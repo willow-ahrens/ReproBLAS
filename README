@@ -1,0 +1,49 @@
+PRBLAS - Parallel Reproducible BLAS v1.0
+
+1. Istallation
+
+- Download the latest version of source code from
+  bebop.cs.berkeley.edu/reproblas/download.html
+- Un-compress the downloaded zip or tar file to {PRBLAS_ROOT} folder
+- Go to {PRBLAS_ROOT}
+- Type make to install the libraries. Alternatively, one can install the
+  libraries separately:
+    make IndexedFP
+    make MPIndexedFP
+    make reproblas_seq
+    make reproblas_mpi
+  compiled libraries reside in sub-directory: {PRBLAS_ROOT}/build/libs
+- make check
+  check the reproducibility of the compiled library
+- make accuracy
+  check the accuracy of the provided reproducible BLAS level 1 routines
+
+2. Usage
+
+In order to use the compiled libraries, one of the following header files
+must be included:
+- IndexedFP.h
+- MPIndexedFP.h
+- rblas.h
+- rblas_mpi.h
+These header files can be found in subdirectory {PRBLAS_ROOT}/build/include
+
+The libraries must also be linked in the correct order during linking time:
+-lreproblas_mpi -lreproblas_seq -liblas -lmpindexedfp -lindexedfp
+
+Dependency of compiled libraries:
+
+                   libreptroblas_mpi.a
+		       |
+               +-------+-------+
+               |               |
+               v               v
+     libreproblas_seq.a     libmpindexedfp.a
+               |               |
+       +-------+--------+  +---+
+       |                |  |
+       v                v  v
+   libiblas.a      libindexedfp.a
+
+Usage examples can be found in subdirectory {PRBLAS_ROOT}/examples.
+
