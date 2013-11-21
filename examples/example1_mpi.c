@@ -59,7 +59,7 @@ int main (int argc, char** args) {
 		for (i = 0; i < n; i++) {
 			s1 += v(i,n);
 		}
-		printf("\nNormal summation  \n", n);
+		printf("\nNormal summation  \n");
 		printf("  >> Sequential  result: %24.17g \n", s1);
 		printf("  >>    Parallel result: %24.17g \n", s); 
 		printf("  >>               Diff: %24g\n", s1 - s);
@@ -82,7 +82,7 @@ int main (int argc, char** args) {
 			dIAddd(&I_s1, v(i,n));
 		}
 		s1 = Iconv2d(I_s1);
-		printf("\nReproducible summation \n", n);
+		printf("\nReproducible summation \n");
 		printf("  >> Sequential  result: %24.17g \n", s1);
 		printf("  >>    Parallel result: %24.17g \n", s); 
 		printf("  >>               Diff: %24g\n", s1 - s);
