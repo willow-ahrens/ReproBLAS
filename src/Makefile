@@ -21,7 +21,8 @@ IBLAS1  = ssumI.o sasumI.o sdotI.o snrm2I.o \
 	zdotI.o zsumI.o dzasumI.o dznrm2I.o \
 	csumI.o scasumI.o cdotI.o scnrm2I.o
 
-SSEO = samax.o samaxm.o damax.o damaxm.o zamax.o zamaxm.o camax.o camaxm.o
+SSEO = samax.o samaxm.o damax.o damaxm.o zamax.o zamaxm.o camax.o camaxm.o	\
+	dIAccum.o
 
 CORE_OBJ = $(SSEO) $(DIBLAS1) $(SIBLAS1) $(ZIBLAS1) $(CIBLAS1) $(IBLAS1)
 
@@ -165,6 +166,7 @@ Iblas_header : Iblas1.mod
 	@echo '#define _INDEXED_BLAS__H_' >> Iblas_tmp.h
 	@echo '#include "IndexedFP.h"' >> Iblas_tmp.h
 	@cat Iblas1.mod >> Iblas_tmp.h
+	@cat accumulator.mod >> Iblas_tmp.h
 	@echo '#endif' >> Iblas_tmp.h
 	@mv Iblas_tmp.h $(ROOT_DIR)/$(BUILD)/include/Iblas.h
 

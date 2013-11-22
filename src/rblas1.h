@@ -6,5 +6,6 @@
 #include "IndexedFP/IndexedFP.h"
 
 #include "rblas1.mod"
+#include "accumulator.mod"
 
 #endif
