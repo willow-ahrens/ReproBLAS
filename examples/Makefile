@@ -1,7 +1,8 @@
 ROOT_DIR=..
 include $(ROOT_DIR)/Make.local
 
-examples = example1 example1_blas example1_acc example1s example1z example1c
+examples = example1 example1_blas example1_acc example1z example1c \
+	example1s example1s_acc
 omp_examples = 
 mpi_examples = 
 

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <sys/time.h>
+#include <rblas.h>
 
 static struct timeval start;
 static struct timeval end;
@@ -32,7 +33,7 @@ int main (int argc, char** args) {
 	double ss[4];
 	double elapsed;
 	float t;
-	I_float I_s;
+	sIAccum I_s;
 
 	printf("\nSum of sin(2* M_PI * (i / n - 0.5).  n = %d \n", n);
 	// SUMMATION USING PRIMITIVE TYPE
@@ -51,29 +52,23 @@ int main (int argc, char** args) {
 	printf("  %16s :  %.17g \t Diff: %g \n", "reverse order", s2, s2 - s1);
 
 	// SUMMATION USING REPRODUCIBLE TYPE
+	sIAccInit(&I_s, 128);
 	tic();
-	sISetZero(I_s);
 	for (i = 0; i < n; i++) {
 		t = v(i,n);
-#if 1 
-		sIAddf(&I_s, t);
-#else
-		sIUpdate_(I_s, fabs(t));
-		sIAddf_(I_s, t);
-		if (i % 1024 == 0)
-			sIRenorm_(I_s);
-#endif
+		sIAccumulate(&I_s, t);
 	}
-	sIRenorm_(I_s);
-	s1 = Iconv2f(I_s);
+	s1 = sIAccExtract(&I_s);
 	elapsed = toc();
-	printf("\n>>%16s :  %.17g \t [%5.1es] \n", "Ifloat", s1, elapsed);
+	printf("\n>>%16s :  %.17g \t [%5.1es] \n", "sIAccum", s1, elapsed);
 	// reverse order
-	sISetZero(I_s);
+	sIAccReset(&I_s);
 	for (i = n-1; i >= 0; i--) {
-		sIAddf(&I_s, v(i,n));
+		t = v(i,n);
+		sIAccumulate(&I_s, t);
 	}
-	s2 = Iconv2f(I_s);
+	s2 = sIAccExtract(&I_s);
+	sIAccDestroy(&I_s);
 	printf("  %16s :  %.17g \t Diff: %g \n", "reverse order", s2, s2 - s1);
 
 
