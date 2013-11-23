@@ -20,7 +20,7 @@ all : $(libs)
 .PHONY: IndexedFP MPIndexedFP
 
 %o:%c
-	$(C_COMPILER) $(CFLAGS) -c $< -o $@
+	$(C_COMPILER) $(FPFLAGS) $(CFLAGS) -c $< -o $@
 
 doubledouble.o : doubledouble.c
 	$(C_COMPILER) -O1 -c $(FPFLAGS) $< -o $@

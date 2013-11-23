@@ -92,7 +92,7 @@ $(shell rm -f .version)
 FPFLAGS =
 
 ifeq (icc, $(CCNAME))
-FPFLAGS += -fp-model strict
+#FPFLAGS += -fp-model strict
 endif
 
 ifeq (gcc, $(CCNAME))
