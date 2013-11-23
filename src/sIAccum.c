@@ -2,39 +2,39 @@
 #include "Iblas1.h"
 #include <stdlib.h>
 
-void dIAccInit(dIAccum *acc, int BUFFER_SIZE) {
+void sIAccInit(sIAccum *acc, int BUFFER_SIZE) {
 	acc->size = BUFFER_SIZE;
 	acc->counter = 0;
-	dISetZero(acc->v);
+	sISetZero(acc->v);
 
 	if (BUFFER_SIZE < 1) BUFFER_SIZE = 128;
-	acc->BUFFER = (double*) malloc(BUFFER_SIZE * sizeof(double));
+	acc->BUFFER = (float*) malloc(BUFFER_SIZE * sizeof(float));
 }
 
-void dIAccReset(dIAccum *acc) {
+void sIAccReset(sIAccum *acc) {
 	acc->counter = 0;
-	dISetZero(acc->v);
+	sISetZero(acc->v);
 }
 
-void dIAccDestroy(dIAccum *acc) {
+void sIAccDestroy(sIAccum *acc) {
 	if (acc->BUFFER != NULL) {
 		free (acc->BUFFER);
 		acc->BUFFER = NULL;
 	}
 }
 
-void dIAccumulate(dIAccum *acc, double x) {
+void sIAccumulate(sIAccum *acc, float x) {
 	int c = acc->counter;
 	acc->BUFFER[c] = x;
 	c++;
 	if (c == acc->size) {
-		dsumI1(c, acc->BUFFER, 1, 3, dIWidth(), acc->v.m, acc->v.c);
+		ssumI1(c, acc->BUFFER, 1, 3, sIWidth(), acc->v.m, acc->v.c);
 		c = 0;
 	}
 	acc->counter = c;
 }
 
-void dIAccumulates(dIAccum *acc, int n, double* v, int inc) {
+void sIAccumulates(sIAccum *acc, int n, float* v, int inc) {
 	int lN;
 	int i;
 	// NAIVE IMPLEMENTATION
@@ -45,8 +45,8 @@ void dIAccumulates(dIAccum *acc, int n, double* v, int inc) {
 		for (i = 0; i < lN; i++) {
 			acc->BUFFER[i] = v[i * inc];
 		}
-		dsumI1(lN + acc->counter, acc->BUFFER, 1,
-			0, dIWidth(), acc->v.m, acc->v.c);
+		ssumI1(lN + acc->counter, acc->BUFFER, 1,
+			0, sIWidth(), acc->v.m, acc->v.c);
 
 		// reset
 		acc->counter = 0;
@@ -55,11 +55,11 @@ void dIAccumulates(dIAccum *acc, int n, double* v, int inc) {
 	}
 }
 
-double dIAccExtract(dIAccum *acc) {
+float sIAccExtract(sIAccum *acc) {
 	int c = acc->counter;
 	if (c > 0) {
-		dsumI1(c, acc->BUFFER, 1, 3, dIWidth(), acc->v.m, acc->v.c);
+		ssumI1(c, acc->BUFFER, 1, 3, sIWidth(), acc->v.m, acc->v.c);
 	}
-	return Iconv2d((acc->v));
+	return Iconv2f((acc->v));
 }
 

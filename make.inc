@@ -1,8 +1,8 @@
 ###############################################
 # C COMPILER                                  #
 ###############################################
-# C_COMPILER    = gcc
-C_COMPILER    = icc
+C_COMPILER    = gcc
+# C_COMPILER    = icc
 # C_COMPILER    = CC
 
 ###############################################
@@ -13,10 +13,10 @@ C_COMPILER    = icc
 ###############################################
 # COMPILING FLAGS                             #
 ###############################################
-# CFLAGS        = -O2 -Werror-implicit-function-declaration
+CFLAGS        = -O2 -Werror-implicit-function-declaration
 
 # for ICC
-CFLAGS        = -O2 -fp-model strict -Werror-implicit-function-declaration
+# CFLAGS        = -O2 -fp-model strict -Werror-implicit-function-declaration
 
 ###############################################
 # FLAG FOR OPENMP SUPPORT	              #

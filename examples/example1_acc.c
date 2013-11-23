@@ -52,23 +52,23 @@ int main (int argc, char** args) {
 	printf("  %16s :  %.17g \t Diff: %g \n", "reverse order", s2, s2 - s1);
 
 	// SUMMATION USING REPRODUCIBLE TYPE
+	dIAccInit(&I_s, 128);
 	tic();
-	dInitAccum(&I_s, 256);
 	for (i = 0; i < n; i++) {
 		t = v(i,n);
-		dAccumulate(&I_s, t);
+		dIAccumulate(&I_s, t);
 	}
-	s1 = dExtractAcc(&I_s);
+	s1 = dIAccExtract(&I_s);
 	elapsed = toc();
 	printf("\n>>%16s :  %.17g \t [%5.1es] \n", "dIAccum", s1, elapsed);
 	// reverse order
-	dResetAcc(&I_s);
+	dIAccReset(&I_s);
 	for (i = n-1; i >= 0; i--) {
 		t = v(i,n);
-		dAccumulate(&I_s, t);
+		dIAccumulate(&I_s, t);
 	}
-	s2 = dExtractAcc(&I_s);
-	dDestroyAcc(&I_s);
+	s2 = dIAccExtract(&I_s);
+	dIAccDestroy(&I_s);
 	printf("  %16s :  %.17g \t Diff: %g \n", "reverse order", s2, s2 - s1);
 
 

@@ -22,7 +22,7 @@ IBLAS1  = ssumI.o sasumI.o sdotI.o snrm2I.o \
 	csumI.o scasumI.o cdotI.o scnrm2I.o
 
 SSEO = samax.o samaxm.o damax.o damaxm.o zamax.o zamaxm.o camax.o camaxm.o	\
-	dIAccum.o
+	dIAccum.o sIAccum.o zIAccum.o cIAccum.o
 
 CORE_OBJ = $(SSEO) $(DIBLAS1) $(SIBLAS1) $(ZIBLAS1) $(CIBLAS1) $(IBLAS1)
 
