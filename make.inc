@@ -21,11 +21,10 @@ CFLAGS        = -O2 -Werror-implicit-function-declaration
 ###############################################
 # FLAG FOR OPENMP SUPPORT	              #
 ###############################################
-#OMP_FLAG     = -fopenmp
+OMP_FLAG     = -fopenmp
 
 # for ICC
-OMP_FLAG     = -openmp
-
+# OMP_FLAG     = -openmp
 
 ###############################################
 # BLAS LIBRARY LOADER FLAG                    #
