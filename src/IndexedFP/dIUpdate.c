@@ -30,7 +30,6 @@ void dIUpdate1_(int fold, int W, int NB, double step,
 	if (x[0] == 0) {
 		dIBoundary(fold, W, fabs(y), x, ldx);
 		for (i = fold; i < fold; i++) {
-			x[i * ldx] = 0;
 			c[i * ldx] = 0;
 		}
 		return;
