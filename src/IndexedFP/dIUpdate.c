@@ -72,7 +72,7 @@ void dIUpdate1(int fold, int W, double* x, double* c, int ldx, double y) {
 	if (y == 0)
 		return;
 
-	if (isnan(x[0] || isinf(x[0])))
+	if (isnan(x[0]) || isinf(x[0]))
 		return;
 
 	if (W == 0)
