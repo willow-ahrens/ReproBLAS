@@ -45,11 +45,11 @@ void scnrm2I2_k3(int n, float complex* v, int incv, float scale, float complex* 
 	// GENERATING MASK
 	// mBLP = 0.000...1 * 2^0
 	__m128 mBLP; // BIT IN THE LAST PLACE MASK
-	SIMD_BLP_MASKS(mBLP);
+	SSE_BLP_MASKS(mBLP);
 
 #if defined( SCASUMI2 )
 	__m128 mAbsMask;
-	SIMD_ABS_MASKS(mAbsMask);
+	SSE_ABS_MASKS(mAbsMask);
 #endif
 #ifdef SCNRM2I2
 	__m128 mScale;
@@ -234,7 +234,7 @@ void csumI2(int n, float complex* v, int incv, int fold, float complex* sum) {
 	// ABSOLUTE MASK
 #	if defined( SCASUMI2 )
 	__m128 mAbsMask;
-	SIMD_ABS_MASKS(mAbsMask);
+	SSE_ABS_MASKS(mAbsMask);
 #	endif
 #	ifdef DNRM2I2
 	__m128 mScale;
@@ -242,7 +242,7 @@ void csumI2(int n, float complex* v, int incv, int fold, float complex* sum) {
 #	endif
 
 	// SET LAST BIT MASK: mBLP = 0.000...1 * 2^0
-	SIMD_BLP_MASKS(mBLP);
+	SSE_BLP_MASKS(mBLP);
 
 	// EXPAND INITIAL SUM TO BUFFER
 	for (j = 0; j < fold; j++) {

@@ -51,7 +51,7 @@ float complex camaxm(
 	__m128 mS, mS2, mv, mv2, my, my2, mAbsMask;
 	__m128 mReal, mImag;
 
-	SIMD_ABS_MASKS(mAbsMask);
+	SSE_ABS_MASKS(mAbsMask);
 
 	mReal = _mm_setzero_ps();
 	mImag = _mm_setzero_ps();

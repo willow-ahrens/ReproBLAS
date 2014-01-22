@@ -46,7 +46,7 @@ void sdotI2(int n, float* v, int incv, float* y, int incy, int fold, float* sum)
 	// ABSOLUTE MASK
 #if defined( SASUMI2 )
 	__m128 mAbsMask;
-	SIMD_ABS_MASKS(mAbsMask);
+	SSE_ABS_MASKS(mAbsMask);
 #elif defined( SNRM2I2 )
 	__m128 mScale;
 	mScale = _mm_set1_ps(scale);
@@ -55,7 +55,7 @@ void sdotI2(int n, float* v, int incv, float* y, int incy, int fold, float* sum)
 #endif
 
 	// SET LAST BIT MASK: mBLP = 0.000...1 * 2^0
-	SIMD_BLP_MASKS(mBLP);
+	SSE_BLP_MASKS(mBLP);
 
 	// EXPAND INITIAL SUM TO BUFFER
 	for (j = 0; j < fold; j++) {
@@ -65,7 +65,7 @@ void sdotI2(int n, float* v, int incv, float* y, int incy, int fold, float* sum)
 	i = 0;
 
 	if (incv == 1) {
-	while (IS_UNALIGNED(v)) {
+	while (IS_UNALIGNED(v, 16)) {
 		mv0 = _mm_load_ss(v);
 #if   defined( SASUMI2 )
 		mv0 = _mm_and_ps(mv0, mAbsMask);

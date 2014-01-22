@@ -24,7 +24,7 @@ double damax(int n, double* v, int inc) {
 
 	
 	if (inc == 1) {
-		if (IS_UNALIGNED(v)) {
+		if (IS_UNALIGNED(v, 16)) {
 			S1 = fabs(v[0]);
 			v += inc;
 			i = 1;

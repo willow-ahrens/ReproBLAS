@@ -53,7 +53,7 @@ Compile : $(OBJ) $(MPOBJ)
 $(MPOBJ): %.o : %.c
 	$(MPIC_COMPILER) $(CFLAGS) -c $< -o $@
 
-TMPL_RDBLAS1 = dIBlas1.c
+TMPL_RDBLAS1 = dIBlas1_AVX.c
 TMPL_RSBLAS1 = sIBlas1.c
 TMPL_ZSUMI2 = zsumI2.c
 TMPL_ZDOTI2 = zdotI2.c
