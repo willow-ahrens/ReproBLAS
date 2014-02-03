@@ -3,7 +3,7 @@
  */
 
 // REDIRECT TO SSE IMPLEMENTATION IF NO AVX SUPPORT
-#ifndef __AVX__ // do we need avx 2?
+#ifndef __AVX__
 #include "dIBlas1_SSE.c"
 #else
 
@@ -27,7 +27,7 @@ extern void dsumI2_k3(int, double*, int, double*);
 
 #define MANUAL_UNROLL
 
-#define UNROLL_STEP_NR_k3 1
+#define UNROLL_STEP_NR_k3 16
 
 /*
  * Reference SIMD implementation for 3-fold binning sum/asum/nrm2/dot

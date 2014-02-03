@@ -37,8 +37,8 @@ void dsetm(int M, int N, double* dst, int ldD, double x);
 void dshowm(double* M, int ldM, int frM, int toM, int frN, int toN);
 
 // CHECK IF AN ADDRESS IS ALIGNED TO 16-BYTE BOUNDARE OR NOT
-#define IS_ALIGNED(ADDR, ALIGN) ((((uintptr_t)ADDR) & ALIGN) == 0)
-#define IS_UNALIGNED(ADDR, ALIGN) ((((uintptr_t)ADDR) & ALIGN) > 0)
+#define IS_ALIGNED(ADDR, ALIGN) ((((uintptr_t)ADDR) & (ALIGN - 1)) == 0)
+#define IS_UNALIGNED(ADDR, ALIGN) ((((uintptr_t)ADDR) & (ALIGN - 1)) > 0)
 
 #define SCALAR_SPLIT(M,X,Q)	\
 	Q = (M + X);		\
