@@ -58,12 +58,12 @@ void ddotI2_k3(int n, double* v, int incv, double* y, int incy, double* sum) {
 
 	// GENERATING MASK
 	// mBLP = 0.000...1 * 2^0
-	SIMD_BLP_MASKD(mBLP);
+	SSE_BLP_MASKD(mBLP);
 
 	// ABSOLUTE MASK
 #if defined( DASUMI2 )
 	__m128d mAbsMask;
-	SIMD_ABS_MASKD(mAbsMask);
+	SSE_ABS_MASKD(mAbsMask);
 #elif defined( DNRM2I2 )
 	__m128d mScale;
 	mScale = _mm_set1_pd(scale);
@@ -446,7 +446,7 @@ void ddotI2(int n, double* v, int incv, double* y, int incy, int fold, double* s
 	// ABSOLUTE MASK
 #if defined( DASUMI2 )
 	__m128d mAbsMask;
-	SIMD_ABS_MASKD(mAbsMask);
+	SSE_ABS_MASKD(mAbsMask);
 #elif defined( DNRM2I2 )
 	__m128d mScale;
 	mScale = _mm_set1_pd(scale);
@@ -455,7 +455,7 @@ void ddotI2(int n, double* v, int incv, double* y, int incy, int fold, double* s
 #endif
 
 	// SET LAST BIT MASK: mBLP = 0.000...1 * 2^0
-	SIMD_BLP_MASKD(mBLP);
+	SSE_BLP_MASKD(mBLP);
 
 	// EXPAND INITIAL SUM TO BUFFER
 	for (j = 0; j < fold; j++) {
@@ -469,7 +469,7 @@ void ddotI2(int n, double* v, int incv, double* y, int incy, int fold, double* s
 #else
 	if (incv == 1) {
 #endif
-	if (IS_UNALIGNED(v)) {
+	if (IS_UNALIGNED(v, 16)) {
 		mv0 = _mm_load_sd(v);
 #if   defined( DASUMI2 )
 		mv0 = _mm_and_pd(mv0, mAbsMask);

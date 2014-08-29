@@ -45,7 +45,7 @@ void zdotuI2_k3
 	// GENERATING MASK
 	// mBLP = 0.000...1 * 2^0
 	__m128d mBLP; // BIT IN THE LAST PLACE MASK
-	SIMD_BLP_MASKD(mBLP);
+	SSE_BLP_MASKD(mBLP);
 	double complex tmp[1] __attribute__((aligned(16)));
 
 
@@ -290,7 +290,7 @@ void zdotuI2
 	// ABSOLUTE MASK
 
 	// SET LAST BIT MASK: mBLP = 0.000...1 * 2^0
-	SIMD_BLP_MASKD(mBLP);
+	SSE_BLP_MASKD(mBLP);
 
 	// EXPAND INITIAL SUM TO BUFFER
 	for (j = 0; j < fold; j++) {

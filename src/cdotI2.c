@@ -46,7 +46,7 @@ void cdotuI2_k3
 	// GENERATING MASK
 	// mBLP = 0.000...1 * 2^0
 	__m128 mBLP; // BIT IN THE LAST PLACE MASK
-	SIMD_BLP_MASKS(mBLP);
+	SSE_BLP_MASKS(mBLP);
 	float complex sret[2] __attribute__((aligned(16)));
 
 	mR0 = _mm_set1_ps(CREAL_(sum[0]));
@@ -284,7 +284,7 @@ void cdotuI2
 	// ABSOLUTE MASK
 
 	// SET LAST BIT MASK: mBLP = 0.000...1 * 2^0
-	SIMD_BLP_MASKS(mBLP);
+	SSE_BLP_MASKS(mBLP);
 
 	// EXPAND INITIAL SUM TO BUFFER
 	for (j = 0; j < fold; j++) {

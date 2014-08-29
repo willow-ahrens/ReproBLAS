@@ -43,7 +43,7 @@ float complex camax(int n, float complex* vd, int inc) {
 	__m128 mS, mv, mAbsMask, mS1, mv1;
 	mS  = _mm_setzero_ps();
 	mS1 = _mm_setzero_ps();
-	SIMD_ABS_MASKS(mAbsMask);
+	SSE_ABS_MASKS(mAbsMask);
 #endif
 	
 	// convert to float pointer
@@ -51,15 +51,15 @@ float complex camax(int n, float complex* vd, int inc) {
 	int pad = 0;
 	if (inc == 1) {
 #ifdef __SSE2__
-		if (IS_UNALIGNED(v)) {
+		if (IS_UNALIGNED(v, 16)) {
 			S0 = fabs(v[0]);
 			v += inc;
 			i ++;
-			if (IS_UNALIGNED(v)) {
+			if (IS_UNALIGNED(v, 16)) {
 				S1 = fabs(v[0]);
 				v += inc;
 				i ++;
-				if (IS_UNALIGNED(v)) {
+				if (IS_UNALIGNED(v, 16)) {
 					v0 = fabs(v[0]);
 					S0 = S0 < v0 ? v0 : S0;
 					v += inc;
