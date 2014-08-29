@@ -1,5 +1,6 @@
 /*
- *  Created   13/10/25   H.D. Nguyen
+ *  AVX Version written based on code by   H.D. Nguyen
+ *  This file was created by Peter Ahrens
  */
 
 // REDIRECT TO SSE IMPLEMENTATION IF NO AVX SUPPORT
