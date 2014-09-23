@@ -53,7 +53,7 @@ double dnrm2I1_(int N, int NB,
 	double scale = 0.0;
 	double nscale = 0.0;
 		
-	for (i = 0; i < N; i+=NB, v+=NB) {
+	for (i = 0; i < N; i+=NB, v+=NB*inc) {
 		lN = NB < (N - i) ? NB:(N-i);
 
 		// LOCAL MAX ABSOLUTE
