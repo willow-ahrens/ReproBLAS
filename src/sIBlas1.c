@@ -64,7 +64,11 @@ void sdotI2(int n, float* v, int incv, float* y, int incy, int fold, float* sum)
 
 	i = 0;
 
+#ifndef SDOTI2
 	if (incv == 1) {
+#else
+	if (incv == 1 && incy == 1) {
+#endif
 	while (IS_UNALIGNED(v, 16)) {
 		mv0 = _mm_load_ss(v);
 #if   defined( SASUMI2 )
