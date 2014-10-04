@@ -241,7 +241,7 @@ void sdotI2(int n, float* v, int incv, float* y, int incy, int fold, float* sum)
 		mv0 = _mm_mul_ps(mv0, mScale);
 		mv0 = _mm_mul_ps(mv0, mv0);
 #		elif defined( SDOTI2 )
-		mv0 = _mm_set_ps(y[0], y[incy], y[2*incy], y[3*incy]);
+		my0 = _mm_set_ps(y[0], y[incy], y[2*incy], y[3*incy]);
 		mv0 = _mm_mul_ps(mv0, my0);
 		y += 4 * incy;
 #		endif
