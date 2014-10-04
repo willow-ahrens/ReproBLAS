@@ -79,6 +79,7 @@ void sdotI2(int n, float* v, int incv, float* y, int incy, int fold, float* sum)
 #elif defined( SDOTI2 )
 		my0 = _mm_load_ss(y);
 		mv0 = _mm_mul_ps(mv0, my0);
+        y++;
 #endif
 
 		for (j = 0; j < fold - 1; j++) {
