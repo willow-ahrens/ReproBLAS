@@ -204,7 +204,7 @@ void zdotuI2_k3
 
 		_mm_store_pd((double*)tmp, mI0);
 #ifdef ZDOTCI2
-		imag = (ZIMAG_(sum[0]) - ZREAL_(tmp[0])) + ZIMAG_(tmp[0]);
+		imag = (ZIMAG_(sum[0]) - ZIMAG_(tmp[0])) + ZREAL_(tmp[0]);
 #elif defined ( ZDOTUI2 )
 		imag = (ZIMAG_(tmp[0]) - ZIMAG_(sum[0])) + ZREAL_(tmp[0]);
 #endif
@@ -221,7 +221,7 @@ void zdotuI2_k3
 
 		_mm_store_pd((double*)tmp, mI1);
 #ifdef ZDOTCI2
-		imag = (ZIMAG_(sum[1]) - ZREAL_(tmp[0])) + ZIMAG_(tmp[0]);
+		imag = (ZIMAG_(sum[1]) - ZIMAG_(tmp[0])) + ZREAL_(tmp[0]);
 #elif defined ( ZDOTUI2 )
 		imag = (ZIMAG_(tmp[0]) - ZIMAG_(sum[1])) + ZREAL_(tmp[0]);
 #endif
@@ -238,7 +238,7 @@ void zdotuI2_k3
 
 		_mm_store_pd((double*)tmp, mI2);
 #ifdef ZDOTCI2
-		imag = (ZIMAG_(sum[2]) - ZREAL_(tmp[0])) + ZIMAG_(tmp[0]);
+		imag = (ZIMAG_(sum[2]) - ZIMAG_(tmp[0])) + ZREAL_(tmp[0]);
 #elif defined ( ZDOTUI2 )
 		imag = (ZIMAG_(tmp[0]) - ZIMAG_(sum[2])) + ZREAL_(tmp[0]);
 #endif
@@ -345,7 +345,7 @@ void zdotuI2
 
 		_mm_store_pd((double*)tmp, mI[j]);
 #ifdef ZDOTCI2
-		imag = (ZIMAG_(sum[i]) - ZREAL_(tmp[0])) + ZIMAG_(tmp[0]);
+		imag = (ZIMAG_(sum[i]) - ZIMAG_(tmp[0])) + ZREAL_(tmp[0]);
 #elif defined ( ZDOTUI2 )
 		imag = (ZIMAG_(tmp[0]) - ZIMAG_(sum[j])) + ZREAL_(tmp[0]);
 #endif
