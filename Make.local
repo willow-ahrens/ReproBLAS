@@ -1,0 +1,100 @@
+# check if file exists
+in_exist := $(wildcard $(CURDIR)/$(ROOT_DIR)/make.inc)
+ifneq ($(strip $(in_exist)),)
+	include $(CURDIR)/$(ROOT_DIR)/make.inc
+endif
+
+ifeq (, $(BUILD))
+	BUILD = build
+endif
+
+#############################
+# DEFAULT VALUES
+#############################
+
+ifeq ($(strip $(C_COMPILER)),)
+	ifneq ($(shell which gcc),)
+		C_COMPILER = gcc
+		CFLAGS = -O2
+	else
+		C_COMPILER = CC
+	endif
+endif
+
+#show:
+#	@echo $(C_COMPILER)
+#	@echo $(MPIC_COMPILER)
+
+ifeq ($(strip $(MPIC_COMPILER)),)
+ifneq ($(shell which mpicc),)
+MPIC_COMPILER := mpicc
+endif
+endif
+
+ifeq ($(strip $(LDC)),)
+LDC = $(C_COMPILER)
+endif
+
+ifeq ($(strip $(MPILDC)),)
+MPILDC = $(MPIC_COMPILER)
+endif
+
+CCNAME =
+
+#############################
+# >>> DETECT COMPILER NAME
+ifeq (icc,$(C_COMPILER))
+CCNAME= icc
+else
+ifeq (gcc,$(C_COMPILER))
+CCNAME= gcc
+else
+ifeq (pgcc,$(C_COMPILER))
+CCNAME= pgcc
+else
+ifeq (craycc,$(C_COMPILER))
+CCNAME= craycc
+endif
+endif
+endif
+endif
+
+ifeq (,$(CCNAME))
+
+$(shell $(C_COMPILER) --version > .version)
+
+ifneq (, $(shell grep ^icc .version))
+	CCNAME = icc
+else
+ifneq (, $(shell grep ^gcc .version))
+	CCNAME = gcc
+else
+ifneq (, $(shell grep ^pgcc .version))
+	CCNAME = pgcc
+endif
+ifneq (, $(shell grep ^LLVM .version))
+	CCNAME = llvm
+endif
+endif
+endif
+
+endif
+
+ifeq (,$(CCNAME))
+
+endif
+
+$(shell rm -f .version)
+
+# <<< end DETECTING
+#############################
+
+FPFLAGS =
+
+ifeq (icc, $(CCNAME))
+#FPFLAGS += -fp-model strict
+endif
+
+ifeq (gcc, $(CCNAME))
+endif
+
