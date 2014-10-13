@@ -571,7 +571,7 @@ class OneDimensionalAccumulation(TargetFunction):
 
   def __init__(self, data_type_class, vectorization_class, settings = [(-1, 1)]):
     super().__init__(data_type_class, vectorization_class)
-    self.set_settings(self)
+    self.set_settings(settings)
 
   def set_settings(self, settings):
     #put settings validation here
