@@ -1,1 +1,1 @@
-script(["../../common/test_data"], [("N", [4096]), ("d", range(4)), ("t", range(8))])
+script(["../../common/test_data"], [("N", [4095]), ("d", range(4)), ("t", range(8))])
