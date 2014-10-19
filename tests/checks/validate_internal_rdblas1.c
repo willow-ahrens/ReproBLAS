@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../common/test_vec.h"
-#include "test_vecvec.h"
+
+#include "../common/test_vecvec_header.h"
 
 const char* vecvec_name(int argc, char** argv) {
   return "Validate rdsum, rdasum, rddot (1Big, 1BigPosNeg)";

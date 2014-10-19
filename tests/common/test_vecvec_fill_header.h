@@ -1,7 +1,8 @@
 #include <stdio.h>
-#include "../common/test_opt.h"
-#include "../common/test_vec.h"
-#include "test_vecvec.h"
+#include "test_opt.h"
+#include "test_vec.h"
+
+#include "test_vecvec_header.h"
 
 #define NAME_SIZE 100
 

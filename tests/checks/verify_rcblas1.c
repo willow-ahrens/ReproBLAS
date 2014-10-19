@@ -6,7 +6,8 @@
 #include "../common/test_opt.h"
 #include "../common/test_vec.h"
 #include "rcblas1_wrapper.h"
-#include "test_vecvec_fill.h"
+
+#include "../common/test_vecvec_fill_header.h"
 
 #define NAME_SIZE 100
 

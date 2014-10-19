@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "../common/test_opt.h"
+#include "test_opt.h"
 
 const char *name(int argc, char** argv);
 int test(int argc, char** argv);

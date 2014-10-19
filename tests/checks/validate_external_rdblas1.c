@@ -7,7 +7,8 @@
 #include "../common/test_opt.h"
 #include "../common/test_file.h"
 #include "rdblas1_wrapper.h"
-#include "test_file.h"
+
+#include "../common/test_file_header.h"
 
 
 #define MAX_FILE 1024

@@ -1,6 +1,8 @@
 #include <stdio.h>
-#include "../common/test_opt.h"
-#include "test.h"
+#include "test_opt.h"
+
+#include "test_header.h"
+
 #define MAX_NAME 100
 
 const char *file_name(int argc, char** argv);
