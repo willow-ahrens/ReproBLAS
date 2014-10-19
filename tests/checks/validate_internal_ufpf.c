@@ -8,7 +8,7 @@ const char* vecvec_name(int argc, char** argv) {
   return "Validate ufpf";
 }
 
-int vecvec_check(int argc, char** argv, int N, int incx, int incy) {
+int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   int i;
   float bin = 1.0;
   float ufpx;

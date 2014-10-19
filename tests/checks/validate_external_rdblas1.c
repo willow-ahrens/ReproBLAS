@@ -19,7 +19,7 @@ const char* file_name(int argc, char** argv) {
   return namebuf;
 }
 
-int file_check(int argc, char** argv, char *fname) {
+int file_test(int argc, char** argv, char *fname) {
   int i;
   int N;
   char ref_fname[MAX_FILE];

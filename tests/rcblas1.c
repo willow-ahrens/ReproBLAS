@@ -8,6 +8,8 @@
 
 #include "benchmark_macro.h"
 
+#define CALL_SCASUM
+
 int main( int argc, char **argv ) {
 	float complex* v;
 	float complex* y;

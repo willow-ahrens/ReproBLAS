@@ -9,7 +9,7 @@ const char* vecvec_name(int argc, char** argv) {
   return namebuf;
 }
 
-int vecvec_check(int argc, char** argv, int N, int incx, int incy) {
+int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   int i;
   double small = 1.0 / (1024.0 * 1024.0);       // 2^-20
   double big   = 1024.0 * 1024.0 * 1024.0 * 32; // 2^35

@@ -57,7 +57,7 @@ extern const char* vecvec_fill_name(int argc, char** argv){
   return namebuf;
 }
 
-extern int vecvec_fill_check(int argc, char** argv, int N, int incx, int incy, int type){
+extern int vecvec_fill_test(int argc, char** argv, int N, int incx, int incy, int type){
   int func = opt_read_int(argc, argv, "-f", 0);
   int rc = 0;
   double ref;

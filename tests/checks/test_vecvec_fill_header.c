@@ -5,7 +5,7 @@
 #define NAME_SIZE 100
 
 extern const char* vecvec_fill_name(int argc, char** argv);
-extern int vecvec_fill_check(int argc, char** argv, int N, int incx, int incy, int type);
+extern int vecvec_fill_test(int argc, char** argv, int N, int incx, int incy, int type);
 
 static char namebuf[NAME_SIZE];
 
@@ -15,8 +15,8 @@ const char* vecvec_name(int argc, char** argv){
   return namebuf;
 }
 
-int vecvec_check(int argc, char** argv, int N, int incx, int incy){
+int vecvec_test(int argc, char** argv, int N, int incx, int incy){
   int type = opt_read_int(argc, argv, "-t", 0);
-  int rc = vecvec_fill_check(argc, argv, N, incx, incy, type);
+  int rc = vecvec_fill_test(argc, argv, N, incx, incy, type);
   return rc;
 }
