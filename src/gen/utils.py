@@ -49,6 +49,13 @@ class CodeBlock:
       self.includes += ["\n".join(["  " * self.base_indent_level + line for line in chunk.split("\n")])]
       self.included.add(chunk)
 
+  def define_vars(self, type_name, variables):
+    self.write(type_name + " " + ", ".join(variables) + ";")
+
+  def set_equal(self, a_vars, b_vars):
+    for (a_var, b_var) in zip(a_vars, b_vars):
+      self.write("{0} = {1};".format(a_var, b_var))
+
   def new_line(self):
     self.blocks += [""]
 

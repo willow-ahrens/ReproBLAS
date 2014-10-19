@@ -108,18 +108,18 @@ class OneDimensionalAccumulation(TargetFunction):
     if fold == -1:
       #define q variables
       self.q_vars = ["q_" + str(i) for i in range(max_process_width)]
-      self.define_vars(code_block, self.vec.type_name, self.q_vars)
+      code_block.define_vars(self.vec.type_name, self.q_vars)
       #define s variables
       self.s_vars = [["s_" + str(i) for i in range(max_process_width)]]
-      self.define_vars(code_block, self.vec.type_name, self.s_vars[0])
+      code_block.define_vars(self.vec.type_name, self.s_vars[0])
     else:
       #define q variables
       self.q_vars = ["q_" + str(i) for i in range(self.vec.suf_width)]
-      self.define_vars(code_block, self.vec.type_name, self.q_vars)
+      code_block.define_vars(self.vec.type_name, self.q_vars)
       #define s variables
       self.s_vars = [["s_{0}_{1}".format(j, i) for i in range(self.vec.suf_width)] for j in range(fold)]
       for j in range(fold):
-        self.define_vars(code_block, self.vec.type_name, self.s_vars[j])
+        code_block.define_vars(self.vec.type_name, self.s_vars[j])
 
     if fold == -1:
       code_block.write("{0} s_buffer[{1}];".format(self.vec.type_name, mix("*", max_process_width, "MAX_FOLD")))
@@ -187,13 +187,6 @@ class OneDimensionalAccumulation(TargetFunction):
       code_block.dedent()
       code_block.write("}")
 
-  def define_vars(self, code_block, type_name, variables):
-    code_block.write(type_name + " " + ", ".join(variables) + ";")
-
-  def set_equal(self, code_block, a_vars, b_vars):
-    for (a_var, b_var) in zip(a_vars, b_vars):
-      code_block.write("{0} = {1};".format(a_var, b_var))
-
   def define_load_vars(self, code_block, process_width):
     raise(NotImplementedError())
 
@@ -211,21 +204,21 @@ class OneDimensionalAccumulation(TargetFunction):
     if(fold == -1):
       code_block.write("for(j = 0; j < fold - 1; j++){")
       code_block.indent()
-      self.set_equal(code_block, self.s_vars[0], self.buffer_vars[:process_width])
+      code_block.set_equal(self.s_vars[0], self.buffer_vars[:process_width])
       self.vec.add_BLP_into(self.q_vars, self.s_vars[0], self.load_vars[0], process_width)
-      self.set_equal(code_block, self.buffer_vars, self.q_vars[:process_width])
-      self.set_equal(code_block, self.q_vars, self.vec.sub(self.s_vars[0], self.q_vars[:process_width]))
-      self.set_equal(code_block, self.load_vars[0], self.vec.add(self.load_vars[0], self.q_vars[:process_width]))
+      code_block.set_equal(self.buffer_vars, self.q_vars[:process_width])
+      code_block.set_equal(self.q_vars, self.vec.sub(self.s_vars[0], self.q_vars[:process_width]))
+      code_block.set_equal(self.load_vars[0], self.vec.add(self.load_vars[0], self.q_vars[:process_width]))
       code_block.dedent()
       code_block.write("}")
       self.vec.add_BLP_into(self.buffer_vars, self.buffer_vars, self.load_vars[0], process_width)
     else:
       for i in range(process_width // self.vec.suf_width):
         for j in range(fold - 1):
-          self.set_equal(code_block, self.q_vars, self.s_vars[j])
+          code_block.set_equal(self.q_vars, self.s_vars[j])
           self.vec.add_BLP_into(self.s_vars[j], self.s_vars[j], self.load_vars[0][i * self.vec.suf_width:], self.vec.suf_width)
-          self.set_equal(code_block, self.q_vars, self.vec.sub(self.q_vars, self.s_vars[j]))
-          self.set_equal(code_block, self.load_vars[0][i * self.vec.suf_width:], self.vec.add(self.load_vars[0][i * self.vec.suf_width:], self.q_vars))      
+          code_block.set_equal(self.q_vars, self.vec.sub(self.q_vars, self.s_vars[j]))
+          code_block.set_equal(self.load_vars[0][i * self.vec.suf_width:], self.vec.add(self.load_vars[0][i * self.vec.suf_width:], self.q_vars))      
         self.vec.add_BLP_into(self.s_vars[fold - 1], self.s_vars[fold - 1], self.load_vars[0][i * self.vec.suf_width:], self.vec.suf_width)
     
   def compute_process_width(self, unroll):
@@ -239,7 +232,7 @@ class NonDotOneDimensionalAccumulation(OneDimensionalAccumulation):
 
   def define_load_vars(self, code_block, process_width):
     self.load_vars = [["v_" + str(i) for i in range(process_width)]]
-    self.define_vars(code_block, self.vec.type_name, self.load_vars[0])
+    code_block.define_vars(self.vec.type_name, self.load_vars[0])
 
   def define_load_ptrs(self, code_block, process_width):
     if self.data_type.is_complex:
@@ -270,8 +263,8 @@ class DotOneDimensionalAccumulation(OneDimensionalAccumulation):
       self.load_vars = [["v_" + str(i) for i in range(process_width)], ["y_" + str(i) for i in range(process_width//2)]]
     else:
       self.load_vars = [["v_" + str(i) for i in range(process_width)], ["y_" + str(i) for i in range(process_width)]]
-    self.define_vars(code_block, self.vec.type_name, self.load_vars[0])
-    self.define_vars(code_block, self.vec.type_name, self.load_vars[1])
+    code_block.define_vars(self.vec.type_name, self.load_vars[0])
+    code_block.define_vars(self.vec.type_name, self.load_vars[1])
 
   def compute_process_width(self, unroll):
     return (unroll * self.data_type.base_size)//self.vec.base_size * self.data_type.base_size
@@ -292,9 +285,9 @@ class SumI(NonDotOneDimensionalAccumulation):
 
   def preprocess(self, code_block, unroll, incs, partial=""):
     if partial == "":
-      self.set_equal(code_block, self.load_vars[0], self.vec.load(self.load_ptrs[0], 0, incs[0], unroll))
+      code_block.set_equal(self.load_vars[0], self.vec.load(self.load_ptrs[0], 0, incs[0], unroll))
     else:
-      self.set_equal(code_block, self.load_vars[0], self.vec.load_partial(self.load_ptrs[0], 0, incs[0], partial))
+      code_block.set_equal(self.load_vars[0], self.vec.load_partial(self.load_ptrs[0], 0, incs[0], partial))
 
 class ASumI(NonDotOneDimensionalAccumulation):
   name = "asumI"
@@ -318,9 +311,9 @@ class ASumI(NonDotOneDimensionalAccumulation):
 
   def preprocess(self, code_block, unroll, incs, partial=""):
     if partial == "":
-      self.set_equal(code_block, self.load_vars[0], self.vec.abs(self.vec.load(self.load_ptrs[0], 0, incs[0], unroll)))
+      code_block.set_equal(self.load_vars[0], self.vec.abs(self.vec.load(self.load_ptrs[0], 0, incs[0], unroll)))
     else:
-      self.set_equal(code_block, self.load_vars[0], self.vec.abs(self.vec.load_partial(self.load_ptrs[0], 0, incs[0], partial)))
+      code_block.set_equal(self.load_vars[0], self.vec.abs(self.vec.load_partial(self.load_ptrs[0], 0, incs[0], partial)))
 
 class Nrm2I(NonDotOneDimensionalAccumulation):
   name = "nrm2I"
@@ -346,10 +339,10 @@ class Nrm2I(NonDotOneDimensionalAccumulation):
     code_block.include("{0} scale_mask = {1};".format(self.vec.type_name, self.vec.set("scale")[0]))
     process_width = self.compute_process_width(unroll)
     if partial == "":
-      self.set_equal(code_block, self.load_vars[0], self.vec.mul(self.vec.load(self.load_ptrs[0], 0, incs[0], unroll), ["scale_mask"] * process_width))
+      code_block.set_equal(self.load_vars[0], self.vec.mul(self.vec.load(self.load_ptrs[0], 0, incs[0], unroll), ["scale_mask"] * process_width))
     else:
-      self.set_equal(code_block, self.load_vars[0], self.vec.mul(self.vec.load_partial(self.load_ptrs[0], 0, incs[0], partial), ["scale_mask"] * process_width))
-    self.set_equal(code_block, self.load_vars[0], self.vec.mul(self.load_vars[0], self.load_vars[0][:process_width]))
+      code_block.set_equal(self.load_vars[0], self.vec.mul(self.vec.load_partial(self.load_ptrs[0], 0, incs[0], partial), ["scale_mask"] * process_width))
+    code_block.set_equal(self.load_vars[0], self.vec.mul(self.load_vars[0], self.load_vars[0][:process_width]))
 
 class DotI(DotOneDimensionalAccumulation):
   def __init__(self, data_type, vectorization):
@@ -370,13 +363,13 @@ class DotI(DotOneDimensionalAccumulation):
   def preprocess(self, code_block, unroll, incs, partial=""):
     process_width = self.compute_process_width(unroll)
     if partial == "":
-      self.set_equal(code_block, self.load_vars[0], self.vec.load(self.load_ptrs[0], 0, incs[0], unroll))
-      self.set_equal(code_block, self.load_vars[1], self.vec.load(self.load_ptrs[1], 0, incs[1], unroll))
+      code_block.set_equal(self.load_vars[0], self.vec.load(self.load_ptrs[0], 0, incs[0], unroll))
+      code_block.set_equal(self.load_vars[1], self.vec.load(self.load_ptrs[1], 0, incs[1], unroll))
     else:
-      self.set_equal(code_block, self.load_vars[0], self.vec.load_partial(self.load_ptrs[0], 0, incs[0], partial))
-      self.set_equal(code_block, self.load_vars[1], self.vec.load_partial(self.load_ptrs[1], 0, incs[1], partial))
+      code_block.set_equal(self.load_vars[0], self.vec.load_partial(self.load_ptrs[0], 0, incs[0], partial))
+      code_block.set_equal(self.load_vars[1], self.vec.load_partial(self.load_ptrs[1], 0, incs[1], partial))
     
-    self.set_equal(code_block, self.load_vars[0], self.vec.mul(self.load_vars[0], self.load_vars[1][:process_width]))
+    code_block.set_equal(self.load_vars[0], self.vec.mul(self.load_vars[0], self.load_vars[1][:process_width]))
 
 class DotUI(DotOneDimensionalAccumulation):
   def __init__(self, data_type_class, vectorization_class):
@@ -394,13 +387,13 @@ class DotUI(DotOneDimensionalAccumulation):
   def preprocess(self, code_block, unroll, incs, partial=""):
     process_width = self.compute_process_width(unroll)
     if partial == "":
-      self.set_equal(code_block, self.load_vars[0], self.vec.load(self.load_ptrs[0], 0, incs[0], unroll))
-      self.set_equal(code_block, self.load_vars[1], self.vec.load(self.load_ptrs[1], 0, incs[1], unroll))
+      code_block.set_equal(self.load_vars[0], self.vec.load(self.load_ptrs[0], 0, incs[0], unroll))
+      code_block.set_equal(self.load_vars[1], self.vec.load(self.load_ptrs[1], 0, incs[1], unroll))
     else:
-      self.set_equal(code_block, self.load_vars[0], self.vec.load_partial(self.load_ptrs[0], 0, incs[0], partial))
-      self.set_equal(code_block, self.load_vars[1], self.vec.load_partial(self.load_ptrs[1], 0, incs[1], partial))
-    self.set_equal(code_block, self.load_vars[0][process_width//2:process_width], self.vec.nconj(self.vec.mul(self.vec.swap_pairwise(self.load_vars[0]), self.vec.rep_odds(self.load_vars[1]))))
-    self.set_equal(code_block, self.load_vars[0][:process_width//2], self.vec.mul(self.load_vars[0], self.vec.rep_evens(self.load_vars[1])))
+      code_block.set_equal(self.load_vars[0], self.vec.load_partial(self.load_ptrs[0], 0, incs[0], partial))
+      code_block.set_equal(self.load_vars[1], self.vec.load_partial(self.load_ptrs[1], 0, incs[1], partial))
+    code_block.set_equal(self.load_vars[0][process_width//2:process_width], self.vec.nconj(self.vec.mul(self.vec.swap_pairwise(self.load_vars[0]), self.vec.rep_odds(self.load_vars[1]))))
+    code_block.set_equal(self.load_vars[0][:process_width//2], self.vec.mul(self.load_vars[0], self.vec.rep_evens(self.load_vars[1])))
 
 class DotCI(DotOneDimensionalAccumulation):
   def __init__(self, data_type_class, vectorization_class):
@@ -418,13 +411,13 @@ class DotCI(DotOneDimensionalAccumulation):
   def preprocess(self, code_block, unroll, incs, partial=""):
     process_width = self.compute_process_width(unroll)
     if partial == "":
-      self.set_equal(code_block, self.load_vars[0], self.vec.load(self.load_ptrs[0], 0, incs[0], unroll))
-      self.set_equal(code_block, self.load_vars[1], self.vec.load(self.load_ptrs[1], 0, incs[1], unroll))
+      code_block.set_equal(self.load_vars[0], self.vec.load(self.load_ptrs[0], 0, incs[0], unroll))
+      code_block.set_equal(self.load_vars[1], self.vec.load(self.load_ptrs[1], 0, incs[1], unroll))
     else:
-      self.set_equal(code_block, self.load_vars[0], self.vec.load_partial(self.load_ptrs[0], 0, incs[0], partial))
-      self.set_equal(code_block, self.load_vars[1], self.vec.load_partial(self.load_ptrs[1], 0, incs[1], partial))
-    self.set_equal(code_block, self.load_vars[0][process_width//2:process_width], self.vec.conj(self.vec.mul(self.vec.swap_pairwise(self.load_vars[0]), self.vec.rep_odds(self.load_vars[1]))))
-    self.set_equal(code_block, self.load_vars[0][:process_width//2], self.vec.mul(self.load_vars[0], self.vec.rep_evens(self.load_vars[1])))
+      code_block.set_equal(self.load_vars[0], self.vec.load_partial(self.load_ptrs[0], 0, incs[0], partial))
+      code_block.set_equal(self.load_vars[1], self.vec.load_partial(self.load_ptrs[1], 0, incs[1], partial))
+    code_block.set_equal(self.load_vars[0][process_width//2:process_width], self.vec.conj(self.vec.mul(self.vec.swap_pairwise(self.load_vars[0]), self.vec.rep_odds(self.load_vars[1]))))
+    code_block.set_equal(self.load_vars[0][:process_width//2], self.vec.mul(self.load_vars[0], self.vec.rep_evens(self.load_vars[1])))
   
 def IBLASFile(target_function, data_type_class, implementations):
   output_file = SrcFile(target_function.file_name(data_type_class))
