@@ -6,10 +6,9 @@
 #include "../common/test_opt.h"
 #include "../common/test_vec.h"
 #include "rsblas1_wrapper.h"
+#include "test_vecvec_fill.h"
 
 #define NAME_SIZE 100
-
-static char namebuf[NAME_SIZE];
 
 int verify_rsblas1_reproducibility(int N, float* x, int incx, float* y, int incy, int func, float ref, Ifloat Iref, int max_num_blocks) {
   // GENERATE DATA
@@ -50,8 +49,8 @@ int verify_rsblas1_reproducibility(int N, float* x, int incx, float* y, int incy
   return 0;
 }
 
-
 extern const char* vecvec_fill_name(int argc, char** argv){
+  static char namebuf[NAME_SIZE];
   int func = opt_read_int(argc, argv, "-f", 0);
   snprintf(namebuf, NAME_SIZE * sizeof(char), "Verify %s reproducibility", wrap_rsblas1_name(func));
   return namebuf;

@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include "../common/test_opt.h"
+#include "test.h"
 #define MAX_NAME 100
 
-extern const char *vecvec_name(int argc, char** argv);
-extern int vecvec_test(int argc, char** argv, int N, int incx, int incy);
-
-static char namebuf[MAX_NAME];
+const char *vecvec_name(int argc, char** argv);
+int vecvec_test(int argc, char** argv, int N, int incx, int incy);
 
 const char* name(int argc, char** argv){
+  static char namebuf[MAX_NAME];
   int N = opt_read_int(argc, argv, "-N", 256);
   int incx = opt_read_int(argc, argv, "-incx", 1);
   int incy = opt_read_int(argc, argv, "-incy", 1);

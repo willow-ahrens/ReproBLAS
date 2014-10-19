@@ -2,11 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../common/test_vec.h"
-
-static char* namebuf = "Validate rssum, rsasum, rsdot (1Big, 1BigPosNeg)";
+#include "test_vecvec.h"
 
 const char* vecvec_name(int argc, char** argv) {
-  return namebuf;
+  return "Validate rssum, rsasum, rsdot (1Big, 1BigPosNeg)";
 }
 
 int vecvec_test(int argc, char** argv, int N, int incx, int incy) {

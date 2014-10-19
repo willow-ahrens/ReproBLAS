@@ -7,13 +7,13 @@
 #include "../common/test_opt.h"
 #include "../common/test_file.h"
 #include "rzblas1_wrapper.h"
+#include "test_file.h"
 
 #define MAX_FILE 1024
 #define MAX_NAME 100
 
-char namebuf[MAX_NAME];
-
 const char* file_name(int argc, char** argv) {
+  static char namebuf[MAX_NAME];
   int func = opt_read_int(argc, argv, "-f", 0);
   snprintf(namebuf, MAX_NAME, "Validate %s external", wrap_rzblas1_name(func));
   return namebuf;

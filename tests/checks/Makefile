@@ -12,28 +12,14 @@ VECVEC_CHECKS = validate_internal_ufp validate_internal_ufpf validate_internal_r
 
 VECVEC_FILL_CHECKS = verify_rdblas1 verify_rsblas1 verify_rcblas1 verify_rzblas1
 
-CHECK_HEADERS = test_header.o test_vecvec_header.o test_vecvec_fill_header.o test_file_header.o
+CHECKS = $(FILE_CHECKS) $(VECVEC_CHECKS) $(VECVEC_FILL_CHECKS)
 
 ../common/libtest.a:
 	@cd ../common; make
 
-$(CHECK_HEADERS): %.o: %.c
-	@$(C_COMPILER) $(CFLAGS) -c $(patsubst %.o,%.c,$@) -o $@
-
-$(FILE_CHECKS): $(patsubst %,%.c,$@) test_file_header.o test_header.o ../common/libtest.a
+$(CHECKS): $(patsubst %,%.c,$@) ../common/libtest.a
 	@$(C_COMPILER) $(CFLAGS) -c $(patsubst %,%.c,$@) -o $(patsubst %,%.o,$@)
-	@$(C_COMPILER) $(CFLAGS) -c $(patsubst %,%.c,$@) -o $(patsubst %,%.o,$@)
-	@$(LDC) test_file_header.o test_header.o $(patsubst %,%.o,$@) -o $@ $(RBLAS)  ../common/libtest.a $(LDFLAGS)
-
-$(VECVEC_CHECKS): $(patsubst %,%.c,$@) test_vecvec_header.o test_header.o ../common/libtest.a
-	@$(C_COMPILER) $(CFLAGS) -c $(patsubst %,%.c,$@) -o $(patsubst %,%.o,$@)
-	@$(C_COMPILER) $(CFLAGS) -c $(patsubst %,%.c,$@) -o $(patsubst %,%.o,$@)
-	@$(LDC) test_vecvec_header.o test_header.o $(patsubst %,%.o,$@) -o $@ $(RBLAS)  ../common/libtest.a $(LDFLAGS)
-
-$(VECVEC_FILL_CHECKS): $(patsubst %,%.c,$@) test_vecvec_fill_header.o test_vecvec_header.o test_header.o ../common/libtest.a
-	@$(C_COMPILER) $(CFLAGS) -c $(patsubst %,%.c,$@) -o $(patsubst %,%.o,$@)
-	@$(C_COMPILER) $(CFLAGS) -c $(patsubst %,%.c,$@) -o $(patsubst %,%.o,$@)
-	@$(LDC) test_vecvec_fill_header.o test_vecvec_header.o test_header.o $(patsubst %,%.o,$@) -o $@ $(RBLAS)  ../common/libtest.a $(LDFLAGS)
+	@$(LDC) $(patsubst %,%.o,$@) -o $@ $(RBLAS)  ../common/libtest.a $(LDFLAGS)
 
 check:
 	python ../harness.py -s check.suite
@@ -44,4 +30,4 @@ reference:
 
 clean:
 	-rm -f *.o
-	-rm -f $(VECVEC_CHECKS) $(VECVEC_FILL_CHECKS) $(FILE_CHECKS)
+	-rm -f $(CHECKS)

@@ -1,15 +1,15 @@
 #include <stdio.h>
 #include "../common/test_opt.h"
 #include "../common/test_vec.h"
+#include "test_vecvec.h"
 
 #define NAME_SIZE 100
 
-extern const char* vecvec_fill_name(int argc, char** argv);
-extern int vecvec_fill_test(int argc, char** argv, int N, int incx, int incy, int type);
-
-static char namebuf[NAME_SIZE];
+const char* vecvec_fill_name(int argc, char** argv);
+int vecvec_fill_test(int argc, char** argv, int N, int incx, int incy, int type);
 
 const char* vecvec_name(int argc, char** argv){
+  static char namebuf[NAME_SIZE];
   int type = opt_read_int(argc, argv, "-t", 0);
   snprintf(namebuf, NAME_SIZE * sizeof(char), "%s (%s)", vecvec_fill_name(argc, argv), vec_fill_name(type));
   return namebuf;
