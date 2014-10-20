@@ -34,9 +34,9 @@ $(BENCHMARK_RBLAS): debug.o dgenvec.o sgenvec.o
 	@echo '#define ' $(CMP_BLAS) > tmp_config.h
 	@$(C_COMPILER) $(CFLAGS) -c $(patsubst %,%.c,$@) -o $@.o
 	@$(LDC) $@.o debug.o dgenvec.o sgenvec.o -o benchmark-rblas  $(RBLAS) $(LDFLAGS)
-	@./benchmark-rblas --header -n 128:128:256 --cmp --incv 1 --incy 1 --flops
-	@./benchmark-rblas -n 512 --cmp --incv 1 --incy 1 --flops
-	@./benchmark-rblas -n 1024:1024:4096 --cmp --incv 1 --incy 1 --flops
+#	@./benchmark-rblas --header -n 128:128:256 --cmp --incv 1 --incy 1 --flops
+#	@./benchmark-rblas -n 512 --cmp --incv 1 --incy 1 --flops
+#	@./benchmark-rblas -n 1024:1024:4096 --cmp --incv 1 --incy 1 --flops
 #	@echo 'VSTRIDE 1 YSTRIDE 1'
 #	@./benchmark-rblas --header -n 128:128:256 --cmp --incv 1 --incy 1
 #	@./benchmark-rblas -n 512 --cmp --incv 1 --incy 1

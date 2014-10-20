@@ -43,11 +43,11 @@ int main( int argc, char **argv ) {
 	#endif
 	if (tests & (1 << RNRM2_BIT))
 	printf("%10s", "RSCNRM2");
-	#ifdef CALL_SDOTC
+	#ifdef CALL_CDOTC
 	if (tests & (1 << DOT_BIT))
 	printf("%10s", "CDOTC");
 	#endif
-	#ifdef CALL_SDOTU
+	#ifdef CALL_CDOTU
 	if (tests & (1 << DOT_BIT))
 	printf("%10s", "CDOTU");
 	#endif
