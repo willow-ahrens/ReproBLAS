@@ -60,30 +60,57 @@ int main( int argc, char **argv ) {
 
 		//==== DASUM ====
 #		ifdef CALL_DASUM
-		time1_(ref, tests, ASUM_BIT, CALL_SASUM, n, v, incv, n)
+        if(flops){
+          time1_(ref, tests, ASUM_BIT, CALL_SASUM, n, v, incv, n * 2)
+        }else{
+          time1_(ref, tests, ASUM_BIT, CALL_SASUM, n, v, incv, n)
+        }
 #		endif
 		//==== RDASUM ====
-		time_(sum,tests, RASUM_BIT, rsasum, n, v, incv, n)
+        if(flops){
+          time_(sum,tests, RASUM_BIT, rsasum, n, v, incv, n * 11)
+        }else{
+          time_(sum,tests, RASUM_BIT, rsasum, n, v, incv, n)
+        }
 
 		//==== RDSUM ====
-		time_(sum,tests, RSUM_BIT, rssum, n, v, incv, n)
+        if(flops){
+          time_(sum,tests, RSUM_BIT, rssum, n, v, incv, n * 10)
+        }else{
+          time_(sum,tests, RSUM_BIT, rssum, n, v, incv, n)
+        }
 
 		//==== DNRM2 ====
 #		ifdef CALL_DNRM2
-		time1_(ref, tests, NRM2_BIT, CALL_SNRM2, n, v, incv, n)
+        if(flops){
+          time1_(ref, tests, NRM2_BIT, CALL_SNRM2, n, v, incv, n * 5)
+        }else{
+          time1_(ref, tests, NRM2_BIT, CALL_SNRM2, n, v, incv, n)
+        }
 #		endif
 
 		//==== RDNRM2 ====
-		time_(sum,tests, RNRM2_BIT, rsnrm2, n, v, incv, n)
+        if(flops){
+          time_(sum,tests, RNRM2_BIT, rsnrm2, n, v, incv, n * 12)
+        }else{
+          time_(sum,tests, RNRM2_BIT, rsnrm2, n, v, incv, n)
+        }
 
 		//==== DDOT ====
 #		ifdef CALL_DDOT
-		time3_(ref, tests, DOT_BIT, CALL_SDOT, n, v, incv, y, incy, 2*n)
+        if(flops){
+          time3_(ref, tests, DOT_BIT, CALL_SDOT, n, v, incv, y, incy, 2*n)
+        }else{
+          time3_(ref, tests, DOT_BIT, CALL_SDOT, n, v, incv, y, incy, 2*n)
+        }
 #		endif
 
 		//==== RDDOT ====
-		time2_(sum, tests, RDOT_BIT, rsdot, n, v, incv, y, incy, 2*n)
-
+        if(flops){
+          time2_(sum, tests, RDOT_BIT, rsdot, n, v, incv, y, incy, 11*n)
+        }else{
+          time2_(sum, tests, RDOT_BIT, rsdot, n, v, incv, y, incy, 2*n)
+        }
 		fprintf(stdout, "\n");
 
 	}

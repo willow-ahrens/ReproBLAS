@@ -63,33 +63,69 @@ int main( int argc, char **argv ) {
 
 		//==== DZASUM ====
 #		ifdef CALL_DZASUM
-		time1_(ref, tests, ASUM_BIT, CALL_DZASUM, n, v, incv, n)
+        if(flops){
+          time1_(ref, tests, ASUM_BIT, CALL_DZASUM, n, v, incv, n * 4)
+        }else{
+          time1_(ref, tests, ASUM_BIT, CALL_DZASUM, n, v, incv, n)
+        }
 #		endif
 		//==== RDZASUM ====
-		time_(ref,tests, RASUM_BIT, rdzasum, n, v, incv, n)
+        if(flops){
+          time_(ref,tests, RASUM_BIT, rdzasum, n, v, incv, n * 22)
+        }else{
+          time_(ref,tests, RASUM_BIT, rdzasum, n, v, incv, n)
+        }
 
 		//==== RDSUM ====
-		time_(sum,tests, RSUM_BIT, rzsum, n, v, incv, n)
+        if(flops){
+          time_(sum,tests, RSUM_BIT, rzsum, n, v, incv, n * 20)
+        }else{
+          time_(sum,tests, RSUM_BIT, rzsum, n, v, incv, n)
+        }
 
 		//==== DZNRM2 ====
 #		ifdef CALL_DZNRM2
-		time1_(ref, tests, NRM2_BIT, CALL_DZNRM2, n, v, incv, n)
+        if(flops){
+          time1_(ref, tests, NRM2_BIT, CALL_DZNRM2, n, v, incv, n * 10)
+        }else{
+          time1_(ref, tests, NRM2_BIT, CALL_DZNRM2, n, v, incv, n)
+        }
 #		endif
 
 		//==== RDZNRM2 ====
-		time_(ref,tests, RNRM2_BIT, rdznrm2, n, v, incv, n)
+        if(flops){
+          time_(ref,tests, RNRM2_BIT, rdznrm2, n, v, incv, n * 24)
+        }else{
+          time_(ref,tests, RNRM2_BIT, rdznrm2, n, v, incv, n)
+        }
 
 		//==== DDOT ====
 #		ifdef CALL_ZDOTC
-		time3_(sum, tests, DOT_BIT, CALL_ZDOTC, n, v, incv, y, incy, 2*n)
+        if(flops){
+          time3_(sum, tests, DOT_BIT, CALL_ZDOTC, n, v, incv, y, incy, 6*n)
+        }else{
+          time3_(sum, tests, DOT_BIT, CALL_ZDOTC, n, v, incv, y, incy, 2*n)
+        }
 #		endif
 #		ifdef CALL_ZDOTU
-		time3_(sum, tests, DOT_BIT, CALL_ZDOTU, n, v, incv, y, incy, 2*n)
+        if(flops){
+          time3_(sum, tests, DOT_BIT, CALL_ZDOTU, n, v, incv, y, incy, 6*n)
+        }else{
+          time3_(sum, tests, DOT_BIT, CALL_ZDOTU, n, v, incv, y, incy, 2*n)
+        }
 #		endif
 
 		//==== RDDOT ====
-		time2_(sum, tests, RDOT_BIT, rzdotc, n, v, incv, y, incy, 2*n)
-		time2_(sum, tests, RDOT_BIT, rzdotu, n, v, incv, y, incy, 2*n)
+        if(flops){
+          time2_(sum, tests, RDOT_BIT, rzdotc, n, v, incv, y, incy, 44*n)
+        }else{
+          time2_(sum, tests, RDOT_BIT, rzdotc, n, v, incv, y, incy, 2*n)
+        }
+        if(flops){
+          time2_(sum, tests, RDOT_BIT, rzdotu, n, v, incv, y, incy, 44*n)
+        }else{
+          time2_(sum, tests, RDOT_BIT, rzdotu, n, v, incv, y, incy, 2*n)
+        }
 
 		fprintf(stdout, "\n");
 

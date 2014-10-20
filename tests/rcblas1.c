@@ -8,8 +8,6 @@
 
 #include "benchmark_macro.h"
 
-#define CALL_SCASUM
-
 int main( int argc, char **argv ) {
 	float complex* v;
 	float complex* y;
@@ -65,34 +63,70 @@ int main( int argc, char **argv ) {
 
 		//==== SCASUM ====
 #		ifdef CALL_SCASUM
-		time1_(ref, tests, ASUM_BIT, CALL_SCASUM, n, v, incv, n)
+        if(flops){
+          time1_(ref, tests, ASUM_BIT, CALL_SCASUM, n, v, incv, n * 4)
+        }else{
+          time1_(ref, tests, ASUM_BIT, CALL_SCASUM, n, v, incv, n)
+        }
 #		endif
 		//==== RSCASUM ====
-		time_(ref, tests, RASUM_BIT, rscasum, n, v, incv, n)
+        if(flops){
+          time_(ref, tests, RASUM_BIT, rscasum, n, v, incv, n * 22)
+        }else{
+          time_(ref, tests, RASUM_BIT, rscasum, n, v, incv, n)
+        }
+      
 
 		//==== RDSUM ====
-		time_(sum, tests, RSUM_BIT, rcsum, n, v, incv, n)
+        if(flops){
+          time_(sum, tests, RSUM_BIT, rcsum, n, v, incv, n * 20)
+        }else{
+          time_(sum, tests, RSUM_BIT, rcsum, n, v, incv, n)
+        }
 
 		//==== SCNRM2 ====
 #		ifdef CALL_SCNRM2
-		time1_(ref, tests, NRM2_BIT, CALL_SCNRM2, n, v, incv, n)
+        if(flops){
+          time1_(ref, tests, NRM2_BIT, CALL_SCNRM2, n, v, incv, n * 10)
+        }else{
+          time1_(ref, tests, NRM2_BIT, CALL_SCNRM2, n, v, incv, n)
+        }
 #		endif
 
 		//==== RSCNRM2 ====
-		time_(ref, tests, RNRM2_BIT, rscnrm2, n, v, incv, n)
+        if(flops){
+          time_(ref, tests, RNRM2_BIT, rscnrm2, n, v, incv, n * 24)
+        }else{
+          time_(ref, tests, RNRM2_BIT, rscnrm2, n, v, incv, n)
+        }
 
 		//==== DDOT ====
 #		ifdef CALL_CDOTC
-		time3_(sum, tests, DOT_BIT, CALL_CDOTC, n, v, incv, y, incy, 2*n)
+        if(flops){
+          time3_(sum, tests, DOT_BIT, CALL_CDOTC, n, v, incv, y, incy, n * 6)
+        }else{
+          time3_(sum, tests, DOT_BIT, CALL_CDOTC, n, v, incv, y, incy, 2*n)
+        }
 #		endif
 #		ifdef CALL_CDOTU
-		time3_(sum, tests, DOT_BIT, CALL_CDOTU, n, v, incv, y, incy, 2*n)
+        if(flops){
+          time3_(sum, tests, DOT_BIT, CALL_CDOTU, n, v, incv, y, incy, n * 6)
+        }else{
+          time3_(sum, tests, DOT_BIT, CALL_CDOTU, n, v, incv, y, incy, 2*n)
+        }
 #		endif
 
 		//==== RDDOT ====
-		time2_(sum, tests, RDOT_BIT, rcdotc, n, v, incv, y, incy, 2*n)
-		time2_(sum, tests, RDOT_BIT, rcdotu, n, v, incv, y, incy, 2*n)
-
+        if(flops){
+          time2_(sum, tests, RDOT_BIT, rcdotc, n, v, incv, y, incy, 44*n)
+        }else{
+          time2_(sum, tests, RDOT_BIT, rcdotc, n, v, incv, y, incy, 2*n)
+        }
+        if(flops){
+          time2_(sum, tests, RDOT_BIT, rcdotu, n, v, incv, y, incy, 44*n)
+        }else{
+          time2_(sum, tests, RDOT_BIT, rcdotu, n, v, incv, y, incy, 2*n)
+        }
 		fprintf(stdout, "\n");
 
 	}

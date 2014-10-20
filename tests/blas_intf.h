@@ -12,6 +12,7 @@
 	extern float  cblas_scnrm2 (int, float complex*, int);
 
 	extern double cblas_ddot (int, double*, int, double*, int);
+	extern float cblas_sdot  (int, float*, int, float*, int);
 	extern void cblas_zdotc_sub(int, double complex*, int, double complex*, int, double complex*);
 	extern void cblas_zdotu_sub(int, double complex*, int, double complex*, int, double complex*);
 	extern void cblas_cdotc_sub(int, float complex*, int, float complex*, int, float complex*);
@@ -19,7 +20,6 @@
 
 	extern void   cblas_dgemv (char,int,int,double,double*,int,double*,int,double,double*,int);
 
-	extern float cblas_sdot  (int, float*, int, float*, int);
 
 #	define CALL_IDAMAX(R, N, V, INC) R = cblas_idamax(N, V, INC)
 
@@ -33,10 +33,10 @@
 #	define CALL_DZNRM2(R, N, V, INC)  R = cblas_dznrm2 (N, V, INC)
 #	define CALL_SCNRM2(R, N, V, INC)  R = cblas_scnrm2 (N, V, INC)
 
-#	define CALL_DDOT(R,N, V, INC, Y, INCY) R = cblas_ddot (N, V, INC, Y, INCY);
+#	define CALL_DDOT(R,N, V, INC, Y, INCY) R = cblas_ddot (N, V, INC, Y, INCY)
+#	define CALL_SDOT(R,N, V, INC, Y, INCY) R = cblas_sdot (N, V, INC, Y, INCY)
 #	define CALL_ZDOTC(R,N,V,INC,Y,INCY)  cblas_zdotc_sub(N,V,INC,Y,INCY,&R)
 #	define CALL_ZDOTU(R,N,V,INC,Y,INCY)  cblas_zdotu_sub(N,V,INC,Y,INCY,&R)
-#	define CALL_SDOT(R,N, V, INC, Y, INCY) R = cblas_sdot (N, V, INC, Y, INCY)
 #	define CALL_CDOTC(R,N,V,INC,Y,INCY)  cblas_cdotc_sub(N,V,INC,Y,INCY,&R)
 #	define CALL_CDOTU(R,N,V,INC,Y,INCY)  cblas_cdotu_sub(N,V,INC,Y,INCY,&R)
 

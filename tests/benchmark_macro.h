@@ -79,6 +79,7 @@
 	int step = 1, start, stop;	\
 	int check;	\
 	int dtype;	\
+	int flops;	\
 	int tests = 1023;	\
 	int cmp_blas = 0;	\
 	int print_header = 0;	\
@@ -91,6 +92,7 @@
 		show_opt("-d", "input generating data type");	\
 		show_opt("--check", "Check accuracy and reproducibility");	\
 		show_opt("--cmp", "Compare with BLAS if availble");	\
+		show_opt("--flops", "measure flops");	\
 		show_opt("--header", "Printing header");	\
 		return 0;	\
 	}	\
@@ -101,6 +103,7 @@
 	check = find_option(argc, argv, "--check");	\
 	cmp_blas = find_option(argc, argv, "--cmp") >= 0;	\
 	print_header = find_option(argc, argv, "--header") >= 0;	\
+	flops = find_option(argc, argv, "--flops") >= 0;\
 \
 	if (find_option(argc, argv, "--dot") >= 0) {	\
 		if (tests == 1023) tests = 0;	\

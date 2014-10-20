@@ -42,6 +42,6 @@ OMP_FLAG     = -fopenmp
 # LDFLAGS      += -mkl_sequential
 
 # MAC OS ACCELERATE FRAMEWORK
-# LDFLAGS      += -framework Accelerate
+LDFLAGS      += -framework Accelerate
 
 LDFLAGS += -lm
