@@ -27,6 +27,10 @@ class DataType:
     else:
       return mix("*", inc, mix("+", offset, i))
 
+  def data_increment(self, src_ptrs, src_incs, i):
+    return ", ".join(["{0} += {1}".format(src_ptr, mix("*", src_inc, self.base_size, i)) for (src_ptr, src_inc) in zip(src_ptrs, src_incs)])
+ # consider here the possible optimization where we multiply incv once by two if the data type is complex.
+
 class Double(DataType):
   name_char = 'd'
   name = "double"

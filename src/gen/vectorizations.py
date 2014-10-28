@@ -75,6 +75,28 @@ class Vectorization:
   def swap_pairwise(self, src_vars):
     raise(NotImplementedError())
 
+  def iterate_unrolled(self, i_var, n_var, src_ptrs, src_incs, max_unroll, min_unroll, body):
+    self.code_block.write("for({0} = 0; {0} + {1} <= {2}; {0} += {1}, {3}){{".format(i_var, max_unroll, n_var, self.data_type.data_increment(src_ptrs, src_incs, max_unroll)))
+    self.code_block.indent()
+    body(max_unroll)
+    self.code_block.dedent()
+    self.code_block.write("}")
+    unroll = max_unroll // 2
+    while(unroll >= self.type_size and unroll >= min_unroll):
+      self.code_block.write("if({0} + {1} <= {2}){{".format(i_var, unroll, n_var))
+      self.code_block.indent()
+      body(unroll)
+      self.code_block.write("{0} += {1}, {2};".format(i_var, unroll, self.data_type.data_increment(src_ptrs, src_incs, unroll)))
+      self.code_block.dedent()
+      self.code_block.write("}")
+      unroll //=2
+    if(unroll >= min_unroll):
+      self.code_block.write("if({0} < {1}){{".format(i_var, n_var))
+      self.code_block.indent()
+      body("({0} - {1})".format(n_var, i_var))
+      self.code_block.dedent()
+      self.code_block.write("}")
+
 class SISD(Vectorization):
   name = "SISD"
 

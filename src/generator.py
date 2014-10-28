@@ -169,27 +169,7 @@ class OneDimensionalAccumulation(TargetFunction):
         process_width = self.compute_process_width(unroll)
         self.preprocess(code_block, unroll, incs)
         self.process(code_block, fold, process_width)
-    code_block.write("for(i = 0; i + {0} <= n; i += {0}, {1}){{".format(max_unroll, self.data_increment(max_unroll, incs)))
-    code_block.indent()
-    body(max_unroll)
-    code_block.dedent()
-    code_block.write("}")
-    unroll = max_unroll // 2
-    while(unroll >= self.vec.type_size and unroll > 0):
-      code_block.write("if(i + {0} <= n){{".format(unroll))
-      code_block.indent()
-      body(unroll)
-      code_block.write("i += {0}, {1};".format(unroll, self.data_increment(unroll, incs)))
-      code_block.dedent()
-      code_block.write("}")
-      unroll //= 2
-    if(unroll > 0):
-      unroll = self.vec.type_size
-      code_block.write("if(i < n){")
-      code_block.indent()
-      body("(n - i)")
-      code_block.dedent()
-      code_block.write("}")
+    self.vec.iterate_unrolled("i", "n", self.load_ptrs, incs, max_unroll, 1, body)
 
   def define_load_vars(self, code_block, process_width):
     raise(NotImplementedError())
@@ -197,10 +177,6 @@ class OneDimensionalAccumulation(TargetFunction):
   def define_load_ptrs(self, code_block, process_width):
     raise(NotImplementedError())
 
-  def data_increment(self, n, incs):
-    return ", ".join(["{0} += {1}".format(load_ptr, mix("*", inc, self.data_type.base_size, n)) for (load_ptr, inc) in zip(self.load_ptrs, incs)])
- # consider here the possible optimization where we multiply incv once by two if the data type is complex.
-  
   def preprocess(self, code_block, unroll, incs, partial=""):
     raise(NotImplementedError())
 
