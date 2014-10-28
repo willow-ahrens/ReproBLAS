@@ -160,30 +160,34 @@ class OneDimensionalAccumulation(TargetFunction):
 
   def write_core(self, code_block, fold, max_process_width, max_unroll, incs):
     code_block.new_line()
+    def body(unroll):
+      if type(unroll) == str:
+        process_width = self.compute_process_width(self.vec.type_size)
+        self.preprocess(code_block, self.vec.type_size, incs, unroll)
+        self.process(code_block, fold, process_width)
+      else:
+        process_width = self.compute_process_width(unroll)
+        self.preprocess(code_block, unroll, incs)
+        self.process(code_block, fold, process_width)
     code_block.write("for(i = 0; i + {0} <= n; i += {0}, {1}){{".format(max_unroll, self.data_increment(max_unroll, incs)))
     code_block.indent()
-    self.preprocess(code_block, max_unroll, incs)
-    self.process(code_block, fold, max_process_width)
+    body(max_unroll)
     code_block.dedent()
     code_block.write("}")
     unroll = max_unroll // 2
     while(unroll >= self.vec.type_size and unroll > 0):
-      process_width = self.compute_process_width(unroll)
       code_block.write("if(i + {0} <= n){{".format(unroll))
       code_block.indent()
-      self.preprocess(code_block, unroll, incs)
-      self.process(code_block, fold, process_width)
+      body(unroll)
       code_block.write("i += {0}, {1};".format(unroll, self.data_increment(unroll, incs)))
       code_block.dedent()
       code_block.write("}")
       unroll //= 2
     if(unroll > 0):
       unroll = self.vec.type_size
-      process_width = self.compute_process_width(unroll)
       code_block.write("if(i < n){")
       code_block.indent()
-      self.preprocess(code_block, unroll, incs, "(n - i)")
-      self.process(code_block, fold, process_width)
+      body("(n - i)")
       code_block.dedent()
       code_block.write("}")
 
