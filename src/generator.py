@@ -5,7 +5,7 @@ from dataTypes import *
 from vectorizations import *
 
 
-class Function:
+class Function(object):
   name = ""
 
   def __init__(self, data_type_class, vectorization_class):
@@ -33,7 +33,7 @@ class Function:
 class TargetFunction(Function):
 
   def __init__(self, data_type_class, vectorization_class):
-    super().__init__(data_type_class, vectorization_class)
+    super(TargetFunction, self).__init__(data_type_class, vectorization_class)
 
   @classmethod
   def file_name(cls, data_type_class):
@@ -42,7 +42,7 @@ class TargetFunction(Function):
 class OneDimensionalAccumulation(TargetFunction):
 
   def __init__(self, data_type_class, vectorization_class, settings = [(-1, 1)]):
-    super().__init__(data_type_class, vectorization_class)
+    super(OneDimensionalAccumulation, self).__init__(data_type_class, vectorization_class)
     self.set_settings(settings)
 
   def set_settings(self, settings):
@@ -208,7 +208,7 @@ class NonDotOneDimensionalAccumulation(OneDimensionalAccumulation):
   standard_incs = ["incv"]
 
   def __init__(self, data_type_class, vectorization_class):
-    super().__init__(data_type_class, vectorization_class)
+    super(NonDotOneDimensionalAccumulation, self).__init__(data_type_class, vectorization_class)
 
   def define_load_vars(self, code_block, process_width):
     self.load_vars = [["v_" + str(i) for i in range(process_width)]]
@@ -228,7 +228,7 @@ class DotOneDimensionalAccumulation(OneDimensionalAccumulation):
   standard_incs = ["incv", "incy"]
 
   def __init__(self, data_type_class, vectorization_class):
-    super().__init__(data_type_class, vectorization_class)
+    super(DotOneDimensionalAccumulation, self).__init__(data_type_class, vectorization_class)
 
   def define_load_ptrs(self, code_block, process_width):
     if self.data_type.is_complex:
@@ -253,14 +253,14 @@ class SumI(NonDotOneDimensionalAccumulation):
   name = "sumI"
 
   def __init__(self, data_type_class, vectorization_class):
-    super().__init__(data_type_class, vectorization_class)
+    super(SumI, self).__init__(data_type_class, vectorization_class)
 
   @classmethod
   def file_name(cls, data_type_class):
     return "{0}sumI2.c".format(data_type_class.name_char)
 
   def write_declaration(self, code_block):
-    super().write_declaration(code_block)
+    super(SumI, self).write_declaration(code_block)
     code_block.write("void {0}sumI2(int n, {1}* v, int incv, int fold, {1}* sum){{".format(self.data_type.name_char, self.data_type.name))
 
   def preprocess(self, code_block, unroll, incs, partial=""):
@@ -273,7 +273,7 @@ class ASumI(NonDotOneDimensionalAccumulation):
   name = "asumI"
 
   def __init__(self, data_type_class, vectorization_class):
-    super().__init__(data_type_class, vectorization_class)
+    super(ASumI, self).__init__(data_type_class, vectorization_class)
 
   @classmethod
   def file_name(cls, data_type_class):
@@ -283,7 +283,7 @@ class ASumI(NonDotOneDimensionalAccumulation):
     return "{0}{1}asumI2.c".format(redundant_char, data_type_class.name_char)
 
   def write_declaration(self, code_block):
-    super().write_declaration(code_block)
+    super(ASumI, self).write_declaration(code_block)
     redundant_char = ""
     if self.data_type.is_complex:
       redundant_char = self.data_type.base_type.name_char
@@ -299,7 +299,7 @@ class Nrm2I(NonDotOneDimensionalAccumulation):
   name = "nrm2I"
 
   def __init__(self, data_type_class, vectorization_class):
-    super().__init__(data_type_class, vectorization_class)
+    super(Nrm2I, self).__init__(data_type_class, vectorization_class)
 
   @classmethod
   def file_name(cls, data_type_class):
@@ -309,7 +309,7 @@ class Nrm2I(NonDotOneDimensionalAccumulation):
     return "{0}{1}nrm2I2.c".format(redundant_char, data_type_class.name_char)
 
   def write_declaration(self, code_block):
-    super().write_declaration(code_block)
+    super(Nrm2I, self).write_declaration(code_block)
     redundant_char = ""
     if self.data_type.is_complex:
       redundant_char = self.data_type.base_type.name_char
@@ -327,14 +327,14 @@ class Nrm2I(NonDotOneDimensionalAccumulation):
 class DotI(DotOneDimensionalAccumulation):
   def __init__(self, data_type, vectorization):
     assert not data_type.is_complex, "dot is only for real types"
-    super().__init__(data_type, vectorization)
+    super(DotI, self).__init__(data_type, vectorization)
 
   @classmethod
   def file_name(cls, data_type_class):
     return "{0}dotI2.c".format(data_type_class.name_char)
 
   def write_declaration(self, code_block):
-    super().write_declaration(code_block)
+    super(DotI, self).write_declaration(code_block)
     code_block.write("void {0}dotI2(int n, {1}* v, int incv, {1}* y, int incy, int fold, {1}* sum){{".format(self.data_type.name_char, self.data_type.name))
 
   def define_preprocess_vars(self):
@@ -354,14 +354,14 @@ class DotI(DotOneDimensionalAccumulation):
 class DotUI(DotOneDimensionalAccumulation):
   def __init__(self, data_type_class, vectorization_class):
     assert data_type_class.is_complex, "dotu is only for complex types"
-    super().__init__(data_type_class, vectorization_class)
+    super(DotUI, self).__init__(data_type_class, vectorization_class)
 
   @classmethod
   def file_name(cls, data_type_class):
     return "{0}dotuI2.c".format(data_type_class.name_char)
 
   def write_declaration(self, code_block):
-    super().write_declaration(code_block)
+    super(DotUI, self).write_declaration(code_block)
     code_block.write("void {0}dotuI2(int n, {1}* v, int incv, {1}* y, int incy, int fold, {1}* sum){{".format(self.data_type.name_char, self.data_type.name))
 
   def preprocess(self, code_block, unroll, incs, partial=""):
@@ -378,14 +378,14 @@ class DotUI(DotOneDimensionalAccumulation):
 class DotCI(DotOneDimensionalAccumulation):
   def __init__(self, data_type_class, vectorization_class):
     assert data_type_class.is_complex, "dotc is only for complex types"
-    super().__init__(data_type_class, vectorization_class)
+    super(DotCI, self).__init__(data_type_class, vectorization_class)
 
   @classmethod
   def file_name(self, data_type_class):
     return "{0}dotcI2.c".format(data_type_class.name_char)
 
   def write_declaration(self, code_block):
-    super().write_declaration(code_block)
+    super(DotCI, self).write_declaration(code_block)
     code_block.write("void {0}dotcI2(int n, {1}* v, int incv, {1}* y, int incy, int fold, {1}* sum){{".format(self.data_type.name_char, self.data_type.name))
 
   def preprocess(self, code_block, unroll, incs, partial=""):

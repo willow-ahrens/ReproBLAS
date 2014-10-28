@@ -10,7 +10,7 @@
 from utils import *
 from dataTypes import *
 
-class Vectorization:
+class Vectorization(object):
   name = ""
   defined_macro = ""
 
@@ -101,7 +101,7 @@ class SISD(Vectorization):
   name = "SISD"
 
   def __init__(self, code_block, data_type_class):
-    super().__init__(code_block, data_type_class)
+    super(SISD, self).__init__(code_block, data_type_class)
     self.code_block.srcFile.include("#include <emmintrin.h>") #needed for DAZ_FLAG. Unclear if the flag is even necessary in SISD.
     self.bit_size = self.data_type.base_type.bit_size
     self.byte_size = self.data_type.base_type.byte_size
@@ -205,7 +205,7 @@ class SISD(Vectorization):
 class SIMD(Vectorization):
 
   def __init__(self, code_block, data_type_class):
-    super().__init__(code_block, data_type_class)
+    super(SIMD, self).__init__(code_block, data_type_class)
     self.suf_width = 1
 
   def include_consolidation_vars(self):
@@ -229,7 +229,7 @@ class SSE(SIMD):
   defined_macro = "__SSE2__"
 
   def __init__(self, code_block, data_type_class):
-    super().__init__(code_block, data_type_class)
+    super(SSE, self).__init__(code_block, data_type_class)
     self.code_block.srcFile.include("#include <emmintrin.h>")
     self.bit_size = 128
     self.byte_size = 16
@@ -353,7 +353,7 @@ class AVX(SIMD):
   defined_macro = "__AVX__"
 
   def __init__(self, code_block, data_type_class):
-    super().__init__(code_block, data_type_class)
+    super(AVX, self).__init__(code_block, data_type_class)
     self.code_block.srcFile.include("#include <immintrin.h>")
     self.bit_size = 256
     self.byte_size = 32 

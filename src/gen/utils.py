@@ -7,7 +7,10 @@
 #                                                            Peter Ahrens 2014 #
 ################################################################################
 
-def mix(op, *args, paren = True):
+def mix(op, *args, **kwargs):
+  paren = True
+  if "paren" in kwargs:
+    paren = kwargs["paren"]
   int_args = [str(arg) for arg in args if str(arg).isdigit()]
   str_args = [str(arg) for arg in args if not str(arg).isdigit()]
   if int_args:
@@ -25,7 +28,7 @@ def mix(op, *args, paren = True):
     str_result = "({0})".format(str_result)
   return str_result
 
-class CodeBlock:
+class CodeBlock(object):
   def __init__(self, srcFile, base_indent_level = 0):
     self.base_indent_level = base_indent_level
     self.indent_level = base_indent_level
@@ -67,7 +70,7 @@ class CodeBlock:
   def __str__(self):
     return "\n".join([str(block) for block in (self.includes + self.blocks)])
 
-class SrcFile:
+class SrcFile(object):
   def __init__(self, name, prelude = []):
     self.name = name
     self.code = CodeBlock(self)

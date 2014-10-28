@@ -9,7 +9,7 @@
 
 from utils import *
 
-class DataType:
+class DataType(object):
   name_char = ''
   name = "" #name of type
   int_float_name = ""
