@@ -7,6 +7,8 @@
 #                                                            Peter Ahrens 2014 #
 ################################################################################
 
+from ast import literal_eval
+
 def mix(op, *args, **kwargs):
   paren = True
   if "paren" in kwargs:
@@ -27,6 +29,21 @@ def mix(op, *args, **kwargs):
   if paren and len(str_args) > 1:
     str_result = "({0})".format(str_result)
   return str_result
+
+def get_settings(file_name):
+  settings_name = os.path.splitext(os.path.abspath(file_name))[0] + ".set"
+  assert os.path.isfile(settings_name), "Error: settings file does not exist."
+  f = open(settings_name, 'w')
+  settings = None
+  for line in f.readlines():
+    try:
+      settings = literal_eval(f.readlines()[0])
+    except (ValueError, SyntaxError):
+      assert false, "Error: corrupt settings file."
+    break
+  assert settings != None
+    assert false, "Error: empty or corrupt settings file."
+  return settings
 
 class CodeBlock(object):
   def __init__(self, srcFile, base_indent_level = 0):
