@@ -3,6 +3,7 @@ sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), "gen")
 from utils import *
 from dataTypes import *
 from vectorizations import *
+from generate import *
 
 
 class Function(object):
@@ -400,49 +401,31 @@ class DotCI(DotOneDimensionalAccumulation):
     code_block.set_equal(self.load_vars[0][:process_width//2], self.vec.mul(self.load_vars[0], self.vec.rep_evens(self.load_vars[1])))
   
 def IBLASFile(target_function, data_type_class, implementations):
-  output_file = SrcFile(target_function.file_name(data_type_class))
-  output_block = output_file.sub_block()
-
-  output_block.new_line()
-
-  for (i, (vectorization, unroll_settings)) in enumerate(implementations):
-    func = target_function(data_type_class, vectorization)
-    if len(implementations) > 1:
-      if i == 0:
-        output_block.write("#if defined( " + vectorization.defined_macro + " )")
-      elif i < len(implementations) - 1:
-        output_block.write("#elif defined( " + vectorization.defined_macro + " )")
-      else:
-        output_block.write("#else")
-      output_block.indent()
-    func.set_settings(unroll_settings)
-    func.write(output_block)
-    if len(implementations) > 1:
-      output_block.dedent()
-  if len(implementations) > 1:
-    output_block.write("#endif")
-
-  output_file.dump()
-  return output_block
+  name = target_function.file_name(data_type_class)
+  def tgt(code_block, vectorization, settings):
+    tgt = target_function(data_type_class, vectorization)
+    tgt.set_settings(settings)
+    tgt.write(code_block)
+  generate(tgt, name, implementations)
 
 
 vec = 0
         
-IBLASFile(SumI, Float, [(AVX, [(3, 32), (-1, 8)]), (SSE, [(3, 8), (-1, 8)]), (SISD, [(3,     2), (-1, 2)])][vec:]) 
-IBLASFile(SumI, Double, [(AVX, [(3, 16), (-1, 8)]), (SSE, [(3, 8), (-1, 4)]), (SISD, [(3,     2), (-1, 2)])][vec:]) 
-IBLASFile(SumI, FloatComplex, [(AVX, [(3, 16), (-1, 8)]), (SSE, [(3, 4), (-1, 8)]), (SISD, [(3,     2), (-1, 2)])][vec:]) 
-IBLASFile(SumI, DoubleComplex, [(AVX, [(3, 8), (-1, 8)]), (SSE, [(3, 4), (-1, 8)]), (SISD, [(3,     2), (-1, 2)])][vec:]) 
-IBLASFile(ASumI, Float, [(AVX, [(3, 32), (-1, 8)]), (SSE, [(3, 8), (-1, 8)]), (SISD, [(3,     2), (-1, 2)])][vec:]) 
-IBLASFile(ASumI, Double, [(AVX, [(3, 16), (-1, 8)]), (SSE, [(3, 4), (-1, 8)]), (SISD, [(3,     2), (-1, 2)])][vec:]) 
-IBLASFile(ASumI, FloatComplex, [(AVX, [(3, 16), (-1, 8)]), (SSE, [(3, 4), (-1, 8)]), (SISD, [(3,     2), (-1, 2)])][vec:]) 
-IBLASFile(ASumI, DoubleComplex, [(AVX, [(3, 8), (-1, 8)]), (SSE, [(3, 2), (-1, 8)]), (SISD, [(3,     2), (-1, 2)])][vec:]) 
-IBLASFile(Nrm2I, Float, [(AVX, [(3, 32), (-1, 8)]), (SSE, [(3, 8), (-1, 8)]), (SISD, [(3,     2), (-1, 2)])][vec:]) 
-IBLASFile(Nrm2I, Double, [(AVX, [(3, 16), (-1, 8)]), (SSE, [(3, 4), (-1, 8)]), (SISD, [(3,     2), (-1, 2)])][vec:]) 
-IBLASFile(Nrm2I, FloatComplex, [(AVX, [(3, 16), (-1, 8)]), (SSE, [(3, 4), (-1, 8)]), (SISD, [(3,     2), (-1, 2)])][vec:]) 
-IBLASFile(Nrm2I, DoubleComplex, [(AVX, [(3, 8), (-1, 8)]), (SSE, [(3, 2), (-1, 8)]), (SISD, [(3,     2), (-1, 2)])][vec:]) 
-IBLASFile(DotI, Float, [(AVX, [(3, 32), (-1, 8)]), (SSE, [(3, 8), (-1, 8)]), (SISD, [(3,     2), (-1, 2)])][vec:]) 
-IBLASFile(DotI, Double, [(AVX, [(3, 16), (-1, 8)]), (SSE, [(3, 4), (-1, 8)]), (SISD, [(3,     2), (-1, 2)])][vec:]) 
-IBLASFile(DotUI, FloatComplex, [(AVX, [(3, 16), (-1, 8)]), (SSE, [(3, 4), (-1, 8)]), (SISD, [(3,     2), (-1, 2)])][vec:]) 
-IBLASFile(DotUI, DoubleComplex, [(AVX, [(3, 8), (-1, 8)]), (SSE, [(3, 2), (-1, 8)]), (SISD, [(3,     2), (-1, 2)])][vec:]) 
-IBLASFile(DotCI, FloatComplex, [(AVX, [(3, 16), (-1, 8)]), (SSE, [(3, 4), (-1, 8)]), (SISD, [(3,     2), (-1, 2)])][vec:]) 
-IBLASFile(DotCI, DoubleComplex, [(AVX, [(3, 8), (-1, 8)]), (SSE, [(3, 2), (-1, 8)]), (SISD, [(3,     2), (-1, 2)])][vec:]) 
+IBLASFile(SumI, Float, [("AVX", [(3, 32), (-1, 8)]), ("SSE", [(3, 8), (-1, 8)]), ("SISD", [(3,     2), (-1, 2)])][vec:]) 
+IBLASFile(SumI, Double, [("AVX", [(3, 16), (-1, 8)]), ("SSE", [(3, 8), (-1, 4)]), ("SISD", [(3,     2), (-1, 2)])][vec:]) 
+IBLASFile(SumI, FloatComplex, [("AVX", [(3, 16), (-1, 8)]), ("SSE", [(3, 4), (-1, 8)]), ("SISD", [(3,     2), (-1, 2)])][vec:]) 
+IBLASFile(SumI, DoubleComplex, [("AVX", [(3, 8), (-1, 8)]), ("SSE", [(3, 4), (-1, 8)]), ("SISD", [(3,     2), (-1, 2)])][vec:]) 
+IBLASFile(ASumI, Float, [("AVX", [(3, 32), (-1, 8)]), ("SSE", [(3, 8), (-1, 8)]), ("SISD", [(3,     2), (-1, 2)])][vec:]) 
+IBLASFile(ASumI, Double, [("AVX", [(3, 16), (-1, 8)]), ("SSE", [(3, 4), (-1, 8)]), ("SISD", [(3,     2), (-1, 2)])][vec:]) 
+IBLASFile(ASumI, FloatComplex, [("AVX", [(3, 16), (-1, 8)]), ("SSE", [(3, 4), (-1, 8)]), ("SISD", [(3,     2), (-1, 2)])][vec:]) 
+IBLASFile(ASumI, DoubleComplex, [("AVX", [(3, 8), (-1, 8)]), ("SSE", [(3, 2), (-1, 8)]), ("SISD", [(3,     2), (-1, 2)])][vec:]) 
+IBLASFile(Nrm2I, Float, [("AVX", [(3, 32), (-1, 8)]), ("SSE", [(3, 8), (-1, 8)]), ("SISD", [(3,     2), (-1, 2)])][vec:]) 
+IBLASFile(Nrm2I, Double, [("AVX", [(3, 16), (-1, 8)]), ("SSE", [(3, 4), (-1, 8)]), ("SISD", [(3,     2), (-1, 2)])][vec:]) 
+IBLASFile(Nrm2I, FloatComplex, [("AVX", [(3, 16), (-1, 8)]), ("SSE", [(3, 4), (-1, 8)]), ("SISD", [(3,     2), (-1, 2)])][vec:]) 
+IBLASFile(Nrm2I, DoubleComplex, [("AVX", [(3, 8), (-1, 8)]), ("SSE", [(3, 2), (-1, 8)]), ("SISD", [(3,     2), (-1, 2)])][vec:]) 
+IBLASFile(DotI, Float, [("AVX", [(3, 32), (-1, 8)]), ("SSE", [(3, 8), (-1, 8)]), ("SISD", [(3,     2), (-1, 2)])][vec:]) 
+IBLASFile(DotI, Double, [("AVX", [(3, 16), (-1, 8)]), ("SSE", [(3, 4), (-1, 8)]), ("SISD", [(3,     2), (-1, 2)])][vec:]) 
+IBLASFile(DotUI, FloatComplex, [("AVX", [(3, 16), (-1, 8)]), ("SSE", [(3, 4), (-1, 8)]), ("SISD", [(3,     2), (-1, 2)])][vec:]) 
+IBLASFile(DotUI, DoubleComplex, [("AVX", [(3, 8), (-1, 8)]), ("SSE", [(3, 2), (-1, 8)]), ("SISD", [(3,     2), (-1, 2)])][vec:]) 
+IBLASFile(DotCI, FloatComplex, [("AVX", [(3, 16), (-1, 8)]), ("SSE", [(3, 4), (-1, 8)]), ("SISD", [(3,     2), (-1, 2)])][vec:]) 
+IBLASFile(DotCI, DoubleComplex, [("AVX", [(3, 8), (-1, 8)]), ("SSE", [(3, 2), (-1, 8)]), ("SISD", [(3,     2), (-1, 2)])][vec:]) 

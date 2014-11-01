@@ -471,3 +471,5 @@ class AVX(SIMD):
       return ["_mm256_permute_pd({0}, 0b0101)".format(src_var) for src_var in src_vars]
     elif self.data_type.base_type.name == "float":
       return ["_mm256_permute_ps({0}, 0b10110001)".format(src_var) for src_var in src_vars]
+
+vectorization_lookup = {"SISD":SISD, "SSE":SSE, "AVX":AVX}
