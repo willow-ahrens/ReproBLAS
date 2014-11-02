@@ -1,11 +1,11 @@
 #include <complex.h>
-#include <immintrin.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <float.h>
 #include <math.h>
 #include "config.h"
 #include "Common/Common.h"
+#include <immintrin.h>
 #include <emmintrin.h>
 
 

@@ -11,7 +11,8 @@ endif
 LIB : $(libs)
 	@cd IndexedFP && $(MAKE) --no-print-directory
 
-GENERATED = dsumI2.c
+GENERATED = dsumI2.c ssumI2.c zsumI2.c csumI2.c\
+            dasumI2.c sasumI2.c dzasumI2.c scasumI2.c
 
 DIBLAS1 = dasumI2.o dsumI2.o dnrm2I2.o ddotI2.o
 SIBLAS1 = sasumI2.o ssumI2.o snrm2I2.o sdotI2.o
@@ -119,6 +120,7 @@ $(ROOT_DIR)/$(BUILD)/libs/libreproblas_mpi.a: $(MPOBJ)
 
 clean:
 	-rm -rf *.o
+	-rm -f $(GENERATED)
 	cd IndexedFP && make clean
 	cd ref && make clean
 	cd $(ROOT_DIR)/$(BUILD)/include && rm *.h

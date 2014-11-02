@@ -23,8 +23,7 @@ class OneDimensionalAccumulation(Function):
   def write_body(self, code_block, settings = [(-1, 1)]):
     code_block.write("SET_DAZ_FLAG;")
     if len(settings) == 1:
-      self.write_cores(-1, settings[0][1])
-      code_block.write("break;")
+      self.write_cores(code_block,settings[0][0], settings[0][1])
     else:
       code_block.write("switch(fold){")
       code_block.indent()
