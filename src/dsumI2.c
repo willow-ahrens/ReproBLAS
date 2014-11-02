@@ -1,10 +1,10 @@
 #include <float.h>
-#include <immintrin.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include "config.h"
 #include "Common/Common.h"
+#include <immintrin.h>
 #include <emmintrin.h>
 
 
