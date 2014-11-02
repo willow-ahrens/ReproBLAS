@@ -11,6 +11,8 @@ endif
 LIB : $(libs)
 	@cd IndexedFP && $(MAKE) --no-print-directory
 
+GENERATED = dsumI2.c
+
 DIBLAS1 = dasumI2.o dsumI2.o dnrm2I2.o ddotI2.o
 SIBLAS1 = sasumI2.o ssumI2.o snrm2I2.o sdotI2.o
 ZIBLAS1 = zsumI2.o dzasumI2.o dznrm2I2.o zdotcI2.o zdotuI2.o
@@ -43,6 +45,12 @@ MPOBJ = prdasum.o  prdsum.o prddot.o prdnrm2.o \
 	prdzasum.o przsum.o przdot.o prdznrm2.o \
 	prscasum.o prcsum.o prcdot.o prscnrm2.o
 
+$(GENERATED): %.c: %.py %.tune
+	python $<
+
+%o:%c
+	$(C_COMPILER) $(CFLAGS) -c $< -o $@
+
 $(MPOBJ) : prblas.h rblas1.h 
 $(RBLAS1_OBJ) : rblas1.h
 
@@ -53,9 +61,6 @@ $(OBJ): config.h
 $(MPOBJ): config.h
 
 Compile : $(OBJ) $(MPOBJ)
-
-%o:%c
-	$(C_COMPILER) $(CFLAGS) -c $< -o $@
 
 $(MPOBJ): %.o : %.c
 	$(MPIC_COMPILER) $(CFLAGS) -c $< -o $@
