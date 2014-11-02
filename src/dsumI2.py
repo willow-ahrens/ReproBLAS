@@ -4,4 +4,4 @@ import generate
 import dataTypes
 import sumI2
 
-generate.generate(sumI2.SumI2(dataTypes.Double), __file__, generate.get_settings(__file__))
+generate.generate(sumI2.SumI2(dataTypes.Double), __file__, generate.get_tuning(__file__))

@@ -10,15 +10,14 @@ import os
 from utils import *
 from vectorizations import *
 
-def get_settings(file_name):
-  settings_name = os.path.splitext(os.path.abspath(file_name))[0] + ".set"
-  assert os.path.isfile(settings_name), "Error: settings file does not exist."
-  f = open(settings_name, 'r')
-  settings = None
+def get_tuning(file_name):
+  tuning_name = os.path.splitext(os.path.abspath(file_name))[0] + ".tune"
+  assert os.path.isfile(tuning_name), "Error: tuning file does not exist."
+  f = open(tuning_name, 'r')
   try:
     return eval(f.readlines()[0])
   except (ValueError, SyntaxError):
-    assert False, "Error: empty or corrupt settings file."
+    assert False, "Error: empty or corrupt tuning file."
 
 class Target(object):
 
@@ -48,27 +47,27 @@ class Function(Target):
   def write_body(self, code_block, settings):
     raise(NotImplementedError())
 
-def generate(target, file_name, settings):
+def generate(target, file_name, tuning):
   output_name = os.path.splitext(os.path.abspath(file_name))[0] + ".c"
   output_file = SrcFile(output_name)
   output_block = output_file.sub_block()
 
   output_block.new_line()
 
-  for (i, (vec_name, vec_settings)) in enumerate(settings):
+  for (i, (vec_name, vec_settings)) in enumerate(tuning):
     vectorization = vectorization_lookup[vec_name]
-    if len(settings) > 1:
+    if len(tuning) > 1:
       if i == 0:
         output_block.write("#if defined( " + vectorization.defined_macro + " )")
-      elif i < len(settings) - 1:
+      elif i < len(tuning) - 1:
         output_block.write("#elif defined( " + vectorization.defined_macro + " )")
       else:
         output_block.write("#else")
       output_block.indent()
     target.write(output_block, vectorization, vec_settings)
-    if len(settings) > 1:
+    if len(tuning) > 1:
       output_block.dedent()
-  if len(settings) > 1:
+  if len(tuning) > 1:
     output_block.write("#endif")
 
   output_file.dump()
