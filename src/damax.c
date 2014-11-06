@@ -1,104 +1,611 @@
-/*
- *  Created   13/10/25   H.D. Nguyen
- */
-
-#include <stdlib.h>
 #include <float.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
-#ifdef __SSE2__
-#	include <emmintrin.h>
-#endif
+#include "config.h"
 #include "Common/Common.h"
-
-#define DAMAX_UNROLL 4 
-
-double damax(int n, double* v, int inc) {
-	int i;
-	double S0 = 0.0;
-	double S1 = 0.0;
-	double v0, v1;
-	double tmp[2] __attribute__ ((aligned(16)));
+#include <immintrin.h>
+#include <emmintrin.h>
 
 
-	i = 0;
+#if defined( __AVX__ )
+  double damax(int n, double* v, int incv){
+    __m256d mask_ABS; AVX_ABS_MASKD(mask_ABS);
+    double tmp_max[4] __attribute__((aligned(32)));
+    int i;
+    double max;
+    double* max_ptr = (double*) &max;
 
-	
-	if (inc == 1) {
-		if (IS_UNALIGNED(v, 16)) {
-			S1 = fabs(v[0]);
-			v += inc;
-			i = 1;
-		}
-#ifdef __SSE2__
-		__m128d mS, mv, mAbsMask, mS1, mv1;
+    __m256d v_0, v_1, v_2, v_3, v_4, v_5, v_6, v_7;
+    __m256d m_0;
+    m_0 = _mm256_setzero_pd();
 
-		mv = _mm_set1_pd(1);
-		mAbsMask = _mm_set1_pd(-1);
-		mAbsMask = _mm_xor_pd(mAbsMask, mv);
-		mS = _mm_cmpeq_pd(mv, mv);
-		mAbsMask = _mm_xor_pd(mAbsMask, mS);
-		mS  = _mm_setzero_pd();
-		mS1 = _mm_setzero_pd();
+    if(incv == 1){
 
-#if (DAMAX_UNROLL >= 4)
-		for (; i < n-3; i+=4) {
-			mv  = _mm_load_pd(v);
-			mv1 = _mm_load_pd(v+2);
+      for(i = 0; i + 32 <= n; i += 32, v += 32){
+        v_0 = _mm256_and_pd(_mm256_loadu_pd(v), mask_ABS);
+        v_1 = _mm256_and_pd(_mm256_loadu_pd(v + 4), mask_ABS);
+        v_2 = _mm256_and_pd(_mm256_loadu_pd(v + 8), mask_ABS);
+        v_3 = _mm256_and_pd(_mm256_loadu_pd(v + 12), mask_ABS);
+        v_4 = _mm256_and_pd(_mm256_loadu_pd(v + 16), mask_ABS);
+        v_5 = _mm256_and_pd(_mm256_loadu_pd(v + 20), mask_ABS);
+        v_6 = _mm256_and_pd(_mm256_loadu_pd(v + 24), mask_ABS);
+        v_7 = _mm256_and_pd(_mm256_loadu_pd(v + 28), mask_ABS);
+        m_0 = _mm256_max_pd(m_0, v_0);
+        m_0 = _mm256_max_pd(m_0, v_1);
+        m_0 = _mm256_max_pd(m_0, v_2);
+        m_0 = _mm256_max_pd(m_0, v_3);
+        m_0 = _mm256_max_pd(m_0, v_4);
+        m_0 = _mm256_max_pd(m_0, v_5);
+        m_0 = _mm256_max_pd(m_0, v_6);
+        m_0 = _mm256_max_pd(m_0, v_7);
+      }
+      if(i + 16 <= n){
+        v_0 = _mm256_and_pd(_mm256_loadu_pd(v), mask_ABS);
+        v_1 = _mm256_and_pd(_mm256_loadu_pd(v + 4), mask_ABS);
+        v_2 = _mm256_and_pd(_mm256_loadu_pd(v + 8), mask_ABS);
+        v_3 = _mm256_and_pd(_mm256_loadu_pd(v + 12), mask_ABS);
+        m_0 = _mm256_max_pd(m_0, v_0);
+        m_0 = _mm256_max_pd(m_0, v_1);
+        m_0 = _mm256_max_pd(m_0, v_2);
+        m_0 = _mm256_max_pd(m_0, v_3);
+        i += 16, v += 16;
+      }
+      if(i + 8 <= n){
+        v_0 = _mm256_and_pd(_mm256_loadu_pd(v), mask_ABS);
+        v_1 = _mm256_and_pd(_mm256_loadu_pd(v + 4), mask_ABS);
+        m_0 = _mm256_max_pd(m_0, v_0);
+        m_0 = _mm256_max_pd(m_0, v_1);
+        i += 8, v += 8;
+      }
+      if(i + 4 <= n){
+        v_0 = _mm256_and_pd(_mm256_loadu_pd(v), mask_ABS);
+        m_0 = _mm256_max_pd(m_0, v_0);
+        i += 4, v += 4;
+      }
+      if(i < n){
+        v_0 = _mm256_and_pd(_mm256_set_pd(0, (n - i)>2?v[2]:0, (n - i)>1?v[1]:0, v[0]), mask_ABS);
+        m_0 = _mm256_max_pd(m_0, v_0);
+      }
+    }else{
 
-			mv  = _mm_and_pd(mAbsMask, mv);
-			mv1 = _mm_and_pd(mAbsMask, mv1);
+      for(i = 0; i + 32 <= n; i += 32, v += (incv * 32)){
+        v_0 = _mm256_and_pd(_mm256_set_pd(v[(incv * 3)], v[(incv * 2)], v[incv], v[0]), mask_ABS);
+        v_1 = _mm256_and_pd(_mm256_set_pd(v[(incv * 7)], v[(incv * 6)], v[(incv * 5)], v[(incv * 4)]), mask_ABS);
+        v_2 = _mm256_and_pd(_mm256_set_pd(v[(incv * 11)], v[(incv * 10)], v[(incv * 9)], v[(incv * 8)]), mask_ABS);
+        v_3 = _mm256_and_pd(_mm256_set_pd(v[(incv * 15)], v[(incv * 14)], v[(incv * 13)], v[(incv * 12)]), mask_ABS);
+        v_4 = _mm256_and_pd(_mm256_set_pd(v[(incv * 19)], v[(incv * 18)], v[(incv * 17)], v[(incv * 16)]), mask_ABS);
+        v_5 = _mm256_and_pd(_mm256_set_pd(v[(incv * 23)], v[(incv * 22)], v[(incv * 21)], v[(incv * 20)]), mask_ABS);
+        v_6 = _mm256_and_pd(_mm256_set_pd(v[(incv * 27)], v[(incv * 26)], v[(incv * 25)], v[(incv * 24)]), mask_ABS);
+        v_7 = _mm256_and_pd(_mm256_set_pd(v[(incv * 31)], v[(incv * 30)], v[(incv * 29)], v[(incv * 28)]), mask_ABS);
+        m_0 = _mm256_max_pd(m_0, v_0);
+        m_0 = _mm256_max_pd(m_0, v_1);
+        m_0 = _mm256_max_pd(m_0, v_2);
+        m_0 = _mm256_max_pd(m_0, v_3);
+        m_0 = _mm256_max_pd(m_0, v_4);
+        m_0 = _mm256_max_pd(m_0, v_5);
+        m_0 = _mm256_max_pd(m_0, v_6);
+        m_0 = _mm256_max_pd(m_0, v_7);
+      }
+      if(i + 16 <= n){
+        v_0 = _mm256_and_pd(_mm256_set_pd(v[(incv * 3)], v[(incv * 2)], v[incv], v[0]), mask_ABS);
+        v_1 = _mm256_and_pd(_mm256_set_pd(v[(incv * 7)], v[(incv * 6)], v[(incv * 5)], v[(incv * 4)]), mask_ABS);
+        v_2 = _mm256_and_pd(_mm256_set_pd(v[(incv * 11)], v[(incv * 10)], v[(incv * 9)], v[(incv * 8)]), mask_ABS);
+        v_3 = _mm256_and_pd(_mm256_set_pd(v[(incv * 15)], v[(incv * 14)], v[(incv * 13)], v[(incv * 12)]), mask_ABS);
+        m_0 = _mm256_max_pd(m_0, v_0);
+        m_0 = _mm256_max_pd(m_0, v_1);
+        m_0 = _mm256_max_pd(m_0, v_2);
+        m_0 = _mm256_max_pd(m_0, v_3);
+        i += 16, v += (incv * 16);
+      }
+      if(i + 8 <= n){
+        v_0 = _mm256_and_pd(_mm256_set_pd(v[(incv * 3)], v[(incv * 2)], v[incv], v[0]), mask_ABS);
+        v_1 = _mm256_and_pd(_mm256_set_pd(v[(incv * 7)], v[(incv * 6)], v[(incv * 5)], v[(incv * 4)]), mask_ABS);
+        m_0 = _mm256_max_pd(m_0, v_0);
+        m_0 = _mm256_max_pd(m_0, v_1);
+        i += 8, v += (incv * 8);
+      }
+      if(i + 4 <= n){
+        v_0 = _mm256_and_pd(_mm256_set_pd(v[(incv * 3)], v[(incv * 2)], v[incv], v[0]), mask_ABS);
+        m_0 = _mm256_max_pd(m_0, v_0);
+        i += 4, v += (incv * 4);
+      }
+      if(i < n){
+        v_0 = _mm256_and_pd(_mm256_set_pd(0, (n - i)>2?v[(incv * 2)]:0, (n - i)>1?v[incv]:0, v[0]), mask_ABS);
+        m_0 = _mm256_max_pd(m_0, v_0);
+      }
+    }
+    _mm256_store_pd(tmp_max, m_0);
+    tmp_max[0] = (tmp_max[0] > tmp_max[1] ? tmp_max[0]: tmp_max[1]);
+    tmp_max[0] = (tmp_max[0] > tmp_max[2] ? tmp_max[0]: tmp_max[2]);
+    tmp_max[0] = (tmp_max[0] > tmp_max[3] ? tmp_max[0]: tmp_max[3]);
+    max_ptr[0] = ((double*)tmp_max)[0];
+    return max;
+  }
+#elif defined( __SSE2__ )
+  double damax(int n, double* v, int incv){
+    __m128d mask_ABS; SSE_ABS_MASKD(mask_ABS);
+    double tmp_max[2] __attribute__((aligned(16)));
+    int i;
+    double max;
+    double* max_ptr = (double*) &max;
 
-			mS  = _mm_max_pd(mS, mv);
-			mS1 = _mm_max_pd(mS1, mv1);
-			v += 4;
-		}
+    __m128d v_0, v_1, v_2, v_3, v_4, v_5, v_6, v_7, v_8, v_9, v_10, v_11, v_12, v_13, v_14, v_15;
+    __m128d m_0;
+    m_0 = _mm_setzero_pd();
 
-		mS = _mm_max_pd(mS, mS1);
+    if(incv == 1){
+
+      for(i = 0; i + 32 <= n; i += 32, v += 32){
+        v_0 = _mm_and_pd(_mm_loadu_pd(v), mask_ABS);
+        v_1 = _mm_and_pd(_mm_loadu_pd(v + 2), mask_ABS);
+        v_2 = _mm_and_pd(_mm_loadu_pd(v + 4), mask_ABS);
+        v_3 = _mm_and_pd(_mm_loadu_pd(v + 6), mask_ABS);
+        v_4 = _mm_and_pd(_mm_loadu_pd(v + 8), mask_ABS);
+        v_5 = _mm_and_pd(_mm_loadu_pd(v + 10), mask_ABS);
+        v_6 = _mm_and_pd(_mm_loadu_pd(v + 12), mask_ABS);
+        v_7 = _mm_and_pd(_mm_loadu_pd(v + 14), mask_ABS);
+        v_8 = _mm_and_pd(_mm_loadu_pd(v + 16), mask_ABS);
+        v_9 = _mm_and_pd(_mm_loadu_pd(v + 18), mask_ABS);
+        v_10 = _mm_and_pd(_mm_loadu_pd(v + 20), mask_ABS);
+        v_11 = _mm_and_pd(_mm_loadu_pd(v + 22), mask_ABS);
+        v_12 = _mm_and_pd(_mm_loadu_pd(v + 24), mask_ABS);
+        v_13 = _mm_and_pd(_mm_loadu_pd(v + 26), mask_ABS);
+        v_14 = _mm_and_pd(_mm_loadu_pd(v + 28), mask_ABS);
+        v_15 = _mm_and_pd(_mm_loadu_pd(v + 30), mask_ABS);
+        m_0 = _mm_max_pd(m_0, v_0);
+        m_0 = _mm_max_pd(m_0, v_1);
+        m_0 = _mm_max_pd(m_0, v_2);
+        m_0 = _mm_max_pd(m_0, v_3);
+        m_0 = _mm_max_pd(m_0, v_4);
+        m_0 = _mm_max_pd(m_0, v_5);
+        m_0 = _mm_max_pd(m_0, v_6);
+        m_0 = _mm_max_pd(m_0, v_7);
+        m_0 = _mm_max_pd(m_0, v_8);
+        m_0 = _mm_max_pd(m_0, v_9);
+        m_0 = _mm_max_pd(m_0, v_10);
+        m_0 = _mm_max_pd(m_0, v_11);
+        m_0 = _mm_max_pd(m_0, v_12);
+        m_0 = _mm_max_pd(m_0, v_13);
+        m_0 = _mm_max_pd(m_0, v_14);
+        m_0 = _mm_max_pd(m_0, v_15);
+      }
+      if(i + 16 <= n){
+        v_0 = _mm_and_pd(_mm_loadu_pd(v), mask_ABS);
+        v_1 = _mm_and_pd(_mm_loadu_pd(v + 2), mask_ABS);
+        v_2 = _mm_and_pd(_mm_loadu_pd(v + 4), mask_ABS);
+        v_3 = _mm_and_pd(_mm_loadu_pd(v + 6), mask_ABS);
+        v_4 = _mm_and_pd(_mm_loadu_pd(v + 8), mask_ABS);
+        v_5 = _mm_and_pd(_mm_loadu_pd(v + 10), mask_ABS);
+        v_6 = _mm_and_pd(_mm_loadu_pd(v + 12), mask_ABS);
+        v_7 = _mm_and_pd(_mm_loadu_pd(v + 14), mask_ABS);
+        m_0 = _mm_max_pd(m_0, v_0);
+        m_0 = _mm_max_pd(m_0, v_1);
+        m_0 = _mm_max_pd(m_0, v_2);
+        m_0 = _mm_max_pd(m_0, v_3);
+        m_0 = _mm_max_pd(m_0, v_4);
+        m_0 = _mm_max_pd(m_0, v_5);
+        m_0 = _mm_max_pd(m_0, v_6);
+        m_0 = _mm_max_pd(m_0, v_7);
+        i += 16, v += 16;
+      }
+      if(i + 8 <= n){
+        v_0 = _mm_and_pd(_mm_loadu_pd(v), mask_ABS);
+        v_1 = _mm_and_pd(_mm_loadu_pd(v + 2), mask_ABS);
+        v_2 = _mm_and_pd(_mm_loadu_pd(v + 4), mask_ABS);
+        v_3 = _mm_and_pd(_mm_loadu_pd(v + 6), mask_ABS);
+        m_0 = _mm_max_pd(m_0, v_0);
+        m_0 = _mm_max_pd(m_0, v_1);
+        m_0 = _mm_max_pd(m_0, v_2);
+        m_0 = _mm_max_pd(m_0, v_3);
+        i += 8, v += 8;
+      }
+      if(i + 4 <= n){
+        v_0 = _mm_and_pd(_mm_loadu_pd(v), mask_ABS);
+        v_1 = _mm_and_pd(_mm_loadu_pd(v + 2), mask_ABS);
+        m_0 = _mm_max_pd(m_0, v_0);
+        m_0 = _mm_max_pd(m_0, v_1);
+        i += 4, v += 4;
+      }
+      if(i + 2 <= n){
+        v_0 = _mm_and_pd(_mm_loadu_pd(v), mask_ABS);
+        m_0 = _mm_max_pd(m_0, v_0);
+        i += 2, v += 2;
+      }
+      if(i < n){
+        v_0 = _mm_and_pd(_mm_set_pd(0, v[0]), mask_ABS);
+        m_0 = _mm_max_pd(m_0, v_0);
+      }
+    }else{
+
+      for(i = 0; i + 32 <= n; i += 32, v += (incv * 32)){
+        v_0 = _mm_and_pd(_mm_set_pd(v[incv], v[0]), mask_ABS);
+        v_1 = _mm_and_pd(_mm_set_pd(v[(incv * 3)], v[(incv * 2)]), mask_ABS);
+        v_2 = _mm_and_pd(_mm_set_pd(v[(incv * 5)], v[(incv * 4)]), mask_ABS);
+        v_3 = _mm_and_pd(_mm_set_pd(v[(incv * 7)], v[(incv * 6)]), mask_ABS);
+        v_4 = _mm_and_pd(_mm_set_pd(v[(incv * 9)], v[(incv * 8)]), mask_ABS);
+        v_5 = _mm_and_pd(_mm_set_pd(v[(incv * 11)], v[(incv * 10)]), mask_ABS);
+        v_6 = _mm_and_pd(_mm_set_pd(v[(incv * 13)], v[(incv * 12)]), mask_ABS);
+        v_7 = _mm_and_pd(_mm_set_pd(v[(incv * 15)], v[(incv * 14)]), mask_ABS);
+        v_8 = _mm_and_pd(_mm_set_pd(v[(incv * 17)], v[(incv * 16)]), mask_ABS);
+        v_9 = _mm_and_pd(_mm_set_pd(v[(incv * 19)], v[(incv * 18)]), mask_ABS);
+        v_10 = _mm_and_pd(_mm_set_pd(v[(incv * 21)], v[(incv * 20)]), mask_ABS);
+        v_11 = _mm_and_pd(_mm_set_pd(v[(incv * 23)], v[(incv * 22)]), mask_ABS);
+        v_12 = _mm_and_pd(_mm_set_pd(v[(incv * 25)], v[(incv * 24)]), mask_ABS);
+        v_13 = _mm_and_pd(_mm_set_pd(v[(incv * 27)], v[(incv * 26)]), mask_ABS);
+        v_14 = _mm_and_pd(_mm_set_pd(v[(incv * 29)], v[(incv * 28)]), mask_ABS);
+        v_15 = _mm_and_pd(_mm_set_pd(v[(incv * 31)], v[(incv * 30)]), mask_ABS);
+        m_0 = _mm_max_pd(m_0, v_0);
+        m_0 = _mm_max_pd(m_0, v_1);
+        m_0 = _mm_max_pd(m_0, v_2);
+        m_0 = _mm_max_pd(m_0, v_3);
+        m_0 = _mm_max_pd(m_0, v_4);
+        m_0 = _mm_max_pd(m_0, v_5);
+        m_0 = _mm_max_pd(m_0, v_6);
+        m_0 = _mm_max_pd(m_0, v_7);
+        m_0 = _mm_max_pd(m_0, v_8);
+        m_0 = _mm_max_pd(m_0, v_9);
+        m_0 = _mm_max_pd(m_0, v_10);
+        m_0 = _mm_max_pd(m_0, v_11);
+        m_0 = _mm_max_pd(m_0, v_12);
+        m_0 = _mm_max_pd(m_0, v_13);
+        m_0 = _mm_max_pd(m_0, v_14);
+        m_0 = _mm_max_pd(m_0, v_15);
+      }
+      if(i + 16 <= n){
+        v_0 = _mm_and_pd(_mm_set_pd(v[incv], v[0]), mask_ABS);
+        v_1 = _mm_and_pd(_mm_set_pd(v[(incv * 3)], v[(incv * 2)]), mask_ABS);
+        v_2 = _mm_and_pd(_mm_set_pd(v[(incv * 5)], v[(incv * 4)]), mask_ABS);
+        v_3 = _mm_and_pd(_mm_set_pd(v[(incv * 7)], v[(incv * 6)]), mask_ABS);
+        v_4 = _mm_and_pd(_mm_set_pd(v[(incv * 9)], v[(incv * 8)]), mask_ABS);
+        v_5 = _mm_and_pd(_mm_set_pd(v[(incv * 11)], v[(incv * 10)]), mask_ABS);
+        v_6 = _mm_and_pd(_mm_set_pd(v[(incv * 13)], v[(incv * 12)]), mask_ABS);
+        v_7 = _mm_and_pd(_mm_set_pd(v[(incv * 15)], v[(incv * 14)]), mask_ABS);
+        m_0 = _mm_max_pd(m_0, v_0);
+        m_0 = _mm_max_pd(m_0, v_1);
+        m_0 = _mm_max_pd(m_0, v_2);
+        m_0 = _mm_max_pd(m_0, v_3);
+        m_0 = _mm_max_pd(m_0, v_4);
+        m_0 = _mm_max_pd(m_0, v_5);
+        m_0 = _mm_max_pd(m_0, v_6);
+        m_0 = _mm_max_pd(m_0, v_7);
+        i += 16, v += (incv * 16);
+      }
+      if(i + 8 <= n){
+        v_0 = _mm_and_pd(_mm_set_pd(v[incv], v[0]), mask_ABS);
+        v_1 = _mm_and_pd(_mm_set_pd(v[(incv * 3)], v[(incv * 2)]), mask_ABS);
+        v_2 = _mm_and_pd(_mm_set_pd(v[(incv * 5)], v[(incv * 4)]), mask_ABS);
+        v_3 = _mm_and_pd(_mm_set_pd(v[(incv * 7)], v[(incv * 6)]), mask_ABS);
+        m_0 = _mm_max_pd(m_0, v_0);
+        m_0 = _mm_max_pd(m_0, v_1);
+        m_0 = _mm_max_pd(m_0, v_2);
+        m_0 = _mm_max_pd(m_0, v_3);
+        i += 8, v += (incv * 8);
+      }
+      if(i + 4 <= n){
+        v_0 = _mm_and_pd(_mm_set_pd(v[incv], v[0]), mask_ABS);
+        v_1 = _mm_and_pd(_mm_set_pd(v[(incv * 3)], v[(incv * 2)]), mask_ABS);
+        m_0 = _mm_max_pd(m_0, v_0);
+        m_0 = _mm_max_pd(m_0, v_1);
+        i += 4, v += (incv * 4);
+      }
+      if(i + 2 <= n){
+        v_0 = _mm_and_pd(_mm_set_pd(v[incv], v[0]), mask_ABS);
+        m_0 = _mm_max_pd(m_0, v_0);
+        i += 2, v += (incv * 2);
+      }
+      if(i < n){
+        v_0 = _mm_and_pd(_mm_set_pd(0, v[0]), mask_ABS);
+        m_0 = _mm_max_pd(m_0, v_0);
+      }
+    }
+    _mm_store_pd(tmp_max, m_0);
+    tmp_max[0] = (tmp_max[0] > tmp_max[1] ? tmp_max[0]: tmp_max[1]);
+    max_ptr[0] = ((double*)tmp_max)[0];
+    return max;
+  }
 #else
-		for (; i < n-1; i+=2,v+=2) {
-			mv = _mm_load_pd(v);
-			mv = _mm_and_pd(mAbsMask, mv);
+  double damax(int n, double* v, int incv){
+    int i;
+    double max;
+    double* max_ptr = (double*) &max;
 
-			mS = _mm_max_pd(mS, mv);
-		}
+    double v_0, v_1, v_2, v_3, v_4, v_5, v_6, v_7, v_8, v_9, v_10, v_11, v_12, v_13, v_14, v_15, v_16, v_17, v_18, v_19, v_20, v_21, v_22, v_23, v_24, v_25, v_26, v_27, v_28, v_29, v_30, v_31;
+    double m_0;
+    m_0 = 0;
+
+    if(incv == 1){
+
+      for(i = 0; i + 32 <= n; i += 32, v += 32){
+        v_0 = fabs(v[0]);
+        v_1 = fabs(v[1]);
+        v_2 = fabs(v[2]);
+        v_3 = fabs(v[3]);
+        v_4 = fabs(v[4]);
+        v_5 = fabs(v[5]);
+        v_6 = fabs(v[6]);
+        v_7 = fabs(v[7]);
+        v_8 = fabs(v[8]);
+        v_9 = fabs(v[9]);
+        v_10 = fabs(v[10]);
+        v_11 = fabs(v[11]);
+        v_12 = fabs(v[12]);
+        v_13 = fabs(v[13]);
+        v_14 = fabs(v[14]);
+        v_15 = fabs(v[15]);
+        v_16 = fabs(v[16]);
+        v_17 = fabs(v[17]);
+        v_18 = fabs(v[18]);
+        v_19 = fabs(v[19]);
+        v_20 = fabs(v[20]);
+        v_21 = fabs(v[21]);
+        v_22 = fabs(v[22]);
+        v_23 = fabs(v[23]);
+        v_24 = fabs(v[24]);
+        v_25 = fabs(v[25]);
+        v_26 = fabs(v[26]);
+        v_27 = fabs(v[27]);
+        v_28 = fabs(v[28]);
+        v_29 = fabs(v[29]);
+        v_30 = fabs(v[30]);
+        v_31 = fabs(v[31]);
+        m_0 = (m_0 > v_0? m_0: v_0);
+        m_0 = (m_0 > v_1? m_0: v_1);
+        m_0 = (m_0 > v_2? m_0: v_2);
+        m_0 = (m_0 > v_3? m_0: v_3);
+        m_0 = (m_0 > v_4? m_0: v_4);
+        m_0 = (m_0 > v_5? m_0: v_5);
+        m_0 = (m_0 > v_6? m_0: v_6);
+        m_0 = (m_0 > v_7? m_0: v_7);
+        m_0 = (m_0 > v_8? m_0: v_8);
+        m_0 = (m_0 > v_9? m_0: v_9);
+        m_0 = (m_0 > v_10? m_0: v_10);
+        m_0 = (m_0 > v_11? m_0: v_11);
+        m_0 = (m_0 > v_12? m_0: v_12);
+        m_0 = (m_0 > v_13? m_0: v_13);
+        m_0 = (m_0 > v_14? m_0: v_14);
+        m_0 = (m_0 > v_15? m_0: v_15);
+        m_0 = (m_0 > v_16? m_0: v_16);
+        m_0 = (m_0 > v_17? m_0: v_17);
+        m_0 = (m_0 > v_18? m_0: v_18);
+        m_0 = (m_0 > v_19? m_0: v_19);
+        m_0 = (m_0 > v_20? m_0: v_20);
+        m_0 = (m_0 > v_21? m_0: v_21);
+        m_0 = (m_0 > v_22? m_0: v_22);
+        m_0 = (m_0 > v_23? m_0: v_23);
+        m_0 = (m_0 > v_24? m_0: v_24);
+        m_0 = (m_0 > v_25? m_0: v_25);
+        m_0 = (m_0 > v_26? m_0: v_26);
+        m_0 = (m_0 > v_27? m_0: v_27);
+        m_0 = (m_0 > v_28? m_0: v_28);
+        m_0 = (m_0 > v_29? m_0: v_29);
+        m_0 = (m_0 > v_30? m_0: v_30);
+        m_0 = (m_0 > v_31? m_0: v_31);
+      }
+      if(i + 16 <= n){
+        v_0 = fabs(v[0]);
+        v_1 = fabs(v[1]);
+        v_2 = fabs(v[2]);
+        v_3 = fabs(v[3]);
+        v_4 = fabs(v[4]);
+        v_5 = fabs(v[5]);
+        v_6 = fabs(v[6]);
+        v_7 = fabs(v[7]);
+        v_8 = fabs(v[8]);
+        v_9 = fabs(v[9]);
+        v_10 = fabs(v[10]);
+        v_11 = fabs(v[11]);
+        v_12 = fabs(v[12]);
+        v_13 = fabs(v[13]);
+        v_14 = fabs(v[14]);
+        v_15 = fabs(v[15]);
+        m_0 = (m_0 > v_0? m_0: v_0);
+        m_0 = (m_0 > v_1? m_0: v_1);
+        m_0 = (m_0 > v_2? m_0: v_2);
+        m_0 = (m_0 > v_3? m_0: v_3);
+        m_0 = (m_0 > v_4? m_0: v_4);
+        m_0 = (m_0 > v_5? m_0: v_5);
+        m_0 = (m_0 > v_6? m_0: v_6);
+        m_0 = (m_0 > v_7? m_0: v_7);
+        m_0 = (m_0 > v_8? m_0: v_8);
+        m_0 = (m_0 > v_9? m_0: v_9);
+        m_0 = (m_0 > v_10? m_0: v_10);
+        m_0 = (m_0 > v_11? m_0: v_11);
+        m_0 = (m_0 > v_12? m_0: v_12);
+        m_0 = (m_0 > v_13? m_0: v_13);
+        m_0 = (m_0 > v_14? m_0: v_14);
+        m_0 = (m_0 > v_15? m_0: v_15);
+        i += 16, v += 16;
+      }
+      if(i + 8 <= n){
+        v_0 = fabs(v[0]);
+        v_1 = fabs(v[1]);
+        v_2 = fabs(v[2]);
+        v_3 = fabs(v[3]);
+        v_4 = fabs(v[4]);
+        v_5 = fabs(v[5]);
+        v_6 = fabs(v[6]);
+        v_7 = fabs(v[7]);
+        m_0 = (m_0 > v_0? m_0: v_0);
+        m_0 = (m_0 > v_1? m_0: v_1);
+        m_0 = (m_0 > v_2? m_0: v_2);
+        m_0 = (m_0 > v_3? m_0: v_3);
+        m_0 = (m_0 > v_4? m_0: v_4);
+        m_0 = (m_0 > v_5? m_0: v_5);
+        m_0 = (m_0 > v_6? m_0: v_6);
+        m_0 = (m_0 > v_7? m_0: v_7);
+        i += 8, v += 8;
+      }
+      if(i + 4 <= n){
+        v_0 = fabs(v[0]);
+        v_1 = fabs(v[1]);
+        v_2 = fabs(v[2]);
+        v_3 = fabs(v[3]);
+        m_0 = (m_0 > v_0? m_0: v_0);
+        m_0 = (m_0 > v_1? m_0: v_1);
+        m_0 = (m_0 > v_2? m_0: v_2);
+        m_0 = (m_0 > v_3? m_0: v_3);
+        i += 4, v += 4;
+      }
+      if(i + 2 <= n){
+        v_0 = fabs(v[0]);
+        v_1 = fabs(v[1]);
+        m_0 = (m_0 > v_0? m_0: v_0);
+        m_0 = (m_0 > v_1? m_0: v_1);
+        i += 2, v += 2;
+      }
+      if(i + 1 <= n){
+        v_0 = fabs(v[0]);
+        m_0 = (m_0 > v_0? m_0: v_0);
+        i += 1, v += 1;
+      }
+    }else{
+
+      for(i = 0; i + 32 <= n; i += 32, v += (incv * 32)){
+        v_0 = fabs(v[0]);
+        v_1 = fabs(v[incv]);
+        v_2 = fabs(v[(incv * 2)]);
+        v_3 = fabs(v[(incv * 3)]);
+        v_4 = fabs(v[(incv * 4)]);
+        v_5 = fabs(v[(incv * 5)]);
+        v_6 = fabs(v[(incv * 6)]);
+        v_7 = fabs(v[(incv * 7)]);
+        v_8 = fabs(v[(incv * 8)]);
+        v_9 = fabs(v[(incv * 9)]);
+        v_10 = fabs(v[(incv * 10)]);
+        v_11 = fabs(v[(incv * 11)]);
+        v_12 = fabs(v[(incv * 12)]);
+        v_13 = fabs(v[(incv * 13)]);
+        v_14 = fabs(v[(incv * 14)]);
+        v_15 = fabs(v[(incv * 15)]);
+        v_16 = fabs(v[(incv * 16)]);
+        v_17 = fabs(v[(incv * 17)]);
+        v_18 = fabs(v[(incv * 18)]);
+        v_19 = fabs(v[(incv * 19)]);
+        v_20 = fabs(v[(incv * 20)]);
+        v_21 = fabs(v[(incv * 21)]);
+        v_22 = fabs(v[(incv * 22)]);
+        v_23 = fabs(v[(incv * 23)]);
+        v_24 = fabs(v[(incv * 24)]);
+        v_25 = fabs(v[(incv * 25)]);
+        v_26 = fabs(v[(incv * 26)]);
+        v_27 = fabs(v[(incv * 27)]);
+        v_28 = fabs(v[(incv * 28)]);
+        v_29 = fabs(v[(incv * 29)]);
+        v_30 = fabs(v[(incv * 30)]);
+        v_31 = fabs(v[(incv * 31)]);
+        m_0 = (m_0 > v_0? m_0: v_0);
+        m_0 = (m_0 > v_1? m_0: v_1);
+        m_0 = (m_0 > v_2? m_0: v_2);
+        m_0 = (m_0 > v_3? m_0: v_3);
+        m_0 = (m_0 > v_4? m_0: v_4);
+        m_0 = (m_0 > v_5? m_0: v_5);
+        m_0 = (m_0 > v_6? m_0: v_6);
+        m_0 = (m_0 > v_7? m_0: v_7);
+        m_0 = (m_0 > v_8? m_0: v_8);
+        m_0 = (m_0 > v_9? m_0: v_9);
+        m_0 = (m_0 > v_10? m_0: v_10);
+        m_0 = (m_0 > v_11? m_0: v_11);
+        m_0 = (m_0 > v_12? m_0: v_12);
+        m_0 = (m_0 > v_13? m_0: v_13);
+        m_0 = (m_0 > v_14? m_0: v_14);
+        m_0 = (m_0 > v_15? m_0: v_15);
+        m_0 = (m_0 > v_16? m_0: v_16);
+        m_0 = (m_0 > v_17? m_0: v_17);
+        m_0 = (m_0 > v_18? m_0: v_18);
+        m_0 = (m_0 > v_19? m_0: v_19);
+        m_0 = (m_0 > v_20? m_0: v_20);
+        m_0 = (m_0 > v_21? m_0: v_21);
+        m_0 = (m_0 > v_22? m_0: v_22);
+        m_0 = (m_0 > v_23? m_0: v_23);
+        m_0 = (m_0 > v_24? m_0: v_24);
+        m_0 = (m_0 > v_25? m_0: v_25);
+        m_0 = (m_0 > v_26? m_0: v_26);
+        m_0 = (m_0 > v_27? m_0: v_27);
+        m_0 = (m_0 > v_28? m_0: v_28);
+        m_0 = (m_0 > v_29? m_0: v_29);
+        m_0 = (m_0 > v_30? m_0: v_30);
+        m_0 = (m_0 > v_31? m_0: v_31);
+      }
+      if(i + 16 <= n){
+        v_0 = fabs(v[0]);
+        v_1 = fabs(v[incv]);
+        v_2 = fabs(v[(incv * 2)]);
+        v_3 = fabs(v[(incv * 3)]);
+        v_4 = fabs(v[(incv * 4)]);
+        v_5 = fabs(v[(incv * 5)]);
+        v_6 = fabs(v[(incv * 6)]);
+        v_7 = fabs(v[(incv * 7)]);
+        v_8 = fabs(v[(incv * 8)]);
+        v_9 = fabs(v[(incv * 9)]);
+        v_10 = fabs(v[(incv * 10)]);
+        v_11 = fabs(v[(incv * 11)]);
+        v_12 = fabs(v[(incv * 12)]);
+        v_13 = fabs(v[(incv * 13)]);
+        v_14 = fabs(v[(incv * 14)]);
+        v_15 = fabs(v[(incv * 15)]);
+        m_0 = (m_0 > v_0? m_0: v_0);
+        m_0 = (m_0 > v_1? m_0: v_1);
+        m_0 = (m_0 > v_2? m_0: v_2);
+        m_0 = (m_0 > v_3? m_0: v_3);
+        m_0 = (m_0 > v_4? m_0: v_4);
+        m_0 = (m_0 > v_5? m_0: v_5);
+        m_0 = (m_0 > v_6? m_0: v_6);
+        m_0 = (m_0 > v_7? m_0: v_7);
+        m_0 = (m_0 > v_8? m_0: v_8);
+        m_0 = (m_0 > v_9? m_0: v_9);
+        m_0 = (m_0 > v_10? m_0: v_10);
+        m_0 = (m_0 > v_11? m_0: v_11);
+        m_0 = (m_0 > v_12? m_0: v_12);
+        m_0 = (m_0 > v_13? m_0: v_13);
+        m_0 = (m_0 > v_14? m_0: v_14);
+        m_0 = (m_0 > v_15? m_0: v_15);
+        i += 16, v += (incv * 16);
+      }
+      if(i + 8 <= n){
+        v_0 = fabs(v[0]);
+        v_1 = fabs(v[incv]);
+        v_2 = fabs(v[(incv * 2)]);
+        v_3 = fabs(v[(incv * 3)]);
+        v_4 = fabs(v[(incv * 4)]);
+        v_5 = fabs(v[(incv * 5)]);
+        v_6 = fabs(v[(incv * 6)]);
+        v_7 = fabs(v[(incv * 7)]);
+        m_0 = (m_0 > v_0? m_0: v_0);
+        m_0 = (m_0 > v_1? m_0: v_1);
+        m_0 = (m_0 > v_2? m_0: v_2);
+        m_0 = (m_0 > v_3? m_0: v_3);
+        m_0 = (m_0 > v_4? m_0: v_4);
+        m_0 = (m_0 > v_5? m_0: v_5);
+        m_0 = (m_0 > v_6? m_0: v_6);
+        m_0 = (m_0 > v_7? m_0: v_7);
+        i += 8, v += (incv * 8);
+      }
+      if(i + 4 <= n){
+        v_0 = fabs(v[0]);
+        v_1 = fabs(v[incv]);
+        v_2 = fabs(v[(incv * 2)]);
+        v_3 = fabs(v[(incv * 3)]);
+        m_0 = (m_0 > v_0? m_0: v_0);
+        m_0 = (m_0 > v_1? m_0: v_1);
+        m_0 = (m_0 > v_2? m_0: v_2);
+        m_0 = (m_0 > v_3? m_0: v_3);
+        i += 4, v += (incv * 4);
+      }
+      if(i + 2 <= n){
+        v_0 = fabs(v[0]);
+        v_1 = fabs(v[incv]);
+        m_0 = (m_0 > v_0? m_0: v_0);
+        m_0 = (m_0 > v_1? m_0: v_1);
+        i += 2, v += (incv * 2);
+      }
+      if(i + 1 <= n){
+        v_0 = fabs(v[0]);
+        m_0 = (m_0 > v_0? m_0: v_0);
+        i += 1, v += incv;
+      }
+    }
+    max_ptr[0] = m_0;
+    return max;
+  }
 #endif
-
-		_mm_store_pd(tmp, mS);
-		S0 = MAX(tmp[0], tmp[1]);
-		S0 = MAX(S0, S1);
-#else
-#if DAMAX_UNROLL >= 4
-		double S2 = 0.0, S3 = 0.0;
-		double v2, v3;
-		for (; i < n-3; i+=4, v+=4) {
-			v0 = fabs(v[0]);
-			v1 = fabs(v[1]);
-			v2 = fabs(v[2]);
-			v3 = fabs(v[3]);
-
-			S0 = MAX(S0, v0);
-			S1 = MAX(S1, v1);
-			S2 = MAX(S2, v2);
-			S3 = MAX(S3, v3);
-		}
-		S0 = MAX(S0, S2);
-		S1 = MAX(S1, S3);
-#endif
-		for (; i < n-1; i+=2, v+=2) {
-			v0 = fabs(v[0]);
-			v1 = fabs(v[1]);
-
-			S0 = MAX(S0, v0);
-			S1 = MAX(S1, v1);
-		}
-		S0 = MAX(S0, S1);
-#endif
-	}
-
-	for (; i < n; i++, v += inc) {
-		v0 = fabs(v[0]);
-		S0 = MAX(S0, v0);
-	}
-	return S0;
-}
-
