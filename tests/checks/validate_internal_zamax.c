@@ -1,0 +1,71 @@
+#include <rblas.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include "../common/test_vec.h"
+
+#include "../common/test_vecvec_header.h"
+
+const char* vecvec_name(int argc, char** argv) {
+  return "Validate zamax(m) (1Big)";
+}
+
+int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
+  int i;
+  double small = 1.0 / (1024.0 * 1024.0);       // 2^-20
+  double big   = 1024.0 * 1024.0 * 1024.0 * 32; // 2^35
+  double complex ref;
+  double complex res;
+
+  vec_random_seed();
+
+  //allocate vectors
+  double complex *x    = zvec_alloc(N, incx);
+  double complex *y    = zvec_alloc(N, incy);
+
+  //fill empty space with random data to check increment
+  zvec_fill(N * incx, x, 1, vec_fill_RAND, 1.0, 1.0);
+  zvec_fill(N * incy, y, 1, vec_fill_RAND, 1.0, 1.0);
+
+  //fill y with 1 where necessary
+  zvec_fill(N, y, incy, vec_fill_CONSTANT, 1.0, 1.0);
+
+  //1 Big
+  ref   = big + _Complex_I * big;
+
+  //1 Big at beginning
+  zvec_fill(N, x, incx, vec_fill_CONSTANT, small, 1.0);
+  x[0]         = -big + -_Complex_I * big;
+
+  res = zamax(N, x, incx);
+  if (res != ref) {
+    printf("zamax(x) = %g + %gi != %g + %gi (1 Big at beginning)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(ref), ZIMAG_(ref));
+    return 1;
+  }
+
+  res = zamaxm(N, x, incx, y, incy);
+  if (res != ref) {
+    printf("zamaxm(x) = %g + %gi != %g + %gi (1 Big at beginning)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(ref), ZIMAG_(ref));
+    return 1;
+  }
+
+  //1 Big at end
+  zvec_fill(N, x, incx, vec_fill_CONSTANT, small, 1.0);
+  x[(N-1)*incx]         = -big + -_Complex_I * big;
+
+  res = zamax(N, x, incx);
+  if (res != ref) {
+    printf("zamax(x) = %g + %gi != %g + %gi (1 Big at end)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(ref), ZIMAG_(ref));
+    return 1;
+  }
+
+  res = zamaxm(N, x, incx, y, incy);
+  if (res != ref) {
+    printf("zamaxm(x) = %g + %gi != %g + %gi (1 Big at end)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(ref), ZIMAG_(ref));
+    return 1;
+  }
+
+  free(x);
+  free(y);
+
+  return 0;
+}

@@ -8,7 +8,7 @@ PRBLAS    = $(ROOT_DIR)/$(BUILD)/libs/libreproblas_mpi.a $(ROOT_DIR)/$(BUILD)/li
 
 FILE_CHECKS = validate_external_rdblas1 validate_external_rsblas1 validate_external_rzblas1 validate_external_rcblas1
 
-VECVEC_CHECKS = validate_internal_ufp validate_internal_ufpf validate_internal_rdblas1 validate_internal_rsblas1 validate_internal_rcblas1 validate_internal_rzblas1 validate_internal_zamax
+VECVEC_CHECKS = validate_internal_ufp validate_internal_ufpf validate_internal_rdblas1 validate_internal_rsblas1 validate_internal_rcblas1 validate_internal_rzblas1 validate_internal_damax validate_internal_samax validate_internal_zamax validate_internal_camax
 
 VECVEC_FILL_CHECKS = verify_rdblas1 verify_rsblas1 verify_rcblas1 verify_rzblas1
 
