@@ -135,8 +135,6 @@ class SISD(Vectorization):
       self.code_block.write("{0}[{1}] = {2};".format(dst_ptr, self.data_type.index(offset, inc, 0), src_vars[0]))
 
   def max_into(self, dst_ptr, offset, inc, src_vars):
-    for src_var in src_vars[1:]:
-      self.set_equal(self.max(src_var[0], src_var));
     for i in range(self.data_type.base_size, self.base_size):
       self.code_block.set_equal(src_vars[i % self.data_type.base_size], self.max(src_vars[i % self.data_type.base_size], src_vars[i]))
     if self.data_type.is_complex:
@@ -283,7 +281,7 @@ class SSE(SIMD):
     self.include_max_vars()
     for src_var in src_vars[1:]:
       self.set_equal(self.max(src_var[0], src_var));
-    self.code_block.write("_mm_store_p{0}(tmp_max, {1});".format(self.data_type.name_char, src_vars[0]))
+    self.code_block.write("_mm_store_p{0}(tmp_max, {1});".format(self.data_type.base_type.name_char, src_vars[0]))
     for i in range(self.data_type.base_size, self.base_size):
       self.code_block.write("tmp_max[{0}] = (tmp_max[{0}] > tmp_max[{1}] ? tmp_max[{0}]: tmp_max[{1}]);".format(i % self.data_type.base_size, i))
     self.code_block.write("{0}[{1}] = (({2}*)tmp_max)[0];".format(dst_ptr, self.data_type.index(offset, inc, 0, False), self.data_type.name))
@@ -419,7 +417,7 @@ class AVX(SIMD):
     self.include_max_vars()
     for src_var in src_vars[1:]:
       self.set_equal(self.max(src_var[0], src_var));
-    self.code_block.write("_mm256_store_p{0}(tmp_max, {1});".format(self.data_type.name_char, src_vars[0]))
+    self.code_block.write("_mm256_store_p{0}(tmp_max, {1});".format(self.data_type.base_type.name_char, src_vars[0]))
     for i in range(self.data_type.base_size, self.base_size):
       self.code_block.write("tmp_max[{0}] = (tmp_max[{0}] > tmp_max[{1}] ? tmp_max[{0}]: tmp_max[{1}]);".format(i % self.data_type.base_size, i))
     self.code_block.write("{0}[{1}] = (({2}*)tmp_max)[0];".format(dst_ptr, self.data_type.index(offset, inc, 0, False), self.data_type.name))

@@ -27,7 +27,6 @@ class AMaxP(Function):
       max_process_width = self.compute_process_width(max_unroll)
       code_block.write("int i;")
       code_block.define_vars(self.data_type.name, ["max"])
-      code_block.write(self.data_type.base_type.name + "* max_ptr = (" + self.data_type.base_type.name + "*) &max;")
       code_block.new_line()
       self.define_load_ptrs(code_block, max_process_width)
       self.define_load_vars(code_block, max_process_width)
@@ -46,7 +45,7 @@ class AMaxP(Function):
       self.write_core(code_block, max_process_width, max_unroll, self.standard_incs)
       code_block.dedent()
       code_block.write("}")
-      self.vec.max_into("max_ptr", 0, 1, self.m_vars)
+      self.vec.max_into("(&max)", 0, 1, self.m_vars)
       code_block.write("return max;")
 
   def write_core(self, code_block, max_process_width, max_unroll, incs):

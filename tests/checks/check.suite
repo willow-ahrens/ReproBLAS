@@ -1,4 +1,5 @@
 check(["validate_internal_ufp", "validate_internal_ufpf"], [("N", [10]), ("incx", [1, 2, 4])])
+check(["validate_internal_zamax"], [("N", [4095]), ("incx", [1, 2, 4])])
 check(["validate_internal_rdblas1", "validate_internal_rsblas1", "validate_internal_rcblas1", "validate_internal_rzblas1"], [("N", [4095]), ("incx", [1, 4]), ("incy", [1, 4])])
 check(["verify_rdblas1", "verify_rsblas1"], [("N", [4095]), ("incx", [1, 4]), ("incy", [1, 4]), ("t", range(1,8)), ("f", range(4))])
 check(["verify_rdblas1", "verify_rsblas1"], [("N", [4095]), ("incx", [1, 4]), ("incy", [1, 4]), ("t", [8]), ("f", range(4)), ("c", [1e8, 1e12, 1e15])])
