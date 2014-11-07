@@ -15,7 +15,8 @@ GENERATED = dasumI2.c dsumI2.c dnrm2I2.c ddotI2.c\
             sasumI2.c ssumI2.c snrm2I2.c sdotI2.c\
             zsumI2.c dzasumI2.c dznrm2I2.c zdotcI2.c zdotuI2.c\
             csumI2.c scasumI2.c scnrm2I2.c cdotcI2.c cdotuI2.c\
-            damax.c
+            damax.c damaxm.c\
+            samax.c samaxm.c\
 
 
 DIBLAS1 = dasumI2.o dsumI2.o dnrm2I2.o ddotI2.o

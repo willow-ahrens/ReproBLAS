@@ -22,59 +22,6 @@ class AMaxP(Function):
     #code_block.srcFile.include("#include \"IndexedFP/" + self.data_type.base_type.name_char + "Indexed.h\"")
     #code_block.srcFile.include("#include \"rblas1.h\"")
 
-
-  def write_body(self, code_block, settings = [1]):
-      code_block.indent()
-      max_unroll = settings[0]
-      max_process_width = self.compute_process_width(max_unroll)
-      code_block.write("int i;")
-      code_block.define_vars(self.data_type.name, "max")
-      code_block.write(self.data_type.base_type.name + "* max_ptr = (" + self.data_type.base_type.name + "*) &max;")
-      code_block.new_line()
-      self.define_load_ptrs(code_block, max_process_width)
-      self.define_load_vars(code_block, max_process_width)
-      self.m_vars = ["m_" + str(i) for i in range(self.vec.suf_width)]
-      code_block.define_vars(self.vec.type_name, self.m_vars)
-      code_block.set_equal(self.m_vars, itertools.repeat(self.vec.zero));
-
-      code_block.new_line()
-
-      code_block.write("if(" + " && ".join([inc + " == 1" for inc in self.standard_incs]) + "){")
-      code_block.indent()
-      self.write_core(code_block, max_process_width, max_unroll, [1 for inc in self.standard_incs])
-      code_block.dedent()
-      code_block.write("}else{")
-      code_block.indent()
-      self.write_core(code_block, max_process_width, max_unroll, self.standard_incs)
-      code_block.dedent()
-      code_block.write("}")
-      self.vec.max_into("max_ptr", 0, 1, self.m_vars)
-      code_block.write("return max;")
-
-  def write_core(self, code_block, max_process_width, max_unroll, incs):
-    code_block.new_line()
-    def body(unroll):
-      if type(unroll) == str:
-        process_width = self.compute_process_width(self.vec.type_size)
-        self.preprocess(code_block, self.vec.type_size, incs, unroll)
-        self.process(code_block, process_width)
-      else:
-        process_width = self.compute_process_width(unroll)
-        self.preprocess(code_block, unroll, incs)
-        self.process(code_block, process_width)
-    self.vec.iterate_unrolled("i", "n", self.load_ptrs, incs, max_unroll, 1, body)
-
-class AMax(AMaxP):
-  standard_incs = ["incv"]
-
-  def __init__(self, data_type_class):
-    super(AMax, self).__init__(data_type_class)
-
-  def write_declaration(self, code_block, settings):
-    super(AMax, self).write_declaration(code_block, settings)
-    code_block.write("{0} {1}amax(int n, {0}* v, int incv){{".format(self.data_type.name, self.data_type.name_char))
-
-
   def write_body(self, code_block, settings = [1]):
       max_unroll = settings[0]
       max_process_width = self.compute_process_width(max_unroll)
@@ -115,6 +62,19 @@ class AMax(AMaxP):
         self.process(code_block, process_width)
     self.vec.iterate_unrolled("i", "n", self.load_ptrs, incs, max_unroll, 1, body)
 
+  def process(self, code_block, process_width):
+    code_block.set_equal(itertools.cycle(self.m_vars), self.vec.max(itertools.cycle(self.m_vars), self.load_vars[0][:process_width]))
+
+class AMax(AMaxP):
+  standard_incs = ["incv"]
+
+  def __init__(self, data_type_class):
+    super(AMax, self).__init__(data_type_class)
+
+  def write_declaration(self, code_block, settings):
+    super(AMax, self).write_declaration(code_block, settings)
+    code_block.write("{0} {1}amax(int n, {0}* v, int incv){{".format(self.data_type.name, self.data_type.name_char))
+
   def define_load_vars(self, code_block, process_width):
     self.load_vars = [["v_" + str(i) for i in range(process_width)]]
     code_block.define_vars(self.vec.type_name, self.load_vars[0])
@@ -135,15 +95,15 @@ class AMax(AMaxP):
     else:
       code_block.set_equal(self.load_vars[0], self.vec.abs(self.vec.load_partial(self.load_ptrs[0], 0, incs[0], partial)))
 
-  def process(self, code_block, process_width):
-    code_block.set_equal(itertools.cycle(self.m_vars), self.vec.max(itertools.cycle(self.m_vars), self.load_vars[0][:process_width]))
-
 class AMaxM(AMaxP):
   standard_incs = ["incv", "incy"]
 
   def __init__(self, data_type_class):
-    super(DotOneDimensionalAccumulation, self).__init__(data_type_class)
-    super(AMax, self).write_declaration(code_block, settings)
+    super(AMaxM, self).__init__(data_type_class)
+
+  def write_declaration(self, code_block, settings):
+    super(AMaxM, self).write_declaration(code_block, settings)
+    code_block.write("{0} {1}amaxm(int n, {0}* v, int incv, {0}* y, int incy){{".format(self.data_type.name, self.data_type.name_char))
 
   def define_load_ptrs(self, code_block, process_width):
     if self.data_type.is_complex:
