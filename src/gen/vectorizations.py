@@ -81,9 +81,6 @@ class Vectorization(object):
 
   def iterate_unrolled_aligned(self, i_var, n_var, src_ptrs, src_incs, max_unroll, min_unroll, body):
     align = False
-    if(type(self.data_type) == Float):
-      print(self.type_size)
-      print(src_incs[0])
     if self.type_size > 1 and src_incs[0] == 1:
       self.code_block.set_equal(i_var, ["((uintptr_t){0} & {1}) >> {2}".format(src_ptrs[0], self.byte_size - 1, int(math.floor(math.log(self.data_type.byte_size, 2))))])
       self.code_block.write("if({0} != 0 && {0} < {1}){{".format(i_var, n_var))
@@ -92,6 +89,10 @@ class Vectorization(object):
       body("{0}".format(i_var))
       self.code_block.write("{0};".format(self.data_type.data_increment(src_ptrs, src_incs, i_var)))
 #      self.code_block.write("printf(\"v = %p, i = %d\\n\", {0}, {1});".format(src_ptrs[0], i_var))
+      self.code_block.dedent()
+      self.code_block.write("}else{")
+      self.code_block.indent()
+      self.code_block.set_equal(i_var, ["0"])
       self.code_block.dedent()
       self.code_block.write("}")
       self.code_block.write("for(; {0} + {1} <= {2}; {0} += {1}, {3}){{".format(i_var, max_unroll, n_var, self.data_type.data_increment(src_ptrs, src_incs, max_unroll)))
