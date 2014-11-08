@@ -7,6 +7,7 @@
 #                                                            Peter Ahrens 2014 #
 ################################################################################
 
+import math
 from utils import *
 from dataTypes import *
 
@@ -41,7 +42,7 @@ class Vectorization(object):
     raise(NotImplementedError())
 
   #loads n values from pointer into the variables listed in variables (n must be a multiple of type_size)
-  def load(self, src_ptr, offset, inc, n):
+  def load(self, src_ptr, offset, inc, n, align=False):
     raise(NotImplementedError())
 
   #loads less than type_size values from pointer into the variables listed in variables
@@ -77,6 +78,45 @@ class Vectorization(object):
 
   def swap_pairwise(self, src_vars):
     raise(NotImplementedError())
+
+  def iterate_unrolled_aligned(self, i_var, n_var, src_ptrs, src_incs, max_unroll, min_unroll, body):
+    align = False
+    if(type(self.data_type) == Float):
+      print(self.type_size)
+      print(src_incs[0])
+    if self.type_size > 1 and src_incs[0] == 1:
+      self.code_block.set_equal(i_var, ["((uintptr_t){0} & {1}) >> {2}".format(src_ptrs[0], self.byte_size - 1, int(math.floor(math.log(self.data_type.byte_size, 2))))])
+      self.code_block.write("if({0} != 0 && {0} < {1}){{".format(i_var, n_var))
+      self.code_block.indent()
+#      self.code_block.write("printf(\"v = %p\\n\", {0});".format(src_ptrs[0]))
+      body("{0}".format(i_var))
+      self.code_block.write("{0};".format(self.data_type.data_increment(src_ptrs, src_incs, i_var)))
+#      self.code_block.write("printf(\"v = %p, i = %d\\n\", {0}, {1});".format(src_ptrs[0], i_var))
+      self.code_block.dedent()
+      self.code_block.write("}")
+      self.code_block.write("for(; {0} + {1} <= {2}; {0} += {1}, {3}){{".format(i_var, max_unroll, n_var, self.data_type.data_increment(src_ptrs, src_incs, max_unroll)))
+      align = True
+    else:
+      self.code_block.write("for({0} = 0; {0} + {1} <= {2}; {0} += {1}, {3}){{".format(i_var, max_unroll, n_var, self.data_type.data_increment(src_ptrs, src_incs, max_unroll)))
+    self.code_block.indent()
+    body(max_unroll, align)
+    self.code_block.dedent()
+    self.code_block.write("}")
+    unroll = max_unroll // 2
+    while(unroll >= self.type_size and unroll >= min_unroll):
+      self.code_block.write("if({0} + {1} <= {2}){{".format(i_var, unroll, n_var))
+      self.code_block.indent()
+      body(unroll, align)
+      self.code_block.write("{0} += {1}, {2};".format(i_var, unroll, self.data_type.data_increment(src_ptrs, src_incs, unroll)))
+      self.code_block.dedent()
+      self.code_block.write("}")
+      unroll //=2
+    if(unroll >= min_unroll):
+      self.code_block.write("if({0} < {1}){{".format(i_var, n_var))
+      self.code_block.indent()
+      body("({0} - {1})".format(n_var, i_var), align)
+      self.code_block.dedent()
+      self.code_block.write("}")
 
   def iterate_unrolled(self, i_var, n_var, src_ptrs, src_incs, max_unroll, min_unroll, body):
     self.code_block.write("for({0} = 0; {0} + {1} <= {2}; {0} += {1}, {3}){{".format(i_var, max_unroll, n_var, self.data_type.data_increment(src_ptrs, src_incs, max_unroll)))
@@ -165,7 +205,7 @@ class SISD(Vectorization):
       self.code_block.write("tmp_BLP.{0} |= 1;".format(self.data_type.base_type.int_char))
       self.code_block.write("{0} = {1} + tmp_BLP.{2};".format(dst[i], src[i], self.data_type.base_type.float_char))
 
-  def load(self, src_ptr, offset, inc, n):
+  def load(self, src_ptr, offset, inc, n, align=False):
     assert n > 0, "n must be nonzero"
     assert inc != 0, "inc must be nonzero"
 
@@ -302,13 +342,16 @@ class SSE(SIMD):
     for i in range(width):
       self.code_block.write("{0} = _mm_add_p{1}({2}, _mm_or_p{1}({3}, mask_BLP));".format(dst[i], self.data_type.base_type.name_char, src[i], blp[i]))
 
-  def load(self, src_ptr, offset, inc, n):
+  def load(self, src_ptr, offset, inc, n, align=False):
     assert n > 0, "n must be nonzero"
     assert n % self.type_size == 0, "n must be a multiple of the number of types that fit in a vector"
     result = []
     for i in range(n//self.type_size):
       if inc == 1 or self.type_size == 1:
-        result += ["_mm_loadu_p{0}({1})".format(self.data_type.base_type.name_char, mix("+", src_ptr, self.data_type.index(offset, inc, i * self.base_size), paren=False))]
+        if align:
+          result += ["_mm_load_p{0}({1})".format(self.data_type.base_type.name_char, mix("+", src_ptr, self.data_type.index(offset, inc, i * self.base_size), paren=False))]
+        else:
+          result += ["_mm_loadu_p{0}({1})".format(self.data_type.base_type.name_char, mix("+", src_ptr, self.data_type.index(offset, inc, i * self.base_size), paren=False))]
       else:
         if self.data_type.base_type.name == "float":
           result += ["_mm_set_ps({0}[{4}], {0}[{3}], {0}[{2}], {0}[{1}])".format(src_ptr, self.data_type.index(offset, inc, i * self.base_size), self.data_type.index(offset, inc, i * self.base_size + 1), self.data_type.index(offset, inc, i * self.base_size + 2), self.data_type.index(offset, inc, i * self.base_size + 3))]
@@ -437,13 +480,16 @@ class AVX(SIMD):
     for i in range(width):
       self.code_block.write("{0} = _mm256_add_p{1}({2}, _mm256_or_p{1}({3}, mask_BLP));".format(dst[i], self.data_type.base_type.name_char, src[i], blp[i]))
 
-  def load(self, src_ptr, offset, inc, n):
+  def load(self, src_ptr, offset, inc, n, align=False):
     assert n > 0, "n must be nonzero"
     assert n % self.type_size == 0, "n must be a multiple of the number of types that fit in a vector"
     result = []
     for i in range(n//self.type_size):
       if inc == 1 or self.type_size == 1:
-        result += ["_mm256_loadu_p{0}({1})".format(self.data_type.base_type.name_char, mix("+", src_ptr, self.data_type.index(offset, inc, i * self.base_size), paren=False))]
+        if align:
+          result += ["_mm256_load_p{0}({1})".format(self.data_type.base_type.name_char, mix("+", src_ptr, self.data_type.index(offset, inc, i * self.base_size), paren=False))]
+        else:
+          result += ["_mm256_loadu_p{0}({1})".format(self.data_type.base_type.name_char, mix("+", src_ptr, self.data_type.index(offset, inc, i * self.base_size), paren=False))]
       else:
         if self.data_type.base_type.name == "float":
           result += ["_mm256_set_ps({0}[{8}], {0}[{7}], {0}[{6}], {0}[{5}], {0}[{4}], {0}[{3}], {0}[{2}], {0}[{1}])".format(src_ptr, self.data_type.index(offset, inc, i * self.base_size), self.data_type.index(offset, inc, i * self.base_size + 1), self.data_type.index(offset, inc, i * self.base_size + 2), self.data_type.index(offset, inc, i * self.base_size + 3), self.data_type.index(offset, inc, i * self.base_size + 4), self.data_type.index(offset, inc, i * self.base_size + 5), self.data_type.index(offset, inc, i * self.base_size + 6), self.data_type.index(offset, inc, i * self.base_size + 7))]

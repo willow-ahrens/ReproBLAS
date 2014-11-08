@@ -16,10 +16,10 @@ class DotI2(blas1I2.DotOneDimensionalAccumulation):
   def define_preprocess_vars(self):
     return
 
-  def preprocess(self, code_block, unroll, incs, partial=""):
+  def preprocess(self, code_block, unroll, incs, partial="", align = False):
     process_width = self.compute_process_width(unroll)
     if partial == "":
-      code_block.set_equal(self.load_vars[0], self.vec.load(self.load_ptrs[0], 0, incs[0], unroll))
+      code_block.set_equal(self.load_vars[0], self.vec.load(self.load_ptrs[0], 0, incs[0], unroll, align))
       code_block.set_equal(self.load_vars[1], self.vec.load(self.load_ptrs[1], 0, incs[1], unroll))
     else:
       code_block.set_equal(self.load_vars[0], self.vec.load_partial(self.load_ptrs[0], 0, incs[0], partial))

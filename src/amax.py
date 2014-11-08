@@ -50,14 +50,14 @@ class AMaxP(Function):
 
   def write_core(self, code_block, max_process_width, max_unroll, incs):
     code_block.new_line()
-    def body(unroll):
+    def body(unroll, align = False):
       if type(unroll) == str:
         process_width = self.compute_process_width(self.vec.type_size)
-        self.preprocess(code_block, self.vec.type_size, incs, unroll)
+        self.preprocess(code_block, self.vec.type_size, incs, partial=unroll)
         self.process(code_block, process_width)
       else:
         process_width = self.compute_process_width(unroll)
-        self.preprocess(code_block, unroll, incs)
+        self.preprocess(code_block, unroll, incs, align=align)
         self.process(code_block, process_width)
     self.vec.iterate_unrolled("i", "n", self.load_ptrs, incs, max_unroll, 1, body)
 
@@ -88,9 +88,9 @@ class AMax(AMaxP):
   def compute_process_width(self, unroll):
     return (unroll * self.data_type.base_size)//self.vec.base_size
 
-  def preprocess(self, code_block, unroll, incs, partial=""):
+  def preprocess(self, code_block, unroll, incs, partial="", align = False):
     if partial == "":
-      code_block.set_equal(self.load_vars[0], self.vec.abs(self.vec.load(self.load_ptrs[0], 0, incs[0], unroll)))
+      code_block.set_equal(self.load_vars[0], self.vec.abs(self.vec.load(self.load_ptrs[0], 0, incs[0], unroll, align)))
     else:
       code_block.set_equal(self.load_vars[0], self.vec.abs(self.vec.load_partial(self.load_ptrs[0], 0, incs[0], partial)))
 
@@ -123,10 +123,10 @@ class AMaxM(AMaxP):
   def compute_process_width(self, unroll):
     return (unroll * self.data_type.base_size)//self.vec.base_size * self.data_type.base_size
 
-  def preprocess(self, code_block, unroll, incs, partial=""):
+  def preprocess(self, code_block, unroll, incs, partial="", align = False):
     process_width = self.compute_process_width(unroll)
     if partial == "":
-      code_block.set_equal(self.load_vars[0], self.vec.load(self.load_ptrs[0], 0, incs[0], unroll))
+      code_block.set_equal(self.load_vars[0], self.vec.load(self.load_ptrs[0], 0, incs[0], unroll, align))
       code_block.set_equal(self.load_vars[1], self.vec.load(self.load_ptrs[1], 0, incs[1], unroll))
     else:
       code_block.set_equal(self.load_vars[0], self.vec.load_partial(self.load_ptrs[0], 0, incs[0], partial))

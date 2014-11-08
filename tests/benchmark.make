@@ -38,9 +38,9 @@ $(BENCHMARK_RBLAS): debug.o dgenvec.o sgenvec.o
 #	@./benchmark-rblas -n 512 --cmp --incv 1 --incy 1 --flops
 #	@./benchmark-rblas -n 1024:1024:4096 --cmp --incv 1 --incy 1 --flops
 #	@echo 'VSTRIDE 1 YSTRIDE 1'
-#	@./benchmark-rblas --header -n 128:128:256 --cmp --incv 1 --incy 1
-#	@./benchmark-rblas -n 512 --cmp --incv 1 --incy 1
-#	@./benchmark-rblas -n 1024:1024:4096 --cmp --incv 1 --incy 1
+	@./benchmark-rblas --header -n 128:128:256 --cmp --incv 1 --incy 1
+	@./benchmark-rblas -n 512 --cmp --incv 1 --incy 1
+	@./benchmark-rblas -n 1024:1024:4096 --cmp --incv 1 --incy 1
 #	@echo 'VSTRIDE 2 YSTRIDE 2'
 #	@./benchmark-rblas --header -n 128:128:256 --cmp --incv 2 --incy 2
 #	@./benchmark-rblas -n 512 --cmp --incv 2 --incy 2

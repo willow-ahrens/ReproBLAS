@@ -13,10 +13,10 @@ class DotCI2(blas1I2.DotOneDimensionalAccumulation):
     super(DotCI2, self).write_declaration(code_block, settings)
     code_block.write("void {0}dotcI2(int n, {1}* v, int incv, {1}* y, int incy, int fold, {1}* sum){{".format(self.data_type.name_char, self.data_type.name))
 
-  def preprocess(self, code_block, unroll, incs, partial=""):
+  def preprocess(self, code_block, unroll, incs, partial="", align = False):
     process_width = self.compute_process_width(unroll)
     if partial == "":
-      code_block.set_equal(self.load_vars[0], self.vec.load(self.load_ptrs[0], 0, incs[0], unroll))
+      code_block.set_equal(self.load_vars[0], self.vec.load(self.load_ptrs[0], 0, incs[0], unroll, align))
       code_block.set_equal(self.load_vars[1], self.vec.load(self.load_ptrs[1], 0, incs[1], unroll))
     else:
       code_block.set_equal(self.load_vars[0], self.vec.load_partial(self.load_ptrs[0], 0, incs[0], partial))

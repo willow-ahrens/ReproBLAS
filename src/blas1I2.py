@@ -120,14 +120,14 @@ class OneDimensionalAccumulation(Function):
 
   def write_core(self, code_block, fold, max_process_width, max_unroll, incs):
     code_block.new_line()
-    def body(unroll):
+    def body(unroll, align = False):
       if type(unroll) == str:
         process_width = self.compute_process_width(self.vec.type_size)
-        self.preprocess(code_block, self.vec.type_size, incs, unroll)
+        self.preprocess(code_block, self.vec.type_size, incs, partial=unroll)
         self.process(code_block, fold, process_width)
       else:
         process_width = self.compute_process_width(unroll)
-        self.preprocess(code_block, unroll, incs)
+        self.preprocess(code_block, unroll, incs, align=align)
         self.process(code_block, fold, process_width)
     self.vec.iterate_unrolled("i", "n", self.load_ptrs, incs, max_unroll, 1, body)
 
@@ -137,7 +137,7 @@ class OneDimensionalAccumulation(Function):
   def define_load_ptrs(self, code_block, process_width):
     raise(NotImplementedError())
 
-  def preprocess(self, code_block, unroll, incs, partial=""):
+  def preprocess(self, code_block, unroll, incs, partial="", align = False):
     raise(NotImplementedError())
 
   def process(self, code_block, fold, process_width):
