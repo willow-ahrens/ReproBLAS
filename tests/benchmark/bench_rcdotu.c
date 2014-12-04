@@ -9,17 +9,18 @@
 #include <rblas.h>
 #include <IndexedFP.h>
 
-#include "benchmark_vecvec_fill_header.h"
+#include "vecvec_fill_bench_header.h"
 
 #define NAME_SIZE 100
+#define FLOP_PER_N 2
 
-extern const char* bench_vecvec_fill_name(int argc, char** argv){
+extern const char* vecvec_fill_bench_name(int argc, char** argv){
   static char namebuf[NAME_SIZE];
   snprintf(namebuf, NAME_SIZE * sizeof(char), "Benchmark rcdot");
   return namebuf;
 }
 
-extern int bench_vecvec_fill_test(int argc, char** argv, int N, int incx, int incy, int type, int unit, int trials){
+extern int vecvec_fill_bench_test(int argc, char** argv, int N, int incx, int incy, int type, int unit, int trials){
   int rc = 0;
   float complex res;
   I_float_Complex Ires;
@@ -40,12 +41,21 @@ extern int bench_vecvec_fill_test(int argc, char** argv, int N, int incx, int in
 
   time_tic();
   for(int i = 0; i < trials; i++){
-    ref = rcdot(N, x, incx, y, incy);
+    res = rcdotu(N, x, incx, y, incy);
   }
   time_toc();
 
-  switch(unit)
-  printf("%d\n", time_read()/);
+  switch(unit){
+    case UNIT_HERTZ:
+      printf("%e\n", (double)((long double)N * trials)/time_read());
+      break;
+    case UNIT_FLOPS:
+      printf("%e\n", (double)((long double)N * FLOP_PER_N * trials)/time_read());
+      break;
+    default:
+      rc = 1;
+  }
+
 
   return rc;
 }

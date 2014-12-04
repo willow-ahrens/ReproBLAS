@@ -15,7 +15,7 @@ static double read_clock( )
 
   gettimeofday( &end, NULL );
 
-  return (end.tv_sec - start.tv_sec) + 1.0e-6 * (end.tv_usec - start.tv_usec);
+  return (end.tv_sec  + 1.0e-6 * end.tv_usec) - (start.tv_sec - 1.0e-6 * start.tv_usec);
 }
 
 void time_tic() {
