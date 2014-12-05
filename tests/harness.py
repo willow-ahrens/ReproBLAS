@@ -103,9 +103,8 @@ def benchmark(tests, params):
   for setting in settings(params):
     results = list(zip(*setting)[1])
     for test in tests:
-      results.append(engineer(re.findall("([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)", run(test, flags(setting))[1])[0][0], BENCH_LEN))
       try:
-        pass
+        results.append(engineer(re.findall("([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)", run(test, flags(setting))[1])[0][0], BENCH_LEN))
       except (ValueError, IndexError):
         assert False, "Error: benchmark output does not match format"
     print(result.format(*results))
