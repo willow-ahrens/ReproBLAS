@@ -7,6 +7,8 @@
 import argparse
 import os
 import subprocess
+import re
+import decimal
 
 OUT_LEN = 80
 
@@ -53,11 +55,18 @@ def settings(params):
 def flags(setting):
   return " ".join(['-{0} "{1}"'.format(*s) for s in setting])
 
+def engineer(f, d):
+  f = decimal.Decimal(f)
+  f = f.normalize().to_eng_string()
+  (m, e) = f.split("E+")
+  e = "e" + e
+  m = "{{0: <.{0}}}".format(d - len(e)).format(m)
+  return m + e
+
 def benchmark(tests, params):
   global divider
   global prev
-  global names
-  BENCH_LEN = 8
+  BENCH_LEN = 9
 
   if prev != "feed":
     print(divider)
@@ -80,8 +89,27 @@ def benchmark(tests, params):
   divider = param_divider + middle_divider + test_divider
 
   assert tests_per_row >= 1, "Error: params too large."
+  labels = list(zip(*params)[0])
   for test in tests:
-    assert len(names[test]) < BENCH_LEN, "Error: test name too long."
+    try:
+      name = re.findall("\[(.*)\]", run(test, "{0} -p")[1])[0]
+    except IndexError:
+      assert False, "Error: benchmark name does not match format."
+    assert len(name) < BENCH_LEN, "Error: test name too long."
+    labels.append(name)
+  print(divider)
+  print(result.format(*labels))
+  print(divider)
+  for setting in settings(params):
+    results = list(zip(*setting)[1])
+    for test in tests:
+      results.append(engineer(re.findall("([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)", run(test, flags(setting))[1])[0][0], BENCH_LEN))
+      try:
+        pass
+      except (ValueError, IndexError):
+        assert False, "Error: benchmark output does not match format"
+    print(result.format(*results))
+  prev = "benchmark"
 
 def script(tests, params):
   global divider
@@ -105,7 +133,6 @@ def script(tests, params):
 def check(tests, params):
   global divider
   global prev
-  global names
   global passed
   global failed
   global not_run

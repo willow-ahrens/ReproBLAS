@@ -16,7 +16,7 @@
 
 extern const char* vecvec_fill_bench_name(int argc, char** argv){
   static char namebuf[NAME_SIZE];
-  snprintf(namebuf, NAME_SIZE * sizeof(char), "Benchmark rcdot");
+  snprintf(namebuf, NAME_SIZE * sizeof(char), "Benchmark [rcdot]");
   return namebuf;
 }
 
@@ -55,7 +55,6 @@ extern int vecvec_fill_bench_test(int argc, char** argv, int N, int incx, int in
     default:
       rc = 1;
   }
-
 
   return rc;
 }
