@@ -60,7 +60,7 @@ def engineer(f, d):
   f = f.normalize().to_eng_string()
   (m, e) = f.split("E+")
   e = "e" + e
-  m = "{{0: <.{0}}}".format(d - len(e)).format(m)
+  m = "{{0:0<{0}.{0}}}".format(d - len(e)).format(m)
   return m + e
 
 def benchmark(tests, params):

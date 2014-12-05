@@ -31,7 +31,7 @@ OMP_FLAG     = -fopenmp
 # OMP_FLAG     = -openmp
 
 ###############################################
-# BLAS LIBRARY LOADER FLAG                    #
+# BLAS LIBRARY selection                      #
 ###############################################
 
 # REFERENCE LIBRARBY
@@ -45,5 +45,10 @@ OMP_FLAG     = -fopenmp
 
 # MAC OS ACCELERATE FRAMEWORK
 LDFLAGS      += -framework Accelerate
+
+# BLAS
+#CMP_BLAS      = BLAS
+# CBLAS
+CMP_BLAS      = CBLAS
 
 LDFLAGS += -lm

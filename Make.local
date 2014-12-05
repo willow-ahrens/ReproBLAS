@@ -39,10 +39,14 @@ ifeq ($(strip $(MPILDC)),)
 MPILDC = $(MPIC_COMPILER)
 endif
 
-CCNAME =
+ifeq ($(CMP_BLAS),)
+    CMP_BLAS = NO_BLAS
+endif
 
 #############################
 # >>> DETECT COMPILER NAME
+CCNAME =
+
 ifeq (icc,$(C_COMPILER))
 CCNAME= icc
 else

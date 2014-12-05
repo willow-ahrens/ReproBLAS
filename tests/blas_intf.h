@@ -18,8 +18,7 @@
 	extern void cblas_cdotc_sub(int, float complex*, int, float complex*, int, float complex*);
 	extern void cblas_cdotu_sub(int, float complex*, int, float complex*, int, float complex*);
 
-	extern void   cblas_dgemv (char,int,int,double,double*,int,double*,int,double,double*,int);
-
+	extern void cblas_dgemv (char,int,int,double,double*,int,double*,int,double,double*,int);
 
 #	define CALL_IDAMAX(R, N, V, INC) R = cblas_idamax(N, V, INC)
 
