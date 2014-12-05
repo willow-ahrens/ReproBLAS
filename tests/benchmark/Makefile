@@ -6,7 +6,10 @@ RBLAS     = $(ROOT_DIR)/$(BUILD)/libs/libreproblas_seq.a $(ROOT_DIR)/$(BUILD)/li
 RBLAS_REF = $(ROOT_DIR)/$(BUILD)/libs/libreproblas_seq.a $(ROOT_DIR)/$(BUILD)/libs/libiblas_ref.a $(ROOT_DIR)/$(BUILD)/libs/libindexedfp.a
 PRBLAS    = $(ROOT_DIR)/$(BUILD)/libs/libreproblas_mpi.a $(ROOT_DIR)/$(BUILD)/libs/libmpindexedfp.a
 
-BENCHMARKS = bench_rcdotu
+BENCHMARKS = bench_rdsum bench_rdasum bench_rdnrm2 bench_rddot                 \
+             bench_rssum bench_rsasum bench_rsnrm2 bench_rsdot                 \
+             bench_rzsum bench_rdzasum bench_rdznrm2 bench_rzdotu bench_rzdotc \
+             bench_rcsum bench_rscasum bench_rscnrm2 bench_rcdotu bench_rcdotc
 
 ../common/libtest.a:
 	@cd ../common; make

@@ -16,7 +16,7 @@
 
 extern const char* vecvec_fill_bench_name(int argc, char** argv){
   static char namebuf[NAME_SIZE];
-  snprintf(namebuf, NAME_SIZE * sizeof(char), "Benchmark [rcdotu]");
+  snprintf(namebuf, NAME_SIZE * sizeof(char), "Benchmark [rcdotc]");
   return namebuf;
 }
 
@@ -41,7 +41,7 @@ extern int vecvec_fill_bench_test(int argc, char** argv, int N, int incx, int in
 
   time_tic();
   for(int i = 0; i < trials; i++){
-    res = rcdotu(N, x, incx, y, incy);
+    res = rcdotc(N, x, incx, y, incy);
   }
   time_toc();
 

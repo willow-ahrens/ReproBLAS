@@ -16,7 +16,7 @@
 
 extern const char* vecvec_fill_bench_name(int argc, char** argv){
   static char namebuf[NAME_SIZE];
-  snprintf(namebuf, NAME_SIZE * sizeof(char), "Benchmark [rcdotu]");
+  snprintf(namebuf, NAME_SIZE * sizeof(char), "Benchmark [rscasum]");
   return namebuf;
 }
 
@@ -25,23 +25,18 @@ extern int vecvec_fill_bench_test(int argc, char** argv, int N, int incx, int in
   float complex res;
   I_float_Complex Ires;
   float complex *x = cvec_alloc(N, incx);
-  float complex *y = cvec_alloc(N, incy);
 
   vec_random_seed();
 
   //fill empty space with random data to check increment
   cvec_fill(N * incx, x, 1, vec_fill_RAND, 1.0, 1.0);
-  cvec_fill(N * incy, y, 1, vec_fill_RAND, 1.0, 1.0);
 
   //fill x
   cvec_fill(N, x, incx, type, 1.0, opt_read_float(argc, argv, "-c", 1.0));
 
-  //fill y with -i where necessary
-  cvec_fill(N, y, incy, vec_fill_CONSTANT, -_Complex_I, 1.0);
-
   time_tic();
   for(int i = 0; i < trials; i++){
-    res = rcdotu(N, x, incx, y, incy);
+    res = rscasum(N, x, incx);
   }
   time_toc();
 
@@ -57,6 +52,5 @@ extern int vecvec_fill_bench_test(int argc, char** argv, int N, int incx, int in
   }
 
   free(x);
-  free(y);
   return rc;
 }
