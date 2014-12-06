@@ -18,6 +18,58 @@ built   = set()
 passed  = 0
 failed  = 0
 not_run = 0
+style   = None
+
+class Style:
+  @classmethod
+  def create_template(cls, left_align, right_align):
+    template = ""
+    left_expanded_columns = ["{{:{0}<{1}}}".format(fill, size) for (fill, size) in left_align]
+    right_expanded_columns = ["{{:{0}<{1}}}".format(fill, size) for (fill, size) in right_align]
+    template = "{0}{1}{0}".format(cls.edge, cls.inner.join(left_expanded_columns + right_expanded_columns))
+    example_output = template.format(*["" for _ in left_align + right_align])
+    if cls.min_len != 0 and len(example_output) < cls.min_len:
+      if(left_expanded_columns):
+        left_expanded_columns = left_expanded_columns + [""]
+      if(right_expanded_columns):
+        right_expanded_columns = [""] + right_expanded_columns
+      left_template = "{0}{1}".format(cls.edge, cls.inner.join(left_expanded_columns))
+      right_template = "{0}{1}".format(cls.inner.join(right_expanded_columns), cls.edge)
+      incomplete_example_output = (left_template + right_template).format(*["" for _ in left_align + right_align])
+      template = "{0}{1}{2}".format(left_template, cls.fill * (cls.min_len - len(incomplete_example_output)), right_template)
+    return template
+
+  @classmethod
+  def create_divider(cls, left_align, right_align):
+    if cls.divider.inner == "" and cls.divider.edge == "" and cls.divider.fill == "":
+      return ""
+    return cls.divider.create_template(left_align, right_align).format(*[cls.divider.fill * size for (fill, size) in left_align + right_align])
+
+class CSVDivider(Style):
+  inner   = ""
+  edge    = ""
+  fill    = ""
+  min_len = 0
+
+class CSV(CSVDivider):
+  inner = ", "
+  edge  = ""
+  fill  = ""
+  divider = CSVDivider
+
+class TermDivider(Style):
+  inner   = "+"
+  edge    = "+"
+  fill    = "-"
+  min_len = OUT_LEN
+
+class Term(TermDivider):
+  inner = "|"
+  edge  = "|"
+  fill  = " "
+  divider = TermDivider
+
+styles = {"term":Term, "csv":CSV}
 
 def callsafe(command):
   rc = 0
@@ -71,61 +123,52 @@ def benchmark(tests, params):
   if prev != "feed":
     print(divider)
 
-  param_result  = ""
-  param_divider = ""
-  test_result   = ""
-  test_divider  = ""
-  tests_per_row = 0
-  for param in params:
-    param_result  += "|{{: <{0}}}".format(len(str(max(param[1]))))
-    param_divider += "+" + ("-" * len(str(max(param[1]))))
-  while tests_per_row < len(tests) and len(param_divider + "+" + test_divider) + BENCH_LEN + 1 < OUT_LEN: 
-    test_result   += "{{: <{0}}}|".format(BENCH_LEN)
-    test_divider  += ("-" * BENCH_LEN) + "+"
-    tests_per_row += 1
-  middle_result = ((OUT_LEN - len(param_divider + "|" + test_divider)) * " ") + "|"
-  middle_divider = ((OUT_LEN - len(param_divider + "+" + test_divider)) * "-") + "+"
-  result = param_result + middle_result + test_result 
-  divider = param_divider + middle_divider + test_divider
+  result_template = style.create_template([(" ", len(str(max(param[1])))) for param in params], [(" ", BENCH_LEN) for test in tests])
+  divider = style.create_divider([(" ", len(str(max(param[1])))) for param in params], [(" ", BENCH_LEN) for test in tests])
 
-  assert tests_per_row >= 1, "Error: params too large."
   labels = list(zip(*params)[0])
   for test in tests:
-    try:
-      name = re.findall("\[(.*)\]", run(test, "{0} -p")[1])[0]
-    except IndexError:
-      assert False, "Error: benchmark name does not match format."
-    assert len(name) < BENCH_LEN, "Error: test name too long."
-    labels.append(name)
+    if test != "":
+      try:
+        name = re.findall("\[(.*)\]", run(test, "{0} -p")[1])[0]
+      except IndexError:
+        assert False, "Error: benchmark name does not match format."
+      assert len(name) < BENCH_LEN, "Error: test name too long."
+      labels.append(name)
+    else:
+      labels.append("")
   print(divider)
-  print(result.format(*labels))
+  print(result_template.format(*labels))
   print(divider)
   for setting in settings(params):
     results = list(zip(*setting)[1])
     for test in tests:
-      try:
-        results.append(engineer(re.findall("([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)", run(test, flags(setting))[1])[0][0], BENCH_LEN))
-      except (ValueError, IndexError):
-        assert False, "Error: benchmark output does not match format"
-    print(result.format(*results))
+      if test != "":
+        try:
+          results.append(engineer(re.findall("([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)", run(test, flags(setting))[1])[0][0], BENCH_LEN))
+        except (ValueError, IndexError):
+          assert False, "Error: benchmark output does not match format"
+      else:
+        results.append("")
+    print(result_template.format(*results))
   prev = "benchmark"
 
 def script(tests, params):
   global divider
   global prev
 
-  result = "|{{0: <{0}}}|".format(OUT_LEN - 2)
+  result_template = style.create_template([(" ", OUT_LEN - 2)], [])
   if prev != "script":
     print(divider)
   for test in tests:
     for setting in settings(params):
       name = "{0} {1}".format(test, flags(setting))
-      print(result.format(name))
+      print(result_template.format(name))
       (rc, out) = run(test, flags(setting))
       if rc != 0:
         for line in out.split("\n"):
           while line:
-            print(result.format(line[:OUT_LEN - 2]))
+            print(result_template.format(line[:OUT_LEN - 2]))
             line = line[OUT_LEN - 2:]
   prev = "script"
 
@@ -135,37 +178,39 @@ def check(tests, params):
   global passed
   global failed
   global not_run
+  global style
 
   assert tests, "Error: no tests to check."
 
   if prev not in {"feed", "check"}:
     print(divider)
-  divider = "{0:-<{1}}+----+".format("+", OUT_LEN - 6)
-  result = "|{{0: <{0}}}|{{1: <4}}|".format(OUT_LEN - 7)
-  error = "|{{0: <{0}}}|".format(OUT_LEN - 2)
+  
+  result_template = style.create_template([(" ", OUT_LEN - 7)], [(" ", 4)])
+  divider = style.create_divider([(" ", OUT_LEN - 7)], [(" ", 4)])
+  error_template = style.create_template([(" ", OUT_LEN - 2)], [])
   if prev != "check":
     print(divider)
-    print(result.format("NAME", "RES"))
+    print(result_template.format("NAME", "RES"))
     print(divider)
 
   for test in tests:
     for setting in settings(params):
       name = run(test, "{0} -p".format(flags(setting)))[1].replace("\n", "")
-      assert len(name) < OUT_LEN - 7, "Error: check name too long."
+      #assert len(name) < OUT_LEN - 7, "Error: check name too long."
       (rc, out) = run(test, flags(setting))
       if rc == 0:
-        print(result.format(name, "PASS"))
+        print(result_template.format(name, "PASS"))
         passed += 1
       elif rc == 125:
-        print(result.format(name, "N/A"))
+        print(result_template.format(name, "N/A"))
         not_run += 1
       else:
-        print(result.format(name, "FAIL"))
+        print(result_template.format(name, "FAIL"))
         failed += 1
       if rc != 0:
         for line in out.split("\n"):
           while line:
-            print(error.format(line[:OUT_LEN - 2]))
+            print(error_template.format(line[:OUT_LEN - 2]))
             line = line[OUT_LEN - 2:]
   prev = "check"
 
@@ -205,8 +250,10 @@ def suite(name):
 if __name__ == "__main__":
   parser = argparse.ArgumentParser(description = "Test Harness")
   parser.add_argument('-s', '--suites', default="check.suite", nargs='+', type=str, help='test suites to run')
+  parser.add_argument('-o', '--format', default="term", choices=styles.keys(), help='output format')
 
   args = parser.parse_args()
+  style = styles[args.format]
   for name in args.suites:
     suite(name)
   for test in built:
