@@ -25,6 +25,9 @@ $(BENCHMARKS): $(patsubst %,%.c,$@) ../common/libtest.a
 bench:
 	python ../harness.py -s bench.suite
 
+bench-record:
+	python ../harness.py -o csv -s bench.suite > out.csv
+
 clean:
 	-rm -f *.o
 	-rm -f $(BENCHMARKS)
