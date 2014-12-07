@@ -110,8 +110,13 @@ def flags(setting):
 def engineer(f, d):
   f = decimal.Decimal(f)
   f = f.normalize().to_eng_string()
-  (m, e) = f.split("E+")
-  e = "e" + e
+  if (f.find("E+") == -1):
+    m = f
+    e = ""
+    #e = "e0"
+  else:
+    (m, e) = f.split("E+")
+    e = "e" + e
   m = "{{0:0<{0}.{0}}}".format(d - len(e)).format(m)
   return m + e
 

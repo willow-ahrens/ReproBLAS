@@ -1,7 +1,7 @@
 ROOT_DIR=../..
 include $(ROOT_DIR)/Make.local
 
-COMMON = test_vec.o test_opt.o test_file.o test_time.o
+COMMON = test_vec.o test_opt.o test_file.o test_time.o test_perf.o
 
 all : libtest.a test_data blas_inc.h
 
