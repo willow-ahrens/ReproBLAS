@@ -13,7 +13,7 @@
 #include "vecvec_fill_bench_header.h"
 
 #define NAME_SIZE 100
-#define FLOP_PER_N 7
+#define FLOP_PER_N 10
 
 extern const char* vecvec_fill_bench_name(int argc, char** argv){
   static char namebuf[NAME_SIZE];
