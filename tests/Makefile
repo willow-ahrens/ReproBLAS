@@ -36,6 +36,15 @@ $(MPTESTTARGET): run-%: %.o $(COMMON) $(PRBLAS) $(RBLAS)
 $(TESTTARGET): run-%: %.o $(COMMON) $(RBLAS)
 	$(LDC) -o $@ $(COMMON) $< $(RBLAS) $(LDFLAGS)
 
+common/libtest.a:
+	@cd common; make
+
+check: common/libtest.a
+	cd checks; make check
+
+bench: common/libtest.a
+	cd benchs; make bench
+
 clean:
 	rm -rf *.o run-*
 	rm -rf *.o
@@ -43,8 +52,4 @@ clean:
 	cd checks; make clean
 	cd common; make clean
 
-include check.make
-
 include accuracy.make
-
-include benchmark.make
