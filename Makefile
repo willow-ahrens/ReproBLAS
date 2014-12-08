@@ -19,8 +19,8 @@ check:
 accuracy:
 	@cd tests && ${MAKE} accuracy --no-print-director
 
-benchmark:
-	@cd tests && ${MAKE} benchmark
+bench:
+	@cd tests && ${MAKE} bench
 
 IndexedFP:
 	cd src && $(MAKE) IndexedFP
