@@ -25,8 +25,26 @@ $(BENCHMARKS): $(patsubst %,%.c,$@) ../common/libtest.a
 bench:
 	python ../harness.py -s bench.suite
 
+bench-compare:
+	python ../harness.py -s compare.suite
+
+bench-flops:
+	python ../harness.py -s flops.suite
+
+bench-peak:
+	python ../harness.py -s peak.suite
+
 bench-record:
-	python ../harness.py -o csv -s bench.suite > out.csv
+	python ../harness.py -s bench.suite -o csv > out.csv
+
+bench-compare-record:
+	python ../harness.py -s compare.suite -o csv > out.csv
+
+bench-flops-record:
+	python ../harness.py -s flops.suite -o csv > out.csv
+
+bench-peak-record:
+	python ../harness.py -s peak.suite -o csv > out.csv
 
 clean:
 	-rm -f *.o

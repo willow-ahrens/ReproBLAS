@@ -50,6 +50,7 @@ clean:
 	rm -rf *.o
 	rm -rf run-*
 	cd checks; make clean
+	cd benchs; make clean
 	cd common; make clean
 
 include accuracy.make
