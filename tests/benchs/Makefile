@@ -19,7 +19,7 @@ BENCHMARKS = bench_rdsum bench_rdasum bench_rdnrm2 bench_rddot                 \
 	@cd ../common; make
 
 $(BENCHMARKS): $(patsubst %,%.c,$@) ../common/libtest.a
-	@$(C_COMPILER) $(CFLAGS) -c $(patsubst %,%.c,$@) -o $(patsubst %,%.o,$@)
+	@$(C_COMPILER) -O0 $(CFLAGS) -c $(patsubst %,%.c,$@) -o $(patsubst %,%.o,$@)
 	@$(LDC) $(patsubst %,%.o,$@) -o $@ $(RBLAS)  ../common/libtest.a $(LDFLAGS)
 
 bench:
