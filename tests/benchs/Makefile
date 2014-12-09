@@ -54,9 +54,6 @@ bench-flops-record:
 bench-peak-record:
 	python ../harness.py -s peak.suite -o csv > out.csv
 
-bench-tmp:
-	python ../harness.py -s bench_tmp.suite
-
 clean:
 	-rm -f *.o
 	-rm -f $(BENCHMARKS)
