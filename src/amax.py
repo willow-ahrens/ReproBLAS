@@ -6,11 +6,11 @@ from vectorizations import *
 from generate import *
 import itertools
 
-class AMaxP(Function):
+class Max(Function):
   standard_incs = ["incv"]
 
   def __init__(self, data_type_class):
-    super(AMaxP, self).__init__(data_type_class)
+    super(Max, self).__init__(data_type_class)
 
   def write_declaration(self, code_block, settings):
     code_block.srcFile.include("#include <stdio.h>")
@@ -64,7 +64,7 @@ class AMaxP(Function):
   def process(self, code_block, process_width):
     code_block.set_equal(itertools.cycle(self.m_vars), self.vec.max(itertools.cycle(self.m_vars), self.load_vars[0][:process_width]))
 
-class AMax(AMaxP):
+class AMax(Max):
   standard_incs = ["incv"]
 
   def __init__(self, data_type_class):
@@ -94,7 +94,7 @@ class AMax(AMaxP):
     else:
       code_block.set_equal(self.load_vars[0], self.vec.abs(self.vec.load_partial(self.load_ptrs[0], 0, incs[0], partial)))
 
-class AMaxM(AMaxP):
+class AMaxM(Max):
   standard_incs = ["incv", "incy"]
 
   def __init__(self, data_type_class):

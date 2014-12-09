@@ -10,10 +10,18 @@ BENCHMARKS = bench_rdsum bench_rdasum bench_rdnrm2 bench_rddot                 \
              bench_rssum bench_rsasum bench_rsnrm2 bench_rsdot                 \
              bench_rzsum bench_rdzasum bench_rdznrm2 bench_rzdotu bench_rzdotc \
              bench_rcsum bench_rscasum bench_rscnrm2 bench_rcdotu bench_rcdotc \
+             bench_damax bench_damaxm                                          \
+             bench_samax bench_samaxm                                          \
+             bench_zamax bench_zamaxm                                          \
+             bench_camax bench_camaxm                                          \
              bench_dasum bench_dnrm2 bench_ddot                                \
              bench_sasum bench_snrm2 bench_sdot                                \
              bench_dzasum bench_dznrm2 bench_zdotu bench_zdotc                 \
              bench_scasum bench_scnrm2 bench_cdotu bench_cdotc                 \
+             bench_idamax                                                      \
+             bench_isamax                                                      \
+             bench_izamax                                                      \
+             bench_icamax                                                      \
 
 ../common/libtest.a:
 	@cd ../common; make

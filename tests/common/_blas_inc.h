@@ -1,5 +1,8 @@
 #ifdef CBLAS
 	extern int cblas_idamax(int, double*, int);
+	extern int cblas_isamax(int, float*, int);
+	extern int cblas_izamax(int, double complex*, int);
+	extern int cblas_icamax(int, float complex*, int);
 
 	extern double cblas_dasum  (int, double*, int);
 	extern float  cblas_sasum  (int, float*, int);
@@ -21,6 +24,9 @@
 	extern void cblas_dgemv (char,int,int,double,double*,int,double*,int,double,double*,int);
 
 #	define CALL_IDAMAX(R, N, V, INC) R = cblas_idamax(N, V, INC)
+#	define CALL_ISAMAX(R, N, V, INC) R = cblas_isamax(N, V, INC)
+#	define CALL_IZAMAX(R, N, V, INC) R = cblas_izamax(N, V, INC)
+#	define CALL_ICAMAX(R, N, V, INC) R = cblas_icamax(N, V, INC)
 
 #	define CALL_DASUM(R, N, V, INC)  R = cblas_dasum (N, V, INC)
 #	define CALL_SASUM(R, N, V, INC)  R = cblas_sasum (N, V, INC)
@@ -47,6 +53,9 @@
 #elif defined (BLAS)
 
 	extern int idamax_(int*, double*, int*);
+	extern int isamax_(int*, float*, int*);
+	extern int izamax_(int*, double complex*, int*);
+	extern int icamax_(int*, float complex*, int*);
 
 	extern double dasum_  (int*, double*, int*);
 	extern float  sasum_  (int*, float*, int*);
@@ -76,6 +85,9 @@
 
 
 #	define CALL_IDAMAX(R, N, V, INC) R = idamax_(&N, V, &INC)
+#	define CALL_ISAMAX(R, N, V, INC) R = isamax_(&N, V, &INC)
+#	define CALL_IZAMAX(R, N, V, INC) R = izamax_(&N, V, &INC)
+#	define CALL_ICAMAX(R, N, V, INC) R = icamax_(&N, V, &INC)
 
 #	define CALL_DASUM(R, N, V, INC)  R = dasum_ (&N, V, &INC)
 #	define CALL_DZASUM(R, N, V, INC) R = dzasum_ (&N, V, &INC)
