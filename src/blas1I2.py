@@ -129,7 +129,8 @@ class OneDimensionalAccumulation(Function):
         process_width = self.compute_process_width(unroll)
         self.preprocess(code_block, unroll, incs, align=align)
         self.process(code_block, fold, process_width)
-    self.vec.iterate_unrolled_aligned("i", "n", self.load_ptrs, incs, max_unroll, 1, body)
+    #self.vec.iterate_unrolled_aligned("i", "n", self.load_ptrs, incs, max_unroll, 1, body)
+    self.vec.iterate_unrolled("i", "n", self.load_ptrs, incs, max_unroll, 1, body)
 
   def define_load_vars(self, code_block, process_width):
     raise(NotImplementedError())

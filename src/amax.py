@@ -59,7 +59,8 @@ class Max(Function):
         process_width = self.compute_process_width(unroll)
         self.preprocess(code_block, unroll, incs, align=align)
         self.process(code_block, process_width)
-    self.vec.iterate_unrolled_aligned("i", "n", self.load_ptrs, incs, max_unroll, 1, body)
+    #self.vec.iterate_unrolled_aligned("i", "n", self.load_ptrs, incs, max_unroll, 1, body)
+    self.vec.iterate_unrolled("i", "n", self.load_ptrs, incs, max_unroll, 1, body)
 
   def process(self, code_block, process_width):
     code_block.set_equal(itertools.cycle(self.m_vars), self.vec.max(itertools.cycle(self.m_vars), self.load_vars[0][:process_width]))
