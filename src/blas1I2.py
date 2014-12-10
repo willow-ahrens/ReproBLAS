@@ -74,10 +74,10 @@ class OneDimensionalAccumulation(Function):
       code_block.define_vars(self.vec.type_name, self.s_vars[0])
     else:
       #define q variables
-      self.q_vars = ["q_" + str(i) for i in range(self.vec.suf_width)]
+      self.q_vars = ["q_" + str(i) for i in range(max_process_width)]
       code_block.define_vars(self.vec.type_name, self.q_vars)
       #define s variables
-      self.s_vars = [["s_{0}_{1}".format(j, i) for i in range(self.vec.suf_width)] for j in range(fold)]
+      self.s_vars = [["s_{0}_{1}".format(j, i) for i in range(max_process_width)] for j in range(fold)]
       for j in range(fold):
         code_block.define_vars(self.vec.type_name, self.s_vars[j])
 
@@ -154,13 +154,12 @@ class OneDimensionalAccumulation(Function):
       code_block.write("}")
       self.vec.add_BLP_into(self.buffer_vars, self.buffer_vars, self.load_vars[0], process_width)
     else:
-      for i in range(process_width // self.vec.suf_width):
-        for j in range(fold - 1):
-          code_block.set_equal(self.q_vars, self.s_vars[j])
-          self.vec.add_BLP_into(self.s_vars[j], self.s_vars[j], self.load_vars[0][i * self.vec.suf_width:], self.vec.suf_width)
-          code_block.set_equal(self.q_vars, self.vec.sub(self.q_vars, self.s_vars[j]))
-          code_block.set_equal(self.load_vars[0][i * self.vec.suf_width:], self.vec.add(self.load_vars[0][i * self.vec.suf_width:], self.q_vars))      
-        self.vec.add_BLP_into(self.s_vars[fold - 1], self.s_vars[fold - 1], self.load_vars[0][i * self.vec.suf_width:], self.vec.suf_width)
+      for j in range(fold - 1):
+        code_block.set_equal(self.q_vars, self.s_vars[j])
+        self.vec.add_BLP_into(self.s_vars[j], self.s_vars[j], self.load_vars[0], process_width)
+        code_block.set_equal(self.q_vars, self.vec.sub(self.q_vars, self.s_vars[j][:process_width]))
+        code_block.set_equal(self.load_vars[0][:process_width], self.vec.add(self.load_vars[0][:process_width], self.q_vars))      
+      self.vec.add_BLP_into(self.s_vars[fold - 1], self.s_vars[fold - 1], self.load_vars[0], process_width)
     
   def compute_process_width(self, unroll):
     raise(NotImplementedError())
