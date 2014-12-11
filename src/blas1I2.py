@@ -20,20 +20,20 @@ class OneDimensionalAccumulation(Function):
     #code_block.srcFile.include("#include \"IndexedFP/" + self.data_type.base_type.name_char + "Indexed.h\"")
     #code_block.srcFile.include("#include \"rblas1.h\"")
 
-  def write_body(self, code_block, settings = [(-1, 1, 1)]):
+  def write_body(self, code_block, settings = [(-1, 1, 8)]):
     code_block.write("SET_DAZ_FLAG;")
     if len(settings) == 1:
       self.write_cores(code_block, settings[0][0], settings[0][1], settings[0][2])
     else:
       code_block.write("switch(fold){")
       code_block.indent()
-      for (fold, max_unroll, max_stride) in settings:
+      for (fold, max_stride, max_unroll) in settings:
         if fold == -1:
           code_block.write("default:{")
         else:
           code_block.write("case " + str(fold) + ":{")
         code_block.indent()
-        self.write_cores(code_block, fold, max_unroll, max_stride)
+        self.write_cores(code_block, fold, max_stride, max_unroll)
         #code_block.write("break;")
         code_block.write("RESET_DAZ_FLAG")
         code_block.write("return;")
@@ -42,7 +42,7 @@ class OneDimensionalAccumulation(Function):
       code_block.dedent()
       code_block.write("}")
 
-  def write_cores(self, code_block, fold, max_unroll, max_stride):
+  def write_cores(self, code_block, fold, max_stride, max_unroll):
 #    if self.vec.name == "AVX":
 #      self.code_block.write('printf("Hi im avx {0}\\n");'.format(self.name))
 #    elif self.vec.name == "SSE":
@@ -154,7 +154,7 @@ class OneDimensionalAccumulation(Function):
         code_block.set_equal(self.load_vars[0][i * width:], self.vec.add(self.load_vars[0][i * width:], self.q_vars[:width]))
       code_block.dedent()
       code_block.write("}")
-      self.vec.add_BLP_into(self.buffer_vars, self.buffer_vars, self.load_vars[0], process_width)
+      self.vec.add_BLP_into(self.buffer_vars, self.buffer_vars, self.load_vars[0], width)
     else:
       for i in range(max(unroll, 1)):
         for j in range(fold - 1):

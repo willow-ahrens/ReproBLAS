@@ -13,13 +13,13 @@ class DotUI2(blas1I2.DotOneDimensionalAccumulation):
     super(DotUI2, self).write_declaration(code_block, settings)
     code_block.write("void {0}dotuI2(int n, {1}* v, int incv, {1}* y, int incy, int fold, {1}* sum){{".format(self.data_type.name_char, self.data_type.name))
 
-  def preprocess(self, code_block, unroll, incs, partial="", align = False):
-    process_width = self.compute_process_width(unroll)
+  def preprocess(self, code_block, n, incs, partial="", align = False):
+    width = self.compute_width(n)
     if partial == "":
-      code_block.set_equal(self.load_vars[0], self.vec.load(self.load_ptrs[0], 0, incs[0], unroll, align))
-      code_block.set_equal(self.load_vars[1], self.vec.load(self.load_ptrs[1], 0, incs[1], unroll))
+      code_block.set_equal(self.load_vars[0], self.vec.load(self.load_ptrs[0], 0, incs[0], n, align))
+      code_block.set_equal(self.load_vars[1], self.vec.load(self.load_ptrs[1], 0, incs[1], n))
     else:
       code_block.set_equal(self.load_vars[0], self.vec.load_partial(self.load_ptrs[0], 0, incs[0], partial))
       code_block.set_equal(self.load_vars[1], self.vec.load_partial(self.load_ptrs[1], 0, incs[1], partial))
-    code_block.set_equal(self.load_vars[0][process_width//2:process_width], self.vec.nconj(self.vec.mul(self.vec.swap_pairwise(self.load_vars[0]), self.vec.rep_odds(self.load_vars[1]))))
-    code_block.set_equal(self.load_vars[0][:process_width//2], self.vec.mul(self.load_vars[0], self.vec.rep_evens(self.load_vars[1])))
+    code_block.set_equal(self.load_vars[0][width//2:width], self.vec.nconj(self.vec.mul(self.vec.swap_pairwise(self.load_vars[0]), self.vec.rep_odds(self.load_vars[1]))))
+    code_block.set_equal(self.load_vars[0][:width//2], self.vec.mul(self.load_vars[0], self.vec.rep_evens(self.load_vars[1])))

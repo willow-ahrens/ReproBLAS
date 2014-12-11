@@ -15,8 +15,8 @@ class ASumI2(blas1I2.NonDotOneDimensionalAccumulation):
       redundant_char = self.data_type.base_type.name_char
     code_block.write("void {0}{1}asumI2(int n, {2}* v, int incv, int fold, {2}* sum){{".format(redundant_char, self.data_type.name_char, self.data_type.name))
 
-  def preprocess(self, code_block, unroll, incs, partial="", align = False):
+  def preprocess(self, code_block, n, incs, partial="", align = False):
     if partial == "":
-      code_block.set_equal(self.load_vars[0], self.vec.abs(self.vec.load(self.load_ptrs[0], 0, incs[0], unroll, align)))
+      code_block.set_equal(self.load_vars[0], self.vec.abs(self.vec.load(self.load_ptrs[0], 0, incs[0], n, align)))
     else:
       code_block.set_equal(self.load_vars[0], self.vec.abs(self.vec.load_partial(self.load_ptrs[0], 0, incs[0], partial)))
