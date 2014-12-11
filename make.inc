@@ -15,7 +15,7 @@ C_COMPILER    = gcc
 # COMPILING FLAGS                             #
 ###############################################
 
-CFLAGS        = -O2 -Werror-implicit-function-declaration -march=core-avx-i
+CFLAGS        = -O3 -Werror-implicit-function-declaration
 #CFLAGS        = -pg -Werror-implicit-function-declaration -march=core-avx-i
 #CFLAGS        = -g -Werror-implicit-function-declaration -march=core-avx-i
 
