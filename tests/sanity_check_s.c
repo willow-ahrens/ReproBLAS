@@ -31,6 +31,7 @@ int main (int argc, char** args) {
 	}
 	else {
 		fprintf(stdout, " | FAILED |");
+//----------------------------------Possible misnaming? should be RSSUM, etc, etc?
 		if (status[0] != 0) {
 			fprintf(stdout, "%8s", "RDSUM");
 		}

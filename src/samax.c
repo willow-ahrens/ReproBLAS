@@ -24,7 +24,7 @@ float samax(int n, float* v, int inc) {
 
 	
 	if (inc == 1) {
-		while (IS_UNALIGNED(v)) {
+		while (IS_UNALIGNED(v, 16)) {
 			v0 = fabs(v[0]);
 			if (S1 < v0) S1 = v0;
 			v += inc;
@@ -33,7 +33,7 @@ float samax(int n, float* v, int inc) {
 #ifdef __SSE__
 		__m128 mS, mv, mAbsMask, mS1, mv1;
 
-		SIMD_ABS_MASKS(mAbsMask);
+		SSE_ABS_MASKS(mAbsMask);
 
 		mS  = _mm_setzero_ps();
 		mS1 = _mm_setzero_ps();

@@ -32,7 +32,7 @@ double complex zamaxm(int n, double complex* x, int incx, double complex* y, int
 
 	mv = _mm_set1_pd(1);
 
-	SIMD_ABS_MASKD(mAbsMask);
+	SSE_ABS_MASKD(mAbsMask);
 
 	mReal = _mm_setzero_pd();
 	mImag = _mm_setzero_pd();

@@ -51,7 +51,7 @@ float snrm2I1_(int N, int NB,
 	float scale = 0.0;
 	float nscale = 0.0;
 		
-	for (i = 0; i < N; i+=NB, v+=NB) {
+	for (i = 0; i < N; i+=NB, v+=NB*inc) {
 		lN = NB < (N - i) ? NB:(N-i);
 
 		// LOCAL MAX ABSOLUTE

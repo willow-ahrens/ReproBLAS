@@ -26,9 +26,9 @@ double damaxm(int n, double* x, int incx, double* y, int incy) {
 
 	mv = _mm_set1_pd(1);
 
-	SIMD_ABS_MASKD(mAbsMask);
+	SSE_ABS_MASKD(mAbsMask);
 
-		if (IS_UNALIGNED(x)) {
+		if (IS_UNALIGNED(x, 16)) {
 			S0 = fabs(x[0] * y[0]);
 			i = 1;
 			x++; y++;
@@ -37,7 +37,7 @@ double damaxm(int n, double* x, int incx, double* y, int incy) {
 		mS = _mm_setzero_pd();
 		mS2 = _mm_setzero_pd();
 
-		if (IS_ALIGNED(y)) {
+		if (IS_ALIGNED(y, 16)) {
 		for (; i < n-3; i+=4, x += 4, y += 4) {
 			mv = _mm_load_pd(x);
 			my = _mm_load_pd(y);

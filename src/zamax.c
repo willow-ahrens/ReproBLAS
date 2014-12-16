@@ -28,10 +28,10 @@ double complex zamax(int n, double complex* vd, int inc) {
 	__m128d mS, mv, mAbsMask, mS1, mv1;
 	mS  = _mm_setzero_pd();
 	mS1 = _mm_setzero_pd();
-	SIMD_ABS_MASKD(mAbsMask);
+	SSE_ABS_MASKD(mAbsMask);
 #endif
 	
-	int unaligned = IS_UNALIGNED(vd);
+	int unaligned = IS_UNALIGNED(vd, 16);
 	double* v = (double*) vd;
 	if (inc == 1) {
 #ifdef __SSE2__

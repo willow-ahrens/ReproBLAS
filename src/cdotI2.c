@@ -46,7 +46,7 @@ void cdotuI2_k3
 	// GENERATING MASK
 	// mBLP = 0.000...1 * 2^0
 	__m128 mBLP; // BIT IN THE LAST PLACE MASK
-	SIMD_BLP_MASKS(mBLP);
+	SSE_BLP_MASKS(mBLP);
 	float complex sret[2] __attribute__((aligned(16)));
 
 	mR0 = _mm_set1_ps(CREAL_(sum[0]));
@@ -195,12 +195,12 @@ void cdotuI2_k3
 #ifdef CDOTUI2
 	real = (CREAL_(sum[0]) - CIMAG_(sret[0])) + CREAL_(sret[0]);
 #elif defined ( CDOTCI2 )
-	real = (CREAL_(sret[0])- CREAL_(sum[0])) + CIMAG_(sret[0]);
+	real = (CIMAG_(sret[0])- CREAL_(sum[0])) + CREAL_(sret[0]);
 #endif
 
 	_mm_store_ps((float*) sret, mI0);
 #ifdef CDOTCI2
-	imag = (CIMAG_(sum[0]) - CREAL_(sret[0])) + CIMAG_(sret[0]);
+	imag = (CIMAG_(sum[0]) - CIMAG_(sret[0])) + CREAL_(sret[0]);
 #elif defined ( CDOTUI2 )
 	imag = (CIMAG_(sret[0]) - CIMAG_(sum[0])) + CREAL_(sret[0]);
 #endif
@@ -211,12 +211,12 @@ void cdotuI2_k3
 #ifdef CDOTUI2
 	real = (CREAL_(sum[1]) - CIMAG_(sret[0])) + CREAL_(sret[0]);
 #elif defined ( CDOTCI2 )
-	real = (CREAL_(sret[0])- CREAL_(sum[1])) + CIMAG_(sret[0]);
+	real = (CIMAG_(sret[0])- CREAL_(sum[1])) + CREAL_(sret[0]);
 #endif
 
 	_mm_store_ps((float*) sret, mI1);
 #ifdef CDOTCI2
-	imag = (CIMAG_(sum[1]) - CREAL_(sret[0])) + CIMAG_(sret[0]);
+	imag = (CIMAG_(sum[1]) - CIMAG_(sret[0])) + CREAL_(sret[0]);
 #elif defined ( CDOTUI2 )
 	imag = (CIMAG_(sret[0]) - CIMAG_(sum[1])) + CREAL_(sret[0]);
 #endif
@@ -227,12 +227,12 @@ void cdotuI2_k3
 #ifdef CDOTUI2
 	real = (CREAL_(sum[2]) - CIMAG_(sret[0])) + CREAL_(sret[0]);
 #elif defined ( CDOTCI2 )
-	real = (CREAL_(sret[0])- CREAL_(sum[2])) + CIMAG_(sret[0]);
+	real = (CIMAG_(sret[0])- CREAL_(sum[2])) + CREAL_(sret[0]);
 #endif
 
 	_mm_store_ps((float*) sret, mI2);
 #ifdef CDOTCI2
-	imag = (CIMAG_(sum[2]) - CREAL_(sret[0])) + CIMAG_(sret[0]);
+	imag = (CIMAG_(sum[2]) - CIMAG_(sret[0])) + CREAL_(sret[0]);
 #elif defined ( CDOTUI2 )
 	imag = (CIMAG_(sret[0]) - CIMAG_(sum[2])) + CREAL_(sret[0]);
 #endif
@@ -284,7 +284,7 @@ void cdotuI2
 	// ABSOLUTE MASK
 
 	// SET LAST BIT MASK: mBLP = 0.000...1 * 2^0
-	SIMD_BLP_MASKS(mBLP);
+	SSE_BLP_MASKS(mBLP);
 
 	// EXPAND INITIAL SUM TO BUFFER
 	for (j = 0; j < fold; j++) {
@@ -331,9 +331,9 @@ void cdotuI2
 	for (j = 0; j < fold; j++) {
 		_mm_store_ps((float*) sret, mR[j]);
 #ifdef CDOTUI2
-		real = (CREAL_(sum[j]) - CREAL_(sret[0])) + CIMAG_(sret[0]);
+		real = (CREAL_(sum[j]) - CIMAG_(sret[0])) + CREAL_(sret[0]);
 #elif defined ( CDOTCI2 )
-		real = (CREAL_(sret[0])- CREAL_(sum[j])) + CIMAG_(sret[0]);
+		real = (CIMAG_(sret[0])- CREAL_(sum[j])) + CREAL_(sret[0]);
 #endif
 
 		_mm_store_ps((float*) sret, mI[j]);

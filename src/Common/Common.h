@@ -37,8 +37,8 @@ void dsetm(int M, int N, double* dst, int ldD, double x);
 void dshowm(double* M, int ldM, int frM, int toM, int frN, int toN);
 
 // CHECK IF AN ADDRESS IS ALIGNED TO 16-BYTE BOUNDARE OR NOT
-#define IS_ALIGNED(ADDR) ((((uintptr_t)ADDR) & 15) == 0)
-#define IS_UNALIGNED(ADDR) ((((uintptr_t)ADDR) & 15) > 0)
+#define IS_ALIGNED(ADDR, ALIGN) ((((uintptr_t)ADDR) & (ALIGN - 1)) == 0)
+#define IS_UNALIGNED(ADDR, ALIGN) ((((uintptr_t)ADDR) & (ALIGN - 1)) > 0)
 
 #define SCALAR_SPLIT(M,X,Q)	\
 	Q = (M + X);		\
@@ -86,25 +86,7 @@ void dshowm(double* M, int ldM, int frM, int toM, int frN, int toN);
 	X = _mm_add_pd(M, X);		\
 	X = _mm_sub_pd(X, M);
 
-#define SIMD_ABS_MASKD(MASK)		\
-{	\
-	__m128d r1__;					\
-	r1__ = _mm_set1_pd(1);			\
-	MASK = _mm_set1_pd(-1);			\
-	MASK = _mm_xor_pd(MASK, r1__);	\
-	r1__ = _mm_cmpeq_pd(r1__, r1__);\
-	MASK = _mm_xor_pd(MASK, r1__);	\
-}
-
-#define SIMD_BLP_MASKD(MASK)		\
-{	\
-	__m128d r1__;					\
-	MASK = _mm_set1_pd(1.0);		\
-	r1__ = _mm_set1_pd(1.0 + (DBL_EPSILON * 1.0001));	\
-	MASK = _mm_xor_pd(MASK, r1__);	\
-}
-
-#define SIMD_ABS_MASKS(MASK)		\
+#define SSE_ABS_MASKS(MASK)		\
 {	\
 	__m128 r1__;					\
 	r1__ = _mm_set1_ps(1);			\
@@ -114,12 +96,71 @@ void dshowm(double* M, int ldM, int frM, int toM, int frN, int toN);
 	MASK = _mm_xor_ps(MASK, r1__);	\
 }
 
-#define SIMD_BLP_MASKS(MASK)		\
+#define SSE_ABS_MASKD(MASK)		\
+{	\
+	__m128d r1__;					\
+	r1__ = _mm_set1_pd(1);			\
+	MASK = _mm_set1_pd(-1);			\
+	MASK = _mm_xor_pd(MASK, r1__);	\
+	r1__ = _mm_cmpeq_pd(r1__, r1__);\
+	MASK = _mm_xor_pd(MASK, r1__);	\
+}
+
+#define AVX_ABS_MASKS(MASK)		\
+{	\
+	__m256 r1__;					\
+	r1__ = _mm256_set1_ps(1);			\
+	MASK = _mm256_set1_ps(-1);			\
+	MASK = _mm256_xor_ps(MASK, r1__);	\
+	r1__ = _mm256_cmp_ps(r1__, r1__, 0);\
+	MASK = _mm256_xor_ps(MASK, r1__);	\
+}
+
+#define AVX_ABS_MASKD(MASK)		\
+{	\
+	__m256d r1__;					\
+	r1__ = _mm256_set1_pd(1);			\
+	MASK = _mm256_set1_pd(-1);			\
+	MASK = _mm256_xor_pd(MASK, r1__);	\
+	r1__ = _mm256_cmp_pd(r1__, r1__, 0);\
+	MASK = _mm256_xor_pd(MASK, r1__);	\
+}
+
+#define SSE_BLP_MASKS(MASK)		\
 {	\
 	__m128 r1__;					\
 	MASK = _mm_set1_ps(1.0);		\
 	r1__ = _mm_set1_ps(1.0 + (FLT_EPSILON * 1.0001));	\
 	MASK = _mm_xor_ps(MASK, r1__);	\
+}
+
+#define SSE_BLP_MASKD(MASK)		\
+{	\
+	__m128d r1__;					\
+	MASK = _mm_set1_pd(1.0);		\
+	r1__ = _mm_set1_pd(1.0 + (DBL_EPSILON * 1.0001));	\
+	MASK = _mm_xor_pd(MASK, r1__);	\
+}
+
+#define AVX_BLP_MASKS(MASK)		\
+{	\
+	__m256 r1__;					\
+	MASK = _mm256_set1_ps(1.0);		\
+	r1__ = _mm256_set1_ps(1.0 + (FLT_EPSILON * 1.0001));	\
+	MASK = _mm256_xor_ps(MASK, r1__);	\
+}
+
+#define AVX_BLP_MASKD(MASK)		\
+{	\
+	__m256d r1__;					\
+	MASK = _mm256_set1_pd(1.0);		\
+	r1__ = _mm256_set1_pd(1.0 + (DBL_EPSILON * 1.0001));	\
+	MASK = _mm256_xor_pd(MASK, r1__);	\
+}
+
+#define AVX_0001_MASK(MASK)		\
+{ \
+  MASK = _mm256_set_epi64x(0, 0, 0, 0xFFFFFFFFFFFFFFFFUL);\
 }
 
 #define SET_DAZ_FLAG \

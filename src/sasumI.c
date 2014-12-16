@@ -49,7 +49,7 @@ void sasumI1_(int N, int NB,
 	int lN;
 	int maxN = sICapacity();
 		
-	for (i = 0; i < N; i+=NB, v+=NB) {
+	for (i = 0; i < N; i+=NB, v+=NB*inc) {
 		lN = NB < (N - i) ? NB:(N-i);
 
 		// LOCAL MAX ABSOLUTE

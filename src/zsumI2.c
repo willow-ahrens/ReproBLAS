@@ -44,11 +44,11 @@ void dznrm2I2_k3(int n, double complex* v, int incv, double scale, double comple
 	// GENERATING MASK
 	// mBLP = 0.000...1 * 2^0
 	__m128d mBLP; // BIT IN THE LAST PLACE MASK
-	SIMD_BLP_MASKD(mBLP);
+	SSE_BLP_MASKD(mBLP);
 
 #if defined( DZASUMI2 )
 	__m128d mAbsMask;
-	SIMD_ABS_MASKD(mAbsMask);
+	SSE_ABS_MASKD(mAbsMask);
 #endif
 #ifdef DZNRM2I2
 	__m128d mScale;
@@ -226,7 +226,7 @@ void zsumI2(int n, double complex* v, int incv, int fold, double complex* sum) {
 	// ABSOLUTE MASK
 #	if defined( DZASUMI2 )
 	__m128d mAbsMask;
-	SIMD_ABS_MASKD(mAbsMask);
+	SSE_ABS_MASKD(mAbsMask);
 #	endif
 #	ifdef DNRM2I2
 	__m128d mScale;
@@ -234,7 +234,7 @@ void zsumI2(int n, double complex* v, int incv, int fold, double complex* sum) {
 #	endif
 
 	// SET LAST BIT MASK: mBLP = 0.000...1 * 2^0
-	SIMD_BLP_MASKD(mBLP);
+	SSE_BLP_MASKD(mBLP);
 
 	// EXPAND INITIAL SUM TO BUFFER
 	for (j = 0; j < fold; j++) {

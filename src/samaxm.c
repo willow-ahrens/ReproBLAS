@@ -18,11 +18,11 @@ float samaxm(int n, float* x, int incx, float* y, int incy) {
 	float tmp[4] __attribute__ ((aligned(16)));
 	__m128 mS, mS2, mv, mv2, my, my2, mAbsMask;
 
-	SIMD_ABS_MASKS(mAbsMask);
+	SSE_ABS_MASKS(mAbsMask);
 
 	i = 0;
 
-	while (IS_UNALIGNED(y)) {
+	while (IS_UNALIGNED(y, 16)) {
 		v0 = fabs(x[0] * y[0]);
 		S0 = S0 > v0 ? S0:v0;
 		x++;

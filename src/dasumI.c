@@ -51,7 +51,7 @@ void dasumI1_(int N, int NB,
 	int accu = 0;
 	int maxN = dICapacity();
 		
-	for (i = 0; i < N; i+=NB, v+=NB) {
+	for (i = 0; i < N; i+=NB, v+=NB*inc) {
 		lN = NB < (N - i) ? NB:(N-i);
 
 		// LOCAL MAX ABSOLUTE
