@@ -160,6 +160,7 @@ rblas_mpi.header : prblas1.h
 	@cat prblas1.h >> reproblas_mpi_tmp.h
 	@echo '#endif' >> reproblas_mpi_tmp.h
 	@mv reproblas_mpi_tmp.h $(ROOT_DIR)/$(BUILD)/include/rblas_mpi.h
+	@cp $(ROOT_DIR)/$(BUILD)/include/rblas_mpi.h $(ROOT_DIR)/$(BUILD)/include/prblas.h
 
 Iblas_header : Iblas1.mod
 	@echo '#ifndef _INDEXED_BLAS__H_' > Iblas_tmp.h

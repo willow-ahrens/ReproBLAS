@@ -2,6 +2,9 @@ PRBLAS - Parallel Reproducible BLAS v1.0
 
 1. Istallation
 
+In order to compile MPI version, an MPI compiler must be provided in make.inc
+Line 12 contains an example for mpicc compiler.
+
 - Download the latest version of source code from
   bebop.cs.berkeley.edu/reproblas/download.html
 - Un-compress the downloaded zip or tar file to {PRBLAS_ROOT} folder
