@@ -154,7 +154,7 @@ class OneDimensionalAccumulation(Function):
         code_block.set_equal(self.load_vars[0][i * width:], self.vec.add(self.load_vars[0][i * width:], self.q_vars[:width]))
       code_block.dedent()
       code_block.write("}")
-      self.vec.add_BLP_into(self.buffer_vars, self.buffer_vars, self.load_vars[0], width)
+      self.vec.add_BLP_into(self.buffer_vars, self.buffer_vars, self.load_vars[0][i * width:], width)
     else:
       for i in range(max(unroll, 1)):
         for j in range(fold - 1):
@@ -162,7 +162,7 @@ class OneDimensionalAccumulation(Function):
           self.vec.add_BLP_into(self.s_vars[j], self.s_vars[j], self.load_vars[0][i * width:], width)
           code_block.set_equal(self.q_vars, self.vec.sub(self.q_vars, self.s_vars[j][:width]))
           code_block.set_equal(self.load_vars[0][i * width:], self.vec.add(self.load_vars[0][i * width:], self.q_vars[:width]))
-        self.vec.add_BLP_into(self.s_vars[fold - 1], self.s_vars[fold - 1], self.load_vars[0], width)
+        self.vec.add_BLP_into(self.s_vars[fold - 1], self.s_vars[fold - 1], self.load_vars[0][i * width:], width)
 
   def compute_width(self, n):
     raise(NotImplementedError())
