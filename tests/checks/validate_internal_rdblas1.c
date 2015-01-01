@@ -15,6 +15,7 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   double big   = 1024.0 * 1024.0 * 1024.0 * 32; // 2^35
   double ref;
   double refa;
+  double refd;
   double res;
 
   vec_random_seed();
@@ -27,11 +28,13 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   dvec_fill(N * incx, x, 1, vec_fill_RAND, 1.0, 1.0);
   dvec_fill(N * incy, y, 1, vec_fill_RAND, 1.0, 1.0);
 
-  //fill y with 1 where necessary
-  dvec_fill(N, y, incy, vec_fill_CONSTANT, 1.0, 1.0);
+  //fill y with -1 where necessary
+  dvec_fill(N, y, incy, vec_fill_CONSTANT, -1.0, 1.0);
 
   //1 Big
   ref   = (N - 1) * small + big;
+  refa  = ref;
+  refd  = ref * -1;
 
   //1 Big at beginning
   dvec_fill(N, x, incx, vec_fill_CONSTANT, small, 1.0);
@@ -44,14 +47,14 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   }
 
   res = rdasum(N, x, incx);
-  if (res != ref) {
-    printf("rdasum(x) = %g != %g (1 Big at beginning)\n", res, ref);
+  if (res != refa) {
+    printf("rdasum(x) = %g != %g (1 Big at beginning)\n", res, refa);
     return 1;
   }
 
   res = rddot(N, x, incx, y, incy);
-  if (res != ref) {
-    printf("rddot(x) = %g != %g (1 Big at beginning)\n", res, ref);
+  if (res != refd) {
+    printf("rddot(x) = %g != %g (1 Big at beginning)\n", res, refd);
     return 1;
   }
 
@@ -66,14 +69,14 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   }
 
   res = rdasum(N, x, incx);
-  if (res != ref) {
-    printf("rdasum(x) = %g != %g (1 Big in middle)\n", res, ref);
+  if (res != refa) {
+    printf("rdasum(x) = %g != %g (1 Big in middle)\n", res, refa);
     return 1;
   }
 
   res = rddot(N, x, incx, y, incy);
-  if (res != ref) {
-    printf("rddot(x) = %g != %g (1 Big in middle)\n", res, ref);
+  if (res != refd) {
+    printf("rddot(x) = %g != %g (1 Big in middle)\n", res, refd);
     return 1;
   }
 
@@ -88,20 +91,21 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   }
 
   res = rdasum(N, x, incx);
-  if (res != ref) {
-    printf("rdasum(x) = %g != %g (1 Big at end)\n", res, ref);
+  if (res != refa) {
+    printf("rdasum(x) = %g != %g (1 Big at end)\n", res, refa);
     return 1;
   }
 
   res = rddot(N, x, incx, y, incy);
-  if (res != ref) {
-    printf("rddot(x) = %g != %g (1 Big at end)\n", res, ref);
+  if (res != refd) {
+    printf("rddot(x) = %g != %g (1 Big at end)\n", res, refd);
     return 1;
   }
 
   //1 Big pos neg
   ref   = (N - 2) * small;
   refa  = ((N - 2) * small) + 2 * big;
+  refd  = ref * -1;
 
   //1 Big pos neg at beginning
   dvec_fill(N, x, incx, vec_fill_CONSTANT, small, 1.0);
@@ -121,8 +125,8 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   }
 
   res = rddot(N, x, incx, y, incy);
-  if (res != ref) {
-    printf("rddot(x) = %g != %g (1 Big pos neg at beginning)\n", res, ref);
+  if (res != refd) {
+    printf("rddot(x) = %g != %g (1 Big pos neg at beginning)\n", res, refd);
     return 1;
   }
 
@@ -144,8 +148,8 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   }
 
   res = rddot(N, x, incx, y, incy);
-  if (res != ref) {
-    printf("rddot(x) = %g != %g (1 Big pos neg at ends)\n", res, ref);
+  if (res != refd) {
+    printf("rddot(x) = %g != %g (1 Big pos neg at ends)\n", res, refd);
     return 1;
   }
 
@@ -167,8 +171,8 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   }
 
   res = rddot(N, x, incx, y, incy);
-  if (res != ref) {
-    printf("rddot(x) = %g != %g (1 Big pos neg at end)\n", res, ref);
+  if (res != refd) {
+    printf("rddot(x) = %g != %g (1 Big pos neg at end)\n", res, refd);
     return 1;
   }
 
