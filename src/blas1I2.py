@@ -23,7 +23,7 @@ class OneDimensionalAccumulation(Function):
   def write_body(self, code_block, settings = [(-1, 1, 8)]):
     code_block.write("SET_DAZ_FLAG;")
     if len(settings) == 1:
-      self.write_cores(code_block, settings[0][0], settings[0][1], settings[0][2])
+      self.write_fold(code_block, settings[0][0], settings[0][1], settings[0][2])
     else:
       code_block.write("switch(fold){")
       code_block.indent()
@@ -33,7 +33,7 @@ class OneDimensionalAccumulation(Function):
         else:
           code_block.write("case " + str(fold) + ":{")
         code_block.indent()
-        self.write_cores(code_block, fold, max_stride, max_unroll)
+        self.write_fold(code_block, fold, max_stride, max_unroll)
         #code_block.write("break;")
         code_block.write("RESET_DAZ_FLAG")
         code_block.write("return;")
@@ -42,7 +42,7 @@ class OneDimensionalAccumulation(Function):
       code_block.dedent()
       code_block.write("}")
 
-  def write_cores(self, code_block, fold, max_stride, max_unroll):
+  def write_fold(self, code_block, fold, max_stride, max_unroll):
 #    if self.vec.name == "AVX":
 #      self.code_block.write('printf("Hi im avx {0}\\n");'.format(self.name))
 #    elif self.vec.name == "SSE":
@@ -98,15 +98,8 @@ class OneDimensionalAccumulation(Function):
       for j in range(fold):
         self.vec.propagate_into(self.s_vars[j], sum_ptr, j, 1)
 
-    code_block.write("if(" + " && ".join([inc + " == 1" for inc in self.standard_incs]) + "){")
-    code_block.indent()
-    self.write_core(code_block, fold, max_stride, max_unroll, [1 for inc in self.standard_incs])
-    code_block.dedent()
-    code_block.write("}else{")
-    code_block.indent()
-    self.write_core(code_block, fold, max_stride, max_unroll, self.standard_incs)
-    code_block.dedent()
-    code_block.write("}")
+    self.write_cores(code_block, fold, max_stride, max_unroll)
+
     #consolidate
     if fold == -1:
       code_block.write("for(j = 0; j < fold; j += 1){")
@@ -117,6 +110,7 @@ class OneDimensionalAccumulation(Function):
     else:
       for j in range(fold):
         self.vec.consolidate_into("sum", j, 1, self.s_vars[j], sum_ptr, j, 1, self.q_vars[0])
+
 
   def write_core(self, code_block, fold, max_stride, max_unroll, incs):
     max_width = self.compute_width(max_stride);
@@ -173,6 +167,17 @@ class NonDotOneDimensionalAccumulation(OneDimensionalAccumulation):
   def __init__(self, data_type_class):
     super(NonDotOneDimensionalAccumulation, self).__init__(data_type_class)
 
+  def write_cores(self, code_block, fold, max_stride, max_unroll):
+    code_block.write("if(incv == 1){")
+    code_block.indent()
+    self.write_core(code_block, fold, max_stride, max_unroll, [1])
+    code_block.dedent()
+    code_block.write("}else{")
+    code_block.indent()
+    self.write_core(code_block, fold, max_stride, max_unroll, self.standard_incs)
+    code_block.dedent()
+    code_block.write("}")
+
   def define_load_vars(self, code_block, width):
     self.load_vars = [["v_" + str(i) for i in range(width)]]
     code_block.define_vars(self.vec.type_name, self.load_vars[0])
@@ -192,6 +197,33 @@ class DotOneDimensionalAccumulation(OneDimensionalAccumulation):
 
   def __init__(self, data_type_class):
     super(DotOneDimensionalAccumulation, self).__init__(data_type_class)
+
+  def write_cores(self, code_block, fold, max_stride, max_unroll):
+    code_block.write("if(incv == 1){")
+    code_block.indent()
+    code_block.write("if(incy == 1){")
+    code_block.indent()
+    self.write_core(code_block, fold, max_stride, max_unroll, [1, 1])
+    code_block.dedent()
+    code_block.write("}else{")
+    code_block.indent()
+    self.write_core(code_block, fold, max_stride, max_unroll, [1, "incy"])
+    code_block.dedent()
+    code_block.write("}")
+    code_block.dedent()
+    code_block.write("}else{")
+    code_block.indent()
+    code_block.write("if(incy == 1){")
+    code_block.indent()
+    self.write_core(code_block, fold, max_stride, max_unroll, ["incv", 1])
+    code_block.dedent()
+    code_block.write("}else{")
+    code_block.indent()
+    self.write_core(code_block, fold, max_stride, max_unroll, ["incv", "incy"])
+    code_block.dedent()
+    code_block.write("}")
+    code_block.dedent()
+    code_block.write("}")
 
   def define_load_ptrs(self, code_block, width):
     if self.data_type.is_complex:
