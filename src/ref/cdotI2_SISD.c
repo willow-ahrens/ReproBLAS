@@ -18,7 +18,7 @@
 
 #define CSET_LAST_BIT(X,XB) \
 {	\
-	i_float ld;	\
+	int_float ld;	\
 	ld.f  = X;		\
 	ld.i |= 1;		\
 	XB    = ld.f;	\

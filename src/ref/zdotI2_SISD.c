@@ -18,7 +18,7 @@
 
 #define DSET_LAST_BIT(X,XB) \
 {	\
-	l_double ld;	\
+	long_double ld;	\
 	ld.d  = X;		\
 	ld.l |= 1;		\
 	XB    = ld.d;	\

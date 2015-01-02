@@ -92,7 +92,7 @@ void cIAdd(I_float_Complex* X, I_float_Complex Y) {
 void sIAddf1(int fold, float* x, int inc, float y) {
 	float M;
 	int i;
-	i_float iM;
+	int_float iM;
 	for (i = 0; i < fold; i++, x += inc) {
 		M = x[0];
 		iM.f = y;

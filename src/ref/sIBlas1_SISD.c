@@ -40,13 +40,13 @@ void sdotI2(int n, float* v, int incv, float* y, int incy, int fold, float* sum)
 	float v0, v1;
 	float q0, q1;
 	float S0, S1, S2;
-	i_float ld0, ld1;
+	int_float ld0, ld1;
 
 #if (UNROLL_STEP_RSBLAS1 >= 4)
 	float v2, v3;
 	float q2, q3;
 	float S3;
-	i_float ld2, ld3;
+	int_float ld2, ld3;
 
 #endif
 

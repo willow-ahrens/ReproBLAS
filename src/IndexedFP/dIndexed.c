@@ -200,7 +200,7 @@ double ufp(double x) {
 	return ldexp(0.5, exp);
 #else
 	long Mask = ~((1l << 52) - 1);
-	l_double lM;
+	long_double lM;
 	lM.d = x;
 	lM.l &= Mask;
 	return lM.d;

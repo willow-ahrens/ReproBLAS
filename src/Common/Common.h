@@ -20,15 +20,15 @@
 #define DIMM1(TRANS,M,N) ((TRANS=='T'||TRANS=='t')?N:M)
 #define DIMM2(TRANS,M,N) ((TRANS=='T'||TRANS=='t')?M:N)
 
-typedef union l_double_ {
+typedef union long_double_ {
 	double d;
 	long   l;
-} l_double;
+} long_double;
 
-typedef union i_float_ {
+typedef union int_float_ {
 	float f;
 	int   i;
-} i_float;
+} int_float;
 
 void dmovv(int N, double* dst, int incD, double* src, int incS);
 void dmovm(int M, int N, double* dst, int ldD, double* src, int ldS);

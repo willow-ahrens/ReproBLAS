@@ -34,7 +34,7 @@ class DataType(object):
 class Double(DataType):
   name_char = 'd'
   name = "double"
-  int_float_name = "l_double"
+  int_float_name = "long_double"
   int_char = "l"
   float_char = "d"
   byte_size = 8
@@ -60,7 +60,7 @@ class DoubleComplex(DataType):
 class Float(DataType):
   name_char = 's'
   name = "float"
-  int_float_name = "i_float"
+  int_float_name = "int_float"
   int_char = "i"
   float_char = "f"
   byte_size = 4

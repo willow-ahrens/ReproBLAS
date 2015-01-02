@@ -180,7 +180,7 @@ float ufpf(float x) {
 	_mm_store_ss(&x, mX);
 	return x;
 #else
-	i_float lM;
+	int_float lM;
 	lM.f = x;
 	lM.i &= F_MMASK;
 	return lM.f;

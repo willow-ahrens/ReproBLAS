@@ -39,7 +39,7 @@ void ddotI2(int n, double* v, int incv, double* y, int incy, int fold, double* s
 	double q0, q1;
 	double S0, S1, S2;
 	double mBLP;
-	l_double ld0, ld1;
+	long_double ld0, ld1;
 
 #ifdef DDOTI2
 	double y0, y1;
@@ -49,7 +49,7 @@ void ddotI2(int n, double* v, int incv, double* y, int incy, int fold, double* s
 	double v2, v3;
 	double q2, q3;
 	double S3;
-	l_double ld2, ld3;
+	long_double ld2, ld3;
 	int k;
 
 #ifdef DDOTI2

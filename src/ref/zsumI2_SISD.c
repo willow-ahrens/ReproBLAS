@@ -51,8 +51,8 @@ void zsumI2(int n, dcomplex* v, int incv, int fold, dcomplex* sum) {
 	double SR1, SI1;
 	double SR2, SI2;
 	double qR0, qI0;
-	l_double ldR0, ldI0;
-	l_double ldR1, ldI1;
+	long_double ldR0, ldI0;
+	long_double ldR1, ldI1;
 	incv *= 2;
 
 	//++++ 3-fold ++++

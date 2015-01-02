@@ -94,7 +94,7 @@ void zIAdd(I_double_Complex* X, I_double_Complex Y) {
 
 void dIAddd1(int fold, double* x, int inc, double y) {
 	double M;
-	l_double lM;
+	long_double lM;
 	int i;
 	for (i = 0; i < fold - 1; i++, x += inc) {
 		M = x[0];
@@ -118,7 +118,7 @@ void dIAddd(I_double* X, double Y) {
 
 void zIAddz1(int fold, double complex* x, int inc, double complex y) {
 	double MR, MI;
-	l_double lMR, lMI;
+	long_double lMR, lMI;
 	double* xptr = (double*) x;
 	double* yptr = (double*) &y;
 

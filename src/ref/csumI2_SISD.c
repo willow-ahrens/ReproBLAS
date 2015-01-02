@@ -51,8 +51,8 @@ void csumI2(int n, float complex* v, int incv, int fold, float complex* sum) {
 	float SR1, SI1;
 	float SR2, SI2;
 	float qR0, qI0;
-	i_float ldR0, ldI0;
-	i_float ldR1, ldI1;
+	int_float ldR0, ldI0;
+	int_float ldR1, ldI1;
 	incv *= 2;
 
 	//++++ 3-fold ++++
