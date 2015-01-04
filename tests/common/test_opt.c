@@ -84,7 +84,7 @@ void opt_eval_option(int argc, char **argv, opt_option *option){
   snprintf(flag, 11 * sizeof(char), "-%c", option->header.short_name);
   i_flag = opt_find_flag(argc, argv, flag);
   if(i_flag < 0){
-    snprintf(flag, 11 * sizeof(char), "-%s", option->header.long_name);
+    snprintf(flag, 11 * sizeof(char), "--%s", option->header.long_name);
     i_flag = opt_find_flag(argc, argv, flag);
   }
   switch(option->type){
