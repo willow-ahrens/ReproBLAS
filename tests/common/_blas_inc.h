@@ -1,3 +1,5 @@
+#ifndef __BLAS_INC_H
+#define __BLAS_INC_H
 #ifdef CBLAS
 	extern int cblas_idamax(int, double*, int);
 	extern int cblas_isamax(int, float*, int);
@@ -120,4 +122,4 @@
     extern void blacs_gridinit_( int*, char*, int*, int* );
     extern void pdgemm_( char*, char*, int*, int*, int*, double*, double*, int*, int*, int*, double*, int*, int*, int*, double*, double*, int*, int*, int* );  
 #endif
-
+#endif

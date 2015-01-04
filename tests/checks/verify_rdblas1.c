@@ -9,8 +9,6 @@
 
 #include "../common/test_vecvec_fill_header.h"
 
-#define MAX_NAME 100
-
 int verify_rdblas1_reproducibility(int N, double* x, int incx, double* y, int incy, int func, double ref, Idouble Iref, int max_num_blocks) {
   // GENERATE DATA
   int i, j;
@@ -51,7 +49,7 @@ int verify_rdblas1_reproducibility(int N, double* x, int incx, double* y, int in
 }
 
 extern const char* vecvec_fill_name(int argc, char** argv){
-  static char namebuf[MAX_NAME];
+  static char line_buffer[MAX_NAME];
   int func = opt_read_int(argc, argv, "-f", 0);
   snprintf(namebuf, MAX_NAME * sizeof(char), "Verify %s reproducibility", wrap_rdblas1_name(func));
   return namebuf;

@@ -9,6 +9,17 @@
 #define verify_RSCNRM2 2
 #define verify_RCDOTU  3
 #define verify_RCDOTC  4
+static int verify_rcblas1_n_names = 5;
+static const char* verify_rcblas1_n_names[] = {"rcsum",
+                                               "rscasum",
+                                               "rscnrm2",
+                                               "rcdotu",
+                                               "rcdotc"}
+static const char* verify_rcblas1_n_descs[] = {"rcsum",
+                                               "rscasum",
+                                               "rscnrm2",
+                                               "rcdotu",
+                                               "rcdotc"}
 
 typedef float complex (*wrap_rcblas1)(int, float complex*, int, float complex*, int);
 typedef I_float_Complex (*wrap_Icblas1)(int, float complex*, int, float complex*, int);
@@ -60,22 +71,6 @@ I_float_Complex wrap_scnrm2I(int N, float complex *x, int incx, float complex *y
   scnrm2I(N, x, incx, &nrm2);
   csISet(cnrm2, nrm2);
   return cnrm2;
-}
-
-const char* wrap_rcblas1_name(int func) {
-  switch(func){
-    case verify_RCSUM:
-      return "rcsum";
-    case verify_RSCASUM:
-      return "rscasum";
-    case verify_RSCNRM2:
-      return "rscnrm2";
-    case verify_RCDOTU:
-      return "rcdotu";
-    case verify_RCDOTC:
-      return "rcdotc";
-  }
-  return "";
 }
 
 wrap_rcblas1 wrap_rcblas1_func(int func) {

@@ -1,3 +1,6 @@
+#ifndef __TEST_VEC_H
+#define __TEST_VEC_H
+
 #include "../../src/types.h"
 
 #define vec_fill_CONSTANT                    0
@@ -80,3 +83,5 @@ float* svec_alloc(int N, int inc);
 double* dvec_alloc(int N, int inc);
 float complex* cvec_alloc(int N, int inc);
 double complex* zvec_alloc(int N, int inc);
+
+#endif
