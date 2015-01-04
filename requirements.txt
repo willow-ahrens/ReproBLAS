@@ -1,0 +1,21 @@
+Herein lie the current requirements of the ReproBLAS library (so that Peter doesn't go crazy):
+  ReproBLAS shall support the following types:
+    double
+    float
+    double complex
+    float complex
+    I_double(K)
+    I_float(K)
+    I_double_complex(K)
+    I_float_complex(K)
+  ReproBLAS shall be able to print any type
+  ReproBLAS shall be able to convert any type to any other type (assuming K is the same)
+  ReproBLAS shall be able to convert any type to a string
+  ReproBLAS shall support the IndexedFP library (with reasonable optimizations, and offer formats to operate on arrays of types)
+  ReproBLAS shall support accumulation using the rsum function
+  ReproBLAS shall support the rsum, rasum, rnrm2, and rdot functions (with excessive optimizations)
+  ReproBLAS shall support gemv and gemm
+  ReproBLAS shall support any value of K from 1 to MAX_INT
+  ReproBLAS shall make efforts to be a useable library
+  ALL PUBLIC FUNCTIONS SHALL BE TESTED
+  ALL PUBLIC FUNCTIONS SHALL BE DOCUMENTED
