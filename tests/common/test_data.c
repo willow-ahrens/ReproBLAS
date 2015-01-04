@@ -41,7 +41,7 @@ int main (int argc, char** argv) {
   output_file.header.long_name = "output";
   output_file.header.help = "output file name";
   output_file._string.required = 0;
-  output_file._string.value = NULL;
+  output_file._string.value = "";
 
   data_type.header.type = opt_named;
   data_type.header.short_name = 'd';
@@ -86,7 +86,7 @@ int main (int argc, char** argv) {
   scale._double.value = 1;
 
   opt_eval_option(argc, argv, &help);
-  if (argc < 2 || help._flag.exists) {
+  if (help._flag.exists) {
     opt_show_option(help);
     opt_show_option(n);
     opt_show_option(output_file);
@@ -133,10 +133,12 @@ int main (int argc, char** argv) {
     }
   }
   strncat(output_file_name, ".dat", MAX_FILE);
-  strncpy(output_file_name, output_file._string.value, MAX_FILE);
+  if(strcmp(output_file._string.value, "") == 0){
+    output_file._string.value = output_file_name;
+  }
 
-  if (file_exists(output_file_name)) {
-    fprintf(stderr, "error: file %s already existed, please choose a different name.\n", output_file_name);
+  if (file_exists(output_file._string.value)) {
+    fprintf(stderr, "error: file %s already existed, please choose a different name.\n", output_file._string.value);
     exit(1);
   }
 
@@ -146,28 +148,28 @@ int main (int argc, char** argv) {
     case 0: {
       double* data = dvec_alloc(n._int.value, 1);
       dvec_fill(n._int.value, data, 1, vec_fill_type._named.value, scale._double.value, cond._double.value);
-      file_write_vector(output_file_name, n._int.value, data, sizeof(double));
+      file_write_vector(output_file._string.value, n._int.value, data, sizeof(double));
       free(data);
       break;
     }
     case 1: {
       float* data = svec_alloc(n._int.value, 1);
       svec_fill(n._int.value, data, 1, vec_fill_type._named.value, scale._double.value, cond._double.value);
-      file_write_vector(output_file_name, n._int.value, data, sizeof(float));
+      file_write_vector(output_file._string.value, n._int.value, data, sizeof(float));
       free(data);
       break;
     }
     case 2: {
       double complex* data = zvec_alloc(n._int.value, 1);
       zvec_fill(n._int.value, data, 1, vec_fill_type._named.value, scale._double.value, cond._double.value);
-      file_write_vector(output_file_name, n._int.value, data, sizeof(double complex));
+      file_write_vector(output_file._string.value, n._int.value, data, sizeof(double complex));
       free(data);
       break;
     }
     case 3: {
       float complex* data = cvec_alloc(n._int.value, 1);
       cvec_fill(n._int.value, data, 1, vec_fill_type._named.value, scale._double.value, cond._double.value);
-      file_write_vector(output_file_name, n._int.value, data, sizeof(float complex));
+      file_write_vector(output_file._string.value, n._int.value, data, sizeof(float complex));
       free(data);
       break;
     }

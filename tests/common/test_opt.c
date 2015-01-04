@@ -58,19 +58,6 @@ static void opt_fprintf_option(FILE *f, opt_option option) {
         }
         fprintf(f, "                  %-30s: %-31s]\n", option._named.names[option._named.n_names-1], option._named.descs[option._named.n_names-1]);
       }
-      /*
-      {
-        int i;
-        char namedesc[63];
-        for(i = 0; i < option._named.n_names - 1; i++){
-          snprintf(namedesc, 63 * sizeof(char), "%s: %s", option._named.names[i], option._named.descs[i]);
-          fprintf(f, "                  %s\n", namedesc);
-        }
-        snprintf(namedesc, 62 * sizeof(char), "%s: %s", option._named.names[option._named.n_names - 1], option._named.descs[option._named.n_names - 1]);
-        fprintf(f, "                  %s]\n", namedesc);
-        fprintf(f, "                  default=%54s\n", option._named.names[option._named.value]);
-      }
-      */
       break;
   }
 }
@@ -106,15 +93,19 @@ void opt_eval_option(int argc, char **argv, opt_option *option){
         if(i_flag + 1 >= argc){
           fprintf(stderr, "error: option takes an argument\n");
           opt_fprintf_option(stderr, *option);
+          exit(125);
         }
         char *end;
         option->_int.value = (int)strtol(argv[i_flag + 1], &end, 0);
         if(end != argv[i_flag + 1] + strlen(argv[i_flag + 1])){
           fprintf(stderr, "error: invalid integer format %s\n", argv[i_flag + 1]);
           opt_fprintf_option(stderr, *option);
+          exit(125);
         }
         if(option->_int.value > option->_int.max || option->_int.value < option->_int.min){
           fprintf(stderr, "error: integer out of bounds %d\n", option->_int.value);
+          opt_fprintf_option(stderr, *option);
+          exit(125);
         }
       }else{
         if(i_flag < 0 && option->_int.required){
@@ -129,6 +120,7 @@ void opt_eval_option(int argc, char **argv, opt_option *option){
         if(i_flag + 1 >= argc){
           fprintf(stderr, "error: option takes an argument\n");
           opt_fprintf_option(stderr, *option);
+          exit(125);
         }
         option->_string.value = argv[i_flag + 1];
       }else{
@@ -144,15 +136,19 @@ void opt_eval_option(int argc, char **argv, opt_option *option){
         if(i_flag + 1 >= argc){
           fprintf(stderr, "error: option takes an argument\n");
           opt_fprintf_option(stderr, *option);
+          exit(125);
         }
         char *end;
         option->_double.value = strtod(argv[i_flag + 1], &end);
         if(end != argv[i_flag + 1] + strlen(argv[i_flag + 1])){
           fprintf(stderr, "error: invalid double format %s\n", argv[i_flag + 1]);
           opt_fprintf_option(stderr, *option);
+          exit(125);
         }
         if(option->_double.value > option->_double.max || option->_double.value < option->_double.min){
-          fprintf(stderr, "error: integer out of bounds %f\n", option->_double.value);
+          fprintf(stderr, "error: double out of bounds %f\n", option->_double.value);
+          opt_fprintf_option(stderr, *option);
+          exit(125);
         }
       }else{
         if(i_flag < 0 && option->_double.required){
@@ -167,15 +163,19 @@ void opt_eval_option(int argc, char **argv, opt_option *option){
         if(i_flag + 1 >= argc){
           fprintf(stderr, "error: option takes an argument\n");
           opt_fprintf_option(stderr, *option);
+          exit(125);
         }
         char *end;
         option->_float.value = (float)strtod(argv[i_flag + 1], &end);
         if(end != argv[i_flag + 1] + strlen(argv[i_flag + 1])){
           fprintf(stderr, "error: invalid float format %s\n", argv[i_flag + 1]);
           opt_fprintf_option(stderr, *option);
+          exit(125);
         }
         if(option->_float.value > option->_float.max || option->_float.value < option->_float.min){
-          fprintf(stderr, "error: integer out of bounds %f\n", option->_float.value);
+          fprintf(stderr, "error: float out of bounds %f\n", option->_float.value);
+          opt_fprintf_option(stderr, *option);
+          exit(125);
         }
       }else{
         if(i_flag < 0 && option->_float.required){
@@ -190,6 +190,7 @@ void opt_eval_option(int argc, char **argv, opt_option *option){
         if(i_flag + 1 >= argc){
           fprintf(stderr, "error: option takes an argument\n");
           opt_fprintf_option(stderr, *option);
+          exit(125);
         }
         int i;
         for(i = 0; i < option->_named.n_names; i++){
@@ -200,6 +201,7 @@ void opt_eval_option(int argc, char **argv, opt_option *option){
         }
         fprintf(stderr, "error: invalid argument %s\n", argv[i_flag + 1]);
         opt_fprintf_option(stderr, *option);
+        exit(125);
       }else{
         if(i_flag < 0 && option->_named.required){
           fprintf(stderr, "error: required argument not found\n");
