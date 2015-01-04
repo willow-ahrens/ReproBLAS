@@ -17,5 +17,6 @@ Herein lie the current requirements of the ReproBLAS library (so that Peter does
   ReproBLAS shall support gemv and gemm
   ReproBLAS shall support any value of K from 1 to MAX_INT
   ReproBLAS shall make efforts to be a useable library
+  ReproBLAS shall use consistent naming conventions
   ALL PUBLIC FUNCTIONS SHALL BE TESTED
   ALL PUBLIC FUNCTIONS SHALL BE DOCUMENTED
