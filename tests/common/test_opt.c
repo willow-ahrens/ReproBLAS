@@ -7,13 +7,14 @@ static void opt_fprintf_option(FILE *f, opt_option option) {
   char* token;
   token = strtok(option.header.help, "\n");
   if(token){
-    fprintf(f, "-%c, --%8s: %64s\n", option.header.short_name, option.header.long_name, token);
+    fprintf(f, "-%c, --%-8s: %-64s\n", option.header.short_name, option.header.long_name, token);
+    token = strtok(NULL, "\n");
     while(token){
       fprintf(f, "                %64s\n", token);
       token = strtok(NULL, "\n");
     }
   }else{
-    fprintf(f, "-%c, --%8s:", option.header.short_name, option.header.long_name);
+    fprintf(f, "-%c, --%-8s:\n", option.header.short_name, option.header.long_name);
   }
   token = strtok(NULL, "\n");
   fprintf(f, "                (");
@@ -37,19 +38,27 @@ static void opt_fprintf_option(FILE *f, opt_option option) {
       if(option._double.required){
         fprintf(f, "required ");
       }
-      fprintf(f, "double) values=[%f, %f] default=%f\n", option._double.min, option._double.max, option._double.value);
+      fprintf(f, "double) values=[%g, %g] default=%g\n", option._double.min, option._double.max, option._double.value);
       break;
     case opt_float:
       if(option._float.required){
         fprintf(f, "required ");
       }
-      fprintf(f, "float) values=[%f, %f] default=%f\n", option._float.min, option._float.max, option._float.value);
+      fprintf(f, "float) values=[%g, %g] default=%g\n", option._float.min, option._float.max, option._float.value);
       break;
     case opt_named:
       if(option._named.required){
         fprintf(f, "required ");
       }
       fprintf(f, "enum) values=[\n");
+      {
+        int i;
+        for(i = 0; i < option._named.n_names - 1; i++){
+          fprintf(f, "                  %-30s: %-32s\n", option._named.names[i], option._named.descs[i]);
+        }
+        fprintf(f, "                  %-30s: %-31s]\n", option._named.names[option._named.n_names-1], option._named.descs[option._named.n_names-1]);
+      }
+      /*
       {
         int i;
         char namedesc[63];
@@ -61,6 +70,7 @@ static void opt_fprintf_option(FILE *f, opt_option option) {
         fprintf(f, "                  %s]\n", namedesc);
         fprintf(f, "                  default=%54s\n", option._named.names[option._named.value]);
       }
+      */
       break;
   }
 }
@@ -94,7 +104,7 @@ void opt_eval_option(int argc, char **argv, opt_option *option){
     case opt_int:
       if(i_flag >= 0){
         if(i_flag + 1 >= argc){
-          fprintf(stderr, "error: option takes an argument\n", argv[i_flag + 1]);
+          fprintf(stderr, "error: option takes an argument\n");
           opt_fprintf_option(stderr, *option);
         }
         char *end;
@@ -117,7 +127,7 @@ void opt_eval_option(int argc, char **argv, opt_option *option){
     case opt_string:
       if(i_flag >= 0){
         if(i_flag + 1 >= argc){
-          fprintf(stderr, "error: option takes an argument\n", argv[i_flag + 1]);
+          fprintf(stderr, "error: option takes an argument\n");
           opt_fprintf_option(stderr, *option);
         }
         option->_string.value = argv[i_flag + 1];
@@ -132,7 +142,7 @@ void opt_eval_option(int argc, char **argv, opt_option *option){
     case opt_double:
       if(i_flag >= 0){
         if(i_flag + 1 >= argc){
-          fprintf(stderr, "error: option takes an argument\n", argv[i_flag + 1]);
+          fprintf(stderr, "error: option takes an argument\n");
           opt_fprintf_option(stderr, *option);
         }
         char *end;
@@ -155,7 +165,7 @@ void opt_eval_option(int argc, char **argv, opt_option *option){
     case opt_float:
       if(i_flag >= 0){
         if(i_flag + 1 >= argc){
-          fprintf(stderr, "error: option takes an argument\n", argv[i_flag + 1]);
+          fprintf(stderr, "error: option takes an argument\n");
           opt_fprintf_option(stderr, *option);
         }
         char *end;
@@ -178,7 +188,7 @@ void opt_eval_option(int argc, char **argv, opt_option *option){
     case opt_named:
       if(i_flag >= 0){
         if(i_flag + 1 >= argc){
-          fprintf(stderr, "error: option takes an argument\n", argv[i_flag + 1]);
+          fprintf(stderr, "error: option takes an argument\n");
           opt_fprintf_option(stderr, *option);
         }
         int i;

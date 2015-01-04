@@ -76,4 +76,8 @@ void opt_show_option(opt_option option);
 
 void opt_eval_option(int argc, char **argv, opt_option *option);
 
+static const int  opt_data_type_n_names  = 4;
+static const char *opt_data_type_names[] = {"double", "float", "double_complex", "float_complex"};
+static const char *opt_data_type_descs[] = {"double precision", "single precision", "complex double precision", "complex single precision"};
+
 #endif
