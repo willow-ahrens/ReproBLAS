@@ -4,10 +4,19 @@
 #include <rblas.h>
 #include <IndexedFP.h>
 
-#define verify_RSSUM  0
-#define verify_RSASUM 1
-#define verify_RSNRM2 2
-#define verify_RSDOT  3
+#define wrap_RSSUM  0
+#define wrap_RSASUM 1
+#define wrap_RSNRM2 2
+#define wrap_RSDOT  3
+static int wrap_rsblas1_n_names = 5;
+static const char* wrap_rsblas1_n_names[] = {"rssum",
+                                               "rsasum",
+                                               "rsnrm2",
+                                               "rsdot"}
+static const char* wrap_rsblas1_n_descs[] = {"rssum",
+                                               "rdasum",
+                                               "rdnrm2",
+                                               "rddot"}
 
 typedef float (*wrap_rsblas1)(int, float*, int, float*, int);
 typedef Ifloat (*wrap_Isblas1)(int, float*, int, float*, int);
@@ -47,29 +56,15 @@ Ifloat wrap_snrm2I(int N, float *x, int incx, float *y, int incy) {
   return nrm2;
 }
 
-const char* wrap_rsblas1_name(int func) {
-  switch(func){
-    case verify_RSSUM:
-      return "rssum";
-    case verify_RSASUM:
-      return "rsasum";
-    case verify_RSNRM2:
-      return "rsnrm2";
-    case verify_RSDOT:
-      return "rsdot";
-  }
-  return "";
-}
-
 wrap_rsblas1 wrap_rsblas1_func(int func) {
   switch(func){
-    case verify_RSSUM:
+    case wrap_RSSUM:
       return wrap_rssum;
-    case verify_RSASUM:
+    case wrap_RSASUM:
       return wrap_rsasum;
-    case verify_RSNRM2:
+    case wrap_RSNRM2:
       return wrap_rsnrm2;
-    case verify_RSDOT:
+    case wrap_RSDOT:
       return wrap_rsdot;
   }
   return NULL;
@@ -77,13 +72,13 @@ wrap_rsblas1 wrap_rsblas1_func(int func) {
 
 wrap_Isblas1 wrap_Isblas1_func(int func) {
   switch(func){
-    case verify_RSSUM:
+    case wrap_RSSUM:
       return wrap_ssumI;
-    case verify_RSASUM:
+    case wrap_RSASUM:
       return wrap_sasumI;
-    case verify_RSNRM2:
+    case wrap_RSNRM2:
       return wrap_snrm2I;
-    case verify_RSDOT:
+    case wrap_RSDOT:
       return wrap_sdotI;
   }
   return NULL;

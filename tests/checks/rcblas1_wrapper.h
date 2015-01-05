@@ -4,18 +4,18 @@
 #include <rblas.h>
 #include <IndexedFP.h>
 
-#define verify_RCSUM  0
-#define verify_RSCASUM 1
-#define verify_RSCNRM2 2
-#define verify_RCDOTU  3
-#define verify_RCDOTC  4
-static int verify_rcblas1_n_names = 5;
-static const char* verify_rcblas1_n_names[] = {"rcsum",
+#define wrap_RCSUM  0
+#define wrap_RSCASUM 1
+#define wrap_RSCNRM2 2
+#define wrap_RCDOTU  3
+#define wrap_RCDOTC  4
+static int wrap_rcblas1_n_names = 5;
+static const char* wrap_rcblas1_n_names[] = {"rcsum",
                                                "rscasum",
                                                "rscnrm2",
                                                "rcdotu",
                                                "rcdotc"}
-static const char* verify_rcblas1_n_descs[] = {"rcsum",
+static const char* wrap_rcblas1_n_descs[] = {"rcsum",
                                                "rscasum",
                                                "rscnrm2",
                                                "rcdotu",
@@ -75,15 +75,15 @@ I_float_Complex wrap_scnrm2I(int N, float complex *x, int incx, float complex *y
 
 wrap_rcblas1 wrap_rcblas1_func(int func) {
   switch(func){
-    case verify_RCSUM:
+    case wrap_RCSUM:
       return wrap_rcsum;
-    case verify_RSCASUM:
+    case wrap_RSCASUM:
       return wrap_rscasum;
-    case verify_RSCNRM2:
+    case wrap_RSCNRM2:
       return wrap_rscnrm2;
-    case verify_RCDOTU:
+    case wrap_RCDOTU:
       return wrap_rcdotu;
-    case verify_RCDOTC:
+    case wrap_RCDOTC:
       return wrap_rcdotc;
   }
   return NULL;
@@ -91,15 +91,15 @@ wrap_rcblas1 wrap_rcblas1_func(int func) {
 
 wrap_Icblas1 wrap_Icblas1_func(int func) {
   switch(func){
-    case verify_RCSUM:
+    case wrap_RCSUM:
       return wrap_csumI;
-    case verify_RSCASUM:
+    case wrap_RSCASUM:
       return wrap_scasumI;
-    case verify_RSCNRM2:
+    case wrap_RSCNRM2:
       return wrap_scnrm2I;
-    case verify_RCDOTU:
+    case wrap_RCDOTU:
       return wrap_cdotuI;
-    case verify_RCDOTC:
+    case wrap_RCDOTC:
       return wrap_cdotcI;
   }
   return NULL;

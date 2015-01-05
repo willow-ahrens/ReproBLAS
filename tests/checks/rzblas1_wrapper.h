@@ -4,11 +4,22 @@
 #include <rblas.h>
 #include <IndexedFP.h>
 
-#define verify_RZSUM  0
-#define verify_RDZASUM 1
-#define verify_RDZNRM2 2
-#define verify_RZDOTU  3
-#define verify_RZDOTC  4
+#define wrap_RZSUM  0
+#define wrap_RDZASUM 1
+#define wrap_RDZNRM2 2
+#define wrap_RZDOTU  3
+#define wrap_RZDOTC  4
+static int wrap_rzblas1_n_names = 5;
+static const char* wrap_rzblas1_n_names[] = {"rzsum",
+                                               "rdzasum",
+                                               "rdznrm2",
+                                               "rzdotu",
+                                               "rzdotc"}
+static const char* wrap_rzblas1_n_descs[] = {"rzsum",
+                                               "rdzasum",
+                                               "rdznrm2",
+                                               "rzdotu",
+                                               "rzdotc"}
 
 typedef double complex (*wrap_rzblas1)(int, double complex*, int, double complex*, int);
 typedef I_double_Complex (*wrap_Izblas1)(int, double complex*, int, double complex*, int);
@@ -61,33 +72,17 @@ I_double_Complex wrap_dznrm2I(int N, double complex *x, int incx, double complex
   return cnrm2;
 }
 
-const char* wrap_rzblas1_name(int func) {
-  switch(func){
-    case verify_RZSUM:
-      return "rzsum";
-    case verify_RDZASUM:
-      return "rdzasum";
-    case verify_RDZNRM2:
-      return "rdznrm2";
-    case verify_RZDOTU:
-      return "rzdotu";
-    case verify_RZDOTC:
-      return "rzdotc";
-  }
-  return "";
-}
-
 wrap_rzblas1 wrap_rzblas1_func(int func) {
   switch(func){
-    case verify_RZSUM:
+    case wrap_RZSUM:
       return wrap_rzsum;
-    case verify_RDZASUM:
+    case wrap_RDZASUM:
       return wrap_rdzasum;
-    case verify_RDZNRM2:
+    case wrap_RDZNRM2:
       return wrap_rdznrm2;
-    case verify_RZDOTU:
+    case wrap_RZDOTU:
       return wrap_rzdotu;
-    case verify_RZDOTC:
+    case wrap_RZDOTC:
       return wrap_rzdotc;
   }
   return NULL;
@@ -95,15 +90,15 @@ wrap_rzblas1 wrap_rzblas1_func(int func) {
 
 wrap_Izblas1 wrap_Izblas1_func(int func) {
   switch(func){
-    case verify_RZSUM:
+    case wrap_RZSUM:
       return wrap_zsumI;
-    case verify_RDZASUM:
+    case wrap_RDZASUM:
       return wrap_dzasumI;
-    case verify_RDZNRM2:
+    case wrap_RDZNRM2:
       return wrap_dznrm2I;
-    case verify_RZDOTU:
+    case wrap_RZDOTU:
       return wrap_zdotuI;
-    case verify_RZDOTC:
+    case wrap_RZDOTC:
       return wrap_zdotcI;
   }
   return NULL;
