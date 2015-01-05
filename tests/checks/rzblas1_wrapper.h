@@ -10,16 +10,16 @@
 #define wrap_RZDOTU  3
 #define wrap_RZDOTC  4
 static int wrap_rzblas1_n_names = 5;
-static const char* wrap_rzblas1_n_names[] = {"rzsum",
-                                               "rdzasum",
-                                               "rdznrm2",
-                                               "rzdotu",
-                                               "rzdotc"}
-static const char* wrap_rzblas1_n_descs[] = {"rzsum",
-                                               "rdzasum",
-                                               "rdznrm2",
-                                               "rzdotu",
-                                               "rzdotc"}
+static const char* wrap_rzblas1_names[] = {"rzsum",
+                                           "rdzasum",
+                                           "rdznrm2",
+                                           "rzdotu",
+                                           "rzdotc"};
+static const char* wrap_rzblas1_descs[] = {"rzsum",
+                                           "rdzasum",
+                                           "rdznrm2",
+                                           "rzdotu",
+                                           "rzdotc"};
 
 typedef double complex (*wrap_rzblas1)(int, double complex*, int, double complex*, int);
 typedef I_double_Complex (*wrap_Izblas1)(int, double complex*, int, double complex*, int);

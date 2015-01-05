@@ -10,23 +10,59 @@
 
 #include "../common/test_file_header.h"
 
-
-#define MAX_FILE 1024
-#define MAX_NAME 100
-
 const char* file_name(int argc, char** argv) {
-  static char namebuf[MAX_NAME];
-  int func = opt_read_int(argc, argv, "-f", 0);
-  snprintf(namebuf, MAX_NAME, "Validate %s external", wrap_rdblas1_name(func));
-  return namebuf;
+  static char name_buffer[MAX_LINE];
+  opt_option func_type;
+  opt_option record;
+
+  func_type.header.type       = opt_named;
+  func_type.header.short_name = 'w';
+  func_type.header.long_name  = "w_type";
+  func_type.header.help       = "wrapped function type";
+  func_type._named.required   = 1;
+  func_type._named.n_names    = wrap_rdblas1_n_names;
+  func_type._named.names      = (char**)wrap_rdblas1_names;
+  func_type._named.descs      = (char**)wrap_rdblas1_descs;
+
+  record.header.type       = opt_flag;
+  record.header.short_name = 'r';
+  record.header.long_name  = "record";
+  record.header.help       = "record the run insted of testing";
+
+  if(help._flag.exists){
+    opt_show_option(func_type);
+    opt_show_option(record);
+    return "";
+  }
+  opt_eval_option(argc, argv, &func_type);
+  snprintf(name_buffer, MAX_LINE, "Validate %s external", wrap_rdblas1_names[func_type._named.value]);
+  return name_buffer;
 }
 
 int file_test(int argc, char** argv, char *fname) {
   int i;
   int N;
-  char ref_fname[MAX_FILE];
-  char Iref_fname[MAX_FILE];
-  int func = opt_read_int(argc, argv, "-f", 0);
+  char ref_fname[MAX_NAME];
+  char Iref_fname[MAX_NAME];
+  opt_option func_type;
+  opt_option record;
+
+  func_type.header.type       = opt_named;
+  func_type.header.short_name = 'w';
+  func_type.header.long_name  = "w_type";
+  func_type.header.help       = "wrapped function type";
+  func_type._named.required   = 1;
+  func_type._named.n_names    = wrap_rdblas1_n_names;
+  func_type._named.names      = (char**)wrap_rdblas1_names;
+  func_type._named.descs      = (char**)wrap_rdblas1_descs;
+
+  record.header.type       = opt_flag;
+  record.header.short_name = 'r';
+  record.header.long_name  = "record";
+  record.header.help       = "record the run insted of testing";
+
+  opt_eval_option(argc, argv, &func_type);
+  opt_eval_option(argc, argv, &record);
 
   double *x;
   double *y;
@@ -43,13 +79,13 @@ int file_test(int argc, char** argv, char *fname) {
   dvec_fill(N, y, 1, vec_fill_CONSTANT, 1.0, 1.0);
 
   ((char*)file_ext(fname))[0] = '\0';
-  snprintf(ref_fname, MAX_FILE, "%s__%s.dat", fname, wrap_rdblas1_name(func));
-  snprintf(Iref_fname, MAX_FILE, "%s__I%s.dat", fname, wrap_rdblas1_name(func));
+  snprintf(ref_fname, MAX_NAME, "%s__%s.dat", fname, wrap_rdblas1_names[func_type._named.value]);
+  snprintf(Iref_fname, MAX_NAME, "%s__I%s.dat", fname, wrap_rdblas1_names[func_type._named.value]);
 
-  res = (wrap_rdblas1_func(func))(N, x, 1, y, 1);
-  Ires = (wrap_Idblas1_func(func))(N, x, 1, y, 1);
+  res = (wrap_rdblas1_func(func_type._named.value))(N, x, 1, y, 1);
+  Ires = (wrap_Idblas1_func(func_type._named.value))(N, x, 1, y, 1);
 
-  if(opt_find_option(argc, argv, "-r") >= 0){
+  if(record._flag.exists){
     ref = res;
     Iref = Ires;
 
@@ -65,11 +101,11 @@ int file_test(int argc, char** argv, char *fname) {
     Iref = *(I_double*)data;
     free(data);
     if(ref != res){
-      printf("%s(%s) = %g != %g\n", wrap_rdblas1_name(func), fname, res, ref);
+      printf("%s(%s) = %g != %g\n", wrap_rdblas1_names[func_type._named.value], fname, res, ref);
       return 1;
     }
     if(memcmp(&Iref, &Ires, sizeof(Iref)) != 0){
-      printf("I%s(%s) = %g != %g\n", wrap_rdblas1_name(func), fname, Iconv2d(Ires), Iconv2d(Iref));
+      printf("I%s(%s) = %g != %g\n", wrap_rdblas1_names[func_type._named.value], fname, Iconv2d(Ires), Iconv2d(Iref));
       printf("Ref I_double:\n");
       dIprint(Iref);
       printf("\nRes I_double:\n");

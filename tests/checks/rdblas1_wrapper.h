@@ -11,7 +11,7 @@
 
 typedef double (*wrap_rdblas1)(int, double*, int, double*, int);
 typedef Idouble (*wrap_Idblas1)(int, double*, int, double*, int);
-static int wrap_rdblas1_n_names = 5;
+static int wrap_rdblas1_n_names = 4;
 static const char* wrap_rdblas1_names[] = {"rdsum",
                                            "rdasum",
                                            "rdnrm2",

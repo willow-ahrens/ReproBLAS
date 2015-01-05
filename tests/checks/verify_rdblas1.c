@@ -49,8 +49,9 @@ int verify_rdblas1_reproducibility(int N, double* x, int incX, double* y, int in
 }
 
 extern const char* vecvec_fill_name(int argc, char** argv){
-  opt_option func_type;
   static char name_buffer[MAX_LINE];
+  opt_option func_type;
+
   func_type.header.type       = opt_named;
   func_type.header.short_name = 'w';
   func_type.header.long_name  = "w_type";
@@ -61,6 +62,7 @@ extern const char* vecvec_fill_name(int argc, char** argv){
   func_type._named.descs      = (char**)wrap_rdblas1_descs;
   if(help._flag.exists){
     opt_show_option(func_type);
+    return "";
   }
   opt_eval_option(argc, argv, &func_type);
   snprintf(name_buffer, MAX_LINE * sizeof(char), "Verify %s reproducibility", wrap_rdblas1_names[func_type._named.value]);

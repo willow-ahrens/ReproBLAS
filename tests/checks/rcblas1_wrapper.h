@@ -10,16 +10,16 @@
 #define wrap_RCDOTU  3
 #define wrap_RCDOTC  4
 static int wrap_rcblas1_n_names = 5;
-static const char* wrap_rcblas1_n_names[] = {"rcsum",
-                                               "rscasum",
-                                               "rscnrm2",
-                                               "rcdotu",
-                                               "rcdotc"}
-static const char* wrap_rcblas1_n_descs[] = {"rcsum",
-                                               "rscasum",
-                                               "rscnrm2",
-                                               "rcdotu",
-                                               "rcdotc"}
+static const char* wrap_rcblas1_names[] = {"rcsum",
+                                           "rscasum",
+                                           "rscnrm2",
+                                           "rcdotu",
+                                           "rcdotc"};
+static const char* wrap_rcblas1_descs[] = {"rcsum",
+                                           "rscasum",
+                                           "rscnrm2",
+                                           "rcdotu",
+                                           "rcdotc"};
 
 typedef float complex (*wrap_rcblas1)(int, float complex*, int, float complex*, int);
 typedef I_float_Complex (*wrap_Icblas1)(int, float complex*, int, float complex*, int);

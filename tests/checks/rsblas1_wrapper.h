@@ -8,15 +8,15 @@
 #define wrap_RSASUM 1
 #define wrap_RSNRM2 2
 #define wrap_RSDOT  3
-static int wrap_rsblas1_n_names = 5;
-static const char* wrap_rsblas1_n_names[] = {"rssum",
-                                               "rsasum",
-                                               "rsnrm2",
-                                               "rsdot"}
-static const char* wrap_rsblas1_n_descs[] = {"rssum",
-                                               "rdasum",
-                                               "rdnrm2",
-                                               "rddot"}
+static int wrap_rsblas1_n_names = 4;
+static const char* wrap_rsblas1_names[] = {"rssum",
+                                           "rsasum",
+                                           "rsnrm2",
+                                           "rsdot"};
+static const char* wrap_rsblas1_descs[] = {"rssum",
+                                           "rdasum",
+                                           "rdnrm2",
+                                           "rddot"};
 
 typedef float (*wrap_rsblas1)(int, float*, int, float*, int);
 typedef Ifloat (*wrap_Isblas1)(int, float*, int, float*, int);
