@@ -105,7 +105,7 @@ def settings(params):
     yield []
 
 def flags(setting):
-  return " ".join(['-{0} "{1}"'.format(*s) for s in setting])
+  return " ".join(['-{0} "{1}"'.format(*s) if len(s[0]) == 1 else '--{0} "{1}"'.format(*s) for s in setting])
 
 def engineer(f, d):
   f = decimal.Decimal(f)

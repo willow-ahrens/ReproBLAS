@@ -11,6 +11,10 @@ _rdblas1_dot_funcs=["rddot"]
 _rsblas1_dot_funcs=["rsdot"]
 _rcblas1_dot_funcs=["rcdotu", "rcdotc"]
 _rzblas1_dot_funcs=["rzdotu", "rzdotc"]
+_d_data = ["data/d_2_rand-1_N4095.dat", "data/d_normal_N4095.dat", "data/d_rand+(rand-1)_N4095.dat", "data/d_rand_N4095.dat", "data/d_rand_cond_N4095.dat", "data/d_sine_N4095.dat", "data/d_small+grow_big_N4095.dat", "data/d_small+rand_big_N4095.dat"]
+_s_data = ["data/s_2_rand-1_N4095.dat", "data/s_normal_N4095.dat", "data/s_rand+(rand-1)_N4095.dat", "data/s_rand_N4095.dat", "data/s_rand_cond_N4095.dat", "data/s_sine_N4095.dat", "data/s_small+grow_big_N4095.dat", "data/s_small+rand_big_N4095.dat"]
+_z_data = ["data/z_2_rand-1_N4095.dat", "data/z_normal_N4095.dat", "data/z_rand+(rand-1)_N4095.dat", "data/z_rand_N4095.dat", "data/z_rand_cond_N4095.dat", "data/z_sine_N4095.dat", "data/z_small+grow_big_N4095.dat", "data/z_small+rand_big_N4095.dat"]
+_c_data = ["data/c_2_rand-1_N4095.dat","data/c_normal_N4095.dat", "data/c_rand+(rand-1)_N4095.dat", "data/c_rand_N4095.dat", "data/c_rand_cond_N4095.dat", "data/c_sine_N4095.dat", "data/c_small+grow_big_N4095.dat", "data/c_small+rand_big_N4095.dat"]
 check(["validate_internal_ufp", "validate_internal_ufpf"], [("N", [10]), ("incX", [1, 2, 4])])
 check(["validate_internal_damax", "validate_internal_samax", "validate_internal_zamax", "validate_internal_camax"], [("N", [4095]), ("incX", [1, 2, 4])])
 check(["validate_internal_rdblas1", "validate_internal_rsblas1", "validate_internal_rcblas1", "validate_internal_rzblas1"], [("N", [4095]), ("incX", [1, 4]), ("incY", [1, 4])])
@@ -22,7 +26,7 @@ check(["verify_rdblas1"], [("N", [4095]), ("incX", [1, 4]), ("incY", [1, 4]), ("
 check(["verify_rsblas1"], [("N", [4095]), ("incX", [1, 4]), ("incY", [1, 4]), ("f", _fill_types), ("w", _rsblas1_dot_funcs)])
 check(["verify_rzblas1"], [("N", [4095]), ("incX", [1, 4]), ("incY", [1, 4]), ("f", _fill_types), ("w", _rzblas1_dot_funcs)])
 check(["verify_rcblas1"], [("N", [4095]), ("incX", [1, 4]), ("incY", [1, 4]), ("f", _fill_types), ("w", _rcblas1_dot_funcs)])
-check(["validate_external_rdblas1"], [("i", ["data/d_2_Random-1_N4095.dat", "data/d_Constant_N4095.dat", "data/d_Normal_N4095.dat", "data/d_Random+(Random-1)_N4095.dat", "data/d_Random_N4095.dat", "data/d_Sine_N4095.dat", "data/d_Small+(Random_Big)_N4095.dat", "data/d_Small+(i_N_Big)_N4095.dat"]), ("w", _rdblas1_funcs)])
-check(["validate_external_rsblas1"], [("i", ["data/s_2_Random-1_N4095.dat", "data/s_Constant_N4095.dat", "data/s_Normal_N4095.dat", "data/s_Random+(Random-1)_N4095.dat", "data/s_Random_N4095.dat", "data/s_Sine_N4095.dat", "data/s_Small+(Random_Big)_N4095.dat", "data/s_Small+(i_N_Big)_N4095.dat"]), ("w", _rsblas1_funcs)])
-check(["validate_external_rzblas1"], [("i", ["data/z_2_Random-1_N4095.dat", "data/z_Constant_N4095.dat", "data/z_Normal_N4095.dat", "data/z_Random+(Random-1)_N4095.dat", "data/z_Random_N4095.dat", "data/z_Sine_N4095.dat", "data/z_Small+(Random_Big)_N4095.dat", "data/z_Small+(i_N_Big)_N4095.dat"]), ("w", _rzblas1_funcs)])
-check(["validate_external_rcblas1"], [("i", ["data/c_2_Random-1_N4095.dat", "data/c_Constant_N4095.dat", "data/c_Normal_N4095.dat", "data/c_Random+(Random-1)_N4095.dat", "data/c_Random_N4095.dat", "data/c_Sine_N4095.dat", "data/c_Small+(Random_Big)_N4095.dat", "data/c_Small+(i_N_Big)_N4095.dat"]), ("w", _rcblas1_funcs)])
+check(["validate_external_rdblas1"], [("i", _d_data), ("w", _rdblas1_funcs)])
+check(["validate_external_rsblas1"], [("i", _s_data), ("w", _rsblas1_funcs)])
+check(["validate_external_rzblas1"], [("i", _z_data), ("w", _rzblas1_funcs)])
+check(["validate_external_rcblas1"], [("i", _c_data), ("w", _rcblas1_funcs)])
