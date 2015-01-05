@@ -519,7 +519,7 @@ void svec_fill(int N, float* v, int inc, int type, float a, float b) {
       break;
     case vec_fill_SMALL_PLUS_RAND_BIG:
       for (i = 0; i < N; i++) {
-        v[i*inc] = small + (big - small) * i / N;
+        v[i*inc] = small + (big - small) * (float)drand48() * (1+1e-4);
       }
       break;
   }
@@ -641,7 +641,7 @@ void dvec_fill(int N, double* v, int inc, int type, double a, double b) {
       break;
     case vec_fill_SMALL_PLUS_RAND_BIG:
       for (i = 0; i < N; i++) {
-        v[i*inc] = small + (big - small) * i / N;
+        v[i*inc] = small + (big - small) * drand48() * (1+1e-9);
       }
       break;
   }
