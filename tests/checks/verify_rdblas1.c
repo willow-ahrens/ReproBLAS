@@ -9,14 +9,15 @@
 
 #include "../common/test_vecvec_fill_header.h"
 
-static opt_option func_type = {._named.header.type       = 0,
+static opt_option func_type = {._named.header.type       = opt_named,
                                ._named.header.short_name = 'w',
                                ._named.header.long_name  = "w_type",
                                ._named.header.help       = "wrapped function type",
                                ._named.required          = 1,
                                ._named.n_names           = wrap_rdblas1_n_names,
                                ._named.names             = (char**)wrap_rdblas1_names,
-                               ._named.descs             = (char**)wrap_rdblas1_descs};
+                               ._named.descs             = (char**)wrap_rdblas1_descs,
+                               ._named.value             = wrap_RDSUM};
 
 int verify_rdblas1_reproducibility(int N, double* x, int incX, double* y, int incY, int func, double ref, Idouble Iref, int max_num_blocks) {
   // GENERATE DATA

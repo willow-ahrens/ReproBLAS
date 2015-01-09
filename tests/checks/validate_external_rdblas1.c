@@ -17,7 +17,8 @@ static opt_option func_type = {._named.header.type       = opt_named,
                                ._named.required          = 1,
                                ._named.n_names           = wrap_rdblas1_n_names,
                                ._named.names             = (char**)wrap_rdblas1_names,
-                               ._named.descs             = (char**)wrap_rdblas1_descs};
+                               ._named.descs             = (char**)wrap_rdblas1_descs,
+                               ._named.value             = wrap_RDSUM};
 
 static opt_option record    = {._flag.header.type       = opt_flag,
                                ._flag.header.short_name = 'r',

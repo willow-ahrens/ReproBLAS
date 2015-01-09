@@ -16,7 +16,8 @@ static opt_option func_type = {._named.header.type       = opt_named,
                                ._named.required          = 1,
                                ._named.n_names           = wrap_rzblas1_n_names,
                                ._named.names             = (char**)wrap_rzblas1_names,
-                               ._named.descs             = (char**)wrap_rzblas1_descs};
+                               ._named.descs             = (char**)wrap_rzblas1_descs,
+                               ._named.value             = wrap_RZSUM};
 
 int verify_rzblas1_reproducibility(int N, double complex* x, int incX, double complex* y, int incY, int func, double complex ref, I_double_Complex Iref, int max_num_blocks) {
   // GENERATE DATA
