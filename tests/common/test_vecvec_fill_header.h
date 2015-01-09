@@ -46,6 +46,7 @@ const char* vecvec_name(int argc, char** argv){
     opt_show_option(scale);
     opt_show_option(cond);
     vecvec_fill_name(argc, argv);
+    return "";
   }
 
   opt_eval_option(argc, argv, &vec_fill_type);

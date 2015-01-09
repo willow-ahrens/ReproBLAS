@@ -13,13 +13,12 @@
 
 #include "vecvec_fill_bench_header.h"
 
-#define NAME_SIZE 100
 #define FLOP_PER_N 8
 
 extern const char* vecvec_fill_bench_name(int argc, char** argv){
-  static char namebuf[NAME_SIZE];
-  snprintf(namebuf, NAME_SIZE * sizeof(char), "Benchmark [zdotc]");
-  return namebuf;
+  static char name_buffer[MAX_LINE];
+  snprintf(name_buffer, MAX_LINE * sizeof(char), "Benchmark [zdotc]");
+  return name_buffer;
 }
 
 extern int vecvec_fill_bench_test(int argc, char** argv, int N, int incx, int incy, int type, int perf_unit, int trials){

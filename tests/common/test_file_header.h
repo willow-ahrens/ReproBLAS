@@ -20,7 +20,9 @@ const char* name(int argc, char** argv){
   if(help._flag.exists){
     opt_show_option(input_file);
     file_name(argc, argv);
+    return "";
   }
+
   opt_eval_option(argc, argv, &input_file);
   snprintf(name_buffer, MAX_LINE, "%s (%s)", file_name(argc, argv), input_file._string.value);
   return name_buffer;

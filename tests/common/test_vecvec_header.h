@@ -44,6 +44,7 @@ const char* name(int argc, char** argv){
     opt_show_option(incX);
     opt_show_option(incY);
     vecvec_name(argc, argv);
+    return "";
   }
 
   opt_eval_option(argc, argv, &N);

@@ -1,23 +1,11 @@
 #include "test_perf.h"
 #include <stdio.h>
 #include <stdlib.h>
-#define BUFFER_SIZE 124
-
-const char* perf_unit_name(int perf_unit){
-  switch(perf_unit){
-    case perf_unit_HERTZ:
-      return "Hertz";
-    case perf_unit_FLOPS:
-      return "FLOPS";
-    case perf_unit_PEAK:
-      return "% Peak";
-  }
-  return "";
-}
+#include "test_limits.h"
 
 double perf_cpu_freq(){
-  char buffer[BUFFER_SIZE];
-  buffer[BUFFER_SIZE - 1] = '\0';
+  char buffer[MAX_LINE];
+  buffer[MAX_LINE - 1] = '\0';
   int i = 0;
   #if defined( __MACH__ )
     FILE *f = popen("sysctl hw.cpufrequency", "r");
@@ -25,8 +13,8 @@ double perf_cpu_freq(){
     FILE *f = popen("grep -m 1 ^'cpu MHz' /proc/cpuinfo", "r");
   #else
   #endif
-  fgets(buffer, BUFFER_SIZE - 1, f);
-  while(buffer[i] != ':' && i < BUFFER_SIZE - 1){
+  fgets(buffer, MAX_LINE - 1, f);
+  while(buffer[i] != ':' && i < MAX_LINE - 1){
     i++;
   }
   pclose(f);
@@ -67,14 +55,21 @@ double perf_peak_flops(int perf_prec){
   return simd * 2 * perf_cpu_freq();
 }
 
-double perf_output(double time, int N, int trials, int flop_per_N, int unit, int perf_prec){
-  switch(unit){
-    case perf_unit_HERTZ:
-      return ((long double)N * trials) / time;
-    case perf_unit_FLOPS:
-      return ((long double)N * flop_per_N * trials) / time;
-    case perf_unit_PEAK:
-      return (((long double)N * flop_per_N * trials * 100) / time) / perf_peak_flops(perf_prec);
-  }
-  return 0;
+const char* perf_vec(){
+  //TODO: use cpuid
+  #if defined( __AVX__ )
+    return "AVX";
+  #elif defined( __SSE__ )
+    return "SSE";
+  #else
+    return "SIMD";
+  #endif
+}
+
+double perf_output_perf(double time, int n_elements, int trials){
+  printf("%e\n", ((long double)n_elements * trials) / time);
+}
+
+double perf_output_desc(int n_adds, int n_muls, int n_or_bits, int perf_prec){
+  printf("{\"n_adds\":%d, \"n_muls\":%d, \"n_or_bits\":%d, \"prec\":%d, \"cpu_freq\":%d, \"vec\":\"%s\"}\n", n_adds, n_muls, n_or_bits, perf_prec, perf_cpu_freq(), perf_vec());
 }
