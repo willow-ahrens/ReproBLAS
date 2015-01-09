@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <limits.h>
+#include <float.h>
 #include "test_limits.h"
 #include "test_opt.h"
 

@@ -9,8 +9,6 @@
 
 #include "../common/test_vecvec_fill_header.h"
 
-#define NAME_SIZE 100
-
 int verify_rcblas1_reproducibility(int N, float complex* x, int incX, float complex* y, int incY, int func, float complex ref, I_float_Complex Iref, int max_num_blocks) {
   // GENERATE DATA
   int i, j;
@@ -71,7 +69,7 @@ extern const char* vecvec_fill_name(int argc, char** argv){
   return name_buffer;
 }
 
-extern int vecvec_fill_test(int argc, char** argv, int N, int incX, int incY, int type){
+extern int vecvec_fill_test(int argc, char** argv, int N, int incX, int incY, int type, double scale, double cond){
   int rc = 0;
   float complex ref;
   I_float_Complex Iref;
@@ -97,7 +95,7 @@ extern int vecvec_fill_test(int argc, char** argv, int N, int incX, int incY, in
   cvec_fill(N * incY, y, 1, vec_fill_RAND, 1.0, 1.0);
 
   //fill x
-  cvec_fill(N, x, incX, type, 1.0, 1.0);
+  cvec_fill(N, x, incX, type, (float)scale, (float)cond);
 
   //fill y with -i where necessary
   cvec_fill(N, y, incY, vec_fill_CONSTANT, -_Complex_I, 1.0);

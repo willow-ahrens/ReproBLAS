@@ -69,7 +69,7 @@ extern const char* vecvec_fill_name(int argc, char** argv){
   return name_buffer;
 }
 
-extern int vecvec_fill_test(int argc, char** argv, int N, int incX, int incY, int type){
+extern int vecvec_fill_test(int argc, char** argv, int N, int incX, int incY, int type, double scale, double cond){
   int rc = 0;
   float ref;
   Ifloat Iref;
@@ -95,7 +95,7 @@ extern int vecvec_fill_test(int argc, char** argv, int N, int incX, int incY, in
   svec_fill(N * incY, y, 1, vec_fill_RAND, 1.0, 1.0);
 
   //fill x
-  svec_fill(N, x, incX, type, 1.0, 1.0);
+  svec_fill(N, x, incX, type, (float)scale, (float)cond);
 
   //fill y with 1 where necessary
   svec_fill(N, y, incY, vec_fill_CONSTANT, 1.0, 1.0);
