@@ -12,6 +12,6 @@ const char* perf_vec();
 
 void perf_output_perf(double time, int n_elements, int trials);
 
-void perf_output_desc(int n_adds, int n_muls, int n_or_bits, int perf_prec);
+void perf_output_desc(int n_ops, char** op_names, int* op_counts);
 
 #endif

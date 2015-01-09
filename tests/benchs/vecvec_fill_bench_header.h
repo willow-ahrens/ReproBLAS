@@ -19,7 +19,7 @@ static opt_option trials = {._int.header.type       = opt_int,
                             ._int.max               = INT_MAX,
                             ._int.value             = 1000};
 
-static opt_option desc   = {._flag.header.type       = opt_int,
+static opt_option desc   = {._flag.header.type       = opt_flag,
                             ._flag.header.short_name = 'd',
                             ._flag.header.long_name  = "desc",
                             ._flag.header.help       = "show benchmark description"};

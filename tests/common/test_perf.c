@@ -70,6 +70,11 @@ void perf_output_perf(double time, int n_elements, int trials){
   printf("%e\n", (double)(((long double)n_elements * trials) / time));
 }
 
-void perf_output_desc(int n_adds, int n_muls, int n_or_bits, int perf_prec){
-  printf("{\"n_adds\":%d, \"n_muls\":%d, \"n_or_bits\":%d, \"prec\":%d, \"cpu_freq\":%e, \"vec\":\"%s\"}\n", n_adds, n_muls, n_or_bits, perf_prec, perf_cpu_freq(), perf_vec());
+void perf_output_desc(int n_ops, char** op_names, int* op_counts){
+  int i;
+  printf("{");
+  for(i = 0; i < n_ops; i++){
+    printf("\"%s\":%d, ", op_names[i], op_counts[i]);
+  }
+  printf("\"cpu_freq\":%e, \"vec\":\"%s\"}\n", perf_cpu_freq(), perf_vec());
 }
