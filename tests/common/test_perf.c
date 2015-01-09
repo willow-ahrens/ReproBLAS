@@ -66,10 +66,10 @@ const char* perf_vec(){
   #endif
 }
 
-double perf_output_perf(double time, int n_elements, int trials){
-  printf("%e\n", ((long double)n_elements * trials) / time);
+void perf_output_perf(double time, int n_elements, int trials){
+  printf("%e\n", (double)(((long double)n_elements * trials) / time));
 }
 
-double perf_output_desc(int n_adds, int n_muls, int n_or_bits, int perf_prec){
-  printf("{\"n_adds\":%d, \"n_muls\":%d, \"n_or_bits\":%d, \"prec\":%d, \"cpu_freq\":%d, \"vec\":\"%s\"}\n", n_adds, n_muls, n_or_bits, perf_prec, perf_cpu_freq(), perf_vec());
+void perf_output_desc(int n_adds, int n_muls, int n_or_bits, int perf_prec){
+  printf("{\"n_adds\":%d, \"n_muls\":%d, \"n_or_bits\":%d, \"prec\":%d, \"cpu_freq\":%e, \"vec\":\"%s\"}\n", n_adds, n_muls, n_or_bits, perf_prec, perf_cpu_freq(), perf_vec());
 }

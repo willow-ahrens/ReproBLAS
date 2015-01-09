@@ -10,6 +10,10 @@
 
 #include "../common/test_file_header.h"
 
+int file_help(void){
+  return 0;
+}
+
 const char* file_name(int argc, char** argv) {
   static char name_buffer[MAX_LINE];
   opt_option func_type;

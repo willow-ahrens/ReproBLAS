@@ -10,8 +10,8 @@ double perf_peak_flops(int perf_prec);
 
 const char* perf_vec();
 
-double perf_output_perf(double time, int n_elements, int trials);
+void perf_output_perf(double time, int n_elements, int trials);
 
-double perf_output_desc(int n_adds, int n_muls, int n_or_bits, int perf_prec);
+void perf_output_desc(int n_adds, int n_muls, int n_or_bits, int perf_prec);
 
 #endif

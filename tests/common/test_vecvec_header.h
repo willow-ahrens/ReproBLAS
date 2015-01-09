@@ -3,49 +3,46 @@
 
 #include "test_header.h"
 
+int vecvec_show_help(void);
 const char *vecvec_name(int argc, char** argv);
 int vecvec_test(int argc, char** argv, int N, int incX, int incY);
 
+static opt_option N    = {._int.header.type       = opt_int,
+                          ._int.header.short_name = 'N',
+                          ._int.header.long_name  = "N_dim",
+                          ._int.header.help       = "N dimension size",
+                          ._int.required          = 0,
+                          ._int.min               = 0,
+                          ._int.max               = INT_MAX,
+                          ._int.value             = 2048};
+
+static opt_option incX = {._int.header.type       = opt_int,
+                          ._int.header.short_name = 'x',
+                          ._int.header.long_name  = "incX",
+                          ._int.header.help       = "X vector increment",
+                          ._int.required          = 0,
+                          ._int.min               = 1,
+                          ._int.max               = INT_MAX,
+                          ._int.value             = 1};
+
+static opt_option incY = {._int.header.type       = opt_int,
+                          ._int.header.short_name = 'y',
+                          ._int.header.long_name  = "incY",
+                          ._int.header.help       = "Y vector increment",
+                          ._int.required          = 0,
+                          ._int.min               = 1,
+                          ._int.max               = INT_MAX,
+                          ._int.value             = 1};
+
+int show_help(void){
+  opt_show_option(N);
+  opt_show_option(incX);
+  opt_show_option(incY);
+  return vecvec_show_help();
+}
+
 const char* name(int argc, char** argv){
-  opt_option N;
-  opt_option incX;
-  opt_option incY;
   static char name_buffer[MAX_LINE];
-
-  N.header.type       = opt_int;
-  N.header.short_name = 'N';
-  N.header.long_name  = "N_dim";
-  N.header.help       = "N dimension size";
-  N._int.required     = 0;
-  N._int.min          = 0;
-  N._int.max          = INT_MAX;
-  N._int.value        = 2048;
-
-  incX.header.type       = opt_int;
-  incX.header.short_name = 'x';
-  incX.header.long_name  = "incX";
-  incX.header.help       = "X vector increment";
-  incX._int.required     = 0;
-  incX._int.min          = 1;
-  incX._int.max          = INT_MAX;
-  incX._int.value        = 1;
-
-  incY.header.type       = opt_int;
-  incY.header.short_name = 'y';
-  incY.header.long_name  = "incY";
-  incY.header.help       = "Y vector increment";
-  incY._int.required     = 0;
-  incY._int.min          = 1;
-  incY._int.max          = INT_MAX;
-  incY._int.value        = 1;
-
-  if(help._flag.exists){
-    opt_show_option(N);
-    opt_show_option(incX);
-    opt_show_option(incY);
-    vecvec_name(argc, argv);
-    return "";
-  }
 
   opt_eval_option(argc, argv, &N);
   opt_eval_option(argc, argv, &incX);
@@ -55,37 +52,7 @@ const char* name(int argc, char** argv){
 }
 
 int test(int argc, char** argv){
-  opt_option N;
-  opt_option incX;
-  opt_option incY;
   int rc;
-
-  N.header.type       = opt_int;
-  N.header.short_name = 'N';
-  N.header.long_name  = "N_dim";
-  N.header.help       = "N dimension size";
-  N._int.required     = 0;
-  N._int.min          = 0;
-  N._int.max          = INT_MAX;
-  N._int.value        = 2048;
-
-  incX.header.type       = opt_int;
-  incX.header.short_name = 'x';
-  incX.header.long_name  = "incX";
-  incX.header.help       = "X vector increment";
-  incX._int.required     = 0;
-  incX._int.min          = 1;
-  incX._int.max          = INT_MAX;
-  incX._int.value        = 1;
-
-  incY.header.type       = opt_int;
-  incY.header.short_name = 'y';
-  incY.header.long_name  = "incY";
-  incY.header.help       = "Y vector increment";
-  incY._int.required     = 0;
-  incY._int.min          = 1;
-  incY._int.max          = INT_MAX;
-  incY._int.value        = 1;
 
   opt_eval_option(argc, argv, &N);
   opt_eval_option(argc, argv, &incX);

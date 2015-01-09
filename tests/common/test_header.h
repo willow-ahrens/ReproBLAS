@@ -4,12 +4,13 @@
 #include "test_limits.h"
 #include "test_opt.h"
 
-opt_option help;
 
+int show_help(void);
 const char *name(int argc, char** argv);
 int test(int argc, char** argv);
 
 int main(int argc, char** argv){
+  opt_option help;
   opt_option print;
 
   help.header.type       = opt_flag;
@@ -26,8 +27,7 @@ int main(int argc, char** argv){
   if(help._flag.exists){
     opt_show_option(help);
     opt_show_option(print);
-    name(argc, argv);
-    return 0;
+    return show_help();
   }
 
   opt_eval_option(argc, argv, &print);
