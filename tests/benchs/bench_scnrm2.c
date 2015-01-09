@@ -17,6 +17,7 @@
 
 int vecvec_fill_bench_desc(void){
   printf("undefined\n");
+  return 0;
 }
 
 int vecvec_fill_bench_show_help(void){
@@ -49,7 +50,7 @@ int vecvec_fill_bench_test(int argc, char** argv, int N, int incx, int incy, int
   }
   time_toc();
 
-  printf("%e\n", perf_output(time_read(), N, trials, FLOP_PER_N, perf_unit, perf_prec_SINGLE));
+  perf_output_perf(time_read(), N, trials);
 
   free(x);
   return rc;
