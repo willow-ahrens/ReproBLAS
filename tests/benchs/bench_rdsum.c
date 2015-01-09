@@ -14,13 +14,21 @@
 
 #define FLOP_PER_N 7
 
-extern const char* vecvec_fill_bench_name(int argc, char** argv){
+int vecvec_fill_bench_desc(void){
+  printf("undefined\n");
+}
+
+int vecvec_fill_bench_show_help(void){
+  return 0;
+}
+
+const char* vecvec_fill_bench_name(int argc, char** argv){
   static char name_buffer[MAX_LINE];
   snprintf(name_buffer, MAX_LINE * sizeof(char), "Benchmark [rdsum]");
   return name_buffer;
 }
 
-extern int vecvec_fill_bench_test(int argc, char** argv, int N, int incx, int incy, int type, int perf_unit, int trials){
+int vecvec_fill_bench_test(int argc, char** argv, int N, int incx, int incy, int type, double scale, double cond, int trials){
   int rc = 0;
   double res;
   I_double Ires;
@@ -32,7 +40,7 @@ extern int vecvec_fill_bench_test(int argc, char** argv, int N, int incx, int in
   dvec_fill(N * incx, x, 1, vec_fill_RAND, 1.0, 1.0);
 
   //fill x
-  dvec_fill(N, x, incx, type, 1.0, opt_read_float(argc, argv, "-c", 1.0));
+  dvec_fill(N, x, incx, type, scale, cond);
 
   time_tic();
   for(int i = 0; i < trials; i++){
