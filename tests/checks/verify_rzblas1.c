@@ -9,6 +9,15 @@
 
 #include "../common/test_vecvec_fill_header.h"
 
+static opt_option func_type = {._named.header.type       = opt_named,
+                               ._named.header.short_name = 'w',
+                               ._named.header.long_name  = "w_type",
+                               ._named.header.help       = "wrapped function type",
+                               ._named.required          = 1,
+                               ._named.n_names           = wrap_rzblas1_n_names,
+                               ._named.names             = (char**)wrap_rzblas1_names,
+                               ._named.descs             = (char**)wrap_rzblas1_descs};
+
 int verify_rzblas1_reproducibility(int N, double complex* x, int incX, double complex* y, int incY, int func, double complex ref, I_double_Complex Iref, int max_num_blocks) {
   // GENERATE DATA
   int i, j;
@@ -48,23 +57,14 @@ int verify_rzblas1_reproducibility(int N, double complex* x, int incX, double co
   return 0;
 }
 
+int vecvec_fill_show_help(void){
+  opt_show_option(func_type);
+  return 0;
+}
 
 extern const char* vecvec_fill_name(int argc, char** argv){
   static char name_buffer[MAX_LINE];
-  opt_option func_type;
 
-  func_type.header.type       = opt_named;
-  func_type.header.short_name = 'w';
-  func_type.header.long_name  = "w_type";
-  func_type.header.help       = "wrapped function type";
-  func_type._named.required   = 1;
-  func_type._named.n_names    = wrap_rzblas1_n_names;
-  func_type._named.names      = (char**)wrap_rzblas1_names;
-  func_type._named.descs      = (char**)wrap_rzblas1_descs;
-  if(help._flag.exists){
-    opt_show_option(func_type);
-    return "";
-  }
   opt_eval_option(argc, argv, &func_type);
   snprintf(name_buffer, MAX_LINE * sizeof(char), "Verify %s reproducibility", wrap_rzblas1_names[func_type._named.value]);
   return name_buffer;
@@ -77,16 +77,7 @@ extern int vecvec_fill_test(int argc, char** argv, int N, int incX, int incY, in
   int max_num_blocks = 1024;
   double complex *x = zvec_alloc(N, incX);
   double complex *y = zvec_alloc(N, incY);
-  opt_option func_type;
 
-  func_type.header.type       = opt_named;
-  func_type.header.short_name = 'w';
-  func_type.header.long_name  = "w_type";
-  func_type.header.help       = "wrapped function type";
-  func_type._named.required   = 1;
-  func_type._named.n_names    = wrap_rzblas1_n_names;
-  func_type._named.names      = (char**)wrap_rzblas1_names;
-  func_type._named.descs      = (char**)wrap_rzblas1_descs;
   opt_eval_option(argc, argv, &func_type);
 
   vec_random_seed();

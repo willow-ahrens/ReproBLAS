@@ -9,7 +9,7 @@
 #define wrap_RSCNRM2 2
 #define wrap_RCDOTU  3
 #define wrap_RCDOTC  4
-static int wrap_rcblas1_n_names = 5;
+static const int wrap_rcblas1_n_names = 5;
 static const char* wrap_rcblas1_names[] = {"rcsum",
                                            "rscasum",
                                            "rscnrm2",

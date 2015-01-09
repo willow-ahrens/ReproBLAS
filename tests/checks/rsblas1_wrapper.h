@@ -8,7 +8,7 @@
 #define wrap_RSASUM 1
 #define wrap_RSNRM2 2
 #define wrap_RSDOT  3
-static int wrap_rsblas1_n_names = 4;
+static const int wrap_rsblas1_n_names = 4;
 static const char* wrap_rsblas1_names[] = {"rssum",
                                            "rsasum",
                                            "rsnrm2",

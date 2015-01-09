@@ -10,34 +10,29 @@
 
 #include "../common/test_file_header.h"
 
-int file_help(void){
+static opt_option func_type = {._named.header.type       = opt_named,
+                               ._named.header.short_name = 'w',
+                               ._named.header.long_name  = "w_type",
+                               ._named.header.help       = "wrapped function type",
+                               ._named.required          = 1,
+                               ._named.n_names           = wrap_rdblas1_n_names,
+                               ._named.names             = (char**)wrap_rdblas1_names,
+                               ._named.descs             = (char**)wrap_rdblas1_descs};
+
+static opt_option record    = {._flag.header.type       = opt_flag,
+                               ._flag.header.short_name = 'r',
+                               ._flag.header.long_name  = "record",
+                               ._flag.header.help       = "record the run insted of testing"};
+
+int file_show_help(void){
+  opt_show_option(func_type);
+  opt_show_option(record);
   return 0;
 }
 
 const char* file_name(int argc, char** argv) {
   static char name_buffer[MAX_LINE];
-  opt_option func_type;
-  opt_option record;
 
-  func_type.header.type       = opt_named;
-  func_type.header.short_name = 'w';
-  func_type.header.long_name  = "w_type";
-  func_type.header.help       = "wrapped function type";
-  func_type._named.required   = 1;
-  func_type._named.n_names    = wrap_rdblas1_n_names;
-  func_type._named.names      = (char**)wrap_rdblas1_names;
-  func_type._named.descs      = (char**)wrap_rdblas1_descs;
-
-  record.header.type       = opt_flag;
-  record.header.short_name = 'r';
-  record.header.long_name  = "record";
-  record.header.help       = "record the run insted of testing";
-
-  if(help._flag.exists){
-    opt_show_option(func_type);
-    opt_show_option(record);
-    return "";
-  }
   opt_eval_option(argc, argv, &func_type);
   snprintf(name_buffer, MAX_LINE, "Validate %s external", wrap_rdblas1_names[func_type._named.value]);
   return name_buffer;
@@ -48,22 +43,6 @@ int file_test(int argc, char** argv, char *fname) {
   int N;
   char ref_fname[MAX_NAME];
   char Iref_fname[MAX_NAME];
-  opt_option func_type;
-  opt_option record;
-
-  func_type.header.type       = opt_named;
-  func_type.header.short_name = 'w';
-  func_type.header.long_name  = "w_type";
-  func_type.header.help       = "wrapped function type";
-  func_type._named.required   = 1;
-  func_type._named.n_names    = wrap_rdblas1_n_names;
-  func_type._named.names      = (char**)wrap_rdblas1_names;
-  func_type._named.descs      = (char**)wrap_rdblas1_descs;
-
-  record.header.type       = opt_flag;
-  record.header.short_name = 'r';
-  record.header.long_name  = "record";
-  record.header.help       = "record the run insted of testing";
 
   opt_eval_option(argc, argv, &func_type);
   opt_eval_option(argc, argv, &record);

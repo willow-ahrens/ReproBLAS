@@ -5,6 +5,10 @@
 
 #include "../common/test_vecvec_header.h"
 
+int vecvec_show_help(void){
+  return 0;
+}
+
 const char* vecvec_name(int argc, char** argv) {
   return "Validate rssum, rsasum, rsdot (1Big, 1BigPosNeg)";
 }
