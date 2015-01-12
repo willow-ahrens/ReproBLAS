@@ -12,7 +12,9 @@
 #define FLOP_PER_N 2
 
 int vecvec_fill_bench_desc(void){
-  printf("undefined\n");
+  char *op_names[] = {"s_add", "s_cmp", "s_orb"};
+  int op_counts[] = {1, 1, 2};
+  perf_output_desc(3, op_names, op_counts);
   return 0;
 }
 

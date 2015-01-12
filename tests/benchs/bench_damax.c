@@ -16,7 +16,7 @@
 
 int vecvec_fill_bench_desc(void){
   char *op_names[] = {"d_cmp", "d_orb"};
-  int op_counts[] = {2};
+  int op_counts[] = {1, 1};
   perf_output_desc(2, op_names, op_counts);
   return 0;
 }

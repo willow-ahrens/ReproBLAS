@@ -13,8 +13,8 @@
 #include "vecvec_fill_bench_header.h"
 
 int vecvec_fill_bench_desc(void){
-  char *op_names[] = {"s_add", "s_mul", "s_cmp", "s_orb"};
-  int op_counts[] = {3, 4, 1, 1};
+  char *op_names[] = {"s_mul", "s_cmp", "s_orb"};
+  int op_counts[] = {4, 4, 4};
   perf_output_desc(3, op_names, op_counts);
   return 0;
 }
