@@ -12,10 +12,10 @@
 
 #include "vecvec_fill_bench_header.h"
 
-#define FLOP_PER_N 7
-
 int vecvec_fill_bench_desc(void){
-  printf("undefined\n");
+  char *op_names[] = {"d_add", "d_orb"};
+  int op_counts[] = {7, 3};
+  perf_output_desc(2, op_names, op_counts);
   return 0;
 }
 

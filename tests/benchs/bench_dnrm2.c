@@ -13,8 +13,6 @@
 
 #include "vecvec_fill_bench_header.h"
 
-#define FLOP_PER_N 3
-
 int vecvec_fill_bench_desc(void){
   char *op_names[] = {"d_add", "d_mul", "d_cmp", "d_orb"};
   int op_counts[] = {1, 2, 1, 1};
