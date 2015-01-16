@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../common/test_vec.h"
+#include "../common/test_util.h"
 #include "../common/test_opt.h"
 #include "../common/test_file.h"
 #include "rzblas1_wrapper.h"

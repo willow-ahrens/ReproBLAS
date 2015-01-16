@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <math.h>
 #include "../common/test_opt.h"
-#include "../common/test_vec.h"
 #include "../common/test_time.h"
 #include "../common/test_perf.h"
 #include <rblas.h>

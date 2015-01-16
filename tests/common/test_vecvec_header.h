@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "test_opt.h"
+#include "test_util.h"
 
 #include "test_header.h"
 

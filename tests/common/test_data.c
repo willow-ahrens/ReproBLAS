@@ -4,7 +4,7 @@
 #include <math.h>
 #include <float.h>
 #include <limits.h>
-#include "test_vec.h"
+#include "test_util.h"
 #include "test_opt.h"
 #include "test_file.h"
 #include "test_limits.h"

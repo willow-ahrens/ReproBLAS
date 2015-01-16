@@ -1,7 +1,6 @@
 #include <rblas.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "../common/test_vec.h"
 
 #include "../common/test_vecvec_header.h"
 

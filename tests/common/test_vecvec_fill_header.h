@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "test_opt.h"
-#include "test_vec.h"
 
 #include "test_vecvec_header.h"
 
