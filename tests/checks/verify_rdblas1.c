@@ -101,63 +101,63 @@ extern int vecvec_fill_test(int argc, char** argv, int N, int incX, int incY, in
   ref  = (wrap_rdblas1_func(func_type._named.value))(N, x, incX, y, incY);
   Iref = (wrap_Idblas1_func(func_type._named.value))(N, x, incX, y, incY);
 
-  dvec_reverse(N, x, incX);
+  dvec_reverse(N, x, incX, NULL, 1);
 
   rc = verify_rdblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  dvec_sort(N, x, incX, vec_order_INCREASING);
+  dvec_sort(N, x, incX, NULL, 1, vec_order_INCREASING);
 
   rc = verify_rdblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  dvec_sort(N, x, incX, vec_order_DECREASING);
+  dvec_sort(N, x, incX, NULL, 1, vec_order_DECREASING);
 
   rc = verify_rdblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  dvec_sort(N, x, incX, vec_order_INCREASING_MAGNITUDE);
+  dvec_sort(N, x, incX, NULL, 1, vec_order_INCREASING_MAGNITUDE);
 
   rc = verify_rdblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  dvec_sort(N, x, incX, vec_order_DECREASING_MAGNITUDE);
+  dvec_sort(N, x, incX, NULL, 1, vec_order_DECREASING_MAGNITUDE);
 
   rc = verify_rdblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  dvec_shuffle(N, x, incX);
+  dvec_shuffle(N, x, incX, NULL, 1);
 
   rc = verify_rdblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  dvec_shuffle(N, x, incX);
+  dvec_shuffle(N, x, incX, NULL, 1);
 
   rc = verify_rdblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  dvec_shuffle(N, x, incX);
+  dvec_shuffle(N, x, incX, NULL, 1);
 
   rc = verify_rdblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  dvec_shuffle(N, x, incX);
+  dvec_shuffle(N, x, incX, NULL, 1);
 
   rc = verify_rdblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
