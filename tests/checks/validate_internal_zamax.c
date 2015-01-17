@@ -19,7 +19,7 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   double complex ref;
   double complex res;
 
-  vec_random_seed();
+  util_random_seed();
 
   //allocate vectors
   double complex *x    = zvec_alloc(N, incx);

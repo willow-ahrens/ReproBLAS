@@ -80,7 +80,7 @@ extern int vecvec_fill_test(int argc, char** argv, int N, int incX, int incY, in
 
   opt_eval_option(argc, argv, &func_type);
 
-  vec_random_seed();
+  util_random_seed();
 
   //fill empty space with random data to check increment
   dvec_fill(N * incX, x, 1, vec_fill_RAND, 1.0, 1.0);

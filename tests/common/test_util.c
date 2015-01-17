@@ -407,23 +407,39 @@ void cvec_permute(int N, float complex* V, int incV, int *Q, int incQ, int *P, i
   permute(N, Q, incQ, &vec_swap, &swap_data);
 }
 
-float* svec_alloc(int N, int incV) {
-  return (float*)calloc(N * incV, sizeof(float));
-}
-
 double* dvec_alloc(int N, int incV) {
   return (double*)calloc(N * incV, sizeof(double));
 }
 
-float complex* cvec_alloc(int N, int incV) {
-  return (float complex*)calloc(N * incV, sizeof(float complex));
+float* svec_alloc(int N, int incV) {
+  return (float*)calloc(N * incV, sizeof(float));
 }
 
 double complex* zvec_alloc(int N, int incV) {
   return (double complex*)calloc(N * incV, sizeof(double complex));
 }
 
-void vec_random_seed(void) {
+float complex* cvec_alloc(int N, int incV) {
+  return (float complex*)calloc(N * incV, sizeof(float complex));
+}
+
+double* dmat_alloc(int M, int N, int ldA) {
+  return (double*)calloc(ldA * N, sizeof(double));
+}
+
+float* smat_alloc(int M, int N, int ldA) {
+  return (float*)calloc(ldA * N, sizeof(float));
+}
+
+double complex* zmat_alloc(int M, int N, int ldA) {
+  return (double complex*)calloc(ldA * N, sizeof(double complex));
+}
+
+float complex* cmat_alloc(int M, int N, int ldA) {
+  return (float complex*)calloc(ldA * N, sizeof(float complex));
+}
+
+void util_random_seed(void) {
   struct timeval st;
   gettimeofday( &st, NULL );
   srand48((long)(st.tv_usec + 1e6*st.tv_sec));

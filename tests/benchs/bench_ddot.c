@@ -36,7 +36,7 @@ int vecvec_fill_bench_test(int argc, char** argv, int N, int incx, int incy, int
   double *x = dvec_alloc(N, incx);
   double *y = dvec_alloc(N, incy);
 
-  vec_random_seed();
+  util_random_seed();
 
   //fill empty space with random data to check increment
   dvec_fill(N * incx, x, 1, vec_fill_RAND, 1.0, 1.0);

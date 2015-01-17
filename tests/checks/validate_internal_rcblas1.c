@@ -22,7 +22,7 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   float complex refdc;
   float complex res;
 
-  vec_random_seed();
+  util_random_seed();
 
   //allocate vectors
   float complex *x    = cvec_alloc(N, incx);

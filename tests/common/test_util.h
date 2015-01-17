@@ -3,7 +3,6 @@
 
 #include "../../src/types.h"
 
-
 #define vec_fill_CONSTANT                    0
 #define vec_fill_RAND                        1
 #define vec_fill_2_TIMES_RAND_MINUS_1        2
@@ -59,7 +58,7 @@ void zvec_fill(int N, double complex* v, int inc, int type, double complex a, do
 
 const char* vec_fill_name(int type);
 
-void vec_random_seed(void);
+void util_random_seed(void);
 
 #define vec_order_INCREASING            0
 #define vec_order_INCREASING_MAGNITUDE  1
@@ -88,6 +87,12 @@ float* svec_alloc(int N, int incV);
 double* dvec_alloc(int N, int incV);
 float complex* cvec_alloc(int N, int incV);
 double complex* zvec_alloc(int N, int incV);
+
+double* dmat_alloc(int M, int N, int ldA);
+float* smat_alloc(int M, int N, int ldA);
+double complex* zmat_alloc(int M, int N, int ldA);
+float complex* cmat_alloc(int M, int N, int ldA);
+
 
 int* util_identity_permutation(int N);
 int* util_inverse_permutation(int N, int *P, int incP);
