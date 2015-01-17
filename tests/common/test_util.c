@@ -329,6 +329,84 @@ void cvec_shuffle(int N, float complex* V, int incV, int *P, int incP) {
   shuffle(N, &vec_swap, &swap_data);
 }
 
+static void permute(int N, int *P, int incP, swap_func swap, void *swap_data) {
+  int i, j;
+  int *permuted = (int*)malloc(N * sizeof(int));
+  for (i = 0; i < N; i++)
+  {
+    permuted[i] = 0
+  }
+  for (i = 0; i < N; i++)
+  {
+    if(!permuted[i]){
+      j = P[i * incP];
+      while(j != i){
+        swap(i, j, swap_data);
+        j = P[j * incP];
+        permuted[j] = 1;
+      }
+      permuted[i] = 1;
+    }
+  }
+  free(permuted);
+}
+
+int* util_identity_permutation(int N){
+  int i;
+  int *identity = (int*)malloc(N * sizeof(int));
+  for (i = 0; i < N; i++)
+  {
+    identity[i] = i;
+  }
+  return identity
+}
+
+int* util_inverse_permutation(int N, int *P, int incP){
+  int i;
+  int *P_inverse = (int*)malloc(N * sizeof(int));
+  for (i = 0; i < N; i++)
+  {
+    P_inverse[P[i * incP]] = i;
+  }
+  return P_inverse;
+}
+
+void dvec_permute(int N, double* V, int incV, int *Q, int incQ, int *P, int incP) {
+  vec_swap_data_t swap_data = {.V     = V,
+                               .incV  = incV,
+                               .sizeV = sizeof(double),
+                               .P     = P,
+                               .incP  = incP};
+  permute(N, *Q, incQ, &vec_swap, &swap_data);
+}
+
+void svec_permute(int N, float* V, int incV, int *Q, int incQ, int *P, int incP) {
+  vec_swap_data_t swap_data = {.V     = V,
+                               .incV  = incV,
+                               .sizeV = sizeof(float),
+                               .P     = P,
+                               .incP  = incP};
+  permute(N, *Q, incQ, &vec_swap, &swap_data);
+}
+
+void zvec_permute(int N, double complex* V, int incV, int *Q, int incQ, int *P, int incP) {
+  vec_swap_data_t swap_data = {.V     = V,
+                               .incV  = incV,
+                               .sizeV = sizeof(double complex),
+                               .P     = P,
+                               .incP  = incP};
+  permute(N, *Q, incQ, &vec_swap, &swap_data);
+}
+
+void cvec_permute(int N, float complex* V, int incV, int *Q, int incQ, int *P, int incP) {
+  vec_swap_data_t swap_data = {.V     = V,
+                               .incV  = incV,
+                               .sizeV = sizeof(float complex),
+                               .P     = P,
+                               .incP  = incP};
+  permute(N, *Q, incQ, &vec_swap, &swap_data);
+}
+
 float* svec_alloc(int N, int incV) {
   return (float*)calloc(N * incV, sizeof(float));
 }

@@ -3,6 +3,7 @@
 
 #include "../../src/types.h"
 
+
 #define vec_fill_CONSTANT                    0
 #define vec_fill_RAND                        1
 #define vec_fill_2_TIMES_RAND_MINUS_1        2
@@ -87,5 +88,12 @@ float* svec_alloc(int N, int incV);
 double* dvec_alloc(int N, int incV);
 float complex* cvec_alloc(int N, int incV);
 double complex* zvec_alloc(int N, int incV);
+
+int* util_identity_permutation(int N);
+int* util_inverse_permutation(int N, int *P, int incP);
+void dvec_permute(int N, double* V, int incV, int *Q, int incQ, int *P, int incP);
+void svec_permute(int N, float* V, int incV, int *Q, int incQ, int *P, int incP);
+void zvec_permute(int N, double complex* V, int incV, int *Q, int incQ, int *P, int incP);
+void cvec_permute(int N, float complex* V, int incV, int *Q, int incQ, int *P, int incP);
 
 #endif
