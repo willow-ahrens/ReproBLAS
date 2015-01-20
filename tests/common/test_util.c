@@ -19,13 +19,13 @@
 
 typedef int (*compare_func)(int i, int j, void *data);
 typedef void (*swap_func)(int i, int j, void *data);
-typedef int (*compare_elem_func)(void *a, void *b, int order);
+typedef int (*compare_elem_func)(void *a, void *b, util_comp_t comp);
 
-int dutil_compare(void *a, void *b, int order){
+int util_dcompare(void *a, void *b, util_comp_t comp){
   double a_prime;
   double b_prime;
-  switch(order){
-    case vec_order_INCREASING:
+  switch(comp){
+    case util_Increasing:
       if(*((double*)a) < *((double*)b)){
         return -1;
       }else if(*((double*)a) > *((double*)b)){
@@ -33,25 +33,25 @@ int dutil_compare(void *a, void *b, int order){
       }else{
         return 0;
       }
-    case vec_order_DECREASING:
-      return -1 * dutil_compare(a, b, vec_order_INCREASING);
-    case vec_order_INCREASING_MAGNITUDE:
+    case util_Decreasing:
+      return -1 * util_dcompare(a, b, util_Increasing);
+    case util_Increasing_Magnitude:
       a_prime = fabs(*((double*)a));
       b_prime = fabs(*((double*)b));
-      return dutil_compare(&a_prime, &b_prime, vec_order_INCREASING);
-    case vec_order_DECREASING_MAGNITUDE:
-      return -1 * dutil_compare(a, b, vec_order_INCREASING_MAGNITUDE);
+      return util_dcompare(&a_prime, &b_prime, util_Increasing);
+    case util_Decreasing_Magnitude:
+      return -1 * util_dcompare(a, b, util_Increasing_Magnitude);
     default:
       fprintf(stderr, "error: default case (%s:%d)\n", __FILE__, __LINE__);
       exit(125);
   }
 }
 
-int sutil_compare(void *a, void *b, int order){
+int util_scompare(void *a, void *b, util_comp_t comp){
   float a_prime;
   float b_prime;
-  switch(order){
-    case vec_order_INCREASING:
+  switch(comp){
+    case util_Increasing:
       if(*((float*)a) < *((float*)b)){
         return -1;
       }else if(*((float*)a) > *((float*)b)){
@@ -59,58 +59,58 @@ int sutil_compare(void *a, void *b, int order){
       }else{
         return 0;
       }
-    case vec_order_DECREASING:
-      return -1 * sutil_compare(a, b, vec_order_INCREASING);
-    case vec_order_INCREASING_MAGNITUDE:
+    case util_Decreasing:
+      return -1 * util_scompare(a, b, util_Increasing);
+    case util_Increasing_Magnitude:
       a_prime = fabs(*((float*)a));
       b_prime = fabs(*((float*)b));
-      return sutil_compare(&a_prime, &b_prime, vec_order_INCREASING);
-    case vec_order_DECREASING_MAGNITUDE:
-      return -1 * sutil_compare(a, b, vec_order_INCREASING_MAGNITUDE);
+      return util_scompare(&a_prime, &b_prime, util_Increasing);
+    case util_Decreasing_Magnitude:
+      return -1 * util_scompare(a, b, util_Increasing_Magnitude);
     default:
       fprintf(stderr, "error: default case (%s:%d)\n", __FILE__, __LINE__);
       exit(125);
   }
 }
 
-int zutil_compare(void *a, void *b, int order){
+int util_zcompare(void *a, void *b, util_comp_t comp){
   double a_prime;
   double b_prime;
-  switch(order){
-    case vec_order_INCREASING:
+  switch(comp){
+    case util_Increasing:
       a_prime = ZREAL_(*((double complex*)a));
       b_prime = ZREAL_(*((double complex*)b));
-      return dutil_compare(&a_prime, &b_prime, vec_order_INCREASING);
-    case vec_order_DECREASING:
-      return -1 * zutil_compare(a, b, vec_order_INCREASING);
-    case vec_order_INCREASING_MAGNITUDE:
+      return util_dcompare(&a_prime, &b_prime, util_Increasing);
+    case util_Decreasing:
+      return -1 * util_zcompare(a, b, util_Increasing);
+    case util_Increasing_Magnitude:
       a_prime = fabsz(*((double complex*)a));
       b_prime = fabsz(*((double complex*)b));
-      return dutil_compare(&a_prime, &b_prime, vec_order_INCREASING);
-    case vec_order_DECREASING_MAGNITUDE:
-      return -1 * zutil_compare(a, b, vec_order_INCREASING_MAGNITUDE);
+      return util_dcompare(&a_prime, &b_prime, util_Increasing);
+    case util_Decreasing_Magnitude:
+      return -1 * util_zcompare(a, b, util_Increasing_Magnitude);
     default:
       fprintf(stderr, "error: default case (%s:%d)\n", __FILE__, __LINE__);
       exit(125);
   }
 }
 
-int cutil_compare(void *a, void *b, int order){
+int util_ccompare(void *a, void *b, util_comp_t comp){
   float a_prime;
   float b_prime;
-  switch(order){
-    case vec_order_INCREASING:
+  switch(comp){
+    case util_Increasing:
       a_prime = CREAL_(*((float complex*)a));
       b_prime = CREAL_(*((float complex*)b));
-      return sutil_compare(&a_prime, &b_prime, vec_order_INCREASING);
-    case vec_order_DECREASING:
-      return -1 * cutil_compare(a, b, vec_order_INCREASING);
-    case vec_order_INCREASING_MAGNITUDE:
+      return util_scompare(&a_prime, &b_prime, util_Increasing);
+    case util_Decreasing:
+      return -1 * util_ccompare(a, b, util_Increasing);
+    case util_Increasing_Magnitude:
       a_prime = fabsc(*((float complex*)a));
       b_prime = fabsc(*((float complex*)b));
-      return sutil_compare(&a_prime, &b_prime, vec_order_INCREASING);
-    case vec_order_DECREASING_MAGNITUDE:
-      return -1 * cutil_compare(a, b, vec_order_INCREASING_MAGNITUDE);
+      return util_scompare(&a_prime, &b_prime, util_Increasing);
+    case util_Decreasing_Magnitude:
+      return -1 * util_ccompare(a, b, util_Increasing_Magnitude);
     default:
       fprintf(stderr, "error: default case (%s:%d)\n", __FILE__, __LINE__);
       exit(125);
@@ -175,15 +175,15 @@ typedef struct vec_compare_data_t{
   int               incV;
   size_t            sizeV;
   compare_elem_func compare_elem;
-  int               order;
+  int               comp;
 } vec_compare_data_t;
 
 static int vec_compare(int a, int b, void *data){
   vec_compare_data_t *d = (vec_compare_data_t*)data;
-  return d->compare_elem(d->V + a * d->incV * d->sizeV, d->V + a * d->incV * d->sizeV, d->order);
+  return d->compare_elem(d->V + a * d->incV * d->sizeV, d->V + a * d->incV * d->sizeV, d->comp);
 }
 
-void dvec_sort(int N, double *V, int incV, int *P, int incP, int order){
+void dvec_sort(int N, double *V, int incV, int *P, int incP, util_comp_t comp){
   vec_swap_data_t swap_data = {.V     = V,
                                .incV  = incV,
                                .sizeV = sizeof(double),
@@ -192,12 +192,12 @@ void dvec_sort(int N, double *V, int incV, int *P, int incP, int order){
   vec_compare_data_t compare_data = {.V            = V,
                                      .incV         = incV,
                                      .sizeV        = sizeof(double),
-                                     .compare_elem = dutil_compare,
-                                     .order        = order};
+                                     .compare_elem = util_dcompare,
+                                     .comp        = comp};
   sort(0, N, &vec_compare, &compare_data, &vec_swap, &swap_data);
 }
 
-void svec_sort(int N, float *V, int incV, int *P, int incP, int order){
+void svec_sort(int N, float *V, int incV, int *P, int incP, util_comp_t comp){
   vec_swap_data_t swap_data = {.V     = V,
                                .incV  = incV,
                                .sizeV = sizeof(float),
@@ -206,12 +206,12 @@ void svec_sort(int N, float *V, int incV, int *P, int incP, int order){
   vec_compare_data_t compare_data = {.V            = V,
                                      .incV         = incV,
                                      .sizeV        = sizeof(float),
-                                     .compare_elem = sutil_compare,
-                                     .order        = order};
+                                     .compare_elem = util_scompare,
+                                     .comp        = comp};
   sort(0, N, &vec_compare, &compare_data, &vec_swap, &swap_data);
 }
 
-void zvec_sort(int N, double complex *V, int incV, int *P, int incP, int order){
+void zvec_sort(int N, double complex *V, int incV, int *P, int incP, util_comp_t comp){
   vec_swap_data_t swap_data = {.V     = V,
                                .incV  = incV,
                                .sizeV = sizeof(double complex),
@@ -220,12 +220,12 @@ void zvec_sort(int N, double complex *V, int incV, int *P, int incP, int order){
   vec_compare_data_t compare_data = {.V            = V,
                                      .incV         = incV,
                                      .sizeV        = sizeof(double complex),
-                                     .compare_elem = zutil_compare,
-                                     .order        = order};
+                                     .compare_elem = util_zcompare,
+                                     .comp        = comp};
   sort(0, N, &vec_compare, &compare_data, &vec_swap, &swap_data);
 }
 
-void cvec_sort(int N, float complex *V, int incV, int *P, int incP, int order){
+void cvec_sort(int N, float complex *V, int incV, int *P, int incP, util_comp_t comp){
   vec_swap_data_t swap_data = {.V     = V,
                                .incV  = incV,
                                .sizeV = sizeof(float complex),
@@ -234,8 +234,8 @@ void cvec_sort(int N, float complex *V, int incV, int *P, int incP, int order){
   vec_compare_data_t compare_data = {.V            = V,
                                      .incV         = incV,
                                      .sizeV        = sizeof(float complex),
-                                     .compare_elem = cutil_compare,
-                                     .order        = order};
+                                     .compare_elem = util_ccompare,
+                                     .comp        = comp};
   sort(0, N, &vec_compare, &compare_data, &vec_swap, &swap_data);
 }
 
@@ -447,19 +447,19 @@ float complex* cvec_alloc(int N, int incV) {
   return V;
 }
 
-double* dmat_alloc(int M, int N, int ldA) {
+double* dmat_alloc(rblas_order_t order, int M, int N, int ldA) {
   return (double*)calloc(ldA * N, sizeof(double));
 }
 
-float* smat_alloc(int M, int N, int ldA) {
+float* smat_alloc(rblas_order_t order, int M, int N, int ldA) {
   return (float*)calloc(ldA * N, sizeof(float));
 }
 
-double complex* zmat_alloc(int M, int N, int ldA) {
+double complex* zmat_alloc(rblas_order_t order, int M, int N, int ldA) {
   return (double complex*)calloc(ldA * N, sizeof(double complex));
 }
 
-float complex* cmat_alloc(int M, int N, int ldA) {
+float complex* cmat_alloc(rblas_order_t order, int M, int N, int ldA) {
   return (float complex*)calloc(ldA * N, sizeof(float complex));
 }
 

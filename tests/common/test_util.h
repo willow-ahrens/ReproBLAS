@@ -2,6 +2,7 @@
 #define __TEST_VEC_H
 
 #include "../../src/types.h"
+#include "../../build/include/rblas.h"
 
 #define vec_fill_CONSTANT                    0
 #define vec_fill_RAND                        1
@@ -60,18 +61,21 @@ const char* vec_fill_name(int type);
 
 void util_random_seed(void);
 
-#define vec_order_INCREASING            0
-#define vec_order_INCREASING_MAGNITUDE  1
-#define vec_order_DECREASING            2
-#define vec_order_DECREASING_MAGNITUDE  3
-int dutil_compare(void *a, void *b, int order);
-int sutil_compare(void *a, void *b, int order);
-int zutil_compare(void *a, void *b, int order);
-int cutil_compare(void *a, void *b, int order);
-void svec_sort(int N, float* V, int incV, int *P, int incP, int order);
-void cvec_sort(int N, float complex* V, int incV, int *P, int incP, int order);
-void dvec_sort(int N, double* V, int incV, int *P, int incP, int order);
-void zvec_sort(int N, double complex* V, int incV, int *P, int incP, int order);
+typedef enum util_comp {
+  util_Increasing = 0,
+  util_Increasing_Magnitude,
+  util_Decreasing,
+  util_Decreasing_Magnitude
+} util_comp_t;
+
+int util_dcompare(void *a, void *b, util_comp_t comp);
+int util_scompare(void *a, void *b, util_comp_t comp);
+int util_zcompare(void *a, void *b, util_comp_t comp);
+int util_ccompare(void *a, void *b, util_comp_t comp);
+void svec_sort(int N, float* V, int incV, int *P, int incP, util_comp_t comp);
+void cvec_sort(int N, float complex* V, int incV, int *P, int incP, util_comp_t comp);
+void dvec_sort(int N, double* V, int incV, int *P, int incP, util_comp_t comp);
+void zvec_sort(int N, double complex* V, int incV, int *P, int incP, util_comp_t comp);
 
 void svec_shuffle(int N, float* V, int incV, int *P, int incP);
 void cvec_shuffle(int N, float complex* V, int incV, int *P, int incP);
@@ -88,10 +92,10 @@ double* dvec_alloc(int N, int incV);
 float complex* cvec_alloc(int N, int incV);
 double complex* zvec_alloc(int N, int incV);
 
-double* dmat_alloc(int M, int N, int ldA);
-float* smat_alloc(int M, int N, int ldA);
-double complex* zmat_alloc(int M, int N, int ldA);
-float complex* cmat_alloc(int M, int N, int ldA);
+double* dmat_alloc(rblas_order_t order, int M, int N, int ldA);
+float* smat_alloc(rblas_order_t order, int M, int N, int ldA);
+double complex* zmat_alloc(rblas_order_t order, int M, int N, int ldA);
+float complex* cmat_alloc(rblas_order_t order, int M, int N, int ldA);
 
 
 int* util_identity_permutation(int N);

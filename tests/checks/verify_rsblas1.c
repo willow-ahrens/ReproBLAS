@@ -106,28 +106,28 @@ extern int vecvec_fill_test(int argc, char** argv, int N, int incX, int incY, in
     return rc;
   }
 
-  svec_sort(N, x, incX, NULL, 1, vec_order_INCREASING);
+  svec_sort(N, x, incX, NULL, 1, util_Increasing);
 
   rc = verify_rsblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  svec_sort(N, x, incX, NULL, 1, vec_order_DECREASING);
+  svec_sort(N, x, incX, NULL, 1, util_Decreasing);
 
   rc = verify_rsblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  svec_sort(N, x, incX, NULL, 1, vec_order_INCREASING_MAGNITUDE);
+  svec_sort(N, x, incX, NULL, 1, util_Increasing_Magnitude);
 
   rc = verify_rsblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  svec_sort(N, x, incX, NULL, 1, vec_order_DECREASING_MAGNITUDE);
+  svec_sort(N, x, incX, NULL, 1, util_Decreasing_Magnitude);
 
   rc = verify_rsblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){

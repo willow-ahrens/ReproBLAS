@@ -1,3 +1,27 @@
+#define rblas_INDEX size_t  /* this may vary between platforms */
+
+typedef enum rblas_order {
+  rblas_Row_Major,
+  rblas_Col_Major
+} rblas_order_t;
+typedef enum rblas_transpose {
+  rblas_No_Trans,
+  rblas_Trans,
+  rblas_Conj_Trans
+} rblas_transpose_t;
+typedef enum rblas_uplo {
+  rblas_Upper,
+  rblas_Lower
+} rblas_uplo_t;
+typedef enum rblas_diag {
+  rblas_Non_Unit,
+  rblas_Unit
+} rblas_diag_t;
+typedef enum rblas_side {
+  rblas_Left,
+  rblas_Right
+} rblas_side_t;
+
 #define  dsumI_(N,V,INC,S) dsumI1(N,V,INC,DEFAULT_FOLD,0,(S).m, (S).c)
 #define dasumI_(N,V,INC,S) dasumI1(N,V,INC,DEFAULT_FOLD,0,(S).m, (S).c)
 #define dnrm2I_(N,V,INC,S) dnrm2I1(N,V,INC,DEFAULT_FOLD,0,(S).m, (S).c)
