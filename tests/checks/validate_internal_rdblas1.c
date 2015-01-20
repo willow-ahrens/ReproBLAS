@@ -27,10 +27,6 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   double *x    = dvec_alloc(N, incx);
   double *y    = dvec_alloc(N, incy);
 
-  //fill empty space with random data to check increment
-  dvec_fill(N * incx, x, 1, vec_fill_RAND, 1.0, 1.0);
-  dvec_fill(N * incy, y, 1, vec_fill_RAND, 1.0, 1.0);
-
   //fill y with -1 where necessary
   dvec_fill(N, y, incy, vec_fill_CONSTANT, -1.0, 1.0);
 

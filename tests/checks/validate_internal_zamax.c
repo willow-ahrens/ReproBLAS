@@ -25,10 +25,6 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   double complex *x    = zvec_alloc(N, incx);
   double complex *y    = zvec_alloc(N, incy);
 
-  //fill empty space with random data to check increment
-  zvec_fill(N * incx, x, 1, vec_fill_RAND, 1.0, 1.0);
-  zvec_fill(N * incy, y, 1, vec_fill_RAND, 1.0, 1.0);
-
   //fill y with 1 where necessary
   zvec_fill(N, y, incy, vec_fill_CONSTANT, 1.0, 1.0);
 

@@ -75,16 +75,13 @@ extern int vecvec_fill_test(int argc, char** argv, int N, int incX, int incY, in
   double complex ref;
   I_double_Complex Iref;
   int max_num_blocks = 1024;
+
+  util_random_seed();
+
   double complex *x = zvec_alloc(N, incX);
   double complex *y = zvec_alloc(N, incY);
 
   opt_eval_option(argc, argv, &func_type);
-
-  util_random_seed();
-
-  //fill empty space with random data to check increment
-  zvec_fill(N * incX, x, 1, vec_fill_RAND, 1.0, 1.0);
-  zvec_fill(N * incY, y, 1, vec_fill_RAND, 1.0, 1.0);
 
   //fill x
   zvec_fill(N, x, incX, type, scale, cond);

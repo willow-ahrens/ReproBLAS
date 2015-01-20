@@ -28,10 +28,6 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   float complex *x    = cvec_alloc(N, incx);
   float complex *y    = cvec_alloc(N, incx);
 
-  //fill empty space with random data to check increment
-  cvec_fill(N * incx, x, 1, vec_fill_RAND, 1.0, 1.0);
-  cvec_fill(N * incy, y, 1, vec_fill_RAND, 1.0, 1.0);
-
   //fill y with -i where necessary
   cvec_fill(N, y, incy, vec_fill_CONSTANT, -_Complex_I, 1.0);
 

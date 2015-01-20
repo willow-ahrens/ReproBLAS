@@ -33,14 +33,11 @@ int vecvec_fill_bench_test(int argc, char** argv, int N, int incx, int incy, int
   int rc = 0;
   float res;
   I_float Ires;
-  float *x = svec_alloc(N, incx);
-  float *y = svec_alloc(N, incy);
 
   util_random_seed();
 
-  //fill empty space with random data to check increment
-  svec_fill(N * incx, x, 1, vec_fill_RAND, 1.0, 1.0);
-  svec_fill(N * incy, y, 1, vec_fill_RAND, 1.0, 1.0);
+  float *x = svec_alloc(N, incx);
+  float *y = svec_alloc(N, incy);
 
   //fill x
   svec_fill(N, x, incx, type, scale, cond);

@@ -28,12 +28,10 @@ const char* vecvec_fill_bench_name(int argc, char** argv){
 int vecvec_fill_bench_test(int argc, char** argv, int N, int incx, int incy, int type, double scale, double cond, int trials){
   int rc = 0;
   double res;
-  double *x = dvec_alloc(N, incx);
 
   util_random_seed();
 
-  //fill empty space with random data to check increment
-  dvec_fill(N * incx, x, 1, vec_fill_RAND, 1.0, 1.0);
+  double *x = dvec_alloc(N, incx);
 
   //fill x
   dvec_fill(N, x, incx, type, scale, cond);

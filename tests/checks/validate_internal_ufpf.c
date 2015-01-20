@@ -22,8 +22,6 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
 
   //allocate vector
   float *x = svec_alloc(N, incx);
-  //fill empty space with random data to check increment
-  svec_fill(N * incx, x, 1, vec_fill_RAND, 1.0, 1.0);
 
   //check
   for (i = 0; i < N; i++) {

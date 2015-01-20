@@ -76,16 +76,13 @@ extern int vecvec_fill_test(int argc, char** argv, int N, int incX, int incY, in
   float ref;
   Ifloat Iref;
   int max_num_blocks = 1024;
+
+  util_random_seed();
+
   float *x = svec_alloc(N, incX);
   float *y = svec_alloc(N, incY);
 
   opt_eval_option(argc, argv, &func_type);
-
-  util_random_seed();
-
-  //fill empty space with random data to check increment
-  svec_fill(N * incX, x, 1, vec_fill_RAND, 1.0, 1.0);
-  svec_fill(N * incY, y, 1, vec_fill_RAND, 1.0, 1.0);
 
   //fill x
   svec_fill(N, x, incX, type, (float)scale, (float)cond);

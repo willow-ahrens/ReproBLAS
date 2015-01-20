@@ -75,16 +75,13 @@ extern int vecvec_fill_test(int argc, char** argv, int N, int incX, int incY, in
   double ref;
   Idouble Iref;
   int max_num_blocks = 1024;
+
+  util_random_seed();
+
   double *x = dvec_alloc(N, incX);
   double *y = dvec_alloc(N, incY);
 
   opt_eval_option(argc, argv, &func_type);
-
-  util_random_seed();
-
-  //fill empty space with random data to check increment
-  dvec_fill(N * incX, x, 1, vec_fill_RAND, 1.0, 1.0);
-  dvec_fill(N * incY, y, 1, vec_fill_RAND, 1.0, 1.0);
 
   //fill x
   dvec_fill(N, x, incX, type, scale, cond);

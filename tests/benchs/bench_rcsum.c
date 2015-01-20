@@ -32,12 +32,10 @@ int vecvec_fill_bench_test(int argc, char** argv, int N, int incx, int incy, int
   int rc = 0;
   float complex res;
   I_float_Complex Ires;
-  float complex *x = cvec_alloc(N, incx);
 
   util_random_seed();
 
-  //fill empty space with random data to check increment
-  cvec_fill(N * incx, x, 1, vec_fill_RAND, 1.0, 1.0);
+  float complex *x = cvec_alloc(N, incx);
 
   //fill x
   cvec_fill(N, x, incx, type, scale, cond);

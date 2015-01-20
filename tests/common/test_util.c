@@ -408,19 +408,43 @@ void cvec_permute(int N, float complex* V, int incV, int *Q, int incQ, int *P, i
 }
 
 double* dvec_alloc(int N, int incV) {
-  return (double*)calloc(N * incV, sizeof(double));
+  double *V = (double*)malloc(N * incV * sizeof(double));
+  if(incV != 1){
+    //fill empty space with random data to check increments
+    dvec_fill(N * incV, V, 1, vec_fill_RAND, 1.0, 1.0);
+    dvec_fill(N, V, incV, vec_fill_CONSTANT, 0.0, 1.0);
+  }
+  return V;
 }
 
 float* svec_alloc(int N, int incV) {
-  return (float*)calloc(N * incV, sizeof(float));
+  float *V = (float*)malloc(N * incV * sizeof(float));
+  if(incV != 1){
+    //fill empty space with random data to check increments
+    svec_fill(N * incV, V, 1, vec_fill_RAND, 1.0, 1.0);
+    svec_fill(N, V, incV, vec_fill_CONSTANT, 0.0, 1.0);
+  }
+  return V;
 }
 
 double complex* zvec_alloc(int N, int incV) {
-  return (double complex*)calloc(N * incV, sizeof(double complex));
+  double complex *V = (double complex*)malloc(N * incV * sizeof(double complex));
+  if(incV != 1){
+    //fill empty space with random data to check increments
+    zvec_fill(N * incV, V, 1, vec_fill_RAND, 1.0, 1.0);
+    zvec_fill(N, V, incV, vec_fill_CONSTANT, 0.0, 1.0);
+  }
+  return V;
 }
 
 float complex* cvec_alloc(int N, int incV) {
-  return (float complex*)calloc(N * incV, sizeof(float complex));
+  float complex *V = (float complex*)malloc(N * incV * sizeof(float complex));
+  if(incV != 1){
+    //fill empty space with random data to check increments
+    cvec_fill(N * incV, V, 1, vec_fill_RAND, 1.0, 1.0);
+    cvec_fill(N, V, incV, vec_fill_CONSTANT, 0.0, 1.0);
+  }
+  return V;
 }
 
 double* dmat_alloc(int M, int N, int ldA) {

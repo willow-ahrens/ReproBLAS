@@ -75,16 +75,13 @@ extern int vecvec_fill_test(int argc, char** argv, int N, int incX, int incY, in
   float complex ref;
   I_float_Complex Iref;
   int max_num_blocks = 1024;
+
+  util_random_seed();
+
   float complex *x = cvec_alloc(N, incX);
   float complex *y = cvec_alloc(N, incY);
 
   opt_eval_option(argc, argv, &func_type);
-
-  util_random_seed();
-
-  //fill empty space with random data to check increment
-  cvec_fill(N * incX, x, 1, vec_fill_RAND, 1.0, 1.0);
-  cvec_fill(N * incY, y, 1, vec_fill_RAND, 1.0, 1.0);
 
   //fill x
   cvec_fill(N, x, incX, type, (float)scale, (float)cond);

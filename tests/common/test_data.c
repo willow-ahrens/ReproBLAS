@@ -144,7 +144,7 @@ int main (int argc, char** argv) {
     exit(1);
   }
 
-  vec_random_seed();
+  util_random_seed();
 
   switch(data_type._named.value){
     case 0: {
