@@ -463,6 +463,64 @@ float complex* cmat_alloc(rblas_order_t order, int M, int N, int ldA) {
   return (float complex*)calloc(ldA * N, sizeof(float complex));
 }
 
+void dmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, double* A, int ldA, int type, double a, double b) {
+  int i;
+  switch(type){
+    case vec_fill_CONSTANT_DROP:
+    case vec_fill_CONSTANT:
+    case vec_fill_RAND_DROP:
+    case vec_fill_RAND:
+    case vec_fill_2_TIMES_RAND_MINUS_1_DROP:
+    case vec_fill_2_TIMES_RAND_MINUS_1:
+    case vec_fill_RAND_PLUS_RAND_MINUS_1_DROP:
+    case vec_fill_RAND_PLUS_RAND_MINUS_1:
+    case vec_fill_NORMAL_DROP:
+    case vec_fill_NORMAL:
+    case vec_fill_SINE_DROP:
+    case vec_fill_SINE:
+    case vec_fill_RAND_COND:
+    case vec_fill_SMALL_PLUS_INCREASING_BIG:
+    case vec_fill_SMALL_PLUS_RAND_BIG:
+      switch(order){
+        case rblas_Row_Major:
+          switch(transA){
+            case rblas_No_Trans:
+              for(i = 0; i < M; i++){
+                dvec_fill(N, A + i * ldA, 1, type, a, b);
+              }
+              break;
+            default:
+              for(i = 0; i < N; i++){
+                dvec_fill(M, A + i, ldA, type, a, b);
+              }
+              break;
+          }
+          break;
+        case rblas_Col_Major:
+          switch(transA){
+            case rblas_No_Trans:
+              for(i = 0; i < M; i++){
+                dvec_fill(N, A + i, ldA, type, a, b);
+              }
+              break;
+            default:
+              for(i = 0; i < N; i++){
+                dvec_fill(M, A + i * ldA, 1, type, a, b);
+              }
+              break;
+          }
+        break;
+      }
+      break;
+    case 34: //mat fill identity. :
+      dmat_fill(order, transA, M, N, A, ldA, vec_fill_CONSTANT, 0.0, 1.0);
+      for(i = 0; i < M && i < N; i++){
+        A[i * ldA + i] = 1.0;
+      }
+      break;
+  }
+}
+
 void util_random_seed(void) {
   struct timeval st;
   gettimeofday( &st, NULL );
