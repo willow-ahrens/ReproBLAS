@@ -21,6 +21,12 @@ typedef int (*compare_func)(int i, int j, void *data);
 typedef void (*swap_func)(int i, int j, void *data);
 typedef int (*compare_elem_func)(void *a, void *b, util_comp_t comp);
 
+void util_random_seed(void) {
+  struct timeval st;
+  gettimeofday( &st, NULL );
+  srand48((long)(st.tv_usec + 1e6*st.tv_sec));
+}
+
 int util_dcompare(void *a, void *b, util_comp_t comp){
   double a_prime;
   double b_prime;
@@ -448,83 +454,71 @@ float complex* cvec_alloc(int N, int incV) {
 }
 
 double* dmat_alloc(rblas_order_t order, int M, int N, int ldA) {
-  return (double*)calloc(ldA * N, sizeof(double));
+  double *A;
+  switch(order){
+    case rblas_Row_Major:
+      A = (double*)malloc(ldA * M * sizeof(double));
+      //fill empty space with random data to check ldA
+      dmat_fill(order, rblas_No_Trans, M, ldA, A, ldA, vec_fill_RAND, 1.0, 1.0);
+      dmat_fill(order, rblas_No_Trans, M, N, A, ldA, vec_fill_CONSTANT, 0.0, 1.0);
+    case rblas_Col_Major:
+      A = (double*)malloc(ldA * N * sizeof(double));
+      //fill empty space with random data to check ldA
+      dmat_fill(order, rblas_No_Trans, ldA, N, A, ldA, vec_fill_RAND, 1.0, 1.0);
+      dmat_fill(order, rblas_No_Trans, M, N, A, ldA, vec_fill_CONSTANT, 0.0, 1.0);
+  }
+  return A;
 }
 
 float* smat_alloc(rblas_order_t order, int M, int N, int ldA) {
-  return (float*)calloc(ldA * N, sizeof(float));
+  float *A;
+  switch(order){
+    case rblas_Row_Major:
+      A = (float*)malloc(ldA * M * sizeof(float));
+      //fill empty space with random data to check ldA
+      smat_fill(order, rblas_No_Trans, M, ldA, A, ldA, vec_fill_RAND, 1.0, 1.0);
+      smat_fill(order, rblas_No_Trans, M, N, A, ldA, vec_fill_CONSTANT, 0.0, 1.0);
+    case rblas_Col_Major:
+      A = (float*)malloc(ldA * N * sizeof(float));
+      //fill empty space with random data to check ldA
+      smat_fill(order, rblas_No_Trans, ldA, N, A, ldA, vec_fill_RAND, 1.0, 1.0);
+      smat_fill(order, rblas_No_Trans, M, N, A, ldA, vec_fill_CONSTANT, 0.0, 1.0);
+  }
+  return A;
 }
 
 double complex* zmat_alloc(rblas_order_t order, int M, int N, int ldA) {
-  return (double complex*)calloc(ldA * N, sizeof(double complex));
+  double complex *A;
+  switch(order){
+    case rblas_Row_Major:
+      A = (double complex*)malloc(ldA * M * sizeof(double complex));
+      //fill empty space with random data to check ldA
+      zmat_fill(order, rblas_No_Trans, M, ldA, A, ldA, vec_fill_RAND, 1.0, 1.0);
+      zmat_fill(order, rblas_No_Trans, M, N, A, ldA, vec_fill_CONSTANT, 0.0, 1.0);
+    case rblas_Col_Major:
+      A = (double complex*)malloc(ldA * N * sizeof(double complex));
+      //fill empty space with random data to check ldA
+      zmat_fill(order, rblas_No_Trans, ldA, N, A, ldA, vec_fill_RAND, 1.0, 1.0);
+      zmat_fill(order, rblas_No_Trans, M, N, A, ldA, vec_fill_CONSTANT, 0.0, 1.0);
+  }
+  return A;
 }
 
 float complex* cmat_alloc(rblas_order_t order, int M, int N, int ldA) {
-  return (float complex*)calloc(ldA * N, sizeof(float complex));
-}
-
-void dmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, double* A, int ldA, int type, double a, double b) {
-  int i;
-  switch(type){
-    case vec_fill_CONSTANT_DROP:
-    case vec_fill_CONSTANT:
-    case vec_fill_RAND_DROP:
-    case vec_fill_RAND:
-    case vec_fill_2_TIMES_RAND_MINUS_1_DROP:
-    case vec_fill_2_TIMES_RAND_MINUS_1:
-    case vec_fill_RAND_PLUS_RAND_MINUS_1_DROP:
-    case vec_fill_RAND_PLUS_RAND_MINUS_1:
-    case vec_fill_NORMAL_DROP:
-    case vec_fill_NORMAL:
-    case vec_fill_SINE_DROP:
-    case vec_fill_SINE:
-    case vec_fill_RAND_COND:
-    case vec_fill_SMALL_PLUS_INCREASING_BIG:
-    case vec_fill_SMALL_PLUS_RAND_BIG:
-      switch(order){
-        case rblas_Row_Major:
-          switch(transA){
-            case rblas_No_Trans:
-              for(i = 0; i < M; i++){
-                dvec_fill(N, A + i * ldA, 1, type, a, b);
-              }
-              break;
-            default:
-              for(i = 0; i < N; i++){
-                dvec_fill(M, A + i, ldA, type, a, b);
-              }
-              break;
-          }
-          break;
-        case rblas_Col_Major:
-          switch(transA){
-            case rblas_No_Trans:
-              for(i = 0; i < M; i++){
-                dvec_fill(N, A + i, ldA, type, a, b);
-              }
-              break;
-            default:
-              for(i = 0; i < N; i++){
-                dvec_fill(M, A + i * ldA, 1, type, a, b);
-              }
-              break;
-          }
-        break;
-      }
-      break;
-    case 34: //mat fill identity. :
-      dmat_fill(order, transA, M, N, A, ldA, vec_fill_CONSTANT, 0.0, 1.0);
-      for(i = 0; i < M && i < N; i++){
-        A[i * ldA + i] = 1.0;
-      }
-      break;
+  float complex *A;
+  switch(order){
+    case rblas_Row_Major:
+      A = (float complex*)malloc(ldA * M * sizeof(float complex));
+      //fill empty space with random data to check ldA
+      cmat_fill(order, rblas_No_Trans, M, ldA, A, ldA, vec_fill_RAND, 1.0, 1.0);
+      cmat_fill(order, rblas_No_Trans, M, N, A, ldA, vec_fill_CONSTANT, 0.0, 1.0);
+    case rblas_Col_Major:
+      A = (float complex*)malloc(ldA * N * sizeof(float complex));
+      //fill empty space with random data to check ldA
+      cmat_fill(order, rblas_No_Trans, ldA, N, A, ldA, vec_fill_RAND, 1.0, 1.0);
+      cmat_fill(order, rblas_No_Trans, M, N, A, ldA, vec_fill_CONSTANT, 0.0, 1.0);
   }
-}
-
-void util_random_seed(void) {
-  struct timeval st;
-  gettimeofday( &st, NULL );
-  srand48((long)(st.tv_usec + 1e6*st.tv_sec));
+  return A;
 }
 
 void dvec_fill(int N, double* V, int incV, int type, double a, double b) {
@@ -859,6 +853,239 @@ void cvec_fill(int N, float complex* V, int incV, int type, float complex a, flo
       break;
   }
 }
+
+void dmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, double* A, int ldA, int type, double a, double b) {
+  int i;
+  switch(type){
+    case vec_fill_CONSTANT_DROP:
+    case vec_fill_CONSTANT:
+    case vec_fill_RAND_DROP:
+    case vec_fill_RAND:
+    case vec_fill_2_TIMES_RAND_MINUS_1_DROP:
+    case vec_fill_2_TIMES_RAND_MINUS_1:
+    case vec_fill_RAND_PLUS_RAND_MINUS_1_DROP:
+    case vec_fill_RAND_PLUS_RAND_MINUS_1:
+    case vec_fill_NORMAL_DROP:
+    case vec_fill_NORMAL:
+    case vec_fill_SINE_DROP:
+    case vec_fill_SINE:
+    case vec_fill_RAND_COND:
+    case vec_fill_SMALL_PLUS_INCREASING_BIG:
+    case vec_fill_SMALL_PLUS_RAND_BIG:
+      switch(order){
+        case rblas_Row_Major:
+          switch(transA){
+            case rblas_No_Trans:
+              for(i = 0; i < M; i++){
+                dvec_fill(N, A + i * ldA, 1, type, a, b);
+              }
+              break;
+            default:
+              for(i = 0; i < N; i++){
+                dvec_fill(M, A + i, ldA, type, a, b);
+              }
+              break;
+          }
+          break;
+        case rblas_Col_Major:
+          switch(transA){
+            case rblas_No_Trans:
+              for(i = 0; i < M; i++){
+                dvec_fill(N, A + i, ldA, type, a, b);
+              }
+              break;
+            default:
+              for(i = 0; i < N; i++){
+                dvec_fill(M, A + i * ldA, 1, type, a, b);
+              }
+              break;
+          }
+        break;
+      }
+      break;
+    case mat_fill_IDENTITY:
+      dmat_fill(order, transA, M, N, A, ldA, vec_fill_CONSTANT, 0.0, 1.0);
+      for(i = 0; i < M && i < N; i++){
+        A[i * ldA + i] = 1.0;
+      }
+      break;
+  }
+}
+
+void smat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, float* A, int ldA, int type, float a, float b) {
+  int i;
+  switch(type){
+    case vec_fill_CONSTANT_DROP:
+    case vec_fill_CONSTANT:
+    case vec_fill_RAND_DROP:
+    case vec_fill_RAND:
+    case vec_fill_2_TIMES_RAND_MINUS_1_DROP:
+    case vec_fill_2_TIMES_RAND_MINUS_1:
+    case vec_fill_RAND_PLUS_RAND_MINUS_1_DROP:
+    case vec_fill_RAND_PLUS_RAND_MINUS_1:
+    case vec_fill_NORMAL_DROP:
+    case vec_fill_NORMAL:
+    case vec_fill_SINE_DROP:
+    case vec_fill_SINE:
+    case vec_fill_RAND_COND:
+    case vec_fill_SMALL_PLUS_INCREASING_BIG:
+    case vec_fill_SMALL_PLUS_RAND_BIG:
+      switch(order){
+        case rblas_Row_Major:
+          switch(transA){
+            case rblas_No_Trans:
+              for(i = 0; i < M; i++){
+                svec_fill(N, A + i * ldA, 1, type, a, b);
+              }
+              break;
+            default:
+              for(i = 0; i < N; i++){
+                svec_fill(M, A + i, ldA, type, a, b);
+              }
+              break;
+          }
+          break;
+        case rblas_Col_Major:
+          switch(transA){
+            case rblas_No_Trans:
+              for(i = 0; i < M; i++){
+                svec_fill(N, A + i, ldA, type, a, b);
+              }
+              break;
+            default:
+              for(i = 0; i < N; i++){
+                svec_fill(M, A + i * ldA, 1, type, a, b);
+              }
+              break;
+          }
+        break;
+      }
+      break;
+    case mat_fill_IDENTITY:
+      smat_fill(order, transA, M, N, A, ldA, vec_fill_CONSTANT, 0.0, 1.0);
+      for(i = 0; i < M && i < N; i++){
+        A[i * ldA + i] = 1.0;
+      }
+      break;
+  }
+}
+
+void zmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, double complex* A, int ldA, int type, double complex a, double complex b) {
+  int i;
+  switch(type){
+    case vec_fill_CONSTANT_DROP:
+    case vec_fill_CONSTANT:
+    case vec_fill_RAND_DROP:
+    case vec_fill_RAND:
+    case vec_fill_2_TIMES_RAND_MINUS_1_DROP:
+    case vec_fill_2_TIMES_RAND_MINUS_1:
+    case vec_fill_RAND_PLUS_RAND_MINUS_1_DROP:
+    case vec_fill_RAND_PLUS_RAND_MINUS_1:
+    case vec_fill_NORMAL_DROP:
+    case vec_fill_NORMAL:
+    case vec_fill_SINE_DROP:
+    case vec_fill_SINE:
+    case vec_fill_RAND_COND:
+    case vec_fill_SMALL_PLUS_INCREASING_BIG:
+    case vec_fill_SMALL_PLUS_RAND_BIG:
+      switch(order){
+        case rblas_Row_Major:
+          switch(transA){
+            case rblas_No_Trans:
+              for(i = 0; i < M; i++){
+                zvec_fill(N, A + i * ldA, 1, type, a, b);
+              }
+              break;
+            default:
+              for(i = 0; i < N; i++){
+                zvec_fill(M, A + i, ldA, type, a, b);
+              }
+              break;
+          }
+          break;
+        case rblas_Col_Major:
+          switch(transA){
+            case rblas_No_Trans:
+              for(i = 0; i < M; i++){
+                zvec_fill(N, A + i, ldA, type, a, b);
+              }
+              break;
+            default:
+              for(i = 0; i < N; i++){
+                zvec_fill(M, A + i * ldA, 1, type, a, b);
+              }
+              break;
+          }
+        break;
+      }
+      break;
+    case mat_fill_IDENTITY:
+      zmat_fill(order, transA, M, N, A, ldA, vec_fill_CONSTANT, 0.0, 1.0);
+      for(i = 0; i < M && i < N; i++){
+        A[i * ldA + i] = 1.0;
+      }
+      break;
+  }
+}
+
+void cmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, float complex* A, int ldA, int type, float complex a, float complex b) {
+  int i;
+  switch(type){
+    case vec_fill_CONSTANT_DROP:
+    case vec_fill_CONSTANT:
+    case vec_fill_RAND_DROP:
+    case vec_fill_RAND:
+    case vec_fill_2_TIMES_RAND_MINUS_1_DROP:
+    case vec_fill_2_TIMES_RAND_MINUS_1:
+    case vec_fill_RAND_PLUS_RAND_MINUS_1_DROP:
+    case vec_fill_RAND_PLUS_RAND_MINUS_1:
+    case vec_fill_NORMAL_DROP:
+    case vec_fill_NORMAL:
+    case vec_fill_SINE_DROP:
+    case vec_fill_SINE:
+    case vec_fill_RAND_COND:
+    case vec_fill_SMALL_PLUS_INCREASING_BIG:
+    case vec_fill_SMALL_PLUS_RAND_BIG:
+      switch(order){
+        case rblas_Row_Major:
+          switch(transA){
+            case rblas_No_Trans:
+              for(i = 0; i < M; i++){
+                cvec_fill(N, A + i * ldA, 1, type, a, b);
+              }
+              break;
+            default:
+              for(i = 0; i < N; i++){
+                cvec_fill(M, A + i, ldA, type, a, b);
+              }
+              break;
+          }
+          break;
+        case rblas_Col_Major:
+          switch(transA){
+            case rblas_No_Trans:
+              for(i = 0; i < M; i++){
+                cvec_fill(N, A + i, ldA, type, a, b);
+              }
+              break;
+            default:
+              for(i = 0; i < N; i++){
+                cvec_fill(M, A + i * ldA, 1, type, a, b);
+              }
+              break;
+          }
+        break;
+      }
+      break;
+    case mat_fill_IDENTITY:
+      cmat_fill(order, transA, M, N, A, ldA, vec_fill_CONSTANT, 0.0, 1.0);
+      for(i = 0; i < M && i < N; i++){
+        A[i * ldA + i] = 1.0;
+      }
+      break;
+  }
+}
+
 
 const char* vec_fill_name(int type) {
   switch(type){

@@ -19,7 +19,6 @@
 #define vec_fill_RAND_PLUS_RAND_MINUS_1_DROP 12
 #define vec_fill_NORMAL_DROP                 13
 #define vec_fill_SINE_DROP                   14
-#define vec_fill_MAX                         15
 static const int  vec_fill_n_names  = 15;
 static const char *vec_fill_names[] = {"constant",
                                        "rand",
@@ -51,11 +50,50 @@ static const char *vec_fill_descs[] = {"Constant",
                                        "Random+(Random-1)[drop]",
                                        "Normal[drop]",
                                        "Sine(2pi*(i/n))[drop]"};
+#define mat_fill_IDENTITY                    15
+static const int  mat_fill_n_names  = 16;
+static const char *mat_fill_names[] = {"constant",
+                                       "rand",
+                                       "2*rand-1",
+                                       "rand+(rand-1)",
+                                       "normal",
+                                       "sine",
+                                       "small+grow*big",
+                                       "small+rand*big",
+                                       "rand_cond",
+                                       "constant[drop]",
+                                       "rand[drop]",
+                                       "2*rand-1[drop]",
+                                       "rand+(rand-1)[drop]",
+                                       "normal[drop]",
+                                       "sine[drop]",
+                                       "identity"};
+static const char *mat_fill_descs[] = {"Constant",
+                                       "Random",
+                                       "2*Random-1",
+                                       "Random+(Random-1)",
+                                       "Normal",
+                                       "Sine(2pi*(i/n))",
+                                       "Small+(i/n)*Big",
+                                       "Small+Rand*Big",
+                                       "RandomConditioned",
+                                       "Constant[drop]",
+                                       "Random[drop]",
+                                       "2*Random-1[drop]",
+                                       "Random+(Random-1)[drop]",
+                                       "Normal[drop]",
+                                       "Sine(2pi*(i/n))[drop]",
+                                       "Identity"};
 
-void svec_fill(int N, float* v, int inc, int type, float a, float b);
 void dvec_fill(int N, double* v, int inc, int type, double a, double b);
-void cvec_fill(int N, float complex* v, int inc, int type, float complex a, float complex b);
+void svec_fill(int N, float* v, int inc, int type, float a, float b);
 void zvec_fill(int N, double complex* v, int inc, int type, double complex a, double complex b);
+void cvec_fill(int N, float complex* v, int inc, int type, float complex a, float complex b);
+
+void dmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, double* A, int ldA, int type, double a, double b);
+void smat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, float* A, int ldA, int type, float a, float b);
+void zmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, double complex* A, int ldA, int type, double complex a, double complex b);
+void cmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, float complex* A, int ldA, int type, float complex a, float complex b);
 
 const char* vec_fill_name(int type);
 
