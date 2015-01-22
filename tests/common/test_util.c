@@ -189,7 +189,7 @@ static int vec_compare(int a, int b, void *data){
   return d->compare_elem(d->V + a * d->incV * d->sizeV, d->V + a * d->incV * d->sizeV, d->comp);
 }
 
-void dvec_sort(int N, double *V, int incV, int *P, int incP, util_comp_t comp){
+void util_dvec_sort(int N, double *V, int incV, int *P, int incP, util_comp_t comp){
   vec_swap_data_t swap_data = {.V     = V,
                                .incV  = incV,
                                .sizeV = sizeof(double),
@@ -203,7 +203,7 @@ void dvec_sort(int N, double *V, int incV, int *P, int incP, util_comp_t comp){
   sort(0, N, &vec_compare, &compare_data, &vec_swap, &swap_data);
 }
 
-void svec_sort(int N, float *V, int incV, int *P, int incP, util_comp_t comp){
+void util_svec_sort(int N, float *V, int incV, int *P, int incP, util_comp_t comp){
   vec_swap_data_t swap_data = {.V     = V,
                                .incV  = incV,
                                .sizeV = sizeof(float),
@@ -217,7 +217,7 @@ void svec_sort(int N, float *V, int incV, int *P, int incP, util_comp_t comp){
   sort(0, N, &vec_compare, &compare_data, &vec_swap, &swap_data);
 }
 
-void zvec_sort(int N, double complex *V, int incV, int *P, int incP, util_comp_t comp){
+void util_zvec_sort(int N, double complex *V, int incV, int *P, int incP, util_comp_t comp){
   vec_swap_data_t swap_data = {.V     = V,
                                .incV  = incV,
                                .sizeV = sizeof(double complex),
@@ -231,7 +231,7 @@ void zvec_sort(int N, double complex *V, int incV, int *P, int incP, util_comp_t
   sort(0, N, &vec_compare, &compare_data, &vec_swap, &swap_data);
 }
 
-void cvec_sort(int N, float complex *V, int incV, int *P, int incP, util_comp_t comp){
+void util_cvec_sort(int N, float complex *V, int incV, int *P, int incP, util_comp_t comp){
   vec_swap_data_t swap_data = {.V     = V,
                                .incV  = incV,
                                .sizeV = sizeof(float complex),
@@ -253,7 +253,7 @@ static void reverse(int N, swap_func swap, void *swap_data) {
   }
 }
 
-void dvec_reverse(int N, double* V, int incV, int *P, int incP) {
+void util_dvec_reverse(int N, double* V, int incV, int *P, int incP) {
   vec_swap_data_t swap_data = {.V     = V,
                                .incV  = incV,
                                .sizeV = sizeof(double),
@@ -262,7 +262,7 @@ void dvec_reverse(int N, double* V, int incV, int *P, int incP) {
   reverse(N, &vec_swap, &swap_data);
 }
 
-void svec_reverse(int N, float* V, int incV, int *P, int incP) {
+void util_svec_reverse(int N, float* V, int incV, int *P, int incP) {
   vec_swap_data_t swap_data = {.V     = V,
                                .incV  = incV,
                                .sizeV = sizeof(float),
@@ -271,7 +271,7 @@ void svec_reverse(int N, float* V, int incV, int *P, int incP) {
   reverse(N, &vec_swap, &swap_data);
 }
 
-void zvec_reverse(int N, double complex* V, int incV, int *P, int incP) {
+void util_zvec_reverse(int N, double complex* V, int incV, int *P, int incP) {
   vec_swap_data_t swap_data = {.V     = V,
                                .incV  = incV,
                                .sizeV = sizeof(double complex),
@@ -280,7 +280,7 @@ void zvec_reverse(int N, double complex* V, int incV, int *P, int incP) {
   reverse(N, &vec_swap, &swap_data);
 }
 
-void cvec_reverse(int N, float complex* V, int incV, int *P, int incP) {
+void util_cvec_reverse(int N, float complex* V, int incV, int *P, int incP) {
   vec_swap_data_t swap_data = {.V     = V,
                                .incV  = incV,
                                .sizeV = sizeof(float complex),
@@ -299,7 +299,7 @@ static void shuffle(int N, swap_func swap, void *swap_data) {
   }
 }
 
-void dvec_shuffle(int N, double* V, int incV, int *P, int incP) {
+void util_dvec_shuffle(int N, double* V, int incV, int *P, int incP) {
   vec_swap_data_t swap_data = {.V     = V,
                                .incV  = incV,
                                .sizeV = sizeof(double),
@@ -308,7 +308,7 @@ void dvec_shuffle(int N, double* V, int incV, int *P, int incP) {
   shuffle(N, &vec_swap, &swap_data);
 }
 
-void svec_shuffle(int N, float* V, int incV, int *P, int incP) {
+void util_svec_shuffle(int N, float* V, int incV, int *P, int incP) {
   vec_swap_data_t swap_data = {.V     = V,
                                .incV  = incV,
                                .sizeV = sizeof(float),
@@ -317,7 +317,7 @@ void svec_shuffle(int N, float* V, int incV, int *P, int incP) {
   shuffle(N, &vec_swap, &swap_data);
 }
 
-void zvec_shuffle(int N, double complex* V, int incV, int *P, int incP) {
+void util_zvec_shuffle(int N, double complex* V, int incV, int *P, int incP) {
   vec_swap_data_t swap_data = {.V     = V,
                                .incV  = incV,
                                .sizeV = sizeof(double complex),
@@ -326,7 +326,7 @@ void zvec_shuffle(int N, double complex* V, int incV, int *P, int incP) {
   shuffle(N, &vec_swap, &swap_data);
 }
 
-void cvec_shuffle(int N, float complex* V, int incV, int *P, int incP) {
+void util_cvec_shuffle(int N, float complex* V, int incV, int *P, int incP) {
   vec_swap_data_t swap_data = {.V     = V,
                                .incV  = incV,
                                .sizeV = sizeof(float complex),
@@ -377,7 +377,7 @@ int* util_inverse_permutation(int N, int *P, int incP){
   return P_inverse;
 }
 
-void dvec_permute(int N, double* V, int incV, int *Q, int incQ, int *P, int incP) {
+void util_dvec_permute(int N, double* V, int incV, int *Q, int incQ, int *P, int incP) {
   vec_swap_data_t swap_data = {.V     = V,
                                .incV  = incV,
                                .sizeV = sizeof(double),
@@ -386,7 +386,7 @@ void dvec_permute(int N, double* V, int incV, int *Q, int incQ, int *P, int incP
   permute(N, Q, incQ, &vec_swap, &swap_data);
 }
 
-void svec_permute(int N, float* V, int incV, int *Q, int incQ, int *P, int incP) {
+void util_svec_permute(int N, float* V, int incV, int *Q, int incQ, int *P, int incP) {
   vec_swap_data_t swap_data = {.V     = V,
                                .incV  = incV,
                                .sizeV = sizeof(float),
@@ -395,7 +395,7 @@ void svec_permute(int N, float* V, int incV, int *Q, int incQ, int *P, int incP)
   permute(N, Q, incQ, &vec_swap, &swap_data);
 }
 
-void zvec_permute(int N, double complex* V, int incV, int *Q, int incQ, int *P, int incP) {
+void util_zvec_permute(int N, double complex* V, int incV, int *Q, int incQ, int *P, int incP) {
   vec_swap_data_t swap_data = {.V     = V,
                                .incV  = incV,
                                .sizeV = sizeof(double complex),
@@ -404,7 +404,7 @@ void zvec_permute(int N, double complex* V, int incV, int *Q, int incQ, int *P, 
   permute(N, Q, incQ, &vec_swap, &swap_data);
 }
 
-void cvec_permute(int N, float complex* V, int incV, int *Q, int incQ, int *P, int incP) {
+void util_cvec_permute(int N, float complex* V, int incV, int *Q, int incQ, int *P, int incP) {
   vec_swap_data_t swap_data = {.V     = V,
                                .incV  = incV,
                                .sizeV = sizeof(float complex),
@@ -413,174 +413,174 @@ void cvec_permute(int N, float complex* V, int incV, int *Q, int incQ, int *P, i
   permute(N, Q, incQ, &vec_swap, &swap_data);
 }
 
-double* dvec_alloc(int N, int incV) {
+double* util_dvec_alloc(int N, int incV) {
   double *V = (double*)malloc(N * incV * sizeof(double));
   if(incV != 1){
     //fill empty space with random data to check increments
-    dvec_fill(N * incV, V, 1, vec_fill_RAND, 1.0, 1.0);
-    dvec_fill(N, V, incV, vec_fill_CONSTANT, 0.0, 1.0);
+    util_dvec_fill(N * incV, V, 1, util_Vec_Rand, 1.0, 1.0);
+    util_dvec_fill(N, V, incV, util_Vec_Constant, 0.0, 1.0);
   }
   return V;
 }
 
-float* svec_alloc(int N, int incV) {
+float* util_svec_alloc(int N, int incV) {
   float *V = (float*)malloc(N * incV * sizeof(float));
   if(incV != 1){
     //fill empty space with random data to check increments
-    svec_fill(N * incV, V, 1, vec_fill_RAND, 1.0, 1.0);
-    svec_fill(N, V, incV, vec_fill_CONSTANT, 0.0, 1.0);
+    util_svec_fill(N * incV, V, 1, util_Vec_Rand, 1.0, 1.0);
+    util_svec_fill(N, V, incV, util_Vec_Constant, 0.0, 1.0);
   }
   return V;
 }
 
-double complex* zvec_alloc(int N, int incV) {
+double complex* util_zvec_alloc(int N, int incV) {
   double complex *V = (double complex*)malloc(N * incV * sizeof(double complex));
   if(incV != 1){
     //fill empty space with random data to check increments
-    zvec_fill(N * incV, V, 1, vec_fill_RAND, 1.0, 1.0);
-    zvec_fill(N, V, incV, vec_fill_CONSTANT, 0.0, 1.0);
+    util_zvec_fill(N * incV, V, 1, util_Vec_Rand, 1.0, 1.0);
+    util_zvec_fill(N, V, incV, util_Vec_Constant, 0.0, 1.0);
   }
   return V;
 }
 
-float complex* cvec_alloc(int N, int incV) {
+float complex* util_cvec_alloc(int N, int incV) {
   float complex *V = (float complex*)malloc(N * incV * sizeof(float complex));
   if(incV != 1){
     //fill empty space with random data to check increments
-    cvec_fill(N * incV, V, 1, vec_fill_RAND, 1.0, 1.0);
-    cvec_fill(N, V, incV, vec_fill_CONSTANT, 0.0, 1.0);
+    util_cvec_fill(N * incV, V, 1, util_Vec_Rand, 1.0, 1.0);
+    util_cvec_fill(N, V, incV, util_Vec_Constant, 0.0, 1.0);
   }
   return V;
 }
 
-double* dmat_alloc(rblas_order_t order, int M, int N, int ldA) {
+double* util_dmat_alloc(rblas_order_t order, int M, int N, int ldA) {
   double *A;
   switch(order){
     case rblas_Row_Major:
       A = (double*)malloc(ldA * M * sizeof(double));
       //fill empty space with random data to check ldA
-      dmat_fill(order, rblas_No_Trans, M, ldA, A, ldA, vec_fill_RAND, 1.0, 1.0);
-      dmat_fill(order, rblas_No_Trans, M, N, A, ldA, vec_fill_CONSTANT, 0.0, 1.0);
+      util_dmat_fill(order, rblas_No_Trans, M, ldA, A, ldA, util_Mat_Row_Rand, 1.0, 1.0);
+      util_dmat_fill(order, rblas_No_Trans, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
     case rblas_Col_Major:
       A = (double*)malloc(ldA * N * sizeof(double));
       //fill empty space with random data to check ldA
-      dmat_fill(order, rblas_No_Trans, ldA, N, A, ldA, vec_fill_RAND, 1.0, 1.0);
-      dmat_fill(order, rblas_No_Trans, M, N, A, ldA, vec_fill_CONSTANT, 0.0, 1.0);
+      util_dmat_fill(order, rblas_No_Trans, ldA, N, A, ldA, util_Mat_Row_Rand, 1.0, 1.0);
+      util_dmat_fill(order, rblas_No_Trans, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
   }
   return A;
 }
 
-float* smat_alloc(rblas_order_t order, int M, int N, int ldA) {
+float* util_smat_alloc(rblas_order_t order, int M, int N, int ldA) {
   float *A;
   switch(order){
     case rblas_Row_Major:
       A = (float*)malloc(ldA * M * sizeof(float));
       //fill empty space with random data to check ldA
-      smat_fill(order, rblas_No_Trans, M, ldA, A, ldA, vec_fill_RAND, 1.0, 1.0);
-      smat_fill(order, rblas_No_Trans, M, N, A, ldA, vec_fill_CONSTANT, 0.0, 1.0);
+      util_smat_fill(order, rblas_No_Trans, M, ldA, A, ldA, util_Mat_Row_Rand, 1.0, 1.0);
+      util_smat_fill(order, rblas_No_Trans, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
     case rblas_Col_Major:
       A = (float*)malloc(ldA * N * sizeof(float));
       //fill empty space with random data to check ldA
-      smat_fill(order, rblas_No_Trans, ldA, N, A, ldA, vec_fill_RAND, 1.0, 1.0);
-      smat_fill(order, rblas_No_Trans, M, N, A, ldA, vec_fill_CONSTANT, 0.0, 1.0);
+      util_smat_fill(order, rblas_No_Trans, ldA, N, A, ldA, util_Mat_Row_Rand, 1.0, 1.0);
+      util_smat_fill(order, rblas_No_Trans, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
   }
   return A;
 }
 
-double complex* zmat_alloc(rblas_order_t order, int M, int N, int ldA) {
+double complex* util_zmat_alloc(rblas_order_t order, int M, int N, int ldA) {
   double complex *A;
   switch(order){
     case rblas_Row_Major:
       A = (double complex*)malloc(ldA * M * sizeof(double complex));
       //fill empty space with random data to check ldA
-      zmat_fill(order, rblas_No_Trans, M, ldA, A, ldA, vec_fill_RAND, 1.0, 1.0);
-      zmat_fill(order, rblas_No_Trans, M, N, A, ldA, vec_fill_CONSTANT, 0.0, 1.0);
+      util_zmat_fill(order, rblas_No_Trans, M, ldA, A, ldA, util_Mat_Row_Rand, 1.0, 1.0);
+      util_zmat_fill(order, rblas_No_Trans, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
     case rblas_Col_Major:
       A = (double complex*)malloc(ldA * N * sizeof(double complex));
       //fill empty space with random data to check ldA
-      zmat_fill(order, rblas_No_Trans, ldA, N, A, ldA, vec_fill_RAND, 1.0, 1.0);
-      zmat_fill(order, rblas_No_Trans, M, N, A, ldA, vec_fill_CONSTANT, 0.0, 1.0);
+      util_zmat_fill(order, rblas_No_Trans, ldA, N, A, ldA, util_Mat_Row_Rand, 1.0, 1.0);
+      util_zmat_fill(order, rblas_No_Trans, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
   }
   return A;
 }
 
-float complex* cmat_alloc(rblas_order_t order, int M, int N, int ldA) {
+float complex* util_cmat_alloc(rblas_order_t order, int M, int N, int ldA) {
   float complex *A;
   switch(order){
     case rblas_Row_Major:
       A = (float complex*)malloc(ldA * M * sizeof(float complex));
       //fill empty space with random data to check ldA
-      cmat_fill(order, rblas_No_Trans, M, ldA, A, ldA, vec_fill_RAND, 1.0, 1.0);
-      cmat_fill(order, rblas_No_Trans, M, N, A, ldA, vec_fill_CONSTANT, 0.0, 1.0);
+      util_cmat_fill(order, rblas_No_Trans, M, ldA, A, ldA, util_Mat_Row_Rand, 1.0, 1.0);
+      util_cmat_fill(order, rblas_No_Trans, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
     case rblas_Col_Major:
       A = (float complex*)malloc(ldA * N * sizeof(float complex));
       //fill empty space with random data to check ldA
-      cmat_fill(order, rblas_No_Trans, ldA, N, A, ldA, vec_fill_RAND, 1.0, 1.0);
-      cmat_fill(order, rblas_No_Trans, M, N, A, ldA, vec_fill_CONSTANT, 0.0, 1.0);
+      util_cmat_fill(order, rblas_No_Trans, ldA, N, A, ldA, util_Mat_Row_Rand, 1.0, 1.0);
+      util_cmat_fill(order, rblas_No_Trans, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
   }
   return A;
 }
 
-void dvec_fill(int N, double* V, int incV, int type, double a, double b) {
+void util_dvec_fill(int N, double* V, int incV, util_vec_fill_t fill, double a, double b) {
   int i;
   double small = 1.0 / (1024.0 * 1024.0);			// 2^-20
   double big   = 1024.0 * 1024.0 * 1024.0 * 32;	// 2^35
-  switch(type){
-    case vec_fill_CONSTANT_DROP:
-    case vec_fill_CONSTANT:
+  switch(fill){
+    case util_Vec_Constant_Drop:
+    case util_Vec_Constant:
       for (i = 0; i < N; i++) {
         V[i*incV] = 1.0;
       }
       break;
-    case vec_fill_RAND_DROP:
-    case vec_fill_RAND:
+    case util_Vec_Rand_Drop:
+    case util_Vec_Rand:
       for (i = 0; i < N; i++) {
         V[i*incV] = drand48() * (1+1e-9);
       }
       break;
-    case vec_fill_2_TIMES_RAND_MINUS_1_DROP:
-    case vec_fill_2_TIMES_RAND_MINUS_1:
+    case util_Vec_2_Times_Rand_Minus_1_Drop:
+    case util_Vec_2_Times_Rand_Minus_1:
       for (i = 0; i < N; i++) {
         V[i*incV] = (2 * drand48() * (1+1e-9) - 1);
       }
       break;
-    case vec_fill_RAND_PLUS_RAND_MINUS_1_DROP:
-    case vec_fill_RAND_PLUS_RAND_MINUS_1:
+    case util_Vec_Rand_Plus_Rand_Minus_1_Drop:
+    case util_Vec_Rand_Plus_Rand_Minus_1:
       for (i = 0; i < N; i++) {
         V[i*incV] = drand48() * (1+1e-9) + (drand48() * (1+1e-9) - 1);
       }
       break;
-    case vec_fill_NORMAL_DROP:
-    case vec_fill_NORMAL:
+    case util_Vec_Normal_Drop:
+    case util_Vec_Normal:
       for (i = 0; i < N; i++) {
         double t1 = drand48();
         double t2 = drand48();
         V[i * incV] = sqrt(-2.0 * log(t1)) * cos(2.0 * M_PI * t2);
       }
       break;
-    case vec_fill_SINE_DROP:
-    case vec_fill_SINE:
+    case util_Vec_Sine_Drop:
+    case util_Vec_Sine:
       for (i = 0; i < N; i++) {
         V[i*incV] = sin(2.0 * M_PI * ((double)i / (double)N));
       }
       break;
-    case vec_fill_RAND_COND:
+    case util_Vec_Rand_Cond:
       {
         int quart = (N / 8) & ~1;
         int mid = N - quart * 2;
         double c1, c2, c, f;
         int i;
 
-        dvec_fill(quart / 2, V, incV, vec_fill_RAND, 1.0e-10, 1.0);
-        dvec_fill(quart / 2, V + incV*(quart / 2), incV, vec_fill_RAND, 1, 1.0);
-        dvec_fill(quart / 8, V, incV, vec_fill_RAND, 1e-20, 1.0);
+        util_dvec_fill(quart / 2, V, incV, util_Vec_Rand, 1.0e-10, 1.0);
+        util_dvec_fill(quart / 2, V + incV*(quart / 2), incV, util_Vec_Rand, 1, 1.0);
+        util_dvec_fill(quart / 8, V, incV, util_Vec_Rand, 1e-20, 1.0);
         c1 = 0.0;
         for (i = 0; i < quart; i++) {
           c1 += V[i*incV];
           V[(i + quart)*incV] = -V[i*incV];
         }
-        dvec_fill(quart, V + 2 * quart*incV, incV, vec_fill_RAND, 1.0, 1.0);
-        dvec_fill(mid - quart, V + 3 * quart *incV, incV, vec_fill_RAND, 1e-8, 1.0);
+        util_dvec_fill(quart, V + 2 * quart*incV, incV, util_Vec_Rand, 1.0, 1.0);
+        util_dvec_fill(mid - quart, V + 3 * quart *incV, incV, util_Vec_Rand, 1e-8, 1.0);
         c2 = 0.0; c = 0.0;
         for (i = 2 * quart; i < N; i++) {
           c2 += fabs(V[i*incV]);
@@ -594,116 +594,104 @@ void dvec_fill(int N, double* V, int incV, int type, double a, double b) {
           V[i*incV] *= f;
         }
 
-        dvec_shuffle(N, V, incV, NULL, 1);
+        util_dvec_shuffle(N, V, incV, NULL, 1);
       }
       break;
-    case vec_fill_SMALL_PLUS_INCREASING_BIG:
+    case util_Vec_Small_Plus_Increasing_Big:
       for (i = 0; i < N; i++) {
         V[i*incV] = small + (big - small) * i / N;
       }
       break;
-    case vec_fill_SMALL_PLUS_RAND_BIG:
+    case util_Vec_Small_Plus_Rand_Big:
       for (i = 0; i < N; i++) {
         V[i*incV] = small + (big - small) * drand48() * (1+1e-9);
       }
       break;
   }
 
-  switch(type){
-    case vec_fill_CONSTANT_DROP:
-    case vec_fill_CONSTANT:
-    case vec_fill_RAND_DROP:
-    case vec_fill_RAND:
-    case vec_fill_2_TIMES_RAND_MINUS_1_DROP:
-    case vec_fill_2_TIMES_RAND_MINUS_1:
-    case vec_fill_RAND_PLUS_RAND_MINUS_1_DROP:
-    case vec_fill_RAND_PLUS_RAND_MINUS_1:
-    case vec_fill_NORMAL_DROP:
-    case vec_fill_NORMAL:
-    case vec_fill_SINE_DROP:
-    case vec_fill_SINE:
-      if (a != 1.0) {
-        for (i = 0; i < N; i++) {
-          V[i*incV] *= a;
-        }
-      }
-      break;
+  if (a != 1.0) {
+    for (i = 0; i < N; i++) {
+      V[i*incV] *= a;
+    }
   }
-  switch(type){
-    case vec_fill_CONSTANT_DROP:
-    case vec_fill_RAND_DROP:
-    case vec_fill_2_TIMES_RAND_MINUS_1_DROP:
-    case vec_fill_RAND_PLUS_RAND_MINUS_1_DROP:
-    case vec_fill_NORMAL_DROP:
-    case vec_fill_SINE_DROP:
+
+  switch(fill){
+    case util_Vec_Constant_Drop:
+    case util_Vec_Rand_Drop:
+    case util_Vec_2_Times_Rand_Minus_1_Drop:
+    case util_Vec_Rand_Plus_Rand_Minus_1_Drop:
+    case util_Vec_Normal_Drop:
+    case util_Vec_Sine_Drop:
       for (i = N/2; i < N; i++) {
         V[i*incV] *= 1e-12;
       }
+      break;
+    default:
       break;
   }
 }
 
 
-void svec_fill(int N, float* V, int incV, int type, float a, float b) {
+void util_svec_fill(int N, float* V, int incV, util_vec_fill_t fill, float a, float b) {
   int i;
   float small = 1.0 / 1024.0;			// 2^-10
   float big   = 1024.0 * 32;		// 2^15
-  switch(type){
-    case vec_fill_CONSTANT_DROP:
-    case vec_fill_CONSTANT:
+  switch(fill){
+    case util_Vec_Constant_Drop:
+    case util_Vec_Constant:
       for (i = 0; i < N; i++) {
         V[i*incV] = 1.0;
       }
       break;
-    case vec_fill_RAND_DROP:
-    case vec_fill_RAND:
+    case util_Vec_Rand_Drop:
+    case util_Vec_Rand:
       for (i = 0; i < N; i++) {
         V[i*incV] = (float)drand48() * (1+1e-4);
       }
       break;
-    case vec_fill_2_TIMES_RAND_MINUS_1_DROP:
-    case vec_fill_2_TIMES_RAND_MINUS_1:
+    case util_Vec_2_Times_Rand_Minus_1_Drop:
+    case util_Vec_2_Times_Rand_Minus_1:
       for (i = 0; i < N; i++) {
         V[i*incV] = (2 * (float)drand48() * (1+1e-4) - 1);
       }
       break;
-    case vec_fill_RAND_PLUS_RAND_MINUS_1_DROP:
-    case vec_fill_RAND_PLUS_RAND_MINUS_1:
+    case util_Vec_Rand_Plus_Rand_Minus_1_Drop:
+    case util_Vec_Rand_Plus_Rand_Minus_1:
       for (i = 0; i < N; i++) {
         V[i*incV] = (float)drand48() * (1+1e-4) + ((float)drand48() * (1+1e-4) - 1);
       }
       break;
-    case vec_fill_NORMAL_DROP:
-    case vec_fill_NORMAL:
+    case util_Vec_Normal_Drop:
+    case util_Vec_Normal:
       for (i = 0; i < N; i++) {
         double t1 = drand48();
         double t2 = drand48();
         V[i * incV] = (float)(sqrt(-2.0 * log(t1)) * cos(2.0 * M_PI * t2));
       }
       break;
-    case vec_fill_SINE_DROP:
-    case vec_fill_SINE:
+    case util_Vec_Sine_Drop:
+    case util_Vec_Sine:
       for (i = 0; i < N; i++) {
         V[i*incV] = (float)sin(2.0 * M_PI * ((float)i / (float)N));
       }
       break;
-    case vec_fill_RAND_COND:
+    case util_Vec_Rand_Cond:
       {
         int quart = (N / 8) & ~1;
         int mid = N - quart * 2;
         double c1, c2, c, f;
         int i;
 
-        svec_fill(quart / 2, V, incV, vec_fill_RAND, 1.0e-10, 1.0);
-        svec_fill(quart / 2, V + (quart / 2) * incV, incV, vec_fill_RAND, 1.0, 1.0);
-        svec_fill(quart / 8, V, incV, vec_fill_RAND, 1e-20, 1.0);
+        util_svec_fill(quart / 2, V, incV, util_Vec_Rand, 1.0e-10, 1.0);
+        util_svec_fill(quart / 2, V + (quart / 2) * incV, incV, util_Vec_Rand, 1.0, 1.0);
+        util_svec_fill(quart / 8, V, incV, util_Vec_Rand, 1e-20, 1.0);
         c1 = 0.0;
         for (i = 0; i < quart; i++) {
           c1 += V[i*incV];
           V[i + quart] = -V[i*incV];
         }
-        svec_fill(quart, V + 2 * quart * incV, incV, vec_fill_RAND, 1.0, 1.0);
-        svec_fill(mid - quart, V + 3 * quart * incV, incV, vec_fill_RAND, 1e-8, 1.0);
+        util_svec_fill(quart, V + 2 * quart * incV, incV, util_Vec_Rand, 1.0, 1.0);
+        util_svec_fill(mid - quart, V + 3 * quart * incV, incV, util_Vec_Rand, 1e-8, 1.0);
         c2 = 0.0; c = 0.0;
         for (i = 2 * quart; i < N; i++) {
           c2 += fabs(V[i*incV]);
@@ -717,407 +705,489 @@ void svec_fill(int N, float* V, int incV, int type, float a, float b) {
           V[i*incV] *= f;
         }
 
-        svec_shuffle(N, V, incV, NULL, 1);
+        util_svec_shuffle(N, V, incV, NULL, 1);
       }
       break;
-    case vec_fill_SMALL_PLUS_INCREASING_BIG:
+    case util_Vec_Small_Plus_Increasing_Big:
       for (i = 0; i < N; i++) {
         V[i*incV] = small + (big - small) * i / N;
       }
       break;
-    case vec_fill_SMALL_PLUS_RAND_BIG:
+    case util_Vec_Small_Plus_Rand_Big:
       for (i = 0; i < N; i++) {
         V[i*incV] = small + (big - small) * (float)drand48() * (1+1e-4);
       }
       break;
   }
 
-  switch(type){
-    case vec_fill_CONSTANT_DROP:
-    case vec_fill_CONSTANT:
-    case vec_fill_RAND_DROP:
-    case vec_fill_RAND:
-    case vec_fill_2_TIMES_RAND_MINUS_1_DROP:
-    case vec_fill_2_TIMES_RAND_MINUS_1:
-    case vec_fill_RAND_PLUS_RAND_MINUS_1_DROP:
-    case vec_fill_RAND_PLUS_RAND_MINUS_1:
-    case vec_fill_NORMAL_DROP:
-    case vec_fill_NORMAL:
-    case vec_fill_SINE_DROP:
-    case vec_fill_SINE:
-      if (a != 1.0) {
-        for (i = 0; i < N; i++) {
-          V[i*incV] *= a;
-        }
-      }
-      break;
+  if (a != 1.0) {
+    for (i = 0; i < N; i++) {
+      V[i*incV] *= a;
+    }
   }
-  switch(type){
-    case vec_fill_CONSTANT_DROP:
-    case vec_fill_RAND_DROP:
-    case vec_fill_2_TIMES_RAND_MINUS_1_DROP:
-    case vec_fill_RAND_PLUS_RAND_MINUS_1_DROP:
-    case vec_fill_NORMAL_DROP:
-    case vec_fill_SINE_DROP:
+
+  switch(fill){
+    case util_Vec_Constant_Drop:
+    case util_Vec_Rand_Drop:
+    case util_Vec_2_Times_Rand_Minus_1_Drop:
+    case util_Vec_Rand_Plus_Rand_Minus_1_Drop:
+    case util_Vec_Normal_Drop:
+    case util_Vec_Sine_Drop:
       for (i = N/2; i < N; i++) {
         V[i*incV] *= 1e-12;
       }
       break;
-  }
-}
-
-void zvec_fill(int N, double complex* V, int incV, int type, double complex a, double complex b) {
-  int i;
-  dvec_fill(N, (double*)V, incV * 2, type, 1.0, CREAL_(b));
-  switch(type){
-    case vec_fill_RAND_DROP:
-    case vec_fill_RAND:
-    case vec_fill_2_TIMES_RAND_MINUS_1_DROP:
-    case vec_fill_2_TIMES_RAND_MINUS_1:
-    case vec_fill_RAND_PLUS_RAND_MINUS_1_DROP:
-    case vec_fill_RAND_PLUS_RAND_MINUS_1:
-      dvec_fill(N, (double*)V + 1, incV * 2, type, 1.0, 1.0);
-      break;
-    case vec_fill_CONSTANT_DROP:
-    case vec_fill_CONSTANT:
-    case vec_fill_NORMAL_DROP:
-    case vec_fill_NORMAL:
-    case vec_fill_SINE_DROP:
-    case vec_fill_SINE:
-    case vec_fill_RAND_COND:
-      dvec_fill(N, (double*)V + 1, incV * 2, vec_fill_CONSTANT, 0.0, 1.0);
-      break;
-  }
-  switch(type){
-    case vec_fill_CONSTANT_DROP:
-    case vec_fill_CONSTANT:
-    case vec_fill_RAND_DROP:
-    case vec_fill_RAND:
-    case vec_fill_2_TIMES_RAND_MINUS_1_DROP:
-    case vec_fill_2_TIMES_RAND_MINUS_1:
-    case vec_fill_RAND_PLUS_RAND_MINUS_1_DROP:
-    case vec_fill_RAND_PLUS_RAND_MINUS_1:
-    case vec_fill_NORMAL_DROP:
-    case vec_fill_NORMAL:
-    case vec_fill_SINE_DROP:
-    case vec_fill_SINE:
-      if (a != 1.0) {
-        for (i = 0; i < N; i++) {
-          V[i*incV] *= a;
-        }
-      }
+    default:
       break;
   }
 }
 
-void cvec_fill(int N, float complex* V, int incV, int type, float complex a, float complex b) {
+void util_zvec_fill(int N, double complex* V, int incV, util_vec_fill_t fill, double complex a, double complex b) {
   int i;
-  svec_fill(N, (float*)V, incV * 2, type, 1.0, CREAL_(b));
-  switch(type){
-    case vec_fill_RAND_DROP:
-    case vec_fill_RAND:
-    case vec_fill_2_TIMES_RAND_MINUS_1_DROP:
-    case vec_fill_2_TIMES_RAND_MINUS_1:
-    case vec_fill_RAND_PLUS_RAND_MINUS_1_DROP:
-    case vec_fill_RAND_PLUS_RAND_MINUS_1:
-      svec_fill(N, (float*)V + 1, incV * 2, type, 1.0, 1.0);
+  util_dvec_fill(N, (double*)V, incV * 2, fill, 1.0, CREAL_(b));
+  switch(fill){
+    case util_Vec_Rand_Drop:
+    case util_Vec_Rand:
+    case util_Vec_2_Times_Rand_Minus_1_Drop:
+    case util_Vec_2_Times_Rand_Minus_1:
+    case util_Vec_Rand_Plus_Rand_Minus_1_Drop:
+    case util_Vec_Rand_Plus_Rand_Minus_1:
+    case util_Vec_Small_Plus_Rand_Big:
+      util_dvec_fill(N, (double*)V + 1, incV * 2, fill, 1.0, 1.0);
       break;
-    case vec_fill_CONSTANT_DROP:
-    case vec_fill_CONSTANT:
-    case vec_fill_NORMAL_DROP:
-    case vec_fill_NORMAL:
-    case vec_fill_SINE_DROP:
-    case vec_fill_SINE:
-    case vec_fill_RAND_COND:
-      svec_fill(N, (float*)V + 1, incV * 2, vec_fill_CONSTANT, 0.0, 1.0);
+    case util_Vec_Constant_Drop:
+    case util_Vec_Constant:
+    case util_Vec_Normal_Drop:
+    case util_Vec_Normal:
+    case util_Vec_Sine_Drop:
+    case util_Vec_Sine:
+    case util_Vec_Rand_Cond:
+    case util_Vec_Small_Plus_Increasing_Big:
+      util_dvec_fill(N, (double*)V + 1, incV * 2, util_Vec_Constant, 0.0, 1.0);
       break;
   }
-  switch(type){
-    case vec_fill_CONSTANT_DROP:
-    case vec_fill_CONSTANT:
-    case vec_fill_RAND_DROP:
-    case vec_fill_RAND:
-    case vec_fill_2_TIMES_RAND_MINUS_1_DROP:
-    case vec_fill_2_TIMES_RAND_MINUS_1:
-    case vec_fill_RAND_PLUS_RAND_MINUS_1_DROP:
-    case vec_fill_RAND_PLUS_RAND_MINUS_1:
-    case vec_fill_NORMAL_DROP:
-    case vec_fill_NORMAL:
-    case vec_fill_SINE_DROP:
-    case vec_fill_SINE:
-      if (a != 1.0) {
-        for (i = 0; i < N; i++) {
-          V[i*incV] *= a;
-        }
-      }
-      break;
+  if (a != 1.0) {
+    for (i = 0; i < N; i++) {
+      V[i*incV] *= a;
+    }
   }
 }
 
-void dmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, double* A, int ldA, int type, double a, double b) {
+void util_cvec_fill(int N, float complex* V, int incV, util_vec_fill_t fill, float complex a, float complex b) {
   int i;
-  switch(type){
-    case vec_fill_CONSTANT_DROP:
-    case vec_fill_CONSTANT:
-    case vec_fill_RAND_DROP:
-    case vec_fill_RAND:
-    case vec_fill_2_TIMES_RAND_MINUS_1_DROP:
-    case vec_fill_2_TIMES_RAND_MINUS_1:
-    case vec_fill_RAND_PLUS_RAND_MINUS_1_DROP:
-    case vec_fill_RAND_PLUS_RAND_MINUS_1:
-    case vec_fill_NORMAL_DROP:
-    case vec_fill_NORMAL:
-    case vec_fill_SINE_DROP:
-    case vec_fill_SINE:
-    case vec_fill_RAND_COND:
-    case vec_fill_SMALL_PLUS_INCREASING_BIG:
-    case vec_fill_SMALL_PLUS_RAND_BIG:
-      switch(order){
-        case rblas_Row_Major:
-          switch(transA){
-            case rblas_No_Trans:
-              for(i = 0; i < M; i++){
-                dvec_fill(N, A + i * ldA, 1, type, a, b);
-              }
-              break;
-            default:
-              for(i = 0; i < N; i++){
-                dvec_fill(M, A + i, ldA, type, a, b);
-              }
-              break;
-          }
-          break;
-        case rblas_Col_Major:
-          switch(transA){
-            case rblas_No_Trans:
-              for(i = 0; i < M; i++){
-                dvec_fill(N, A + i, ldA, type, a, b);
-              }
-              break;
-            default:
-              for(i = 0; i < N; i++){
-                dvec_fill(M, A + i * ldA, 1, type, a, b);
-              }
-              break;
-          }
-        break;
-      }
+  util_svec_fill(N, (float*)V, incV * 2, fill, 1.0, CREAL_(b));
+  switch(fill){
+    case util_Vec_Rand_Drop:
+    case util_Vec_Rand:
+    case util_Vec_2_Times_Rand_Minus_1_Drop:
+    case util_Vec_2_Times_Rand_Minus_1:
+    case util_Vec_Rand_Plus_Rand_Minus_1_Drop:
+    case util_Vec_Rand_Plus_Rand_Minus_1:
+    case util_Vec_Small_Plus_Rand_Big:
+      util_svec_fill(N, (float*)V + 1, incV * 2, fill, 1.0, 1.0);
       break;
-    case mat_fill_IDENTITY:
-      dmat_fill(order, transA, M, N, A, ldA, vec_fill_CONSTANT, 0.0, 1.0);
+    case util_Vec_Constant_Drop:
+    case util_Vec_Constant:
+    case util_Vec_Normal_Drop:
+    case util_Vec_Normal:
+    case util_Vec_Sine_Drop:
+    case util_Vec_Sine:
+    case util_Vec_Rand_Cond:
+    case util_Vec_Small_Plus_Increasing_Big:
+      util_svec_fill(N, (float*)V + 1, incV * 2, util_Vec_Constant, 0.0, 1.0);
+      break;
+  }
+  if (a != 1.0) {
+    for (i = 0; i < N; i++) {
+      V[i*incV] *= a;
+    }
+  }
+}
+
+void dmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, double* A, int ldA, util_mat_fill_t fill, double a, double b) {
+  int i;
+  util_vec_fill_t row_fill;
+  switch(fill){
+    case util_Mat_Identity:
+      dmat_fill(order, transA, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
       for(i = 0; i < M && i < N; i++){
         A[i * ldA + i] = 1.0;
       }
+      return;
+    case util_Mat_Row_Constant_Drop:
+      row_fill = util_Vec_Constant_Drop;
       break;
+    case util_Mat_Row_Constant:
+      row_fill = util_Vec_Constant;
+      break;
+    case util_Mat_Row_Rand_Drop:
+      row_fill = util_Vec_Rand_Drop;
+      break;
+    case util_Mat_Row_Rand:
+      row_fill = util_Vec_Rand;
+      break;
+    case util_Mat_Row_2_Times_Rand_Minus_1_Drop:
+      row_fill = util_Vec_2_Times_Rand_Minus_1_Drop;
+      break;
+    case util_Mat_Row_2_Times_Rand_Minus_1:
+      row_fill = util_Vec_2_Times_Rand_Minus_1;
+      break;
+    case util_Mat_Row_Rand_Plus_Rand_Minus_1_Drop:
+      row_fill = util_Vec_Rand_Plus_Rand_Minus_1_Drop;
+      break;
+    case util_Mat_Row_Rand_Plus_Rand_Minus_1:
+      row_fill = util_Vec_Rand_Plus_Rand_Minus_1;
+      break;
+    case util_Mat_Row_Normal_Drop:
+      row_fill = util_Vec_Normal_Drop;
+      break;
+    case util_Mat_Row_Normal:
+      row_fill = util_Vec_Normal;
+      break;
+    case util_Mat_Row_Sine_Drop:
+      row_fill = util_Vec_Sine_Drop;
+      break;
+    case util_Mat_Row_Sine:
+      row_fill = util_Vec_Sine;
+      break;
+    case util_Mat_Row_Rand_Cond:
+      row_fill = util_Vec_Rand_Cond;
+      break;
+    case util_Mat_Row_Small_Plus_Increasing_Big:
+      row_fill = util_Vec_Small_Plus_Increasing_Big;
+      break;
+    case util_Mat_Row_Small_Plus_Rand_Big:
+      row_fill = util_Vec_Small_Plus_Rand_Big;
+      break;
+  }
+  switch(order){
+    case rblas_Row_Major:
+      switch(transA){
+        case rblas_No_Trans:
+          for(i = 0; i < M; i++){
+            util_dvec_fill(N, A + i * ldA, 1, row_fill, a, b);
+          }
+          break;
+        default:
+          for(i = 0; i < N; i++){
+            util_dvec_fill(M, A + i, ldA, row_fill, a, b);
+          }
+          break;
+      }
+      break;
+    case rblas_Col_Major:
+      switch(transA){
+        case rblas_No_Trans:
+          for(i = 0; i < M; i++){
+            util_dvec_fill(N, A + i, ldA, row_fill, a, b);
+          }
+          break;
+        default:
+          for(i = 0; i < N; i++){
+            util_dvec_fill(M, A + i * ldA, 1, row_fill, a, b);
+          }
+          break;
+      }
+    break;
   }
 }
 
-void smat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, float* A, int ldA, int type, float a, float b) {
+void smat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, float* A, int ldA, util_mat_fill_t fill, float a, float b) {
   int i;
-  switch(type){
-    case vec_fill_CONSTANT_DROP:
-    case vec_fill_CONSTANT:
-    case vec_fill_RAND_DROP:
-    case vec_fill_RAND:
-    case vec_fill_2_TIMES_RAND_MINUS_1_DROP:
-    case vec_fill_2_TIMES_RAND_MINUS_1:
-    case vec_fill_RAND_PLUS_RAND_MINUS_1_DROP:
-    case vec_fill_RAND_PLUS_RAND_MINUS_1:
-    case vec_fill_NORMAL_DROP:
-    case vec_fill_NORMAL:
-    case vec_fill_SINE_DROP:
-    case vec_fill_SINE:
-    case vec_fill_RAND_COND:
-    case vec_fill_SMALL_PLUS_INCREASING_BIG:
-    case vec_fill_SMALL_PLUS_RAND_BIG:
-      switch(order){
-        case rblas_Row_Major:
-          switch(transA){
-            case rblas_No_Trans:
-              for(i = 0; i < M; i++){
-                svec_fill(N, A + i * ldA, 1, type, a, b);
-              }
-              break;
-            default:
-              for(i = 0; i < N; i++){
-                svec_fill(M, A + i, ldA, type, a, b);
-              }
-              break;
-          }
-          break;
-        case rblas_Col_Major:
-          switch(transA){
-            case rblas_No_Trans:
-              for(i = 0; i < M; i++){
-                svec_fill(N, A + i, ldA, type, a, b);
-              }
-              break;
-            default:
-              for(i = 0; i < N; i++){
-                svec_fill(M, A + i * ldA, 1, type, a, b);
-              }
-              break;
-          }
-        break;
-      }
-      break;
-    case mat_fill_IDENTITY:
-      smat_fill(order, transA, M, N, A, ldA, vec_fill_CONSTANT, 0.0, 1.0);
+  util_vec_fill_t row_fill;
+  switch(fill){
+    case util_Mat_Identity:
+      smat_fill(order, transA, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
       for(i = 0; i < M && i < N; i++){
         A[i * ldA + i] = 1.0;
       }
+      return;
+    case util_Mat_Row_Constant_Drop:
+      row_fill = util_Vec_Constant_Drop;
       break;
+    case util_Mat_Row_Constant:
+      row_fill = util_Vec_Constant;
+      break;
+    case util_Mat_Row_Rand_Drop:
+      row_fill = util_Vec_Rand_Drop;
+      break;
+    case util_Mat_Row_Rand:
+      row_fill = util_Vec_Rand;
+      break;
+    case util_Mat_Row_2_Times_Rand_Minus_1_Drop:
+      row_fill = util_Vec_2_Times_Rand_Minus_1_Drop;
+      break;
+    case util_Mat_Row_2_Times_Rand_Minus_1:
+      row_fill = util_Vec_2_Times_Rand_Minus_1;
+      break;
+    case util_Mat_Row_Rand_Plus_Rand_Minus_1_Drop:
+      row_fill = util_Vec_Rand_Plus_Rand_Minus_1_Drop;
+      break;
+    case util_Mat_Row_Rand_Plus_Rand_Minus_1:
+      row_fill = util_Vec_Rand_Plus_Rand_Minus_1;
+      break;
+    case util_Mat_Row_Normal_Drop:
+      row_fill = util_Vec_Normal_Drop;
+      break;
+    case util_Mat_Row_Normal:
+      row_fill = util_Vec_Normal;
+      break;
+    case util_Mat_Row_Sine_Drop:
+      row_fill = util_Vec_Sine_Drop;
+      break;
+    case util_Mat_Row_Sine:
+      row_fill = util_Vec_Sine;
+      break;
+    case util_Mat_Row_Rand_Cond:
+      row_fill = util_Vec_Rand_Cond;
+      break;
+    case util_Mat_Row_Small_Plus_Increasing_Big:
+      row_fill = util_Vec_Small_Plus_Increasing_Big;
+      break;
+    case util_Mat_Row_Small_Plus_Rand_Big:
+      row_fill = util_Vec_Small_Plus_Rand_Big;
+      break;
+  }
+  switch(order){
+    case rblas_Row_Major:
+      switch(transA){
+        case rblas_No_Trans:
+          for(i = 0; i < M; i++){
+            util_svec_fill(N, A + i * ldA, 1, row_fill, a, b);
+          }
+          break;
+        default:
+          for(i = 0; i < N; i++){
+            util_svec_fill(M, A + i, ldA, row_fill, a, b);
+          }
+          break;
+      }
+      break;
+    case rblas_Col_Major:
+      switch(transA){
+        case rblas_No_Trans:
+          for(i = 0; i < M; i++){
+            util_svec_fill(N, A + i, ldA, row_fill, a, b);
+          }
+          break;
+        default:
+          for(i = 0; i < N; i++){
+            util_svec_fill(M, A + i * ldA, 1, row_fill, a, b);
+          }
+          break;
+      }
+    break;
   }
 }
 
-void zmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, double complex* A, int ldA, int type, double complex a, double complex b) {
+void zmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, double complex* A, int ldA, util_mat_fill_t fill, double complex a, double complex b) {
   int i;
-  switch(type){
-    case vec_fill_CONSTANT_DROP:
-    case vec_fill_CONSTANT:
-    case vec_fill_RAND_DROP:
-    case vec_fill_RAND:
-    case vec_fill_2_TIMES_RAND_MINUS_1_DROP:
-    case vec_fill_2_TIMES_RAND_MINUS_1:
-    case vec_fill_RAND_PLUS_RAND_MINUS_1_DROP:
-    case vec_fill_RAND_PLUS_RAND_MINUS_1:
-    case vec_fill_NORMAL_DROP:
-    case vec_fill_NORMAL:
-    case vec_fill_SINE_DROP:
-    case vec_fill_SINE:
-    case vec_fill_RAND_COND:
-    case vec_fill_SMALL_PLUS_INCREASING_BIG:
-    case vec_fill_SMALL_PLUS_RAND_BIG:
-      switch(order){
-        case rblas_Row_Major:
-          switch(transA){
-            case rblas_No_Trans:
-              for(i = 0; i < M; i++){
-                zvec_fill(N, A + i * ldA, 1, type, a, b);
-              }
-              break;
-            default:
-              for(i = 0; i < N; i++){
-                zvec_fill(M, A + i, ldA, type, a, b);
-              }
-              break;
-          }
-          break;
-        case rblas_Col_Major:
-          switch(transA){
-            case rblas_No_Trans:
-              for(i = 0; i < M; i++){
-                zvec_fill(N, A + i, ldA, type, a, b);
-              }
-              break;
-            default:
-              for(i = 0; i < N; i++){
-                zvec_fill(M, A + i * ldA, 1, type, a, b);
-              }
-              break;
-          }
-        break;
-      }
-      break;
-    case mat_fill_IDENTITY:
-      zmat_fill(order, transA, M, N, A, ldA, vec_fill_CONSTANT, 0.0, 1.0);
+  util_vec_fill_t row_fill;
+  switch(fill){
+    case util_Mat_Identity:
+      zmat_fill(order, transA, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
       for(i = 0; i < M && i < N; i++){
         A[i * ldA + i] = 1.0;
       }
+      return;
+    case util_Mat_Row_Constant_Drop:
+      row_fill = util_Vec_Constant_Drop;
       break;
+    case util_Mat_Row_Constant:
+      row_fill = util_Vec_Constant;
+      break;
+    case util_Mat_Row_Rand_Drop:
+      row_fill = util_Vec_Rand_Drop;
+      break;
+    case util_Mat_Row_Rand:
+      row_fill = util_Vec_Rand;
+      break;
+    case util_Mat_Row_2_Times_Rand_Minus_1_Drop:
+      row_fill = util_Vec_2_Times_Rand_Minus_1_Drop;
+      break;
+    case util_Mat_Row_2_Times_Rand_Minus_1:
+      row_fill = util_Vec_2_Times_Rand_Minus_1;
+      break;
+    case util_Mat_Row_Rand_Plus_Rand_Minus_1_Drop:
+      row_fill = util_Vec_Rand_Plus_Rand_Minus_1_Drop;
+      break;
+    case util_Mat_Row_Rand_Plus_Rand_Minus_1:
+      row_fill = util_Vec_Rand_Plus_Rand_Minus_1;
+      break;
+    case util_Mat_Row_Normal_Drop:
+      row_fill = util_Vec_Normal_Drop;
+      break;
+    case util_Mat_Row_Normal:
+      row_fill = util_Vec_Normal;
+      break;
+    case util_Mat_Row_Sine_Drop:
+      row_fill = util_Vec_Sine_Drop;
+      break;
+    case util_Mat_Row_Sine:
+      row_fill = util_Vec_Sine;
+      break;
+    case util_Mat_Row_Rand_Cond:
+      row_fill = util_Vec_Rand_Cond;
+      break;
+    case util_Mat_Row_Small_Plus_Increasing_Big:
+      row_fill = util_Vec_Small_Plus_Increasing_Big;
+      break;
+    case util_Mat_Row_Small_Plus_Rand_Big:
+      row_fill = util_Vec_Small_Plus_Rand_Big;
+      break;
+  }
+  switch(order){
+    case rblas_Row_Major:
+      switch(transA){
+        case rblas_No_Trans:
+          for(i = 0; i < M; i++){
+            util_zvec_fill(N, A + i * ldA, 1, row_fill, a, b);
+          }
+          break;
+        default:
+          for(i = 0; i < N; i++){
+            util_zvec_fill(M, A + i, ldA, row_fill, a, b);
+          }
+          break;
+      }
+      break;
+    case rblas_Col_Major:
+      switch(transA){
+        case rblas_No_Trans:
+          for(i = 0; i < M; i++){
+            util_zvec_fill(N, A + i, ldA, row_fill, a, b);
+          }
+          break;
+        default:
+          for(i = 0; i < N; i++){
+            util_zvec_fill(M, A + i * ldA, 1, row_fill, a, b);
+          }
+          break;
+      }
+    break;
   }
 }
 
-void cmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, float complex* A, int ldA, int type, float complex a, float complex b) {
+void cmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, float complex* A, int ldA, util_mat_fill_t fill, float complex a, float complex b) {
   int i;
-  switch(type){
-    case vec_fill_CONSTANT_DROP:
-    case vec_fill_CONSTANT:
-    case vec_fill_RAND_DROP:
-    case vec_fill_RAND:
-    case vec_fill_2_TIMES_RAND_MINUS_1_DROP:
-    case vec_fill_2_TIMES_RAND_MINUS_1:
-    case vec_fill_RAND_PLUS_RAND_MINUS_1_DROP:
-    case vec_fill_RAND_PLUS_RAND_MINUS_1:
-    case vec_fill_NORMAL_DROP:
-    case vec_fill_NORMAL:
-    case vec_fill_SINE_DROP:
-    case vec_fill_SINE:
-    case vec_fill_RAND_COND:
-    case vec_fill_SMALL_PLUS_INCREASING_BIG:
-    case vec_fill_SMALL_PLUS_RAND_BIG:
-      switch(order){
-        case rblas_Row_Major:
-          switch(transA){
-            case rblas_No_Trans:
-              for(i = 0; i < M; i++){
-                cvec_fill(N, A + i * ldA, 1, type, a, b);
-              }
-              break;
-            default:
-              for(i = 0; i < N; i++){
-                cvec_fill(M, A + i, ldA, type, a, b);
-              }
-              break;
-          }
-          break;
-        case rblas_Col_Major:
-          switch(transA){
-            case rblas_No_Trans:
-              for(i = 0; i < M; i++){
-                cvec_fill(N, A + i, ldA, type, a, b);
-              }
-              break;
-            default:
-              for(i = 0; i < N; i++){
-                cvec_fill(M, A + i * ldA, 1, type, a, b);
-              }
-              break;
-          }
-        break;
-      }
-      break;
-    case mat_fill_IDENTITY:
-      cmat_fill(order, transA, M, N, A, ldA, vec_fill_CONSTANT, 0.0, 1.0);
+  util_vec_fill_t row_fill;
+  switch(fill){
+    case util_Mat_Identity:
+      cmat_fill(order, transA, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
       for(i = 0; i < M && i < N; i++){
         A[i * ldA + i] = 1.0;
       }
+      return;
+    case util_Mat_Row_Constant_Drop:
+      row_fill = util_Vec_Constant_Drop;
       break;
+    case util_Mat_Row_Constant:
+      row_fill = util_Vec_Constant;
+      break;
+    case util_Mat_Row_Rand_Drop:
+      row_fill = util_Vec_Rand_Drop;
+      break;
+    case util_Mat_Row_Rand:
+      row_fill = util_Vec_Rand;
+      break;
+    case util_Mat_Row_2_Times_Rand_Minus_1_Drop:
+      row_fill = util_Vec_2_Times_Rand_Minus_1_Drop;
+      break;
+    case util_Mat_Row_2_Times_Rand_Minus_1:
+      row_fill = util_Vec_2_Times_Rand_Minus_1;
+      break;
+    case util_Mat_Row_Rand_Plus_Rand_Minus_1_Drop:
+      row_fill = util_Vec_Rand_Plus_Rand_Minus_1_Drop;
+      break;
+    case util_Mat_Row_Rand_Plus_Rand_Minus_1:
+      row_fill = util_Vec_Rand_Plus_Rand_Minus_1;
+      break;
+    case util_Mat_Row_Normal_Drop:
+      row_fill = util_Vec_Normal_Drop;
+      break;
+    case util_Mat_Row_Normal:
+      row_fill = util_Vec_Normal;
+      break;
+    case util_Mat_Row_Sine_Drop:
+      row_fill = util_Vec_Sine_Drop;
+      break;
+    case util_Mat_Row_Sine:
+      row_fill = util_Vec_Sine;
+      break;
+    case util_Mat_Row_Rand_Cond:
+      row_fill = util_Vec_Rand_Cond;
+      break;
+    case util_Mat_Row_Small_Plus_Increasing_Big:
+      row_fill = util_Vec_Small_Plus_Increasing_Big;
+      break;
+    case util_Mat_Row_Small_Plus_Rand_Big:
+      row_fill = util_Vec_Small_Plus_Rand_Big;
+      break;
+  }
+  switch(order){
+    case rblas_Row_Major:
+      switch(transA){
+        case rblas_No_Trans:
+          for(i = 0; i < M; i++){
+            util_cvec_fill(N, A + i * ldA, 1, row_fill, a, b);
+          }
+          break;
+        default:
+          for(i = 0; i < N; i++){
+            util_cvec_fill(M, A + i, ldA, row_fill, a, b);
+          }
+          break;
+      }
+      break;
+    case rblas_Col_Major:
+      switch(transA){
+        case rblas_No_Trans:
+          for(i = 0; i < M; i++){
+            util_cvec_fill(N, A + i, ldA, row_fill, a, b);
+          }
+          break;
+        default:
+          for(i = 0; i < N; i++){
+            util_cvec_fill(M, A + i * ldA, 1, row_fill, a, b);
+          }
+          break;
+      }
+    break;
   }
 }
 
 
 const char* vec_fill_name(int type) {
   switch(type){
-    case vec_fill_CONSTANT_DROP:
+    case util_Vec_Constant_Drop:
       return "Constant[Drop]";
-    case vec_fill_CONSTANT:
+    case util_Vec_Constant:
       return "Constant";
-    case vec_fill_RAND_DROP:
+    case util_Vec_Rand_Drop:
       return "Random[Drop]";
-    case vec_fill_RAND:
+    case util_Vec_Rand:
       return "Random";
-    case vec_fill_2_TIMES_RAND_MINUS_1_DROP:
+    case util_Vec_2_Times_Rand_Minus_1_Drop:
       return "2*Random-1[Drop]";
-    case vec_fill_2_TIMES_RAND_MINUS_1:
+    case util_Vec_2_Times_Rand_Minus_1:
       return "2*Random-1";
-    case vec_fill_RAND_PLUS_RAND_MINUS_1_DROP:
+    case util_Vec_Rand_Plus_Rand_Minus_1_Drop:
       return "Random+(Random-1)[Drop]";
-    case vec_fill_RAND_PLUS_RAND_MINUS_1:
+    case util_Vec_Rand_Plus_Rand_Minus_1:
       return "Random+(Random-1)";
-    case vec_fill_NORMAL_DROP:
+    case util_Vec_Normal_Drop:
       return "Normal[Drop]";
-    case vec_fill_NORMAL:
+    case util_Vec_Normal:
       return "Normal";
-    case vec_fill_SINE_DROP:
+    case util_Vec_Sine_Drop:
       return "Sine[Drop]";
-    case vec_fill_SINE:
+    case util_Vec_Sine:
       return "Sine";
-    case vec_fill_RAND_COND:
+    case util_Vec_Rand_Cond:
       return "RandomConditioned";
-    case vec_fill_SMALL_PLUS_INCREASING_BIG:
+    case util_Vec_Small_Plus_Increasing_Big:
       return "Small+(i/N*Big)";
-    case vec_fill_SMALL_PLUS_RAND_BIG:
+    case util_Vec_Small_Plus_Rand_Big:
       return "Small+(Random*Big)";
   }
   return "";
