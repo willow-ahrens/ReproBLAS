@@ -55,9 +55,9 @@ int main (int argc, char** argv) {
   vec_fill_type.header.long_name  = "f_type";
   vec_fill_type.header.help       = "vector fill type";
   vec_fill_type._named.required   = 0;
-  vec_fill_type._named.n_names    = (int)vec_fill_n_names;
-  vec_fill_type._named.names      = (char**)vec_fill_names;
-  vec_fill_type._named.descs      = (char**)vec_fill_descs;
+  vec_fill_type._named.n_names    = (int)util_vec_fill_n_names;
+  vec_fill_type._named.names      = (char**)util_vec_fill_names;
+  vec_fill_type._named.descs      = (char**)util_vec_fill_descs;
   vec_fill_type._named.value      = 0;
   /*
   mat_fill_type.header.type       = opt_named;
@@ -116,7 +116,7 @@ int main (int argc, char** argv) {
     case 2: data_type_char = 'z'; break;
     case 3: data_type_char = 'c'; break;
   }
-  snprintf(output_file_name, MAX_NAME, "%c_%s_N%d", data_type_char, vec_fill_names[vec_fill_type._named.value], N._int.value);
+  snprintf(output_file_name, MAX_NAME, "%c_%s_N%d", data_type_char, util_vec_fill_names[vec_fill_type._named.value], N._int.value);
   for(i = 0; output_file_name[i] != '\0'; i++){
     switch(output_file_name[i]){
       case '/':
@@ -148,29 +148,29 @@ int main (int argc, char** argv) {
 
   switch(data_type._named.value){
     case 0: {
-      double* data = dvec_alloc(N._int.value, 1);
-      dvec_fill(N._int.value, data, 1, vec_fill_type._named.value, scale._double.value, cond._double.value);
+      double* data = util_dvec_alloc(N._int.value, 1);
+      util_dvec_fill(N._int.value, data, 1, vec_fill_type._named.value, scale._double.value, cond._double.value);
       file_write_vector(output_file._string.value, N._int.value, data, sizeof(double));
       free(data);
       break;
     }
     case 1: {
-      float* data = svec_alloc(N._int.value, 1);
-      svec_fill(N._int.value, data, 1, vec_fill_type._named.value, scale._double.value, cond._double.value);
+      float* data = util_svec_alloc(N._int.value, 1);
+      util_svec_fill(N._int.value, data, 1, vec_fill_type._named.value, scale._double.value, cond._double.value);
       file_write_vector(output_file._string.value, N._int.value, data, sizeof(float));
       free(data);
       break;
     }
     case 2: {
-      double complex* data = zvec_alloc(N._int.value, 1);
-      zvec_fill(N._int.value, data, 1, vec_fill_type._named.value, scale._double.value, cond._double.value);
+      double complex* data = util_zvec_alloc(N._int.value, 1);
+      util_zvec_fill(N._int.value, data, 1, vec_fill_type._named.value, scale._double.value, cond._double.value);
       file_write_vector(output_file._string.value, N._int.value, data, sizeof(double complex));
       free(data);
       break;
     }
     case 3: {
-      float complex* data = cvec_alloc(N._int.value, 1);
-      cvec_fill(N._int.value, data, 1, vec_fill_type._named.value, scale._double.value, cond._double.value);
+      float complex* data = util_cvec_alloc(N._int.value, 1);
+      util_cvec_fill(N._int.value, data, 1, vec_fill_type._named.value, scale._double.value, cond._double.value);
       file_write_vector(output_file._string.value, N._int.value, data, sizeof(float complex));
       free(data);
       break;

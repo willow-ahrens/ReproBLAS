@@ -58,9 +58,9 @@ int file_test(int argc, char** argv, char *fname) {
   I_double_Complex Ires;
 
   file_read_vector(fname, &N, (void**)&x, sizeof(double complex));
-  y = zvec_alloc(N, 1);
+  y = util_zvec_alloc(N, 1);
   //fill y with -i where necessary
-  zvec_fill(N, y, 1, vec_fill_CONSTANT, -_Complex_I, 1.0);
+  util_zvec_fill(N, y, 1, util_Vec_Constant, -_Complex_I, 1.0);
 
   ((char*)file_ext(fname))[0] = '\0';
   snprintf(ref_fname, MAX_NAME, "%s__%s.dat", fname, wrap_rzblas1_names[func_type._named.value]);

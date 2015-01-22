@@ -12,9 +12,9 @@ static opt_option vec_fill_type = {._named.header.type       = opt_named,
                                    ._named.header.long_name  = "f_type",
                                    ._named.header.help       = "vector fill type",
                                    ._named.required          = 0,
-                                   ._named.n_names           = (int)vec_fill_n_names,
-                                   ._named.names             = (char**)vec_fill_names,
-                                   ._named.descs             = (char**)vec_fill_descs,
+                                   ._named.n_names           = (int)util_vec_fill_n_names,
+                                   ._named.names             = (char**)util_vec_fill_names,
+                                   ._named.descs             = (char**)util_vec_fill_descs,
                                    ._named.value             = 0};
 
 static opt_option scale         = {._double.header.type       = opt_double,
@@ -48,7 +48,7 @@ const char* vecvec_name(int argc, char** argv){
   opt_eval_option(argc, argv, &vec_fill_type);
   opt_eval_option(argc, argv, &scale);
   opt_eval_option(argc, argv, &cond);
-  snprintf(name_buffer, MAX_LINE * sizeof(char), "%s (%s)", vecvec_fill_name(argc, argv), vec_fill_names[vec_fill_type._named.value]);
+  snprintf(name_buffer, MAX_LINE * sizeof(char), "%s (%s)", vecvec_fill_name(argc, argv), util_vec_fill_names[vec_fill_type._named.value]);
   return name_buffer;
 }
 

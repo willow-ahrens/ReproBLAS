@@ -22,17 +22,17 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   util_random_seed();
 
   //allocate vectors
-  double complex *x    = zvec_alloc(N, incx);
-  double complex *y    = zvec_alloc(N, incy);
+  double complex *x    = util_zvec_alloc(N, incx);
+  double complex *y    = util_zvec_alloc(N, incy);
 
   //fill y with 1 where necessary
-  zvec_fill(N, y, incy, vec_fill_CONSTANT, 1.0, 1.0);
+  util_zvec_fill(N, y, incy, util_Vec_Constant, 1.0, 1.0);
 
   //1 Big
   ref   = big + _Complex_I * big;
 
   //1 Big at beginning
-  zvec_fill(N, x, incx, vec_fill_CONSTANT, small, 1.0);
+  util_zvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
   x[0]         = -big + -_Complex_I * big;
 
   res = zamax(N, x, incx);
@@ -48,7 +48,7 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   }
 
   //1 Big at end
-  zvec_fill(N, x, incx, vec_fill_CONSTANT, small, 1.0);
+  util_zvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
   x[(N-1)*incx]         = -big + -_Complex_I * big;
 
   res = zamax(N, x, incx);

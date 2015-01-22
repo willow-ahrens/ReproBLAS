@@ -25,11 +25,11 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   util_random_seed();
 
   //allocate vectors
-  float complex *x    = cvec_alloc(N, incx);
-  float complex *y    = cvec_alloc(N, incx);
+  float complex *x    = util_cvec_alloc(N, incx);
+  float complex *y    = util_cvec_alloc(N, incx);
 
   //fill y with -i where necessary
-  cvec_fill(N, y, incy, vec_fill_CONSTANT, -_Complex_I, 1.0);
+  util_cvec_fill(N, y, incy, util_Vec_Constant, -_Complex_I, 1.0);
 
   //1 Big
   ref   = (N - 1) * small + big;
@@ -38,7 +38,7 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   refdc  = ref * _Complex_I;
 
   //1 Big at beginning
-  cvec_fill(N, x, incx, vec_fill_CONSTANT, small, 1.0);
+  util_cvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
   x[0]         = big;
 
   res = rcsum(N, x, incx);
@@ -66,7 +66,7 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   }
 
   //1 Big in middle
-  cvec_fill(N, x, incx, vec_fill_CONSTANT, small, 1.0);
+  util_cvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
   x[(N/2)*incx] = big;
 
   res = rcsum(N, x, incx);
@@ -94,7 +94,7 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   }
 
   //1 Big at end
-  cvec_fill(N, x, incx, vec_fill_CONSTANT, small, 1.0);
+  util_cvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
   x[(N-1)*incx] = big;
 
   res = rcsum(N, x, incx);
@@ -128,7 +128,7 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   refdc  = ref * _Complex_I;
 
   //1 Big pos neg at beginning
-  cvec_fill(N, x, incx, vec_fill_CONSTANT, small, 1.0);
+  util_cvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
   x[0]         = big;
   x[(N/2)*incx] = -big;
 
@@ -157,7 +157,7 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   }
 
   //1 Big pos neg at ends
-  cvec_fill(N, x, incx, vec_fill_CONSTANT, small, 1.0);
+  util_cvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
   x[0]         = big;
   x[(N-1)*incx] = -big;
 
@@ -186,7 +186,7 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   }
 
   //1 Big pos neg at end
-  cvec_fill(N, x, incx, vec_fill_CONSTANT, small, 1.0);
+  util_cvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
   x[(N/2)*incx] = big;
   x[(N-1)*incx] = -big;
 

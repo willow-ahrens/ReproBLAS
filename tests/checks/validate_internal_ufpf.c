@@ -21,7 +21,7 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   util_random_seed();
 
   //allocate vector
-  float *x = svec_alloc(N, incx);
+  float *x = util_svec_alloc(N, incx);
 
   //check
   for (i = 0; i < N; i++) {

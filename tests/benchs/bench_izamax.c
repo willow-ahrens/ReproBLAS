@@ -31,10 +31,10 @@ int vecvec_fill_bench_test(int argc, char** argv, int N, int incx, int incy, int
 
   util_random_seed();
 
-  double complex *x = zvec_alloc(N, incx);
+  double complex *x = util_zvec_alloc(N, incx);
 
   //fill x
-  zvec_fill(N, x, incx, type, scale, cond);
+  util_zvec_fill(N, x, incx, type, scale, cond);
 
   time_tic();
   for(int i = 0; i < trials; i++){

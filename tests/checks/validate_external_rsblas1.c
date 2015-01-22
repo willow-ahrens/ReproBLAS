@@ -58,9 +58,9 @@ int file_test(int argc, char** argv, char *fname) {
   I_float Ires;
 
   file_read_vector(fname, &N, (void**)&x, sizeof(float));
-  y = svec_alloc(N, 1);
+  y = util_svec_alloc(N, 1);
   //fill y with 1 where necessary
-  svec_fill(N, y, 1, vec_fill_CONSTANT, 1.0, 1.0);
+  util_svec_fill(N, y, 1, util_Vec_Constant, 1.0, 1.0);
 
   ((char*)file_ext(fname))[0] = '\0';
   snprintf(ref_fname, MAX_NAME, "%s__%s.dat", fname, wrap_rsblas1_names[func_type._named.value]);

@@ -21,7 +21,7 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   util_random_seed();
 
   //allocate vector
-  double *x = dvec_alloc(N, incx);
+  double *x = util_dvec_alloc(N, incx);
 
   //check
   for (i = 0; i < N; i++) {

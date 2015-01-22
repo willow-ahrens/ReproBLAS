@@ -22,17 +22,17 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   util_random_seed();
 
   //allocate vectors
-  float complex *x    = cvec_alloc(N, incx);
-  float complex *y    = cvec_alloc(N, incy);
+  float complex *x    = util_cvec_alloc(N, incx);
+  float complex *y    = util_cvec_alloc(N, incy);
 
   //fill y with 1 where necessary
-  cvec_fill(N, y, incy, vec_fill_CONSTANT, 1.0, 1.0);
+  util_cvec_fill(N, y, incy, util_Vec_Constant, 1.0, 1.0);
 
   //1 Big
   ref   = big + _Complex_I * big;
 
   //1 Big at beginning
-  cvec_fill(N, x, incx, vec_fill_CONSTANT, small, 1.0);
+  util_cvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
   x[0]         = -big + -_Complex_I * big;
 
   res = camax(N, x, incx);
@@ -48,7 +48,7 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   }
 
   //1 Big at end
-  cvec_fill(N, x, incx, vec_fill_CONSTANT, small, 1.0);
+  util_cvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
   x[(N-1)*incx]         = -big + -_Complex_I * big;
 
   res = camax(N, x, incx);

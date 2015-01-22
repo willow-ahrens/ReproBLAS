@@ -36,14 +36,14 @@ int vecvec_fill_bench_test(int argc, char** argv, int N, int incx, int incy, int
 
   util_random_seed();
 
-  double *x = dvec_alloc(N, incx);
-  double *y = dvec_alloc(N, incy);
+  double *x = util_dvec_alloc(N, incx);
+  double *y = util_dvec_alloc(N, incy);
 
   //fill x
-  dvec_fill(N, x, incx, type, scale, cond);
+  util_dvec_fill(N, x, incx, type, scale, cond);
 
   //fill y with 1 where necessary
-  dvec_fill(N, y, incy, vec_fill_CONSTANT, 1.0, 1.0);
+  util_dvec_fill(N, y, incy, util_Vec_Constant, 1.0, 1.0);
 
   time_tic();
   for(int i = 0; i < trials; i++){

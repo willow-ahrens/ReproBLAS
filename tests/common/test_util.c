@@ -804,12 +804,12 @@ void util_cvec_fill(int N, float complex* V, int incV, util_vec_fill_t fill, flo
   }
 }
 
-void dmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, double* A, int ldA, util_mat_fill_t fill, double a, double b) {
+void util_dmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, double* A, int ldA, util_mat_fill_t fill, double a, double b) {
   int i;
   util_vec_fill_t row_fill;
   switch(fill){
     case util_Mat_Identity:
-      dmat_fill(order, transA, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
+      util_dmat_fill(order, transA, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
       for(i = 0; i < M && i < N; i++){
         A[i * ldA + i] = 1.0;
       }
@@ -892,12 +892,12 @@ void dmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, doub
   }
 }
 
-void smat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, float* A, int ldA, util_mat_fill_t fill, float a, float b) {
+void util_smat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, float* A, int ldA, util_mat_fill_t fill, float a, float b) {
   int i;
   util_vec_fill_t row_fill;
   switch(fill){
     case util_Mat_Identity:
-      smat_fill(order, transA, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
+      util_smat_fill(order, transA, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
       for(i = 0; i < M && i < N; i++){
         A[i * ldA + i] = 1.0;
       }
@@ -980,12 +980,12 @@ void smat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, floa
   }
 }
 
-void zmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, double complex* A, int ldA, util_mat_fill_t fill, double complex a, double complex b) {
+void util_zmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, double complex* A, int ldA, util_mat_fill_t fill, double complex a, double complex b) {
   int i;
   util_vec_fill_t row_fill;
   switch(fill){
     case util_Mat_Identity:
-      zmat_fill(order, transA, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
+      util_zmat_fill(order, transA, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
       for(i = 0; i < M && i < N; i++){
         A[i * ldA + i] = 1.0;
       }
@@ -1068,12 +1068,12 @@ void zmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, doub
   }
 }
 
-void cmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, float complex* A, int ldA, util_mat_fill_t fill, float complex a, float complex b) {
+void util_cmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, float complex* A, int ldA, util_mat_fill_t fill, float complex a, float complex b) {
   int i;
   util_vec_fill_t row_fill;
   switch(fill){
     case util_Mat_Identity:
-      cmat_fill(order, transA, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
+      util_cmat_fill(order, transA, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
       for(i = 0; i < M && i < N; i++){
         A[i * ldA + i] = 1.0;
       }

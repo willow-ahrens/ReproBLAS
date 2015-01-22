@@ -36,14 +36,14 @@ int vecvec_fill_bench_test(int argc, char** argv, int N, int incx, int incy, int
 
   util_random_seed();
 
-  float complex *x = cvec_alloc(N, incx);
-  float complex *y = cvec_alloc(N, incy);
+  float complex *x = util_cvec_alloc(N, incx);
+  float complex *y = util_cvec_alloc(N, incy);
 
   //fill x
-  cvec_fill(N, x, incx, type, scale, cond);
+  util_cvec_fill(N, x, incx, type, scale, cond);
 
   //fill y with -i where necessary
-  cvec_fill(N, y, incy, vec_fill_CONSTANT, -_Complex_I, 1.0);
+  util_cvec_fill(N, y, incy, util_Vec_Constant, -_Complex_I, 1.0);
 
   time_tic();
   for(int i = 0; i < trials; i++){

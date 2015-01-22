@@ -4,21 +4,6 @@
 #include "../../src/types.h"
 #include "../../build/include/rblas.h"
 
-#define vec_fill_CONSTANT                    0
-#define vec_fill_RAND                        1
-#define vec_fill_2_TIMES_RAND_MINUS_1        2
-#define vec_fill_RAND_PLUS_RAND_MINUS_1      3
-#define vec_fill_NORMAL                      4
-#define vec_fill_SINE                        5
-#define vec_fill_SMALL_PLUS_INCREASING_BIG   6
-#define vec_fill_SMALL_PLUS_RAND_BIG         7
-#define vec_fill_RAND_COND                   8
-#define vec_fill_CONSTANT_DROP               9
-#define vec_fill_RAND_DROP                   10
-#define vec_fill_2_TIMES_RAND_MINUS_1_DROP   11
-#define vec_fill_RAND_PLUS_RAND_MINUS_1_DROP 12
-#define vec_fill_NORMAL_DROP                 13
-#define vec_fill_SINE_DROP                   14
 typedef enum util_vec_fill {
   util_Vec_Constant = 0,
   util_Vec_Rand,
@@ -137,7 +122,6 @@ typedef enum util_comp {
   util_Decreasing,
   util_Decreasing_Magnitude
 } util_comp_t;
-
 int util_dcompare(void *a, void *b, util_comp_t comp);
 int util_scompare(void *a, void *b, util_comp_t comp);
 int util_zcompare(void *a, void *b, util_comp_t comp);

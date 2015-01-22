@@ -78,16 +78,16 @@ extern int vecvec_fill_test(int argc, char** argv, int N, int incX, int incY, in
 
   util_random_seed();
 
-  float complex *x = cvec_alloc(N, incX);
-  float complex *y = cvec_alloc(N, incY);
+  float complex *x = util_cvec_alloc(N, incX);
+  float complex *y = util_cvec_alloc(N, incY);
 
   opt_eval_option(argc, argv, &func_type);
 
   //fill x
-  cvec_fill(N, x, incX, type, (float)scale, (float)cond);
+  util_cvec_fill(N, x, incX, type, (float)scale, (float)cond);
 
   //fill y with -i where necessary
-  cvec_fill(N, y, incY, vec_fill_CONSTANT, -_Complex_I, 1.0);
+  util_cvec_fill(N, y, incY, util_Vec_Constant, -_Complex_I, 1.0);
 
   //nrm2 doesn't make sense with more than 1 block.
   if(func_type._named.value == wrap_RSCNRM2){
@@ -98,63 +98,63 @@ extern int vecvec_fill_test(int argc, char** argv, int N, int incX, int incY, in
   ref  = (wrap_rcblas1_func(func_type._named.value))(N, x, incX, y, incY);
   Iref = (wrap_Icblas1_func(func_type._named.value))(N, x, incX, y, incY);
 
-  cvec_reverse(N, x, incX, NULL, 1);
+  util_cvec_reverse(N, x, incX, NULL, 1);
 
   rc = verify_rcblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  cvec_sort(N, x, incX, NULL, 1, util_Increasing);
+  util_cvec_sort(N, x, incX, NULL, 1, util_Increasing);
 
   rc = verify_rcblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  cvec_sort(N, x, incX, NULL, 1, util_Decreasing);
+  util_cvec_sort(N, x, incX, NULL, 1, util_Decreasing);
 
   rc = verify_rcblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  cvec_sort(N, x, incX, NULL, 1, util_Increasing_Magnitude);
+  util_cvec_sort(N, x, incX, NULL, 1, util_Increasing_Magnitude);
 
   rc = verify_rcblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  cvec_sort(N, x, incX, NULL, 1, util_Decreasing_Magnitude);
+  util_cvec_sort(N, x, incX, NULL, 1, util_Decreasing_Magnitude);
 
   rc = verify_rcblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  cvec_shuffle(N, x, incX, NULL, 1);
+  util_cvec_shuffle(N, x, incX, NULL, 1);
 
   rc = verify_rcblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  cvec_shuffle(N, x, incX, NULL, 1);
+  util_cvec_shuffle(N, x, incX, NULL, 1);
 
   rc = verify_rcblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  cvec_shuffle(N, x, incX, NULL, 1);
+  util_cvec_shuffle(N, x, incX, NULL, 1);
 
   rc = verify_rcblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  cvec_shuffle(N, x, incX, NULL, 1);
+  util_cvec_shuffle(N, x, incX, NULL, 1);
 
   rc = verify_rcblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){

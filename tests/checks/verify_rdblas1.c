@@ -78,16 +78,16 @@ extern int vecvec_fill_test(int argc, char** argv, int N, int incX, int incY, in
 
   util_random_seed();
 
-  double *x = dvec_alloc(N, incX);
-  double *y = dvec_alloc(N, incY);
+  double *x = util_dvec_alloc(N, incX);
+  double *y = util_dvec_alloc(N, incY);
 
   opt_eval_option(argc, argv, &func_type);
 
   //fill x
-  dvec_fill(N, x, incX, type, scale, cond);
+  util_dvec_fill(N, x, incX, type, scale, cond);
 
   //fill y with 1 where necessary
-  dvec_fill(N, y, incY, vec_fill_CONSTANT, 1.0, 1.0);
+  util_dvec_fill(N, y, incY, util_Vec_Constant, 1.0, 1.0);
 
   //nrm2 doesn't make sense with more than 1 block.
   if(func_type._named.value == wrap_RDNRM2){
@@ -98,63 +98,63 @@ extern int vecvec_fill_test(int argc, char** argv, int N, int incX, int incY, in
   ref  = (wrap_rdblas1_func(func_type._named.value))(N, x, incX, y, incY);
   Iref = (wrap_Idblas1_func(func_type._named.value))(N, x, incX, y, incY);
 
-  dvec_reverse(N, x, incX, NULL, 1);
+  util_dvec_reverse(N, x, incX, NULL, 1);
 
   rc = verify_rdblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  dvec_sort(N, x, incX, NULL, 1, util_Increasing);
+  util_dvec_sort(N, x, incX, NULL, 1, util_Increasing);
 
   rc = verify_rdblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  dvec_sort(N, x, incX, NULL, 1, util_Decreasing);
+  util_dvec_sort(N, x, incX, NULL, 1, util_Decreasing);
 
   rc = verify_rdblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  dvec_sort(N, x, incX, NULL, 1, util_Increasing_Magnitude);
+  util_dvec_sort(N, x, incX, NULL, 1, util_Increasing_Magnitude);
 
   rc = verify_rdblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  dvec_sort(N, x, incX, NULL, 1, util_Decreasing_Magnitude);
+  util_dvec_sort(N, x, incX, NULL, 1, util_Decreasing_Magnitude);
 
   rc = verify_rdblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  dvec_shuffle(N, x, incX, NULL, 1);
+  util_dvec_shuffle(N, x, incX, NULL, 1);
 
   rc = verify_rdblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  dvec_shuffle(N, x, incX, NULL, 1);
+  util_dvec_shuffle(N, x, incX, NULL, 1);
 
   rc = verify_rdblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  dvec_shuffle(N, x, incX, NULL, 1);
+  util_dvec_shuffle(N, x, incX, NULL, 1);
 
   rc = verify_rdblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  dvec_shuffle(N, x, incX, NULL, 1);
+  util_dvec_shuffle(N, x, incX, NULL, 1);
 
   rc = verify_rdblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){

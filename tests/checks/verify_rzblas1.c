@@ -78,16 +78,16 @@ extern int vecvec_fill_test(int argc, char** argv, int N, int incX, int incY, in
 
   util_random_seed();
 
-  double complex *x = zvec_alloc(N, incX);
-  double complex *y = zvec_alloc(N, incY);
+  double complex *x = util_zvec_alloc(N, incX);
+  double complex *y = util_zvec_alloc(N, incY);
 
   opt_eval_option(argc, argv, &func_type);
 
   //fill x
-  zvec_fill(N, x, incX, type, scale, cond);
+  util_zvec_fill(N, x, incX, type, scale, cond);
 
   //fill y with -i where necessary
-  zvec_fill(N, y, incY, vec_fill_CONSTANT, -_Complex_I, 1.0);
+  util_zvec_fill(N, y, incY, util_Vec_Constant, -_Complex_I, 1.0);
 
   //nrm2 doesn't make sense with more than 1 block.
   if(func_type._named.value == wrap_RDZNRM2){
@@ -98,63 +98,63 @@ extern int vecvec_fill_test(int argc, char** argv, int N, int incX, int incY, in
   ref  = (wrap_rzblas1_func(func_type._named.value))(N, x, incX, y, incY);
   Iref = (wrap_Izblas1_func(func_type._named.value))(N, x, incX, y, incY);
 
-  zvec_reverse(N, x, incX, NULL, 1);
+  util_zvec_reverse(N, x, incX, NULL, 1);
 
   rc = verify_rzblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  zvec_sort(N, x, incX, NULL, 1, util_Increasing);
+  util_zvec_sort(N, x, incX, NULL, 1, util_Increasing);
 
   rc = verify_rzblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  zvec_sort(N, x, incX, NULL, 1, util_Decreasing);
+  util_zvec_sort(N, x, incX, NULL, 1, util_Decreasing);
 
   rc = verify_rzblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  zvec_sort(N, x, incX, NULL, 1, util_Increasing_Magnitude);
+  util_zvec_sort(N, x, incX, NULL, 1, util_Increasing_Magnitude);
 
   rc = verify_rzblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  zvec_sort(N, x, incX, NULL, 1, util_Decreasing_Magnitude);
+  util_zvec_sort(N, x, incX, NULL, 1, util_Decreasing_Magnitude);
 
   rc = verify_rzblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  zvec_shuffle(N, x, incX, NULL, 1);
+  util_zvec_shuffle(N, x, incX, NULL, 1);
 
   rc = verify_rzblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  zvec_shuffle(N, x, incX, NULL, 1);
+  util_zvec_shuffle(N, x, incX, NULL, 1);
 
   rc = verify_rzblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  zvec_shuffle(N, x, incX, NULL, 1);
+  util_zvec_shuffle(N, x, incX, NULL, 1);
 
   rc = verify_rzblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  zvec_shuffle(N, x, incX, NULL, 1);
+  util_zvec_shuffle(N, x, incX, NULL, 1);
 
   rc = verify_rzblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){

@@ -22,17 +22,17 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   util_random_seed();
 
   //allocate vectors
-  double *x    = dvec_alloc(N, incx);
-  double *y    = dvec_alloc(N, incy);
+  double *x    = util_dvec_alloc(N, incx);
+  double *y    = util_dvec_alloc(N, incy);
 
   //fill y with 1 where necessary
-  dvec_fill(N, y, incy, vec_fill_CONSTANT, 1, 1.0);
+  util_dvec_fill(N, y, incy, util_Vec_Constant, 1, 1.0);
 
   //1 Big
   ref   = big;
 
   //1 Big at beginning
-  dvec_fill(N, x, incx, vec_fill_CONSTANT, small, 1.0);
+  util_dvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
   x[0]         = -big;
 
   res = damax(N, x, incx);
@@ -48,7 +48,7 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   }
 
   //1 Big at end
-  dvec_fill(N, x, incx, vec_fill_CONSTANT, small, 1.0);
+  util_dvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
   x[(N-1)*incx]         = -big;
 
   res = damax(N, x, incx);

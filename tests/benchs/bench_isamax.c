@@ -31,10 +31,10 @@ int vecvec_fill_bench_test(int argc, char** argv, int N, int incx, int incy, int
 
   util_random_seed();
 
-  float *x = svec_alloc(N, incx);
+  float *x = util_svec_alloc(N, incx);
 
   //fill x
-  svec_fill(N, x, incx, type, scale, cond);
+  util_svec_fill(N, x, incx, type, scale, cond);
 
   time_tic();
   for(int i = 0; i < trials; i++){
