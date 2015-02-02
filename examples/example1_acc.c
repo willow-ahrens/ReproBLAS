@@ -3,6 +3,7 @@
 #include <math.h>
 #include <sys/time.h>
 #include <rblas.h>
+#include "doubledouble.h"
 
 static struct timeval start;
 static struct timeval end;

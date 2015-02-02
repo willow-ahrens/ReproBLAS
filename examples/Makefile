@@ -30,8 +30,11 @@ LDFLAGS += -L$(realpath ../build/libs) -lm
 %.o :%.c
 	$(C_COMPILER) $(INCR) $(CFLAGS) -c -o $@ $<
 
-$(examples): % :%.o
-	$(LDC) -o run-$@ $(patsubst %,%.o,$@) $(LDFLAGS) -lreproblas_seq -liblas -lindexedfp
+doubledouble.o : doubledouble.c
+	$(C_COMPILER) -O1 -c $(FPFLAGS) $< -o $@
+
+$(examples): % :%.o doubledouble.o
+	$(LDC) -o run-$@ $(patsubst %,%.o,$@) doubledouble.o $(LDFLAGS) -lreproblas_seq -liblas -lindexedfp
 
 $(omp_examples): 
 	$(C_COMPILER) $(CFLAGS) $(INCR) $(OMP_FLAG) -c $(patsubst %,%.c,$@)

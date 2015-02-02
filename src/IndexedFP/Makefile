@@ -3,7 +3,6 @@ include $(ROOT_DIR)/Make.local
 
 OBJ = dIConv.o dIndexed.o dIAdd.o dIRenorm.o dIUpdate.o \
 	sIndexed.o sIAdd.o sIConv.o sIRenorm.o sIUpdate.o \
-	doubledouble.o
 
 MPOBJ = MPIndexedFP.o dIndexedMPI.o sIndexedMPI.o
 
@@ -21,9 +20,6 @@ all : $(libs)
 
 %o:%c
 	$(C_COMPILER) $(FPFLAGS) $(CFLAGS) -c $< -o $@
-
-doubledouble.o : doubledouble.c
-	$(C_COMPILER) -O1 -c $(FPFLAGS) $< -o $@
 
 $(MPOBJ): %.o : %.c
 	$(MPIC_COMPILER) $(CFLAGS) -c $< -o $@

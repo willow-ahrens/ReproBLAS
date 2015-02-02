@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <sys/time.h>
+#include "doubledouble.h"
 
 static struct timeval start;
 static struct timeval end;

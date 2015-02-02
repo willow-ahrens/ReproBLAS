@@ -73,9 +73,3 @@ extern void zconv2I1(int fold, int W, double complex X,
 		double complex* rep, double complex* C, int inc);
 extern I_double_Complex zconv2I(double complex x);
 
-// higher precision
-extern void ddpdd(double* x, double* y);
-extern void ddpd(double* x, double y);
-extern void dndpd(int n, double* x, double y);
-extern double TwoProd(double a, double b, double* lo);
-extern double TwoSum(double a, double b, double* lo);

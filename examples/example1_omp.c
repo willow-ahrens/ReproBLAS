@@ -4,6 +4,7 @@
 #include <omp.h>
 
 #include <IndexedFP.h>
+#include "doubledouble.h"
 
 //double v(int i, int n) {
 //	return  sin(2*M_PI * (i / (double)n - 0.5));

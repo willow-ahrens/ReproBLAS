@@ -3,6 +3,7 @@
 #include <math.h>
 
 #include <IndexedFP.h>
+#include "doubledouble.h"
 
 float complex v(int i, int n) {
 	return  sin(M_PI * (i / (float)n - 0.5))

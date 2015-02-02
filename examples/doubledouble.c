@@ -8,7 +8,7 @@
 #include <math.h>
 #include <fenv.h>
 
-#include "dIndexed.h"
+#include "doubledouble.h"
 
 // a += b
 void ddpdd(double* a, double* b) {
