@@ -16,7 +16,7 @@ class Max(Target):
   def write(self, code_block, arguments):
       self.data_type = self.data_type_class(code_block)
       self.vec = self.vec_class(code_block, self.data_type_class)
-      max_unroll = arguments["{}{}_max_unroll".format(self.data_type.name_char, self.name)]
+      max_unroll = arguments["{}{}_max_unroll_{}".format(self.data_type.name_char, self.name, self.vec.name)]
       max_process_width = self.compute_process_width(max_unroll)
       code_block.write("int i;")
       code_block.define_vars(self.data_type.name, ["max"])

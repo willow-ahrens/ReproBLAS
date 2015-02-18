@@ -146,7 +146,6 @@ class SISD(Vectorization):
 
   def __init__(self, code_block, data_type_class):
     super(SISD, self).__init__(code_block, data_type_class)
-    self.code_block.srcFile.include("#include <emmintrin.h>") #needed for DAZ_FLAG. Unclear if the flag is even necessary in SISD.
     self.bit_size = self.data_type.base_type.bit_size
     self.byte_size = self.data_type.base_type.byte_size
     self.type_name = self.data_type.base_type.name
@@ -289,7 +288,6 @@ class SSE(SIMD):
 
   def __init__(self, code_block, data_type_class):
     super(SSE, self).__init__(code_block, data_type_class)
-    self.code_block.srcFile.include("#include <emmintrin.h>")
     self.bit_size = 128
     self.byte_size = 16
     self.type_name = {"float": "__m128", "double": "__m128d"}[self.data_type.base_type.name]
@@ -428,7 +426,6 @@ class AVX(SIMD):
 
   def __init__(self, code_block, data_type_class):
     super(AVX, self).__init__(code_block, data_type_class)
-    self.code_block.srcFile.include("#include <immintrin.h>")
     self.bit_size = 256
     self.byte_size = 32 
     self.type_name = {"float": "__m256", "double": "__m256d"}[self.data_type.base_type.name]
