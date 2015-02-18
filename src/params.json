@@ -10,5 +10,17 @@
     "samax_max_unroll_SISD": [2, 4, 6, 8, 10, 12, 14, 16],
     "zamax_max_unroll_AVX": [2, 4, 6, 8, 10, 12, 14, 16],
     "zamax_max_unroll_SSE": [1, 2, 3, 4, 5, 6, 7, 8],
-    "zamax_max_unroll_SISD": [1, 2, 3, 4, 5, 6, 7, 8]
+    "zamax_max_unroll_SISD": [1, 2, 3, 4, 5, 6, 7, 8],
+    "camaxm_max_unroll_AVX": [4, 8, 12, 16, 20, 24, 28, 32],
+    "camaxm_max_unroll_SSE": [2, 4, 6, 8, 10, 12, 14, 16],
+    "camaxm_max_unroll_SISD": [1, 2, 3, 4, 5, 6, 7, 8],
+    "damaxm_max_unroll_AVX": [4, 8, 12, 16, 20, 24, 28, 32],
+    "damaxm_max_unroll_SSE": [2, 4, 6, 8, 10, 12, 14, 16],
+    "damaxm_max_unroll_SISD": [1, 2, 3, 4, 5, 6, 7, 8],
+    "samaxm_max_unroll_AVX": [8, 16, 24, 32, 48, 56, 64],
+    "samaxm_max_unroll_SSE": [4, 8, 12, 16, 20, 24, 28, 32],
+    "samaxm_max_unroll_SISD": [2, 4, 6, 8, 10, 12, 14, 16],
+    "zamaxm_max_unroll_AVX": [2, 4, 6, 8, 10, 12, 14, 16],
+    "zamaxm_max_unroll_SSE": [1, 2, 3, 4, 5, 6, 7, 8],
+    "zamaxm_max_unroll_SISD": [1, 2, 3, 4, 5, 6, 7, 8]
 }

@@ -10,5 +10,17 @@
     "samax_max_unroll_SISD": 4, 
     "zamax_max_unroll_AVX": 8, 
     "zamax_max_unroll_SSE": 4, 
-    "zamax_max_unroll_SISD": 1
+    "zamax_max_unroll_SISD": 1,
+    "camaxm_max_unroll_AVX": 8, 
+    "camaxm_max_unroll_SSE": 4, 
+    "camaxm_max_unroll_SISD": 2,
+    "damaxm_max_unroll_AVX": 8, 
+    "damaxm_max_unroll_SSE": 4, 
+    "damaxm_max_unroll_SISD": 2, 
+    "samaxm_max_unroll_AVX": 16, 
+    "samaxm_max_unroll_SSE": 8, 
+    "samaxm_max_unroll_SISD": 2, 
+    "zamaxm_max_unroll_AVX": 4, 
+    "zamaxm_max_unroll_SSE": 2, 
+    "zamaxm_max_unroll_SISD": 1
 }
