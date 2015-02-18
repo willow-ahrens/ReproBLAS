@@ -29,11 +29,10 @@ def mix(op, *args, **kwargs):
   return str_result
 
 class CodeBlock(object):
-  def __init__(self, srcFile, base_indent_level = 0):
+  def __init__(self, base_indent_level = 0):
     self.base_indent_level = base_indent_level
     self.indent_level = base_indent_level
     self.blocks = []
-    self.srcFile = srcFile
     self.included = set()
     self.includes = []
 
@@ -69,25 +68,3 @@ class CodeBlock(object):
 
   def __str__(self):
     return "\n".join([str(block) for block in (self.includes + self.blocks)])
-
-class SrcFile(object):
-  def __init__(self, name, prelude = []):
-    self.name = name
-    self.code = CodeBlock(self)
-    self.prelude = self.code.sub_block()
-    for chunk in prelude:
-      self.prelude.write(chunk)
-
-  def write(self, chunk):
-    self.code.write(chunk)
-
-  def include(self, chunk):
-    self.code.include(chunk)
-
-  def sub_block(self):
-    return self.code.sub_block()
-
-  def dump(self):
-    f = open(self.name, 'w')
-    f.write(str(self.code))
-    f.close()

@@ -6,24 +6,17 @@ from vectorizations import *
 from generate import *
 import itertools
 
-class Max(Function):
+class Max(Target):
   standard_incs = ["incv"]
 
-  def __init__(self, data_type_class):
-    super(Max, self).__init__(data_type_class)
+  def __init__(self, data_type_class, vec_class):
+    self.data_type_class = data_type_class
+    self.vec_class = vec_class
 
-  def write_declaration(self, code_block, settings):
-    code_block.srcFile.include("#include <stdio.h>")
-    code_block.srcFile.include("#include <stdlib.h>")
-    code_block.srcFile.include("#include <float.h>")
-    code_block.srcFile.include("#include <math.h>")
-    code_block.srcFile.include("#include \"config.h\"")
-    code_block.srcFile.include("#include \"Common/Common.h\"")
-    #code_block.srcFile.include("#include \"IndexedFP/" + self.data_type.base_type.name_char + "Indexed.h\"")
-    #code_block.srcFile.include("#include \"rblas1.h\"")
-
-  def write_body(self, code_block, settings = [1]):
-      max_unroll = settings[0]
+  def write(self, code_block, arguments):
+      self.data_type = self.data_type_class(code_block)
+      self.vec = self.vec_class(code_block, self.data_type_class)
+      max_unroll = arguments["{}{}_max_unroll".format(self.data_type.name_char, self.name)]
       max_process_width = self.compute_process_width(max_unroll)
       code_block.write("int i;")
       code_block.define_vars(self.data_type.name, ["max"])
@@ -66,14 +59,11 @@ class Max(Function):
     code_block.set_equal(itertools.cycle(self.m_vars), self.vec.max(itertools.cycle(self.m_vars), self.load_vars[0][:process_width]))
 
 class AMax(Max):
+  name = "amax"
   standard_incs = ["incv"]
 
-  def __init__(self, data_type_class):
-    super(AMax, self).__init__(data_type_class)
-
-  def write_declaration(self, code_block, settings):
-    super(AMax, self).write_declaration(code_block, settings)
-    code_block.write("{0} {1}amax(int n, {0}* v, int incv){{".format(self.data_type.name, self.data_type.name_char))
+  def __init__(self, data_type_class, vec_class):
+    super(AMax, self).__init__(data_type_class, vec_class)
 
   def define_load_vars(self, code_block, process_width):
     self.load_vars = [["v_" + str(i) for i in range(process_width)]]
@@ -96,10 +86,11 @@ class AMax(Max):
       code_block.set_equal(self.load_vars[0], self.vec.abs(self.vec.load_partial(self.load_ptrs[0], 0, incs[0], partial)))
 
 class AMaxM(Max):
+  name = "amaxm"
   standard_incs = ["incv", "incy"]
 
-  def __init__(self, data_type_class):
-    super(AMaxM, self).__init__(data_type_class)
+  def __init__(self, data_type_class, vec_class):
+    super(AMaxM, self).__init__(data_type_class, vec_class)
 
   def write_declaration(self, code_block, settings):
     super(AMaxM, self).write_declaration(code_block, settings)

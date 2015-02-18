@@ -41,8 +41,8 @@ class Double(DataType):
   bit_size = 64
   base_size = 1
 
-  def __init__(self, code):
-    code.srcFile.include("#include <float.h>")
+  def __init__(self, code_block):
+    self.code_block = code_block
 Double.base_type = Double
 
 class DoubleComplex(DataType):
@@ -54,8 +54,8 @@ class DoubleComplex(DataType):
   is_complex = True
   base_type = Double
 
-  def __init__(self, code):
-    code.srcFile.include("#include <complex.h>")
+  def __init__(self, code_block):
+    self.code_block = code_block
 
 class Float(DataType):
   name_char = 's'
@@ -67,8 +67,8 @@ class Float(DataType):
   bit_size = 32
   base_size = 1
 
-  def __init__(self, code):
-    code.srcFile.include("#include <float.h>")
+  def __init__(self, code_block):
+    self.code_block = code_block
 Float.base_type = Float
 
 
@@ -81,5 +81,5 @@ class FloatComplex(DataType):
   is_complex = True
   base_type = Float
 
-  def __init__(self, code):
-    code.srcFile.include("#include <complex.h>")
+  def __init__(self, code_block):
+    self.code_block = code_block
