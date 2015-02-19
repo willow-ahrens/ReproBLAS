@@ -7,9 +7,21 @@
 #include <immintrin.h>
 #include <emmintrin.h>
 
+/*[[[cog
+import cog
+import sys, os
+from gen import generate
+from gen import dataTypes
+from gen import vectorizations
+import sumI2
+]]]*/
+//[[[end]]]
 
 #if defined( __AVX__ )
   void dsumI2(int n, double* v, int incv, int fold, double* sum){
+    /*[[[cog
+    cog.out(generate.generate(sumI2.SumI2(dataTypes.Double, vectorizations.AVX), args, params))
+    ]]]*/
     __m256d mask_BLP; AVX_BLP_MASKD(mask_BLP);
     double tmp_cons[4] __attribute__((aligned(32)));
     SET_DAZ_FLAG;
@@ -504,9 +516,13 @@
         return;
       }
     }
+    //[[[end]]]
   }
 #elif defined( __SSE2__ )
   void dsumI2(int n, double* v, int incv, int fold, double* sum){
+    /*[[[cog
+    cog.out(generate.generate(sumI2.SumI2(dataTypes.Double, vectorizations.AVX), args, params))
+    ]]]*/
     __m128d mask_BLP; SSE_BLP_MASKD(mask_BLP);
     double tmp_cons[2] __attribute__((aligned(16)));
     SET_DAZ_FLAG;
@@ -1019,9 +1035,13 @@
         return;
       }
     }
+    //[[[end]]]
   }
 #else
   void dsumI2(int n, double* v, int incv, int fold, double* sum){
+    /*[[[cog
+    cog.out(generate.generate(sumI2.SumI2(dataTypes.Double, vectorizations.AVX), args, params))
+    ]]]*/
     long_double tmp_BLP;
     SET_DAZ_FLAG;
     switch(fold){
@@ -1269,5 +1289,6 @@
         return;
       }
     }
+    //[[[end]]]
   }
 #endif

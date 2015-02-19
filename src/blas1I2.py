@@ -5,34 +5,34 @@ from dataTypes import *
 from vectorizations import *
 from generate import *
 
-class OneDimensionalAccumulation(Function):
+class OneDimensionalAccumulation(Target):
 
-  def __init__(self, data_type_class):
-    super(OneDimensionalAccumulation, self).__init__(data_type_class)
+  def __init__(self, data_type_class, vec_class):
+    self.data_type_class = data_type_class
+    self.vec_class = vec_class
 
-  def write_declaration(self, code_block, settings):
-    code_block.srcFile.include("#include <stdio.h>")
-    code_block.srcFile.include("#include <stdlib.h>")
-    code_block.srcFile.include("#include <float.h>")
-    code_block.srcFile.include("#include <math.h>")
-    code_block.srcFile.include("#include \"config.h\"")
-    code_block.srcFile.include("#include \"Common/Common.h\"")
-    #code_block.srcFile.include("#include \"IndexedFP/" + self.data_type.base_type.name_char + "Indexed.h\"")
-    #code_block.srcFile.include("#include \"rblas1.h\"")
-
-  def write_body(self, code_block, settings = [(-1, 1, 8)]):
+  def write(self, code_block, arguments):
+    self.data_type = self.data_type_class(code_block)
+    self.vec = self.vec_class(code_block, self.data_type_class)
     code_block.write("SET_DAZ_FLAG;")
-    if len(settings) == 1:
-      self.write_fold(code_block, settings[0][0], settings[0][1], settings[0][2])
+    expanded_folds = []
+    for i in range(1, 9):
+      if arguments["{}_expand_fold_{}".format(self.name, i)]=="TRUE":
+        expanded_folds.append(i)
+    expanded_folds.append(0)
+    if len(expanded_folds) == 1:
+      #TODO make the unroll a multiple of the stride. also figure out what we're naming them
+      self.write_fold(code_block, 0, arguments["{}_max_stride_fold_{}".format(self.name, 0)], arguments["{}_max_unroll_fold_{}".format(self.name, 0)])
     else:
       code_block.write("switch(fold){")
       code_block.indent()
-      for (fold, max_stride, max_unroll) in settings:
-        if fold == -1:
+      for fold in expanded_folds:
+        if fold == 0:
           code_block.write("default:{")
         else:
           code_block.write("case " + str(fold) + ":{")
         code_block.indent()
+        self.write_fold(code_block, fold, arguments["{}_max_stride_fold_{}".format(self.name, fold)], arguments["{}_max_unroll_fold_{}".format(self.name, fold)])
         self.write_fold(code_block, fold, max_stride, max_unroll)
         #code_block.write("break;")
         code_block.write("RESET_DAZ_FLAG")
@@ -42,6 +42,7 @@ class OneDimensionalAccumulation(Function):
       code_block.dedent()
       code_block.write("}")
 
+  #TODO this should probably be two methods, one for generic fold and one for specific
   def write_fold(self, code_block, fold, max_stride, max_unroll):
 #    if self.vec.name == "AVX":
 #      self.code_block.write('printf("Hi im avx {0}\\n");'.format(self.name))
@@ -54,7 +55,7 @@ class OneDimensionalAccumulation(Function):
 # unroll_width is the number of elements of the input vector that are processed in each iteration.
 # process_width is the number of variables that are processed in each iteration.
     max_width = self.compute_width(max_stride)
-    if fold == -1:
+    if fold == 0:
       code_block.write("int i, j;")
     else:
       code_block.write("int i;")
@@ -65,7 +66,7 @@ class OneDimensionalAccumulation(Function):
       sum_ptr = "sum_base"
     self.define_load_ptrs(code_block, max_width * max_unroll)
     self.define_load_vars(code_block, max_width * max_unroll)
-    if fold == -1:
+    if fold == 0:
       #define q variables
       self.q_vars = ["q_" + str(i) for i in range(max_width)]
       code_block.define_vars(self.vec.type_name, self.q_vars)
@@ -81,14 +82,14 @@ class OneDimensionalAccumulation(Function):
       for j in range(fold):
         code_block.define_vars(self.vec.type_name, self.s_vars[j])
 
-    if fold == -1:
+    if fold == 0:
       code_block.write("{0} s_buffer[{1}];".format(self.vec.type_name, mix("*", max_width, "MAX_FOLD")))
       self.buffer_vars = ["s_buffer[{0}]".format(mix("+", mix("*", "j", max_width), i)) for i in range(max_width)]
 
     code_block.new_line()
 
     #propagate sum to buffer
-    if fold == -1:
+    if fold == 0:
       code_block.write("for(j = 0; j < fold; j += 1){")
       code_block.indent()
       self.vec.propagate_into(self.buffer_vars, sum_ptr, "j", 1)
@@ -101,7 +102,7 @@ class OneDimensionalAccumulation(Function):
     self.write_cores(code_block, fold, max_stride, max_unroll)
 
     #consolidate
-    if fold == -1:
+    if fold == 0:
       code_block.write("for(j = 0; j < fold; j += 1){")
       code_block.indent()
       self.vec.consolidate_into("sum", "j", 1, self.buffer_vars, sum_ptr, "j", 1, self.q_vars[0])
@@ -109,8 +110,8 @@ class OneDimensionalAccumulation(Function):
       code_block.write("}")
     else:
       for j in range(fold):
+        #TODO consolidate_into should be a subtract and a reduce
         self.vec.consolidate_into("sum", j, 1, self.s_vars[j], sum_ptr, j, 1, self.q_vars[0])
-
 
   def write_core(self, code_block, fold, max_stride, max_unroll, incs):
     max_width = self.compute_width(max_stride);
@@ -137,7 +138,7 @@ class OneDimensionalAccumulation(Function):
     raise(NotImplementedError())
 
   def process(self, code_block, fold, width, unroll):
-    if(fold == -1):
+    if(fold == 0):
       code_block.write("for(j = 0; j < fold - 1; j++){")
       code_block.indent()
       for i in range(max(unroll, 1)):
@@ -164,8 +165,8 @@ class OneDimensionalAccumulation(Function):
 class NonDotOneDimensionalAccumulation(OneDimensionalAccumulation):
   standard_incs = ["incv"]
 
-  def __init__(self, data_type_class):
-    super(NonDotOneDimensionalAccumulation, self).__init__(data_type_class)
+  def __init__(self, data_type_class, vec_class):
+    super(NonDotOneDimensionalAccumulation, self).__init__(data_type_class, vec_class)
 
   def write_cores(self, code_block, fold, max_stride, max_unroll):
     code_block.write("if(incv == 1){")
@@ -195,8 +196,8 @@ class NonDotOneDimensionalAccumulation(OneDimensionalAccumulation):
 class DotOneDimensionalAccumulation(OneDimensionalAccumulation):
   standard_incs = ["incv", "incy"]
 
-  def __init__(self, data_type_class):
-    super(DotOneDimensionalAccumulation, self).__init__(data_type_class)
+  def __init__(self, data_type_class, vec_class):
+    super(DotOneDimensionalAccumulation, self).__init__(data_type_class, vec_class)
 
   def write_cores(self, code_block, fold, max_stride, max_unroll):
     code_block.write("if(incv == 1){")

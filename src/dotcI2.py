@@ -8,10 +8,7 @@ class DotCI2(blas1I2.DotOneDimensionalAccumulation):
   def __init__(self, data_type_class):
     assert data_type_class.is_complex, "dotc is only for complex types"
     super(DotCI2, self).__init__(data_type_class)
-
-  def write_declaration(self, code_block, settings):
-    super(DotCI2, self).write_declaration(code_block, settings)
-    code_block.write("void {0}dotcI2(int n, {1}* v, int incv, {1}* y, int incy, int fold, {1}* sum){{".format(self.data_type.name_char, self.data_type.name))
+    self.name = "{0}dotcI2".format(self.data_type.name_char)
 
   def preprocess(self, code_block, n, incs, partial="", align = False):
     width = self.compute_width(n)

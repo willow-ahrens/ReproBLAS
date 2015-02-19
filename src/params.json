@@ -22,5 +22,14 @@
     "samaxm_max_unroll_SISD": [2, 4, 6, 8, 10, 12, 14, 16],
     "zamaxm_max_unroll_AVX": [2, 4, 6, 8, 10, 12, 14, 16],
     "zamaxm_max_unroll_SSE": [1, 2, 3, 4, 5, 6, 7, 8],
-    "zamaxm_max_unroll_SISD": [1, 2, 3, 4, 5, 6, 7, 8]
+    "zamaxm_max_unroll_SISD": [1, 2, 3, 4, 5, 6, 7, 8],
+    "dsumI2_expand_fold_1": ["TRUE", "FALSE"],
+    "dsumI2_expand_fold_2": ["TRUE", "FALSE"],
+    "dsumI2_expand_fold_3": ["TRUE", "FALSE"],
+    "dsumI2_expand_fold_4": ["TRUE", "FALSE"],
+    "dsumI2_expand_fold_5": ["TRUE", "FALSE"],
+    "dsumI2_expand_fold_6": ["TRUE", "FALSE"],
+    "dsumI2_expand_fold_7": ["TRUE", "FALSE"],
+    "dsumI2_expand_fold_8": ["TRUE", "FALSE"]
+    "dsumI2_max_unroll_fold_1": []
 }

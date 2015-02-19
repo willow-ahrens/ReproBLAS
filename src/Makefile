@@ -11,7 +11,7 @@ endif
 LIB : $(libs)
 	@cd IndexedFP && $(MAKE) --no-print-directory
 
-GENERATED = dasumI2.c dsumI2.c dnrm2I2.c ddotI2.c\
+GENERATED = dasumI2.c dnrm2I2.c ddotI2.c\
             sasumI2.c ssumI2.c snrm2I2.c sdotI2.c\
             zsumI2.c dzasumI2.c dznrm2I2.c zdotcI2.c zdotuI2.c\
             csumI2.c scasumI2.c scnrm2I2.c cdotcI2.c cdotuI2.c\
@@ -53,7 +53,7 @@ $(GENERATED): %.c: %.py %.tune
 	python $<
 
 %o:%c
-	python -m gen.cogapp -r $<
+	python -m gen.cogapp -r -D args=default_args.json -D params=params.json $<
 	$(C_COMPILER) $(CFLAGS) -c $< -o $@
 
 $(MPOBJ) : prblas.h rblas1.h 

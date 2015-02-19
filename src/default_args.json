@@ -22,5 +22,13 @@
     "samaxm_max_unroll_SISD": 2, 
     "zamaxm_max_unroll_AVX": 4, 
     "zamaxm_max_unroll_SSE": 2, 
-    "zamaxm_max_unroll_SISD": 1
+    "zamaxm_max_unroll_SISD": 1,
+    "dsumI2_expand_fold_1": "FALSE",
+    "dsumI2_expand_fold_2": "FALSE",
+    "dsumI2_expand_fold_3": "TRUE",
+    "dsumI2_expand_fold_4": "FALSE",
+    "dsumI2_expand_fold_5": "FALSE",
+    "dsumI2_expand_fold_6": "FALSE",
+    "dsumI2_expand_fold_7": "FALSE",
+    "dsumI2_expand_fold_8": "FALSE"
 }

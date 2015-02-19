@@ -7,12 +7,9 @@ import blas1I2
 class SumI2(blas1I2.NonDotOneDimensionalAccumulation):
   name = "sumI"
 
-  def __init__(self, data_type_class):
-    super(SumI2, self).__init__(data_type_class)
-
-  def write_declaration(self, code_block, settings):
-    super(SumI2, self).write_declaration(code_block, settings)
-    code_block.write("void {0}sumI2(int n, {1}* v, int incv, int fold, {1}* sum){{".format(self.data_type.name_char, self.data_type.name))
+  def __init__(self, data_type_class, vec_class):
+    super(SumI2, self).__init__(data_type_class, vec_class)
+    self.name = "{0}sumI2".format(self.data_type_class.name_char)
 
   def preprocess(self, code_block, n, incs, partial="", align = False):
     if partial == "":
