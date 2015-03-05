@@ -8,9 +8,9 @@ class ASumI2(blas1I2.NonDotOneDimensionalAccumulation):
   def __init__(self, data_type_class, vec_class):
     super(ASumI2, self).__init__(data_type_class, vec_class)
     redundant_char = ""
-    if self.data_type.is_complex:
-      redundant_char = self.data_type.base_type.name_char
-    self.name = "{0}{1}asumI2".format(redundant_char, self.data_type.name_char)
+    if self.data_type_class.is_complex:
+      redundant_char = self.data_type_class.base_type.name_char
+    self.name = "{0}{1}asumI2".format(redundant_char, self.data_type_class.name_char)
 
   def preprocess(self, code_block, n, incs, partial="", align = False):
     if partial == "":

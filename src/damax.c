@@ -27,28 +27,17 @@ import amax
     int i;
     double max;
 
-    __m256d v_0, v_1, v_2, v_3;
+    __m256d v_0, v_1;
     __m256d m_0;
     m_0 = _mm256_setzero_pd();
 
     if(incv == 1){
 
-      for(i = 0; i + 16 <= n; i += 16, v += 16){
-        v_0 = _mm256_and_pd(_mm256_loadu_pd(v), mask_ABS);
-        v_1 = _mm256_and_pd(_mm256_loadu_pd(v + 4), mask_ABS);
-        v_2 = _mm256_and_pd(_mm256_loadu_pd(v + 8), mask_ABS);
-        v_3 = _mm256_and_pd(_mm256_loadu_pd(v + 12), mask_ABS);
-        m_0 = _mm256_max_pd(m_0, v_0);
-        m_0 = _mm256_max_pd(m_0, v_1);
-        m_0 = _mm256_max_pd(m_0, v_2);
-        m_0 = _mm256_max_pd(m_0, v_3);
-      }
-      if(i + 8 <= n){
+      for(i = 0; i + 8 <= n; i += 8, v += 8){
         v_0 = _mm256_and_pd(_mm256_loadu_pd(v), mask_ABS);
         v_1 = _mm256_and_pd(_mm256_loadu_pd(v + 4), mask_ABS);
         m_0 = _mm256_max_pd(m_0, v_0);
         m_0 = _mm256_max_pd(m_0, v_1);
-        i += 8, v += 8;
       }
       if(i + 4 <= n){
         v_0 = _mm256_and_pd(_mm256_loadu_pd(v), mask_ABS);
@@ -61,22 +50,11 @@ import amax
       }
     }else{
 
-      for(i = 0; i + 16 <= n; i += 16, v += (incv * 16)){
-        v_0 = _mm256_and_pd(_mm256_set_pd(v[(incv * 3)], v[(incv * 2)], v[incv], v[0]), mask_ABS);
-        v_1 = _mm256_and_pd(_mm256_set_pd(v[(incv * 7)], v[(incv * 6)], v[(incv * 5)], v[(incv * 4)]), mask_ABS);
-        v_2 = _mm256_and_pd(_mm256_set_pd(v[(incv * 11)], v[(incv * 10)], v[(incv * 9)], v[(incv * 8)]), mask_ABS);
-        v_3 = _mm256_and_pd(_mm256_set_pd(v[(incv * 15)], v[(incv * 14)], v[(incv * 13)], v[(incv * 12)]), mask_ABS);
-        m_0 = _mm256_max_pd(m_0, v_0);
-        m_0 = _mm256_max_pd(m_0, v_1);
-        m_0 = _mm256_max_pd(m_0, v_2);
-        m_0 = _mm256_max_pd(m_0, v_3);
-      }
-      if(i + 8 <= n){
+      for(i = 0; i + 8 <= n; i += 8, v += (incv * 8)){
         v_0 = _mm256_and_pd(_mm256_set_pd(v[(incv * 3)], v[(incv * 2)], v[incv], v[0]), mask_ABS);
         v_1 = _mm256_and_pd(_mm256_set_pd(v[(incv * 7)], v[(incv * 6)], v[(incv * 5)], v[(incv * 4)]), mask_ABS);
         m_0 = _mm256_max_pd(m_0, v_0);
         m_0 = _mm256_max_pd(m_0, v_1);
-        i += 8, v += (incv * 8);
       }
       if(i + 4 <= n){
         v_0 = _mm256_and_pd(_mm256_set_pd(v[(incv * 3)], v[(incv * 2)], v[incv], v[0]), mask_ABS);
@@ -106,28 +84,17 @@ import amax
     int i;
     double max;
 
-    __m128d v_0, v_1, v_2, v_3;
+    __m128d v_0, v_1;
     __m128d m_0;
     m_0 = _mm_setzero_pd();
 
     if(incv == 1){
 
-      for(i = 0; i + 8 <= n; i += 8, v += 8){
-        v_0 = _mm_and_pd(_mm_loadu_pd(v), mask_ABS);
-        v_1 = _mm_and_pd(_mm_loadu_pd(v + 2), mask_ABS);
-        v_2 = _mm_and_pd(_mm_loadu_pd(v + 4), mask_ABS);
-        v_3 = _mm_and_pd(_mm_loadu_pd(v + 6), mask_ABS);
-        m_0 = _mm_max_pd(m_0, v_0);
-        m_0 = _mm_max_pd(m_0, v_1);
-        m_0 = _mm_max_pd(m_0, v_2);
-        m_0 = _mm_max_pd(m_0, v_3);
-      }
-      if(i + 4 <= n){
+      for(i = 0; i + 4 <= n; i += 4, v += 4){
         v_0 = _mm_and_pd(_mm_loadu_pd(v), mask_ABS);
         v_1 = _mm_and_pd(_mm_loadu_pd(v + 2), mask_ABS);
         m_0 = _mm_max_pd(m_0, v_0);
         m_0 = _mm_max_pd(m_0, v_1);
-        i += 4, v += 4;
       }
       if(i + 2 <= n){
         v_0 = _mm_and_pd(_mm_loadu_pd(v), mask_ABS);
@@ -140,22 +107,11 @@ import amax
       }
     }else{
 
-      for(i = 0; i + 8 <= n; i += 8, v += (incv * 8)){
-        v_0 = _mm_and_pd(_mm_set_pd(v[incv], v[0]), mask_ABS);
-        v_1 = _mm_and_pd(_mm_set_pd(v[(incv * 3)], v[(incv * 2)]), mask_ABS);
-        v_2 = _mm_and_pd(_mm_set_pd(v[(incv * 5)], v[(incv * 4)]), mask_ABS);
-        v_3 = _mm_and_pd(_mm_set_pd(v[(incv * 7)], v[(incv * 6)]), mask_ABS);
-        m_0 = _mm_max_pd(m_0, v_0);
-        m_0 = _mm_max_pd(m_0, v_1);
-        m_0 = _mm_max_pd(m_0, v_2);
-        m_0 = _mm_max_pd(m_0, v_3);
-      }
-      if(i + 4 <= n){
+      for(i = 0; i + 4 <= n; i += 4, v += (incv * 4)){
         v_0 = _mm_and_pd(_mm_set_pd(v[incv], v[0]), mask_ABS);
         v_1 = _mm_and_pd(_mm_set_pd(v[(incv * 3)], v[(incv * 2)]), mask_ABS);
         m_0 = _mm_max_pd(m_0, v_0);
         m_0 = _mm_max_pd(m_0, v_1);
-        i += 4, v += (incv * 4);
       }
       if(i + 2 <= n){
         v_0 = _mm_and_pd(_mm_set_pd(v[incv], v[0]), mask_ABS);

@@ -7,9 +7,21 @@
 #include <immintrin.h>
 #include <emmintrin.h>
 
+/*[[[cog
+import cog
+import sys, os
+from gen import generate
+from gen import dataTypes
+from gen import vectorizations
+import asumI2
+]]]*/
+//[[[end]]]
 
 #if defined( __AVX__ )
   void sasumI2(int n, float* v, int incv, int fold, float* sum){
+    /*[[[cog
+    cog.out(generate.generate(asumI2.ASumI2(dataTypes.Float, vectorizations.AVX), args, params))
+    ]]]*/
     __m256 mask_ABS; AVX_ABS_MASKS(mask_ABS);
     __m256 mask_BLP; AVX_BLP_MASKS(mask_BLP);
     float tmp_cons[8] __attribute__((aligned(32)));
@@ -18,7 +30,7 @@
       case 3:{
         int i;
 
-        __m256 v_0, v_1, v_2, v_3, v_4, v_5, v_6, v_7;
+        __m256 v_0, v_1, v_2, v_3;
         __m256 q_0, q_1;
         __m256 s_0_0, s_0_1;
         __m256 s_1_0, s_1_1;
@@ -29,89 +41,7 @@
         s_2_0 = s_2_1 = _mm256_broadcast_ss(sum + 2);
         if(incv == 1){
 
-          for(i = 0; i + 64 <= n; i += 64, v += 64){
-            v_0 = _mm256_and_ps(_mm256_loadu_ps(v), mask_ABS);
-            v_1 = _mm256_and_ps(_mm256_loadu_ps(v + 8), mask_ABS);
-            v_2 = _mm256_and_ps(_mm256_loadu_ps(v + 16), mask_ABS);
-            v_3 = _mm256_and_ps(_mm256_loadu_ps(v + 24), mask_ABS);
-            v_4 = _mm256_and_ps(_mm256_loadu_ps(v + 32), mask_ABS);
-            v_5 = _mm256_and_ps(_mm256_loadu_ps(v + 40), mask_ABS);
-            v_6 = _mm256_and_ps(_mm256_loadu_ps(v + 48), mask_ABS);
-            v_7 = _mm256_and_ps(_mm256_loadu_ps(v + 56), mask_ABS);
-            q_0 = s_0_0;
-            q_1 = s_0_1;
-            s_0_0 = _mm256_add_ps(s_0_0, _mm256_or_ps(v_0, mask_BLP));
-            s_0_1 = _mm256_add_ps(s_0_1, _mm256_or_ps(v_1, mask_BLP));
-            q_0 = _mm256_sub_ps(q_0, s_0_0);
-            q_1 = _mm256_sub_ps(q_1, s_0_1);
-            v_0 = _mm256_add_ps(v_0, q_0);
-            v_1 = _mm256_add_ps(v_1, q_1);
-            q_0 = s_1_0;
-            q_1 = s_1_1;
-            s_1_0 = _mm256_add_ps(s_1_0, _mm256_or_ps(v_0, mask_BLP));
-            s_1_1 = _mm256_add_ps(s_1_1, _mm256_or_ps(v_1, mask_BLP));
-            q_0 = _mm256_sub_ps(q_0, s_1_0);
-            q_1 = _mm256_sub_ps(q_1, s_1_1);
-            v_0 = _mm256_add_ps(v_0, q_0);
-            v_1 = _mm256_add_ps(v_1, q_1);
-            s_2_0 = _mm256_add_ps(s_2_0, _mm256_or_ps(v_0, mask_BLP));
-            s_2_1 = _mm256_add_ps(s_2_1, _mm256_or_ps(v_1, mask_BLP));
-            q_0 = s_0_0;
-            q_1 = s_0_1;
-            s_0_0 = _mm256_add_ps(s_0_0, _mm256_or_ps(v_2, mask_BLP));
-            s_0_1 = _mm256_add_ps(s_0_1, _mm256_or_ps(v_3, mask_BLP));
-            q_0 = _mm256_sub_ps(q_0, s_0_0);
-            q_1 = _mm256_sub_ps(q_1, s_0_1);
-            v_2 = _mm256_add_ps(v_2, q_0);
-            v_3 = _mm256_add_ps(v_3, q_1);
-            q_0 = s_1_0;
-            q_1 = s_1_1;
-            s_1_0 = _mm256_add_ps(s_1_0, _mm256_or_ps(v_2, mask_BLP));
-            s_1_1 = _mm256_add_ps(s_1_1, _mm256_or_ps(v_3, mask_BLP));
-            q_0 = _mm256_sub_ps(q_0, s_1_0);
-            q_1 = _mm256_sub_ps(q_1, s_1_1);
-            v_2 = _mm256_add_ps(v_2, q_0);
-            v_3 = _mm256_add_ps(v_3, q_1);
-            s_2_0 = _mm256_add_ps(s_2_0, _mm256_or_ps(v_2, mask_BLP));
-            s_2_1 = _mm256_add_ps(s_2_1, _mm256_or_ps(v_3, mask_BLP));
-            q_0 = s_0_0;
-            q_1 = s_0_1;
-            s_0_0 = _mm256_add_ps(s_0_0, _mm256_or_ps(v_4, mask_BLP));
-            s_0_1 = _mm256_add_ps(s_0_1, _mm256_or_ps(v_5, mask_BLP));
-            q_0 = _mm256_sub_ps(q_0, s_0_0);
-            q_1 = _mm256_sub_ps(q_1, s_0_1);
-            v_4 = _mm256_add_ps(v_4, q_0);
-            v_5 = _mm256_add_ps(v_5, q_1);
-            q_0 = s_1_0;
-            q_1 = s_1_1;
-            s_1_0 = _mm256_add_ps(s_1_0, _mm256_or_ps(v_4, mask_BLP));
-            s_1_1 = _mm256_add_ps(s_1_1, _mm256_or_ps(v_5, mask_BLP));
-            q_0 = _mm256_sub_ps(q_0, s_1_0);
-            q_1 = _mm256_sub_ps(q_1, s_1_1);
-            v_4 = _mm256_add_ps(v_4, q_0);
-            v_5 = _mm256_add_ps(v_5, q_1);
-            s_2_0 = _mm256_add_ps(s_2_0, _mm256_or_ps(v_4, mask_BLP));
-            s_2_1 = _mm256_add_ps(s_2_1, _mm256_or_ps(v_5, mask_BLP));
-            q_0 = s_0_0;
-            q_1 = s_0_1;
-            s_0_0 = _mm256_add_ps(s_0_0, _mm256_or_ps(v_6, mask_BLP));
-            s_0_1 = _mm256_add_ps(s_0_1, _mm256_or_ps(v_7, mask_BLP));
-            q_0 = _mm256_sub_ps(q_0, s_0_0);
-            q_1 = _mm256_sub_ps(q_1, s_0_1);
-            v_6 = _mm256_add_ps(v_6, q_0);
-            v_7 = _mm256_add_ps(v_7, q_1);
-            q_0 = s_1_0;
-            q_1 = s_1_1;
-            s_1_0 = _mm256_add_ps(s_1_0, _mm256_or_ps(v_6, mask_BLP));
-            s_1_1 = _mm256_add_ps(s_1_1, _mm256_or_ps(v_7, mask_BLP));
-            q_0 = _mm256_sub_ps(q_0, s_1_0);
-            q_1 = _mm256_sub_ps(q_1, s_1_1);
-            v_6 = _mm256_add_ps(v_6, q_0);
-            v_7 = _mm256_add_ps(v_7, q_1);
-            s_2_0 = _mm256_add_ps(s_2_0, _mm256_or_ps(v_6, mask_BLP));
-            s_2_1 = _mm256_add_ps(s_2_1, _mm256_or_ps(v_7, mask_BLP));
-          }
-          if(i + 32 <= n){
+          for(i = 0; i + 32 <= n; i += 32, v += 32){
             v_0 = _mm256_and_ps(_mm256_loadu_ps(v), mask_ABS);
             v_1 = _mm256_and_ps(_mm256_loadu_ps(v + 8), mask_ABS);
             v_2 = _mm256_and_ps(_mm256_loadu_ps(v + 16), mask_ABS);
@@ -152,7 +82,6 @@
             v_3 = _mm256_add_ps(v_3, q_1);
             s_2_0 = _mm256_add_ps(s_2_0, _mm256_or_ps(v_2, mask_BLP));
             s_2_1 = _mm256_add_ps(s_2_1, _mm256_or_ps(v_3, mask_BLP));
-            i += 32, v += 32;
           }
           if(i + 16 <= n){
             v_0 = _mm256_and_ps(_mm256_loadu_ps(v), mask_ABS);
@@ -204,89 +133,7 @@
           }
         }else{
 
-          for(i = 0; i + 64 <= n; i += 64, v += (incv * 64)){
-            v_0 = _mm256_and_ps(_mm256_set_ps(v[(incv * 7)], v[(incv * 6)], v[(incv * 5)], v[(incv * 4)], v[(incv * 3)], v[(incv * 2)], v[incv], v[0]), mask_ABS);
-            v_1 = _mm256_and_ps(_mm256_set_ps(v[(incv * 15)], v[(incv * 14)], v[(incv * 13)], v[(incv * 12)], v[(incv * 11)], v[(incv * 10)], v[(incv * 9)], v[(incv * 8)]), mask_ABS);
-            v_2 = _mm256_and_ps(_mm256_set_ps(v[(incv * 23)], v[(incv * 22)], v[(incv * 21)], v[(incv * 20)], v[(incv * 19)], v[(incv * 18)], v[(incv * 17)], v[(incv * 16)]), mask_ABS);
-            v_3 = _mm256_and_ps(_mm256_set_ps(v[(incv * 31)], v[(incv * 30)], v[(incv * 29)], v[(incv * 28)], v[(incv * 27)], v[(incv * 26)], v[(incv * 25)], v[(incv * 24)]), mask_ABS);
-            v_4 = _mm256_and_ps(_mm256_set_ps(v[(incv * 39)], v[(incv * 38)], v[(incv * 37)], v[(incv * 36)], v[(incv * 35)], v[(incv * 34)], v[(incv * 33)], v[(incv * 32)]), mask_ABS);
-            v_5 = _mm256_and_ps(_mm256_set_ps(v[(incv * 47)], v[(incv * 46)], v[(incv * 45)], v[(incv * 44)], v[(incv * 43)], v[(incv * 42)], v[(incv * 41)], v[(incv * 40)]), mask_ABS);
-            v_6 = _mm256_and_ps(_mm256_set_ps(v[(incv * 55)], v[(incv * 54)], v[(incv * 53)], v[(incv * 52)], v[(incv * 51)], v[(incv * 50)], v[(incv * 49)], v[(incv * 48)]), mask_ABS);
-            v_7 = _mm256_and_ps(_mm256_set_ps(v[(incv * 63)], v[(incv * 62)], v[(incv * 61)], v[(incv * 60)], v[(incv * 59)], v[(incv * 58)], v[(incv * 57)], v[(incv * 56)]), mask_ABS);
-            q_0 = s_0_0;
-            q_1 = s_0_1;
-            s_0_0 = _mm256_add_ps(s_0_0, _mm256_or_ps(v_0, mask_BLP));
-            s_0_1 = _mm256_add_ps(s_0_1, _mm256_or_ps(v_1, mask_BLP));
-            q_0 = _mm256_sub_ps(q_0, s_0_0);
-            q_1 = _mm256_sub_ps(q_1, s_0_1);
-            v_0 = _mm256_add_ps(v_0, q_0);
-            v_1 = _mm256_add_ps(v_1, q_1);
-            q_0 = s_1_0;
-            q_1 = s_1_1;
-            s_1_0 = _mm256_add_ps(s_1_0, _mm256_or_ps(v_0, mask_BLP));
-            s_1_1 = _mm256_add_ps(s_1_1, _mm256_or_ps(v_1, mask_BLP));
-            q_0 = _mm256_sub_ps(q_0, s_1_0);
-            q_1 = _mm256_sub_ps(q_1, s_1_1);
-            v_0 = _mm256_add_ps(v_0, q_0);
-            v_1 = _mm256_add_ps(v_1, q_1);
-            s_2_0 = _mm256_add_ps(s_2_0, _mm256_or_ps(v_0, mask_BLP));
-            s_2_1 = _mm256_add_ps(s_2_1, _mm256_or_ps(v_1, mask_BLP));
-            q_0 = s_0_0;
-            q_1 = s_0_1;
-            s_0_0 = _mm256_add_ps(s_0_0, _mm256_or_ps(v_2, mask_BLP));
-            s_0_1 = _mm256_add_ps(s_0_1, _mm256_or_ps(v_3, mask_BLP));
-            q_0 = _mm256_sub_ps(q_0, s_0_0);
-            q_1 = _mm256_sub_ps(q_1, s_0_1);
-            v_2 = _mm256_add_ps(v_2, q_0);
-            v_3 = _mm256_add_ps(v_3, q_1);
-            q_0 = s_1_0;
-            q_1 = s_1_1;
-            s_1_0 = _mm256_add_ps(s_1_0, _mm256_or_ps(v_2, mask_BLP));
-            s_1_1 = _mm256_add_ps(s_1_1, _mm256_or_ps(v_3, mask_BLP));
-            q_0 = _mm256_sub_ps(q_0, s_1_0);
-            q_1 = _mm256_sub_ps(q_1, s_1_1);
-            v_2 = _mm256_add_ps(v_2, q_0);
-            v_3 = _mm256_add_ps(v_3, q_1);
-            s_2_0 = _mm256_add_ps(s_2_0, _mm256_or_ps(v_2, mask_BLP));
-            s_2_1 = _mm256_add_ps(s_2_1, _mm256_or_ps(v_3, mask_BLP));
-            q_0 = s_0_0;
-            q_1 = s_0_1;
-            s_0_0 = _mm256_add_ps(s_0_0, _mm256_or_ps(v_4, mask_BLP));
-            s_0_1 = _mm256_add_ps(s_0_1, _mm256_or_ps(v_5, mask_BLP));
-            q_0 = _mm256_sub_ps(q_0, s_0_0);
-            q_1 = _mm256_sub_ps(q_1, s_0_1);
-            v_4 = _mm256_add_ps(v_4, q_0);
-            v_5 = _mm256_add_ps(v_5, q_1);
-            q_0 = s_1_0;
-            q_1 = s_1_1;
-            s_1_0 = _mm256_add_ps(s_1_0, _mm256_or_ps(v_4, mask_BLP));
-            s_1_1 = _mm256_add_ps(s_1_1, _mm256_or_ps(v_5, mask_BLP));
-            q_0 = _mm256_sub_ps(q_0, s_1_0);
-            q_1 = _mm256_sub_ps(q_1, s_1_1);
-            v_4 = _mm256_add_ps(v_4, q_0);
-            v_5 = _mm256_add_ps(v_5, q_1);
-            s_2_0 = _mm256_add_ps(s_2_0, _mm256_or_ps(v_4, mask_BLP));
-            s_2_1 = _mm256_add_ps(s_2_1, _mm256_or_ps(v_5, mask_BLP));
-            q_0 = s_0_0;
-            q_1 = s_0_1;
-            s_0_0 = _mm256_add_ps(s_0_0, _mm256_or_ps(v_6, mask_BLP));
-            s_0_1 = _mm256_add_ps(s_0_1, _mm256_or_ps(v_7, mask_BLP));
-            q_0 = _mm256_sub_ps(q_0, s_0_0);
-            q_1 = _mm256_sub_ps(q_1, s_0_1);
-            v_6 = _mm256_add_ps(v_6, q_0);
-            v_7 = _mm256_add_ps(v_7, q_1);
-            q_0 = s_1_0;
-            q_1 = s_1_1;
-            s_1_0 = _mm256_add_ps(s_1_0, _mm256_or_ps(v_6, mask_BLP));
-            s_1_1 = _mm256_add_ps(s_1_1, _mm256_or_ps(v_7, mask_BLP));
-            q_0 = _mm256_sub_ps(q_0, s_1_0);
-            q_1 = _mm256_sub_ps(q_1, s_1_1);
-            v_6 = _mm256_add_ps(v_6, q_0);
-            v_7 = _mm256_add_ps(v_7, q_1);
-            s_2_0 = _mm256_add_ps(s_2_0, _mm256_or_ps(v_6, mask_BLP));
-            s_2_1 = _mm256_add_ps(s_2_1, _mm256_or_ps(v_7, mask_BLP));
-          }
-          if(i + 32 <= n){
+          for(i = 0; i + 32 <= n; i += 32, v += (incv * 32)){
             v_0 = _mm256_and_ps(_mm256_set_ps(v[(incv * 7)], v[(incv * 6)], v[(incv * 5)], v[(incv * 4)], v[(incv * 3)], v[(incv * 2)], v[incv], v[0]), mask_ABS);
             v_1 = _mm256_and_ps(_mm256_set_ps(v[(incv * 15)], v[(incv * 14)], v[(incv * 13)], v[(incv * 12)], v[(incv * 11)], v[(incv * 10)], v[(incv * 9)], v[(incv * 8)]), mask_ABS);
             v_2 = _mm256_and_ps(_mm256_set_ps(v[(incv * 23)], v[(incv * 22)], v[(incv * 21)], v[(incv * 20)], v[(incv * 19)], v[(incv * 18)], v[(incv * 17)], v[(incv * 16)]), mask_ABS);
@@ -327,7 +174,6 @@
             v_3 = _mm256_add_ps(v_3, q_1);
             s_2_0 = _mm256_add_ps(s_2_0, _mm256_or_ps(v_2, mask_BLP));
             s_2_1 = _mm256_add_ps(s_2_1, _mm256_or_ps(v_3, mask_BLP));
-            i += 32, v += (incv * 32);
           }
           if(i + 16 <= n){
             v_0 = _mm256_and_ps(_mm256_set_ps(v[(incv * 7)], v[(incv * 6)], v[(incv * 5)], v[(incv * 4)], v[(incv * 3)], v[(incv * 2)], v[incv], v[0]), mask_ABS);
@@ -399,75 +245,181 @@
       default:{
         int i, j;
 
-        __m256 v_0;
-        __m256 q_0;
-        __m256 s_0;
-        __m256 s_buffer[MAX_FOLD];
+        __m256 v_0, v_1, v_2, v_3;
+        __m256 q_0, q_1;
+        __m256 s_0, s_1;
+        __m256 s_buffer[(MAX_FOLD * 2)];
 
         for(j = 0; j < fold; j += 1){
-          s_buffer[j] = _mm256_broadcast_ss(sum + j);
+          s_buffer[(j * 2)] = s_buffer[((j * 2) + 1)] = _mm256_broadcast_ss(sum + j);
         }
         if(incv == 1){
 
-          for(i = 0; i + 8 <= n; i += 8, v += 8){
+          for(i = 0; i + 32 <= n; i += 32, v += 32){
+            v_0 = _mm256_and_ps(_mm256_loadu_ps(v), mask_ABS);
+            v_1 = _mm256_and_ps(_mm256_loadu_ps(v + 8), mask_ABS);
+            v_2 = _mm256_and_ps(_mm256_loadu_ps(v + 16), mask_ABS);
+            v_3 = _mm256_and_ps(_mm256_loadu_ps(v + 24), mask_ABS);
+            for(j = 0; j < fold - 1; j++){
+              s_0 = s_buffer[(j * 2)];
+              s_1 = s_buffer[((j * 2) + 1)];
+              q_0 = _mm256_add_ps(s_0, _mm256_or_ps(v_0, mask_BLP));
+              q_1 = _mm256_add_ps(s_1, _mm256_or_ps(v_1, mask_BLP));
+              s_buffer[(j * 2)] = q_0;
+              s_buffer[((j * 2) + 1)] = q_1;
+              q_0 = _mm256_sub_ps(s_0, q_0);
+              q_1 = _mm256_sub_ps(s_1, q_1);
+              v_0 = _mm256_add_ps(v_0, q_0);
+              v_1 = _mm256_add_ps(v_1, q_1);
+              s_0 = s_buffer[(j * 2)];
+              s_1 = s_buffer[((j * 2) + 1)];
+              q_0 = _mm256_add_ps(s_0, _mm256_or_ps(v_2, mask_BLP));
+              q_1 = _mm256_add_ps(s_1, _mm256_or_ps(v_3, mask_BLP));
+              s_buffer[(j * 2)] = q_0;
+              s_buffer[((j * 2) + 1)] = q_1;
+              q_0 = _mm256_sub_ps(s_0, q_0);
+              q_1 = _mm256_sub_ps(s_1, q_1);
+              v_2 = _mm256_add_ps(v_2, q_0);
+              v_3 = _mm256_add_ps(v_3, q_1);
+            }
+            s_buffer[(j * 2)] = _mm256_add_ps(s_buffer[(j * 2)], _mm256_or_ps(v_2, mask_BLP));
+            s_buffer[((j * 2) + 1)] = _mm256_add_ps(s_buffer[((j * 2) + 1)], _mm256_or_ps(v_3, mask_BLP));
+          }
+          if(i + 16 <= n){
+            v_0 = _mm256_and_ps(_mm256_loadu_ps(v), mask_ABS);
+            v_1 = _mm256_and_ps(_mm256_loadu_ps(v + 8), mask_ABS);
+            for(j = 0; j < fold - 1; j++){
+              s_0 = s_buffer[(j * 2)];
+              s_1 = s_buffer[((j * 2) + 1)];
+              q_0 = _mm256_add_ps(s_0, _mm256_or_ps(v_0, mask_BLP));
+              q_1 = _mm256_add_ps(s_1, _mm256_or_ps(v_1, mask_BLP));
+              s_buffer[(j * 2)] = q_0;
+              s_buffer[((j * 2) + 1)] = q_1;
+              q_0 = _mm256_sub_ps(s_0, q_0);
+              q_1 = _mm256_sub_ps(s_1, q_1);
+              v_0 = _mm256_add_ps(v_0, q_0);
+              v_1 = _mm256_add_ps(v_1, q_1);
+            }
+            s_buffer[(j * 2)] = _mm256_add_ps(s_buffer[(j * 2)], _mm256_or_ps(v_0, mask_BLP));
+            s_buffer[((j * 2) + 1)] = _mm256_add_ps(s_buffer[((j * 2) + 1)], _mm256_or_ps(v_1, mask_BLP));
+            i += 16, v += 16;
+          }
+          if(i + 8 <= n){
             v_0 = _mm256_and_ps(_mm256_loadu_ps(v), mask_ABS);
             for(j = 0; j < fold - 1; j++){
-              s_0 = s_buffer[j];
+              s_0 = s_buffer[(j * 2)];
               q_0 = _mm256_add_ps(s_0, _mm256_or_ps(v_0, mask_BLP));
-              s_buffer[j] = q_0;
+              s_buffer[(j * 2)] = q_0;
               q_0 = _mm256_sub_ps(s_0, q_0);
               v_0 = _mm256_add_ps(v_0, q_0);
             }
-            s_buffer[j] = _mm256_add_ps(s_buffer[j], _mm256_or_ps(v_0, mask_BLP));
+            s_buffer[(j * 2)] = _mm256_add_ps(s_buffer[(j * 2)], _mm256_or_ps(v_0, mask_BLP));
+            i += 8, v += 8;
           }
           if(i < n){
             v_0 = _mm256_and_ps(_mm256_set_ps(0, (n - i)>6?v[6]:0, (n - i)>5?v[5]:0, (n - i)>4?v[4]:0, (n - i)>3?v[3]:0, (n - i)>2?v[2]:0, (n - i)>1?v[1]:0, v[0]), mask_ABS);
             for(j = 0; j < fold - 1; j++){
-              s_0 = s_buffer[j];
+              s_0 = s_buffer[(j * 2)];
               q_0 = _mm256_add_ps(s_0, _mm256_or_ps(v_0, mask_BLP));
-              s_buffer[j] = q_0;
+              s_buffer[(j * 2)] = q_0;
               q_0 = _mm256_sub_ps(s_0, q_0);
               v_0 = _mm256_add_ps(v_0, q_0);
             }
-            s_buffer[j] = _mm256_add_ps(s_buffer[j], _mm256_or_ps(v_0, mask_BLP));
+            s_buffer[(j * 2)] = _mm256_add_ps(s_buffer[(j * 2)], _mm256_or_ps(v_0, mask_BLP));
           }
         }else{
 
-          for(i = 0; i + 8 <= n; i += 8, v += (incv * 8)){
+          for(i = 0; i + 32 <= n; i += 32, v += (incv * 32)){
+            v_0 = _mm256_and_ps(_mm256_set_ps(v[(incv * 7)], v[(incv * 6)], v[(incv * 5)], v[(incv * 4)], v[(incv * 3)], v[(incv * 2)], v[incv], v[0]), mask_ABS);
+            v_1 = _mm256_and_ps(_mm256_set_ps(v[(incv * 15)], v[(incv * 14)], v[(incv * 13)], v[(incv * 12)], v[(incv * 11)], v[(incv * 10)], v[(incv * 9)], v[(incv * 8)]), mask_ABS);
+            v_2 = _mm256_and_ps(_mm256_set_ps(v[(incv * 23)], v[(incv * 22)], v[(incv * 21)], v[(incv * 20)], v[(incv * 19)], v[(incv * 18)], v[(incv * 17)], v[(incv * 16)]), mask_ABS);
+            v_3 = _mm256_and_ps(_mm256_set_ps(v[(incv * 31)], v[(incv * 30)], v[(incv * 29)], v[(incv * 28)], v[(incv * 27)], v[(incv * 26)], v[(incv * 25)], v[(incv * 24)]), mask_ABS);
+            for(j = 0; j < fold - 1; j++){
+              s_0 = s_buffer[(j * 2)];
+              s_1 = s_buffer[((j * 2) + 1)];
+              q_0 = _mm256_add_ps(s_0, _mm256_or_ps(v_0, mask_BLP));
+              q_1 = _mm256_add_ps(s_1, _mm256_or_ps(v_1, mask_BLP));
+              s_buffer[(j * 2)] = q_0;
+              s_buffer[((j * 2) + 1)] = q_1;
+              q_0 = _mm256_sub_ps(s_0, q_0);
+              q_1 = _mm256_sub_ps(s_1, q_1);
+              v_0 = _mm256_add_ps(v_0, q_0);
+              v_1 = _mm256_add_ps(v_1, q_1);
+              s_0 = s_buffer[(j * 2)];
+              s_1 = s_buffer[((j * 2) + 1)];
+              q_0 = _mm256_add_ps(s_0, _mm256_or_ps(v_2, mask_BLP));
+              q_1 = _mm256_add_ps(s_1, _mm256_or_ps(v_3, mask_BLP));
+              s_buffer[(j * 2)] = q_0;
+              s_buffer[((j * 2) + 1)] = q_1;
+              q_0 = _mm256_sub_ps(s_0, q_0);
+              q_1 = _mm256_sub_ps(s_1, q_1);
+              v_2 = _mm256_add_ps(v_2, q_0);
+              v_3 = _mm256_add_ps(v_3, q_1);
+            }
+            s_buffer[(j * 2)] = _mm256_add_ps(s_buffer[(j * 2)], _mm256_or_ps(v_2, mask_BLP));
+            s_buffer[((j * 2) + 1)] = _mm256_add_ps(s_buffer[((j * 2) + 1)], _mm256_or_ps(v_3, mask_BLP));
+          }
+          if(i + 16 <= n){
+            v_0 = _mm256_and_ps(_mm256_set_ps(v[(incv * 7)], v[(incv * 6)], v[(incv * 5)], v[(incv * 4)], v[(incv * 3)], v[(incv * 2)], v[incv], v[0]), mask_ABS);
+            v_1 = _mm256_and_ps(_mm256_set_ps(v[(incv * 15)], v[(incv * 14)], v[(incv * 13)], v[(incv * 12)], v[(incv * 11)], v[(incv * 10)], v[(incv * 9)], v[(incv * 8)]), mask_ABS);
+            for(j = 0; j < fold - 1; j++){
+              s_0 = s_buffer[(j * 2)];
+              s_1 = s_buffer[((j * 2) + 1)];
+              q_0 = _mm256_add_ps(s_0, _mm256_or_ps(v_0, mask_BLP));
+              q_1 = _mm256_add_ps(s_1, _mm256_or_ps(v_1, mask_BLP));
+              s_buffer[(j * 2)] = q_0;
+              s_buffer[((j * 2) + 1)] = q_1;
+              q_0 = _mm256_sub_ps(s_0, q_0);
+              q_1 = _mm256_sub_ps(s_1, q_1);
+              v_0 = _mm256_add_ps(v_0, q_0);
+              v_1 = _mm256_add_ps(v_1, q_1);
+            }
+            s_buffer[(j * 2)] = _mm256_add_ps(s_buffer[(j * 2)], _mm256_or_ps(v_0, mask_BLP));
+            s_buffer[((j * 2) + 1)] = _mm256_add_ps(s_buffer[((j * 2) + 1)], _mm256_or_ps(v_1, mask_BLP));
+            i += 16, v += (incv * 16);
+          }
+          if(i + 8 <= n){
             v_0 = _mm256_and_ps(_mm256_set_ps(v[(incv * 7)], v[(incv * 6)], v[(incv * 5)], v[(incv * 4)], v[(incv * 3)], v[(incv * 2)], v[incv], v[0]), mask_ABS);
             for(j = 0; j < fold - 1; j++){
-              s_0 = s_buffer[j];
+              s_0 = s_buffer[(j * 2)];
               q_0 = _mm256_add_ps(s_0, _mm256_or_ps(v_0, mask_BLP));
-              s_buffer[j] = q_0;
+              s_buffer[(j * 2)] = q_0;
               q_0 = _mm256_sub_ps(s_0, q_0);
               v_0 = _mm256_add_ps(v_0, q_0);
             }
-            s_buffer[j] = _mm256_add_ps(s_buffer[j], _mm256_or_ps(v_0, mask_BLP));
+            s_buffer[(j * 2)] = _mm256_add_ps(s_buffer[(j * 2)], _mm256_or_ps(v_0, mask_BLP));
+            i += 8, v += (incv * 8);
           }
           if(i < n){
             v_0 = _mm256_and_ps(_mm256_set_ps(0, (n - i)>6?v[(incv * 6)]:0, (n - i)>5?v[(incv * 5)]:0, (n - i)>4?v[(incv * 4)]:0, (n - i)>3?v[(incv * 3)]:0, (n - i)>2?v[(incv * 2)]:0, (n - i)>1?v[incv]:0, v[0]), mask_ABS);
             for(j = 0; j < fold - 1; j++){
-              s_0 = s_buffer[j];
+              s_0 = s_buffer[(j * 2)];
               q_0 = _mm256_add_ps(s_0, _mm256_or_ps(v_0, mask_BLP));
-              s_buffer[j] = q_0;
+              s_buffer[(j * 2)] = q_0;
               q_0 = _mm256_sub_ps(s_0, q_0);
               v_0 = _mm256_add_ps(v_0, q_0);
             }
-            s_buffer[j] = _mm256_add_ps(s_buffer[j], _mm256_or_ps(v_0, mask_BLP));
+            s_buffer[(j * 2)] = _mm256_add_ps(s_buffer[(j * 2)], _mm256_or_ps(v_0, mask_BLP));
           }
         }
         for(j = 0; j < fold; j += 1){
-          s_buffer[j] = _mm256_sub_ps(s_buffer[j], _mm256_set_ps(sum[j], sum[j], sum[j], sum[j], sum[j], sum[j], sum[j], 0));
-          _mm256_store_ps(tmp_cons, s_buffer[j]);
+          s_buffer[(j * 2)] = _mm256_sub_ps(s_buffer[(j * 2)], _mm256_set_ps(sum[j], sum[j], sum[j], sum[j], sum[j], sum[j], sum[j], 0));
+          q_0 = _mm256_broadcast_ss(sum + j);
+          s_buffer[(j * 2)] = _mm256_add_ps(s_buffer[(j * 2)], _mm256_sub_ps(s_buffer[((j * 2) + 1)], q_0));
+          _mm256_store_ps(tmp_cons, s_buffer[(j * 2)]);
           sum[j] = tmp_cons[0] + tmp_cons[1] + tmp_cons[2] + tmp_cons[3] + tmp_cons[4] + tmp_cons[5] + tmp_cons[6] + tmp_cons[7];
         }
         RESET_DAZ_FLAG
         return;
       }
     }
+    //[[[end]]]
   }
 #elif defined( __SSE2__ )
   void sasumI2(int n, float* v, int incv, int fold, float* sum){
+    /*[[[cog
+    cog.out(generate.generate(asumI2.ASumI2(dataTypes.Float, vectorizations.SSE), args, params))
+    ]]]*/
     __m128 mask_ABS; SSE_ABS_MASKS(mask_ABS);
     __m128 mask_BLP; SSE_BLP_MASKS(mask_BLP);
     float tmp_cons[4] __attribute__((aligned(16)));
@@ -476,141 +428,58 @@
       case 3:{
         int i;
 
-        __m128 v_0, v_1, v_2, v_3, v_4, v_5, v_6, v_7;
-        __m128 q_0, q_1, q_2, q_3, q_4, q_5, q_6, q_7;
-        __m128 s_0_0, s_0_1, s_0_2, s_0_3, s_0_4, s_0_5, s_0_6, s_0_7;
-        __m128 s_1_0, s_1_1, s_1_2, s_1_3, s_1_4, s_1_5, s_1_6, s_1_7;
-        __m128 s_2_0, s_2_1, s_2_2, s_2_3, s_2_4, s_2_5, s_2_6, s_2_7;
+        __m128 v_0, v_1, v_2, v_3;
+        __m128 q_0, q_1;
+        __m128 s_0_0, s_0_1;
+        __m128 s_1_0, s_1_1;
+        __m128 s_2_0, s_2_1;
 
-        s_0_0 = s_0_1 = s_0_2 = s_0_3 = s_0_4 = s_0_5 = s_0_6 = s_0_7 = _mm_load1_ps(sum);
-        s_1_0 = s_1_1 = s_1_2 = s_1_3 = s_1_4 = s_1_5 = s_1_6 = s_1_7 = _mm_load1_ps(sum + 1);
-        s_2_0 = s_2_1 = s_2_2 = s_2_3 = s_2_4 = s_2_5 = s_2_6 = s_2_7 = _mm_load1_ps(sum + 2);
+        s_0_0 = s_0_1 = _mm_load1_ps(sum);
+        s_1_0 = s_1_1 = _mm_load1_ps(sum + 1);
+        s_2_0 = s_2_1 = _mm_load1_ps(sum + 2);
         if(incv == 1){
 
-          for(i = 0; i + 32 <= n; i += 32, v += 32){
-            v_0 = _mm_and_ps(_mm_loadu_ps(v), mask_ABS);
-            v_1 = _mm_and_ps(_mm_loadu_ps(v + 4), mask_ABS);
-            v_2 = _mm_and_ps(_mm_loadu_ps(v + 8), mask_ABS);
-            v_3 = _mm_and_ps(_mm_loadu_ps(v + 12), mask_ABS);
-            v_4 = _mm_and_ps(_mm_loadu_ps(v + 16), mask_ABS);
-            v_5 = _mm_and_ps(_mm_loadu_ps(v + 20), mask_ABS);
-            v_6 = _mm_and_ps(_mm_loadu_ps(v + 24), mask_ABS);
-            v_7 = _mm_and_ps(_mm_loadu_ps(v + 28), mask_ABS);
-            q_0 = s_0_0;
-            q_1 = s_0_1;
-            q_2 = s_0_2;
-            q_3 = s_0_3;
-            q_4 = s_0_4;
-            q_5 = s_0_5;
-            q_6 = s_0_6;
-            q_7 = s_0_7;
-            s_0_0 = _mm_add_ps(s_0_0, _mm_or_ps(v_0, mask_BLP));
-            s_0_1 = _mm_add_ps(s_0_1, _mm_or_ps(v_1, mask_BLP));
-            s_0_2 = _mm_add_ps(s_0_2, _mm_or_ps(v_2, mask_BLP));
-            s_0_3 = _mm_add_ps(s_0_3, _mm_or_ps(v_3, mask_BLP));
-            s_0_4 = _mm_add_ps(s_0_4, _mm_or_ps(v_4, mask_BLP));
-            s_0_5 = _mm_add_ps(s_0_5, _mm_or_ps(v_5, mask_BLP));
-            s_0_6 = _mm_add_ps(s_0_6, _mm_or_ps(v_6, mask_BLP));
-            s_0_7 = _mm_add_ps(s_0_7, _mm_or_ps(v_7, mask_BLP));
-            q_0 = _mm_sub_ps(q_0, s_0_0);
-            q_1 = _mm_sub_ps(q_1, s_0_1);
-            q_2 = _mm_sub_ps(q_2, s_0_2);
-            q_3 = _mm_sub_ps(q_3, s_0_3);
-            q_4 = _mm_sub_ps(q_4, s_0_4);
-            q_5 = _mm_sub_ps(q_5, s_0_5);
-            q_6 = _mm_sub_ps(q_6, s_0_6);
-            q_7 = _mm_sub_ps(q_7, s_0_7);
-            v_0 = _mm_add_ps(v_0, q_0);
-            v_1 = _mm_add_ps(v_1, q_1);
-            v_2 = _mm_add_ps(v_2, q_2);
-            v_3 = _mm_add_ps(v_3, q_3);
-            v_4 = _mm_add_ps(v_4, q_4);
-            v_5 = _mm_add_ps(v_5, q_5);
-            v_6 = _mm_add_ps(v_6, q_6);
-            v_7 = _mm_add_ps(v_7, q_7);
-            q_0 = s_1_0;
-            q_1 = s_1_1;
-            q_2 = s_1_2;
-            q_3 = s_1_3;
-            q_4 = s_1_4;
-            q_5 = s_1_5;
-            q_6 = s_1_6;
-            q_7 = s_1_7;
-            s_1_0 = _mm_add_ps(s_1_0, _mm_or_ps(v_0, mask_BLP));
-            s_1_1 = _mm_add_ps(s_1_1, _mm_or_ps(v_1, mask_BLP));
-            s_1_2 = _mm_add_ps(s_1_2, _mm_or_ps(v_2, mask_BLP));
-            s_1_3 = _mm_add_ps(s_1_3, _mm_or_ps(v_3, mask_BLP));
-            s_1_4 = _mm_add_ps(s_1_4, _mm_or_ps(v_4, mask_BLP));
-            s_1_5 = _mm_add_ps(s_1_5, _mm_or_ps(v_5, mask_BLP));
-            s_1_6 = _mm_add_ps(s_1_6, _mm_or_ps(v_6, mask_BLP));
-            s_1_7 = _mm_add_ps(s_1_7, _mm_or_ps(v_7, mask_BLP));
-            q_0 = _mm_sub_ps(q_0, s_1_0);
-            q_1 = _mm_sub_ps(q_1, s_1_1);
-            q_2 = _mm_sub_ps(q_2, s_1_2);
-            q_3 = _mm_sub_ps(q_3, s_1_3);
-            q_4 = _mm_sub_ps(q_4, s_1_4);
-            q_5 = _mm_sub_ps(q_5, s_1_5);
-            q_6 = _mm_sub_ps(q_6, s_1_6);
-            q_7 = _mm_sub_ps(q_7, s_1_7);
-            v_0 = _mm_add_ps(v_0, q_0);
-            v_1 = _mm_add_ps(v_1, q_1);
-            v_2 = _mm_add_ps(v_2, q_2);
-            v_3 = _mm_add_ps(v_3, q_3);
-            v_4 = _mm_add_ps(v_4, q_4);
-            v_5 = _mm_add_ps(v_5, q_5);
-            v_6 = _mm_add_ps(v_6, q_6);
-            v_7 = _mm_add_ps(v_7, q_7);
-            s_2_0 = _mm_add_ps(s_2_0, _mm_or_ps(v_0, mask_BLP));
-            s_2_1 = _mm_add_ps(s_2_1, _mm_or_ps(v_1, mask_BLP));
-            s_2_2 = _mm_add_ps(s_2_2, _mm_or_ps(v_2, mask_BLP));
-            s_2_3 = _mm_add_ps(s_2_3, _mm_or_ps(v_3, mask_BLP));
-            s_2_4 = _mm_add_ps(s_2_4, _mm_or_ps(v_4, mask_BLP));
-            s_2_5 = _mm_add_ps(s_2_5, _mm_or_ps(v_5, mask_BLP));
-            s_2_6 = _mm_add_ps(s_2_6, _mm_or_ps(v_6, mask_BLP));
-            s_2_7 = _mm_add_ps(s_2_7, _mm_or_ps(v_7, mask_BLP));
-          }
-          if(i + 16 <= n){
+          for(i = 0; i + 16 <= n; i += 16, v += 16){
             v_0 = _mm_and_ps(_mm_loadu_ps(v), mask_ABS);
             v_1 = _mm_and_ps(_mm_loadu_ps(v + 4), mask_ABS);
             v_2 = _mm_and_ps(_mm_loadu_ps(v + 8), mask_ABS);
             v_3 = _mm_and_ps(_mm_loadu_ps(v + 12), mask_ABS);
             q_0 = s_0_0;
             q_1 = s_0_1;
-            q_2 = s_0_2;
-            q_3 = s_0_3;
             s_0_0 = _mm_add_ps(s_0_0, _mm_or_ps(v_0, mask_BLP));
             s_0_1 = _mm_add_ps(s_0_1, _mm_or_ps(v_1, mask_BLP));
-            s_0_2 = _mm_add_ps(s_0_2, _mm_or_ps(v_2, mask_BLP));
-            s_0_3 = _mm_add_ps(s_0_3, _mm_or_ps(v_3, mask_BLP));
             q_0 = _mm_sub_ps(q_0, s_0_0);
             q_1 = _mm_sub_ps(q_1, s_0_1);
-            q_2 = _mm_sub_ps(q_2, s_0_2);
-            q_3 = _mm_sub_ps(q_3, s_0_3);
             v_0 = _mm_add_ps(v_0, q_0);
             v_1 = _mm_add_ps(v_1, q_1);
-            v_2 = _mm_add_ps(v_2, q_2);
-            v_3 = _mm_add_ps(v_3, q_3);
             q_0 = s_1_0;
             q_1 = s_1_1;
-            q_2 = s_1_2;
-            q_3 = s_1_3;
             s_1_0 = _mm_add_ps(s_1_0, _mm_or_ps(v_0, mask_BLP));
             s_1_1 = _mm_add_ps(s_1_1, _mm_or_ps(v_1, mask_BLP));
-            s_1_2 = _mm_add_ps(s_1_2, _mm_or_ps(v_2, mask_BLP));
-            s_1_3 = _mm_add_ps(s_1_3, _mm_or_ps(v_3, mask_BLP));
             q_0 = _mm_sub_ps(q_0, s_1_0);
             q_1 = _mm_sub_ps(q_1, s_1_1);
-            q_2 = _mm_sub_ps(q_2, s_1_2);
-            q_3 = _mm_sub_ps(q_3, s_1_3);
             v_0 = _mm_add_ps(v_0, q_0);
             v_1 = _mm_add_ps(v_1, q_1);
-            v_2 = _mm_add_ps(v_2, q_2);
-            v_3 = _mm_add_ps(v_3, q_3);
             s_2_0 = _mm_add_ps(s_2_0, _mm_or_ps(v_0, mask_BLP));
             s_2_1 = _mm_add_ps(s_2_1, _mm_or_ps(v_1, mask_BLP));
-            s_2_2 = _mm_add_ps(s_2_2, _mm_or_ps(v_2, mask_BLP));
-            s_2_3 = _mm_add_ps(s_2_3, _mm_or_ps(v_3, mask_BLP));
-            i += 16, v += 16;
+            q_0 = s_0_0;
+            q_1 = s_0_1;
+            s_0_0 = _mm_add_ps(s_0_0, _mm_or_ps(v_2, mask_BLP));
+            s_0_1 = _mm_add_ps(s_0_1, _mm_or_ps(v_3, mask_BLP));
+            q_0 = _mm_sub_ps(q_0, s_0_0);
+            q_1 = _mm_sub_ps(q_1, s_0_1);
+            v_2 = _mm_add_ps(v_2, q_0);
+            v_3 = _mm_add_ps(v_3, q_1);
+            q_0 = s_1_0;
+            q_1 = s_1_1;
+            s_1_0 = _mm_add_ps(s_1_0, _mm_or_ps(v_2, mask_BLP));
+            s_1_1 = _mm_add_ps(s_1_1, _mm_or_ps(v_3, mask_BLP));
+            q_0 = _mm_sub_ps(q_0, s_1_0);
+            q_1 = _mm_sub_ps(q_1, s_1_1);
+            v_2 = _mm_add_ps(v_2, q_0);
+            v_3 = _mm_add_ps(v_3, q_1);
+            s_2_0 = _mm_add_ps(s_2_0, _mm_or_ps(v_2, mask_BLP));
+            s_2_1 = _mm_add_ps(s_2_1, _mm_or_ps(v_3, mask_BLP));
           }
           if(i + 8 <= n){
             v_0 = _mm_and_ps(_mm_loadu_ps(v), mask_ABS);
@@ -662,130 +531,47 @@
           }
         }else{
 
-          for(i = 0; i + 32 <= n; i += 32, v += (incv * 32)){
-            v_0 = _mm_and_ps(_mm_set_ps(v[(incv * 3)], v[(incv * 2)], v[incv], v[0]), mask_ABS);
-            v_1 = _mm_and_ps(_mm_set_ps(v[(incv * 7)], v[(incv * 6)], v[(incv * 5)], v[(incv * 4)]), mask_ABS);
-            v_2 = _mm_and_ps(_mm_set_ps(v[(incv * 11)], v[(incv * 10)], v[(incv * 9)], v[(incv * 8)]), mask_ABS);
-            v_3 = _mm_and_ps(_mm_set_ps(v[(incv * 15)], v[(incv * 14)], v[(incv * 13)], v[(incv * 12)]), mask_ABS);
-            v_4 = _mm_and_ps(_mm_set_ps(v[(incv * 19)], v[(incv * 18)], v[(incv * 17)], v[(incv * 16)]), mask_ABS);
-            v_5 = _mm_and_ps(_mm_set_ps(v[(incv * 23)], v[(incv * 22)], v[(incv * 21)], v[(incv * 20)]), mask_ABS);
-            v_6 = _mm_and_ps(_mm_set_ps(v[(incv * 27)], v[(incv * 26)], v[(incv * 25)], v[(incv * 24)]), mask_ABS);
-            v_7 = _mm_and_ps(_mm_set_ps(v[(incv * 31)], v[(incv * 30)], v[(incv * 29)], v[(incv * 28)]), mask_ABS);
-            q_0 = s_0_0;
-            q_1 = s_0_1;
-            q_2 = s_0_2;
-            q_3 = s_0_3;
-            q_4 = s_0_4;
-            q_5 = s_0_5;
-            q_6 = s_0_6;
-            q_7 = s_0_7;
-            s_0_0 = _mm_add_ps(s_0_0, _mm_or_ps(v_0, mask_BLP));
-            s_0_1 = _mm_add_ps(s_0_1, _mm_or_ps(v_1, mask_BLP));
-            s_0_2 = _mm_add_ps(s_0_2, _mm_or_ps(v_2, mask_BLP));
-            s_0_3 = _mm_add_ps(s_0_3, _mm_or_ps(v_3, mask_BLP));
-            s_0_4 = _mm_add_ps(s_0_4, _mm_or_ps(v_4, mask_BLP));
-            s_0_5 = _mm_add_ps(s_0_5, _mm_or_ps(v_5, mask_BLP));
-            s_0_6 = _mm_add_ps(s_0_6, _mm_or_ps(v_6, mask_BLP));
-            s_0_7 = _mm_add_ps(s_0_7, _mm_or_ps(v_7, mask_BLP));
-            q_0 = _mm_sub_ps(q_0, s_0_0);
-            q_1 = _mm_sub_ps(q_1, s_0_1);
-            q_2 = _mm_sub_ps(q_2, s_0_2);
-            q_3 = _mm_sub_ps(q_3, s_0_3);
-            q_4 = _mm_sub_ps(q_4, s_0_4);
-            q_5 = _mm_sub_ps(q_5, s_0_5);
-            q_6 = _mm_sub_ps(q_6, s_0_6);
-            q_7 = _mm_sub_ps(q_7, s_0_7);
-            v_0 = _mm_add_ps(v_0, q_0);
-            v_1 = _mm_add_ps(v_1, q_1);
-            v_2 = _mm_add_ps(v_2, q_2);
-            v_3 = _mm_add_ps(v_3, q_3);
-            v_4 = _mm_add_ps(v_4, q_4);
-            v_5 = _mm_add_ps(v_5, q_5);
-            v_6 = _mm_add_ps(v_6, q_6);
-            v_7 = _mm_add_ps(v_7, q_7);
-            q_0 = s_1_0;
-            q_1 = s_1_1;
-            q_2 = s_1_2;
-            q_3 = s_1_3;
-            q_4 = s_1_4;
-            q_5 = s_1_5;
-            q_6 = s_1_6;
-            q_7 = s_1_7;
-            s_1_0 = _mm_add_ps(s_1_0, _mm_or_ps(v_0, mask_BLP));
-            s_1_1 = _mm_add_ps(s_1_1, _mm_or_ps(v_1, mask_BLP));
-            s_1_2 = _mm_add_ps(s_1_2, _mm_or_ps(v_2, mask_BLP));
-            s_1_3 = _mm_add_ps(s_1_3, _mm_or_ps(v_3, mask_BLP));
-            s_1_4 = _mm_add_ps(s_1_4, _mm_or_ps(v_4, mask_BLP));
-            s_1_5 = _mm_add_ps(s_1_5, _mm_or_ps(v_5, mask_BLP));
-            s_1_6 = _mm_add_ps(s_1_6, _mm_or_ps(v_6, mask_BLP));
-            s_1_7 = _mm_add_ps(s_1_7, _mm_or_ps(v_7, mask_BLP));
-            q_0 = _mm_sub_ps(q_0, s_1_0);
-            q_1 = _mm_sub_ps(q_1, s_1_1);
-            q_2 = _mm_sub_ps(q_2, s_1_2);
-            q_3 = _mm_sub_ps(q_3, s_1_3);
-            q_4 = _mm_sub_ps(q_4, s_1_4);
-            q_5 = _mm_sub_ps(q_5, s_1_5);
-            q_6 = _mm_sub_ps(q_6, s_1_6);
-            q_7 = _mm_sub_ps(q_7, s_1_7);
-            v_0 = _mm_add_ps(v_0, q_0);
-            v_1 = _mm_add_ps(v_1, q_1);
-            v_2 = _mm_add_ps(v_2, q_2);
-            v_3 = _mm_add_ps(v_3, q_3);
-            v_4 = _mm_add_ps(v_4, q_4);
-            v_5 = _mm_add_ps(v_5, q_5);
-            v_6 = _mm_add_ps(v_6, q_6);
-            v_7 = _mm_add_ps(v_7, q_7);
-            s_2_0 = _mm_add_ps(s_2_0, _mm_or_ps(v_0, mask_BLP));
-            s_2_1 = _mm_add_ps(s_2_1, _mm_or_ps(v_1, mask_BLP));
-            s_2_2 = _mm_add_ps(s_2_2, _mm_or_ps(v_2, mask_BLP));
-            s_2_3 = _mm_add_ps(s_2_3, _mm_or_ps(v_3, mask_BLP));
-            s_2_4 = _mm_add_ps(s_2_4, _mm_or_ps(v_4, mask_BLP));
-            s_2_5 = _mm_add_ps(s_2_5, _mm_or_ps(v_5, mask_BLP));
-            s_2_6 = _mm_add_ps(s_2_6, _mm_or_ps(v_6, mask_BLP));
-            s_2_7 = _mm_add_ps(s_2_7, _mm_or_ps(v_7, mask_BLP));
-          }
-          if(i + 16 <= n){
+          for(i = 0; i + 16 <= n; i += 16, v += (incv * 16)){
             v_0 = _mm_and_ps(_mm_set_ps(v[(incv * 3)], v[(incv * 2)], v[incv], v[0]), mask_ABS);
             v_1 = _mm_and_ps(_mm_set_ps(v[(incv * 7)], v[(incv * 6)], v[(incv * 5)], v[(incv * 4)]), mask_ABS);
             v_2 = _mm_and_ps(_mm_set_ps(v[(incv * 11)], v[(incv * 10)], v[(incv * 9)], v[(incv * 8)]), mask_ABS);
             v_3 = _mm_and_ps(_mm_set_ps(v[(incv * 15)], v[(incv * 14)], v[(incv * 13)], v[(incv * 12)]), mask_ABS);
             q_0 = s_0_0;
             q_1 = s_0_1;
-            q_2 = s_0_2;
-            q_3 = s_0_3;
             s_0_0 = _mm_add_ps(s_0_0, _mm_or_ps(v_0, mask_BLP));
             s_0_1 = _mm_add_ps(s_0_1, _mm_or_ps(v_1, mask_BLP));
-            s_0_2 = _mm_add_ps(s_0_2, _mm_or_ps(v_2, mask_BLP));
-            s_0_3 = _mm_add_ps(s_0_3, _mm_or_ps(v_3, mask_BLP));
             q_0 = _mm_sub_ps(q_0, s_0_0);
             q_1 = _mm_sub_ps(q_1, s_0_1);
-            q_2 = _mm_sub_ps(q_2, s_0_2);
-            q_3 = _mm_sub_ps(q_3, s_0_3);
             v_0 = _mm_add_ps(v_0, q_0);
             v_1 = _mm_add_ps(v_1, q_1);
-            v_2 = _mm_add_ps(v_2, q_2);
-            v_3 = _mm_add_ps(v_3, q_3);
             q_0 = s_1_0;
             q_1 = s_1_1;
-            q_2 = s_1_2;
-            q_3 = s_1_3;
             s_1_0 = _mm_add_ps(s_1_0, _mm_or_ps(v_0, mask_BLP));
             s_1_1 = _mm_add_ps(s_1_1, _mm_or_ps(v_1, mask_BLP));
-            s_1_2 = _mm_add_ps(s_1_2, _mm_or_ps(v_2, mask_BLP));
-            s_1_3 = _mm_add_ps(s_1_3, _mm_or_ps(v_3, mask_BLP));
             q_0 = _mm_sub_ps(q_0, s_1_0);
             q_1 = _mm_sub_ps(q_1, s_1_1);
-            q_2 = _mm_sub_ps(q_2, s_1_2);
-            q_3 = _mm_sub_ps(q_3, s_1_3);
             v_0 = _mm_add_ps(v_0, q_0);
             v_1 = _mm_add_ps(v_1, q_1);
-            v_2 = _mm_add_ps(v_2, q_2);
-            v_3 = _mm_add_ps(v_3, q_3);
             s_2_0 = _mm_add_ps(s_2_0, _mm_or_ps(v_0, mask_BLP));
             s_2_1 = _mm_add_ps(s_2_1, _mm_or_ps(v_1, mask_BLP));
-            s_2_2 = _mm_add_ps(s_2_2, _mm_or_ps(v_2, mask_BLP));
-            s_2_3 = _mm_add_ps(s_2_3, _mm_or_ps(v_3, mask_BLP));
-            i += 16, v += (incv * 16);
+            q_0 = s_0_0;
+            q_1 = s_0_1;
+            s_0_0 = _mm_add_ps(s_0_0, _mm_or_ps(v_2, mask_BLP));
+            s_0_1 = _mm_add_ps(s_0_1, _mm_or_ps(v_3, mask_BLP));
+            q_0 = _mm_sub_ps(q_0, s_0_0);
+            q_1 = _mm_sub_ps(q_1, s_0_1);
+            v_2 = _mm_add_ps(v_2, q_0);
+            v_3 = _mm_add_ps(v_3, q_1);
+            q_0 = s_1_0;
+            q_1 = s_1_1;
+            s_1_0 = _mm_add_ps(s_1_0, _mm_or_ps(v_2, mask_BLP));
+            s_1_1 = _mm_add_ps(s_1_1, _mm_or_ps(v_3, mask_BLP));
+            q_0 = _mm_sub_ps(q_0, s_1_0);
+            q_1 = _mm_sub_ps(q_1, s_1_1);
+            v_2 = _mm_add_ps(v_2, q_0);
+            v_3 = _mm_add_ps(v_3, q_1);
+            s_2_0 = _mm_add_ps(s_2_0, _mm_or_ps(v_2, mask_BLP));
+            s_2_1 = _mm_add_ps(s_2_1, _mm_or_ps(v_3, mask_BLP));
           }
           if(i + 8 <= n){
             v_0 = _mm_and_ps(_mm_set_ps(v[(incv * 3)], v[(incv * 2)], v[incv], v[0]), mask_ABS);
@@ -839,34 +625,16 @@
         s_0_0 = _mm_sub_ps(s_0_0, _mm_set_ps(sum[0], sum[0], sum[0], 0));
         q_0 = _mm_load1_ps(sum);
         s_0_0 = _mm_add_ps(s_0_0, _mm_sub_ps(s_0_1, q_0));
-        s_0_0 = _mm_add_ps(s_0_0, _mm_sub_ps(s_0_2, q_0));
-        s_0_0 = _mm_add_ps(s_0_0, _mm_sub_ps(s_0_3, q_0));
-        s_0_0 = _mm_add_ps(s_0_0, _mm_sub_ps(s_0_4, q_0));
-        s_0_0 = _mm_add_ps(s_0_0, _mm_sub_ps(s_0_5, q_0));
-        s_0_0 = _mm_add_ps(s_0_0, _mm_sub_ps(s_0_6, q_0));
-        s_0_0 = _mm_add_ps(s_0_0, _mm_sub_ps(s_0_7, q_0));
         _mm_store_ps(tmp_cons, s_0_0);
         sum[0] = tmp_cons[0] + tmp_cons[1] + tmp_cons[2] + tmp_cons[3];
         s_1_0 = _mm_sub_ps(s_1_0, _mm_set_ps(sum[1], sum[1], sum[1], 0));
         q_0 = _mm_load1_ps(sum + 1);
         s_1_0 = _mm_add_ps(s_1_0, _mm_sub_ps(s_1_1, q_0));
-        s_1_0 = _mm_add_ps(s_1_0, _mm_sub_ps(s_1_2, q_0));
-        s_1_0 = _mm_add_ps(s_1_0, _mm_sub_ps(s_1_3, q_0));
-        s_1_0 = _mm_add_ps(s_1_0, _mm_sub_ps(s_1_4, q_0));
-        s_1_0 = _mm_add_ps(s_1_0, _mm_sub_ps(s_1_5, q_0));
-        s_1_0 = _mm_add_ps(s_1_0, _mm_sub_ps(s_1_6, q_0));
-        s_1_0 = _mm_add_ps(s_1_0, _mm_sub_ps(s_1_7, q_0));
         _mm_store_ps(tmp_cons, s_1_0);
         sum[1] = tmp_cons[0] + tmp_cons[1] + tmp_cons[2] + tmp_cons[3];
         s_2_0 = _mm_sub_ps(s_2_0, _mm_set_ps(sum[2], sum[2], sum[2], 0));
         q_0 = _mm_load1_ps(sum + 2);
         s_2_0 = _mm_add_ps(s_2_0, _mm_sub_ps(s_2_1, q_0));
-        s_2_0 = _mm_add_ps(s_2_0, _mm_sub_ps(s_2_2, q_0));
-        s_2_0 = _mm_add_ps(s_2_0, _mm_sub_ps(s_2_3, q_0));
-        s_2_0 = _mm_add_ps(s_2_0, _mm_sub_ps(s_2_4, q_0));
-        s_2_0 = _mm_add_ps(s_2_0, _mm_sub_ps(s_2_5, q_0));
-        s_2_0 = _mm_add_ps(s_2_0, _mm_sub_ps(s_2_6, q_0));
-        s_2_0 = _mm_add_ps(s_2_0, _mm_sub_ps(s_2_7, q_0));
         _mm_store_ps(tmp_cons, s_2_0);
         sum[2] = tmp_cons[0] + tmp_cons[1] + tmp_cons[2] + tmp_cons[3];
         RESET_DAZ_FLAG
@@ -875,7 +643,7 @@
       default:{
         int i, j;
 
-        __m128 v_0, v_1;
+        __m128 v_0, v_1, v_2, v_3;
         __m128 q_0, q_1;
         __m128 s_0, s_1;
         __m128 s_buffer[(MAX_FOLD * 2)];
@@ -885,7 +653,37 @@
         }
         if(incv == 1){
 
-          for(i = 0; i + 8 <= n; i += 8, v += 8){
+          for(i = 0; i + 16 <= n; i += 16, v += 16){
+            v_0 = _mm_and_ps(_mm_loadu_ps(v), mask_ABS);
+            v_1 = _mm_and_ps(_mm_loadu_ps(v + 4), mask_ABS);
+            v_2 = _mm_and_ps(_mm_loadu_ps(v + 8), mask_ABS);
+            v_3 = _mm_and_ps(_mm_loadu_ps(v + 12), mask_ABS);
+            for(j = 0; j < fold - 1; j++){
+              s_0 = s_buffer[(j * 2)];
+              s_1 = s_buffer[((j * 2) + 1)];
+              q_0 = _mm_add_ps(s_0, _mm_or_ps(v_0, mask_BLP));
+              q_1 = _mm_add_ps(s_1, _mm_or_ps(v_1, mask_BLP));
+              s_buffer[(j * 2)] = q_0;
+              s_buffer[((j * 2) + 1)] = q_1;
+              q_0 = _mm_sub_ps(s_0, q_0);
+              q_1 = _mm_sub_ps(s_1, q_1);
+              v_0 = _mm_add_ps(v_0, q_0);
+              v_1 = _mm_add_ps(v_1, q_1);
+              s_0 = s_buffer[(j * 2)];
+              s_1 = s_buffer[((j * 2) + 1)];
+              q_0 = _mm_add_ps(s_0, _mm_or_ps(v_2, mask_BLP));
+              q_1 = _mm_add_ps(s_1, _mm_or_ps(v_3, mask_BLP));
+              s_buffer[(j * 2)] = q_0;
+              s_buffer[((j * 2) + 1)] = q_1;
+              q_0 = _mm_sub_ps(s_0, q_0);
+              q_1 = _mm_sub_ps(s_1, q_1);
+              v_2 = _mm_add_ps(v_2, q_0);
+              v_3 = _mm_add_ps(v_3, q_1);
+            }
+            s_buffer[(j * 2)] = _mm_add_ps(s_buffer[(j * 2)], _mm_or_ps(v_2, mask_BLP));
+            s_buffer[((j * 2) + 1)] = _mm_add_ps(s_buffer[((j * 2) + 1)], _mm_or_ps(v_3, mask_BLP));
+          }
+          if(i + 8 <= n){
             v_0 = _mm_and_ps(_mm_loadu_ps(v), mask_ABS);
             v_1 = _mm_and_ps(_mm_loadu_ps(v + 4), mask_ABS);
             for(j = 0; j < fold - 1; j++){
@@ -902,6 +700,7 @@
             }
             s_buffer[(j * 2)] = _mm_add_ps(s_buffer[(j * 2)], _mm_or_ps(v_0, mask_BLP));
             s_buffer[((j * 2) + 1)] = _mm_add_ps(s_buffer[((j * 2) + 1)], _mm_or_ps(v_1, mask_BLP));
+            i += 8, v += 8;
           }
           if(i + 4 <= n){
             v_0 = _mm_and_ps(_mm_loadu_ps(v), mask_ABS);
@@ -928,7 +727,37 @@
           }
         }else{
 
-          for(i = 0; i + 8 <= n; i += 8, v += (incv * 8)){
+          for(i = 0; i + 16 <= n; i += 16, v += (incv * 16)){
+            v_0 = _mm_and_ps(_mm_set_ps(v[(incv * 3)], v[(incv * 2)], v[incv], v[0]), mask_ABS);
+            v_1 = _mm_and_ps(_mm_set_ps(v[(incv * 7)], v[(incv * 6)], v[(incv * 5)], v[(incv * 4)]), mask_ABS);
+            v_2 = _mm_and_ps(_mm_set_ps(v[(incv * 11)], v[(incv * 10)], v[(incv * 9)], v[(incv * 8)]), mask_ABS);
+            v_3 = _mm_and_ps(_mm_set_ps(v[(incv * 15)], v[(incv * 14)], v[(incv * 13)], v[(incv * 12)]), mask_ABS);
+            for(j = 0; j < fold - 1; j++){
+              s_0 = s_buffer[(j * 2)];
+              s_1 = s_buffer[((j * 2) + 1)];
+              q_0 = _mm_add_ps(s_0, _mm_or_ps(v_0, mask_BLP));
+              q_1 = _mm_add_ps(s_1, _mm_or_ps(v_1, mask_BLP));
+              s_buffer[(j * 2)] = q_0;
+              s_buffer[((j * 2) + 1)] = q_1;
+              q_0 = _mm_sub_ps(s_0, q_0);
+              q_1 = _mm_sub_ps(s_1, q_1);
+              v_0 = _mm_add_ps(v_0, q_0);
+              v_1 = _mm_add_ps(v_1, q_1);
+              s_0 = s_buffer[(j * 2)];
+              s_1 = s_buffer[((j * 2) + 1)];
+              q_0 = _mm_add_ps(s_0, _mm_or_ps(v_2, mask_BLP));
+              q_1 = _mm_add_ps(s_1, _mm_or_ps(v_3, mask_BLP));
+              s_buffer[(j * 2)] = q_0;
+              s_buffer[((j * 2) + 1)] = q_1;
+              q_0 = _mm_sub_ps(s_0, q_0);
+              q_1 = _mm_sub_ps(s_1, q_1);
+              v_2 = _mm_add_ps(v_2, q_0);
+              v_3 = _mm_add_ps(v_3, q_1);
+            }
+            s_buffer[(j * 2)] = _mm_add_ps(s_buffer[(j * 2)], _mm_or_ps(v_2, mask_BLP));
+            s_buffer[((j * 2) + 1)] = _mm_add_ps(s_buffer[((j * 2) + 1)], _mm_or_ps(v_3, mask_BLP));
+          }
+          if(i + 8 <= n){
             v_0 = _mm_and_ps(_mm_set_ps(v[(incv * 3)], v[(incv * 2)], v[incv], v[0]), mask_ABS);
             v_1 = _mm_and_ps(_mm_set_ps(v[(incv * 7)], v[(incv * 6)], v[(incv * 5)], v[(incv * 4)]), mask_ABS);
             for(j = 0; j < fold - 1; j++){
@@ -945,6 +774,7 @@
             }
             s_buffer[(j * 2)] = _mm_add_ps(s_buffer[(j * 2)], _mm_or_ps(v_0, mask_BLP));
             s_buffer[((j * 2) + 1)] = _mm_add_ps(s_buffer[((j * 2) + 1)], _mm_or_ps(v_1, mask_BLP));
+            i += 8, v += (incv * 8);
           }
           if(i + 4 <= n){
             v_0 = _mm_and_ps(_mm_set_ps(v[(incv * 3)], v[(incv * 2)], v[incv], v[0]), mask_ABS);
@@ -981,16 +811,20 @@
         return;
       }
     }
+    //[[[end]]]
   }
 #else
   void sasumI2(int n, float* v, int incv, int fold, float* sum){
+    /*[[[cog
+    cog.out(generate.generate(asumI2.ASumI2(dataTypes.Float, vectorizations.SISD), args, params))
+    ]]]*/
     int_float tmp_BLP;
     SET_DAZ_FLAG;
     switch(fold){
       case 3:{
         int i;
 
-        float v_0, v_1;
+        float v_0, v_1, v_2, v_3;
         float q_0, q_1;
         float s_0_0, s_0_1;
         float s_1_0, s_1_1;
@@ -1001,7 +835,73 @@
         s_2_0 = s_2_1 = sum[2];
         if(incv == 1){
 
-          for(i = 0; i + 2 <= n; i += 2, v += 2){
+          for(i = 0; i + 4 <= n; i += 4, v += 4){
+            v_0 = fabs(v[0]);
+            v_1 = fabs(v[1]);
+            v_2 = fabs(v[2]);
+            v_3 = fabs(v[3]);
+            q_0 = s_0_0;
+            q_1 = s_0_1;
+            tmp_BLP.f = v_0;
+            tmp_BLP.i |= 1;
+            s_0_0 = s_0_0 + tmp_BLP.f;
+            tmp_BLP.f = v_1;
+            tmp_BLP.i |= 1;
+            s_0_1 = s_0_1 + tmp_BLP.f;
+            q_0 = q_0 - s_0_0;
+            q_1 = q_1 - s_0_1;
+            v_0 = v_0 + q_0;
+            v_1 = v_1 + q_1;
+            q_0 = s_1_0;
+            q_1 = s_1_1;
+            tmp_BLP.f = v_0;
+            tmp_BLP.i |= 1;
+            s_1_0 = s_1_0 + tmp_BLP.f;
+            tmp_BLP.f = v_1;
+            tmp_BLP.i |= 1;
+            s_1_1 = s_1_1 + tmp_BLP.f;
+            q_0 = q_0 - s_1_0;
+            q_1 = q_1 - s_1_1;
+            v_0 = v_0 + q_0;
+            v_1 = v_1 + q_1;
+            tmp_BLP.f = v_0;
+            tmp_BLP.i |= 1;
+            s_2_0 = s_2_0 + tmp_BLP.f;
+            tmp_BLP.f = v_1;
+            tmp_BLP.i |= 1;
+            s_2_1 = s_2_1 + tmp_BLP.f;
+            q_0 = s_0_0;
+            q_1 = s_0_1;
+            tmp_BLP.f = v_2;
+            tmp_BLP.i |= 1;
+            s_0_0 = s_0_0 + tmp_BLP.f;
+            tmp_BLP.f = v_3;
+            tmp_BLP.i |= 1;
+            s_0_1 = s_0_1 + tmp_BLP.f;
+            q_0 = q_0 - s_0_0;
+            q_1 = q_1 - s_0_1;
+            v_2 = v_2 + q_0;
+            v_3 = v_3 + q_1;
+            q_0 = s_1_0;
+            q_1 = s_1_1;
+            tmp_BLP.f = v_2;
+            tmp_BLP.i |= 1;
+            s_1_0 = s_1_0 + tmp_BLP.f;
+            tmp_BLP.f = v_3;
+            tmp_BLP.i |= 1;
+            s_1_1 = s_1_1 + tmp_BLP.f;
+            q_0 = q_0 - s_1_0;
+            q_1 = q_1 - s_1_1;
+            v_2 = v_2 + q_0;
+            v_3 = v_3 + q_1;
+            tmp_BLP.f = v_2;
+            tmp_BLP.i |= 1;
+            s_2_0 = s_2_0 + tmp_BLP.f;
+            tmp_BLP.f = v_3;
+            tmp_BLP.i |= 1;
+            s_2_1 = s_2_1 + tmp_BLP.f;
+          }
+          if(i + 2 <= n){
             v_0 = fabs(v[0]);
             v_1 = fabs(v[1]);
             q_0 = s_0_0;
@@ -1034,6 +934,7 @@
             tmp_BLP.f = v_1;
             tmp_BLP.i |= 1;
             s_2_1 = s_2_1 + tmp_BLP.f;
+            i += 2, v += 2;
           }
           if(i + 1 <= n){
             v_0 = fabs(v[0]);
@@ -1056,7 +957,73 @@
           }
         }else{
 
-          for(i = 0; i + 2 <= n; i += 2, v += (incv * 2)){
+          for(i = 0; i + 4 <= n; i += 4, v += (incv * 4)){
+            v_0 = fabs(v[0]);
+            v_1 = fabs(v[incv]);
+            v_2 = fabs(v[(incv * 2)]);
+            v_3 = fabs(v[(incv * 3)]);
+            q_0 = s_0_0;
+            q_1 = s_0_1;
+            tmp_BLP.f = v_0;
+            tmp_BLP.i |= 1;
+            s_0_0 = s_0_0 + tmp_BLP.f;
+            tmp_BLP.f = v_1;
+            tmp_BLP.i |= 1;
+            s_0_1 = s_0_1 + tmp_BLP.f;
+            q_0 = q_0 - s_0_0;
+            q_1 = q_1 - s_0_1;
+            v_0 = v_0 + q_0;
+            v_1 = v_1 + q_1;
+            q_0 = s_1_0;
+            q_1 = s_1_1;
+            tmp_BLP.f = v_0;
+            tmp_BLP.i |= 1;
+            s_1_0 = s_1_0 + tmp_BLP.f;
+            tmp_BLP.f = v_1;
+            tmp_BLP.i |= 1;
+            s_1_1 = s_1_1 + tmp_BLP.f;
+            q_0 = q_0 - s_1_0;
+            q_1 = q_1 - s_1_1;
+            v_0 = v_0 + q_0;
+            v_1 = v_1 + q_1;
+            tmp_BLP.f = v_0;
+            tmp_BLP.i |= 1;
+            s_2_0 = s_2_0 + tmp_BLP.f;
+            tmp_BLP.f = v_1;
+            tmp_BLP.i |= 1;
+            s_2_1 = s_2_1 + tmp_BLP.f;
+            q_0 = s_0_0;
+            q_1 = s_0_1;
+            tmp_BLP.f = v_2;
+            tmp_BLP.i |= 1;
+            s_0_0 = s_0_0 + tmp_BLP.f;
+            tmp_BLP.f = v_3;
+            tmp_BLP.i |= 1;
+            s_0_1 = s_0_1 + tmp_BLP.f;
+            q_0 = q_0 - s_0_0;
+            q_1 = q_1 - s_0_1;
+            v_2 = v_2 + q_0;
+            v_3 = v_3 + q_1;
+            q_0 = s_1_0;
+            q_1 = s_1_1;
+            tmp_BLP.f = v_2;
+            tmp_BLP.i |= 1;
+            s_1_0 = s_1_0 + tmp_BLP.f;
+            tmp_BLP.f = v_3;
+            tmp_BLP.i |= 1;
+            s_1_1 = s_1_1 + tmp_BLP.f;
+            q_0 = q_0 - s_1_0;
+            q_1 = q_1 - s_1_1;
+            v_2 = v_2 + q_0;
+            v_3 = v_3 + q_1;
+            tmp_BLP.f = v_2;
+            tmp_BLP.i |= 1;
+            s_2_0 = s_2_0 + tmp_BLP.f;
+            tmp_BLP.f = v_3;
+            tmp_BLP.i |= 1;
+            s_2_1 = s_2_1 + tmp_BLP.f;
+          }
+          if(i + 2 <= n){
             v_0 = fabs(v[0]);
             v_1 = fabs(v[incv]);
             q_0 = s_0_0;
@@ -1089,6 +1056,7 @@
             tmp_BLP.f = v_1;
             tmp_BLP.i |= 1;
             s_2_1 = s_2_1 + tmp_BLP.f;
+            i += 2, v += (incv * 2);
           }
           if(i + 1 <= n){
             v_0 = fabs(v[0]);
@@ -1125,7 +1093,7 @@
       default:{
         int i, j;
 
-        float v_0, v_1;
+        float v_0, v_1, v_2, v_3;
         float q_0, q_1;
         float s_0, s_1;
         float s_buffer[(MAX_FOLD * 2)];
@@ -1135,7 +1103,49 @@
         }
         if(incv == 1){
 
-          for(i = 0; i + 2 <= n; i += 2, v += 2){
+          for(i = 0; i + 4 <= n; i += 4, v += 4){
+            v_0 = fabs(v[0]);
+            v_1 = fabs(v[1]);
+            v_2 = fabs(v[2]);
+            v_3 = fabs(v[3]);
+            for(j = 0; j < fold - 1; j++){
+              s_0 = s_buffer[(j * 2)];
+              s_1 = s_buffer[((j * 2) + 1)];
+              tmp_BLP.f = v_0;
+              tmp_BLP.i |= 1;
+              q_0 = s_0 + tmp_BLP.f;
+              tmp_BLP.f = v_1;
+              tmp_BLP.i |= 1;
+              q_1 = s_1 + tmp_BLP.f;
+              s_buffer[(j * 2)] = q_0;
+              s_buffer[((j * 2) + 1)] = q_1;
+              q_0 = s_0 - q_0;
+              q_1 = s_1 - q_1;
+              v_0 = v_0 + q_0;
+              v_1 = v_1 + q_1;
+              s_0 = s_buffer[(j * 2)];
+              s_1 = s_buffer[((j * 2) + 1)];
+              tmp_BLP.f = v_2;
+              tmp_BLP.i |= 1;
+              q_0 = s_0 + tmp_BLP.f;
+              tmp_BLP.f = v_3;
+              tmp_BLP.i |= 1;
+              q_1 = s_1 + tmp_BLP.f;
+              s_buffer[(j * 2)] = q_0;
+              s_buffer[((j * 2) + 1)] = q_1;
+              q_0 = s_0 - q_0;
+              q_1 = s_1 - q_1;
+              v_2 = v_2 + q_0;
+              v_3 = v_3 + q_1;
+            }
+            tmp_BLP.f = v_2;
+            tmp_BLP.i |= 1;
+            s_buffer[(j * 2)] = s_buffer[(j * 2)] + tmp_BLP.f;
+            tmp_BLP.f = v_3;
+            tmp_BLP.i |= 1;
+            s_buffer[((j * 2) + 1)] = s_buffer[((j * 2) + 1)] + tmp_BLP.f;
+          }
+          if(i + 2 <= n){
             v_0 = fabs(v[0]);
             v_1 = fabs(v[1]);
             for(j = 0; j < fold - 1; j++){
@@ -1160,6 +1170,7 @@
             tmp_BLP.f = v_1;
             tmp_BLP.i |= 1;
             s_buffer[((j * 2) + 1)] = s_buffer[((j * 2) + 1)] + tmp_BLP.f;
+            i += 2, v += 2;
           }
           if(i + 1 <= n){
             v_0 = fabs(v[0]);
@@ -1179,7 +1190,49 @@
           }
         }else{
 
-          for(i = 0; i + 2 <= n; i += 2, v += (incv * 2)){
+          for(i = 0; i + 4 <= n; i += 4, v += (incv * 4)){
+            v_0 = fabs(v[0]);
+            v_1 = fabs(v[incv]);
+            v_2 = fabs(v[(incv * 2)]);
+            v_3 = fabs(v[(incv * 3)]);
+            for(j = 0; j < fold - 1; j++){
+              s_0 = s_buffer[(j * 2)];
+              s_1 = s_buffer[((j * 2) + 1)];
+              tmp_BLP.f = v_0;
+              tmp_BLP.i |= 1;
+              q_0 = s_0 + tmp_BLP.f;
+              tmp_BLP.f = v_1;
+              tmp_BLP.i |= 1;
+              q_1 = s_1 + tmp_BLP.f;
+              s_buffer[(j * 2)] = q_0;
+              s_buffer[((j * 2) + 1)] = q_1;
+              q_0 = s_0 - q_0;
+              q_1 = s_1 - q_1;
+              v_0 = v_0 + q_0;
+              v_1 = v_1 + q_1;
+              s_0 = s_buffer[(j * 2)];
+              s_1 = s_buffer[((j * 2) + 1)];
+              tmp_BLP.f = v_2;
+              tmp_BLP.i |= 1;
+              q_0 = s_0 + tmp_BLP.f;
+              tmp_BLP.f = v_3;
+              tmp_BLP.i |= 1;
+              q_1 = s_1 + tmp_BLP.f;
+              s_buffer[(j * 2)] = q_0;
+              s_buffer[((j * 2) + 1)] = q_1;
+              q_0 = s_0 - q_0;
+              q_1 = s_1 - q_1;
+              v_2 = v_2 + q_0;
+              v_3 = v_3 + q_1;
+            }
+            tmp_BLP.f = v_2;
+            tmp_BLP.i |= 1;
+            s_buffer[(j * 2)] = s_buffer[(j * 2)] + tmp_BLP.f;
+            tmp_BLP.f = v_3;
+            tmp_BLP.i |= 1;
+            s_buffer[((j * 2) + 1)] = s_buffer[((j * 2) + 1)] + tmp_BLP.f;
+          }
+          if(i + 2 <= n){
             v_0 = fabs(v[0]);
             v_1 = fabs(v[incv]);
             for(j = 0; j < fold - 1; j++){
@@ -1204,6 +1257,7 @@
             tmp_BLP.f = v_1;
             tmp_BLP.i |= 1;
             s_buffer[((j * 2) + 1)] = s_buffer[((j * 2) + 1)] + tmp_BLP.f;
+            i += 2, v += (incv * 2);
           }
           if(i + 1 <= n){
             v_0 = fabs(v[0]);
@@ -1231,5 +1285,6 @@
         return;
       }
     }
+    //[[[end]]]
   }
 #endif

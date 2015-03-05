@@ -192,15 +192,41 @@ import amax
 
     double* v_base = (double*) v;
     double* y_base = (double*) y;
-    double v_0, v_1, v_2, v_3;
-    double y_0, y_1;
+    double v_0, v_1, v_2, v_3, v_4, v_5, v_6, v_7;
+    double y_0, y_1, y_2, y_3;
     double m_0, m_1;
     m_0 = 0;
     m_1 = 0;
 
     if(incv == 1 && incy == 1){
 
-      for(i = 0; i + 1 <= n; i += 1, v_base += 2, y_base += 2){
+      for(i = 0; i + 2 <= n; i += 2, v_base += 4, y_base += 4){
+        v_0 = v_base[0];
+        v_1 = v_base[1];
+        v_2 = v_base[2];
+        v_3 = v_base[3];
+        y_0 = y_base[0];
+        y_1 = y_base[1];
+        y_2 = y_base[2];
+        y_3 = y_base[3];
+        v_4 = fabs(v_1 * y_1);
+        v_5 = fabs(v_0 * y_1);
+        v_6 = fabs(v_3 * y_3);
+        v_7 = fabs(v_2 * y_3);
+        v_0 = fabs(v_0 * y_0);
+        v_1 = fabs(v_1 * y_0);
+        v_2 = fabs(v_2 * y_2);
+        v_3 = fabs(v_3 * y_2);
+        m_0 = (m_0 > v_0? m_0: v_0);
+        m_1 = (m_1 > v_1? m_1: v_1);
+        m_0 = (m_0 > v_2? m_0: v_2);
+        m_1 = (m_1 > v_3? m_1: v_3);
+        m_0 = (m_0 > v_4? m_0: v_4);
+        m_1 = (m_1 > v_5? m_1: v_5);
+        m_0 = (m_0 > v_6? m_0: v_6);
+        m_1 = (m_1 > v_7? m_1: v_7);
+      }
+      if(i + 1 <= n){
         v_0 = v_base[0];
         v_1 = v_base[1];
         y_0 = y_base[0];
@@ -213,10 +239,37 @@ import amax
         m_1 = (m_1 > v_1? m_1: v_1);
         m_0 = (m_0 > v_2? m_0: v_2);
         m_1 = (m_1 > v_3? m_1: v_3);
+        i += 1, v_base += 2, y_base += 2;
       }
     }else{
 
-      for(i = 0; i + 1 <= n; i += 1, v_base += (incv * 2), y_base += (incy * 2)){
+      for(i = 0; i + 2 <= n; i += 2, v_base += (incv * 4), y_base += (incy * 4)){
+        v_0 = v_base[0];
+        v_1 = v_base[1];
+        v_2 = v_base[(incv * 2)];
+        v_3 = v_base[((incv * 2) + 1)];
+        y_0 = y_base[0];
+        y_1 = y_base[1];
+        y_2 = y_base[(incy * 2)];
+        y_3 = y_base[((incy * 2) + 1)];
+        v_4 = fabs(v_1 * y_1);
+        v_5 = fabs(v_0 * y_1);
+        v_6 = fabs(v_3 * y_3);
+        v_7 = fabs(v_2 * y_3);
+        v_0 = fabs(v_0 * y_0);
+        v_1 = fabs(v_1 * y_0);
+        v_2 = fabs(v_2 * y_2);
+        v_3 = fabs(v_3 * y_2);
+        m_0 = (m_0 > v_0? m_0: v_0);
+        m_1 = (m_1 > v_1? m_1: v_1);
+        m_0 = (m_0 > v_2? m_0: v_2);
+        m_1 = (m_1 > v_3? m_1: v_3);
+        m_0 = (m_0 > v_4? m_0: v_4);
+        m_1 = (m_1 > v_5? m_1: v_5);
+        m_0 = (m_0 > v_6? m_0: v_6);
+        m_1 = (m_1 > v_7? m_1: v_7);
+      }
+      if(i + 1 <= n){
         v_0 = v_base[0];
         v_1 = v_base[1];
         y_0 = y_base[0];
@@ -229,6 +282,7 @@ import amax
         m_1 = (m_1 > v_1? m_1: v_1);
         m_0 = (m_0 > v_2? m_0: v_2);
         m_1 = (m_1 > v_3? m_1: v_3);
+        i += 1, v_base += (incv * 2), y_base += (incy * 2);
       }
     }
     ((double*)(&max))[0] = m_0;
