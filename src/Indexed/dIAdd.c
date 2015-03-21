@@ -7,7 +7,7 @@
 #include <math.h>
 #include <float.h>
 #include <complex.h>
-#include "indexed.h"
+#include "Indexed.h"
 #include "../Common/Common.h"
 
 // ADDING TWO INDEXED FP

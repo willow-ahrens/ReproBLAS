@@ -9,7 +9,7 @@ libs += reproblas_mpi
 endif
 
 LIB : $(libs)
-	@cd IndexedFP && $(MAKE) --no-print-directory
+	@cd Indexed && $(MAKE) --no-print-directory
 
 DIBLAS1 = dasumI2.o dsumI2.o dnrm2I2.o ddotI2.o
 SIBLAS1 = sasumI2.o ssumI2.o snrm2I2.o sdotI2.o
@@ -65,19 +65,19 @@ Compile : $(OBJ) $(MPOBJ)
 $(MPOBJ): %.o : %.c
 	$(MPIC_COMPILER) $(CFLAGS) -c $< -o $@
 
-.PHONY: IndexedFP MPIndexedFP
+.PHONY: Indexed MPIndexedFP
 
-IndexedFP:
-	cd IndexedFP && $(MAKE) IndexedFP
+Indexed:
+	cd Indexed && $(MAKE) Indexed
 
-MPIndexedFP: IndexedFP
-	cd IndexedFP && $(MAKE) MPIndexedFP
+MPIndexedFP: Indexed
+	cd Indexed && $(MAKE) MPIndexedFP
 
-iblas: IndexedFP $(ROOT_DIR)/$(BUILD)/libs/libiblas.a Iblas_header rblas_header
+iblas: Indexed $(ROOT_DIR)/$(BUILD)/libs/libiblas.a Iblas_header rblas_header
 $(ROOT_DIR)/$(BUILD)/libs/libiblas.a: $(CORE_OBJ)
 	ar -crs $(ROOT_DIR)/$(BUILD)/libs/libiblas.a $(CORE_OBJ)
 
-iblas_ref: IndexedFP $(ROOT_DIR)/$(BUILD)/libs/libiblas_ref.a Iblas_header rblas_header
+iblas_ref: Indexed $(ROOT_DIR)/$(BUILD)/libs/libiblas_ref.a Iblas_header rblas_header
 $(ROOT_DIR)/$(BUILD)/libs/libiblas_ref.a: $(CORE_OBJ)
 	cd ref && $(MAKE) --no-print-directory
 	ar -crs $(ROOT_DIR)/$(BUILD)/libs/libiblas_ref.a $(CORE_OBJ_REF)
@@ -120,7 +120,7 @@ $(ROOT_DIR)/$(BUILD)/libs/libreproblas_mpi.a: $(MPOBJ)
 clean:
 	-rm -rf *.o
 	-rm -f $(GENERATED)
-	cd IndexedFP && make clean
+	cd Indexed && make clean
 	cd ref && make clean
 	cd $(ROOT_DIR)/$(BUILD)/include && rm *.h
 	cd $(ROOT_DIR)/$(BUILD)/libs && rm *.a

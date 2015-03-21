@@ -3,7 +3,7 @@
 
 #include <complex.h>
 #include "Iblas1.h"
-#include "IndexedFP/indexed.h"
+#include "Indexed/Indexed.h"
 
 #include "rblas1.mod"
 #include "accumulator.mod"

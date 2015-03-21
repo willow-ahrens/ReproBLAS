@@ -22,8 +22,8 @@ accuracy:
 bench:
 	@cd tests && ${MAKE} bench
 
-IndexedFP:
-	cd src && $(MAKE) IndexedFP
+Indexed:
+	cd src && $(MAKE) Indexed
 
 MPIndexedFP:
 	cd src && $(MAKE) MPIndexedFP

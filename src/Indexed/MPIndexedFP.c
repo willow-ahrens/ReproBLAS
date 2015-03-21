@@ -5,7 +5,7 @@
 #include "MPIndexedFP.h"
 #include "dIndexedMPI.h"
 #include "sIndexedMPI.h"
-#include "indexed.h"
+#include "Indexed.h"
 #include <stdio.h>
 
 MPI_Datatype MPI_IDOUBLE;

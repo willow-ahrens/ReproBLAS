@@ -7,8 +7,8 @@
 #include <stdio.h>
 
 #include "rblas1.h"
-#include "IndexedFP/MPIndexedFP.h"
-#include "IndexedFP/dIndexedMPI.h"
+#include "Indexed/MPIndexedFP.h"
+#include "Indexed/dIndexedMPI.h"
 #include "prblas.h"
 
 void prdzasumI(

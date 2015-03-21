@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <float.h>
-#include "indexed.h"
+#include "Indexed.h"
 #include "../Common/Common.h"
 
 void dconv2I1(int fold, int W, double x, double* rep, double* C, int inc) {

@@ -7,7 +7,7 @@
 #include <math.h>
 #include <float.h>
 #include <complex.h>
-#include "indexed.h"
+#include "Indexed.h"
 #include "../Common/Common.h"
 
 void fconv2I1(int fold, int W, float x, float* mantissa, F_CARRY_T* carry, int inc) {

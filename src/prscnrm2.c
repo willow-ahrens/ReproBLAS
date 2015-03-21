@@ -8,8 +8,8 @@
 #include <math.h>
 
 #include "rblas1.h"
-#include "IndexedFP/MPIndexedFP.h"
-#include "IndexedFP/sIndexedMPI.h"
+#include "Indexed/MPIndexedFP.h"
+#include "Indexed/sIndexedMPI.h"
 #include "prblas.h"
 
 void prscnrm2I(

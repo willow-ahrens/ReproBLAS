@@ -6,7 +6,7 @@ OBJ = dIConv.o dIndexed.o dIAdd.o dIRenorm.o dIUpdate.o \
 
 MPOBJ = MPIndexedFP.o dIndexedMPI.o sIndexedMPI.o
 
-libs := IndexedFP
+libs := Indexed
 ifneq ($(MPIC_COMPILER),)
 libs += MPIndexedFP
 else
@@ -16,7 +16,7 @@ all : $(libs)
 	@:
 
 
-.PHONY: IndexedFP MPIndexedFP
+.PHONY: Indexed MPIndexedFP
 
 %o:%c
 	$(C_COMPILER) $(FPFLAGS) $(CFLAGS) -c $< -o $@
@@ -30,15 +30,15 @@ IndexedFP_mod = types.mod dIndexed.mod sIndexed.mod \
 $(Indexed_mod) :
 	cat $< >> IndexedFP_tmp.h
 
-IndexedFP_header:
-	@cp indexed.h $(ROOT_DIR)/$(BUILD)/include/IndexedFP.h
+Indexed_header:
+	@cp Indexed.h $(ROOT_DIR)/$(BUILD)/include/IndexedFP.h
 
-IndexedFP: $(ROOT_DIR)/$(BUILD)/libs/libindexedfp.a IndexedFP_header
+Indexed: $(ROOT_DIR)/$(BUILD)/libs/libindexedfp.a Indexed_header
 
 $(ROOT_DIR)/$(BUILD)/libs/libindexedfp.a: $(OBJ)
 	ar -crs $(ROOT_DIR)/$(BUILD)/libs/libindexedfp.a $(OBJ)
 
-MPIndexedFP: IndexedFP $(ROOT_DIR)/$(BUILD)/libs/libmpindexedfp.a
+MPIndexedFP: Indexed $(ROOT_DIR)/$(BUILD)/libs/libmpindexedfp.a
 	@cp MPIndexedFP.h $(ROOT_DIR)/$(BUILD)/include/
 
 $(ROOT_DIR)/$(BUILD)/libs/libmpindexedfp.a: $(MPOBJ)
