@@ -6,7 +6,7 @@
 #include "../types.h"
 
 
-#include "config.inc"
+#include "config.h"
 #include "types.mod"
 #include "dIndexed.mod"
 
