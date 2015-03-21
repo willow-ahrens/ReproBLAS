@@ -5,6 +5,7 @@
 //  DEFINE TYPES                      //
 //====================================//
 
+#define F_CARRY_OP 1
 #if (F_CARRY_OP == 1)
 #define F_CARRY_T  double
 #elif (F_CARRY_OP == 0)
