@@ -5,7 +5,6 @@
 #include <float.h>
 #include "../types.h"
 
-#include "config.h"
 #include "types.mod"
 #include "sIndexed.mod"
 

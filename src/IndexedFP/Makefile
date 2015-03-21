@@ -24,7 +24,7 @@ all : $(libs)
 $(MPOBJ): %.o : %.c
 	$(MPIC_COMPILER) $(CFLAGS) -c $< -o $@
 
-IndexedFP_mod = config.h types.mod dIndexed.mod sIndexed.mod \
+IndexedFP_mod = types.mod dIndexed.mod sIndexed.mod \
 	dIWrapper.mod sIWrapper.mod
 
 $(Indexed_mod) :

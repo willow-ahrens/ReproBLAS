@@ -1,5 +1,0 @@
-// +++++++++++++++++++
-// INPUT CONFIGURATION
-
-// DEFAULT NUMBER OF BINS
-#define DEFAULT_FOLD 3

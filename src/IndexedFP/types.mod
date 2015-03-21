@@ -1,11 +1,12 @@
 #include <complex.h>
 #include <math.h>
 
+#define DEFAULT_FOLD 3
+#define F_CARRY_OP 1
 //====================================//
 //  DEFINE TYPES                      //
 //====================================//
 
-#define F_CARRY_OP 1
 #if (F_CARRY_OP == 1)
 #define F_CARRY_T  double
 #elif (F_CARRY_OP == 0)
