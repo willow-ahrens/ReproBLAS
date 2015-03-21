@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <float.h>
-#include "dIndexed.h"
+#include "indexed.h"
 #include "../Common/Common.h"
 
 #ifdef __SSE2__
@@ -42,7 +42,7 @@ void dIRenorm2(int n, double* X, int incX) {
 	dIRenorm1(n, X, X + n * incX, incX);
 }
 
-void zIRenorm1(int fold, dcomplex* rep, dcomplex* carry, int inc) {
+void zIRenorm1(int fold, double complex* rep, double complex* carry, int inc) {
 	dIRenorm1(fold, (double*)rep, (double*)carry,2 * inc);
 	dIRenorm1(fold, ((double*)rep) + 1, (double*)carry + 1, 2 * inc);
 }

@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <float.h>
-#include "sIndexed.h"
+#include "indexed.h"
 #include "../Common/Common.h"
 
 // ADDING TWO INDEXED FP
@@ -134,20 +134,20 @@ void sINeg1(int fold, float* x, F_CARRY_T* c, int inc) {
 }
 
 void cINeg1(int fold, float complex* x, F_CARRY_T* c, int inc) {
-	float MR, MI, R, I;
+	float MR, MI, BR, BI;
 	float* xptr = (float*) x;
 	int i;
 
 	inc *= 2;
 	for (i = 0; i < fold; i++, xptr += inc, c += inc) {
-		R = xptr[0];
-		I = xptr[1];
+		BR = xptr[0];
+		BI = xptr[1];
 
-		MR = ufpf(R);
-		MI = ufpf(I);
+		MR = ufpf(BR);
+		MI = ufpf(BI);
 
-		xptr[0] = (3 * MR) - R;
-		xptr[1] = (3 * MI) - I;
+		xptr[0] = (3 * MR) - BR;
+		xptr[1] = (3 * MI) - BI;
 		c[0] = -c[0];
 		c[1] = -c[1];
 	}

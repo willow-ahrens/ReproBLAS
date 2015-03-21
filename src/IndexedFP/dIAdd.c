@@ -6,7 +6,8 @@
 #include <stdio.h>
 #include <math.h>
 #include <float.h>
-#include "dIndexed.h"
+#include <complex.h>
+#include "indexed.h"
 #include "../Common/Common.h"
 
 // ADDING TWO INDEXED FP
@@ -170,7 +171,7 @@ void dINeg1(int fold, double* x, double* c, int inc) {
 }
 
 void zINeg1(int fold, double complex* x, double complex* c, int inc) {
-	double MR, MI, R, I;
+	double MR, MI, BR, BI;
 	double* xptr = (double*) x;
 	double* cptr = (double*) c;
 
@@ -178,14 +179,14 @@ void zINeg1(int fold, double complex* x, double complex* c, int inc) {
 
 	inc *= 2;
 	for (i = 0; i < fold; i++, xptr += inc, cptr += inc) {
-		R = xptr[0];
-		I = xptr[1];
+		BR = xptr[0];
+		BI = xptr[1];
 
-		MR = ufp(R);
-		MI = ufp(I);
+		MR = ufp(BR);
+		MI = ufp(BI);
 
-		xptr[0] = (3 * MR) - R;
-		xptr[1] = (3 * MI) - I;
+		xptr[0] = (3 * MR) - BR;
+		xptr[1] = (3 * MI) - BI;
 		cptr[0] = -cptr[0];
 		cptr[1] = -cptr[1];
 	}

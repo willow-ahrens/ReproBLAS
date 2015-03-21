@@ -2,7 +2,7 @@
  *  Created   13/10/25   H.D. Nguyen
  */
 
-#include "dIndexed.h"
+#include "indexed.h"
 #include "dIndexedMPI.h"
 
 // DEFAULT FOLD (3)

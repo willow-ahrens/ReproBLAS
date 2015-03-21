@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <float.h>
-#include "dIndexed.h"
+#include "indexed.h"
 #include "../Common/Common.h"
 
 #ifdef __SSE2__

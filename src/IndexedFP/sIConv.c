@@ -6,7 +6,8 @@
 #include <stdio.h>
 #include <math.h>
 #include <float.h>
-#include "sIndexed.h"
+#include <complex.h>
+#include "indexed.h"
 #include "../Common/Common.h"
 
 void fconv2I1(int fold, int W, float x, float* mantissa, F_CARRY_T* carry, int inc) {
@@ -85,9 +86,11 @@ float Iconv2f1(int fold, float* mantissa, F_CARRY_T* carry, int inc) {
 }
 
 float complex Iconv2c1(int fold, float complex* mantissa, F_CARRY_T* C, int inc) {
-	scomplex ret;
-	CSET_(ret, Iconv2f1(fold, (float*)(mantissa), C, 2 * inc),
-		Iconv2f1(fold, (float*)(mantissa) + 1, C+1, 2 * inc));
+	float complex ret;
+	float* rptr = (float*) &ret;
+	inc *= 2;
+	rptr[0] = Iconv2f1(fold, (float*)mantissa, (F_CARRY_T*)C, inc);
+	rptr[1] = Iconv2f1(fold, (float*)mantissa + 1, (F_CARRY_T*)C + 1, inc);
 	return ret;
 }
 

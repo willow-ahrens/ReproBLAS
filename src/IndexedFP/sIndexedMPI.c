@@ -2,7 +2,7 @@
  *  Created   13/10/25   H.D. Nguyen
  */
 
-#include "sIndexed.h"
+#include "indexed.h"
 #include "sIndexedMPI.h"
 #include <stdio.h>
 
