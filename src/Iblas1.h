@@ -5,7 +5,7 @@
 #ifndef _IBLAS_LEVEL1__H_
 #define _IBLAS_LEVEL1__H_
 
-#include "IndexedFP/IndexedFP.h"
+#include "IndexedFP/indexed.h"
 
 #define DAMAX damax
 #define DAMAXM damaxm

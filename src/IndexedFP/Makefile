@@ -31,11 +31,7 @@ $(Indexed_mod) :
 	cat $< >> IndexedFP_tmp.h
 
 IndexedFP_header:
-	@echo '#ifndef _INDEXED_FP__H' >  IndexedFP_tmp.h
-	@echo '#define _INDEXED_FP__H' >> IndexedFP_tmp.h
-	@$(foreach mod, $(IndexedFP_mod),cat $(mod) >> IndexedFP_tmp.h;)
-	@echo '#endif' >> IndexedFP_tmp.h
-	@mv IndexedFP_tmp.h $(ROOT_DIR)/$(BUILD)/include/IndexedFP.h
+	@cp indexed.h $(ROOT_DIR)/$(BUILD)/include/IndexedFP.h
 
 IndexedFP: $(ROOT_DIR)/$(BUILD)/libs/libindexedfp.a IndexedFP_header
 
