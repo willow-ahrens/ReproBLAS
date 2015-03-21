@@ -5,8 +5,6 @@
 #include <float.h>
 #include "../types.h"
 
-#define CHECK_NAN_INF
-
 #include "config.inc"
 #include "types.mod"
 #include "sIndexed.mod"

@@ -13,6 +13,7 @@
 #	include <xmmintrin.h>
 #endif
 
+#define CHECK_NAN_INF
 #define POW2(x) powf(2.0,x)
 
 // PRE-FIXED BOUNDARIES

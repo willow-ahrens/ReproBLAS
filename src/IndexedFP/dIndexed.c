@@ -13,9 +13,12 @@
 #	include <emmintrin.h>
 #endif
 
+#define CHECK_NAN_INF
+
 // PRE-FIXED BOUNDARIES
 #define DEFAULT_W 40
 #define PREC 53
+#define D_BOUNDARY_ZERO_IND 32
 static double D_BOUNDARIES[64];
 static int    D_BOUNDARIES_initialized = 0;
 static int    D_BOUNDARY_NB    = 1<<(PREC - DEFAULT_W - 2); // 2^(51-W)
