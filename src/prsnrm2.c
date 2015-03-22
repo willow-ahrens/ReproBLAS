@@ -4,8 +4,8 @@
 #include <math.h>
 
 #include "rblas1.h"
-#include "Indexed/sIndexedMPI.h"
-#include "Indexed/MPIndexedFP.h"
+#include "MPI_Indexed.h"
+#include "MPI_Indexed/MPI_sIndexed.h"
 #include "prblas.h"
 
 void prsnrm2I(

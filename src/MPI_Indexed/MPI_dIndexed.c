@@ -3,7 +3,7 @@
  */
 
 #include "Indexed.h"
-#include "dIndexedMPI.h"
+#include "MPI_dIndexed.h"
 
 // DEFAULT FOLD (3)
 void dIAdd_MPI(

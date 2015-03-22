@@ -2,9 +2,9 @@
  *  Created   13/10/25   H.D. Nguyen
  */
 
-#include "MPIndexedFP.h"
-#include "dIndexedMPI.h"
-#include "sIndexedMPI.h"
+#include "MPI_Indexed.h"
+#include "MPI_dIndexed.h"
+#include "MPI_sIndexed.h"
 #include "Indexed.h"
 #include <stdio.h>
 

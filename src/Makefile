@@ -65,13 +65,13 @@ Compile : $(OBJ) $(MPOBJ)
 $(MPOBJ): %.o : %.c
 	$(MPIC_COMPILER) $(CFLAGS) -c $< -o $@
 
-.PHONY: Indexed MPIndexedFP
+.PHONY: Indexed MPI_Indexed
 
 Indexed:
 	cd Indexed && $(MAKE) Indexed
 
-MPIndexedFP: Indexed
-	cd Indexed && $(MAKE) MPIndexedFP
+MPI_Indexed: Indexed
+	cd MPI_Indexed && $(MAKE) MPI_Indexed
 
 iblas: Indexed $(ROOT_DIR)/$(BUILD)/libs/libiblas.a Iblas_header rblas_header
 $(ROOT_DIR)/$(BUILD)/libs/libiblas.a: $(CORE_OBJ)
@@ -113,7 +113,7 @@ reproblas_seq: iblas $(ROOT_DIR)/$(BUILD)/libs/libreproblas_seq.a rblas_header
 $(ROOT_DIR)/$(BUILD)/libs/libreproblas_seq.a: $(RBLAS1_OBJ)
 	ar -crs $(ROOT_DIR)/$(BUILD)/libs/libreproblas_seq.a $(RBLAS1_OBJ)
 
-reproblas_mpi: MPIndexedFP reproblas_seq $(ROOT_DIR)/$(BUILD)/libs/libreproblas_mpi.a rblas_mpi.header
+reproblas_mpi: MPI_Indexed reproblas_seq $(ROOT_DIR)/$(BUILD)/libs/libreproblas_mpi.a rblas_mpi.header
 $(ROOT_DIR)/$(BUILD)/libs/libreproblas_mpi.a: $(MPOBJ)
 	-ar -crs $(ROOT_DIR)/$(BUILD)/libs/libreproblas_mpi.a $(MPOBJ)
 
