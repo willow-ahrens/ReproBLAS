@@ -6,7 +6,6 @@
 #include <stdio.h>
 #include <math.h>
 #include <float.h>
-#include "rblas.h"
 #include "../types.h"
 #include "IndexedBLAS.h"
 

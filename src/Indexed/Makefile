@@ -15,10 +15,10 @@ all : $(libs)
 %o:%c
 	$(C_COMPILER) $(FPFLAGS) $(CFLAGS) -c $< -o $@
 
-Indexed: $(ROOT_DIR)/$(BUILD)/libs/libindexedfp.a
+Indexed: $(ROOT_DIR)/$(BUILD)/libs/libindexed.a
 
-$(ROOT_DIR)/$(BUILD)/libs/libindexedfp.a: $(OBJ)
-	ar -crs $(ROOT_DIR)/$(BUILD)/libs/libindexedfp.a $(OBJ)
+$(ROOT_DIR)/$(BUILD)/libs/libindexed.a: $(OBJ)
+	ar -crs $(ROOT_DIR)/$(BUILD)/libs/libindexed.a $(OBJ)
 
 clean:
 	rm -rf *.o *.s

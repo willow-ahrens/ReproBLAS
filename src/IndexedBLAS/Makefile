@@ -3,7 +3,7 @@ include $(ROOT_DIR)/Make.local
 
 all: LIB
 
-libs = IndexedBLAS 
+libs = IndexedBLAS
 
 LIB : $(libs)
 
@@ -49,19 +49,13 @@ Indexed:
 MPI_Indexed: Indexed
 	cd ../MPI_Indexed && $(MAKE) MPI_Indexed
 
-IndexedBLAS: Indexed $(ROOT_DIR)/$(BUILD)/libs/libiblas.a
+IndexedBLAS: Indexed $(ROOT_DIR)/$(BUILD)/libs/libindexedblas.a
 
-$(ROOT_DIR)/$(BUILD)/libs/libiblas.a: $(CORE_OBJ)
-	ar -crs $(ROOT_DIR)/$(BUILD)/libs/libiblas.a $(CORE_OBJ)
-
-iblas_ref: Indexed $(ROOT_DIR)/$(BUILD)/libs/libiblas_ref.a Iblas_header rblas_header
-
-$(ROOT_DIR)/$(BUILD)/libs/libiblas_ref.a: $(CORE_OBJ)
-	cd ref && $(MAKE) --no-print-directory
-	ar -crs $(ROOT_DIR)/$(BUILD)/libs/libiblas_ref.a $(CORE_OBJ_REF)
+$(ROOT_DIR)/$(BUILD)/libs/libindexedblas.a: $(CORE_OBJ)
+	ar -crs $(ROOT_DIR)/$(BUILD)/libs/libindexedblas.a $(CORE_OBJ)
 
 clean:
 	-rm -rf *.o
 	cd ref && make clean
-	cd $(ROOT_DIR)/$(BUILD)/libs && rm *.a
+	cd $(ROOT_DIR)/$(BUILD)/libs && rm -f *.a
 

@@ -21,15 +21,11 @@ all : $(libs)
 $(MPOBJ): %.o : %.c
 	$(MPIC_COMPILER) $(CFLAGS) -c $< -o $@
 
-$(ROOT_DIR)/$(BUILD)/libs/libindexedfp.a:
-	cd ../Indexed
-	$(Make) Indexed
-
-MPI_Indexed: $(ROOT_DIR)/$(BUILD)/libs/libmpindexedfp.a
+MPI_Indexed: $(ROOT_DIR)/$(BUILD)/libs/libmpiindexed.a
 	@cp MPI_Indexed.h $(ROOT_DIR)/$(BUILD)/include/
 
-$(ROOT_DIR)/$(BUILD)/libs/libmpindexedfp.a: $(MPOBJ)
-	-ar -crs $(ROOT_DIR)/$(BUILD)/libs/libmpindexedfp.a $(MPOBJ)
+$(ROOT_DIR)/$(BUILD)/libs/libmpiindexed.a: $(MPOBJ)
+	-ar -crs $(ROOT_DIR)/$(BUILD)/libs/libmpiindexed.a $(MPOBJ)
 
 clean:
 	rm -rf *.o *.s

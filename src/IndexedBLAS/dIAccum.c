@@ -1,4 +1,3 @@
-#include "rblas.h"
 #include "IndexedBLAS.h"
 #include <complex.h>
 #include <stdlib.h>
