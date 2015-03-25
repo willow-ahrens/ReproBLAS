@@ -11,7 +11,7 @@ test_data: test_data.c libtest.a
 %.o: %.c
 	$(C_COMPILER) $(CFLAGS) -c -o $@ $<
 
-CFLAGS += -I$(ROOT_DIR)/$(BUILD)/include/ #POSSIBLY UNNECCESARY
+CFLAGS += -I$(ROOT_DIR)/include/
 
 libtest.a: $(COMMON)
 	ar -crs libtest.a $(COMMON)

@@ -2,7 +2,7 @@
 #define __TEST_VEC_H
 
 #include "../../src/types.h"
-#include "../../build/include/rblas.h"
+#include "reproBLAS.h"
 
 typedef enum util_vec_fill {
   util_Vec_Constant = 0,

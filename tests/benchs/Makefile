@@ -2,9 +2,8 @@ ROOT_DIR=../..
 include $(ROOT_DIR)/Make.local
 
 CFLAGS += -I$(ROOT_DIR)/$(BUILD)/include/
-RBLAS     = $(ROOT_DIR)/$(BUILD)/libs/libreproblas_seq.a $(ROOT_DIR)/$(BUILD)/libs/libiblas.a $(ROOT_DIR)/$(BUILD)/libs/libindexedfp.a
-RBLAS_REF = $(ROOT_DIR)/$(BUILD)/libs/libreproblas_seq.a $(ROOT_DIR)/$(BUILD)/libs/libiblas_ref.a $(ROOT_DIR)/$(BUILD)/libs/libindexedfp.a
-PRBLAS    = $(ROOT_DIR)/$(BUILD)/libs/libreproblas_mpi.a $(ROOT_DIR)/$(BUILD)/libs/libmpindexedfp.a
+RBLAS     = $(ROOT_DIR)/$(BUILD)/libs/libreproblas.a $(ROOT_DIR)/$(BUILD)/libs/libindexedblas.a $(ROOT_DIR)/$(BUILD)/libs/libindexed.a
+PRBLAS    = $(ROOT_DIR)/$(BUILD)/libs/libmpireproblas.a $(ROOT_DIR)/$(BUILD)/libs/libmpiindexed.a
 
 BENCHMARKS = bench_rdsum bench_rdasum bench_rdnrm2 bench_rddot                 \
              bench_rssum bench_rsasum bench_rsnrm2 bench_rsdot                 \

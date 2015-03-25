@@ -1,5 +1,5 @@
-#include <rblas.h>
-#include <IndexedFP.h>
+#include <IndexedBLAS.h>
+#include <Indexed.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

@@ -1,8 +1,9 @@
 #ifndef _RZBLAS1_WRAPPER_H
 #define _RZBLAS1_WRAPPER_H
 
-#include <rblas.h>
-#include <IndexedFP.h>
+#include <reproBLAS.h>
+#include <IndexedBLAS.h>
+#include <Indexed.h>
 
 #define wrap_RZSUM  0
 #define wrap_RDZASUM 1

@@ -1,5 +1,3 @@
-#include <rblas.h>
-#include <IndexedFP.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -7,8 +5,6 @@
 #include "../common/test_time.h"
 #include "../common/test_perf.h"
 #include "../common/blas_inc.h"
-#include <rblas.h>
-#include <IndexedFP.h>
 
 #include "vecvec_fill_bench_header.h"
 
@@ -32,7 +28,6 @@ const char* vecvec_fill_bench_name(int argc, char** argv){
 int vecvec_fill_bench_test(int argc, char** argv, int N, int incx, int incy, int type, double scale, double cond, int trials){
   int rc = 0;
   double res;
-  I_double Ires;
 
   util_random_seed();
 

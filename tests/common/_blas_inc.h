@@ -1,5 +1,8 @@
 #ifndef __BLAS_INC_H
 #define __BLAS_INC_H
+
+#include <complex.h>
+
 #ifdef CBLAS
 	extern int cblas_idamax(int, double*, int);
 	extern int cblas_isamax(int, float*, int);
