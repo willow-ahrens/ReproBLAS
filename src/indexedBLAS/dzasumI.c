@@ -22,7 +22,7 @@ int rdzasum_exception(
 		for (f = 0; f < fold; f++) 
 			ZSET_(sum[f], amax, amax);
 #ifdef DEBUG
-		fprintf(stdout, "EARLY TERMINATION DUE TO NAN EXECPTION AT INDEX %d \n", i);
+		fprintf(stdout, "EARLY TERMINATION DUE TO NAN EXECPTION AT INDEX %d \n", f);
 #endif
 		return -1;
 	}

@@ -57,7 +57,7 @@ int rddot_exception(
 		for (f = 0; f < fold; f++) 
 			dot[f] = amax;
 #ifdef DEBUG
-		fprintf(stdout, "EARLY TERMINATION DUE TO NAN EXECPTION AT INDEX %d \n", i);
+		fprintf(stdout, "EARLY TERMINATION DUE TO NAN EXECPTION AT INDEX %d \n", f);
 #endif
 		return -1;
 	}
@@ -75,7 +75,7 @@ int rddot_exception(
 		for (f = 0; f < fold; f++) 
 			dot[f] = NAN;
 #ifdef DEBUG
-		fprintf(stdout, "EARLY TERMINATION DUE TO NAN EXECPTION AT %d \n", i);
+		fprintf(stdout, "EARLY TERMINATION DUE TO NAN EXECPTION AT %d \n", f);
 #endif
 		return -1;
 	}

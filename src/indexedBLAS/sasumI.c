@@ -20,7 +20,7 @@ int rsasum_exception(
 		for (f = 0; f < fold; f++) 
 			sum[f] = amax;
 #ifdef DEBUG
-		fprintf(stdout, "EARLY TERMINATION DUE TO NAN EXECPTION AT INDEX %d \n", i);
+		fprintf(stdout, "EARLY TERMINATION DUE TO NAN EXECPTION AT INDEX %d \n", f);
 #endif
 		return -1;
 	}
