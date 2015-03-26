@@ -8,7 +8,7 @@
 #include <sys/time.h>
 #include <mpi.h>
 
-#include <IndexedFP.h>
+#include <indexedFP.h>
 
 #define TIMING
 

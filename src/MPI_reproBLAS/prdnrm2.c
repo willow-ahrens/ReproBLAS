@@ -7,10 +7,10 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "MPI_Indexed.h"
-#include "../MPI_Indexed/MPI_dIndexed.h"
+#include "MPI_indexed.h"
+#include "../MPI_indexed/MPI_dindexed.h"
 #include "MPI_reproBLAS.h"
-#include "IndexedBLAS.h"
+#include "indexedBLAS.h"
 
 void prdnrm2I(
 	MPI_Comm comm, int root,

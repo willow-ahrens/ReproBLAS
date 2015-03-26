@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <sys/time.h>
 #include <mpi.h>
-#include <MPIndexedFP.h>
+#include <MPindexedFP.h>
 
 static struct timeval start;
 static struct timeval end;

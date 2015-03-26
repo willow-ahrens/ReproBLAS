@@ -3,8 +3,8 @@ include $(ROOT_DIR)/Make.local
 
 all: reproBLAS
 
-Indexed:
-	@cd ../Indexed && $(MAKE) --no-print-directory
+indexed:
+	@cd ../indexed && $(MAKE) --no-print-directory
 
 RBLAS1_OBJ = rdzasum.o rzsum.o rdznrm2.o rzdot.o \
 	rcdot.o rcsum.o rscasum.o rscnrm2.o \
@@ -12,9 +12,9 @@ RBLAS1_OBJ = rdzasum.o rzsum.o rdznrm2.o rzdot.o \
 	rssum.o rsasum.o rsnrm2.o rsdot.o
 
 $(MPOBJ) : prblas.h rblas1.h 
-.PHONY: Indexed
+.PHONY: indexed
 
-reproBLAS: Indexed $(ROOT_DIR)/$(BUILD)/libs/libreproblas.a
+reproBLAS: indexed $(ROOT_DIR)/$(BUILD)/libs/libreproblas.a
 $(ROOT_DIR)/$(BUILD)/libs/libreproblas.a: $(RBLAS1_OBJ)
 	ar -crs $(ROOT_DIR)/$(BUILD)/libs/libreproblas.a $(RBLAS1_OBJ)
 

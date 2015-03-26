@@ -3,7 +3,7 @@
 #include <math.h>
 #include <float.h>
 #include "reproBLAS.h"
-#include "IndexedBLAS.h"
+#include "indexedBLAS.h"
 
 I_double_Complex zdotcI(
 	int N,

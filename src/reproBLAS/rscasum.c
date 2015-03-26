@@ -7,7 +7,7 @@
 #include <math.h>
 #include <float.h>
 #include "reproBLAS.h"
-#include "IndexedBLAS.h"
+#include "indexedBLAS.h"
 
 I_float scasumI(int N, float complex* v, int inc) {
 	I_float sum;

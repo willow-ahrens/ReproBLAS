@@ -1,4 +1,4 @@
-#include <IndexedFP.h>
+#include <indexedFP.h>
 #include <stdio.h>
 #include <stdlib.h>
 

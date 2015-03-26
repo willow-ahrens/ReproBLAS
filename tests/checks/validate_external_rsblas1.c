@@ -1,5 +1,5 @@
-#include <IndexedBLAS.h>
-#include <Indexed.h>
+#include <indexedBLAS.h>
+#include <indexed.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

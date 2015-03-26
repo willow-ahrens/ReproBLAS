@@ -7,7 +7,7 @@
 #include <math.h>
 #include <float.h>
 #include "reproBLAS.h"
-#include "IndexedBLAS.h"
+#include "indexedBLAS.h"
 
 I_double dasumI(int N, double* v, int inc) {
 	I_double sum;

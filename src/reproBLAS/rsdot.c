@@ -3,7 +3,7 @@
 #include <math.h>
 #include <float.h>
 #include "reproBLAS.h"
-#include "IndexedBLAS.h"
+#include "indexedBLAS.h"
 
 I_float sdotI(int N, float* x, int incx, float* y, int incy) {
 	I_float dot;

@@ -8,7 +8,7 @@ libs += MPI_reproBLAS
 endif
 
 LIB : $(libs)
-	@cd ../Indexed && $(MAKE) --no-print-directory
+	@cd ../indexed && $(MAKE) --no-print-directory
 
 MPOBJ = prdasum.o  prdsum.o prddot.o prdnrm2.o \
 	prsasum.o  prssum.o prsdot.o prsnrm2.o \
@@ -18,18 +18,18 @@ MPOBJ = prdasum.o  prdsum.o prddot.o prdnrm2.o \
 $(MPOBJ): %.o : %.c
 	$(MPIC_COMPILER) $(CFLAGS) -c $< -o $@
 
-.PHONY: Indexed MPI_Indexed
+.PHONY: indexed MPI_indexed
 
-Indexed:
-	cd ../Indexed && $(MAKE) Indexed
+indexed:
+	cd ../indexed && $(MAKE) indexed
 
-MPI_Indexed: Indexed
-	cd ../MPI_Indexed && $(MAKE) MPI_Indexed
+MPI_indexed: indexed
+	cd ../MPI_indexed && $(MAKE) MPI_indexed
 
-IndexedBLAS: Indexed
-	cd ../IndexedBLAS && $(MAKE) IndexedBLAS
+indexedBLAS: indexed
+	cd ../indexedBLAS && $(MAKE) indexedBLAS
 
-MPI_reproBLAS: MPI_Indexed Indexed IndexedBLAS $(ROOT_DIR)/$(BUILD)/libs/libmpireproblas.a
+MPI_reproBLAS: MPI_indexed indexed indexedBLAS $(ROOT_DIR)/$(BUILD)/libs/libmpireproblas.a
 $(ROOT_DIR)/$(BUILD)/libs/libmpireproblas.a: $(MPOBJ)
 	-ar -crs $(ROOT_DIR)/$(BUILD)/libs/libmpireproblas.a $(MPOBJ)
 

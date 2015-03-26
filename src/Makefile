@@ -3,35 +3,35 @@ include $(ROOT_DIR)/Make.local
 
 all: LIB
 
-libs = Indexed reproBLAS IndexedBLAS
+libs = indexed reproBLAS indexedBLAS
 ifneq ($(MPIC_COMPILER),)
-libs += MPI_Indexed MPI_reproBLAS
+libs += MPI_indexed MPI_reproBLAS
 endif
 
 LIB : $(libs)
-	@cd Indexed && $(MAKE) --no-print-directory
+	@cd indexed && $(MAKE) --no-print-directory
 
-Indexed:
-	cd Indexed && $(MAKE) Indexed
+indexed:
+	cd indexed && $(MAKE) indexed
 
-MPI_Indexed: Indexed
-	cd MPI_Indexed && $(MAKE) MPI_Indexed
+MPI_indexed: indexed
+	cd MPI_indexed && $(MAKE) MPI_indexed
 
-IndexedBLAS: Indexed
-	cd IndexedBLAS && $(MAKE) IndexedBLAS
+indexedBLAS: indexed
+	cd indexedBLAS && $(MAKE) indexedBLAS
 
-reproBLAS: IndexedBLAS Indexed
+reproBLAS: indexedBLAS indexed
 	cd reproBLAS && $(MAKE) reproBLAS
 
-MPI_reproBLAS: IndexedBLAS MPI_Indexed Indexed
+MPI_reproBLAS: indexedBLAS MPI_indexed indexed
 	cd MPI_reproBLAS && $(MAKE) MPI_reproBLAS
 
 clean:
 	-rm -rf *.o
 	-rm -f $(GENERATED)
-	cd Indexed && make clean
-	cd MPI_Indexed && make clean
-	cd IndexedBLAS && make clean
+	cd indexed && make clean
+	cd MPI_indexed && make clean
+	cd indexedBLAS && make clean
 	cd MPI_reproBLAS && make clean
 	cd reproBLAS && make clean
 	cd $(ROOT_DIR)/$(BUILD)/libs && rm -f *.a

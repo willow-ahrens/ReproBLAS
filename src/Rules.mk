@@ -1,2 +1,2 @@
 TARGETS :=
-SUBDIRS := IndexedFP rblas
+SUBDIRS := indexedFP rblas

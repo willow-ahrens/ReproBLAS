@@ -2,8 +2,8 @@
 #define _RDBLAS1_WRAPPER_H
 
 #include <reproBLAS.h>
-#include <IndexedBLAS.h>
-#include <Indexed.h>
+#include <indexedBLAS.h>
+#include <indexed.h>
 
 #define wrap_RDSUM  0
 #define wrap_RDASUM 1
