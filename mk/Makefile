@@ -24,8 +24,8 @@ MK := $(TOP)/mk
 dir : dir_$(RUNDIR)
 tree : tree_$(RUNDIR)
 
-clean : clean_$(.DEFAULT_GOAL)_$(RUNDIR)
-clean_dir : clean_$(RUNDIR)
+clean : clean_$(.DEFAULT_GOAL)
+clean_dir : clean_dir_$(RUNDIR)
 clean_tree : clean_tree_$(RUNDIR)
 
 # $(d) keeps the path of "current" directory during tree traversal and

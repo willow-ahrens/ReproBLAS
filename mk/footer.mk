@@ -47,13 +47,13 @@ $(foreach v,$(INHERIT_DIR_VARS_$(d)),$(if $($(v)_$(d)),,$(eval $(v)_$(d) := $($(
 ########################################################################
 $(foreach sd,$(SUBDIRS),$(eval $(call include_subdir_rules,$(sd))))
 
-.PHONY: dir_$(d) clean_$(d) clean_extra_$(d) clean_tree_$(d) dist_clean_$(d)
+.PHONY: dir_$(d) clean_dir_$(d) clean_extra_$(d) clean_tree_$(d) dist_clean_$(d)
 .SECONDARY: $(OBJPATH)
 
 # Whole tree targets
 all :: $(TARGETS_$(d))
 
-clean_all :: clean_$(d)
+clean_all :: clean_dir_$(d)
 
 # dist_clean is optimized in skel.mk if we are building in out of project tree
 ifeq ($(strip $(TOP_BUILD_DIR)),)
@@ -74,9 +74,9 @@ endif
 
 # Again - no point to enforce clean_extra dependency if CLEAN is empty
 ifeq ($(strip $(CLEAN_$(d))),)
-clean_$(d) :
+clean_dir_$(d) :
 else
-clean_$(d) : clean_extra_$(d)
+clean_dir_$(d) : clean_extra_$(d)
 endif
 	rm -f $(CLEAN_DIR)/*
 
@@ -86,7 +86,7 @@ endif
 clean_extra_$(d) :
 	rm -rf $(filter %/,$(CLEAN_$(subst clean_extra_,,$@))); rm -f $(filter-out %/,$(CLEAN_$(subst clean_extra_,,$@)))
 
-clean_tree_$(d) : clean_$(d) $(foreach sd,$(SUBDIRS_$(d)),clean_tree_$(sd))
+clean_tree_$(d) : clean_dir_$(d) $(foreach sd,$(SUBDIRS_$(d)),clean_tree_$(sd))
 
 # Skip the target rules generation and inclusion of the dependencies
 # when we just want to clean up things or print the current build directory :)
