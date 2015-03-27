@@ -168,7 +168,7 @@ endef
 # also inside your project like example below.
 TOP_BUILD_DIR := $(if $(BUILD_MODE),$(TOP)/build/$(BUILD_MODE)/$(HOST_ARCH),$(TOP)/build/$(HOST_ARCH))
 OBJPATH = $(call real_to_build_dir,$(d))
-CLEAN_DIR = $(call real_to_build_dir,$(subst clean_,,$@))
+CLEAN_DIR = $(call real_to_build_dir,$(subst clean_dir_,,$@))
 DIST_CLEAN_DIR = $(patsubst %/$(OBJDIR),%/$(firstword $(subst /, ,$(OBJDIR))),\
 				 $(call real_to_build_dir,$(subst dist_clean_,,$@)))
 
