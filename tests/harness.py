@@ -14,7 +14,7 @@ OUT_LEN = 80
 
 divider = "+" + (OUT_LEN - 2) * "-" + "+"
 prev    = "feed"
-built   = set()
+built   = {}
 passed  = 0
 failed  = 0
 not_run = 0
@@ -83,18 +83,15 @@ def callsafe(command):
 def call(command):
   return subprocess.check_output(command, shell=True)
 
-def clean(test):
-  call("cd {0}; make clean".format(os.path.split(test)[0]))
-
 def run(test, args):
   global built
   test = os.path.realpath(test)
   if test not in built:
     #assert not os.path.isfile(test), "Error: make clean unsuccessful."
-    call("make {1}".format(test))
-    assert os.path.isfile(test), "Error: make unsuccessful."
-    built.add(test)
-  return callsafe("{0} {1}".format(test, args))
+    built[test] = os.path.join(call("cd {0}; make pbd".format(os.path.split(test)[0])).split()[-1], os.path.split(test)[1])
+    call("make {0}".format(built[test]))
+    assert os.path.isfile(built[test]), "Error: make unsuccessful."
+  return callsafe("{0} {1}".format(built[test], args))
 
 def settings(params):
   if params:
@@ -261,8 +258,6 @@ if __name__ == "__main__":
   style = styles[args.format]
   for name in args.suites:
     suite(name)
-  for test in built:
-    clean(test)
   feed()
   if (passed + failed + not_run) > 0:
     print(divider)

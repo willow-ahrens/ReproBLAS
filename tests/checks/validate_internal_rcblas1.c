@@ -27,7 +27,7 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
 
   //allocate vectors
   float complex *x    = util_cvec_alloc(N, incx);
-  float complex *y    = util_cvec_alloc(N, incx);
+  float complex *y    = util_cvec_alloc(N, incy);
 
   //fill y with -i where necessary
   util_cvec_fill(N, y, incy, util_Vec_Constant, -_Complex_I, 1.0);

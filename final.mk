@@ -28,3 +28,10 @@ install-lib : $(call get_subtree,INSTALL_LIB,$(TOP))
 install-doc: $(call get_subtree,INSTALL_DOC,$(TOP))
 	$(INSTALL) -d $(DOC_DIR)
 	$(INSTALL_DATA) -t $(DOC_DIR) $^
+
+check:
+	python $(TOP)/tests/harness.py -s $(TOP)/tests/checks/check.suite
+
+reference:
+	python $(TOP)/tests/harness.py -s $(TOP)/tests/checks/data/create.suite
+	python $(TOP)/tests/harness.py -s $(TOP)/tests/checks/reference.suite
