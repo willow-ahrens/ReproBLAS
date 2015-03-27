@@ -11,7 +11,7 @@ endif
 
 MK := $(TOP)/mk
 
-.PHONY: dir tree all clean clean_dir clean_all clean_tree dist_clean
+.PHONY: dir tree all clean clean_dir clean_all clean_tree dist_clean pbd
 
 # Default target when nothing is given on the command line.  Reasonable
 # options are:
@@ -44,6 +44,10 @@ include $(MK)/skel.mk
 $(eval $(value HEADER))
 include $(TOP)/Rules.top
 $(eval $(value FOOTER))
+
+# Outputs the current build directory
+pbd:
+	@echo $(call real_to_build_dir,$(RUNDIR))
 
 # Optional final makefile where you can specify additional targets
 -include $(TOP)/final.mk

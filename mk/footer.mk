@@ -89,8 +89,8 @@ clean_extra_$(d) :
 clean_tree_$(d) : clean_$(d) $(foreach sd,$(SUBDIRS_$(d)),clean_tree_$(sd))
 
 # Skip the target rules generation and inclusion of the dependencies
-# when we just want to clean up things :)
-ifeq ($(filter clean clean_% dist_clean,$(MAKECMDGOALS)),)
+# when we just want to clean up things or print the current build directory :)
+ifeq ($(filter clean clean_% dist_clean pbd,$(MAKECMDGOALS)),)
 
 SUBDIRS_TGTS := $(foreach sd,$(SUBDIRS_$(d)),$(TARGETS_$(sd)))
 

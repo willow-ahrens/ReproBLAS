@@ -14,8 +14,6 @@ DOC_DIR := /tmp/test-ex1/share/doc/ex1
 INSTALL := install
 INSTALL_DATA := install -m 644
 
-.PHONY: install install-bin install-lib install-doc pwd
-
 install: install-bin install-lib install-doc
 
 install-bin : $(call get_subtree,INSTALL_BIN,$(TOP))
@@ -30,6 +28,3 @@ install-lib : $(call get_subtree,INSTALL_LIB,$(TOP))
 install-doc: $(call get_subtree,INSTALL_DOC,$(TOP))
 	$(INSTALL) -d $(DOC_DIR)
 	$(INSTALL_DATA) -t $(DOC_DIR) $^
-
-pwd:
-	@echo $(call real_to_build_dir,$(RUNDIR))
