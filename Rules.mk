@@ -1,5 +1,5 @@
 TARGETS :=
-SUBDIRS := src #tests #examples
+SUBDIRS := src tests #examples
 
 INCLUDES += $(TOP)/include
 

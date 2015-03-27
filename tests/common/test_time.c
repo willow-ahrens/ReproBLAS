@@ -1,4 +1,5 @@
 #include <sys/time.h>
+#include <stddef.h>
 static int initialized = 0;
 static struct timeval start;
 static double tic;

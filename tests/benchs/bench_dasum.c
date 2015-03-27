@@ -4,7 +4,7 @@
 #include "../common/test_opt.h"
 #include "../common/test_time.h"
 #include "../common/test_perf.h"
-#include "../common/blas_inc.h"
+#include "../common/test_BLAS.h"
 
 #include "vecvec_fill_bench_header.h"
 

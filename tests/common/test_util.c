@@ -246,7 +246,7 @@ typedef struct mat_row_compare_data{
 
 static int vec_compare(int a, int b, void *data){
   vec_compare_data_t *d = (vec_compare_data_t*)data;
-  return d->elem_compare(d->V + a * d->incV * d->elem_size, d->V + a * d->incV * d->elem_size, d->comp);
+  return d->elem_compare(d->V + a * d->incV * d->elem_size, d->V + b * d->incV * d->elem_size, d->comp);
 }
 
 static int mat_row_compare(int a, int b, void *data){

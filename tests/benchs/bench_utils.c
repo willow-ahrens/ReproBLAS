@@ -1,6 +1,8 @@
 #ifndef _UNIT_WRAPPER_H
 #define _UNIT_WRAPPER_H
 
+#include <stdio.h>
+
 #define UNIT_FLOPS         0
 #define UNIT_HERTZ         1
 #define UNIT_PERCENT_PEAK  2
@@ -39,7 +41,6 @@ void print_performance(double time, int N, int trials, int flop_per_N, int unit,
       printf("Error: unknown unit.\n");
       exit(1);
   }
-  return "";
 }
 
 #endif
