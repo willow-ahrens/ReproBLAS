@@ -13,7 +13,7 @@
 PYTHON = python
 #PYTHON = python3
 
-# enable vectorizations (comment all for auto, )
+# enable vectorizations (comment all for auto)
 #MMX := true
 #MMX := false
 #SSE := true
@@ -53,7 +53,6 @@ ENDIAN := $(shell perl -le 'print unpack(N,pack(L,0x01020304)) == 0x01020304 ? b
 # set to value other then "true" you'll see just indication of what is
 # being compiled (without details about options)
 #VERBOSE := true
-#VERBOSE := false
 
 # Uncomment if you don't like coloring of the output
 #COLOR_TTY := false
