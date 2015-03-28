@@ -20,7 +20,7 @@ static opt_option func_type = {._named.header.type       = opt_named,
 
 int verify_rzblas1_reproducibility(int N, double complex* x, int incX, double complex* y, int incY, int func, double complex ref, I_double_Complex Iref, int max_num_blocks) {
   // GENERATE DATA
-  int i, j;
+  int i;
   double complex res;
   I_double_Complex Ires;
   int num_blocks = 1;
@@ -34,9 +34,9 @@ int verify_rzblas1_reproducibility(int N, double complex* x, int incX, double co
     else {
       block_N =  (N + num_blocks - 1) / num_blocks;
       zISetZero(Ires);
-      for (j = 0; j < N; j += block_N) {
-        block_N = block_N < N - j ? block_N : (N-j);
-        zIAdd(&Ires, (wrap_Izblas1_func(func))(block_N, x + j * incX, incX, y + j * incY, incY));
+      for (i = 0; i < N; i += block_N) {
+        block_N = block_N < N - i ? block_N : (N-i);
+        zIAdd(&Ires, (wrap_Izblas1_func(func))(block_N, x + i * incX, incX, y + i * incY, incY));
       }
       res = Iconv2z(Ires);
     }

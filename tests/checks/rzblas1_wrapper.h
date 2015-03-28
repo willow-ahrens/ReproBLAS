@@ -26,18 +26,26 @@ typedef double complex (*wrap_rzblas1)(int, double complex*, int, double complex
 typedef I_double_Complex (*wrap_Izblas1)(int, double complex*, int, double complex*, int);
 
 double complex wrap_rzsum(int N, double complex *x, int incx, double complex *y, int incy) {
+  (void)y;
+  (void)incy;
   return rzsum(N, x, incx);
 }
 
 I_double_Complex wrap_zsumI(int N, double complex *x, int incx, double complex *y, int incy) {
+  (void)y;
+  (void)incy;
   return zsumI(N, x, incx);
 }
 
 double complex wrap_rdzasum(int N, double complex *x, int incx, double complex *y, int incy) {
+  (void)y;
+  (void)incy;
   return (double complex)rdzasum(N, x, incx);
 }
 
 I_double_Complex wrap_dzasumI(int N, double complex *x, int incx, double complex *y, int incy) {
+  (void)y;
+  (void)incy;
   I_double_Complex casum;
   Idouble asum = dzasumI(N, x, incx);
   zdISet(casum, asum);
@@ -61,10 +69,14 @@ I_double_Complex wrap_zdotcI(int N, double complex *x, int incx, double complex 
 }
 
 double complex wrap_rdznrm2(int N, double complex *x, int incx, double complex *y, int incy) {
+  (void)y;
+  (void)incy;
   return rdznrm2(N, x, incx);
 }
 
 I_double_Complex wrap_dznrm2I(int N, double complex *x, int incx, double complex *y, int incy) {
+  (void)y;
+  (void)incy;
   I_double_Complex cnrm2;
   Idouble nrm2;
   dISetZero(nrm2);

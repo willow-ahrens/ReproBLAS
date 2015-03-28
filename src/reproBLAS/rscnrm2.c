@@ -22,7 +22,6 @@ float rscnrm2(int N, float complex* v, int inc) {
 	I_float sum;
 	I_float_Complex tmp;
 	float sqrt_sum;
-	int i;
 	float scale = 0.0;
 	
 	sISetZero(sum);

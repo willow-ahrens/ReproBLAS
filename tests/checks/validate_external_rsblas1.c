@@ -40,7 +40,6 @@ const char* file_name(int argc, char** argv) {
 }
 
 int file_test(int argc, char** argv, char *fname) {
-  int i;
   int N;
   char ref_fname[MAX_NAME];
   char Iref_fname[MAX_NAME];

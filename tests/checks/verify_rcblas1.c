@@ -20,7 +20,7 @@ static opt_option func_type = {._named.header.type       = opt_named,
 
 int verify_rcblas1_reproducibility(int N, float complex* x, int incX, float complex* y, int incY, int func, float complex ref, I_float_Complex Iref, int max_num_blocks) {
   // GENERATE DATA
-  int i, j;
+  int i;
   float complex res;
   I_float_Complex Ires;
   int num_blocks = 1;
@@ -34,9 +34,9 @@ int verify_rcblas1_reproducibility(int N, float complex* x, int incX, float comp
     else {
       block_N =  (N + num_blocks - 1) / num_blocks;
       cISetZero(Ires);
-      for (j = 0; j < N; j += block_N) {
-        block_N = block_N < N - j ? block_N : (N-j);
-        cIAdd(&Ires, (wrap_Icblas1_func(func))(block_N, x + j * incX, incX, y + j * incY, incY));
+      for (i = 0; i < N; i += block_N) {
+        block_N = block_N < N - i ? block_N : (N-i);
+        cIAdd(&Ires, (wrap_Icblas1_func(func))(block_N, x + i * incX, incX, y + i * incY, incY));
       }
       res = Iconv2c(Ires);
     }

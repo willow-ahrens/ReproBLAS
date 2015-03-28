@@ -23,18 +23,26 @@ typedef float (*wrap_rsblas1)(int, float*, int, float*, int);
 typedef Ifloat (*wrap_Isblas1)(int, float*, int, float*, int);
 
 float wrap_rssum(int N, float *x, int incx, float *y, int incy) {
+  (void)y;
+  (void)incy;
   return rssum(N, x, incx);
 }
 
 Ifloat wrap_ssumI(int N, float *x, int incx, float *y, int incy) {
+  (void)y;
+  (void)incy;
   return ssumI(N, x, incx);
 }
 
 float wrap_rsasum(int N, float *x, int incx, float *y, int incy) {
+  (void)y;
+  (void)incy;
   return rsasum(N, x, incx);
 }
 
 Ifloat wrap_sasumI(int N, float *x, int incx, float *y, int incy) {
+  (void)y;
+  (void)incy;
   return sasumI(N, x, incx);
 }
 
@@ -47,10 +55,14 @@ Ifloat wrap_sdotI(int N, float *x, int incx, float *y, int incy) {
 }
 
 float wrap_rsnrm2(int N, float *x, int incx, float *y, int incy) {
+  (void)y;
+  (void)incy;
   return rsnrm2(N, x, incx);
 }
 
 Ifloat wrap_snrm2I(int N, float *x, int incx, float *y, int incy) {
+  (void)y;
+  (void)incy;
   Ifloat nrm2;
   sISetZero(nrm2);
   snrm2I(N, x, incx, &nrm2);

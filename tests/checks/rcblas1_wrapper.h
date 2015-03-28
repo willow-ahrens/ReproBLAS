@@ -27,18 +27,26 @@ typedef I_float_Complex (*wrap_Icblas1)(int, float complex*, int, float complex*
 
 
 float complex wrap_rcsum(int N, float complex *x, int incx, float complex *y, int incy) {
+  (void)y;
+  (void)incy;
   return rcsum(N, x, incx);
 }
 
 I_float_Complex wrap_csumI(int N, float complex *x, int incx, float complex *y, int incy) {
+  (void)y;
+  (void)incy;
   return csumI(N, x, incx);
 }
 
 float complex wrap_rscasum(int N, float complex *x, int incx, float complex *y, int incy) {
+  (void)y;
+  (void)incy;
   return (float complex)rscasum(N, x, incx);
 }
 
 I_float_Complex wrap_scasumI(int N, float complex *x, int incx, float complex *y, int incy) {
+  (void)y;
+  (void)incy;
   I_float_Complex casum;
   Ifloat asum = scasumI(N, x, incx);
   csISet(casum, asum);
@@ -62,10 +70,14 @@ I_float_Complex wrap_cdotcI(int N, float complex *x, int incx, float complex *y,
 }
 
 float complex wrap_rscnrm2(int N, float complex *x, int incx, float complex *y, int incy) {
+  (void)y;
+  (void)incy;
   return rscnrm2(N, x, incx);
 }
 
 I_float_Complex wrap_scnrm2I(int N, float complex *x, int incx, float complex *y, int incy) {
+  (void)y;
+  (void)incy;
   I_float_Complex cnrm2;
   Ifloat nrm2;
   sISetZero(nrm2);

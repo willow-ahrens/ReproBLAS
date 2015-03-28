@@ -21,7 +21,7 @@ static opt_option func_type = {._named.header.type       = opt_named,
 
 int verify_rsblas1_reproducibility(int N, float* x, int incX, float* y, int incY, int func, float ref, Ifloat Iref, int max_num_blocks) {
   // GENERATE DATA
-  int i, j;
+  int i;
   float res;
   Ifloat Ires;
   int num_blocks = 1;
@@ -35,9 +35,9 @@ int verify_rsblas1_reproducibility(int N, float* x, int incX, float* y, int incY
     else {
       block_N =  (N + num_blocks - 1) / num_blocks;
       sISetZero(Ires);
-      for (j = 0; j < N; j += block_N) {
-        block_N = block_N < N - j ? block_N : (N-j);
-        sIAdd(&Ires, (wrap_Isblas1_func(func))(block_N, x + j * incX, incX, y + j * incY, incY));
+      for (i = 0; i < N; i += block_N) {
+        block_N = block_N < N - i ? block_N : (N-i);
+        sIAdd(&Ires, (wrap_Isblas1_func(func))(block_N, x + i * incX, incX, y + i * incY, incY));
       }
       res = Iconv2f(Ires);
     }

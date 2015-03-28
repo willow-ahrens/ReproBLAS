@@ -210,7 +210,6 @@ def check(tests, params):
         print(result_template.format(name, "FAIL"))
         failed += 1
       if rc != 0:
-        print(out)
         for line in out.split("\n"):
           while line:
             print(error_template.format(line[:OUT_LEN - 2]))
