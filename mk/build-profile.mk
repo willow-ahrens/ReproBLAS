@@ -1,4 +1,4 @@
-CFLAGS   += -ggdb -pg $(OPT_FLAGS)
-CXXFLAGS += -ggdb -pg $(OPT_FLAGS)
+CFLAGS   += -ggdb -pg $(OPTFLAGS)
+CXXFLAGS += -ggdb -pg $(OPTFLAGS)
 CPPFLAGS += -DPROFILE
 LDFLAGS  += -ggdb -pg

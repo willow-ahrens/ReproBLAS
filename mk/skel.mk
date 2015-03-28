@@ -59,8 +59,6 @@ DIR_CXXFLAGS = $(CXXFLAGS_$(@RD))
 CFLAGS = $(DIR_CFLAGS)
 CXXFLAGS = $(DIR_CXXFLAGS)
 
-OPT_FLAGS := -O3
-
 # List of includes that all (or at least majority) needs
 INCLUDES := 
 
@@ -90,8 +88,11 @@ LDLIBS :=
 #                       The end of generic flags                       #
 ########################################################################
 
-# Now we suck in configuration ...
+# First we suck in our configuration ...
 include $(MK)/config.mk
+
+# Then we suck in user configuration ...
+include $(TOP)/config.mk
 
 # ... optional build mode specific flags ...
 ifdef BUILD_MODE
@@ -105,18 +106,8 @@ else
   include $(MK)/config-default.mk
 endif
 
-# ... and here's a good place to translate some of these settings into
-# compilation flags/variables.  As an example a preprocessor macro for
-# target endianess
-ifeq ($(ENDIAN),big)
-  CPPFLAGS += -DBIG_ENDIAN
-else
-  CPPFLAGS += -DLITTLE_ENDIAN
-endif
-
-# Use host/build specific config files to override default extension
-# for shared libraries 
-SOEXT := $(or $(SOEXT),so)
+# Parse the configuration variables and turn them into the necessary flags
+include $(MK)/parse_config.mk
 
 ########################################################################
 #         A more advanced part - if you change anything below          #

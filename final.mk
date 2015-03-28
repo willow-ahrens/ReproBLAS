@@ -30,8 +30,11 @@ install-doc: $(call get_subtree,INSTALL_DOC,$(TOP))
 	$(INSTALL_DATA) -t $(DOC_DIR) $^
 
 check:
-	python $(TOP)/tests/harness.py -s $(TOP)/tests/checks/check.suite
+	$(PYTHON) $(TOP)/tests/harness.py -s $(TOP)/tests/checks/check.suite
 
 reference:
-	python $(TOP)/tests/harness.py -s $(TOP)/tests/checks/data/create.suite
-	python $(TOP)/tests/harness.py -s $(TOP)/tests/checks/reference.suite
+	$(PYTHON) $(TOP)/tests/harness.py -s $(TOP)/tests/checks/data/create.suite
+	$(PYTHON) $(TOP)/tests/harness.py -s $(TOP)/tests/checks/reference.suite
+
+bench:
+	$(PYTHON) $(TOP)/tests/harness.py -s $(TOP)/tests/benchs/bench.suite

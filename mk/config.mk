@@ -17,7 +17,7 @@ HOST_ARCH := $(BUILD_ARCH)
 #LDFLAGS  += -ggdb
 # If you don't plan on having different build modes then just comment
 # below or set it to empty.
-BUILD_MODE := $(or $(BUILD_MODE),debug)
+BUILD_MODE := release
 
 # To have some per directory setting automatically propagated to all
 # subdirs then uncomment below.  That way you can have all project
@@ -29,16 +29,6 @@ BUILD_MODE := $(or $(BUILD_MODE),debug)
 # in some directory (just set INHERIT_DIR_VARS_$(d) there).
 INHERIT_DIR_VARS := CPPFLAGS INCLUDES CFLAGS CXXFLAGS
 
-# Again, by default we are running on the same architecture we are
-# building - if you're cross compiling then you should set this manually
-ENDIAN := $(shell perl -le 'print unpack(N,pack(L,0x01020304)) == 0x01020304 ? big : little')
+# Default optimization flags.
+OPTFLAGS := -O3
 
-# Make the compiler invocation lines verbose - if it is not defined or
-# set to value other then "true" you'll see just indication of what is
-# being compiled (without details about options)
-#VERBOSE := true
-
-# Uncomment if you don't like coloring of the output
-#COLOR_TTY := false
-
-# Any additional settings should go here

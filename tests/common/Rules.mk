@@ -1,7 +1,7 @@
 TARGETS := libtest.a test_data$(EXE)
 SUBDIRS := 
 
-test_data$(EXE)_DEPS = libtest.a
+test_data$(EXE)_DEPS = libtest.a test_data.o
 
 LIBTEST := $(OBJPATH)/libtest.a
 
