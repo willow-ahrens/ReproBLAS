@@ -307,14 +307,11 @@ class SSE(SIMD):
       self.propagate_into([common_summand_var], common_summand_ptr, common_summand_offset, common_summand_inc)
       for src_var in src_vars[1:]:
         self.code_block.write("{0} = _mm_add_p{1}({0}, _mm_sub_p{1}({2}, {3}));".format(src_vars[0], self.data_type.base_type.name_char, src_var, common_summand_var))
-    if self.data_type.name == "double complex":
-      self.code_block.write("_mm_store_pd((double*){0}, {1});".format(mix("+", dst_ptr, self.data_type.index(offset, inc, 0), paren=False), src_vars[0]))
+    if self.data_type.is_complex:
+      self.code_block.write("_mm_store_p{0}(({1}*)tmp_cons, {2});".format(self.data_type.base_type.name_char, self.data_type.base_type.name, src_vars[0]))
     else:
-      if self.data_type.name == "float complex":
-        self.code_block.write("_mm_store_ps((float*)tmp_cons, {0});".format(src_vars[0]))
-      else:
-        self.code_block.write("_mm_store_p{0}(tmp_cons, {1});".format(self.data_type.name_char, src_vars[0]))
-      self.code_block.write("{0}[{1}] = {2};".format(dst_ptr, self.data_type.index(offset, inc, 0, False), " + ".join(["tmp_cons[{0}]".format(i) for i in range(self.type_size)])))
+      self.code_block.write("_mm_store_p{0}(tmp_cons, {1});".format(self.data_type.name_char, src_vars[0]))
+    self.code_block.write("{0}[{1}] = {2};".format(dst_ptr, self.data_type.index(offset, inc, 0, False), " + ".join(["tmp_cons[{0}]".format(i) for i in range(self.type_size)])))
 
   def max_into(self, dst_ptr, offset, inc, src_vars): 
     self.include_max_vars()

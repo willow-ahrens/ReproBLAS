@@ -2127,17 +2127,20 @@ import dotcI2
         s_0_0 = _mm_add_pd(s_0_0, _mm_sub_pd(s_0_1, q_0));
         s_0_0 = _mm_add_pd(s_0_0, _mm_sub_pd(s_0_2, q_0));
         s_0_0 = _mm_add_pd(s_0_0, _mm_sub_pd(s_0_3, q_0));
-        _mm_store_pd((double*)sum, s_0_0);
+        _mm_store_pd((double*)tmp_cons, s_0_0);
+        sum[0] = tmp_cons[0];
         q_0 = _mm_loadu_pd(sum_base + 2);
         s_1_0 = _mm_add_pd(s_1_0, _mm_sub_pd(s_1_1, q_0));
         s_1_0 = _mm_add_pd(s_1_0, _mm_sub_pd(s_1_2, q_0));
         s_1_0 = _mm_add_pd(s_1_0, _mm_sub_pd(s_1_3, q_0));
-        _mm_store_pd((double*)sum + 2, s_1_0);
+        _mm_store_pd((double*)tmp_cons, s_1_0);
+        sum[1] = tmp_cons[0];
         q_0 = _mm_loadu_pd(sum_base + 4);
         s_2_0 = _mm_add_pd(s_2_0, _mm_sub_pd(s_2_1, q_0));
         s_2_0 = _mm_add_pd(s_2_0, _mm_sub_pd(s_2_2, q_0));
         s_2_0 = _mm_add_pd(s_2_0, _mm_sub_pd(s_2_3, q_0));
-        _mm_store_pd((double*)sum + 4, s_2_0);
+        _mm_store_pd((double*)tmp_cons, s_2_0);
+        sum[2] = tmp_cons[0];
         RESET_DAZ_FLAG
         return;
       }
@@ -2662,7 +2665,8 @@ import dotcI2
           s_buffer[(j * 4)] = _mm_add_pd(s_buffer[(j * 4)], _mm_sub_pd(s_buffer[((j * 4) + 1)], q_0));
           s_buffer[(j * 4)] = _mm_add_pd(s_buffer[(j * 4)], _mm_sub_pd(s_buffer[((j * 4) + 2)], q_0));
           s_buffer[(j * 4)] = _mm_add_pd(s_buffer[(j * 4)], _mm_sub_pd(s_buffer[((j * 4) + 3)], q_0));
-          _mm_store_pd((double*)sum + (j * 2), s_buffer[(j * 4)]);
+          _mm_store_pd((double*)tmp_cons, s_buffer[(j * 4)]);
+          sum[j] = tmp_cons[0];
         }
         RESET_DAZ_FLAG
         return;
