@@ -10,10 +10,16 @@ int vecvec_show_help(void){
 }
 
 const char* vecvec_name(int argc, char** argv) {
+  (void)argc;
+  (void)argv;
   return "Validate ufpf";
 }
 
 int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
+  (void)argc;
+  (void)argv;
+  (void)incx;
+  (void)incy;
   int i;
   float bin = 1.0;
   float ufpx;

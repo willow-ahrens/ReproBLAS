@@ -208,6 +208,7 @@ def check(tests, params):
         not_run += 1
       else:
         print(result_template.format(name, "FAIL"))
+        print(error_template.format("error {}:".format(rc)))
         failed += 1
       if rc != 0:
         for line in out.split("\n"):

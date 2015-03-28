@@ -10,11 +10,14 @@ int vecvec_show_help(void){
 }
 
 const char* vecvec_name(int argc, char** argv) {
+  (void)argc;
+  (void)argv;
   return "Validate rzsum, rdzasum, rzdotu/c (1Big, 1BigPosNeg)";
 }
 
 int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
-  int i;
+  (void)argc;
+  (void)argv;
   double small = 1.0 / (1024.0 * 1024.0);       // 2^-20
   double big   = 1024.0 * 1024.0 * 1024.0 * 32; // 2^35
   double complex ref;
