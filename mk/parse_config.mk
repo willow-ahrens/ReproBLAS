@@ -106,11 +106,3 @@ else ifeq ($(strip $(BLAS)),-latlas)
 else ifeq ($(strip $(BLAS)),-framework Accelerate)
   CPPFLAGS += -DCBLAS
 endif
-
-$(info CC = $(CC))
-$(info MPICC = $(MPICC))
-$(info PYTHON = $(PYTHON))
-$(info CFLAGS = $(CFLAGS))
-$(info CPPFLAGS = $(CPPFLAGS))
-$(info LDFLAGS = $(LDFLAGS))
-$(info BLAS = $(BLAS))
