@@ -91,16 +91,18 @@ LDLIBS :=
 #                       The end of generic flags                       #
 ########################################################################
 
-# First we suck in our configuration ...
-include $(MK)/config.mk
-
-# Then we suck in user configuration ...
+# First we suck in user configuration ...
 include $(TOP)/config.mk
 
-# ... optional build mode specific flags ...
-ifdef BUILD_MODE
-  -include $(MK)/build-$(BUILD_MODE).mk
-endif
+# Fill BUILD_ARCH with appropriate value automatically (with some
+# cosmetics in case of Cygwin/MinGW :)).
+BUILD_ARCH := $(patsubst MINGW32_%,MinGW,$(patsubst CYGWIN_%,Cygwin,$(shell uname -s)))-$(shell uname -m)
+
+# Target platform (where the code will be executed).  I'm not using
+# TARGET_ARCH for this since this variable is already used in builtin
+# make rules and I want to be able to use those built in rules.  By
+# default we are running on the same machine we are building.
+HOST_ARCH ?= $(BUILD_ARCH)
 
 # ... host and build specific settings ...
 ifneq ($(wildcard $(MK)/config-$(BUILD_ARCH)_$(HOST_ARCH).mk),)
@@ -110,7 +112,13 @@ else
 endif
 
 # Parse the configuration variables and turn them into the necessary flags
-include $(MK)/parse_config.mk
+include $(MK)/config.mk
+
+# ... optional build mode specific flags ...
+ifdef BUILD_MODE
+  -include $(MK)/build-$(BUILD_MODE).mk
+endif
+
 
 ########################################################################
 #         A more advanced part - if you change anything below          #

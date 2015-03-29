@@ -42,16 +42,20 @@
 # building - if you're cross compiling then you should set this manually
 ENDIAN := $(shell perl -le 'print unpack(N,pack(L,0x01020304)) == 0x01020304 ? big : little')
 
-# select comparison BLAS (comment all for auto)
-#BLAS = -lblas
-#BLAS = -latlas
-#BLAS = -lmkl_sequential
-#BLAS = -framework Acclerate
+# select comparison BLAS (for custom blas, link the appropriate blas library and uncomment fortran or cblas interface)
+#BLAS := REF
+#BLAS := ATLAS
+#BLAS := MKL
+BLAS := ACCELERATE
+#LDFLAGS += -lblas
+#CPPFLAGS += -DBLAS
 
 # set build mode (comment all for auto)
 #BUILD_MODE := release
 #BUILD_MODE := debug
 #BUILD_MODE := profile
+
+#HOST_ARCH := profile
 
 ARGS = $(TOP)/src/default_args.json
 PARAMS = $(TOP)/src/params.json
