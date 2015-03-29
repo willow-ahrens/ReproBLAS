@@ -5,8 +5,7 @@
 
 
 import argparse
-import os
-import subprocess
+import os, subprocess, sys
 import re
 import decimal
 
@@ -74,14 +73,14 @@ styles = {"term":Term, "csv":CSV}
 def callsafe(command):
   rc = 0
   try:
-    out = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
+    out = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True).decode(sys.stdout.encoding)
   except subprocess.CalledProcessError as e:
     rc = e.returncode
-    out = e.output
+    out = e.output.decode(sys.stdout.encoding)
   return (rc, out)
 
 def call(command):
-  return subprocess.check_output(command, shell=True)
+  return subprocess.check_output(command, shell=True).decode(sys.stdout.encoding)
 
 def run(test, args):
   global built
@@ -96,7 +95,7 @@ def settings(params):
   if params:
     for value in params[0][1]:
       for setting in settings(params[1:]):
-        yield [(params[0][0], value)] + setting 
+        yield [(params[0][0], value)] + setting
   else:
     yield []
 
@@ -127,7 +126,7 @@ def benchmark(tests, params):
   result_template = style.create_template([(" ", len(str(max(param[1])))) for param in params], [(" ", BENCH_LEN) for test in tests])
   divider = style.create_divider([(" ", len(str(max(param[1])))) for param in params], [(" ", BENCH_LEN) for test in tests])
 
-  labels = list(zip(*params)[0])
+  labels = list(list(zip(*params))[0])
   for test in tests:
     if test != "":
       try:
@@ -142,7 +141,7 @@ def benchmark(tests, params):
   print(result_template.format(*labels))
   print(divider)
   for setting in settings(params):
-    results = list(zip(*setting)[1])
+    results = list(list(zip(*setting))[1])
     for test in tests:
       if test != "":
         try:
