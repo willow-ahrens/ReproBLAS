@@ -1,11 +1,3 @@
-# For now I depend on flex and bison - I want to generate source files
-# in the same directory as their lex/yacc inputs.
-%.c %.h : %.y
-	bison -d -o $*.c $<
-
-%.c : %.l
-	flex -o$@ $<
-
 # "Pretty printing" stuff
 #
 # The value of the variable VERBOSE decides whether to output only
@@ -79,9 +71,6 @@ LINK.cc = $(call echo_cmd,LINK $@) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS) $(T
 # would just append ".o:.f" and set COMPILE.f (actually make already
 # defines it - just take a look at output of "make -p")
 AUTO_RULES := .o:.cpp .o:.cc .o:.c
-# Additional mapping together with corresponding variables can be specified
-# in user_rules.mk
--include $(MK)/user_rules.mk
 
 # This compile command should be generic for most compilers - you should
 # just define appropriate COMPILE.suffix variable.
@@ -102,6 +91,18 @@ COMPILECMD = $(COMPILE$(suffix $<)) -o $@ $<
 # syntax for functions :P).  The above setting means that %.cmo and %.cmx
 # can be generated from %.ml via their respective COMPILE commands
 # expanded in COMPILECMD_TD (see below).
+
+ifneq ($(PYTHON),)
+  COMPILE.c.ccog = $(call echo_cmd,COG $<) $(COG)
+else
+  COMPILE.c.ccog = $(call echo_cmd,PSEUDOCOG $<) $(PSEUDOCOG)
+endif
+
+AUTO_TD_RULES := .c:.ccog
+
+# Additional mapping together with corresponding variables can be specified
+# in user_rules.mk
+-include $(MK)/user_rules.mk
 
 # Again this should be generic enough so that you won't have to touch it
 COMPILECMD_TD = $(COMPILE$(suffix $@)$(suffix $<)) -o $@ $<

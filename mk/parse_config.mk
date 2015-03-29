@@ -13,6 +13,10 @@ ifeq ($(CC),cc)
     CC := gcc
   else ifeq ("$(shell which icc >/dev/null; echo $$?)", "0")
     CC := icc
+  else ifeq ("$(shell which pgcc >/dev/null; echo $$?)", "0")
+    CC := pgcc
+  else ifeq ("$(shell which craycc >/dev/null; echo $$?)", "0")
+    CC := craycc
   else ifeq ("$(shell which clang >/dev/null; echo $$?)", "0")
     CC := clang
   endif
@@ -93,10 +97,8 @@ ifeq ($(MMX)$(SSE)$(SSE1)$(SSE2)$(SSE3)$(SSE4_1)$(SSE4_2)$(AVX)$(AVX2),)
   endif
 endif
 
-#determine BLAS link type
-ifneq ($(BLAS),)
-  LDFLAGS += $(BLAS)
-endif
+# Determine BLAS link
+LDFLAGS += $(BLAS)
 ifeq ($(strip $(BLAS)),-lblas)
   CPPFLAGS += -DBLAS
 else ifeq ($(strip $(BLAS)),-lmkl_sequential)
@@ -106,3 +108,9 @@ else ifeq ($(strip $(BLAS)),-latlas)
 else ifeq ($(strip $(BLAS)),-framework Accelerate)
   CPPFLAGS += -DCBLAS
 endif
+
+# Create cog compiler
+COG = PYTHONPATH=$(TOP)/cog $(PYTHON) -m cogapp $(COGFLAGS) -D args=$(ARGS) -D params=$(PARAMS)
+
+# Create cog compiler
+PSEUDOCOG = $(TOP)/cog/pseudocog.sh

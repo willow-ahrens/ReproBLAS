@@ -3,6 +3,16 @@ SUBDIRS :=
 
 INSTALL_LIB := $(TARGETS)
 
+COGGED = dasumI2.ccog dsumI2.ccog dnrm2I2.ccog ddotI2.ccog                 \
+         zsumI2.ccog dzasumI2.ccog dznrm2I2.ccog zdotcI2.ccog zdotuI2.ccog \
+         sasumI2.ccog ssumI2.ccog snrm2I2.ccog sdotI2.ccog                 \
+         csumI2.ccog scasumI2.ccog scnrm2I2.ccog cdotcI2.ccog cdotuI2.ccog \
+
+PRECIOUS = dasumI2.c dsumI2.c dnrm2I2.c ddotI2.c              \
+           zsumI2.c dzasumI2.c dznrm2I2.c zdotcI2.c zdotuI2.c \
+           sasumI2.c ssumI2.c snrm2I2.c sdotI2.c              \
+           csumI2.c scasumI2.c scnrm2I2.c cdotcI2.c cdotuI2.c \
+
 LIBINDEXEDBLAS := $(OBJPATH)/libindexedblas.a
 
 libindexedblas.a_DEPS = $$(LIBINDEXED)                                     \

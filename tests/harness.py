@@ -87,7 +87,6 @@ def run(test, args):
   global built
   test = os.path.realpath(test)
   if test not in built:
-    #assert not os.path.isfile(test), "Error: make clean unsuccessful."
     built[test] = os.path.join(call("cd {0}; make pbd".format(os.path.split(test)[0])).split()[-1], os.path.split(test)[1])
     call("make {0}".format(built[test]))
     assert os.path.isfile(built[test]), "Error: make unsuccessful."

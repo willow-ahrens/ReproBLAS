@@ -29,6 +29,8 @@ install-doc: $(call get_subtree,INSTALL_DOC,$(TOP))
 	$(INSTALL) -d $(DOC_DIR)
 	$(INSTALL_DATA) -t $(DOC_DIR) $^
 
+.PHONY: replace check bench reference
+
 check:
 	$(PYTHON) $(TOP)/tests/harness.py -s $(TOP)/tests/checks/check.suite
 

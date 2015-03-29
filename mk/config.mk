@@ -27,8 +27,7 @@ BUILD_MODE := release
 # turn inheritance in some part by just clearing INHERIT_DIR_VARS_$(d)
 # This is a global inheritance flag - you might want to turn it on only
 # in some directory (just set INHERIT_DIR_VARS_$(d) there).
-INHERIT_DIR_VARS := CPPFLAGS INCLUDES CFLAGS CXXFLAGS
+INHERIT_DIR_VARS := INCLUDES CPPFLAGS CFLAGS
 
 # Default optimization flags.
 OPTFLAGS := -O3
-

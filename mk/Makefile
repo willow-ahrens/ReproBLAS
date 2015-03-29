@@ -11,7 +11,7 @@ endif
 
 MK := $(TOP)/mk
 
-.PHONY: dir tree all clean clean_dir clean_all clean_tree dist_clean pbd
+.PHONY: dir tree all clean clean_dir clean_all clean_tree dist_clean pbd replace excise
 
 # Default target when nothing is given on the command line.  Reasonable
 # options are:
@@ -47,7 +47,18 @@ $(eval $(value FOOTER))
 
 # Outputs the current build directory
 pbd:
-	@echo $(call real_to_build_dir,$(RUNDIR))
+	@echo "$(call real_to_build_dir,$(RUNDIR))"
+
+# Marks specified output as precious
+.PRECIOUS: $(call get_subtree,PRECIOUS,$(TOP))
+
+# Runs code generators in place
+replace:
+	$(foreach SOURCE, $(call get_subtree,COGGED,$(TOP)), $(COG) -r $(SOURCE) &&) echo
+
+# Removes generated code from code generators
+excise:
+	$(foreach SOURCE, $(call get_subtree,COGGED,$(TOP)), $(COG) -x $(SOURCE) &&) echo
 
 # Optional final makefile where you can specify additional targets
 -include $(TOP)/final.mk

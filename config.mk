@@ -1,11 +1,15 @@
 # select compiler (comment all for auto)
 #CC = gcc
 #CC = icc
+#CC = pgcc
+#CC = craycc
 #CC = clang
 
 # select MPI compiler (comment all for auto)
 #MPICC = gcc
 #MPICC = icc
+#MPICC = pgcc
+#MPICC = craycc
 #MPICC = clang
 #MPICC = mpicc
 
@@ -48,6 +52,9 @@ ENDIAN := $(shell perl -le 'print unpack(N,pack(L,0x01020304)) == 0x01020304 ? b
 #BUILD_MODE := release
 #BUILD_MODE := debug
 #BUILD_MODE := profile
+
+ARGS = $(TOP)/src/default_args.json
+PARAMS = $(TOP)/src/params.json
 
 # Make the compiler invocation lines verbose - if it is not defined or
 # set to value other then "true" you'll see just indication of what is

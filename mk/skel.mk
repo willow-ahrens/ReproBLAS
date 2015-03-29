@@ -22,14 +22,14 @@ VERB_VARS :=
 #   INSTALL_$d := $(OBJPATH)/some_target
 # you can say simply
 #   INSTALL := some_target
-OBJ_VARS := INSTALL_BIN INSTALL_LIB
+OBJ_VARS := INSTALL_BIN INSTALL_LIB PRECIOUS
 
 # DIR_VARS - like VERB_VARS but all values taken from Rules.mk have $(d)
 # prepended (unless value is an absolute path) so you can say:
 #   INSTALL_DOC := Readme.txt
 # instead of:
 #   INSTALL_DOC_$d := $(d)/Readme.txt
-DIR_VARS := INSTALL_DOC INSTALL_INC
+DIR_VARS := INSTALL_DOC INSTALL_INC COGGED
 
 # NOTE: There is generic macro defined below with which you can get all
 # values of given variable from some subtree e.g.:
@@ -51,6 +51,7 @@ DIR_INCLUDES = $(addprefix -I,$(INCLUDES_$(@RD)))
 DIR_CPPFLAGS = $(CPPFLAGS_$(@RD))
 DIR_CFLAGS = $(CFLAGS_$(@RD))
 DIR_CXXFLAGS = $(CXXFLAGS_$(@RD))
+DIR_COGFLAGS = $(COGFLAGS_$(@RD))
 
 ########################################################################
 #                       Global flags/settings                          #
@@ -60,7 +61,7 @@ CFLAGS = $(DIR_CFLAGS)
 CXXFLAGS = $(DIR_CXXFLAGS)
 
 # List of includes that all (or at least majority) needs
-INCLUDES := 
+INCLUDES :=
 
 # Here's an example of settings for preprocessor.  -MMD is to
 # automatically build dependency files as a side effect of compilation.
@@ -70,7 +71,9 @@ INCLUDES :=
 # Note that I'm adding DIR_INCLUDES before INCLUDES so that they have
 # precedence.
 CPPFLAGS = -MMD -D_REENTRANT -D_POSIX_C_SOURCE=200112L -D__EXTENSIONS__ \
-	   $(DIR_CPPFLAGS) $(DIR_INCLUDES) $(addprefix -I,$(INCLUDES))
+           $(DIR_CPPFLAGS) $(DIR_INCLUDES) $(addprefix -I,$(INCLUDES))
+
+COGFLAGS = $(DIR_COGFLAGS) $(DIR_INCLUDES) $(addprefix -I,$(INCLUDES))
 
 # Linker flags.  The values below will use what you've specified for
 # particular target or directory but if you have some flags or libraries
