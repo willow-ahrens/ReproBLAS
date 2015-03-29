@@ -7,7 +7,10 @@
 #LDFLAGS  += -ggdb
 # If you don't plan on having different build modes then just comment
 # below or set it to empty.
-BUILD_MODE ?= release
+ifeq (BUILD_MODE,)
+  BUILD_MODE := release
+endif
+BLAS =
 
 # To have some per directory setting automatically propagated to all
 # subdirs then uncomment below.  That way you can have all project
@@ -20,7 +23,9 @@ BUILD_MODE ?= release
 INHERIT_DIR_VARS := INCLUDES CPPFLAGS CFLAGS
 
 # Default optimization flags.
-OPTFLAGS ?= -O3
+ifeq (OPTFLAGS,)
+  OPTFLAGS := release
+endif
 
 # Here's a good place to translate some of these settings into
 # compilation flags/variables.  As an example a preprocessor macro for

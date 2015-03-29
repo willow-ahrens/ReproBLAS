@@ -2,15 +2,19 @@ TARGETS := bench_damax$(EXE) bench_damaxm$(EXE) \
            bench_zamax$(EXE) bench_zamaxm$(EXE) \
            bench_samax$(EXE) bench_samaxm$(EXE) \
            bench_camax$(EXE) bench_camaxm$(EXE) \
-           bench_dasum$(EXE) bench_ddot$(EXE) bench_dnrm2$(EXE) \
-           bench_zdotc$(EXE) bench_zdotu$(EXE) bench_dzasum$(EXE) bench_dznrm2$(EXE) \
-           bench_sasum$(EXE) bench_sdot$(EXE) bench_snrm2$(EXE) \
-           bench_cdotc$(EXE) bench_cdotu$(EXE) bench_scasum$(EXE) bench_scnrm2$(EXE) \
-           bench_idamax$(EXE) bench_izamax$(EXE) bench_isamax$(EXE) bench_icamax$(EXE) \
            bench_rcdotc$(EXE) bench_rcdotu$(EXE) bench_rcsum$(EXE) bench_rscasum$(EXE) bench_rscnrm2$(EXE) \
            bench_rdasum$(EXE) bench_rddot$(EXE) bench_rdnrm2$(EXE) bench_rdsum$(EXE) \
            bench_rsasum$(EXE) bench_rsdot$(EXE) bench_rsnrm2$(EXE) bench_rssum$(EXE) \
            bench_rzdotc$(EXE) bench_rzdotu$(EXE) bench_rzsum$(EXE) bench_rdzasum$(EXE) bench_rdznrm2$(EXE)
+
+ifneq ($(BLAS),)
+TARGETS += bench_dasum$(EXE) bench_ddot$(EXE) bench_dnrm2$(EXE) \
+           bench_zdotc$(EXE) bench_zdotu$(EXE) bench_dzasum$(EXE) bench_dznrm2$(EXE) \
+           bench_sasum$(EXE) bench_sdot$(EXE) bench_snrm2$(EXE) \
+           bench_cdotc$(EXE) bench_cdotu$(EXE) bench_scasum$(EXE) bench_scnrm2$(EXE) \
+           bench_idamax$(EXE) bench_izamax$(EXE) bench_isamax$(EXE) bench_icamax$(EXE)
+endif
+
 SUBDIRS :=
 
 bench_camax$(EXE)_DEPS = $$(LIBTEST) $$(LIBINDEXEDBLAS) bench_camax.o

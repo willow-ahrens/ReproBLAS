@@ -36,19 +36,23 @@
 #AVX2 := false
 
 # optimization flags (comment for auto)
-#OPTFLAGS := -O3
+#OPTFLAGS := -O2
 
 # Again, by default we are running on the same architecture we are
 # building - if you're cross compiling then you should set this manually
 ENDIAN := $(shell perl -le 'print unpack(N,pack(L,0x01020304)) == 0x01020304 ? big : little')
 
-# select comparison BLAS (for custom blas, link the appropriate blas library and uncomment fortran or cblas interface)
+# Select BLAS library from the following options. If BLAS is not defined, corresponding parts of ReproBLAS will not be built.
+# Preconfigured BLAS:
 #BLAS := REF
 #BLAS := ATLAS
 #BLAS := MKL
-BLAS := ACCELERATE
+#BLAS := ACCELERATE
+# Custom BLAS: Link your library and select between reference fortran or cblas interface
+#BLAS := CUSTOM
 #LDFLAGS += -lblas
 #CPPFLAGS += -DBLAS
+#CPPFLAGS += -DCBLAS
 
 # set build mode (comment all for auto)
 #BUILD_MODE := release

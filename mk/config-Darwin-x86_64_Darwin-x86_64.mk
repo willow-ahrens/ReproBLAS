@@ -3,7 +3,3 @@ AR := ar
 RANLIB := ranlib
 
 OPEN_GL_LIBS := -lGL -lGLU
-
-ifeq ($(BLAS),)
-  BLAS := -framework Accelerate
-endif
