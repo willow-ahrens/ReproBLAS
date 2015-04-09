@@ -16,16 +16,25 @@ class OneDimensionalAccumulation(Target):
 
   def get_arguments(self):
     arguments = []
-    for i in range(1, self.max_expand_fold + 1):
+    for i in range(self.max_expand_fold + 1):
       for vectorization in vectorization_lookup.values():
         arguments.append("{}_expand_{}_fold_{}".format(self.name, vectorization.name, i))
         arguments.append("{}_max_pipe_width_{}_fold_{}".format(self.name, vectorization.name, i))
         arguments.append("{}_max_unroll_width_{}_fold_{}".format(self.name, vectorization.name, i))
     return arguments
 
+  def get_metrics(self):
+    metrics = {}
+    for i in range(self.max_expand_fold + 1):
+      for vectorization in vectorization_lookup.values():
+        metrics["{}_expand_{}_fold_{}".format(self.name, vectorization.name, i)] = ["{}_fold_{}".format(self.metric_name, i)]
+        metrics["{}_max_pipe_width_{}_fold_{}".format(self.name, vectorization.name, i)] = ["{}_fold_{}".format(self.metric_name, i)]
+        metrics["{}_max_unroll_width_{}_fold_{}".format(self.name, vectorization.name, i)] = ["{}_fold_{}".format(self.metric_name, i)]
+    return metrics
+
   def get_parameters(self):
     parameters = []
-    for i in range(1, self.max_expand_fold + 1):
+    for i in range(self.max_expand_fold + 1):
       for vectorization in vectorization_lookup.values():
         vec = vectorization(CodeBlock(), self.data_type_class)
         parameters.append(BooleanParameter("{}_expand_{}_fold_{}".format(self.name, vec.name, i), i == self.default_fold))
@@ -43,12 +52,7 @@ class OneDimensionalAccumulation(Target):
   #REG_WIDTH = number of variables needed to hold the independently loaded elements
   #UNROLL_WIDTH = number of times PIPE_WIDTH elements per indexed sum are to be processed in the inner loop
   def write(self, code_block):
-    for vectorization in vectorization_lookup.values():
-      code_block.write("#ifdef {}".format(vectorization.defined_macro))
-      code_block.indent()
-      self.write_vec(vectorization, code_block)
-      code_block.dedent()
-      code_block.write("#endif")
+    iterate_all_vectorizations(self.write_vec, code_block)
 
   def write_vec(self, vec_class, code_block):
     self.data_type = self.data_type_class(code_block)
@@ -70,7 +74,7 @@ class OneDimensionalAccumulation(Target):
         else:
           code_block.write("case " + str(fold) + ":{")
         code_block.indent()
-        self.write_fold(code_block, fold, arguments["{}_max_pipe_width_{}_fold_{}".format(self.name, self.vec.name, fold)], arguments["{}_max_unroll_width_{}_fold_{}".format(self.name, self.vec.name, fold)])
+        self.write_fold(code_block, fold, self.arguments["{}_max_pipe_width_{}_fold_{}".format(self.name, self.vec.name, fold)], self.arguments["{}_max_unroll_width_{}_fold_{}".format(self.name, self.vec.name, fold)])
         #code_block.write("break;")
         code_block.write("RESET_DAZ_FLAG")
         code_block.write("return;")

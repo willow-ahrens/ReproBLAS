@@ -18,7 +18,7 @@ import sumI2
 
 void zsumI2(int n, double complex* v, int incv, int fold, double complex* sum){
   /*[[[cog
-  cog.out(generate.generate(sumI2.SumI2(dataTypes.DoubleComplex), args, params, mode))
+  cog.out(generate.generate(sumI2.SumI2(dataTypes.DoubleComplex), cog.inFile, args, params, mode))
   ]]]*/
   //[[[end]]]
 }

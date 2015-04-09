@@ -7,16 +7,13 @@
 ################################################################################
 
 import os,json
-import cog
 from utils import *
 from vectorizations import *
 
 def serialize_arguments(arguments, arguments_file_name):
   assert type(arguments) == dict, "ReproBLAS error: invalid argument file format"
-  for key in arguments.keys():
-    assert type(key) == str, "ReproBLAS error: invalid argument file format"
   arguments_file = open(arguments_file_name, "w")
-  json.dump(arguments, arguments_file)
+  json.dump(arguments, arguments_file, separators=(',', ': '), sort_keys=True, indent=2)
   arguments_file.close()
 
 def deserialize_arguments(arguments_file_name):
@@ -24,14 +21,11 @@ def deserialize_arguments(arguments_file_name):
   arguments = json.load(arguments_file)
   arguments_file.close()
   assert type(arguments) == dict, "ReproBLAS error: invalid argument file format"
-  for key in arguments.keys():
-    assert type(key) == str, "ReproBLAS error: invalid argument file format"
   return arguments
 
 def serialize_parameter_space(parameter_space, parameter_space_file_name):
   parameter_space_file = open(parameter_space_file_name, "w")
-  print(parameter_space.encode())
-  json.dump(parameter_space.encode(),parameter_space_file)
+  json.dump(parameter_space.encode(),parameter_space_file, separators=(',', ': '), sort_keys=True, indent=2)
   parameter_space_file.close()
 
 def deserialize_parameter_space(parameter_space_file_name):
@@ -136,27 +130,27 @@ class ParameterSpace:
     parameter_space.parameters = {parameter_name:Parameter.decode(parameter) for (parameter_name, parameter) in data["parameters"].items()}
     return parameter_space
 
-  def add_target(self, target):
-    if target.file_name not in self.forward_dependencies:
-      self.forward_dependencies[target.file_name] = set()
+  def add_target(self, file_name, target):
+    if file_name not in self.forward_dependencies:
+      self.forward_dependencies[file_name] = set()
     for argument in target.get_arguments():
-      self.forward_dependencies[target.file_name].add(argument)
+      self.forward_dependencies[file_name].add(argument)
 
     for argument in target.get_arguments():
       if argument not in self.backward_dependencies:
         self.backward_dependencies[argument] = set()
-      self.backward_dependencies[argument].add(target.file_name)
+      self.backward_dependencies[argument].add(file_name)
 
-    for argument in target.get_arguments():
+    for (argument, metrics) in target.get_metrics().items():
       if argument not in self.backward_metrics:
         self.backward_metrics[argument] = set()
-      for metric in target.get_metrics():
+      for metric in metrics:
         self.backward_metrics[argument].add(metric)
 
-    for metric in target.get_metrics():
-      if metric not in self.forward_metrics:
-        self.forward_metrics[metric] = set()
-      for argument in target.get_arguments():
+    for (argument, metrics) in target.get_metrics().items():
+      for metric in metrics:
+        if metric not in self.forward_metrics:
+          self.forward_metrics[metric] = set()
         self.forward_metrics[metric].add(argument)
 
     for parameter in target.get_parameters():
@@ -169,6 +163,8 @@ class ParameterSpace:
     assert argument in self.parameters, "ReproBLAS error: missing parameter data"
     return self.parameters[argument].parse_value(arguments[argument])
 
+  def get_default_args(self):
+    return {parameter.name:parameter.default for parameter in self.parameters.values()}
 
 
 class Target(object):
@@ -176,8 +172,6 @@ class Target(object):
   A Target is a target for code generation. Override "get_parameters",
   "get_arguments", "get_metrics", and "write" to use.
   """
-  def __init__(self):
-    self.file_name = cog.inFile
 
   def get_parameters(self):
     """
@@ -187,7 +181,8 @@ class Target(object):
 
   def get_metrics(self):
     """
-    Return a list of metric names target affects.
+    Return a dictionary argument -> metrics where metrics is a list of
+    metrics affected by the argument.
     """
     raise(NotImplementedError())
 
@@ -204,7 +199,7 @@ class Target(object):
     """
     self.arguments = {}
     for argument in self.get_arguments():
-      self.arguments[name] = parameter_space.get_value(argument, arguments)
+      self.arguments[argument] = parameter_space.get_value(argument, arguments)
 
   def write(self, code_block):
     """
@@ -213,7 +208,7 @@ class Target(object):
     """
     raise(NotImplementedError())
 
-def generate(target, args, params, mode):
+def generate(target, file_name, args, params, mode):
   """
   Given the target, run the generator and return the output. This function
   should be called on a target <target> as follows:
@@ -229,6 +224,6 @@ def generate(target, args, params, mode):
       parameter_space = deserialize_parameter_space(params)
     else:
       parameter_space = ParameterSpace()
-    parameter_space.add_target(target)
+    parameter_space.add_target(file_name, target)
     serialize_parameter_space(parameter_space, params)
   return str(code_block)

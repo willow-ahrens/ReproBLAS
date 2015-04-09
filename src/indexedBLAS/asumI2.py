@@ -11,9 +11,7 @@ class ASumI2(blas1I2.NonDotOneDimensionalAccumulation):
     if self.data_type_class.is_complex:
       redundant_char = self.data_type_class.base_type.name_char
     self.name = "{0}{1}asumI2".format(redundant_char, self.data_type_class.name_char)
-
-  def get_metrics(self):
-    return ["bench_{}".format(self.name[:-1])]
+    self.metric_name = "r{0}{1}asum".format(redundant_char, self.data_type_class.name_char)
 
   def preprocess(self, code_block, n, incs, partial="", align = False):
     if partial == "":

@@ -29,7 +29,16 @@ install-doc: $(call get_subtree,INSTALL_DOC,$(TOP))
 	$(INSTALL) -d $(DOC_DIR)
 	$(INSTALL_DATA) -t $(DOC_DIR) $^
 
-.PHONY: replace excise check bench reference
+.PHONY: params replace excise check bench reference
+
+# Creates the parameter list
+params:
+	rm -f $(TOP)/src/params.json
+	$(foreach SOURCE, $(call get_subtree,COGGED,$(TOP)), $(COG) -D mode=params $(SOURCE);)
+
+# Creates default arguments from current parameter list
+default_args:
+	$(PYTHON) $(TOP)/src/gen/default_args.py --params $(TOP)/src/params.json --args $(TOP)/src/default_args.json
 
 # Runs code generators in place
 replace:

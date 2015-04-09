@@ -17,7 +17,7 @@ import amax
 
 float samax(int n, float* v, int incv){
   /*[[[cog
-  cog.out(generate.generate(amax.AMax(dataTypes.Float), args, params, mode))
+  cog.out(generate.generate(amax.AMax(dataTypes.Float), cog.inFile, args, params, mode))
   ]]]*/
   //[[[end]]]
 }

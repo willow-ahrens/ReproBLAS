@@ -18,7 +18,7 @@ import nrm2I2
 
 void scnrm2I2(int n, float complex* v, int incv, float scale, int fold, float complex* sum){
   /*[[[cog
-  cog.out(generate.generate(nrm2I2.Nrm2I2(dataTypes.FloatComplex), args, params, mode))
+  cog.out(generate.generate(nrm2I2.Nrm2I2(dataTypes.FloatComplex), cog.inFile, args, params, mode))
   ]]]*/
   //[[[end]]]
 }

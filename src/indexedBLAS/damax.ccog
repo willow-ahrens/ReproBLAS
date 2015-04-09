@@ -18,7 +18,7 @@ import amax
 
 double damax(int n, double* v, int incv){
   /*[[[cog
-  cog.out(generate.generate(amax.AMax(dataTypes.Double), args, params, mode))
+  cog.out(generate.generate(amax.AMax(dataTypes.Double), cog.inFile, args, params, mode))
   ]]]*/
   //[[[end]]]
 }

@@ -19,7 +19,7 @@ import amax
 
 float complex camaxm(int n, float complex* v, int incv, float complex* y, int incy){
   /*[[[cog
-  cog.out(generate.generate(amax.AMaxM(dataTypes.FloatComplex), args, params, mode))
+  cog.out(generate.generate(amax.AMaxM(dataTypes.FloatComplex), cog.inFile, args, params, mode))
   ]]]*/
   //[[[end]]]
 }

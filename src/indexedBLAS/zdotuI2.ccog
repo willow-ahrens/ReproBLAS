@@ -18,7 +18,7 @@ import dotuI2
 
 void zdotuI2(int n, double complex* v, int incv, double complex* y, int incy, int fold, double complex* sum){
   /*[[[cog
-  cog.out(generate.generate(dotuI2.DotUI2(dataTypes.DoubleComplex), args, params, mode))
+  cog.out(generate.generate(dotuI2.DotUI2(dataTypes.DoubleComplex), cog.inFile, args, params, mode))
   ]]]*/
   //[[[end]]]
 }

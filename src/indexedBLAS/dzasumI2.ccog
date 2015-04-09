@@ -18,7 +18,7 @@ import asumI2
 
 void dzasumI2(int n, double complex* v, int incv, int fold, double complex* sum){
   /*[[[cog
-  cog.out(generate.generate(asumI2.ASumI2(dataTypes.DoubleComplex), args, params, mode))
+  cog.out(generate.generate(asumI2.ASumI2(dataTypes.DoubleComplex), cog.inFile, args, params, mode))
   ]]]*/
   //[[[end]]]
 }

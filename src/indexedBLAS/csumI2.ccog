@@ -19,7 +19,7 @@ import sumI2
 
 void csumI2(int n, float complex* v, int incv, int fold, float complex* sum){
   /*[[[cog
-  cog.out(generate.generate(sumI2.SumI2(dataTypes.FloatComplex), args, params, mode))
+  cog.out(generate.generate(sumI2.SumI2(dataTypes.FloatComplex), cog.inFile, args, params, mode))
   ]]]*/
   //[[[end]]]
 }

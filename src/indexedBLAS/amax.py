@@ -30,19 +30,14 @@ class Max(Target):
 
 
   def get_metrics(self):
-    return ["bench_{}".format(self.name)]
+    return {argument: ["bench_{}".format(self.name)] for argument in self.get_arguments()}
 
   def write(self, code_block):
-    for vectorization in vectorization_lookup.values():
-      code_block.write("#ifdef {}".format(vectorization.defined_macro))
-      code_block.indent()
-      self.write_vec(vectorization, code_block)
-      code_block.dedent()
-      code_block.write("#endif")
+    iterate_all_vectorizations(self.write_vec, code_block)
 
   def write_vec(self, vec_class, code_block):
       self.data_type = self.data_type_class(code_block)
-      self.vec = self.vec_class(code_block, self.data_type_class)
+      self.vec = vec_class(code_block, self.data_type_class)
       max_unroll_width = self.arguments["{}{}_max_unroll_width_{}".format(self.data_type.name_char, self.name, self.vec.name)]
       max_reg_width = self.compute_reg_width(max_unroll_width)
       code_block.write("int i;")

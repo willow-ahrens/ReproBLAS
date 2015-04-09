@@ -18,7 +18,7 @@ import amax
 
 double complex zamaxm(int n, double complex* v, int incv, double complex* y, int incy){
   /*[[[cog
-  cog.out(generate.generate(amax.AMaxM(dataTypes.DoubleComplex), args, params, mode))
+  cog.out(generate.generate(amax.AMaxM(dataTypes.DoubleComplex), cog.inFile, args, params, mode))
   ]]]*/
   //[[[end]]]
 }

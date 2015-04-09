@@ -17,7 +17,7 @@ import asumI2
 
 void sasumI2(int n, float* v, int incv, int fold, float* sum){
   /*[[[cog
-  cog.out(generate.generate(asumI2.ASumI2(dataTypes.Float), args, params, mode))
+  cog.out(generate.generate(asumI2.ASumI2(dataTypes.Float), cog.inFile, args, params, mode))
   ]]]*/
   //[[[end]]]
 }

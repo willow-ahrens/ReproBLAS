@@ -141,6 +141,7 @@ class Vectorization(object):
       self.code_block.dedent()
       self.code_block.write("}")
 
+
 class SISD(Vectorization):
   name = "SISD"
 
@@ -557,3 +558,18 @@ class AVX(SIMD):
       return ["_mm256_permute_ps({0}, 0b10110001)".format(src_var) for src_var in src_vars]
 
 vectorization_lookup = {"SISD":SISD, "SSE":SSE, "AVX":AVX}
+
+all_vectorizations = [AVX, SSE, SISD]
+
+def iterate_all_vectorizations(f, code_block):
+  for (i, vectorization) in enumerate(all_vectorizations):
+    if i == 0:
+      code_block.write("#ifdef {}".format(vectorization.defined_macro))
+    elif i < len(all_vectorizations) - 1:
+      code_block.write("#elif defined({})".format(vectorization.defined_macro))
+    else:
+      code_block.write("#else")
+    code_block.indent()
+    f(vectorization, code_block.sub_block())
+    code_block.dedent()
+  code_block.write("#endif")

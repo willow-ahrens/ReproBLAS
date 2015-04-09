@@ -19,7 +19,7 @@ import dotcI2
 
 void cdotcI2(int n, float complex* v, int incv, float complex* y, int incy, int fold, float complex* sum){
   /*[[[cog
-  cog.out(generate.generate(dotcI2.DotCI2(dataTypes.FloatComplex), args, params, mode))
+  cog.out(generate.generate(dotcI2.DotCI2(dataTypes.FloatComplex), cog.inFile, args, params, mode))
   ]]]*/
   //[[[end]]]
 }

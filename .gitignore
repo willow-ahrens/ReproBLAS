@@ -1,2 +1,3 @@
 build/*
 tests/common/test_data
+*.pyc

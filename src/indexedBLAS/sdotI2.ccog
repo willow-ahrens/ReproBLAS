@@ -17,7 +17,7 @@ import dotI2
 
 void sdotI2(int n, float* v, int incv, float* y, int incy, int fold, float* sum){
   /*[[[cog
-  cog.out(generate.generate(dotI2.DotI2(dataTypes.Float), args, params, mode))
+  cog.out(generate.generate(dotI2.DotI2(dataTypes.Float), cog.inFile, args, params, mode))
   ]]]*/
   //[[[end]]]
 }

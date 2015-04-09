@@ -9,9 +9,7 @@ class DotCI2(blas1I2.DotOneDimensionalAccumulation):
     assert data_type_class.is_complex, "dotc is only for complex types"
     super(DotCI2, self).__init__(data_type_class)
     self.name = "{0}dotcI2".format(self.data_type_class.name_char)
-
-  def get_metrics(self):
-    return ["bench_{}".format(self.name[:-1])]
+    self.metric_name = "r{0}dotc".format(self.data_type_class.name_char)
 
   def preprocess(self, code_block, n, incs, partial="", align = False):
     reg_width = self.compute_reg_width(n)

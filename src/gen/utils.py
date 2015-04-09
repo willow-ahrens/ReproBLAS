@@ -62,7 +62,7 @@ class CodeBlock(object):
     self.blocks += [""]
 
   def sub_block(self):
-    block = CodeBlock(self.srcFile, base_indent_level = self.indent_level)
+    block = CodeBlock(base_indent_level = self.indent_level)
     self.blocks += [block]
     return block
 

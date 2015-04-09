@@ -10,9 +10,7 @@ class SumI2(blas1I2.NonDotOneDimensionalAccumulation):
   def __init__(self, data_type_class):
     super(SumI2, self).__init__(data_type_class)
     self.name = "{0}sumI2".format(self.data_type_class.name_char)
-
-  def get_metrics(self):
-    return ["bench_{}".format(self.name[:-1])]
+    self.metric_name = "r{0}sum".format(self.data_type_class.name_char)
 
   def preprocess(self, code_block, n, incs, partial="", align = False):
     if partial == "":

@@ -17,7 +17,7 @@ import asumI2
 
 void dasumI2(int n, double* v, int incv, int fold, double* sum){
   /*[[[cog
-  cog.out(generate.generate(asumI2.ASumI2(dataTypes.Double), args, params, mode))
+  cog.out(generate.generate(asumI2.ASumI2(dataTypes.Double), cog.inFile, args, params, mode))
   ]]]*/
   //[[[end]]]
 }

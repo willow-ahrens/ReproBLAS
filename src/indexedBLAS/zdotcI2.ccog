@@ -18,7 +18,7 @@ import dotcI2
 
 void zdotcI2(int n, double complex* v, int incv, double complex* y, int incy, int fold, double complex* sum){
   /*[[[cog
-  cog.out(generate.generate(dotcI2.DotCI2(dataTypes.DoubleComplex), args, params, mode))
+  cog.out(generate.generate(dotcI2.DotCI2(dataTypes.DoubleComplex), cog.inFile, args, params, mode))
   ]]]*/
   //[[[end]]]
 }
