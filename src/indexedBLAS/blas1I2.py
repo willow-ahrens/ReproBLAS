@@ -7,26 +7,60 @@ from generate import *
 
 class OneDimensionalAccumulation(Target):
 
-  def __init__(self, data_type_class, vec_class):
+  def __init__(self, data_type_class):
+    super(OneDimensionalAccumulation, self).__init__()
+    self.default_fold = 3 #TODO Read this from config.h
+    self.max_fold = 4 #TODO Read this from config.h
+    self.max_expand_fold = min(self.max_fold, 6)
     self.data_type_class = data_type_class
-    self.vec_class = vec_class
 
+  def get_arguments(self):
+    arguments = []
+    for i in range(1, self.max_expand_fold + 1):
+      for vectorization in vectorization_lookup.values():
+        arguments.append("{}_expand_{}_fold_{}".format(self.name, vectorization.name, i))
+        arguments.append("{}_max_pipe_width_{}_fold_{}".format(self.name, vectorization.name, i))
+        arguments.append("{}_max_unroll_width_{}_fold_{}".format(self.name, vectorization.name, i))
+    return arguments
+
+  def get_parameters(self):
+    parameters = []
+    for i in range(1, self.max_expand_fold + 1):
+      for vectorization in vectorization_lookup.values():
+        vec = vectorization(CodeBlock(), self.data_type_class)
+        parameters.append(BooleanParameter("{}_expand_{}_fold_{}".format(self.name, vec.name, i), i == self.default_fold))
+        parameters.append(IntegerParameter("{}_max_unroll_width_{}_fold_{}".format(self.name, vec.name, i), 1, 8, 1, 2))
+        name = "{}_max_pipe_width_{}_fold_{}".format(self.name, vec.name, i)
+        step = max(1, vec.type_size)
+        minimum = step
+        maximum = step * 8
+        default = step * 2
+        parameters.append(IntegerParameter(name, minimum, maximum, step, default))
+    return parameters
 
   #SUM_WIDTH = number of indexed sums used at once
   #PIPE_WIDTH = number of independently loaded input elements processed per indexed sum
   #REG_WIDTH = number of variables needed to hold the independently loaded elements
-  #UNROLL_WIDTH = number of times PIPE_WIDTH elements are to be processed in the inner loop
-  def write(self, code_block, arguments):
+  #UNROLL_WIDTH = number of times PIPE_WIDTH elements per indexed sum are to be processed in the inner loop
+  def write(self, code_block):
+    for vectorization in vectorization_lookup.values():
+      code_block.write("#ifdef {}".format(vectorization.defined_macro))
+      code_block.indent()
+      self.write_vec(vectorization, code_block)
+      code_block.dedent()
+      code_block.write("#endif")
+
+  def write_vec(self, vec_class, code_block):
     self.data_type = self.data_type_class(code_block)
-    self.vec = self.vec_class(code_block, self.data_type_class)
+    self.vec = vec_class(code_block, self.data_type_class)
     code_block.write("SET_DAZ_FLAG;")
     expanded_folds = []
-    for i in range(1, 9):
-      if arguments["{}_expand_fold_{}".format(self.name, i)]:
+    for i in range(1, self.max_expand_fold + 1):
+      if self.arguments["{}_expand_{}_fold_{}".format(self.name, self.vec.name, i)]:
         expanded_folds.append(i)
     expanded_folds.append(0)
     if len(expanded_folds) == 1:
-      self.write_fold(code_block, 0, arguments["{}_max_pipe_width_{}_fold_{}".format(self.name, self.vec.name, 0)], arguments["{}_max_unroll_width_{}_fold_{}".format(self.name, self.vec.name, 0)])
+      self.write_fold(code_block, 0, self.arguments["{}_max_pipe_width_{}_fold_{}".format(self.name, self.vec.name, 0)], self.arguments["{}_max_unroll_width_{}_fold_{}".format(self.name, self.vec.name, 0)])
     else:
       code_block.write("switch(fold){")
       code_block.indent()
@@ -165,8 +199,8 @@ class OneDimensionalAccumulation(Target):
 class NonDotOneDimensionalAccumulation(OneDimensionalAccumulation):
   standard_incs = ["incv"]
 
-  def __init__(self, data_type_class, vec_class):
-    super(NonDotOneDimensionalAccumulation, self).__init__(data_type_class, vec_class)
+  def __init__(self, data_type_class):
+    super(NonDotOneDimensionalAccumulation, self).__init__(data_type_class)
 
   def write_cores(self, code_block, fold, max_pipe_width, max_unroll_width):
     code_block.write("if(incv == 1){")
@@ -196,8 +230,8 @@ class NonDotOneDimensionalAccumulation(OneDimensionalAccumulation):
 class DotOneDimensionalAccumulation(OneDimensionalAccumulation):
   standard_incs = ["incv", "incy"]
 
-  def __init__(self, data_type_class, vec_class):
-    super(DotOneDimensionalAccumulation, self).__init__(data_type_class, vec_class)
+  def __init__(self, data_type_class):
+    super(DotOneDimensionalAccumulation, self).__init__(data_type_class)
 
   def write_cores(self, code_block, fold, max_pipe_width, max_unroll_width):
     code_block.write("if(incv == 1){")

@@ -5,13 +5,16 @@ import dataTypes
 import blas1I2
 
 class DotI2(blas1I2.DotOneDimensionalAccumulation):
-  def __init__(self, data_type_class, vec_class):
+  def __init__(self, data_type_class):
     assert not data_type_class.is_complex, "dot is only for real types"
-    super(DotI2, self).__init__(data_type_class, vec_class)
+    super(DotI2, self).__init__(data_type_class)
     self.name = "{0}dotI2".format(self.data_type_class.name_char, self.data_type_class.name)
 
   def define_preprocess_vars(self):
     return
+
+  def get_metrics(self):
+    return ["bench_{}".format(self.name[:-1])]
 
   #TODO vec.load should just handle the partial case separately.
   def preprocess(self, code_block, n, incs, partial="", align = False):

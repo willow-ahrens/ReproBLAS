@@ -5,12 +5,15 @@ import dataTypes
 import blas1I2
 
 class Nrm2I2(blas1I2.NonDotOneDimensionalAccumulation):
-  def __init__(self, data_type_class, vectorization_class):
-    super(Nrm2I2, self).__init__(data_type_class, vectorization_class)
+  def __init__(self, data_type_class):
+    super(Nrm2I2, self).__init__(data_type_class)
     redundant_char = ""
     if self.data_type_class.is_complex:
       redundant_char = self.data_type_class.base_type.name_char
     self.name = "{0}{1}nrm2I2".format(redundant_char, self.data_type_class.name_char)
+
+  def get_metrics(self):
+    return ["bench_{}".format(self.name[:-1])]
 
   def preprocess(self, code_block, n, incs, partial="", align=False):
     code_block.include("{0} scale_mask = {1};".format(self.vec.type_name, self.vec.set("scale")[0]))

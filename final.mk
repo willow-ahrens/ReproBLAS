@@ -29,7 +29,15 @@ install-doc: $(call get_subtree,INSTALL_DOC,$(TOP))
 	$(INSTALL) -d $(DOC_DIR)
 	$(INSTALL_DATA) -t $(DOC_DIR) $^
 
-.PHONY: replace check bench reference
+.PHONY: replace excise check bench reference
+
+# Runs code generators in place
+replace:
+	$(foreach SOURCE, $(call get_subtree,COGGED,$(TOP)), $(COG) -r $(SOURCE) &&) echo
+
+# Removes generated code from code generators
+excise:
+	$(foreach SOURCE, $(call get_subtree,COGGED,$(TOP)), $(COG) -r -x $(SOURCE) &&) echo
 
 check:
 	$(PYTHON) $(TOP)/tests/harness.py -s $(TOP)/tests/checks/check.suite

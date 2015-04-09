@@ -1,9 +1,11 @@
-#include <float.h>
+#include <complex.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <float.h>
 #include <math.h>
 #include "../config.h"
 #include "../Common/Common.h"
+#include "indexedBLAS.h"
 #include <immintrin.h>
 #include <emmintrin.h>
 
@@ -11,13 +13,13 @@
 import cog
 import generate
 import dataTypes
-import dotI2
+import amax
 ]]]*/
 //[[[end]]]
 
-void sdotI2(int n, float* v, int incv, float* y, int incy, int fold, float* sum){
+float complex camaxm(int n, float complex* v, int incv, float complex* y, int incy){
   /*[[[cog
-  cog.out(generate.generate(dotI2.DotI2(dataTypes.Float), args, params, mode))
+  cog.out(generate.generate(amax.AMaxM(dataTypes.FloatComplex), args, params, mode))
   ]]]*/
   //[[[end]]]
 }

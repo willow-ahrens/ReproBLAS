@@ -11,6 +11,14 @@ import cog
 from utils import *
 from vectorizations import *
 
+def serialize_arguments(arguments, arguments_file_name):
+  assert type(arguments) == dict, "ReproBLAS error: invalid argument file format"
+  for key in arguments.keys():
+    assert type(key) == str, "ReproBLAS error: invalid argument file format"
+  arguments_file = open(arguments_file_name, "w")
+  json.dump(arguments, arguments_file)
+  arguments_file.close()
+
 def deserialize_arguments(arguments_file_name):
   arguments_file = open(arguments_file_name, "r")
   arguments = json.load(arguments_file)
@@ -20,25 +28,19 @@ def deserialize_arguments(arguments_file_name):
     assert type(key) == str, "ReproBLAS error: invalid argument file format"
   return arguments
 
-def serialize_arguments(arguments, arguments_file_name):
-  assert type(arguments) == dict, "ReproBLAS error: invalid argument file format"
-  for key in arguments.keys():
-    assert type(key) == str, "ReproBLAS error: invalid argument file format"
-  arguments_file = open(arguments_file_name, "w")
-  json.dump(arguments_file, arguments)
-  arguments_file.close()
-
 def serialize_parameter_space(parameter_space, parameter_space_file_name):
   parameter_space_file = open(parameter_space_file_name, "w")
-  json.dump(parameter_space_file, parameter_space)
+  print(parameter_space.encode())
+  json.dump(parameter_space.encode(),parameter_space_file)
   parameter_space_file.close()
 
-def deserialize_parameter_space(parameter_space, parameter_space_file_name):
+def deserialize_parameter_space(parameter_space_file_name):
   parameter_space_file = open(parameter_space_file_name, "r")
-  parameter_space = ParameterSpace.decode(json.dump(parameter_space_file, parameter_space))
+  parameter_space = ParameterSpace.decode(json.load(parameter_space_file))
   parameter_space_file.close()
+  return parameter_space
 
-class Parameter:
+class Parameter(object):
   def __init__(self, name):
     self.name = name
 
@@ -48,21 +50,38 @@ class Parameter:
   def encode(self):
     return {"name":self.name, "flavor":self.flavor}
 
-  @classmethod
+  @staticmethod
   def decode(data):
     assert type(data) == dict, "ReproBLAS error: invalid parameter file format"
     assert "name" in data, "ReproBLAS error: invalid parameter file format"
     assert "flavor" in data, "ReproBLAS error: invalid parameter file format"
     assert "default" in data, "ReproBLAS error: invalid parameter file format"
+    if data["flavor"] == "boolean":
+      return BooleanParameter(data["name"], data["default"])
     if data["flavor"] == "integer":
       assert "minimum" in data, "ReproBLAS error: invalid parameter file format"
       assert "maximum" in data, "ReproBLAS error: invalid parameter file format"
       assert "step" in data, "ReproBLAS error: invalid parameter file format"
       return IntegerParameter(data["name"], data["minimum"], data["maximum"], data["step"], data["default"])
 
+class BooleanParameter(Parameter):
+  def __init__(self, name, default):
+    super(BooleanParameter, self).__init__(name)
+    self.flavor = "boolean"
+    self.default = self.parse_value(default)
+
+  def parse_value(self, value):
+    return bool(value)
+
+  def encode(self):
+    data = super(BooleanParameter, self).encode()
+    data["default"] = self.default
+    return data
+
+
 class IntegerParameter(Parameter):
   def __init__(self, name, minimum, maximum, step, default):
-    super(IntegerParemeter, self).__init__(self, name)
+    super(IntegerParameter, self).__init__(name)
     self.flavor = "integer"
     self.minimum = minimum
     self.maximum = maximum
@@ -73,16 +92,18 @@ class IntegerParameter(Parameter):
 
   def parse_value(self, value):
     value = int(value)
-    assert value >= minimum, "ReproBLAS error: integer parameter must be >= min"
-    assert value < maximum, "ReproBLAS error: integer parameter must be < max"
-    assert value % step == 0, "ReproBLAS error: integer parameter value must be multiple of step"
+    assert value >= self.minimum, "ReproBLAS error: integer parameter must be >= min"
+    assert value < self.maximum, "ReproBLAS error: integer parameter must be < max"
+    assert value % self.step == 0, "ReproBLAS error: integer parameter value must be multiple of step"
+    return value
 
   def encode(self):
-    data = super(IntegerParameter, self).encode
+    data = super(IntegerParameter, self).encode()
     data["minimum"] = self.minimum
     data["maximum"] = self.maximum
     data["step"] = self.step
     data["default"] = self.default
+    return data
 
 class ParameterSpace:
   def __init__(self):
@@ -97,9 +118,9 @@ class ParameterSpace:
             "backward_dependencies":{argument:list(file_names) for (argument, file_names) in self.backward_dependencies.items()},\
             "forward_metrics":{metric:list(arguments) for (metric, arguments) in self.forward_metrics.items()},\
             "backward_metrics":{argument:list(metrics) for (argument, metrics) in self.backward_metrics.items()},\
-            "parameters":{parameter_name:parameter.encode() for (parameter_name, parameter) in self.parameters.items()]}
+            "parameters":{parameter_name:parameter.encode() for (parameter_name, parameter) in self.parameters.items()}}
 
-  @classmethod
+  @staticmethod
   def decode(data):
     parameter_space = ParameterSpace()
     assert type(data) == dict, "ReproBLAS error: invalid parameter file format"
@@ -112,7 +133,8 @@ class ParameterSpace:
     parameter_space.backward_dependencies = {argument:set(file_names) for (argument, file_names) in data["backward_dependencies"].items()}
     parameter_space.forward_metrics = {metric:set(arguments) for (metric, arguments) in data["forward_metrics"].items()}
     parameter_space.backward_metrics = {argument:set(metrics) for (argument, metrics) in data["backward_metrics"].items()}
-    parameter_space.parameters = {parameter_name:Parameter.decode(parameter) for (parameter_name, parameter) in data["parameters"].items()]
+    parameter_space.parameters = {parameter_name:Parameter.decode(parameter) for (parameter_name, parameter) in data["parameters"].items()}
+    return parameter_space
 
   def add_target(self, target):
     if target.file_name not in self.forward_dependencies:
@@ -127,7 +149,7 @@ class ParameterSpace:
 
     for argument in target.get_arguments():
       if argument not in self.backward_metrics:
-        self.backward_metrics[arguments] = set()
+        self.backward_metrics[argument] = set()
       for metric in target.get_metrics():
         self.backward_metrics[argument].add(metric)
 
@@ -147,12 +169,13 @@ class ParameterSpace:
     assert argument in self.parameters, "ReproBLAS error: missing parameter data"
     return self.parameters[argument].parse_value(arguments[argument])
 
-class Target(object):
-    """
-    A Target is a target for code generation. Override "get_parameters",
-    "get_arguments", "get_metrics", and "write" to use.
-    """
 
+
+class Target(object):
+  """
+  A Target is a target for code generation. Override "get_parameters",
+  "get_arguments", "get_metrics", and "write" to use.
+  """
   def __init__(self):
     self.file_name = cog.inFile
 

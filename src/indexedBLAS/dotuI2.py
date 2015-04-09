@@ -5,10 +5,13 @@ import dataTypes
 import blas1I2
 
 class DotUI2(blas1I2.DotOneDimensionalAccumulation):
-  def __init__(self, data_type_class, vec_class):
+  def __init__(self, data_type_class):
     assert data_type_class.is_complex, "dotu is only for complex types"
-    super(DotUI2, self).__init__(data_type_class, vec_class)
+    super(DotUI2, self).__init__(data_type_class)
     self.name = "{0}dotuI2".format(self.data_type_class.name_char)
+
+  def get_metrics(self):
+    return ["bench_{}".format(self.name[:-1])]
 
   def preprocess(self, code_block, n, incs, partial="", align = False):
     reg_width = self.compute_reg_width(n)

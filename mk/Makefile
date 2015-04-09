@@ -53,14 +53,6 @@ pbd:
 # Marks specified output as precious
 .PRECIOUS: $(call get_subtree,PRECIOUS,$(TOP))
 
-# Runs code generators in place
-replace:
-	$(foreach SOURCE, $(call get_subtree,COGGED,$(TOP)), $(COG) -r $(SOURCE) &&) echo
-
-# Removes generated code from code generators
-excise:
-	$(foreach SOURCE, $(call get_subtree,COGGED,$(TOP)), $(COG) -x $(SOURCE) &&) echo
-
 # Optional final makefile where you can specify additional targets
 -include $(TOP)/final.mk
 

@@ -1,6 +1,7 @@
-#include <float.h>
+#include <complex.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <float.h>
 #include <math.h>
 #include "../config.h"
 #include "../Common/Common.h"
@@ -11,13 +12,13 @@
 import cog
 import generate
 import dataTypes
-import dotI2
+import amax
 ]]]*/
 //[[[end]]]
 
-void sdotI2(int n, float* v, int incv, float* y, int incy, int fold, float* sum){
+double complex zamax(int n, double complex* v, int incv){
   /*[[[cog
-  cog.out(generate.generate(dotI2.DotI2(dataTypes.Float), args, params, mode))
+  cog.out(generate.generate(amax.AMax(dataTypes.DoubleComplex), args, params, mode))
   ]]]*/
   //[[[end]]]
 }

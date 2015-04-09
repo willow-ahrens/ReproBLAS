@@ -11,13 +11,13 @@
 import cog
 import generate
 import dataTypes
-import dotI2
+import amax
 ]]]*/
 //[[[end]]]
 
-void sdotI2(int n, float* v, int incv, float* y, int incy, int fold, float* sum){
+double damaxm(int n, double* v, int incv, double* y, int incy){
   /*[[[cog
-  cog.out(generate.generate(dotI2.DotI2(dataTypes.Float), args, params, mode))
+  cog.out(generate.generate(amax.AMaxM(dataTypes.Double), args, params, mode))
   ]]]*/
   //[[[end]]]
 }

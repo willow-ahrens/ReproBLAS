@@ -1,4 +1,4 @@
-TARGETS :=
+TARGETS := params.json
 SUBDIRS := src tests #examples
 
 INCLUDES += $(TOP)/include
