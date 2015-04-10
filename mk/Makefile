@@ -11,7 +11,7 @@ endif
 
 MK := $(TOP)/mk
 
-.PHONY: dir tree all clean clean_dir clean_all clean_tree dist_clean pbd replace excise
+.PHONY: dir tree all clean clean_dir clean_all clean_tree dist_clean pbd top
 
 # Default target when nothing is given on the command line.  Reasonable
 # options are:
@@ -49,6 +49,10 @@ $(eval $(value FOOTER))
 # Outputs the current build directory
 pbd:
 	@echo "$(call real_to_build_dir,$(RUNDIR))"
+
+# Outputs the top build directory
+top:
+	@echo "$(TOP)"
 
 # Marks specified output as precious
 .PRECIOUS: $(call get_subtree,PRECIOUS,$(TOP))

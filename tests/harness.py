@@ -8,113 +8,247 @@ import argparse
 import os, subprocess, sys
 import re
 import decimal
+import texttable.texttable as texttable
+import itertools
+import copy
 
-OUT_LEN = 80
+class Harness(object)
+  def __init__(self, name):
+    self.name = name
+    parser = argparse.ArgumentParser(description = name)
+    parser.add_argument('-f', '--format', default="term", choices=["term", "csv"], help='output format')
+    args = parser.parse_args()
+    if args.format == "term":
+      self.table = textable.Texttable(max_width = 80)
+      self.table.set_precision(9)
+    if args.format == "csv":
+      self.table = texttable.Texttable(max_width = 0)
+      self.table.set_chars(["", ", ", "", ""]
+      self.table.set_deco(texttable.Texttable.VLINES)
+    self.tests = []
 
-divider = "+" + (OUT_LEN - 2) * "-" + "+"
-prev    = "feed"
-built   = {}
-passed  = 0
-failed  = 0
-not_run = 0
-style   = None
+  def add_test(self, test):
+    self.tests.append(test)
 
-class Style:
-  @classmethod
-  def create_template(cls, left_align, right_align):
-    template = ""
-    left_expanded_columns = ["{{:{0}<{1}}}".format(fill, size) for (fill, size) in left_align]
-    right_expanded_columns = ["{{:{0}<{1}}}".format(fill, size) for (fill, size) in right_align]
-    template = "{0}{1}{0}".format(cls.edge, cls.inner.join(left_expanded_columns + right_expanded_columns))
-    example_output = template.format(*["" for _ in left_align + right_align])
-    if cls.min_len != 0 and len(example_output) < cls.min_len:
-      if(left_expanded_columns):
-        left_expanded_columns = left_expanded_columns + [""]
-      if(right_expanded_columns):
-        right_expanded_columns = [""] + right_expanded_columns
-      left_template = "{0}{1}".format(cls.edge, cls.inner.join(left_expanded_columns))
-      right_template = "{0}{1}".format(cls.inner.join(right_expanded_columns), cls.edge)
-      incomplete_example_output = (left_template + right_template).format(*["" for _ in left_align + right_align])
-      template = "{0}{1}{2}".format(left_template, cls.fill * (cls.min_len - len(incomplete_example_output)), right_template)
-    return template
+  def add_tests(self, tests):
+    self.tests += tests
 
-  @classmethod
-  def create_divider(cls, left_align, right_align):
-    if cls.divider.inner == "" and cls.divider.edge == "" and cls.divider.fill == "":
-      return ""
-    return cls.divider.create_template(left_align, right_align).format(*[cls.divider.fill * size for (fill, size) in left_align + right_align])
+  def run(self):
+    command_list = []
+    for test in self.tests:
+      test.setup()
+      command_list += test.get_command_list()
+    output_list = terminal.run(command_list)
+    for test in self.tests:
+      test.parse_output_list(output_list[:len(test.get_command_list())])
+      output_list = output_list[len(test.get_command_list()):]
+    for test in self.tests:
+      self.table.set_header(test.get_header())
+      self.table.set_cols_align(test.get_align())
+      self.table.set_cols_dtype(test.get_dtype())
+      if test.get_cols_width():
+        if args.format == "term":
+          self.table.set_cols_width(test.get_cols_width(80))
+        if args.format == "csv":
+      self.table.add_rows(test.get_rows())
+      self.table.draw()
+      self.table.reset()
 
-class CSVDivider(Style):
-  inner   = ""
-  edge    = ""
-  fill    = ""
-  min_len = 0
+class Suite(object):
+  def setup(self):
+    """
+    call necessary commands to setup suite (i.e. build the executables)
+    """
+    raise(NotImplementedError())
+  def get_command_list(self):
+    """
+    return a list of commands that constitute the suite to be run on the
+    target architecture
+    """
+    raise(NotImplementedError())
+  def parse_output_list(self, output_list):
+    """
+    parse the output of the command set. The output will be given as a list of
+    (return code, output)
+    """
+    raise(NotImplementedError())
+  def get_header(self):
+    """
+    return the header names for our output as a list.
+    see texttable.py for details.
+    """
+    raise(NotImplementedError())
+  def get_align(self):
+    """
+    return the alignment for our output fields as a list of "l", "c", or "r".
+    see texttable.py for details.
+    """
+    raise(NotImplementedError())
+  def get_dtype(self):
+    """
+    return the datatype for our output fields as a list of "a", "t", "f", "e",
+    or "r".
+    see texttable.py for details.
+    """
+    raise(NotImplementedError())
+  def get_cols_width(self, max_width):
+    """
+    return either a list of integer column widths or None if you want autosize.
+    """
+    raise(NotImplementedError())
+  def get_rows(self):
+    """
+    return a list of lists of each datatype in the rows. parse_output_list will
+    have been called when this is called.
+    """
+    raise(NotImplementedError())
 
-class CSV(CSVDivider):
-  inner = ", "
-  edge  = ""
-  fill  = ""
-  divider = CSVDivider
+class CheckSuite(Suite):
 
-class TermDivider(Style):
-  inner   = "+"
-  edge    = "+"
-  fill    = "-"
-  min_len = OUT_LEN
+  def __init__(self):
+    self.checks = []
 
-class Term(TermDivider):
-  inner = "|"
-  edge  = "|"
-  fill  = " "
-  divider = TermDivider
+  def add_checks(self, checks, params, ranges):
+    for args in itertools.product(*ranges):
+      row = [copy.deepcopy(checks) for check in checks]
+      for check in row:
+        check.set_args(params, args)
+      self.checks += row
 
-styles = {"term":Term, "csv":CSV}
+  def setup(self):
+    for check in self.checks:
+      check.setup()
 
-def callsafe(command):
-  rc = 0
-  try:
-    out = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True).decode(sys.stdout.encoding)
-  except subprocess.CalledProcessError as e:
-    rc = e.returncode
-    out = e.output.decode(sys.stdout.encoding)
-  return (rc, out)
+  def get_command_list(self):
+    command_list = []
+    for check in self.checks:
+      command_list += check.get_command_list():
+    return command_list
 
-def call(command):
-  return subprocess.check_output(command, shell=True).decode(sys.stdout.encoding)
+  def parse_output_list(self, output_list):
+    for check in self.checks:
+      check.parse_output_list(output_list[:len(check.get_command_list)])
+      output_list = output_list[len(check.get_command_list):]
 
-def run(test, args):
-  global built
-  test = os.path.realpath(test)
-  if test not in built:
-    built[test] = os.path.join(call("cd {0}; make pbd".format(os.path.split(test)[0])).split()[-1], os.path.split(test)[1])
-    call("make {0}".format(built[test]))
-    assert os.path.isfile(built[test]), "Error: make unsuccessful."
-  return callsafe("{0} {1}".format(built[test], args))
+  def get_header(self):
+    return ["Check", "Res"]
 
-def settings(params):
-  if params:
-    for value in params[0][1]:
-      for setting in settings(params[1:]):
-        yield [(params[0][0], value)] + setting
-  else:
-    yield []
+  def get_align(self):
+    return ["l", "c"]
 
-def flags(setting):
-  return " ".join(['-{0} "{1}"'.format(*s) if len(s[0]) == 1 else '--{0} "{1}"'.format(*s) for s in setting])
+  def get_dtype(self):
+    return ["t", "t"]
 
-def engineer(f, d):
-  f = decimal.Decimal(f)
-  f = f.normalize().to_eng_string()
-  if (f.find("E+") == -1):
-    m = f
-    e = ""
-    #e = "e0"
-  else:
-    (m, e) = f.split("E+")
-    e = "e" + e
-  m = "{{0:0<{0}.{0}}}".format(d - len(e)).format(m)
-  return m + e
+  def set_cols_width(self, max_width):
+    return [max_width - 1 - 1 - 4 - 1, 4]
 
+  def get_rows(self):
+    passed = 0
+    failed = 0
+    na = 0
+    rows = []
+    for check in self.checks:
+      if check.code() == 0:
+        rows.append([check.get_name(), "Pass"])
+        passed += 1
+      elif check.code() == 125:
+        rows.append([check.get_output(), "N/A"])
+        na += 1
+      else:
+        rows.append([check.get_output(), "Fail"])
+        failed += 1
+    emoticon = ":("
+    if passed == len(self.checks):
+      emoticon = ":D"
+    rows.append(["Passed: {} Failed: {} N/A: {}".format(passed, failed, na), emoticon])
+
+class MetricSuite(Suite):
+
+  def __init__(self, metrics, params, ranges):
+    self.params = params
+    self.metric_rows = []
+    self.args = []
+    self.metrics = []
+    for args in itertools.product(*ranges):
+      self.args.append(args)
+      row = [copy.deepcopy(metric) for metric in metrics]
+      for metric in row:
+        metric.set_args(params, args)
+        self.metrics += metric
+      self.metric_rows.append(row)
+
+  def setup(self):
+    for metric in self.metrics:
+      metric.setup()
+
+  def get_command_list(self):
+    command_list = []
+    for metric in self.metrics:
+      command_list += metric.get_command_list():
+    return command_list
+
+  def parse_output_list(self, output_list):
+    for metric in self.metrics:
+      metric.parse_output_list(output_list[:len(metric.get_command_list())])
+      output_list = output_list[len(metric.get_command_list()):]
+
+  def get_header(self):
+    return self.params + [metric.get_name() for metric in self.metric_rows[0]]
+
+  def get_align(self):
+    return ["l" for _ in self.get_header()]
+
+  def get_dtype(self):
+    return ["a" for _ in self.params] + ["f" for _ in self.metric_rows[0]]
+
+  def get_cols_width(self, max_width):
+    return None
+
+  def get_rows(self):
+    rows = []
+    for metric_row in self.metric_rows:
+      row = copy.deepcopy(self.params)
+      for metric in metric_row:
+        row.append(metric.result())
+    return rows
+
+class Test(object):
+  def get_name(self):
+    """
+    return the name of the test
+    """
+    raise NotImplementedError()
+
+  def setup(self):
+    """
+    call necessary commands to setup test (i.e. build the executables)
+    """
+    raise(NotImplementedError())
+
+  def get_command_list(self):
+    """
+    return a list of commands that constitute the test to be run on the
+    target architecture
+    """
+    raise(NotImplementedError())
+
+  def parse_output_list(self, output_list):
+    """
+    parse the output of the command set. The output will be given as a list of
+    (return code, output)
+    """
+    raise(NotImplementedError())
+
+  def get_output(self):
+    """
+    return all relevant output (mostly for debugging)
+    """
+    raise(NotImplementedError())
+
+class ExecutableTest(Test):
+
+  def get_name(self):
+    
 def benchmark(tests, params):
   global divider
   global prev

@@ -141,7 +141,7 @@ else ifeq ($(strip $(BLAS)),ACCELERATE)
 endif
 
 # Create cog compiler
-COG = PYTHONPATH=$(TOP)/cog $(PYTHON) -m cogapp $(COGFLAGS)
+COG = PYTHONPATH=$(TOP)/scripts $(PYTHON) -m cogapp $(COGFLAGS)
 
 # Create cog compiler
 PSEUDOCOG = $(TOP)/cog/pseudocog.sh
