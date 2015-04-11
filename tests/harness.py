@@ -25,32 +25,32 @@ class Harness(object)
       self.table = texttable.Texttable(max_width = 0)
       self.table.set_chars(["", ", ", "", ""]
       self.table.set_deco(texttable.Texttable.VLINES)
-    self.tests = []
+    self.suites = []
 
-  def add_test(self, test):
-    self.tests.append(test)
+  def add_suite(self, suite):
+    self.suites.append(suite)
 
-  def add_tests(self, tests):
-    self.tests += tests
+  def add_suites(self, suites):
+    self.suites += suites
 
   def run(self):
     command_list = []
-    for test in self.tests:
-      test.setup()
-      command_list += test.get_command_list()
+    for suite in self.suites:
+      suite.setup()
+      command_list += suite.get_command_list()
     output_list = terminal.run(command_list)
-    for test in self.tests:
-      test.parse_output_list(output_list[:len(test.get_command_list())])
-      output_list = output_list[len(test.get_command_list()):]
-    for test in self.tests:
-      self.table.set_header(test.get_header())
-      self.table.set_cols_align(test.get_align())
-      self.table.set_cols_dtype(test.get_dtype())
-      if test.get_cols_width():
+    for suite in self.suites:
+      suite.parse_output_list(output_list[:len(suite.get_command_list())])
+      output_list = output_list[len(suite.get_command_list()):]
+    for suite in self.suites:
+      self.table.set_header(suite.get_header())
+      self.table.set_cols_align(suite.get_align())
+      self.table.set_cols_dtype(suite.get_dtype())
+      if suite.get_cols_width():
         if args.format == "term":
-          self.table.set_cols_width(test.get_cols_width(80))
+          self.table.set_cols_width(suite.get_cols_width(80))
         if args.format == "csv":
-      self.table.add_rows(test.get_rows())
+      self.table.add_rows(suite.get_rows())
       self.table.draw()
       self.table.reset()
 
@@ -107,17 +107,22 @@ class CheckSuite(Suite):
 
   def __init__(self):
     self.checks = []
+    self.check_rows = []
+    self.args = []
+    self.params = []
 
   def add_checks(self, checks, params, ranges):
     for args in itertools.product(*ranges):
-      row = [copy.deepcopy(checks) for check in checks]
-      for check in row:
-        check.set_args(params, args)
-      self.checks += row
+      check_row = [copy.deepcopy(checks) for check in checks]
+      self.check_rows.append(check_row)
+      self.checks += check_row
+      self.params.append(params)
+      self.args.append(args)
 
-  def setup(self):
-    for check in self.checks:
-      check.setup()
+  def setup(self, **kwargs):
+    for check_row, params, args in zip(self.check_rows, self.params, self.args):
+      for check in check_row:
+        check.setup(flags = terminal.flags(params, args), **kwargs)
 
   def get_command_list(self):
     command_list = []
@@ -148,10 +153,10 @@ class CheckSuite(Suite):
     na = 0
     rows = []
     for check in self.checks:
-      if check.code() == 0:
+      if check.get_result() == 0:
         rows.append([check.get_name(), "Pass"])
         passed += 1
-      elif check.code() == 125:
+      elif check.get_result() == 125:
         rows.append([check.get_output(), "N/A"])
         na += 1
       else:
@@ -166,6 +171,7 @@ class MetricSuite(Suite):
 
   def __init__(self, metrics, params, ranges):
     self.params = params
+    self.ranges = ranges
     self.metric_rows = []
     self.args = []
     self.metrics = []
@@ -173,13 +179,13 @@ class MetricSuite(Suite):
       self.args.append(args)
       row = [copy.deepcopy(metric) for metric in metrics]
       for metric in row:
-        metric.set_args(params, args)
         self.metrics += metric
       self.metric_rows.append(row)
 
-  def setup(self):
-    for metric in self.metrics:
-      metric.setup()
+  def setup(self, **kwargs):
+    for (metric_row, args) in zip(self.metric_rows, self.args):
+      for metric in metric_row:
+        metric.setup(flags = terminal.flags(params, args),**kwargs)
 
   def get_command_list(self):
     command_list = []
@@ -213,13 +219,14 @@ class MetricSuite(Suite):
     return rows
 
 class Test(object):
+
   def get_name(self):
     """
     return the name of the test
     """
     raise NotImplementedError()
 
-  def setup(self):
+  def setup(self, **kwargs):
     """
     call necessary commands to setup test (i.e. build the executables)
     """
@@ -245,9 +252,25 @@ class Test(object):
     """
     raise(NotImplementedError())
 
+  def get_output(self):
+    """
+    return test result
+    """
+    raise(NotImplementedError())
+
 class ExecutableTest(Test):
 
-  def get_name(self):
+  def setup(self, **kwargs):
+    make(self.executable, **kwargs)
+
+  def (self):
+    rai
+
+      try:
+        name = re.findall("\[(.*)\]", run(test, "{0} -p")[1])[0]
+      except IndexError:
+        assert False, "Error: benchmark name does not match format."
+      assert len(name) < BENCH_LEN, "Error: test name too long."
     
 def benchmark(tests, params):
   global divider

@@ -12,16 +12,22 @@ def call(command):
 
 top = call("make top")
 
-built = {}
+def make_clean(location):
+  call("cd {0}; make clean".format(location).split()[-1], os.path.split(executable)[1])
 
-def make(executable):
-  global built
+def make(executable, args = None, id = None):
   executable = os.path.join(top,executable)
-  if executable not in built:
-    built[executable] = os.path.join(call("cd {0}; make pbd".format(os.path.split(executable)[0])).split()[-1], os.path.split(executable)[1])
-    call("make {0}".format(built[executable]))
-    assert os.path.isfile(built[test]), "Error: make unsuccessful."
-  return built[executable]
+  result = os.path.join(call("cd {0}; make pbd".format(os.path.split(executable)[0])).split()[-1], os.path.split(executable)[1])
+  env = ""
+  if args:
+    env = "ARGS={}".format(args)
+  call("make {} {}".format(result, env))
+  assert os.path.isfile(result), "Error: make unsuccessful."
+  if id:
+    new_result = "{}__{}{}".format(os.path.splitext(result)[1], id, os.path.splitext(result[0]))
+    call("cp {} {}".format(result, new_result)
+    result = new_result
+  return result
 
 def flags(params, args):
   return " ".join(['-{0} "{1}"'.format(param, arg) if len(param) == 1 else '--{0} "{1}"'.format(param, arg) for (param, arg) in zip(params, args)])
