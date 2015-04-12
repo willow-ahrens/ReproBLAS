@@ -38,7 +38,7 @@ params:
 
 # Creates default arguments from current parameter list
 default_args:
-	$(PYTHON) $(TOP)/src/gen/default_args.py --params $(TOP)/src/params.json --args $(TOP)/src/default_args.json
+	$(CALL_PYTHON) $(TOP)/src/gen/default_args.py --params $(TOP)/src/params.json --args $(TOP)/src/default_args.json
 
 # Runs code generators in place
 replace:
@@ -49,11 +49,12 @@ excise:
 	$(foreach SOURCE, $(call get_subtree,COGGED,$(TOP)), $(COG) -r -x $(SOURCE) &&) echo
 
 check:
-	$(PYTHON) $(TOP)/tests/harness.py -s $(TOP)/tests/checks/check.suite
+	$(CALL_PYTHON) $(TOP)/tests/checks/check.py
 
+#TODO
 reference:
-	$(PYTHON) $(TOP)/tests/harness.py -s $(TOP)/tests/checks/data/create.suite
-	$(PYTHON) $(TOP)/tests/harness.py -s $(TOP)/tests/checks/reference.suite
+	$(CALL_PYTHON) $(TOP)/tests/harness.py -s $(TOP)/tests/checks/data/create.suite
+	$(CALL_PYTHON) $(TOP)/tests/harness.py -s $(TOP)/tests/checks/reference.suite
 
 bench:
-	$(PYTHON) $(TOP)/tests/harness.py -s $(TOP)/tests/benchs/bench.suite
+	$(CALL_PYTHON) $(TOP)/tests/benchs/bench.py

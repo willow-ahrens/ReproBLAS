@@ -1,5 +1,0 @@
-_opts = [("N", [16348]), ("a", [1000]), ("u", [0])]
-benchmark(["bench_rdsum", "bench_rdasum", "bench_rdnrm2", "bench_rddot"], _opts)
-benchmark(["bench_rssum", "bench_rsasum", "bench_rsnrm2", "bench_rsdot"], _opts)
-benchmark(["bench_rzsum", "bench_rdzasum", "bench_rdznrm2", "bench_rzdotu", "bench_rzdotc"], _opts)
-benchmark(["bench_rcsum", "bench_rscasum", "bench_rscnrm2", "bench_rcdotu", "bench_rcdotc"], _opts)

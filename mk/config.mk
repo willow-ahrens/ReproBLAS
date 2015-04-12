@@ -140,8 +140,10 @@ else ifeq ($(strip $(BLAS)),ACCELERATE)
   CPPFLAGS += -DCBLAS
 endif
 
+CALL_PYTHON = PYTHONPATH=$(TOP) $(PYTHON)
+
 # Create cog compiler
-COG = PYTHONPATH=$(TOP)/scripts $(PYTHON) -m cogapp $(COGFLAGS)
+COG = $(CALL_PYTHON) -m scripts.cogapp $(COGFLAGS)
 
 # Create cog compiler
 PSEUDOCOG = $(TOP)/cog/pseudocog.sh
