@@ -52,5 +52,6 @@ def flags(params, args):
   return " ".join(['-{0} "{1}"'.format(param, arg) if len(param) == 1 else '--{0} "{1}"'.format(param, arg) for (param, arg) in zip(params, args)])
 
 def get_vectorization():
+  make("scripts/get_vectorization.c", remake = True)
   return call(make("scripts/get_vectorization", remake = True)).split()[0]
 
