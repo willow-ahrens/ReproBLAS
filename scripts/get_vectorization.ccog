@@ -15,5 +15,12 @@ int main(int argc, char** argv){
   vectorizations.iterate_all_vectorizations(print_vectorization, code_block)
   cog.out(str(code_block))
   ]]]*/
+  #ifdef __AVX__
+    printf("AVX\n");
+  #elif defined(__SSE2__)
+    printf("SSE\n");
+  #else
+    printf("SISD\n");
+  #endif
   //[[[end]]]
 }

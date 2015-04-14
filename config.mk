@@ -14,7 +14,7 @@
 #MPICC = mpicc
 
 # select python (comment all for auto)
-PYTHON = python
+#PYTHON = python
 #PYTHON = python3
 
 # enable vectorizations (comment all for auto)
@@ -31,7 +31,7 @@ PYTHON = python
 #SSE4_2 := true
 #SSE4_2 := false
 #AVX := true
-AVX := false
+#AVX := false
 #AVX2 := true
 #AVX2 := false
 
