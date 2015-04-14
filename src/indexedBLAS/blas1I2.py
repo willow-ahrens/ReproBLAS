@@ -27,9 +27,9 @@ class OneDimensionalAccumulation(Target):
     metrics = {}
     for i in range(self.max_expand_fold + 1):
       for vectorization in vectorization_lookup.values():
-        metrics["{}_expand_{}_fold_{}".format(self.name, vectorization.name, i)] = ["{}_fold_{}".format(self.metric_name, i)]
-        metrics["{}_max_pipe_width_{}_fold_{}".format(self.name, vectorization.name, i)] = ["{}_fold_{}".format(self.metric_name, i)]
-        metrics["{}_max_unroll_width_{}_fold_{}".format(self.name, vectorization.name, i)] = ["{}_fold_{}".format(self.metric_name, i)]
+        metrics["{}_expand_{}_fold_{}".format(self.name, vectorization.name, i)] = ["bench_{}_fold_{}".format(self.metric_name, i)]
+        metrics["{}_max_pipe_width_{}_fold_{}".format(self.name, vectorization.name, i)] = ["bench_{}_fold_{}".format(self.metric_name, i)]
+        metrics["{}_max_unroll_width_{}_fold_{}".format(self.name, vectorization.name, i)] = ["bench_{}_fold_{}".format(self.metric_name, i)]
     return metrics
 
   def get_parameters(self):
@@ -38,13 +38,12 @@ class OneDimensionalAccumulation(Target):
       for vectorization in vectorization_lookup.values():
         vec = vectorization(CodeBlock(), self.data_type_class)
         parameters.append(BooleanParameter("{}_expand_{}_fold_{}".format(self.name, vec.name, i), i == self.default_fold))
-        parameters.append(IntegerParameter("{}_max_unroll_width_{}_fold_{}".format(self.name, vec.name, i), 1, 8, 1, 2))
+        parameters.append(IntegerParameter("{}_max_unroll_width_{}_fold_{}".format(self.name, vec.name, i), 1, 8, 1, 1))
         name = "{}_max_pipe_width_{}_fold_{}".format(self.name, vec.name, i)
-        step = max(1, vec.type_size)
-        minimum = step
-        maximum = step * 8
-        default = step * 2
-        parameters.append(IntegerParameter(name, minimum, maximum, step, default))
+        minimum = max(1, vec.type_size)
+        maximum = minimum * 8
+        default = minimum
+        parameters.append(PowerOfTwoParameter(name, minimum, maximum, default))
     return parameters
 
   #SUM_WIDTH = number of indexed sums used at once

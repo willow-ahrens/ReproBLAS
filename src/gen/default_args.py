@@ -8,7 +8,4 @@ args = parser.parse_args()
 
 parameter_space = deserialize_parameter_space(args.params)
 
-serialize_arguments(parameter_space.get_default_args(), args.args)
-
-
-
+serialize_arguments(parameter_space.get_default_arguments(), args.args)

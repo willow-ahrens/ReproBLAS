@@ -1,0 +1,19 @@
+#include <stdio.h>
+
+/*[[[cog
+import cog
+from src.gen import vectorizations
+from src.gen import utils
+]]]*/
+//[[[end]]]
+
+int main(int argc, char** argv){
+  /*[[[cog
+  def print_vectorization(vectorization, code_block):
+    code_block.write('printf("{}\\n");'.format(vectorization.name))
+  code_block = utils.CodeBlock()
+  vectorizations.iterate_all_vectorizations(print_vectorization, code_block)
+  cog.out(str(code_block))
+  ]]]*/
+  //[[[end]]]
+}

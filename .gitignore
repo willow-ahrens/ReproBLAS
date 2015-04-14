@@ -1,3 +1,4 @@
 build/*
 tests/common/test_data
 *.pyc
+*.log

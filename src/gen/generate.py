@@ -57,6 +57,10 @@ class Parameter(object):
       assert "maximum" in data, "ReproBLAS error: invalid parameter file format"
       assert "step" in data, "ReproBLAS error: invalid parameter file format"
       return IntegerParameter(data["name"], data["minimum"], data["maximum"], data["step"], data["default"])
+    if data["flavor"] == "poweroftwo":
+      assert "minimum" in data, "ReproBLAS error: invalid parameter file format"
+      assert "maximum" in data, "ReproBLAS error: invalid parameter file format"
+      return PowerOfTwoParameter(data["name"], data["minimum"], data["maximum"], data["default"])
 
 class BooleanParameter(Parameter):
   def __init__(self, name, default):
@@ -87,7 +91,7 @@ class IntegerParameter(Parameter):
   def parse_value(self, value):
     value = int(value)
     assert value >= self.minimum, "ReproBLAS error: integer parameter must be >= min"
-    assert value < self.maximum, "ReproBLAS error: integer parameter must be < max"
+    assert value <= self.maximum, "ReproBLAS error: integer parameter must be <= max"
     assert value % self.step == 0, "ReproBLAS error: integer parameter value must be multiple of step"
     return value
 
@@ -96,6 +100,29 @@ class IntegerParameter(Parameter):
     data["minimum"] = self.minimum
     data["maximum"] = self.maximum
     data["step"] = self.step
+    data["default"] = self.default
+    return data
+
+class PowerOfTwoParameter(Parameter):
+  def __init__(self, name, minimum, maximum, default):
+    super(PowerOfTwoParameter, self).__init__(name)
+    self.flavor = "poweroftwo"
+    self.minimum = minimum
+    self.maximum = maximum
+    assert math.log(minimum, 2) % 1 == 0, "ReproBLAS error: power of two parameter minimum must be power of two"
+    assert math.log(maximum, 2) % 1 == 0, "ReproBLAS error: power of two parameter maximum must be power of two"
+    self.default = self.parse_value(default)
+
+  def parse_value(self, value):
+    assert math.log(value, 2) % 1 == 0, "ReproBLAS error: power of two parameter value must be power of two"
+    assert value >= self.minimum, "ReproBLAS error: power of two parameter must be >= min"
+    assert value <= self.maximum, "ReproBLAS error: power of two parameter must be <= max"
+    return value
+
+  def encode(self):
+    data = super(PowerOfTwoParameter, self).encode()
+    data["minimum"] = self.minimum
+    data["maximum"] = self.maximum
     data["default"] = self.default
     return data
 
@@ -163,7 +190,7 @@ class ParameterSpace:
     assert argument in self.parameters, "ReproBLAS error: missing parameter data"
     return self.parameters[argument].parse_value(arguments[argument])
 
-  def get_default_args(self):
+  def get_default_arguments(self):
     return {parameter.name:parameter.default for parameter in self.parameters.values()}
 
 

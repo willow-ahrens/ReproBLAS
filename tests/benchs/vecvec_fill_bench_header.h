@@ -16,7 +16,7 @@ static opt_option trials = {._int.header.type       = opt_int,
                             ._int.required          = 0,
                             ._int.min               = 1,
                             ._int.max               = INT_MAX,
-                            ._int.value             = 1000};
+                            ._int.value             = 10000};
 
 static opt_option desc   = {._flag.header.type       = opt_flag,
                             ._flag.header.short_name = 'd',

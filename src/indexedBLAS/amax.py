@@ -30,7 +30,7 @@ class Max(Target):
 
 
   def get_metrics(self):
-    return {argument: ["bench_{}".format(self.name)] for argument in self.get_arguments()}
+    return {argument: ["bench_{}{}".format(self.data_type_class.name_char, self.name)] for argument in self.get_arguments()}
 
   def write(self, code_block):
     iterate_all_vectorizations(self.write_vec, code_block)

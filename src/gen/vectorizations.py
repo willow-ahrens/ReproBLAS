@@ -79,6 +79,38 @@ class Vectorization(object):
   def swap_pairwise(self, src_vars):
     raise(NotImplementedError())
 
+  def iterate_unrolled(self, i_var, n_var, src_ptrs, src_incs, max_unroll, min_unroll, body):
+    i = 0
+    unroll = (max_unroll // max(self.type_size, 1)) * max(self.type_size, 1)
+    while(unroll >= min_unroll):
+      if i == 0:
+        self.code_block.write("for({0} = 0; {0} + {1} <= {2}; {0} += {1}, {3}){{".format(i_var, max_unroll, n_var, self.data_type.data_increment(src_ptrs, src_incs, max_unroll)))
+        self.code_block.indent()
+        body(unroll)
+        self.code_block.dedent()
+        self.code_block.write("}")
+      elif unroll < self.type_size:
+        self.code_block.write("if({0} < {1}){{".format(i_var, n_var))
+        self.code_block.indent()
+        body("({0} - {1})".format(n_var, i_var))
+        self.code_block.dedent()
+        self.code_block.write("}")
+        break
+      else:
+        self.code_block.write("if({0} + {1} <= {2}){{".format(i_var, unroll, n_var))
+        self.code_block.indent()
+        body(unroll)
+        self.code_block.write("{0} += {1}, {2};".format(i_var, unroll, self.data_type.data_increment(src_ptrs, src_incs, unroll)))
+        self.code_block.dedent()
+        self.code_block.write("}")
+      if math.log(unroll, 2) % 1 != 0:
+        unroll = 2**int(math.log(unroll, 2))
+      else:
+        unroll //= 2
+      i += 1;
+
+"""
+  ##TODO This is currently broken on wierd unroll sizes. fix that.
   def iterate_unrolled_aligned(self, i_var, n_var, src_ptrs, src_incs, max_unroll, min_unroll, body):
     align = False
     if self.type_size > 1 and src_incs[0] == 1:
@@ -118,28 +150,7 @@ class Vectorization(object):
       body("({0} - {1})".format(n_var, i_var), align)
       self.code_block.dedent()
       self.code_block.write("}")
-
-  def iterate_unrolled(self, i_var, n_var, src_ptrs, src_incs, max_unroll, min_unroll, body):
-    self.code_block.write("for({0} = 0; {0} + {1} <= {2}; {0} += {1}, {3}){{".format(i_var, max_unroll, n_var, self.data_type.data_increment(src_ptrs, src_incs, max_unroll)))
-    self.code_block.indent()
-    body(max_unroll)
-    self.code_block.dedent()
-    self.code_block.write("}")
-    unroll = max_unroll // 2
-    while(unroll >= self.type_size and unroll >= min_unroll):
-      self.code_block.write("if({0} + {1} <= {2}){{".format(i_var, unroll, n_var))
-      self.code_block.indent()
-      body(unroll)
-      self.code_block.write("{0} += {1}, {2};".format(i_var, unroll, self.data_type.data_increment(src_ptrs, src_incs, unroll)))
-      self.code_block.dedent()
-      self.code_block.write("}")
-      unroll //=2
-    if(unroll >= min_unroll):
-      self.code_block.write("if({0} < {1}){{".format(i_var, n_var))
-      self.code_block.indent()
-      body("({0} - {1})".format(n_var, i_var))
-      self.code_block.dedent()
-      self.code_block.write("}")
+"""
 
 
 class SISD(Vectorization):

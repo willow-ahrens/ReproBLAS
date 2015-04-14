@@ -29,7 +29,7 @@ install-doc: $(call get_subtree,INSTALL_DOC,$(TOP))
 	$(INSTALL) -d $(DOC_DIR)
 	$(INSTALL_DATA) -t $(DOC_DIR) $^
 
-.PHONY: params replace excise check bench reference
+.PHONY: params replace excise check bench reference tune
 
 # Creates the parameter list
 params:
@@ -39,6 +39,10 @@ params:
 # Creates default arguments from current parameter list
 default_args:
 	$(CALL_PYTHON) $(TOP)/src/gen/default_args.py --params $(TOP)/src/params.json --args $(TOP)/src/default_args.json
+
+# tunes
+tune:
+	$(CALL_PYTHON) $(TOP)/tune/ReproBLASOpenTuner.py --params $(TOP)/src/params.json --args $(TOP)/src/tuned_args.json --database $(TOP)/tune/ReproBLASOpenTuner.db --trials 50 --no-dups
 
 # Runs code generators in place
 replace:
