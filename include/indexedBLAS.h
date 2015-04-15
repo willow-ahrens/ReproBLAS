@@ -1,7 +1,14 @@
 #ifndef _INDEXED_BLAS__H_
 #define _INDEXED_BLAS__H_
 #include "indexed.h"
+#include "reproBLAS.h"
 #include <complex.h>
+
+void dgemvI(rblas_order_t Order,
+            rblas_transpose_t TransA, int M, int N,
+            double *A, int lda,
+            double *X, int incX,
+            I_double *Y, int incY, int fold);
 
 #define  dsumI_(N,V,INC,S) dsumI1(N,V,INC,DEFAULT_FOLD,0,(S).m, (S).c)
 #define dasumI_(N,V,INC,S) dasumI1(N,V,INC,DEFAULT_FOLD,0,(S).m, (S).c)

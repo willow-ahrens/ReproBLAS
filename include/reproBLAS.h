@@ -25,6 +25,12 @@ typedef enum rblas_side {
   rblas_Right
 } rblas_side_t;
 
+void rdgemv(const rblas_order_t order,
+            const rblas_transpose_t TransA, const int M, const int N,
+            const double *A, const int lda,
+            const double *X, const int incX,
+            double *Y, const int incY);
+
 // SEQUENTIAL REPRODUCIBLE VERSIONS
 extern double rdsum (int N, double* v, int inc);
 extern double rdasum(int N, double* v, int inc);

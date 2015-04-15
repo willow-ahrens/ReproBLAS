@@ -810,11 +810,13 @@ double* util_dmat_alloc(rblas_order_t order, int M, int N, int ldA) {
       //fill empty space with random data to check ldA
       util_dmat_fill(order, rblas_No_Trans, M, ldA, A, ldA, util_Mat_Row_Rand, 1.0, 1.0);
       util_dmat_fill(order, rblas_No_Trans, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
+      break;
     case rblas_Col_Major:
       A = (double*)malloc(ldA * N * sizeof(double));
       //fill empty space with random data to check ldA
       util_dmat_fill(order, rblas_No_Trans, ldA, N, A, ldA, util_Mat_Row_Rand, 1.0, 1.0);
       util_dmat_fill(order, rblas_No_Trans, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
+      break;
   }
   return A;
 }
@@ -827,11 +829,13 @@ float* util_smat_alloc(rblas_order_t order, int M, int N, int ldA) {
       //fill empty space with random data to check ldA
       util_smat_fill(order, rblas_No_Trans, M, ldA, A, ldA, util_Mat_Row_Rand, 1.0, 1.0);
       util_smat_fill(order, rblas_No_Trans, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
+      break;
     case rblas_Col_Major:
       A = (float*)malloc(ldA * N * sizeof(float));
       //fill empty space with random data to check ldA
       util_smat_fill(order, rblas_No_Trans, ldA, N, A, ldA, util_Mat_Row_Rand, 1.0, 1.0);
       util_smat_fill(order, rblas_No_Trans, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
+      break;
   }
   return A;
 }
@@ -844,11 +848,13 @@ double complex* util_zmat_alloc(rblas_order_t order, int M, int N, int ldA) {
       //fill empty space with random data to check ldA
       util_zmat_fill(order, rblas_No_Trans, M, ldA, A, ldA, util_Mat_Row_Rand, 1.0, 1.0);
       util_zmat_fill(order, rblas_No_Trans, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
+      break;
     case rblas_Col_Major:
       A = (double complex*)malloc(ldA * N * sizeof(double complex));
       //fill empty space with random data to check ldA
       util_zmat_fill(order, rblas_No_Trans, ldA, N, A, ldA, util_Mat_Row_Rand, 1.0, 1.0);
       util_zmat_fill(order, rblas_No_Trans, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
+      break;
   }
   return A;
 }
@@ -861,11 +867,13 @@ float complex* util_cmat_alloc(rblas_order_t order, int M, int N, int ldA) {
       //fill empty space with random data to check ldA
       util_cmat_fill(order, rblas_No_Trans, M, ldA, A, ldA, util_Mat_Row_Rand, 1.0, 1.0);
       util_cmat_fill(order, rblas_No_Trans, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
+      break;
     case rblas_Col_Major:
       A = (float complex*)malloc(ldA * N * sizeof(float complex));
       //fill empty space with random data to check ldA
       util_cmat_fill(order, rblas_No_Trans, ldA, N, A, ldA, util_Mat_Row_Rand, 1.0, 1.0);
       util_cmat_fill(order, rblas_No_Trans, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
+      break;
   }
   return A;
 }

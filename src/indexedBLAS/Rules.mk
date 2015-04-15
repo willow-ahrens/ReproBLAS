@@ -36,4 +36,5 @@ libindexedblas.a_DEPS = $$(LIBINDEXED)                                     \
                         zamax.o zamaxm.o                                   \
                         samax.o samaxm.o                                   \
                         camax.o camaxm.o                                   \
-                        dIAccum.o zIAccum.o sIAccum.o cIAccum.o
+                        dIAccum.o zIAccum.o sIAccum.o cIAccum.o            \
+                        dgemvI.o
