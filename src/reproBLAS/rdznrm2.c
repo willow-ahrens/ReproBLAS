@@ -14,14 +14,14 @@ double dznrm2I(
 	double complex* x, int incx,
 	I_double* sum
 ) {
-	return dznrm2I1(N, x, incx, DEFAULT_FOLD, 0, sum->m, sum->c);
+	return dznrm2I1(N, x, incx, DEFAULT_FOLD, sum->m, sum->c);
 }
 
 double rdznrm2(int N, double complex* v, int inc) {
 	I_double sum;
 	dISetZero(sum);
 	double scale = 0.0;
-	scale = dznrm2I1(N, v, inc, DEFAULT_FOLD, 0, sum.m, sum.c);
+	scale = dznrm2I1(N, v, inc, DEFAULT_FOLD, sum.m, sum.c);
 
 	if (isnan(scale))
 		return scale;

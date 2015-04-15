@@ -80,7 +80,7 @@ int rssum_exception(
 
 void ssumI1_(int N, int NB,
 	float* v, int inc,
-	int fold, int W, float* sum, float* c) {
+	int fold, float* sum, float* c) {
 	float amax;
 
 	int i, j;
@@ -104,7 +104,7 @@ void ssumI1_(int N, int NB,
 			continue;
 #		endif
 
-		sIUpdate1(fold, W, amax, sum, c, 1);
+		sIUpdate1(fold, amax, sum, c, 1);
 		
 		for (j = 0; j < lN - maxN + 1; j+=maxN) {
 			ssumI2(maxN, v + j*inc, inc, fold, sum);

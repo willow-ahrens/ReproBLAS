@@ -12,7 +12,7 @@ I_double_Complex zdotcI(
 ) {
 	I_double_Complex dot;
 	zISetZero(dot);
-	zdotcI1(N, x, incx, y, incy, DEFAULT_FOLD, 0,
+	zdotcI1(N, x, incx, y, incy, DEFAULT_FOLD, 
 		(double complex*)dot.m, (double complex*)dot.c);
 	return dot;
 }
@@ -24,7 +24,7 @@ double complex rzdotc(
 ) {
 	I_double_Complex dot;
 	zISetZero(dot);
-	zdotcI1(N, x, incx, y, incy, DEFAULT_FOLD, 0,
+	zdotcI1(N, x, incx, y, incy, DEFAULT_FOLD, 
 		(double complex*)dot.m, (double complex*)dot.c);
 	return Iconv2z(dot);
 }
@@ -36,7 +36,7 @@ I_double_Complex zdotuI(
 ) {
 	I_double_Complex dot;
 	zISetZero(dot);
-	zdotuI1(N, x, incx, y, incy, DEFAULT_FOLD, 0,
+	zdotuI1(N, x, incx, y, incy, DEFAULT_FOLD, 
 		(double complex*)dot.m, (double complex*)dot.c);
 	return dot;
 }
@@ -48,7 +48,7 @@ double complex rzdotu(
 ) {
 	I_double_Complex dot;
 	zISetZero(dot);
-	zdotuI1(N, x, incx, y, incy, DEFAULT_FOLD, 0,
+	zdotuI1(N, x, incx, y, incy, DEFAULT_FOLD, 
 		(double complex*)dot.m, (double complex*)dot.c);
 	return Iconv2z(dot);
 }

@@ -139,7 +139,7 @@ int zdot_exception(
 void zdotI1_(int N, int NB,
 	double complex* v, int inc,
 	double complex* y, int incy,
-	int fold, int W, double complex* dot, double complex* c,
+	int fold, double complex* dot, double complex* c,
 	int conj) {
 
 	double complex amax;
@@ -169,7 +169,7 @@ void zdotI1_(int N, int NB,
 			accu = 0;
 		}
 
-		zIUpdate1(fold, W, dot, c, 1, amax);
+		zIUpdate1(fold, dot, c, 1, amax);
 
 		if (conj)
 			zdotcI2(lN, v, inc, y, incy, fold, dot);

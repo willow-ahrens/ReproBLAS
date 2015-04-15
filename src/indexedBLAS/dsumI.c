@@ -82,7 +82,7 @@ int exceptionHandling(
 
 void dsumI1_(int N, int NB,
 	double* v, int inc,
-	int fold, int W,
+	int fold,
 	double* sum, double* c) {
 	
 	double amax;
@@ -112,7 +112,7 @@ void dsumI1_(int N, int NB,
 			accu = 0;
 		}
 		
-		dIUpdate1(fold, W, sum, c, 1, amax);
+		dIUpdate1(fold, sum, c, 1, amax);
 		
 		// TODO: CHECK POTENTIAL FALSE INFINITY
 		dsumI2(lN, v, inc, fold, sum);

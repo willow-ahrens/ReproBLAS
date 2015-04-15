@@ -105,7 +105,7 @@ void sIAddf1(int fold, float* x, int inc, float y) {
 }
 
 void sIAddf(I_float* X, float Y) {
-	sIUpdate1(DEFAULT_FOLD, 0, fabs(Y), (X)->m, (X)->c, 1);
+	sIUpdate1(DEFAULT_FOLD, fabs(Y), (X)->m, (X)->c, 1);
 	sIAddf1(DEFAULT_FOLD, (X)->m, 1, Y);
 	sIRenorm1(DEFAULT_FOLD, (X)->m, (X)->c, 1);
 }
@@ -117,7 +117,7 @@ void cIAddc1(int fold, float complex* x, int inc, float complex Y) {
 }
 
 void cIAddc(I_float_Complex* X, float complex Y) {
-	cIUpdate1(DEFAULT_FOLD,0,(float complex*)((X)->m),(X)->c,1,Y);
+	cIUpdate1(DEFAULT_FOLD,(float complex*)((X)->m),(X)->c,1,Y);
 	cIAddc1(DEFAULT_FOLD, (float complex*)((X)->m), 1, Y);
 	cIRenorm1(DEFAULT_FOLD,(float complex*)((X)->m), (X)->c, 1);
 }

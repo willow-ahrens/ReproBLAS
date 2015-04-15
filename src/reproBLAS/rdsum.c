@@ -12,14 +12,14 @@
 I_double dsumI(int N, double* v, int inc) {
 	I_double sum;
 	dISetZero(sum);
-	dsumI1(N, v, inc, DEFAULT_FOLD, 0, sum.m, sum.c);
+	dsumI1(N, v, inc, DEFAULT_FOLD, sum.m, sum.c);
 	return sum;
 }
 
 double rdsum(int N, double* v, int inc) {
 	I_double sum;
 	dISetZero(sum);
-	dsumI1(N, v, inc, DEFAULT_FOLD, 0, sum.m, sum.c);
+	dsumI1(N, v, inc, DEFAULT_FOLD, sum.m, sum.c);
 	return Iconv2d(sum);
 }
 

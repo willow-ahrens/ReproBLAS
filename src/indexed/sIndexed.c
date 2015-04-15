@@ -108,13 +108,19 @@ float* F_Max2Boundaries(float amax) {
 }
 
 // COMPUTE THE BOUNDARIES BASED ON MAXIMUM ABSOLUTE VALUE
-int sIBoundary_(int fold, int step, float max, float* M, int inc) {
+int sIBoundary_(int fold, float max, float* M, int inc) {
 	float delta;
 	int i;
 	float M0;
 
 	int index;
+    index = F_Max2Ind(max);
+    for (i = 0; i < fold; i++, M += inc) {
+        M[0] = F_BOUNDARIES[index + i];
+    }
+    return index;
 
+    /*
 	if (step == F_BIN_WIDTH || step == 0) {
 		index = F_Max2Ind(max);
 		for (i = 0; i < fold; i++, M += inc) {
@@ -163,6 +169,7 @@ int sIBoundary_(int fold, int step, float max, float* M, int inc) {
 #endif
 
 	return index / step;
+    */
 }
 
 #define USE_FREXP

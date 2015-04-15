@@ -10,7 +10,7 @@
 #include "indexed.h"
 #include "../Common/Common.h"
 
-void fconv2I1(int fold, int W, float x, float* mantissa, float* carry, int inc) {
+void fconv2I1(int fold, float x, float* mantissa, float* carry, int inc) {
 	int i;
 	float q;
 	for (i = 0; i < fold; i++) carry[i*inc] = 0;
@@ -19,7 +19,7 @@ void fconv2I1(int fold, int W, float x, float* mantissa, float* carry, int inc) 
 			mantissa[i*inc] = 0.0;
 		return;
 	}
-	sIBoundary_(fold, W, fabs(x), mantissa, inc);
+	sIBoundary_(fold, fabs(x), mantissa, inc);
 	float M;
 	for (i = 0; i < fold; i++, mantissa += inc) {
 		M = mantissa[0];
@@ -32,7 +32,7 @@ void fconv2I1(int fold, int W, float x, float* mantissa, float* carry, int inc) 
 
 I_float fconv2I(float x) {
 	I_float ret;
-	fconv2I1(DEFAULT_FOLD, 0, x, ret.m, ret.c, 1);
+	fconv2I1(DEFAULT_FOLD, x, ret.m, ret.c, 1);
 	return ret;
 }
 
@@ -94,14 +94,14 @@ float complex Iconv2c1(int fold, float complex* mantissa, float* C, int inc) {
 	return ret;
 }
 
-void cconv2I1(int fold, int W, float complex x, float complex* m, float* c, int inc) {
+void cconv2I1(int fold, float complex x, float complex* m, float* c, int inc) {
 	float* xptr = (float*) &(x);
-	fconv2I1(fold, W, xptr[0], (float*)m  , c  , 2*inc);
-	fconv2I1(fold, W, xptr[1], (float*)m+1, c+1, 2*inc);
+	fconv2I1(fold, xptr[0], (float*)m  , c  , 2*inc);
+	fconv2I1(fold, xptr[1], (float*)m+1, c+1, 2*inc);
 }
 
 I_float_Complex cconv2I(float complex x) {
 	I_float_Complex ret;
-	cconv2I1(DEFAULT_FOLD, 0, x, (float complex*)ret.m, ret.c, 1);
+	cconv2I1(DEFAULT_FOLD, x, (float complex*)ret.m, ret.c, 1);
 	return ret;
 }

@@ -97,7 +97,7 @@ void prcdotI2(
 	int N,
 	float complex* x, int incx,
 	float complex* y, int incy,
-	int fold, int W, float complex* sum,
+	int fold, float complex* sum,
 	float complex* local_sum,	// WORKING BUFFER TO STORE LOCAL SUM
 	int conj
 ) {
@@ -124,9 +124,9 @@ void prcdotI2(
    	
 	// PEFORM THE LOCAL SUM WITH BLOCK SIZE OF 1024
 	if (conj == 1)
-		cdotcI1(N, x, incx, y, incy, fold, W, local_sum, C);
+		cdotcI1(N, x, incx, y, incy, fold, local_sum, C);
 	else
-		cdotuI1(N, x, incx, y, incy, fold, W, local_sum, C);
+		cdotuI1(N, x, incx, y, incy, fold, local_sum, C);
 
 	// REDUCE THE RESULT TO THE ROOT PROCESSOR
 	if (root >= 0)
@@ -147,20 +147,20 @@ void prcdotcI2(
 	int N,
 	float complex* x, int incx,
 	float complex* y, int incy,
-	int fold, int W, float complex* sum,
+	int fold, float complex* sum,
 	float complex* local_sum	// WORKING BUFFER TO STORE LOCAL SUM
 ) {
-	prcdotI2(comm, root, N, x, incx, y, incy, fold, W, sum, local_sum, 1);
+	prcdotI2(comm, root, N, x, incx, y, incy, fold, sum, local_sum, 1);
 }
 void prcdotuI2(
 	MPI_Comm comm, int root,
 	int N,
 	float complex* x, int incx,
 	float complex* y, int incy,
-	int fold, int W, float complex* sum,
+	int fold, float complex* sum,
 	float complex* local_sum	// WORKING BUFFER TO STORE LOCAL SUM
 ) {
-	prcdotI2(comm, root, N, x, incx, y, incy, fold, W, sum, local_sum, 0);
+	prcdotI2(comm, root, N, x, incx, y, incy, fold, sum, local_sum, 0);
 }
 
 float complex prcdotc2(
@@ -168,7 +168,7 @@ float complex prcdotc2(
 	int N,
 	float complex* x, int incx,
 	float complex* y, int incy,
-	int fold, int W 
+	int fold
 ) {
 	float complex *sum = NULL;
 	float complex ret;
@@ -176,7 +176,7 @@ float complex prcdotc2(
 
 	sum = (float complex*) malloc(cISize(fold));
 
-	prcdotcI2(comm, root, N, x, incx, y, incy, fold, W, sum, NULL);
+	prcdotcI2(comm, root, N, x, incx, y, incy, fold, sum, NULL);
 
 	MPI_Comm_rank(comm, &me);
 
@@ -192,7 +192,7 @@ float complex prcdotu2(
 	int N,
 	float complex* x, int incx,
 	float complex* y, int incy,
-	int fold, int W 
+	int fold
 ) {
 	float complex *sum = NULL;
 	float complex ret;
@@ -200,7 +200,7 @@ float complex prcdotu2(
 
 	sum = (float complex*) malloc(cISize(fold));
 
-	prcdotuI2(comm, root, N, x, incx, y, incy, fold, W, sum, NULL);
+	prcdotuI2(comm, root, N, x, incx, y, incy, fold, sum, NULL);
 
 	MPI_Comm_rank(comm, &me);
 

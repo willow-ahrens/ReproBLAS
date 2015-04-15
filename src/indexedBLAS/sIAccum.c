@@ -27,7 +27,7 @@ void sIAccumulate(sIAccum *acc, float x) {
 	acc->BUFFER[c] = x;
 	c++;
 	if (c == acc->size) {
-		ssumI1(c, acc->BUFFER, 1, 3, sIWidth(), acc->v.m, acc->v.c);
+		ssumI1(c, acc->BUFFER, 1, 3, acc->v.m, acc->v.c);
 		c = 0;
 	}
 	acc->counter = c;
@@ -45,7 +45,7 @@ void sIAccumulates(sIAccum *acc, int n, float* v, int inc) {
 			acc->BUFFER[i] = v[i * inc];
 		}
 		ssumI1(lN + acc->counter, acc->BUFFER, 1,
-			0, sIWidth(), acc->v.m, acc->v.c);
+			0, acc->v.m, acc->v.c);
 
 		// reset
 		acc->counter = 0;
@@ -57,7 +57,7 @@ void sIAccumulates(sIAccum *acc, int n, float* v, int inc) {
 float sIAccExtract(sIAccum *acc) {
 	int c = acc->counter;
 	if (c > 0) {
-		ssumI1(c, acc->BUFFER, 1, 3, sIWidth(), acc->v.m, acc->v.c);
+		ssumI1(c, acc->BUFFER, 1, 3, acc->v.m, acc->v.c);
 	}
 	return Iconv2f((acc->v));
 }

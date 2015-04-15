@@ -140,7 +140,7 @@ int cdot_exception(
 void cdotI1_(int N, int NB,
 	float complex* v, int inc,
 	float complex* y, int incy,
-	int fold, int W, float complex* dot, float* C,
+	int fold, float complex* dot, float* C,
 	int conj) {
 /*
  * Purpose
@@ -184,7 +184,7 @@ void cdotI1_(int N, int NB,
 		if (status == 1)
 			continue;
 		
-		cIUpdate1(fold, W, dot, C, 1, amax);
+		cIUpdate1(fold, dot, C, 1, amax);
 
 		for (j = 0; j < lN; j+=maxN) {
 			lB = maxN < lN - j ? maxN : lN - j;

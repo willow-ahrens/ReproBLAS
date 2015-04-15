@@ -13,7 +13,7 @@ I_float ssumI(int N, float* v, int inc) {
 	I_float sum;
 
 	sISetZero(sum);
-	ssumI1(N, v, inc, DEFAULT_FOLD, 0, sum.m, sum.c);
+	ssumI1(N, v, inc, DEFAULT_FOLD, sum.m, sum.c);
 
 	return sum;
 }
@@ -22,7 +22,7 @@ float rssum(int N, float* v, int inc) {
 	I_float sum;
 
 	sISetZero(sum);
-	ssumI1(N, v, inc, DEFAULT_FOLD, 0, sum.m, sum.c);
+	ssumI1(N, v, inc, DEFAULT_FOLD, sum.m, sum.c);
 
 	return Iconv2f(sum);
 }

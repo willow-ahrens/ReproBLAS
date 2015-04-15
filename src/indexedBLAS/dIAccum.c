@@ -28,7 +28,7 @@ void dIAccumulate(dIAccum *acc, double x) {
 	acc->BUFFER[c] = x;
 	c++;
 	if (c == acc->size) {
-		dsumI1(c, acc->BUFFER, 1, 3, dIWidth(), acc->v.m, acc->v.c);
+		dsumI1(c, acc->BUFFER, 1, 3, acc->v.m, acc->v.c);
 		c = 0;
 	}
 	acc->counter = c;
@@ -46,7 +46,7 @@ void dIAccumulates(dIAccum *acc, int n, double* v, int inc) {
 			acc->BUFFER[i] = v[i * inc];
 		}
 		dsumI1(lN + acc->counter, acc->BUFFER, 1,
-			0, dIWidth(), acc->v.m, acc->v.c);
+			0, acc->v.m, acc->v.c);
 
 		// reset
 		acc->counter = 0;
@@ -58,7 +58,7 @@ void dIAccumulates(dIAccum *acc, int n, double* v, int inc) {
 double dIAccExtract(dIAccum *acc) {
 	int c = acc->counter;
 	if (c > 0) {
-		dsumI1(c, acc->BUFFER, 1, 3, dIWidth(), acc->v.m, acc->v.c);
+		dsumI1(c, acc->BUFFER, 1, 3,  acc->v.m, acc->v.c);
 	}
 	return Iconv2d((acc->v));
 }

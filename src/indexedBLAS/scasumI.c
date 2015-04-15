@@ -44,7 +44,7 @@ int rscasum_exception(
 // work is a buffer of size fold (sizeof(float) + sizeof (carry))
 void scasumI1_(int N, int NB,
 	float complex* v, int inc,
-	int fold, int W, float* sum, float* carry,
+	int fold, float* sum, float* carry,
 	float complex* work) {
 
 	float amax;
@@ -104,7 +104,7 @@ void scasumI1_(int N, int NB,
 		if (status > 0)
 			continue;
 		
-		cIUpdates1(fold, W, BUFFER, C, 1, amax);
+		cIUpdates1(fold, BUFFER, C, 1, amax);
 
 		for (j = 0; j < lN; j+=maxN) {
 			lB = maxN < lN - j ? maxN : lN - j;

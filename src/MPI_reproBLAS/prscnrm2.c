@@ -55,7 +55,7 @@ void prscnrm2I2(
 	MPI_Comm comm, int root,
 	int N,
 	float complex* x, int incx,
-	int fold, int W, float* sum,
+	int fold,  float* sum,
 	float* local_sum	// WORKING BUFFER TO STORE LOCAL SUM
 ) {
 	int me, i;
@@ -83,7 +83,7 @@ void prscnrm2I2(
 		myType = MPI_IFLOAT_SCALE;
    	
 	// PEFORM THE LOCAL SUM WITH BLOCK SIZE OF 1024
-	local_sum[0] = scnrm2I1(N, x, incx, fold, W, local_sum + 1, C, NULL);
+	local_sum[0] = scnrm2I1(N, x, incx, fold, local_sum + 1, C, NULL);
 
 	// REDUCE THE RESULT TO THE ROOT PROCESSOR
 	if (root >= 0)
@@ -104,7 +104,7 @@ float prscnrm22(
 	MPI_Comm comm, int root,
 	int N,
 	float complex* x, int incx,
-	int fold, int W
+	int fold
 ) {
 	float *sum = NULL;
 	float *local_sum = NULL;
@@ -113,7 +113,7 @@ float prscnrm22(
 
 	sum = (float*) malloc(sizeof(float) + sISize(fold));
 
-	prscnrm2I2(comm, root, N, x, incx, fold, W, sum, NULL);
+	prscnrm2I2(comm, root, N, x, incx, fold, sum, NULL);
 
 	MPI_Comm_rank(comm, &me);
 

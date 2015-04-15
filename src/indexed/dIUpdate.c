@@ -19,7 +19,7 @@
 
 // CHANGE THE INDEX
 // IN FACT, IT IS A POSSIBLE SHIFTING LEFT
-void dIUpdate1_(int fold, int W, int NB, double step,
+void dIUpdate1_(int fold, int NB, double step,
 	double* x, double* c, int ldx, double y) {
 	int i;
 	int shift;
@@ -28,7 +28,7 @@ void dIUpdate1_(int fold, int W, int NB, double step,
 		return;
 
 	if (x[0] == 0) {
-		dIBoundary(fold, W, fabs(y), x, ldx);
+		dIBoundary(fold, fabs(y), x, ldx);
 		for (i = fold; i < fold; i++) {
 			x[i * ldx] = 0;
 			c[i * ldx] = 0;
@@ -54,7 +54,7 @@ void dIUpdate1_(int fold, int W, int NB, double step,
 //	printf("Update to new M: %g\n", M);
 
 	if (d == fold) {
-		dIBoundary(fold, W, fabs(y), x, ldx);
+		dIBoundary(fold, fabs(y), x, ldx);
 		for (i = 0; i < fold; i++) {
 			c[i*ldx] = 0;
 		}
@@ -65,33 +65,32 @@ void dIUpdate1_(int fold, int W, int NB, double step,
 		x[i * ldx] = x[(i - d) * ldx];
 		c[i * ldx] = c[(i - d) * ldx];
 	}
-	dIBoundary(d, W, fabs(y), x, ldx);
+	dIBoundary(d, fabs(y), x, ldx);
 	for (i = 0; i < d; i++) c[i * ldx] = 0.0;
 }
 
-void dIUpdate1(int fold, int W, double* x, double* c, int ldx, double y) {
+void dIUpdate1(int fold, double* x, double* c, int ldx, double y) {
 	if (y == 0)
 		return;
 
 	if (isnan(x[0] || isinf(x[0])))
 		return;
 
-	if (W == 0)
-		W = dIWidth();
+	int W = dIWidth();
 	int NB     = 1 << (PREC - W);
 	double step = pow(2.0, -W);
 
-	dIUpdate1_(fold, W, NB, step, x, c, ldx, y);
+	dIUpdate1_(fold, NB, step, x, c, ldx, y);
 }
 
-void zIUpdates1(int fold, int W, double complex* x, double complex* c, int ldx, double y) {
-	dIUpdate1(fold, W, (double*)x, (double*)(c), 2 * ldx, fabs(y));
-	dIUpdate1(fold, W, ((double*)x) + 1, (double*)(c) + 1, 2 * ldx, fabs(y));
+void zIUpdates1(int fold, double complex* x, double complex* c, int ldx, double y) {
+	dIUpdate1(fold, (double*)x, (double*)(c), 2 * ldx, fabs(y));
+	dIUpdate1(fold, ((double*)x) + 1, (double*)(c) + 1, 2 * ldx, fabs(y));
 }
 
-void zIUpdate1(int fold, int W,double complex* x, double complex* c, int ldx,double complex y) {
+void zIUpdate1(int fold, double complex* x, double complex* c, int ldx,double complex y) {
 	double* tmp = (double*)&y;
-	dIUpdate1(fold, W, (double*)x, (double*)(c), 2 * ldx, fabs(tmp[0]));
-	dIUpdate1(fold, W, ((double*)x) + 1, (double*)(c) + 1, 2 * ldx, fabs(tmp[1]));
+	dIUpdate1(fold, (double*)x, (double*)(c), 2 * ldx, fabs(tmp[0]));
+	dIUpdate1(fold, ((double*)x) + 1, (double*)(c) + 1, 2 * ldx, fabs(tmp[1]));
 }
 

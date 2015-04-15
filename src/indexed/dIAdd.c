@@ -112,7 +112,7 @@ void dIAddd1(int fold, double* x, int inc, double y) {
 }
 
 void dIAddd(I_double* X, double Y) {
-	dIUpdate1(DEFAULT_FOLD, 0, X->m, X->c, 1, fabs(Y));
+	dIUpdate1(DEFAULT_FOLD, X->m, X->c, 1, fabs(Y));
 	dIAddd1(DEFAULT_FOLD, X->m, 1, Y);
 	dIRenorm1(DEFAULT_FOLD, X->m, X->c, 1);
 }
@@ -153,7 +153,7 @@ void zIAddz1(int fold, double complex* x, int inc, double complex y) {
 }
 
 void zIAddz(I_double_Complex* X, double complex Y) {
-	zIUpdate1(DEFAULT_FOLD, 0,
+	zIUpdate1(DEFAULT_FOLD, 
 		(double complex*)X->m, (double complex*)X->c, 1, fabs(Y));
 	zIAddz1(DEFAULT_FOLD, (double complex*)X->m, 1, Y);
 	zIRenorm1(DEFAULT_FOLD, (double complex*)X->m, (double complex*)X->c, 1);

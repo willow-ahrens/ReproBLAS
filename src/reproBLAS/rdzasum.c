@@ -12,14 +12,14 @@
 I_double dzasumI(int N, double complex* v, int inc) {
 	I_double sum;
 	dISetZero(sum);
-	dzasumI1(N, v, inc, DEFAULT_FOLD, 0, sum.m, sum.c);
+	dzasumI1(N, v, inc, DEFAULT_FOLD, sum.m, sum.c);
 	return sum;
 }
 
 double rdzasum(int N, double complex* v, int inc) {
 	I_double sum;
 	dISetZero(sum);
-	dzasumI1(N, v, inc, DEFAULT_FOLD, 0, sum.m, sum.c);
+	dzasumI1(N, v, inc, DEFAULT_FOLD,  sum.m, sum.c);
 	return Iconv2d(sum);
 }
 

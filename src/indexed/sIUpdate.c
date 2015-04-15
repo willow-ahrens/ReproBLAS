@@ -17,7 +17,7 @@
 
 // CHANGE THE INDEX
 // IN FACT, IT IS A POSSIBLE SHIFTING LEFT
-void sIUpdate_work(int fold, int W, int NB, float step,
+void sIUpdate_work(int fold, int NB, float step,
 	float* x, float* c, int ldx, float y) {
 	int i;
 	int d;
@@ -26,7 +26,7 @@ void sIUpdate_work(int fold, int W, int NB, float step,
 		return;
 
 	if (x[0] == 0) {
-		sIBoundary_(fold, W, fabs(y), x, ldx);
+		sIBoundary_(fold, fabs(y), x, ldx);
 		for (i = fold; i < 2 * fold; i++) x[i * ldx] = 0;
 		return;
 	}
@@ -53,34 +53,33 @@ void sIUpdate_work(int fold, int W, int NB, float step,
 		c[i * ldx] = c[(i - d) * ldx];
 	}
 
-	sIBoundary_(d, W, fabs(y), x, ldx);
+	sIBoundary_(d, fabs(y), x, ldx);
 	for (i = 0; i < d; i++) c[i * ldx] = 0.0;
 }
 
-void sIUpdate1(int fold, int W, float y, float* x,
+void sIUpdate1(int fold, float y, float* x,
 	float* c, int ldx){
 	if (y == 0 || isnan(y) || isinf(y))
 		return;
 
 	float M = ufpf(x[0]);
-	if (W == 0)
-		W = sIWidth();
+	int W = sIWidth();
 	int NB     = 1 << (PREC - W);
 	M = M / NB;
 	float step = ldexp(0.5f, 1-W);
 
-	sIUpdate_work(fold, W, NB, step, x, c, ldx, y);
+	sIUpdate_work(fold, NB, step, x, c, ldx, y);
 }
 
-void cIUpdates1(int K, int W, float complex* X, float* C, int INC, float Y) {
+void cIUpdates1(int K, float complex* X, float* C, int INC, float Y) {
 	Y = fabs(Y);
-	sIUpdate1(K,W,Y,(float*)X  , C  , 2*INC);
-	sIUpdate1(K,W,Y,(float*)X+1, C+1, 2*INC);
+	sIUpdate1(K,Y,(float*)X  , C  , 2*INC);
+	sIUpdate1(K,Y,(float*)X+1, C+1, 2*INC);
 }
 
-void cIUpdate1(int K, int W, float complex* X, float* C,int INC, float complex Y) {
+void cIUpdate1(int K, float complex* X, float* C,int INC, float complex Y) {
 	float* tmp = (float*)&Y;
-	sIUpdate1(K, W, fabs(tmp[0]), (float*)X  , C  , 2*INC);
-	sIUpdate1(K, W, fabs(tmp[1]), (float*)X+1, C+1, 2*INC);
+	sIUpdate1(K, fabs(tmp[0]), (float*)X  , C  , 2*INC);
+	sIUpdate1(K, fabs(tmp[1]), (float*)X+1, C+1, 2*INC);
 }
 

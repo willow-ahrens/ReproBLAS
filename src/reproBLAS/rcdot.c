@@ -16,7 +16,7 @@ I_float_Complex cdotcI(
 ) {
 	I_float_Complex dot;
 	cISetZero(dot);
-	cdotcI1(N, x, incx, y, incy, DEFAULT_FOLD, 0, (float complex*)dot.m, dot.c);
+	cdotcI1(N, x, incx, y, incy, DEFAULT_FOLD, (float complex*)dot.m, dot.c);
 	return dot;
 }
 
@@ -27,7 +27,7 @@ I_float_Complex cdotuI(
 ) {
 	I_float_Complex dot;
 	cISetZero(dot);
-	cdotuI1(N, x, incx, y, incy, DEFAULT_FOLD, 0, (float complex*)dot.m, dot.c);
+	cdotuI1(N, x, incx, y, incy, DEFAULT_FOLD, (float complex*)dot.m, dot.c);
 	return (dot);
 }
 
@@ -38,7 +38,7 @@ float complex rcdotc(
 ) {
 	I_float_Complex dot;
 	cISetZero(dot);
-	cdotcI1(N, x, incx, y, incy, DEFAULT_FOLD, 0, (float complex*)dot.m, dot.c);
+	cdotcI1(N, x, incx, y, incy, DEFAULT_FOLD, (float complex*)dot.m, dot.c);
 	return Iconv2c(dot);
 }
 
@@ -49,7 +49,7 @@ float complex rcdotu(
 ) {
 	I_float_Complex dot;
 	cISetZero(dot);
-	cdotuI1(N, x, incx, y, incy, DEFAULT_FOLD, 0, (float complex*)dot.m, dot.c);
+	cdotuI1(N, x, incx, y, incy, DEFAULT_FOLD, (float complex*)dot.m, dot.c);
 	return Iconv2c(dot);
 }
 

@@ -4,6 +4,11 @@
 #include <math.h>
 #include <stddef.h>
 
+typedef double double_indexed;
+typedef double double_complex_indexed;
+typedef float float_indexed;
+typedef float float_complex_indexed;
+
 #define DEFAULT_FOLD 3
 
 typedef struct Idouble_ {
@@ -116,12 +121,10 @@ extern void zIAddz1(int fold, double complex* x, int inc, double complex y);
 extern void zIAddz(I_double_Complex* X, double complex Y);
 
 // UPDADATE INDEX FP BY NEW MAXIMUM ABSOLUTE VALUE
-extern void dIUpdate1 (int fold, int W, double* x, double* c, int ldx, double y);
-extern void zIUpdates1(int fold, int W,
-		double complex* x, double complex* c, int ldx, double y);
+extern void dIUpdate1 (int fold, double* x, double* c, int ldx, double y);
+extern void zIUpdates1(int fold, double complex* x, double complex* c, int ldx, double y);
 
-extern void zIUpdate1 (int fold, int W,
-		double complex* x, double complex* c, int ldx,double complex y);
+extern void zIUpdate1 (int fold, double complex* x, double complex* c, int ldx,double complex y);
 
 // COMPUTE BOUNDARIES BASED ON MAXIMUM ABSOLUTE VALUE
 // [INPUT]
@@ -130,7 +133,7 @@ extern void zIUpdate1 (int fold, int W,
 //    MAX   : MAXIMUM ABSOLUTE VALUE OF INPUT VALUES TO BE SUMMED
 // [OUTPUT]
 //    M     : PRECOMPUTED BOUNDARIES
-extern int  dIBoundary(int fold, int W, double max, double* M, int inc);
+extern int  dIBoundary(int fold, double max, double* M, int inc);
 
 // COMPUTE THE UNIT IN TH FIRST PLACE
 extern double ufp(double x);
@@ -144,7 +147,7 @@ extern void dIRenorm1(int fold, double* X, double* C, int inc);
 extern void zIRenorm1(int fold, double complex* rep, double complex* c, int inc);
 
 // CONVERT A DOUBLE TO INDEXED FORMAT
-extern void dconv2I1(int fold, int W, double x, double* rep, double* C, int inc);
+extern void dconv2I1(int fold, double x, double* rep, double* C, int inc);
 extern I_double dconv2I(double x);
 
 // CONVERT AN INDEXED FP BACK TO DOUBLE
@@ -155,7 +158,7 @@ extern double complex Iconv2z1(int fold,
 		double complex* rep, double complex* carry, int inc);
 
 // CONVERT A DOUBLE COMPLEX TO INDEXED FORMAT
-extern void zconv2I1(int fold, int W, double complex X,
+extern void zconv2I1(int fold, double complex X,
 		double complex* rep, double complex* C, int inc);
 extern I_double_Complex zconv2I(double complex x);
 
@@ -188,7 +191,7 @@ extern void cINeg1(int fold, float complex* x, float* c, int inc);
 //    MAX   : MAXIMUM ABSOLUTE VALUE OF INPUT VALUES TO BE SUMMED
 // [OUTPUT]
 //    M     : PRECOMPUTED BOUNDARIES
-extern int  sIBoundary_(int fold, int W, float max, float* M, int inc);
+extern int  sIBoundary_(int fold, float max, float* M, int inc);
 
 // UNIT IN THE FIRST PLACE
 extern float ufpf(float x);
@@ -203,15 +206,13 @@ extern void cIAdd1(int fold, float complex* x, float* xc, int incx,
 extern void cIAdd(I_float_Complex* X, I_float_Complex Y);
 
 //====
-extern void sIUpdate1(int fold, int W, float y, float* x, float* C, int inc);
+extern void sIUpdate1(int fold, float y, float* x, float* C, int inc);
 
 // UPDATE A COMPLEX USING A FLOAT
-extern void cIUpdates1(int K, int W,
-	float complex* X, float* C, int INC, float Y);
+extern void cIUpdates1(int K, float complex* X, float* C, int INC, float Y);
 
 // UPDATE A COMPLEX USING A COMPLEX
-extern void cIUpdate1(int K, int W,
-	float complex* X, float* C,int INC, float complex Y);
+extern void cIUpdate1(int K, float complex* X, float* C,int INC, float complex Y);
 
 // RENORMALIZATION TO AVOID OVERFLOW
 // [INPUT]
@@ -229,10 +230,8 @@ extern float complex Iconv2c1(int fold, float complex* m, float* c, int inc);
 extern float complex Iconv2c_(int fold, float complex* rep);
 
 // CONVERT FROM FLOAT TO INDEXED FORMAT
-extern void fconv2I1(int fold, int W, float x,
-              float* rep, float* carry, int inc);
-extern void cconv2I1(int fold, int W,
-              float complex x, float complex* m, float* c, int inc);
+extern void fconv2I1(int fold, float x, float* rep, float* carry, int inc);
+extern void cconv2I1(int fold, float complex x, float complex* m, float* c, int inc);
 
 extern I_float         fconv2I(float x);
 extern I_float_Complex cconv2I(float complex x);
@@ -252,11 +251,11 @@ extern I_float_Complex cconv2I(float complex x);
 
 
 // ADDING A NATIVE FP TO AN INDEXED FP
-#define dIUpdate_(X,Y) dIUpdate1(DEFAULT_FOLD, 0, (X).m, (X).c, 1, fabs(Y))
+#define dIUpdate_(X,Y) dIUpdate1(DEFAULT_FOLD,  (X).m, (X).c, 1, fabs(Y))
 #define dIAddd_(X,Y)   dIAddd1(DEFAULT_FOLD, (X).m, 1, Y)
 #define dIRenorm_(X)   dIRenorm1(DEFAULT_FOLD, (X).m, (X).c, 1)
 
-#define zIUpdate_(X,Y) zIUpdate1(DEFAULT_FOLD, 0,	\
+#define zIUpdate_(X,Y) zIUpdate1(DEFAULT_FOLD, 	\
 		(double complex*)((X).m),(double complex*)((X).c),1,Y)
 #define zIAddz_(X,Y) zIAddz1(DEFAULT_FOLD, (double complex*)((X).m), 1, Y)
 #define zIRenorm_(X) zIRenorm1(DEFAULT_FOLD,	\
@@ -289,11 +288,11 @@ extern I_float_Complex cconv2I(float complex x);
 
 
 // ADDING A NATIVE FP TO AN INDEXED FP
-#define sIUpdate_(X,Y) sIUpdate1(DEFAULT_FOLD, 0, fabs(Y), (X).m, (X).c, 1)
+#define sIUpdate_(X,Y) sIUpdate1(DEFAULT_FOLD, fabs(Y), (X).m, (X).c, 1)
 #define sIAddf_(X,Y)   sIAddf1(DEFAULT_FOLD, (X).m, 1, Y)
 #define sIRenorm_(X)   sIRenorm1(DEFAULT_FOLD, (X).m, (X).c, 1)
 
-#define cIUpdate_(X,Y) cIUpdate1(DEFAULT_FOLD,0,(float complex*)((X).m),(X).c,1,Y)
+#define cIUpdate_(X,Y) cIUpdate1(DEFAULT_FOLD,(float complex*)((X).m),(X).c,1,Y)
 #define cIAddc_(X,Y) cIAddc1(DEFAULT_FOLD, (float complex*)((X).m), 1, Y)
 #define cIRenorm_(X) cIRenorm1(DEFAULT_FOLD,(float complex*)((X).m), (X).c, 1)
 

@@ -90,7 +90,7 @@ void sdotI1_(
 	int N, int NB,
 	float* x, int incx,
 	float* y, int incy,
-	int fold, int W,
+	int fold, 
 	float* dot, float* c
 ) {
 
@@ -113,7 +113,7 @@ void sdotI1_(
 			continue;
 #		endif
 
-		sIUpdate1(fold, W, amax, dot, c, 1);
+		sIUpdate1(fold, amax, dot, c, 1);
 		
 		for (j = 0; j < lN - maxN + 1; j+=maxN) {
 			sdotI2(maxN, x + j * incx, incx, y + j * incy, incy, fold, dot);

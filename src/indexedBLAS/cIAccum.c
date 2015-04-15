@@ -27,7 +27,7 @@ void cIAccumulate(cIAccum *acc, float complex x) {
 	acc->BUFFER[c] = x;
 	c++;
 	if (c == acc->size) {
-		csumI1(c, acc->BUFFER, 1, 0, sIWidth(),
+		csumI1(c, acc->BUFFER, 1, 0, 
 			(float complex*)acc->v.m, acc->v.c);
 		c = 0;
 	}
@@ -46,7 +46,7 @@ void cIAccumulates(cIAccum *acc, int n, float complex* v, int inc) {
 			acc->BUFFER[i] = v[i * inc];
 		}
 		csumI1(lN + acc->counter, acc->BUFFER, 1,
-			0, sIWidth(),
+			0, 
 			(float complex*)acc->v.m, acc->v.c);
 
 		// reset
@@ -59,7 +59,7 @@ void cIAccumulates(cIAccum *acc, int n, float complex* v, int inc) {
 float complex cIAccExtract(cIAccum *acc) {
 	int c = acc->counter;
 	if (c > 0) {
-		csumI1(c, acc->BUFFER, 1, 0, sIWidth(),
+		csumI1(c, acc->BUFFER, 1, 0, 
 			(float complex*)acc->v.m, acc->v.c);
 	}
 	return Iconv2c((acc->v));

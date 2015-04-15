@@ -41,7 +41,7 @@ int rsnrm2_exception(
 
 float snrm2I1_(int N, int NB,
 	float* v, int inc,
-	int fold, int W, float* sum, float* c) {
+	int fold, float* sum, float* c) {
 	float amax;
 
 	int i, j;
@@ -67,7 +67,7 @@ float snrm2I1_(int N, int NB,
 			continue;
 #		endif
 
-		sIBoundary_(1, W, amax, &nscale, 1); 
+		sIBoundary_(1, amax, &nscale, 1); 
 		nscale = ufpf(nscale);
 //		nscale = nscale / 1.5;
 //		printf("max: %g, nscale: %g \n", amax, nscale);
@@ -89,7 +89,7 @@ float snrm2I1_(int N, int NB,
 		amax *= nscale;
 		amax = amax * amax;
 
-		sIUpdate1(fold, W, amax, sum, c, 1);
+		sIUpdate1(fold, amax, sum, c, 1);
 		
 		for (j = 0; j < lN - maxN + 1; j+=maxN) {
 			snrm2I2(maxN, v + j * inc, inc, nscale, fold, sum);

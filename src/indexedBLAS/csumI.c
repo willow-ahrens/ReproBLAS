@@ -133,7 +133,7 @@ int csum_exception(
 
 void csumI1_(int N, int NB,
 	float complex* v, int inc,
-	int fold, int W, float complex* sum, float* C) {
+	int fold, float complex* sum, float* C) {
 
 	float complex amax;
 
@@ -156,7 +156,7 @@ void csumI1_(int N, int NB,
 		if (status == 1)
 			continue;
 		
-		cIUpdate1(fold, W, sum, C, 1, amax);
+		cIUpdate1(fold, sum, C, 1, amax);
 
 		for (j = 0; j < lN; j+=maxN) {
 			lB = maxN < lN - j ? maxN : lN - j;

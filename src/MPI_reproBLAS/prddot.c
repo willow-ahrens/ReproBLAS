@@ -54,7 +54,7 @@ void prddotI2(
 	int N,
 	double* x, int incx,
 	double* y, int incy,
-	int fold, int W, double* sum,
+	int fold, double* sum,
 	double* local_sum	// WORKING BUFFER TO STORE LOCAL SUM
 ) {
 	int me, i;
@@ -74,7 +74,7 @@ void prddotI2(
 		myType = MPI_IDOUBLE;
    	
 	// PEFORM THE LOCAL SUM WITH BLOCK SIZE OF 1024
-	ddotI1(N, x, incx, y, incy, fold, W, local_sum, local_sum + fold);
+	ddotI1(N, x, incx, y, incy, fold, local_sum, local_sum + fold);
 
 	// REDUCE THE RESULT TO THE ROOT PROCESSOR
 	if (root >= 0)
@@ -95,7 +95,7 @@ double prddot2(
 	int N,
 	double* x, int incx,
 	double* y, int incy,
-	int fold, int W 
+	int fold
 ) {
 	double *sum = NULL;
 	double ret;
@@ -103,7 +103,7 @@ double prddot2(
 
 	sum = (double*) malloc((2 * fold) * sizeof(double));
 
-	prddotI2(comm, root, N, x, incx, y, incy, fold, W, sum, NULL);
+	prddotI2(comm, root, N, x, incx, y, incy, fold, sum, NULL);
 
 	MPI_Comm_rank(comm, &me);
 

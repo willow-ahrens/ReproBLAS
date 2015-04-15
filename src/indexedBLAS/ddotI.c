@@ -87,7 +87,7 @@ void ddotI1_(
 	int N, int NB,
 	double* x, int incx,
 	double* y, int incy,
-	int fold, int W, double* dot, double* c
+	int fold, double* dot, double* c
 ) {
 
 	int lN, i;
@@ -118,7 +118,7 @@ void ddotI1_(
 			accu = 0;
 		}
 		
-		dIUpdate1(fold, W, dot, c, 1, amax);
+		dIUpdate1(fold, dot, c, 1, amax);
 		
 		ddotI2(lN, x, incx, y, incy, fold, dot);
 

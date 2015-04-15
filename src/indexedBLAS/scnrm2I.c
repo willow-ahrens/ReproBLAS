@@ -40,7 +40,7 @@ int rscnrm2_exception(
 
 float scnrm2I1_(int N, int NB,
 	float complex* v, int inc,
-	int fold, int W, float* sum, float* carry,
+	int fold, float* sum, float* carry,
 	float complex* work) {
 	
 	float amax;
@@ -101,7 +101,7 @@ float scnrm2I1_(int N, int NB,
 		if (status > 0)
 			continue;
 		
-		sIBoundary_(1, W, amax, &nscale, 1); 
+		sIBoundary_(1, amax, &nscale, 1); 
 		nscale = nscale / 1.5;
 //		printf("max: %g, scale: %g, nscale: %g \n", amax, scale, nscale);
 
@@ -122,7 +122,7 @@ float scnrm2I1_(int N, int NB,
 			amax = amax * amax;
 //			printf("\nBefore Update: \n");
 //			cIprint(fold, BUFFER);
-			cIUpdates1(fold, W, BUFFER, C, 1, amax);
+			cIUpdates1(fold, BUFFER, C, 1, amax);
 
 //			printf("\nAfter Update: \n");
 //			cIprint(fold, BUFFER);

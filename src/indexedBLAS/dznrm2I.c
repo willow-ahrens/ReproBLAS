@@ -40,7 +40,7 @@ int rdznrm2_exception(
 
 double dznrm2I1_(int N, int NB,
 	double complex* v, int inc,
-	int fold, int W, double* sum, double* c) {
+	int fold, double* sum, double* c) {
 	double amax;
 	double complex amaxz;
 	double complex BUFFER[2 * MAX_FOLD];
@@ -85,7 +85,7 @@ double dznrm2I1_(int N, int NB,
 			accu = 0;
 		}
 
-		dIBoundary(1, W, amax, &nscale, 1); 
+		dIBoundary(1, amax, &nscale, 1); 
 		nscale = nscale / 1.5;
 //		printf("max: %g, nscale: %g \n", amax, nscale);
 
@@ -106,7 +106,7 @@ double dznrm2I1_(int N, int NB,
 		amax *= nscale;
 		amax = amax * amax;
 
-		zIUpdates1(fold, W, BUFFER, BUFFER + fold, 1, amax);
+		zIUpdates1(fold, BUFFER, BUFFER + fold, 1, amax);
 		
 		// TODO: CHECK POTENTIAL FALSE INFINITY
 		dznrm2I2(lN, v, inc, nscale, fold, BUFFER);

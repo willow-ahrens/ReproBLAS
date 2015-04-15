@@ -97,7 +97,7 @@ void przdotI2(
 	int N,
 	double complex* x, int incx,
 	double complex* y, int incy,
-	int fold, int W, double complex* sum,
+	int fold, double complex* sum,
 	double complex* local_sum,	// WORKING BUFFER TO STORE LOCAL SUM
 	int conj
 ) {
@@ -121,9 +121,9 @@ void przdotI2(
    	
 	// PEFORM THE LOCAL SUM WITH BLOCK SIZE OF 1024
 	if (conj == 1)
-		zdotcI1(N, x, incx, y, incy, fold, W, local_sum, local_sum + fold);
+		zdotcI1(N, x, incx, y, incy, fold, local_sum, local_sum + fold);
 	else
-		zdotuI1(N, x, incx, y, incy, fold, W, local_sum, local_sum + fold);
+		zdotuI1(N, x, incx, y, incy, fold, local_sum, local_sum + fold);
 
 	// REDUCE THE RESULT TO THE ROOT PROCESSOR
 	if (root >= 0)
@@ -144,20 +144,20 @@ void przdotcI2(
 	int N,
 	double complex* x, int incx,
 	double complex* y, int incy,
-	int fold, int W, double complex* sum,
+	int fold, double complex* sum,
 	double complex* local_sum	// WORKING BUFFER TO STORE LOCAL SUM
 ) {
-	przdotI2(comm, root, N, x, incx, y, incy, fold, W, sum, local_sum, 1);
+	przdotI2(comm, root, N, x, incx, y, incy, fold, sum, local_sum, 1);
 }
 void przdotuI2(
 	MPI_Comm comm, int root,
 	int N,
 	double complex* x, int incx,
 	double complex* y, int incy,
-	int fold, int W, double complex* sum,
+	int fold, double complex* sum,
 	double complex* local_sum	// WORKING BUFFER TO STORE LOCAL SUM
 ) {
-	przdotI2(comm, root, N, x, incx, y, incy, fold, W, sum, local_sum, 0);
+	przdotI2(comm, root, N, x, incx, y, incy, fold, sum, local_sum, 0);
 }
 
 double complex przdotc2(
@@ -165,7 +165,7 @@ double complex przdotc2(
 	int N,
 	double complex* x, int incx,
 	double complex* y, int incy,
-	int fold, int W 
+	int fold
 ) {
 	double complex *sum = NULL;
 	double complex ret;
@@ -173,7 +173,7 @@ double complex przdotc2(
 
 	sum = (double complex*) malloc(zISize(fold));
 
-	przdotcI2(comm, root, N, x, incx, y, incy, fold, W, sum, NULL);
+	przdotcI2(comm, root, N, x, incx, y, incy, fold, sum, NULL);
 
 	MPI_Comm_rank(comm, &me);
 
@@ -189,7 +189,7 @@ double complex przdotu2(
 	int N,
 	double complex* x, int incx,
 	double complex* y, int incy,
-	int fold, int W 
+	int fold
 ) {
 	double complex *sum = NULL;
 	double complex ret;
@@ -197,7 +197,7 @@ double complex przdotu2(
 
 	sum = (double complex*) malloc(zISize(fold));
 
-	przdotuI2(comm, root, N, x, incx, y, incy, fold, W, sum, NULL);
+	przdotuI2(comm, root, N, x, incx, y, incy, fold, sum, NULL);
 
 	MPI_Comm_rank(comm, &me);
 

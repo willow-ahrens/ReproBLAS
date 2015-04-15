@@ -10,7 +10,7 @@ float snrm2I(
 	float* x, int incx,
 	I_float* dot
 ) {
-	return snrm2I1(N, x, incx, DEFAULT_FOLD, 0, dot->m, dot->c);
+	return snrm2I1(N, x, incx, DEFAULT_FOLD, dot->m, dot->c);
 }
 
 float rsnrm2(int N, float* v, int inc) {
@@ -20,7 +20,7 @@ float rsnrm2(int N, float* v, int inc) {
 
 	sISetZero(sum);
 
-	scale = snrm2I1(N, v, inc, DEFAULT_FOLD, 0, sum.m, sum.c);
+	scale = snrm2I1(N, v, inc, DEFAULT_FOLD, sum.m, sum.c);
 
 	if (isnan(scale))
 		return scale;

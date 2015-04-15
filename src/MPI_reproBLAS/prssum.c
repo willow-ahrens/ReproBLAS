@@ -55,7 +55,7 @@ void prssumI2(
 	MPI_Comm comm, int root,
 	int N,
 	float* x, int incx,
-	int fold, int W,
+	int fold, 
 	void* sum,
 	void* local_sum	// WORKING BUFFER TO STORE LOCAL SUM
 ) {
@@ -85,7 +85,7 @@ void prssumI2(
 		myType = MPI_IFLOAT;
    	
 	// PEFORM THE LOCAL SUM WITH BLOCK SIZE OF 1024
-	ssumI1(N, x, incx, fold, W, psum, (float*)(psum + fold));
+	ssumI1(N, x, incx, fold, psum, (float*)(psum + fold));
 
 	// REDUCE THE RESULT TO THE ROOT PROCESSOR
 	if (root >= 0)
@@ -106,14 +106,14 @@ float prssum2(
 	MPI_Comm comm, int root,
 	int N,
 	float* x, int incx,
-	int fold, int W 
+	int fold
 ) {
 	float ret;
 	int    me;
 
 	void* sum = malloc(fold * (sizeof(float) + sizeof(float)));
 
-	prssumI2(comm, root, N, x, incx, fold, W, sum, NULL);
+	prssumI2(comm, root, N, x, incx, fold, sum, NULL);
 
 	MPI_Comm_rank(comm, &me);
 

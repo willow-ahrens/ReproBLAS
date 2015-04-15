@@ -26,7 +26,7 @@ I_double ddotI(
 
 	dISetZero(dot);
 
-	ddotI1(N, x, incx, y, incy, DEFAULT_FOLD, 0, dot.m, dot.c);
+	ddotI1(N, x, incx, y, incy, DEFAULT_FOLD, dot.m, dot.c);
 
 	return dot;
 }
@@ -41,7 +41,7 @@ double rddot(
 
 	dISetZero(dot);
 
-	ddotI1(N, x, incx, y, incy, DEFAULT_FOLD, 0, dot.m, dot.c);
+	ddotI1(N, x, incx, y, incy, DEFAULT_FOLD, dot.m, dot.c);
 
 	return Iconv2d(dot);
 }

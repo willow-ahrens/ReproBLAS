@@ -9,7 +9,7 @@
 #include "indexed.h"
 #include "../Common/Common.h"
 
-void dconv2I1(int fold, int W, double x, double* rep, double* C, int inc) {
+void dconv2I1(int fold, double x, double* rep, double* C, int inc) {
 	int i;
 	double q;
 	if (x == 0.0) {
@@ -19,7 +19,7 @@ void dconv2I1(int fold, int W, double x, double* rep, double* C, int inc) {
 		}
 		return;
 	}
-	dIBoundary(fold, W, fabs(x), rep, inc);
+	dIBoundary(fold, fabs(x), rep, inc);
 	double M;
 	for (i = 0; i < fold; i++, rep += inc, C += inc) {
 		// high-order part
@@ -35,7 +35,7 @@ void dconv2I1(int fold, int W, double x, double* rep, double* C, int inc) {
 
 I_double dconv2I(double x) {
 	I_double ret;
-	dconv2I1(DEFAULT_FOLD, 0, x, ret.m, ret.c, 1);
+	dconv2I1(DEFAULT_FOLD, x, ret.m, ret.c, 1);
 	return ret;
 }
 
@@ -85,18 +85,18 @@ double complex Iconv2z1(int fold, double complex* rep, double complex* C, int in
 	return ret;
 }
 
-void zconv2I1(int fold, int W, double complex X, double complex* rep, double complex* C, int inc) {
+void zconv2I1(int fold, double complex X, double complex* rep, double complex* C, int inc) {
 	double* xx = (double*) &X;
 	double* dptr = (double*) rep;
 	double* cptr = (double*) C;
 	inc *= 2;
-	dconv2I1(fold, W, xx[0], dptr, cptr, inc);
-	dconv2I1(fold, W, xx[1], dptr+1, cptr + 1, inc);
+	dconv2I1(fold, xx[0], dptr, cptr, inc);
+	dconv2I1(fold, xx[1], dptr+1, cptr + 1, inc);
 }
 
 I_double_Complex zconv2I(double complex x) {
 	I_double_Complex ret;
-	zconv2I1(DEFAULT_FOLD, 0, x, (double complex*)ret.m, (double complex*) ret.c, 1);
+	zconv2I1(DEFAULT_FOLD, x, (double complex*)ret.m, (double complex*) ret.c, 1);
 	return ret;
 }
 

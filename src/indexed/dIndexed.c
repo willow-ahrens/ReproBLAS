@@ -136,13 +136,18 @@ double* D_Max2Boundaries(double amax) {
 
 
 // COMPUTE THE BOUNDARIES BASED ON MAXIMUM ABSOLUTE VALUE
-int dIBoundary(int fold, int W, double max, double* M, int inc) {
+int dIBoundary(int fold, double max, double* M, int inc) {
 	double delta;
 	int i;
 	double M0;
 
-	int index;
+	int index = D_Max2Ind(max);
+    for (i = 0; i < fold; i++) {
+        M[i * inc] = D_BOUNDARIES[index + i];
+    }
+    return index;
 
+    /*
 	if (W == D_BIN_WIDTH || W == 0) {
 		index = D_Max2Ind(max);
 		for (i = 0; i < fold; i++) {
@@ -191,6 +196,7 @@ int dIBoundary(int fold, int W, double max, double* M, int inc) {
 #endif
 
 	return index / W;
+  */
 }
 
 #define USE_FREXP

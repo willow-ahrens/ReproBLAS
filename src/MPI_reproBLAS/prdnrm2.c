@@ -25,7 +25,7 @@ void prdnrm2I(
 	for (i = 0; i < 1+ 2*DEFAULT_FOLD; i++)
 		local_sum[i] = 0;
 
-	local_sum[0] = dnrm2I1(N, x, incx, DEFAULT_FOLD, 0,
+	local_sum[0] = dnrm2I1(N, x, incx, DEFAULT_FOLD, 
 		local_sum + 1, local_sum + 1 + DEFAULT_FOLD);
 
 	for (i = 0; i < 1 + 2 * DEFAULT_FOLD; i++) {
@@ -56,7 +56,7 @@ void prdnrm2I2(
 	MPI_Comm comm, int root,
 	int N,
 	double* x, int incx,
-	int fold, int W, double* sum,
+	int fold,  double* sum,
 	double* local_sum	// WORKING BUFFER TO STORE LOCAL SUM
 ) {
 	int me, i;
@@ -77,7 +77,7 @@ void prdnrm2I2(
 		myType = MPI_IDOUBLE_SCALE;
    	
 	// PEFORM THE LOCAL SUM WITH BLOCK SIZE OF 1024
-	local_sum[0] = dnrm2I1(N, x, incx, fold, W, local_sum + 1, local_sum + 1 + fold);
+	local_sum[0] = dnrm2I1(N, x, incx, fold, local_sum + 1, local_sum + 1 + fold);
 
 	// REDUCE THE RESULT TO THE ROOT PROCESSOR
 	if (root >= 0)
@@ -98,7 +98,7 @@ double prdnrm22(
 	MPI_Comm comm, int root,
 	int N,
 	double* x, int incx,
-	int fold, int W
+	int fold
 ) {
 	double *sum = NULL;
 	double *local_sum = NULL;
@@ -107,7 +107,7 @@ double prdnrm22(
 
 	sum = (double*) malloc((1 + 2 * fold) * sizeof(double));
 
-	prdnrm2I2(comm, root, N, x, incx, fold, W, sum, NULL);
+	prdnrm2I2(comm, root, N, x, incx, fold, sum, NULL);
 
 	MPI_Comm_rank(comm, &me);
 

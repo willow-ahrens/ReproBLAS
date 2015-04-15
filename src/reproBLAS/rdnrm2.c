@@ -14,7 +14,7 @@ double dnrm2I(
 	double* x, int incx,
 	I_double* sum
 ) {
-	return dnrm2I1(N, x, incx, DEFAULT_FOLD, 0, sum->m, sum->c);
+	return dnrm2I1(N, x, incx, DEFAULT_FOLD, sum->m, sum->c);
 }
 
 double rdnrm2(int N, double* v, int inc) {
@@ -24,7 +24,7 @@ double rdnrm2(int N, double* v, int inc) {
 
 	dISetZero(sum);
 
-	scale = dnrm2I1(N, v, inc, DEFAULT_FOLD, 0, sum.m, sum.c);
+	scale = dnrm2I1(N, v, inc, DEFAULT_FOLD, sum.m, sum.c);
 
 	if (isnan(scale))
 		return scale;

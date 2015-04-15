@@ -15,7 +15,7 @@ float scnrm2I(
 	I_float* sum
 ) {
 	I_float_Complex tmp;
-	return scnrm2I1(N, x, incx, DEFAULT_FOLD, 0, sum->m, sum->c, (float complex*)&tmp);
+	return scnrm2I1(N, x, incx, DEFAULT_FOLD, sum->m, sum->c, (float complex*)&tmp);
 }
 
 float rscnrm2(int N, float complex* v, int inc) {
@@ -25,7 +25,7 @@ float rscnrm2(int N, float complex* v, int inc) {
 	float scale = 0.0;
 	
 	sISetZero(sum);
-	scale = scnrm2I1(N, v, inc, DEFAULT_FOLD, 0, sum.m, sum.c, (float complex*)&tmp);
+	scale = scnrm2I1(N, v, inc, DEFAULT_FOLD, sum.m, sum.c, (float complex*)&tmp);
 
 	if (isnan(scale))
 		return scale;

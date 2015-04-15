@@ -11,12 +11,12 @@ void dgemvI(rblas_order_t Order,
       switch(TransA){
         case rblas_No_Trans:
           for(int i = 0; i < M; i++){
-            ddotI1(N,X,incX, A + i * lda, 1, fold,40,&Y[i*incY].m,&Y[i*incY].c);
+            ddotI1(N,X,incX, A + i * lda, 1, fold,&Y[i*incY].m,&Y[i*incY].c);
           }
           break;
         default:
           for(int i = 0; i < N; i++){
-            ddotI1(M,X,incX, A + i, lda, fold,40,&Y[i*incY].m,&Y[i*incY].c);
+            ddotI1(M,X,incX, A + i, lda, fold,&Y[i*incY].m,&Y[i*incY].c);
           }
       }
       break;

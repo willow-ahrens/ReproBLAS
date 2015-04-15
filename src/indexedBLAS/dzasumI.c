@@ -43,7 +43,7 @@ int rdzasum_exception(
 
 void dzasumI1_(int N, int NB,
 	dcomplex* v, int inc,
-	int fold, int W, double* sum, double * c) {
+	int fold, double* sum, double * c) {
 
 	double amax;
 	double M;
@@ -85,7 +85,7 @@ void dzasumI1_(int N, int NB,
 		if (status > 0)
 			continue;
 		
-		zIUpdates1(fold, W, BUFFER, BUFFER + fold, 1, amax);
+		zIUpdates1(fold, BUFFER, BUFFER + fold, 1, amax);
 
 		if (accu + lN > maxN) {
 			zIRenorm1(fold, BUFFER, BUFFER + fold, 1);

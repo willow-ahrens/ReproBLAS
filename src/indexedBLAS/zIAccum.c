@@ -27,7 +27,7 @@ void zIAccumulate(zIAccum *acc, double complex x) {
 	acc->BUFFER[c] = x;
 	c++;
 	if (c == acc->size) {
-		zsumI1(c, acc->BUFFER, 1, 0, dIWidth(),
+		zsumI1(c, acc->BUFFER, 1, 0, 
 			(double complex*)acc->v.m, (double complex*)acc->v.c);
 		c = 0;
 	}
@@ -46,7 +46,7 @@ void zIAccumulates(zIAccum *acc, int n, double complex* v, int inc) {
 			acc->BUFFER[i] = v[i * inc];
 		}
 		zsumI1(lN + acc->counter, acc->BUFFER, 1,
-			0, dIWidth(),
+			0, 
 			(double complex*)acc->v.m, (double complex*)acc->v.c);
 
 		// reset
@@ -59,7 +59,7 @@ void zIAccumulates(zIAccum *acc, int n, double complex* v, int inc) {
 double complex zIAccExtract(zIAccum *acc) {
 	int c = acc->counter;
 	if (c > 0) {
-		zsumI1(c, acc->BUFFER, 1, 0, dIWidth(),
+		zsumI1(c, acc->BUFFER, 1, 0, 
 			(double complex*)acc->v.m, (double complex*)acc->v.c);
 	}
 	return Iconv2z((acc->v));
