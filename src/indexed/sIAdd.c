@@ -11,7 +11,7 @@
 
 // ADDING TWO INDEXED FP
 // X += Y
-void sIAdd1(int n, float* x, F_CARRY_T* xc, int incx, float* y, F_CARRY_T* yc, int incy) {
+void sIAdd1(int n, float* x, float* xc, int incx, float* y, float* yc, int incy) {
 	int i, j;
 	int d;
 
@@ -76,8 +76,8 @@ void sIAdd(I_float* X, I_float Y) {
 	sIRenorm1(DEFAULT_FOLD,(X)->m,(X)->c,1);
 }
 
-void cIAdd1(int K, float complex* x, F_CARRY_T* xc, int incx,
-	float complex* y, F_CARRY_T* yc, int incy) {
+void cIAdd1(int K, float complex* x, float* xc, int incx,
+	float complex* y, float* yc, int incy) {
 	sIAdd1(K, (float*)x    , xc    , 2 * incx, (float*)y    , yc    , 2 * incy);
 	sIAdd1(K, (float*)x + 1, xc + 1, 2 * incx, (float*)y + 1, yc + 1, 2 * incy);
 }
@@ -122,7 +122,7 @@ void cIAddc(I_float_Complex* X, float complex Y) {
 	cIRenorm1(DEFAULT_FOLD,(float complex*)((X)->m), (X)->c, 1);
 }
 
-void sINeg1(int fold, float* x, F_CARRY_T* c, int inc) {
+void sINeg1(int fold, float* x, float* c, int inc) {
 	float M, X;
 	int i;
 	for (i = 0; i < fold; i++, x += inc, c += inc) {
@@ -133,7 +133,7 @@ void sINeg1(int fold, float* x, F_CARRY_T* c, int inc) {
 	}
 }
 
-void cINeg1(int fold, float complex* x, F_CARRY_T* c, int inc) {
+void cINeg1(int fold, float complex* x, float* c, int inc) {
 	float MR, MI, BR, BI;
 	float* xptr = (float*) x;
 	int i;

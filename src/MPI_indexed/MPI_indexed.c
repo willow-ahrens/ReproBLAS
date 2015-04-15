@@ -40,15 +40,7 @@ int MPI_IFLOAT_Create(MPI_Datatype* newtype) {
 	array_of_displacements[1] = carry_address - base_address;
 
 	array_of_types[0] = MPI_FLOAT;
-#if F_CARRY_OP == 0
 	array_of_types[1] = MPI_FLOAT;
-#elif F_CARRY_OP == 1
-	array_of_types[1] = MPI_DOUBLE;
-#elif F_CARRY_OP == 2
-	array_of_types[1] = MPI_INT;
-#elif F_CARRY_OP == 3
-	array_of_types[1] = MPI_LONG;
-#endif
 
 	int ret = MPI_Type_create_struct(2, array_of_blocklengths, array_of_displacements,array_of_types, newtype);
 	if (ret == MPI_SUCCESS) {
@@ -115,15 +107,7 @@ int RMPI_Init() {
 	array_of_displacements[1] = carry_address - base_address;
 
 	array_of_types[0] = MPI_FLOAT;
-#if F_CARRY_OP == 0
 	array_of_types[1] = MPI_FLOAT;
-#elif F_CARRY_OP == 1
-	array_of_types[1] = MPI_DOUBLE;
-#elif F_CARRY_OP == 2
-	array_of_types[1] = MPI_INT;
-#elif F_CARRY_OP == 3
-	array_of_types[1] = MPI_LONG;
-#endif
 
 	status = MPI_Type_create_struct(2, array_of_blocklengths, array_of_displacements,array_of_types, &MPI_IFLOAT);
 	if (status == MPI_SUCCESS) {

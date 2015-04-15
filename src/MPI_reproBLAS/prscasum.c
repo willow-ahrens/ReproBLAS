@@ -63,7 +63,7 @@ void prscasumI2(
 		created = 1;
 	}
 
-	F_CARRY_T* C = (F_CARRY_T*)(local_sum + fold);
+	float* C = (float*)(local_sum + fold);
 	for (i = 0; i < fold; i++) {
 		local_sum[i] = 0;
 		C[i] = 0;
@@ -109,7 +109,7 @@ float prscasum2(
 	MPI_Comm_rank(comm, &me);
 
 	// CONVERT THE EXTENDED INDEXED FP NUMBER TO FLOAT-PRECISION
-	ret = Iconv2f1(fold, sum, (F_CARRY_T*)(sum + fold), 1);
+	ret = Iconv2f1(fold, sum, (float*)(sum + fold), 1);
 
 	free(sum);
 	return ret;

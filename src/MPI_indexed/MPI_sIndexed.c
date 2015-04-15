@@ -26,16 +26,16 @@ void sIAdd_MPI(
 
 	MPI_Type_size(*datatype, &size);
 
-	fold = size / (sizeof(float) + sizeof(F_CARRY_T));
+	fold = size / (sizeof(float) + sizeof(float));
 
 	for (i = 0; i < *len; i++) {
 
 		sIAdd1(fold,
-			(float*)inoutvec, (F_CARRY_T*)(inoutvec + array_of_addresses[1]), 1,
-			(float*)invec, (F_CARRY_T*)(invec + array_of_addresses[1]), 1
+			(float*)inoutvec, (float*)(inoutvec + array_of_addresses[1]), 1,
+			(float*)invec, (float*)(invec + array_of_addresses[1]), 1
 		);
 		sIRenorm1(fold,
-			(float*)inoutvec, (F_CARRY_T*)(inoutvec + array_of_addresses[1]), 1
+			(float*)inoutvec, (float*)(inoutvec + array_of_addresses[1]), 1
 		);
 
 		invec    = (char*)invec + size;
@@ -63,19 +63,19 @@ void cIAdd_MPI(
 
 	MPI_Type_size(*datatype, &size);
 
-	fold = size / (sizeof(float complex) + 2 * sizeof(F_CARRY_T));
+	fold = size / (sizeof(float complex) + 2 * sizeof(float));
 
 	for (i = 0; i < *len; i++) {
 
 		cIAdd1(fold,
 			(float complex*)inoutvec,
-			(F_CARRY_T*)(inoutvec + array_of_addresses[1]), 1,
+			(float*)(inoutvec + array_of_addresses[1]), 1,
 			(float complex*)invec,
-			(F_CARRY_T*)(invec + array_of_addresses[1]), 1
+			(float*)(invec + array_of_addresses[1]), 1
 		);
 		cIRenorm1(fold,
 			(float complex*)inoutvec,
-			(F_CARRY_T*)(inoutvec + array_of_addresses[1]), 1
+			(float*)(inoutvec + array_of_addresses[1]), 1
 		);
 
 		invec    = (char*)invec + size;
@@ -107,7 +107,7 @@ void sINrm2_MPI(
 
 	MPI_Type_size(*datatype, &size);
 
-	fold = (size - sizeof(float)) / (sizeof(float) + sizeof(F_CARRY_T));
+	fold = (size - sizeof(float)) / (sizeof(float) + sizeof(float));
 
 	for (i = 0; i < *len; i++) {
 		pin  = (float*) invec;
@@ -134,8 +134,8 @@ void sINrm2_MPI(
 		}
 
 		sIAdd1(fold,
-			pout + 1, (F_CARRY_T*)(inoutvec + array_of_addresses[1]), 1,
-			pin  + 1, (F_CARRY_T*)(invec + array_of_addresses[1]), 1
+			pout + 1, (float*)(inoutvec + array_of_addresses[1]), 1,
+			pin  + 1, (float*)(invec + array_of_addresses[1]), 1
 		);
 
 		invec    = (char*)invec + size;
@@ -156,15 +156,7 @@ int sIMPICreate_(MPI_Datatype* newtype, int size1, int size2) {
 	array_of_displacements[1] = size1 * sizeof(float);
 
 	array_of_types[0] = MPI_FLOAT;
-#if F_CARRY_OP == 0
 	array_of_types[1] = MPI_FLOAT;
-#elif F_CARRY_OP == 1
-	array_of_types[1] = MPI_DOUBLE;
-#elif F_CARRY_OP == 2
-	array_of_types[1] = MPI_INT;
-#elif F_CARRY_OP == 3
-	array_of_types[1] = MPI_LONG;
-#endif
 
 	int ret = MPI_Type_create_struct(2, array_of_blocklengths, array_of_displacements,array_of_types, newtype);
 	if (ret == MPI_SUCCESS) {

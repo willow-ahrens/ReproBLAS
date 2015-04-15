@@ -44,7 +44,7 @@ int rscasum_exception(
 // work is a buffer of size fold (sizeof(float) + sizeof (carry))
 void scasumI1_(int N, int NB,
 	float complex* v, int inc,
-	int fold, int W, float* sum, F_CARRY_T* carry,
+	int fold, int W, float* sum, float* carry,
 	float complex* work) {
 
 	float amax;
@@ -59,7 +59,7 @@ void scasumI1_(int N, int NB,
 
 	/*
 	float complex BUFFER[MAX_FOLD];
-	F_CARRY_T C[2*MAX_FOLD];
+	float C[2*MAX_FOLD];
 	*/
 
 	if (work == NULL) {
@@ -68,7 +68,7 @@ void scasumI1_(int N, int NB,
 	}
 
 	float complex* BUFFER = work;
-	F_CARRY_T* C     = (F_CARRY_T*) (BUFFER + fold);
+	float* C     = (float*) (BUFFER + fold);
 
 	for (i = 0; i < fold; i++) {
 		CSET_(BUFFER[i], sum[i], 1.5*ufpf(sum[i]));

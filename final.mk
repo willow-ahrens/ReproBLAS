@@ -55,10 +55,9 @@ excise:
 check:
 	$(CALL_PYTHON) $(TOP)/tests/checks/check.py
 
-#TODO
 reference:
-	$(CALL_PYTHON) $(TOP)/tests/harness.py -s $(TOP)/tests/checks/data/create.suite
-	$(CALL_PYTHON) $(TOP)/tests/harness.py -s $(TOP)/tests/checks/reference.suite
+	rm $(TOP)/tests/checks/data/*
+	$(CALL_PYTHON) $(TOP)/tests/checks/reference.py
 
 bench:
 	$(CALL_PYTHON) $(TOP)/tests/benchs/bench.py

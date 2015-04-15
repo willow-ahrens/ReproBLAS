@@ -1,6 +1,6 @@
 #ifndef _INDEXED_BLAS__H_
 #define _INDEXED_BLAS__H_
-#include "Indexed.h"
+#include "indexed.h"
 #include <complex.h>
 
 #define  dsumI_(N,V,INC,S) dsumI1(N,V,INC,DEFAULT_FOLD,0,(S).m, (S).c)
@@ -119,13 +119,13 @@ extern void   ddotI1_ (int N, int NB, double* x, int incx,
 
 //++++ FLOAT +++++
 extern float snrm2I1_(int N, int NB, 
-             float* x, int incx, int fold, int W, float* sum, F_CARRY_T* c);
+             float* x, int incx, int fold, int W, float* sum, float* c);
 extern void  ssumI1_ (int N, int NB,
-             float* x, int incx, int fold, int W, float* sum, F_CARRY_T* c);
+             float* x, int incx, int fold, int W, float* sum, float* c);
 void  sasumI1_(int N, int NB,
-             float* x, int incx, int fold, int W, float* sum, F_CARRY_T* c);
+             float* x, int incx, int fold, int W, float* sum, float* c);
 extern void  sdotI1_ (int N, int NB, float* x, int incx, float* y, int incy,
-             int fold, int W, float* dot, F_CARRY_T* c);
+             int fold, int W, float* dot, float* c);
 
 #define sasumI1(N,V,INC,K,W,SUM,C)       sasumI1_(N,1024,V,INC,K,W,SUM,C)
 #define ssumI1(N,V,INC,K,W,SUM,C)        ssumI1_(N,1024,V,INC,K,W,SUM,C)
@@ -168,16 +168,16 @@ extern void   zsumI1_  (int N, int NB,
 //++++ COMPLEX +++++
 extern void   scasumI1_(int N, int NB,
                  float complex* x, int inc, int K, int W,
-                 float* sum, F_CARRY_T* c, float complex* work);
+                 float* sum, float* c, float complex* work);
 extern float  scnrm2I1_(int N, int NB,
                  float complex* v, int inc, int K, int W,
-                 float* sum, F_CARRY_T* c, float complex* work);
+                 float* sum, float* c, float complex* work);
 extern void   cdotI1_  (int N, int NB,
                  float complex* v, int inc, float complex* y, int incy,
-                 int K, int W,  float complex* dot, F_CARRY_T* c, int conj);
+                 int K, int W,  float complex* dot, float* c, int conj);
 extern void   csumI1_  (int N, int NB,
                  float complex* v, int inc, int K, int W,
-                 float complex* sum, F_CARRY_T* c);
+                 float complex* sum, float* c);
 
 #define scasumI1(N, X, INCX, K, W, SUM, C, WORK)	\
 	if (INCX == 1)	\

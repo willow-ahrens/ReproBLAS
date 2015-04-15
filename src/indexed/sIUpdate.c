@@ -18,7 +18,7 @@
 // CHANGE THE INDEX
 // IN FACT, IT IS A POSSIBLE SHIFTING LEFT
 void sIUpdate_work(int fold, int W, int NB, float step,
-	float* x, F_CARRY_T* c, int ldx, float y) {
+	float* x, float* c, int ldx, float y) {
 	int i;
 	int d;
 
@@ -58,7 +58,7 @@ void sIUpdate_work(int fold, int W, int NB, float step,
 }
 
 void sIUpdate1(int fold, int W, float y, float* x,
-	F_CARRY_T* c, int ldx){
+	float* c, int ldx){
 	if (y == 0 || isnan(y) || isinf(y))
 		return;
 
@@ -72,13 +72,13 @@ void sIUpdate1(int fold, int W, float y, float* x,
 	sIUpdate_work(fold, W, NB, step, x, c, ldx, y);
 }
 
-void cIUpdates1(int K, int W, float complex* X, F_CARRY_T* C, int INC, float Y) {
+void cIUpdates1(int K, int W, float complex* X, float* C, int INC, float Y) {
 	Y = fabs(Y);
 	sIUpdate1(K,W,Y,(float*)X  , C  , 2*INC);
 	sIUpdate1(K,W,Y,(float*)X+1, C+1, 2*INC);
 }
 
-void cIUpdate1(int K, int W, float complex* X, F_CARRY_T* C,int INC, float complex Y) {
+void cIUpdate1(int K, int W, float complex* X, float* C,int INC, float complex Y) {
 	float* tmp = (float*)&Y;
 	sIUpdate1(K, W, fabs(tmp[0]), (float*)X  , C  , 2*INC);
 	sIUpdate1(K, W, fabs(tmp[1]), (float*)X+1, C+1, 2*INC);

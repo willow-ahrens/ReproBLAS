@@ -2,22 +2,9 @@
 #define INDEXED_H
 #include <complex.h>
 #include <math.h>
+#include <stddef.h>
 
 #define DEFAULT_FOLD 3
-#define F_CARRY_OP 1
-//====================================//
-//  DEFINE TYPES                      //
-//====================================//
-
-#if (F_CARRY_OP == 1)
-#define F_CARRY_T  double
-#elif (F_CARRY_OP == 0)
-#define F_CARRY_T  float
-#elif (F_CARRY_OP == 2)
-#define F_CARRY_T  int
-#elif (F_CARRY_OP == 3)
-#define F_CARRY_T  int
-#endif
 
 typedef struct Idouble_ {
 	double m[DEFAULT_FOLD];
@@ -36,18 +23,29 @@ typedef struct dIComplex_ {
 
 typedef struct Ifloat_ {
 	float  m[DEFAULT_FOLD];
-	F_CARRY_T c[DEFAULT_FOLD];
+	float c[DEFAULT_FOLD];
 } I_float;
 
 typedef struct sIComplex_{
 	float m[2*DEFAULT_FOLD];
-	F_CARRY_T c[2*DEFAULT_FOLD];
+	float c[2*DEFAULT_FOLD];
 } I_float_Complex;
 
-#define zISize(K) (2*K*sizeof(double complex))
-#define dISize(K) (2*K*sizeof(double))
-#define sISize(K) (K*(sizeof(float)+sizeof(F_CARRY_T)))
-#define cISize(K) (K*sizeof(float complex)+2*K*sizeof(F_CARRY_T))
+static inline size_t dISize(int fold){
+  return 2*fold*sizeof(double);
+}
+
+static inline size_t zISize(int fold){
+  return 4*fold*sizeof(double);
+}
+
+static inline size_t sISize(int fold){
+  return 2*fold*sizeof(float);
+}
+
+static inline size_t cISize(int fold){
+  return 4*fold*sizeof(float);
+}
 
 // SET ZERO
 #define ISetZero_(K,M,C) {	\
@@ -165,8 +163,8 @@ extern I_double_Complex zconv2I(double complex x);
 extern int sICapacity();
 extern int sIWidth();
 
-extern void sIprint1(int n, float* x, F_CARRY_T* carry, int inc);
-extern void cIprint1(int n, float complex* x, F_CARRY_T* carry, int inc);
+extern void sIprint1(int n, float* x, float* carry, int inc);
+extern void cIprint1(int n, float complex* x, float* carry, int inc);
 
 // ADD A FLOAT TO AN INDEXED FP
 // [INPUT]
@@ -180,8 +178,8 @@ extern void cIAddc1(int fold, float complex* x, int inc, float complex Y);
 extern void cIAddc(I_float_Complex* X, float complex Y);
 
 // NEGATION
-extern void sINeg1(int fold, float* x, F_CARRY_T* c, int inc);
-extern void cINeg1(int fold, float complex* x, F_CARRY_T* c, int inc);
+extern void sINeg1(int fold, float* x, float* c, int inc);
+extern void cINeg1(int fold, float complex* x, float* c, int inc);
 
 // COMPUTE BOUNDARIES BASED ON MAXIMUM ABSOLUTE VALUE
 // [INPUT]
@@ -197,44 +195,44 @@ extern float ufpf(float x);
 
 // X += Y
 extern void sIAdd1(int fold, float* x,
-	F_CARRY_T* xc, int incx, float* y, F_CARRY_T* yc, int incy);
+	float* xc, int incx, float* y, float* yc, int incy);
 extern void sIAdd(I_float* X, I_float Y);
 
-extern void cIAdd1(int fold, float complex* x, F_CARRY_T* xc, int incx,
-	float complex* y, F_CARRY_T* yc, int incy);
+extern void cIAdd1(int fold, float complex* x, float* xc, int incx,
+	float complex* y, float* yc, int incy);
 extern void cIAdd(I_float_Complex* X, I_float_Complex Y);
 
 //====
-extern void sIUpdate1(int fold, int W, float y, float* x, F_CARRY_T* C, int inc);
+extern void sIUpdate1(int fold, int W, float y, float* x, float* C, int inc);
 
 // UPDATE A COMPLEX USING A FLOAT
 extern void cIUpdates1(int K, int W,
-	float complex* X, F_CARRY_T* C, int INC, float Y);
+	float complex* X, float* C, int INC, float Y);
 
 // UPDATE A COMPLEX USING A COMPLEX
 extern void cIUpdate1(int K, int W,
-	float complex* X, F_CARRY_T* C,int INC, float complex Y);
+	float complex* X, float* C,int INC, float complex Y);
 
 // RENORMALIZATION TO AVOID OVERFLOW
 // [INPUT]
 //    FOLD  : NB OF BINS OF LEADING BITS (NB OF M TO BE COMPUTED)
 // [IN/OUTPUT]
 //    X     : INDEXED FP
-extern void sIRenorm1(int fold, float* X, F_CARRY_T* C, int inc);
+extern void sIRenorm1(int fold, float* X, float* C, int inc);
 
-extern void cIRenorm1(int fold, float complex* sum, F_CARRY_T* C, int inc);
+extern void cIRenorm1(int fold, float complex* sum, float* C, int inc);
 
 // CONVERSION FROM INDEXED FORMAT TO FLOAT
-extern float   Iconv2f1(int fold, float* m, F_CARRY_T* c, int inc);
+extern float   Iconv2f1(int fold, float* m, float* c, int inc);
 
-extern float complex Iconv2c1(int fold, float complex* m, F_CARRY_T* c, int inc);
+extern float complex Iconv2c1(int fold, float complex* m, float* c, int inc);
 extern float complex Iconv2c_(int fold, float complex* rep);
 
 // CONVERT FROM FLOAT TO INDEXED FORMAT
 extern void fconv2I1(int fold, int W, float x,
-              float* rep, F_CARRY_T* carry, int inc);
+              float* rep, float* carry, int inc);
 extern void cconv2I1(int fold, int W,
-              float complex x, float complex* m, F_CARRY_T* c, int inc);
+              float complex x, float complex* m, float* c, int inc);
 
 extern I_float         fconv2I(float x);
 extern I_float_Complex cconv2I(float complex x);

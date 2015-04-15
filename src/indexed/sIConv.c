@@ -10,7 +10,7 @@
 #include "indexed.h"
 #include "../Common/Common.h"
 
-void fconv2I1(int fold, int W, float x, float* mantissa, F_CARRY_T* carry, int inc) {
+void fconv2I1(int fold, int W, float x, float* mantissa, float* carry, int inc) {
 	int i;
 	float q;
 	for (i = 0; i < fold; i++) carry[i*inc] = 0;
@@ -36,7 +36,7 @@ I_float fconv2I(float x) {
 	return ret;
 }
 
-float Iconv2f1(int fold, float* mantissa, F_CARRY_T* carry, int inc) {
+float Iconv2f1(int fold, float* mantissa, float* carry, int inc) {
 	int i;
 
 	// CHECK FOR NAN OR INFINITY
@@ -85,16 +85,16 @@ float Iconv2f1(int fold, float* mantissa, F_CARRY_T* carry, int inc) {
 	return (float)ret;
 }
 
-float complex Iconv2c1(int fold, float complex* mantissa, F_CARRY_T* C, int inc) {
+float complex Iconv2c1(int fold, float complex* mantissa, float* C, int inc) {
 	float complex ret;
 	float* rptr = (float*) &ret;
 	inc *= 2;
-	rptr[0] = Iconv2f1(fold, (float*)mantissa, (F_CARRY_T*)C, inc);
-	rptr[1] = Iconv2f1(fold, (float*)mantissa + 1, (F_CARRY_T*)C + 1, inc);
+	rptr[0] = Iconv2f1(fold, (float*)mantissa, (float*)C, inc);
+	rptr[1] = Iconv2f1(fold, (float*)mantissa + 1, (float*)C + 1, inc);
 	return ret;
 }
 
-void cconv2I1(int fold, int W, float complex x, float complex* m, F_CARRY_T* c, int inc) {
+void cconv2I1(int fold, int W, float complex x, float complex* m, float* c, int inc) {
 	float* xptr = (float*) &(x);
 	fconv2I1(fold, W, xptr[0], (float*)m  , c  , 2*inc);
 	fconv2I1(fold, W, xptr[1], (float*)m+1, c+1, 2*inc);

@@ -91,7 +91,7 @@ void sdotI1_(
 	float* x, int incx,
 	float* y, int incy,
 	int fold, int W,
-	float* dot, F_CARRY_T* c
+	float* dot, float* c
 ) {
 
 	int lN, i, j;

@@ -188,20 +188,16 @@ float ufpf(float x) {
 #endif
 }
 
-void sIprint1(int n, float* x, F_CARRY_T* carry, int inc) {
+void sIprint1(int n, float* x, float* carry, int inc) {
 	int i;
 	float M;
 	for (i = 0; i < n; i++) {
 		M = ufpf(x[i*inc]);
-#if F_CARRY_OP == 0 || F_CARRY_OP == 1
 		printf("{M:2^%g # %g :: %g (%g)}", log2f(M), carry[i*inc], x[i*inc] - 1.5*M, x[i*inc] + (carry[i*inc]-6)*0.25*M);
-#elif F_CARRY_OP == 2
-		printf("{M:2^%g # %d :: %g}", log2f(M), carry[i*inc], x[i*inc] - 1.5*M);
-#endif
 	}
 }
 
-void cIprint1(int n, float complex* x, F_CARRY_T* carry, int inc) {
+void cIprint1(int n, float complex* x, float* carry, int inc) {
 	/*
 	printf("\nReal: ");
 	sIprint_(n, (float*) x, carry, inc*2);
@@ -214,20 +210,12 @@ void cIprint1(int n, float complex* x, F_CARRY_T* carry, int inc) {
 	for (i = 0; i < n; i++, ptr += 2 * inc, carry += 2 * inc) {
 		M = ufpf(ptr[0]);
 		printf("M:2^%2g", log2f(M));
-#if F_CARRY_OP == 0 || F_CARRY_OP == 1
 		printf("# %4g", carry[0]);
-#elif F_CARRY_OP == 2
-		printf("# %4g", carry[0]);
-#endif
 		printf(" %8.3g (%8.3g) ", ptr[0], ptr[0] - 1.5 * M);
 
 		M = ufpf(ptr[1]);
 		printf(" || M:2^%2g", log2f(M));
-#if F_CARRY_OP == 0 || F_CARRY_OP == 1
 		printf("# %6g", carry[1]);
-#elif F_CARRY_OP == 2
-		printf("# %6g", carry[1]);
-#endif
 		printf(" %8.3g (%8.3g) ", ptr[1], ptr[1] - 1.5 * M);
 		printf("\n");
 	}

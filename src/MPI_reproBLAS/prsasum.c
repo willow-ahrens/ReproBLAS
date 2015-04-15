@@ -66,12 +66,12 @@ void prsasumI2(
 
 	int created = 0;
 	if (local_sum == NULL) {
-		local_sum = malloc(fold * (sizeof(float) + sizeof(F_CARRY_T)));
+		local_sum = malloc(fold * (sizeof(float) + sizeof(float)));
 		created = 1;
 	}
 
 	float* psum = (float*) (local_sum);
-	F_CARRY_T* pcarry = (F_CARRY_T*) (psum + fold);
+	float* pcarry = (float*) (psum + fold);
 
 	for (i = 0; i < fold; i++){
 		psum[i] = 0.0;
@@ -85,7 +85,7 @@ void prsasumI2(
 		myType = MPI_IFLOAT;
    	
 	// PEFORM THE LOCAL SUM WITH BLOCK SIZE OF 1024
-	sasumI1(N, x, incx, fold, W, psum, (F_CARRY_T*)(psum + fold));
+	sasumI1(N, x, incx, fold, W, psum, (float*)(psum + fold));
 
 	// REDUCE THE RESULT TO THE ROOT PROCESSOR
 	if (root >= 0)
@@ -111,7 +111,7 @@ float prsasum2(
 	float ret;
 	int    me;
 
-	void* sum = malloc(fold * (sizeof(float) + sizeof(F_CARRY_T)));
+	void* sum = malloc(fold * (sizeof(float) + sizeof(float)));
 
 	prsasumI2(comm, root, N, x, incx, fold, W, sum, NULL);
 
@@ -121,7 +121,7 @@ float prsasum2(
 
 	if (me == root || root < 0)
 		// CONVERT THE EXTENDED INDEXED FP NUMBER TO DOUBLE-PRECISION
-		ret = Iconv2f1(fold, psum, (F_CARRY_T*)(psum + fold), 1);
+		ret = Iconv2f1(fold, psum, (float*)(psum + fold), 1);
 	else
 		ret = 0.0;
 

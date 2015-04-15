@@ -102,7 +102,7 @@ void prcdotI2(
 	int conj
 ) {
 	int me, i;
-	F_CARRY_T* C = (F_CARRY_T*) (local_sum + fold);
+	float* C = (float*) (local_sum + fold);
 
 	MPI_Datatype myType;
 	int created = 0;
@@ -181,7 +181,7 @@ float complex prcdotc2(
 	MPI_Comm_rank(comm, &me);
 
 	// CONVERT THE EXTENDED INDEXED FP NUMBER TO DOUBLE-PRECISION
-	ret = Iconv2c1(fold, sum, (F_CARRY_T*)(sum + fold), 1);
+	ret = Iconv2c1(fold, sum, (float*)(sum + fold), 1);
 
 	free(sum);
 	return ret;
@@ -205,7 +205,7 @@ float complex prcdotu2(
 	MPI_Comm_rank(comm, &me);
 
 	// CONVERT THE EXTENDED INDEXED FP NUMBER TO DOUBLE-PRECISION
-	ret = Iconv2c1(fold, sum, (F_CARRY_T*)(sum + fold), 1);
+	ret = Iconv2c1(fold, sum, (float*)(sum + fold), 1);
 
 	free(sum);
 	return ret;

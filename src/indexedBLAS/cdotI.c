@@ -140,7 +140,7 @@ int cdot_exception(
 void cdotI1_(int N, int NB,
 	float complex* v, int inc,
 	float complex* y, int incy,
-	int fold, int W, float complex* dot, F_CARRY_T* C,
+	int fold, int W, float complex* dot, float* C,
 	int conj) {
 /*
  * Purpose

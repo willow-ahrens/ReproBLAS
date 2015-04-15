@@ -13,7 +13,7 @@
 #	include <xmmintrin.h>
 #endif
 
-void sIRenorm1(int n, float* X, F_CARRY_T* leading, int inc) {
+void sIRenorm1(int n, float* X, float* leading, int inc) {
 	int i;
 	float M;
 	float x;
@@ -38,7 +38,7 @@ void sIRenorm1(int n, float* X, F_CARRY_T* leading, int inc) {
 	}
 }
 
-void cIRenorm1(int K, float complex* X, F_CARRY_T* C, int INC) {
+void cIRenorm1(int K, float complex* X, float* C, int INC) {
 	sIRenorm1(K, (float*)X,     C,     2*INC);
 	sIRenorm1(K, (float*)X + 1, C + 1, 2*INC);
 }

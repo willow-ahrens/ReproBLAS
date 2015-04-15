@@ -19,7 +19,7 @@ void prsnrm2I(
 	RMPI_Init();
 	void* local_sum = BUF;
 	float* psum = (float*) (local_sum);
-	F_CARRY_T* pcarry = (F_CARRY_T*) (psum + 1 + DEFAULT_FOLD);
+	float* pcarry = (float*) (psum + 1 + DEFAULT_FOLD);
 
 	for (i = 0; i < DEFAULT_FOLD; i++) {
 		psum[i+1] = 0;
@@ -51,7 +51,7 @@ float prsnrm2(
 
 	if (me == root || root < 0)
 		// CONVERT THE EXTENDED INDEXED FP NUMBER TO DOUBLE-PRECISION
-		return psum[0] * sqrt(Iconv2f1(DEFAULT_FOLD,psum + 1, (F_CARRY_T*)(psum + 1 + DEFAULT_FOLD), 1));
+		return psum[0] * sqrt(Iconv2f1(DEFAULT_FOLD,psum + 1, (float*)(psum + 1 + DEFAULT_FOLD), 1));
 
 	return 0.0;
 }
@@ -71,12 +71,12 @@ void prsnrm2I2(
 
 	int created = 0;
 	if (local_sum == NULL) {
-		local_sum = malloc(fold * (sizeof(float) + sizeof(F_CARRY_T)));
+		local_sum = malloc(fold * (sizeof(float) + sizeof(float)));
 		created = 1;
 	}
 
 	float* psum = (float*) (local_sum);
-	F_CARRY_T* pcarry = (F_CARRY_T*) (local_sum + fold+1);
+	float* pcarry = (float*) (local_sum + fold+1);
 
 	for (i = 0; i < fold; i++){
 		psum[i] = 0.0;
@@ -91,7 +91,7 @@ void prsnrm2I2(
 		myType = MPI_IFLOAT_SCALE;
    	
 	// PEFORM THE LOCAL SUM WITH BLOCK SIZE OF 1024
-	psum[0] = snrm2I1(N, x, incx, fold, W, psum + 1, (F_CARRY_T*)(psum + 1 + fold));
+	psum[0] = snrm2I1(N, x, incx, fold, W, psum + 1, (float*)(psum + 1 + fold));
 
 	// REDUCE THE RESULT TO THE ROOT PROCESSOR
 	if (root >= 0)
@@ -117,7 +117,7 @@ float prsnrm22(
 	float ret;
 	int    me;
 
-	void* sum = malloc((1+fold) * sizeof(float) + fold * sizeof(F_CARRY_T));
+	void* sum = malloc((1+fold) * sizeof(float) + fold * sizeof(float));
 
 	prsnrm2I2(comm, root, N, x, incx, fold, W, sum, NULL);
 
@@ -127,7 +127,7 @@ float prsnrm22(
 
 	if (me == root || root < 0)
 		// CONVERT THE EXTENDED INDEXED FP NUMBER TO DOUBLE-PRECISION
-		ret = psum[0] * sqrt(Iconv2f1(fold, psum+1, (F_CARRY_T*)(psum +1 + fold), 1));
+		ret = psum[0] * sqrt(Iconv2f1(fold, psum+1, (float*)(psum +1 + fold), 1));
 	else
 		ret = 0.0;
 

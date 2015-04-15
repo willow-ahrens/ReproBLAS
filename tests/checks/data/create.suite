@@ -1,3 +1,0 @@
-_fill_types=["rand", "2*rand-1", "rand+(rand-1)", "normal", "sine", "small+grow*big", "small+rand*big", "rand_cond"]
-_data_types=["double", "float", "double_complex", "float_complex"]
-script(["../../common/test_data"], [("N", [4095]), ("d", _data_types), ("f", _fill_types)])

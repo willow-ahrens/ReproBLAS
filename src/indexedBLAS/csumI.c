@@ -133,7 +133,7 @@ int csum_exception(
 
 void csumI1_(int N, int NB,
 	float complex* v, int inc,
-	int fold, int W, float complex* sum, F_CARRY_T* C) {
+	int fold, int W, float complex* sum, float* C) {
 
 	float complex amax;
 

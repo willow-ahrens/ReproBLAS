@@ -67,7 +67,7 @@ void prscnrm2I2(
 		local_sum = (float*) malloc(sISize(fold) + sizeof(float));
 		created = 1;
 	}
-	F_CARRY_T* C = (F_CARRY_T*) (local_sum + 1 + fold);
+	float* C = (float*) (local_sum + 1 + fold);
 
 	local_sum[fold] = 0.0;
 	for (i = 0; i < fold; i++) {
@@ -118,7 +118,7 @@ float prscnrm22(
 	MPI_Comm_rank(comm, &me);
 
 	// CONVERT THE EXTENDED INDEXED FP NUMBER TO DOUBLE-PRECISION
-	ret = sum[0] * Iconv2f1(fold, sum + 1, (F_CARRY_T*)(sum + 1 + fold), 1);
+	ret = sum[0] * Iconv2f1(fold, sum + 1, (float*)(sum + 1 + fold), 1);
 
 	free(sum);
 	return ret;

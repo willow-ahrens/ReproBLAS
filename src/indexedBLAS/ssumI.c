@@ -80,7 +80,7 @@ int rssum_exception(
 
 void ssumI1_(int N, int NB,
 	float* v, int inc,
-	int fold, int W, float* sum, F_CARRY_T* c) {
+	int fold, int W, float* sum, float* c) {
 	float amax;
 
 	int i, j;
