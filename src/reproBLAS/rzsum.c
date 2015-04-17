@@ -16,6 +16,8 @@ double complex rzsum(int N, double complex* v, int inc) {
 	I_double_Complex sum;
 	zISetZero(sum);
 	zsumI1(N, v, inc, DEFAULT_FOLD, (double complex*)sum.m, (double complex*)sum.c);
-	return Iconv2z(sum);
+    double complex ret;
+    zziconv_sub(&sum, &ret, DEFAULT_FOLD);
+	return ret;
 }
 

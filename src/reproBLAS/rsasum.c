@@ -24,6 +24,6 @@ float rsasum(int N, float* v, int inc) {
 	sISetZero(sum);
 	sasumI1(N, v, inc, DEFAULT_FOLD, sum.m, sum.c);
 
-	return Iconv2f(sum);
+	return ssiconv(&sum, DEFAULT_FOLD);
 }
 

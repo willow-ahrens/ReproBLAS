@@ -21,22 +21,22 @@ void rdgemv(const rblas_order_t order,
         case rblas_No_Trans:
           YI = (Idouble*)malloc(dISize(DEFAULT_FOLD)*M);
           for(int i = 0; i < M; i++){
-            YI[i] = dconv2I(Y[i * incY]);
+            didconv(Y[i * incY], YI + i, DEFAULT_FOLD);
           }
           dgemvI(order, TransA, M, N, A, lda, X, incX, YI, 1, DEFAULT_FOLD);
           for(int i = 0; i < M; i++){
-            Y[i * incY] = Iconv2d1(DEFAULT_FOLD, &YI[i].m, &YI[i].c, 1);
+            Y[i * incY] = ddiconv(YI + i, DEFAULT_FOLD);
           }
           free(YI);
           break;
         default:
           YI = (Idouble*)malloc(dISize(DEFAULT_FOLD)*N);
           for(int i = 0; i < N; i++){
-            YI[i] = dconv2I(Y[i * incY]);
+            didconv(Y[i * incY], YI + i, DEFAULT_FOLD);
           }
           dgemvI(order, TransA, M, N, A, lda, X, incX, YI, 1, DEFAULT_FOLD);
           for(int i = 0; i < N; i++){
-            Y[i * incY] = Iconv2d1(DEFAULT_FOLD, &YI[i].m, &YI[i].c, 1);
+            Y[i * incY] = ddiconv(YI + i, DEFAULT_FOLD);
           }
           free(YI);
           break;

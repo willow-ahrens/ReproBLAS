@@ -22,6 +22,6 @@ float rscasum(int N, float complex* v, int inc) {
 	I_float_Complex tmp;
 	sISetZero(sum);
 	scasumI1(N, v, inc, DEFAULT_FOLD, sum.m, sum.c, (float complex*)&tmp);
-	return Iconv2f(sum);
+	return ssiconv(&sum, DEFAULT_FOLD);
 }
 

@@ -38,7 +38,7 @@ int verify_rzblas1_reproducibility(int N, double complex* x, int incX, double co
         block_N = block_N < N - i ? block_N : (N-i);
         zIAdd(&Ires, (wrap_Izblas1_func(func))(block_N, x + i * incX, incX, y + i * incY, incY));
       }
-      res = Iconv2z(Ires);
+      zziconv_sub(&Ires, &res, DEFAULT_FOLD);
     }
     if (res != ref) {
       printf("%s(x, y)[num_blocks=%d,block_N=%d] = %g + %gi != %g + %gi\n", wrap_rzblas1_names[func], num_blocks, block_N, CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));

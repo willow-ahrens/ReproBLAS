@@ -20,6 +20,6 @@ float rsdot(int N, float* x, int incx, float* y, int incy) {
 	sISetZero(dot);
 	sdotI1(N, x, incx, y, incy, DEFAULT_FOLD, dot.m, dot.c);
 
-	return Iconv2f(dot);
+	return ssiconv(&dot, DEFAULT_FOLD);
 }
 

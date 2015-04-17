@@ -16,88 +16,87 @@
 #define CHECK_NAN_INF
 
 // PRE-FIXED BOUNDARIES
-#define DEFAULT_W 40
+#define WIDTH 64
+#define BIN_WIDTH 40
 #define PREC 53
-#define D_BOUNDARY_ZERO_IND 32
-static double D_BOUNDARIES[64];
-static int    D_BOUNDARIES_initialized = 0;
-static int    D_BOUNDARY_NB    = 1<<(PREC - DEFAULT_W - 2); // 2^(51-W)
-//static int D_BOUNDARY_LOG2NB = 10;
-static int    D_BIN_WIDTH      = DEFAULT_W;
-static double D_BOUNDARY_STEP  = (double)(1l << DEFAULT_W);
-static double D_BOUNDARY_STEP1 = 1.0/(1l << DEFAULT_W);
-static int    D_BOUNDARY_LEFT  = 32;
-static int    D_BOUNDARY_RIGHT = 32;
+#define BOUND_ZERO_INDEX 32
+static double bounds[64];
+static int    bounds_initialized = 0;
+static int    capacity    = 1 << (PREC - BIN_WIDTH - 2); // 2^(51-W)
+static double bound_step;//initialized in bounds_intialize
+static int    bound_min_index  = 32;//initialized in bounds_intialize
+static int    bound_max_index = 32;//initialized in bounds_intialize
 
-#define FF_ 1.5
+int dIWidth() { return BIN_WIDTH; }
+int dICapacity() { return capacity; }
 
-int dIWidth() { return D_BIN_WIDTH; }
-int dICapacity() { return D_BOUNDARY_NB; }
-
-void dI_initialize_() {
-	if (D_BOUNDARIES_initialized) return;
-	D_BOUNDARIES[D_BOUNDARY_ZERO_IND] = FF_;
+static void bounds_initialize() {
+	if (bounds_initialized) return;
+    bound_step = ldexp(1, BIN_WIDTH);
+	bounds[BOUND_ZERO_INDEX] = 1.5;
 	int exp = -1;
-	int ind = D_BOUNDARY_ZERO_IND + 1;
-	double bound = D_BOUNDARY_STEP1 * FF_;
-	while (exp * D_BIN_WIDTH  >= DBL_MIN_EXP) {
-		D_BOUNDARIES[ind] = bound;
+	int ind = BOUND_ZERO_INDEX + 1;
+	double bound = (1.0/bound_step) * 1.5;
+	while (exp * BIN_WIDTH  >= DBL_MIN_EXP) {
+		bounds[ind] = bound;
 		ind++;
 		exp--;
-		bound *= D_BOUNDARY_STEP1;
+		bound /= bound_step;
 	}
-	D_BOUNDARY_RIGHT = ind;
+	bound_max_index = ind;
 	while (ind < 64) {
-		D_BOUNDARIES[ind] = 0.0;
+		bounds[ind] = 0.0;
 		ind++;
 	}
 
 	exp = 1;
-	bound = D_BOUNDARY_STEP * FF_;
-	ind = D_BOUNDARY_ZERO_IND - 1;
-	while (exp * D_BIN_WIDTH <= DBL_MAX_EXP) {
-		D_BOUNDARIES[ind] = bound;
+	bound = bound_step * 1.5;
+	ind = BOUND_ZERO_INDEX - 1;
+	while (exp * BIN_WIDTH <= DBL_MAX_EXP) {
+		bounds[ind] = bound;
 		ind--;
 		exp++;
-		bound *= D_BOUNDARY_STEP;
+		bound *= bound_step;
 	}
-	D_BOUNDARY_LEFT = ind;
+	bound_min_index = ind;
 	while (ind >= 0) {
-		D_BOUNDARIES[ind] = bound;
+		bounds[ind] = bound;
 		ind--;
 	}
-	D_BOUNDARIES_initialized = 1;
+	bounds_initialized = 1;
 }
 
+/*
 double D_Ind2Boundary(int index) {
-	dI_initialize_();
-	index = D_BOUNDARY_ZERO_IND - ((index & 2047) - 1024);
-	return D_BOUNDARIES[index];
+	bounds_initialize();
+	index = BOUND_ZERO_INDEX - ((index & 2047) - 1024);
+	return bounds[index];
 }
 
 double* D_Ind2Boundaries(int index) {
-	dI_initialize_();
-	index = D_BOUNDARY_ZERO_IND - ((index & 2047) - 1024);
-	return D_BOUNDARIES+index;
+	bounds_initialize();
+	index = BOUND_ZERO_INDEX - ((index & 2047) - 1024);
+	return bounds+index;
 }
+*/
 
 int D_Max2Ind(double amax) {
-	dI_initialize_();
+	bounds_initialize();
 	if (amax == 0)
-		return D_BOUNDARY_RIGHT;
+		return bound_max_index;
 	// TODO OVERFLOW
-	amax *= FF_ * (1 << (PREC - D_BIN_WIDTH));
-	int left = D_BOUNDARY_LEFT;
-	int right = D_BOUNDARY_RIGHT;
-	int mid = D_BOUNDARY_ZERO_IND;
+	amax *= 1.5 * (1 << (PREC - BIN_WIDTH));
+	int left = bound_min_index;
+	int right = bound_max_index;
+	int mid = BOUND_ZERO_INDEX;
 
 	while (right - left > 0) {
 		// FOUND
-		if (D_BOUNDARIES[mid+1] <= amax && amax < D_BOUNDARIES[mid]) {
+		if (bounds[mid+1] <= amax && amax < bounds[mid]) {
 			return mid;
 		}
 		
-		if (D_BOUNDARIES[mid] <= amax) {
+		if (bounds[mid] <= amax) {
 			right = mid;
 		}
 		else {
@@ -108,22 +107,22 @@ int D_Max2Ind(double amax) {
 	return left;
 }
 double* D_Max2Boundaries(double amax) {
-	dI_initialize_();
+	bounds_initialize();
 	if (amax == 0)
-		return D_BOUNDARIES + D_BOUNDARY_RIGHT;
+		return bounds + bound_max_index;
 	// TODO OVERFLOW
-	amax *= FF_ * D_BOUNDARY_NB;
-	int left = D_BOUNDARY_LEFT;
-	int right = D_BOUNDARY_RIGHT;
-	int mid = D_BOUNDARY_ZERO_IND;
+	amax *= 1.5 * capacity;
+	int left = bound_min_index;
+	int right = bound_max_index;
+	int mid = BOUND_ZERO_INDEX;
 
 	while (right - left > 0) {
 		// FOUND
-		if (D_BOUNDARIES[mid+1] < amax && amax <= D_BOUNDARIES[mid]) {
-			return D_BOUNDARIES + mid;
+		if (bounds[mid+1] < amax && amax <= bounds[mid]) {
+			return bounds + mid;
 		}
 		
-		if (D_BOUNDARIES[mid] < amax) {
+		if (bounds[mid] < amax) {
 			right = mid;
 		}
 		else {
@@ -131,27 +130,46 @@ double* D_Max2Boundaries(double amax) {
 		}
 		mid = (left + right) / 2;
 	}
-	return D_BOUNDARIES + left;
+	return bounds + left;
 }
 
 
 // COMPUTE THE BOUNDARIES BASED ON MAXIMUM ABSOLUTE VALUE
 int dIBoundary(int fold, double max, double* M, int inc) {
-	double delta;
 	int i;
-	double M0;
+    int index;
+    int other = D_Max2Ind(max);
 
-	int index = D_Max2Ind(max);
+    max *= 1.5 * (1l << (PREC - BIN_WIDTH));
+    if(max >= bounds[bound_min_index]){
+      index = bound_min_index;
+    } else if(max < bounds[bound_max_index]){
+      index = bound_max_index;
+    } else {
+      if(frexp(max, &index) < 0.75){
+        index--;
+      }
+      index--;
+      if(index < 0){
+        index -= BIN_WIDTH - 1; //fixing integer division rounding negatives towards 0
+      }
+      index /= BIN_WIDTH;
+      index = BOUND_ZERO_INDEX - 1 - index;
+    }
+    if(index != other){
+      printf("max %g, index %d, peter index %d %g\n", max, other, index, bounds[index]);
+    }
     for (i = 0; i < fold; i++) {
-        M[i * inc] = D_BOUNDARIES[index + i];
+        M[i * inc] = bounds[index + i];
     }
     return index;
 
+
     /*
-	if (W == D_BIN_WIDTH || W == 0) {
+	if (W == BIN_WIDTH || W == 0) {
 		index = D_Max2Ind(max);
 		for (i = 0; i < fold; i++) {
-			M[i * inc] = D_BOUNDARIES[index + i];
+			M[i * inc] = bounds[index + i];
 		}
 		return index;
 	}
@@ -168,14 +186,14 @@ int dIBoundary(int fold, double max, double* M, int inc) {
 	if (index >= DBL_MAX_EXP) {
 		// TO AVOID FALSE OVERFLOW
 		M0 = ldexp(0.5, 1 + index - W);
-		M0 *= FF_;
+		M0 *= 1.5;
 		M[0] = M0;
 		if (fold > 1)
 			M[inc] = M0;
 	}
 	else {
 		M0 = ldexp(0.5, 1 + index);
-		M0 *= FF_;
+		M0 *= 1.5;
 		M[0] = M0;
 		if (fold > 1) {
 			M0 *= dW;

@@ -88,7 +88,9 @@ int file_test(int argc, char** argv, char *fname) {
       return 1;
     }
     if(memcmp(&Iref, &Ires, sizeof(Iref)) != 0){
-      printf("I%s(%s) = %g + %gi != %g + %gi\n", wrap_rzblas1_names[func_type._named.value], fname, ZREAL_(Iconv2z(Ires)), ZIMAG_(Iconv2z(Ires)), ZREAL_(Iconv2z(Iref)), ZIMAG_(Iconv2z(Iref)));
+      zziconv_sub(&Ires, &res, DEFAULT_FOLD);
+      zziconv_sub(&Iref, &ref, DEFAULT_FOLD);
+      printf("I%s(%s) = %g + %gi != %g + %gi\n", wrap_rzblas1_names[func_type._named.value], fname, ZREAL_(res), ZIMAG_(res), ZREAL_(ref), ZIMAG_(ref));
       printf("Ref I_double_Complex:\n");
       zIprint(Iref);
       printf("\nRes I_double_Complex:\n");

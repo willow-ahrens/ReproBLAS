@@ -88,7 +88,7 @@ int file_test(int argc, char** argv, char *fname) {
       return 1;
     }
     if(memcmp(&Iref, &Ires, sizeof(Iref)) != 0){
-      printf("I%s(%s) = %g != %g\n", wrap_rdblas1_names[func_type._named.value], fname, Iconv2d(Ires), Iconv2d(Iref));
+      printf("I%s(%s) = %g != %g\n", wrap_rdblas1_names[func_type._named.value], fname, ddiconv(&Ires, DEFAULT_FOLD), ddiconv(&Iref, DEFAULT_FOLD));
       printf("Ref I_double:\n");
       dIprint(Iref);
       printf("\nRes I_double:\n");

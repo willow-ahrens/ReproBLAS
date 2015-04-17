@@ -32,7 +32,7 @@ double rdnrm2(int N, double* v, int inc) {
 	if (isinf(sum.m[0]))
 		return sum.m[0];
 
-	sqrt_sum = Iconv2d(sum);
+	sqrt_sum = ddiconv(&sum, DEFAULT_FOLD);
 	sqrt_sum = sqrt(sqrt_sum);
 	return scale * sqrt_sum;
 }

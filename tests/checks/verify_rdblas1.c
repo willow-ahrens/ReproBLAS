@@ -38,7 +38,7 @@ int verify_rdblas1_reproducibility(int N, double* x, int incX, double* y, int in
         block_N = block_N < N - i ? block_N : (N-i);
         dIAdd(&Ires, (wrap_Idblas1_func(func))(block_N, x + i * incX, incX, y + i * incY, incY));
       }
-      res = Iconv2d(Ires);
+      res = ddiconv(&Ires, DEFAULT_FOLD);
     }
     if (res != ref) {
       printf("%s(x, y)[num_blocks=%d,block_N=%d] = %g != %g\n", wrap_rdblas1_names[func], num_blocks, block_N, res, ref);

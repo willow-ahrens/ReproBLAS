@@ -5,4 +5,4 @@ INSTALL_LIB := $(TARGETS)
 
 LIBINDEXED := $(OBJPATH)/libindexed.a
 
-libindexed.a_DEPS = dIConv.o dIndexed.o dIAdd.o dIRenorm.o dIUpdate.o sIndexed.o sIAdd.o sIConv.o sIRenorm.o sIUpdate.o
+libindexed.a_DEPS = dconv.o dIndexed.o dIAdd.o dIRenorm.o dIUpdate.o sIndexed.o sIAdd.o sconv.o sIRenorm.o sIUpdate.o

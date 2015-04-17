@@ -19,7 +19,9 @@ I_float_Complex csumI(int N, float complex* v, int inc) {
 float complex rcsum(int N, float complex* v, int inc) {
 	I_float_Complex sum;
 	cISetZero(sum);
+    float complex ret;
 	csumI1(N, v, inc, DEFAULT_FOLD, (float complex*)sum.m, sum.c);
-	return Iconv2c(sum);
+    cciconv_sub(&sum, &ret, DEFAULT_FOLD);
+    return ret;
 }
 

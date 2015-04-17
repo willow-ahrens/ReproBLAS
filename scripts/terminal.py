@@ -5,14 +5,14 @@ import subprocess
 import sys
 
 def callsafe(command):
-#  print command
+  print(command)
   rc = 0
   try:
     out = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True).decode(sys.stdout.encoding)
   except subprocess.CalledProcessError as e:
     rc = e.returncode
     out = e.output.decode(sys.stdout.encoding)
-#  print out
+  print(out)
   return (rc, out)
 
 def call(command):

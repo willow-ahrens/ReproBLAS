@@ -33,7 +33,7 @@ float rscnrm2(int N, float complex* v, int inc) {
 	if (isinf(sum.m[0]))
 		return sum.m[0];
 
-	sqrt_sum = Iconv2f(sum);
+	sqrt_sum = ssiconv(&sum, DEFAULT_FOLD);
 //	printf("scale: %g sum: %g\n", scale, sqrt_sum);
 	sqrt_sum = sqrt(sqrt_sum);
 	return scale * sqrt_sum;

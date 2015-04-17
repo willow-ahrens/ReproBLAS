@@ -39,7 +39,7 @@ int verify_rsblas1_reproducibility(int N, float* x, int incX, float* y, int incY
         block_N = block_N < N - i ? block_N : (N-i);
         sIAdd(&Ires, (wrap_Isblas1_func(func))(block_N, x + i * incX, incX, y + i * incY, incY));
       }
-      res = Iconv2f(Ires);
+      res = ssiconv(&Ires, DEFAULT_FOLD);
     }
     if (res != ref) {
       printf("%s(x, y)[num_blocks=%d,block_N=%d] = %g != %g\n", wrap_rsblas1_names[func], num_blocks, block_N, res, ref);

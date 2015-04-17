@@ -26,7 +26,9 @@ double complex rzdotc(
 	zISetZero(dot);
 	zdotcI1(N, x, incx, y, incy, DEFAULT_FOLD, 
 		(double complex*)dot.m, (double complex*)dot.c);
-	return Iconv2z(dot);
+    double complex ret;
+    zziconv_sub(&dot, &ret, DEFAULT_FOLD);
+	return ret;
 }
 
 I_double_Complex zdotuI(
@@ -50,6 +52,8 @@ double complex rzdotu(
 	zISetZero(dot);
 	zdotuI1(N, x, incx, y, incy, DEFAULT_FOLD, 
 		(double complex*)dot.m, (double complex*)dot.c);
-	return Iconv2z(dot);
+    double complex ret;
+    zziconv_sub(&dot, &ret, DEFAULT_FOLD);
+	return ret;
 }
 

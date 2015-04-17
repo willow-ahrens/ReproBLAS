@@ -38,7 +38,7 @@ int verify_rcblas1_reproducibility(int N, float complex* x, int incX, float comp
         block_N = block_N < N - i ? block_N : (N-i);
         cIAdd(&Ires, (wrap_Icblas1_func(func))(block_N, x + i * incX, incX, y + i * incY, incY));
       }
-      res = Iconv2c(Ires);
+      cciconv_sub(&Ires, &res, DEFAULT_FOLD);
     }
     if (res != ref) {
       printf("%s(x, y)[num_blocks=%d,block_N=%d] = %g + %gi != %g + %gi\n", wrap_rcblas1_names[func], num_blocks, block_N, CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));

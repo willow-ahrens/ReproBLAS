@@ -147,21 +147,16 @@ extern void dIRenorm1(int fold, double* X, double* C, int inc);
 extern void zIRenorm1(int fold, double complex* rep, double complex* c, int inc);
 
 // CONVERT A DOUBLE TO INDEXED FORMAT
-extern void dconv2I1(int fold, double x, double* rep, double* C, int inc);
-extern I_double dconv2I(double x);
+void didconv(double x, double_indexed *y, int fold);
 
 // CONVERT AN INDEXED FP BACK TO DOUBLE
-extern double Iconv2d1(int fold, double* m, double* c, int inc);
+double ddiconv(double_indexed *x, int fold);
 
 // CONVERT AN INDEXED COMPLEX TO COMPLEX
-extern double complex Iconv2z1(int fold,
-		double complex* rep, double complex* carry, int inc);
+void zziconv_sub(double_complex_indexed *x, void *y, int fold);
 
 // CONVERT A DOUBLE COMPLEX TO INDEXED FORMAT
-extern void zconv2I1(int fold, double complex X,
-		double complex* rep, double complex* C, int inc);
-extern I_double_Complex zconv2I(double complex x);
-
+extern void zizconv(void *x, double_complex_indexed *y, int fold);
 
 extern int sICapacity();
 extern int sIWidth();
@@ -224,17 +219,12 @@ extern void sIRenorm1(int fold, float* X, float* C, int inc);
 extern void cIRenorm1(int fold, float complex* sum, float* C, int inc);
 
 // CONVERSION FROM INDEXED FORMAT TO FLOAT
-extern float   Iconv2f1(int fold, float* m, float* c, int inc);
-
-extern float complex Iconv2c1(int fold, float complex* m, float* c, int inc);
-extern float complex Iconv2c_(int fold, float complex* rep);
+extern float ssiconv(float_indexed *x, int fold);
+extern void cciconv_sub(float_complex_indexed *x, void *y, int fold);
 
 // CONVERT FROM FLOAT TO INDEXED FORMAT
-extern void fconv2I1(int fold, float x, float* rep, float* carry, int inc);
-extern void cconv2I1(int fold, float complex x, float complex* m, float* c, int inc);
-
-extern I_float         fconv2I(float x);
-extern I_float_Complex cconv2I(float complex x);
+extern void sisconv(float x, float_indexed *y, int fold);
+extern void cicconv(void *x, float_complex_indexed *y, int fold);
 
 
 /*******************************************/
@@ -270,9 +260,6 @@ extern I_float_Complex cconv2I(float complex x);
 //====================================//
 // CONVERSION
 //====================================//
-#define Iconv2d(X)  Iconv2d1(DEFAULT_FOLD, (X).m, (X).c, 1)
-#define Iconv2z(X) Iconv2z1(DEFAULT_FOLD,	\
-	(double complex*)(X).m, (double complex*)(X).c, 1)
 
 
 /*******************************************/
@@ -305,7 +292,5 @@ extern I_float_Complex cconv2I(float complex x);
 //====================================//
 // CONVERSION
 //====================================//
-#define Iconv2f(X) Iconv2f1(DEFAULT_FOLD, (X).m, (X).c, 1)
-#define Iconv2c(X) Iconv2c1(DEFAULT_FOLD, (float complex*)(X).m, (X).c, 1)
 
 #endif
