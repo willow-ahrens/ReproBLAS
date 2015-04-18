@@ -60,7 +60,7 @@ static void bounds_initialize() {
   }
   bound_min_index = index;
   while (index >= 0) {
-    bounds[index] = bounds[bound_min_index - 1] * step;
+    bounds[index] = bounds[bound_min_index + 1] * step;
     index--;
   }
 
@@ -74,28 +74,25 @@ int dIBoundary(int fold, double max, double* M, int inc) {
 
   bounds_initialize();
 
-  max *= 1.5 * (1l << (PREC - BIN_WIDTH));
-  if(max >= bounds[bound_min_index]){
+  if(isinf(max)){
     index = bound_min_index;
-  } else if(max < bounds[bound_max_index]){
+  } else if(max == 0){
     index = bound_max_index;
   } else {
-    if(frexp(max, &index) < 0.75){
-      index--;
-    }
-    index--;
+    frexp(max, &index);
+    index += PREC - BIN_WIDTH - 1;
     if(index < 0){
-      index -= BIN_WIDTH - 1; //fixing integer division rounding negatives towards 0
+      index -= BIN_WIDTH - 1; //we want to round towards -infinity
     }
     index /= BIN_WIDTH;
     index = BOUND_ZERO_INDEX - 1 - index;
   }
+
   for (i = 0; i < fold; i++) {
     M[i * inc] = bounds[index + i];
   }
   return index;
 }
-
 
 
 void dIprint1(int n, double *x, double *c, int inc) {
