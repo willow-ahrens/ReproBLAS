@@ -170,12 +170,12 @@ typedef struct vec_swap_data{
 } vec_swap_data_t;
 
 typedef struct mat_row_swap_data{
-  rblas_order_t     order;
-  rblas_transpose_t transA;
+  char     Order;
+  char TransA;
   int               M;
   int               N;
   void              *A;
-  int               ldA;
+  int               lda;
   size_t            elem_size;
   int               *P;
   int               incP;
@@ -192,28 +192,31 @@ static void vec_swap(int a, int b, void *data){
 static void mat_row_swap(int a, int b, void *data){
   int i;
   mat_row_swap_data_t *d = (mat_row_swap_data_t*)data;
-  switch(d->order){
-    case rblas_Row_Major:
-      switch(d->transA){
-        case rblas_No_Trans:
-          elem_swap(d->A + a * d->ldA * d->elem_size, d->A + b * d->ldA * d->elem_size, d->N * d->elem_size);
+  switch(d->Order){
+    case 'r':
+    case 'R':
+      switch(d->TransA){
+        case 'n':
+        case 'N':
+          elem_swap(d->A + a * d->lda * d->elem_size, d->A + b * d->lda * d->elem_size, d->N * d->elem_size);
           break;
         default:
           for(i = 0; i < d->M; i++){
-            elem_swap(d->A + (a + (i * d->ldA)) * d->elem_size, d->A + (b + (i * d->ldA)) * d->elem_size, d->elem_size);
+            elem_swap(d->A + (a + (i * d->lda)) * d->elem_size, d->A + (b + (i * d->lda)) * d->elem_size, d->elem_size);
           }
           break;
       }
       break;
-    case rblas_Col_Major:
-      switch(d->transA){
-        case rblas_No_Trans:
+    default:
+      switch(d->TransA){
+        case 'n':
+        case 'N':
           for(i = 0; i < d->N; i++){
-            elem_swap(d->A + (a + (i * d->ldA)) * d->elem_size, d->A + (b + (i * d->ldA)) * d->elem_size, d->elem_size);
+            elem_swap(d->A + (a + (i * d->lda)) * d->elem_size, d->A + (b + (i * d->lda)) * d->elem_size, d->elem_size);
           }
           break;
         default:
-          elem_swap(d->A + a * d->ldA * d->elem_size, d->A + b * d->ldA * d->elem_size, d->M * d->elem_size);
+          elem_swap(d->A + a * d->lda * d->elem_size, d->A + b * d->lda * d->elem_size, d->M * d->elem_size);
           break;
       }
       break;
@@ -232,12 +235,12 @@ typedef struct vec_compare_data{
 } vec_compare_data_t;
 
 typedef struct mat_row_compare_data{
-  rblas_order_t     order;
-  rblas_transpose_t transA;
+  char     Order;
+  char TransA;
   int               M;
   int               N;
   void              *A;
-  int               ldA;
+  int               lda;
   size_t            elem_size;
   elem_compare_func elem_compare;
   int               comp;
@@ -251,38 +254,44 @@ static int vec_compare(int a, int b, void *data){
 
 static int mat_row_compare(int a, int b, void *data){
   mat_row_compare_data_t *d = (mat_row_compare_data_t*)data;
-  switch(d->order){
-    case rblas_Row_Major:
-      switch(d->transA){
-        case rblas_No_Trans:
-          return d->elem_compare(d->A + (a * d->ldA + d->col) * d->elem_size, d->A + (b * d->ldA + d->col) * d->elem_size, d->elem_size);
+  switch(d->Order){
+    case 'r':
+    case 'R':
+      switch(d->TransA){
+        case 'n':
+        case 'N':
+          return d->elem_compare(d->A + (a * d->lda + d->col) * d->elem_size, d->A + (b * d->lda + d->col) * d->elem_size, d->elem_size);
         default:
-          return d->elem_compare(d->A + (a + d->ldA * d->col) * d->elem_size, d->A + (b + d->ldA * d->col) * d->elem_size, d->elem_size);
+          return d->elem_compare(d->A + (a + d->lda * d->col) * d->elem_size, d->A + (b + d->lda * d->col) * d->elem_size, d->elem_size);
       }
       break;
-    case rblas_Col_Major:
-      switch(d->transA){
-        case rblas_No_Trans:
-          return d->elem_compare(d->A + (a + d->ldA * d->col) * d->elem_size, d->A + (b + d->ldA * d->col) * d->elem_size, d->elem_size);
+    default:
+      switch(d->TransA){
+        case 'n':
+        case 'N':
+          return d->elem_compare(d->A + (a + d->lda * d->col) * d->elem_size, d->A + (b + d->lda * d->col) * d->elem_size, d->elem_size);
         default:
-          return d->elem_compare(d->A + (a * d->ldA + d->col) * d->elem_size, d->A + (b * d->ldA + d->col) * d->elem_size, d->elem_size);
+          return d->elem_compare(d->A + (a * d->lda + d->col) * d->elem_size, d->A + (b * d->lda + d->col) * d->elem_size, d->elem_size);
       }
       break;
   }
 }
 
-static int mat_row_permute_size(rblas_order_t order, rblas_transpose_t transA, int M, int N){
-  switch(order){
-    case rblas_Row_Major:
-      switch(transA){
-        case rblas_No_Trans:
+static int mat_row_permute_size(char Order, char TransA, int M, int N){
+  switch(Order){
+    case 'r':
+    case 'R':
+      switch(TransA){
+        case 'n':
+        case 'N':
           return M;
         default:
           return N;
       }
-    case rblas_Col_Major:
-      switch(transA){
-        case rblas_No_Trans:
+    default:
+      switch(TransA){
+        case 'n':
+        case 'N':
           return N;
         default:
           return M;
@@ -346,96 +355,96 @@ void util_cvec_sort(int N, float complex *V, int incV, int *P, int incP, util_co
   sort(0, N, &vec_compare, &compare_data, &vec_swap, &swap_data);
 }
 
-void util_dmat_row_sort(rblas_order_t order, rblas_transpose_t transA, int M, int N, double *A, int ldA, int *P, int incP, util_comp_t comp, int col){
-  mat_row_swap_data_t swap_data = {.order     = order,
-                                   .transA    = transA,
+void util_dmat_row_sort(char Order, char TransA, int M, int N, double *A, int lda, int *P, int incP, util_comp_t comp, int col){
+  mat_row_swap_data_t swap_data = {.Order     = Order,
+                                   .TransA    = TransA,
                                    .M         = M,
                                    .N         = N,
                                    .A         = A,
-                                   .ldA       = ldA,
+                                   .lda       = lda,
                                    .elem_size = sizeof(double),
                                    .P         = P,
                                    .incP      = incP};
-  mat_row_compare_data_t compare_data = {.order        = order,
-                                         .transA       = transA,
+  mat_row_compare_data_t compare_data = {.Order        = Order,
+                                         .TransA       = TransA,
                                          .M            = M,
                                          .N            = N,
                                          .A            = A,
-                                         .ldA          = ldA,
+                                         .lda          = lda,
                                          .elem_size    = sizeof(double),
                                          .elem_compare = util_dcompare,
                                          .comp         = comp,
                                          .col          = col};
-  sort(0, mat_row_permute_size(order, transA, M, N), &mat_row_compare, &compare_data, &mat_row_swap, &swap_data);
+  sort(0, mat_row_permute_size(Order, TransA, M, N), &mat_row_compare, &compare_data, &mat_row_swap, &swap_data);
 }
 
-void util_smat_row_sort(rblas_order_t order, rblas_transpose_t transA, int M, int N, float *A, int ldA, int *P, int incP, util_comp_t comp, int col){
-  mat_row_swap_data_t swap_data = {.order     = order,
-                                   .transA    = transA,
+void util_smat_row_sort(char Order, char TransA, int M, int N, float *A, int lda, int *P, int incP, util_comp_t comp, int col){
+  mat_row_swap_data_t swap_data = {.Order     = Order,
+                                   .TransA    = TransA,
                                    .M         = M,
                                    .N         = N,
                                    .A         = A,
-                                   .ldA       = ldA,
+                                   .lda       = lda,
                                    .elem_size = sizeof(float),
                                    .P         = P,
                                    .incP      = incP};
-  mat_row_compare_data_t compare_data = {.order        = order,
-                                         .transA       = transA,
+  mat_row_compare_data_t compare_data = {.Order        = Order,
+                                         .TransA       = TransA,
                                          .M            = M,
                                          .N            = N,
                                          .A            = A,
-                                         .ldA          = ldA,
+                                         .lda          = lda,
                                          .elem_size    = sizeof(float),
                                          .elem_compare = util_scompare,
                                          .comp         = comp,
                                          .col          = col};
-  sort(0, mat_row_permute_size(order, transA, M, N), &mat_row_compare, &compare_data, &mat_row_swap, &swap_data);
+  sort(0, mat_row_permute_size(Order, TransA, M, N), &mat_row_compare, &compare_data, &mat_row_swap, &swap_data);
 }
 
-void util_zmat_row_sort(rblas_order_t order, rblas_transpose_t transA, int M, int N, double complex *A, int ldA, int *P, int incP, util_comp_t comp, int col){
-  mat_row_swap_data_t swap_data = {.order     = order,
-                                   .transA    = transA,
+void util_zmat_row_sort(char Order, char TransA, int M, int N, double complex *A, int lda, int *P, int incP, util_comp_t comp, int col){
+  mat_row_swap_data_t swap_data = {.Order     = Order,
+                                   .TransA    = TransA,
                                    .M         = M,
                                    .N         = N,
                                    .A         = A,
-                                   .ldA       = ldA,
+                                   .lda       = lda,
                                    .elem_size = sizeof(double complex),
                                    .P         = P,
                                    .incP      = incP};
-  mat_row_compare_data_t compare_data = {.order        = order,
-                                         .transA       = transA,
+  mat_row_compare_data_t compare_data = {.Order        = Order,
+                                         .TransA       = TransA,
                                          .M            = M,
                                          .N            = N,
                                          .A            = A,
-                                         .ldA          = ldA,
+                                         .lda          = lda,
                                          .elem_size    = sizeof(double complex),
                                          .elem_compare = util_zcompare,
                                          .comp         = comp,
                                          .col          = col};
-  sort(0, mat_row_permute_size(order, transA, M, N), &mat_row_compare, &compare_data, &mat_row_swap, &swap_data);
+  sort(0, mat_row_permute_size(Order, TransA, M, N), &mat_row_compare, &compare_data, &mat_row_swap, &swap_data);
 }
 
-void util_cmat_row_sort(rblas_order_t order, rblas_transpose_t transA, int M, int N, float complex *A, int ldA, int *P, int incP, util_comp_t comp, int col){
-  mat_row_swap_data_t swap_data = {.order     = order,
-                                   .transA    = transA,
+void util_cmat_row_sort(char Order, char TransA, int M, int N, float complex *A, int lda, int *P, int incP, util_comp_t comp, int col){
+  mat_row_swap_data_t swap_data = {.Order     = Order,
+                                   .TransA    = TransA,
                                    .M         = M,
                                    .N         = N,
                                    .A         = A,
-                                   .ldA       = ldA,
+                                   .lda       = lda,
                                    .elem_size = sizeof(float complex),
                                    .P         = P,
                                    .incP      = incP};
-  mat_row_compare_data_t compare_data = {.order        = order,
-                                         .transA       = transA,
+  mat_row_compare_data_t compare_data = {.Order        = Order,
+                                         .TransA       = TransA,
                                          .M            = M,
                                          .N            = N,
                                          .A            = A,
-                                         .ldA          = ldA,
+                                         .lda          = lda,
                                          .elem_size    = sizeof(float complex),
                                          .elem_compare = util_ccompare,
                                          .comp         = comp,
                                          .col          = col};
-  sort(0, mat_row_permute_size(order, transA, M, N), &mat_row_compare, &compare_data, &mat_row_swap, &swap_data);
+  sort(0, mat_row_permute_size(Order, TransA, M, N), &mat_row_compare, &compare_data, &mat_row_swap, &swap_data);
 }
 
 static void reverse(int N, swap_func swap, void *swap_data) {
@@ -482,56 +491,56 @@ void util_cvec_reverse(int N, float complex* V, int incV, int *P, int incP) {
   reverse(N, &vec_swap, &swap_data);
 }
 
-void util_dmat_row_reverse(rblas_order_t order, rblas_transpose_t transA, int M, int N, double *A, int ldA, int *P, int incP){
-  mat_row_swap_data_t swap_data = {.order     = order,
-                                   .transA    = transA,
+void util_dmat_row_reverse(char Order, char TransA, int M, int N, double *A, int lda, int *P, int incP){
+  mat_row_swap_data_t swap_data = {.Order     = Order,
+                                   .TransA    = TransA,
                                    .M         = M,
                                    .N         = N,
                                    .A         = A,
-                                   .ldA       = ldA,
+                                   .lda       = lda,
                                    .elem_size = sizeof(double),
                                    .P         = P,
                                    .incP      = incP};
-  reverse(mat_row_permute_size(order, transA, M, N), &mat_row_swap, &swap_data);
+  reverse(mat_row_permute_size(Order, TransA, M, N), &mat_row_swap, &swap_data);
 }
 
-void util_smat_row_reverse(rblas_order_t order, rblas_transpose_t transA, int M, int N, float *A, int ldA, int *P, int incP){
-  mat_row_swap_data_t swap_data = {.order     = order,
-                                   .transA    = transA,
+void util_smat_row_reverse(char Order, char TransA, int M, int N, float *A, int lda, int *P, int incP){
+  mat_row_swap_data_t swap_data = {.Order     = Order,
+                                   .TransA    = TransA,
                                    .M         = M,
                                    .N         = N,
                                    .A         = A,
-                                   .ldA       = ldA,
+                                   .lda       = lda,
                                    .elem_size = sizeof(float),
                                    .P         = P,
                                    .incP      = incP};
-  reverse(mat_row_permute_size(order, transA, M, N), &mat_row_swap, &swap_data);
+  reverse(mat_row_permute_size(Order, TransA, M, N), &mat_row_swap, &swap_data);
 }
 
-void util_zmat_row_reverse(rblas_order_t order, rblas_transpose_t transA, int M, int N, double complex *A, int ldA, int *P, int incP){
-  mat_row_swap_data_t swap_data = {.order     = order,
-                                   .transA    = transA,
+void util_zmat_row_reverse(char Order, char TransA, int M, int N, double complex *A, int lda, int *P, int incP){
+  mat_row_swap_data_t swap_data = {.Order     = Order,
+                                   .TransA    = TransA,
                                    .M         = M,
                                    .N         = N,
                                    .A         = A,
-                                   .ldA       = ldA,
+                                   .lda       = lda,
                                    .elem_size = sizeof(double complex),
                                    .P         = P,
                                    .incP      = incP};
-  reverse(mat_row_permute_size(order, transA, M, N), &mat_row_swap, &swap_data);
+  reverse(mat_row_permute_size(Order, TransA, M, N), &mat_row_swap, &swap_data);
 }
 
-void util_cmat_row_reverse(rblas_order_t order, rblas_transpose_t transA, int M, int N, float complex *A, int ldA, int *P, int incP){
-  mat_row_swap_data_t swap_data = {.order     = order,
-                                   .transA    = transA,
+void util_cmat_row_reverse(char Order, char TransA, int M, int N, float complex *A, int lda, int *P, int incP){
+  mat_row_swap_data_t swap_data = {.Order     = Order,
+                                   .TransA    = TransA,
                                    .M         = M,
                                    .N         = N,
                                    .A         = A,
-                                   .ldA       = ldA,
+                                   .lda       = lda,
                                    .elem_size = sizeof(float complex),
                                    .P         = P,
                                    .incP      = incP};
-  reverse(mat_row_permute_size(order, transA, M, N), &mat_row_swap, &swap_data);
+  reverse(mat_row_permute_size(Order, TransA, M, N), &mat_row_swap, &swap_data);
 }
 
 static void shuffle(int N, swap_func swap, void *swap_data) {
@@ -580,56 +589,56 @@ void util_cvec_shuffle(int N, float complex* V, int incV, int *P, int incP) {
   shuffle(N, &vec_swap, &swap_data);
 }
 
-void util_dmat_row_shuffle(rblas_order_t order, rblas_transpose_t transA, int M, int N, double *A, int ldA, int *P, int incP){
-  mat_row_swap_data_t swap_data = {.order     = order,
-                                   .transA    = transA,
+void util_dmat_row_shuffle(char Order, char TransA, int M, int N, double *A, int lda, int *P, int incP){
+  mat_row_swap_data_t swap_data = {.Order     = Order,
+                                   .TransA    = TransA,
                                    .M         = M,
                                    .N         = N,
                                    .A         = A,
-                                   .ldA       = ldA,
+                                   .lda       = lda,
                                    .elem_size = sizeof(double),
                                    .P         = P,
                                    .incP      = incP};
-  shuffle(mat_row_permute_size(order, transA, M, N), &mat_row_swap, &swap_data);
+  shuffle(mat_row_permute_size(Order, TransA, M, N), &mat_row_swap, &swap_data);
 }
 
-void util_smat_row_shuffle(rblas_order_t order, rblas_transpose_t transA, int M, int N, float *A, int ldA, int *P, int incP){
-  mat_row_swap_data_t swap_data = {.order     = order,
-                                   .transA    = transA,
+void util_smat_row_shuffle(char Order, char TransA, int M, int N, float *A, int lda, int *P, int incP){
+  mat_row_swap_data_t swap_data = {.Order     = Order,
+                                   .TransA    = TransA,
                                    .M         = M,
                                    .N         = N,
                                    .A         = A,
-                                   .ldA       = ldA,
+                                   .lda       = lda,
                                    .elem_size = sizeof(float),
                                    .P         = P,
                                    .incP      = incP};
-  shuffle(mat_row_permute_size(order, transA, M, N), &mat_row_swap, &swap_data);
+  shuffle(mat_row_permute_size(Order, TransA, M, N), &mat_row_swap, &swap_data);
 }
 
-void util_zmat_row_shuffle(rblas_order_t order, rblas_transpose_t transA, int M, int N, double complex *A, int ldA, int *P, int incP){
-  mat_row_swap_data_t swap_data = {.order     = order,
-                                   .transA    = transA,
+void util_zmat_row_shuffle(char Order, char TransA, int M, int N, double complex *A, int lda, int *P, int incP){
+  mat_row_swap_data_t swap_data = {.Order     = Order,
+                                   .TransA    = TransA,
                                    .M         = M,
                                    .N         = N,
                                    .A         = A,
-                                   .ldA       = ldA,
+                                   .lda       = lda,
                                    .elem_size = sizeof(double complex),
                                    .P         = P,
                                    .incP      = incP};
-  shuffle(mat_row_permute_size(order, transA, M, N), &mat_row_swap, &swap_data);
+  shuffle(mat_row_permute_size(Order, TransA, M, N), &mat_row_swap, &swap_data);
 }
 
-void util_cmat_row_shuffle(rblas_order_t order, rblas_transpose_t transA, int M, int N, float complex *A, int ldA, int *P, int incP){
-  mat_row_swap_data_t swap_data = {.order     = order,
-                                   .transA    = transA,
+void util_cmat_row_shuffle(char Order, char TransA, int M, int N, float complex *A, int lda, int *P, int incP){
+  mat_row_swap_data_t swap_data = {.Order     = Order,
+                                   .TransA    = TransA,
                                    .M         = M,
                                    .N         = N,
                                    .A         = A,
-                                   .ldA       = ldA,
+                                   .lda       = lda,
                                    .elem_size = sizeof(float complex),
                                    .P         = P,
                                    .incP      = incP};
-  shuffle(mat_row_permute_size(order, transA, M, N), &mat_row_swap, &swap_data);
+  shuffle(mat_row_permute_size(Order, TransA, M, N), &mat_row_swap, &swap_data);
 }
 
 static void permute(int N, int *P, int incP, swap_func swap, void *swap_data) {
@@ -710,56 +719,56 @@ void util_cvec_permute(int N, float complex* V, int incV, int *Q, int incQ, int 
   permute(N, Q, incQ, &vec_swap, &swap_data);
 }
 
-void util_dmat_row_permute(rblas_order_t order, rblas_transpose_t transA, int M, int N, double *A, int ldA, int *Q, int incQ, int *P, int incP){
-  mat_row_swap_data_t swap_data = {.order     = order,
-                                   .transA    = transA,
+void util_dmat_row_permute(char Order, char TransA, int M, int N, double *A, int lda, int *Q, int incQ, int *P, int incP){
+  mat_row_swap_data_t swap_data = {.Order     = Order,
+                                   .TransA    = TransA,
                                    .M         = M,
                                    .N         = N,
                                    .A         = A,
-                                   .ldA       = ldA,
+                                   .lda       = lda,
                                    .elem_size = sizeof(double),
                                    .P         = P,
                                    .incP      = incP};
-  permute(mat_row_permute_size(order, transA, M, N), Q, incQ, &mat_row_swap, &swap_data);
+  permute(mat_row_permute_size(Order, TransA, M, N), Q, incQ, &mat_row_swap, &swap_data);
 }
 
-void util_smat_row_permute(rblas_order_t order, rblas_transpose_t transA, int M, int N, float *A, int ldA, int *Q, int incQ, int *P, int incP){
-  mat_row_swap_data_t swap_data = {.order     = order,
-                                   .transA    = transA,
+void util_smat_row_permute(char Order, char TransA, int M, int N, float *A, int lda, int *Q, int incQ, int *P, int incP){
+  mat_row_swap_data_t swap_data = {.Order     = Order,
+                                   .TransA    = TransA,
                                    .M         = M,
                                    .N         = N,
                                    .A         = A,
-                                   .ldA       = ldA,
+                                   .lda       = lda,
                                    .elem_size = sizeof(float),
                                    .P         = P,
                                    .incP      = incP};
-  permute(mat_row_permute_size(order, transA, M, N), Q, incQ, &mat_row_swap, &swap_data);
+  permute(mat_row_permute_size(Order, TransA, M, N), Q, incQ, &mat_row_swap, &swap_data);
 }
 
-void util_zmat_row_permute(rblas_order_t order, rblas_transpose_t transA, int M, int N, double complex *A, int ldA, int *Q, int incQ, int *P, int incP){
-  mat_row_swap_data_t swap_data = {.order     = order,
-                                   .transA    = transA,
+void util_zmat_row_permute(char Order, char TransA, int M, int N, double complex *A, int lda, int *Q, int incQ, int *P, int incP){
+  mat_row_swap_data_t swap_data = {.Order     = Order,
+                                   .TransA    = TransA,
                                    .M         = M,
                                    .N         = N,
                                    .A         = A,
-                                   .ldA       = ldA,
+                                   .lda       = lda,
                                    .elem_size = sizeof(double complex),
                                    .P         = P,
                                    .incP      = incP};
-  permute(mat_row_permute_size(order, transA, M, N), Q, incQ, &mat_row_swap, &swap_data);
+  permute(mat_row_permute_size(Order, TransA, M, N), Q, incQ, &mat_row_swap, &swap_data);
 }
 
-void util_cmat_row_permute(rblas_order_t order, rblas_transpose_t transA, int M, int N, float complex *A, int ldA, int *Q, int incQ, int *P, int incP){
-  mat_row_swap_data_t swap_data = {.order     = order,
-                                   .transA    = transA,
+void util_cmat_row_permute(char Order, char TransA, int M, int N, float complex *A, int lda, int *Q, int incQ, int *P, int incP){
+  mat_row_swap_data_t swap_data = {.Order     = Order,
+                                   .TransA    = TransA,
                                    .M         = M,
                                    .N         = N,
                                    .A         = A,
-                                   .ldA       = ldA,
+                                   .lda       = lda,
                                    .elem_size = sizeof(float complex),
                                    .P         = P,
                                    .incP      = incP};
-  permute(mat_row_permute_size(order, transA, M, N), Q, incQ, &mat_row_swap, &swap_data);
+  permute(mat_row_permute_size(Order, TransA, M, N), Q, incQ, &mat_row_swap, &swap_data);
 }
 
 double* util_dvec_alloc(int N, int incV) {
@@ -802,77 +811,81 @@ float complex* util_cvec_alloc(int N, int incV) {
   return V;
 }
 
-double* util_dmat_alloc(rblas_order_t order, int M, int N, int ldA) {
+double* util_dmat_alloc(char Order, int M, int N, int lda) {
   double *A;
-  switch(order){
-    case rblas_Row_Major:
-      A = (double*)malloc(ldA * M * sizeof(double));
-      //fill empty space with random data to check ldA
-      util_dmat_fill(order, rblas_No_Trans, M, ldA, A, ldA, util_Mat_Row_Rand, 1.0, 1.0);
-      util_dmat_fill(order, rblas_No_Trans, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
+  switch(Order){
+    case 'r':
+    case 'R':
+      A = (double*)malloc(lda * M * sizeof(double));
+      //fill empty space with random data to check lda
+      util_dmat_fill(Order, 'n', M, lda, A, lda, util_Mat_Row_Rand, 1.0, 1.0);
+      util_dmat_fill(Order, 'n', M, N, A, lda, util_Mat_Row_Constant, 0.0, 1.0);
       break;
-    case rblas_Col_Major:
-      A = (double*)malloc(ldA * N * sizeof(double));
-      //fill empty space with random data to check ldA
-      util_dmat_fill(order, rblas_No_Trans, ldA, N, A, ldA, util_Mat_Row_Rand, 1.0, 1.0);
-      util_dmat_fill(order, rblas_No_Trans, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
+    default:
+      A = (double*)malloc(lda * N * sizeof(double));
+      //fill empty space with random data to check lda
+      util_dmat_fill(Order, 'n', lda, N, A, lda, util_Mat_Row_Rand, 1.0, 1.0);
+      util_dmat_fill(Order, 'n', M, N, A, lda, util_Mat_Row_Constant, 0.0, 1.0);
       break;
   }
   return A;
 }
 
-float* util_smat_alloc(rblas_order_t order, int M, int N, int ldA) {
+float* util_smat_alloc(char Order, int M, int N, int lda) {
   float *A;
-  switch(order){
-    case rblas_Row_Major:
-      A = (float*)malloc(ldA * M * sizeof(float));
-      //fill empty space with random data to check ldA
-      util_smat_fill(order, rblas_No_Trans, M, ldA, A, ldA, util_Mat_Row_Rand, 1.0, 1.0);
-      util_smat_fill(order, rblas_No_Trans, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
+  switch(Order){
+    case 'r':
+    case 'R':
+      A = (float*)malloc(lda * M * sizeof(float));
+      //fill empty space with random data to check lda
+      util_smat_fill(Order, 'n', M, lda, A, lda, util_Mat_Row_Rand, 1.0, 1.0);
+      util_smat_fill(Order, 'n', M, N, A, lda, util_Mat_Row_Constant, 0.0, 1.0);
       break;
     case rblas_Col_Major:
-      A = (float*)malloc(ldA * N * sizeof(float));
-      //fill empty space with random data to check ldA
-      util_smat_fill(order, rblas_No_Trans, ldA, N, A, ldA, util_Mat_Row_Rand, 1.0, 1.0);
-      util_smat_fill(order, rblas_No_Trans, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
+      A = (float*)malloc(lda * N * sizeof(float));
+      //fill empty space with random data to check lda
+      util_smat_fill(Order, 'n', lda, N, A, lda, util_Mat_Row_Rand, 1.0, 1.0);
+      util_smat_fill(Order, 'n', M, N, A, lda, util_Mat_Row_Constant, 0.0, 1.0);
       break;
   }
   return A;
 }
 
-double complex* util_zmat_alloc(rblas_order_t order, int M, int N, int ldA) {
+double complex* util_zmat_alloc(char Order, int M, int N, int lda) {
   double complex *A;
-  switch(order){
-    case rblas_Row_Major:
-      A = (double complex*)malloc(ldA * M * sizeof(double complex));
-      //fill empty space with random data to check ldA
-      util_zmat_fill(order, rblas_No_Trans, M, ldA, A, ldA, util_Mat_Row_Rand, 1.0, 1.0);
-      util_zmat_fill(order, rblas_No_Trans, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
+  switch(Order){
+    case 'r':
+    case 'R':
+      A = (double complex*)malloc(lda * M * sizeof(double complex));
+      //fill empty space with random data to check lda
+      util_zmat_fill(Order, 'n', M, lda, A, lda, util_Mat_Row_Rand, 1.0, 1.0);
+      util_zmat_fill(Order, 'n', M, N, A, lda, util_Mat_Row_Constant, 0.0, 1.0);
       break;
-    case rblas_Col_Major:
-      A = (double complex*)malloc(ldA * N * sizeof(double complex));
-      //fill empty space with random data to check ldA
-      util_zmat_fill(order, rblas_No_Trans, ldA, N, A, ldA, util_Mat_Row_Rand, 1.0, 1.0);
-      util_zmat_fill(order, rblas_No_Trans, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
+    default:
+      A = (double complex*)malloc(lda * N * sizeof(double complex));
+      //fill empty space with random data to check lda
+      util_zmat_fill(Order, 'n', lda, N, A, lda, util_Mat_Row_Rand, 1.0, 1.0);
+      util_zmat_fill(Order, 'n', M, N, A, lda, util_Mat_Row_Constant, 0.0, 1.0);
       break;
   }
   return A;
 }
 
-float complex* util_cmat_alloc(rblas_order_t order, int M, int N, int ldA) {
+float complex* util_cmat_alloc(char Order, int M, int N, int lda) {
   float complex *A;
-  switch(order){
-    case rblas_Row_Major:
-      A = (float complex*)malloc(ldA * M * sizeof(float complex));
-      //fill empty space with random data to check ldA
-      util_cmat_fill(order, rblas_No_Trans, M, ldA, A, ldA, util_Mat_Row_Rand, 1.0, 1.0);
-      util_cmat_fill(order, rblas_No_Trans, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
+  switch(Order){
+    case 'r':
+    case 'R':
+      A = (float complex*)malloc(lda * M * sizeof(float complex));
+      //fill empty space with random data to check lda
+      util_cmat_fill(Order, 'n', M, lda, A, lda, util_Mat_Row_Rand, 1.0, 1.0);
+      util_cmat_fill(Order, 'n', M, N, A, lda, util_Mat_Row_Constant, 0.0, 1.0);
       break;
-    case rblas_Col_Major:
-      A = (float complex*)malloc(ldA * N * sizeof(float complex));
-      //fill empty space with random data to check ldA
-      util_cmat_fill(order, rblas_No_Trans, ldA, N, A, ldA, util_Mat_Row_Rand, 1.0, 1.0);
-      util_cmat_fill(order, rblas_No_Trans, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
+    default:
+      A = (float complex*)malloc(lda * N * sizeof(float complex));
+      //fill empty space with random data to check lda
+      util_cmat_fill(Order, 'n', lda, N, A, lda, util_Mat_Row_Rand, 1.0, 1.0);
+      util_cmat_fill(Order, 'n', M, N, A, lda, util_Mat_Row_Constant, 0.0, 1.0);
       break;
   }
   return A;
@@ -1161,14 +1174,14 @@ void util_cvec_fill(int N, float complex* V, int incV, util_vec_fill_t fill, flo
   }
 }
 
-void util_dmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, double* A, int ldA, util_mat_fill_t fill, double a, double b) {
+void util_dmat_fill(char Order, char TransA, int M, int N, double* A, int lda, util_mat_fill_t fill, double a, double b) {
   int i;
   util_vec_fill_t row_fill;
   switch(fill){
     case util_Mat_Identity:
-      util_dmat_fill(order, transA, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
+      util_dmat_fill(Order, TransA, M, N, A, lda, util_Mat_Row_Constant, 0.0, 1.0);
       for(i = 0; i < M && i < N; i++){
-        A[i * ldA + i] = 1.0;
+        A[i * lda + i] = 1.0;
       }
       return;
     case util_Mat_Row_Constant_Drop:
@@ -1217,31 +1230,34 @@ void util_dmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N,
       row_fill = util_Vec_Small_Plus_Rand_Big;
       break;
   }
-  switch(order){
-    case rblas_Row_Major:
-      switch(transA){
-        case rblas_No_Trans:
+  switch(Order){
+    case 'r':
+    case 'R':
+      switch(TransA){
+        case 'n':
+        case 'N':
           for(i = 0; i < M; i++){
-            util_dvec_fill(N, A + i * ldA, 1, row_fill, a, b);
+            util_dvec_fill(N, A + i * lda, 1, row_fill, a, b);
           }
           break;
         default:
           for(i = 0; i < N; i++){
-            util_dvec_fill(M, A + i, ldA, row_fill, a, b);
+            util_dvec_fill(M, A + i, lda, row_fill, a, b);
           }
           break;
       }
       break;
-    case rblas_Col_Major:
-      switch(transA){
-        case rblas_No_Trans:
+    default:
+      switch(TransA){
+        case 'n':
+        case 'N':
           for(i = 0; i < M; i++){
-            util_dvec_fill(N, A + i, ldA, row_fill, a, b);
+            util_dvec_fill(N, A + i, lda, row_fill, a, b);
           }
           break;
         default:
           for(i = 0; i < N; i++){
-            util_dvec_fill(M, A + i * ldA, 1, row_fill, a, b);
+            util_dvec_fill(M, A + i * lda, 1, row_fill, a, b);
           }
           break;
       }
@@ -1249,14 +1265,14 @@ void util_dmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N,
   }
 }
 
-void util_smat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, float* A, int ldA, util_mat_fill_t fill, float a, float b) {
+void util_smat_fill(char Order, char TransA, int M, int N, float* A, int lda, util_mat_fill_t fill, float a, float b) {
   int i;
   util_vec_fill_t row_fill;
   switch(fill){
     case util_Mat_Identity:
-      util_smat_fill(order, transA, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
+      util_smat_fill(Order, TransA, M, N, A, lda, util_Mat_Row_Constant, 0.0, 1.0);
       for(i = 0; i < M && i < N; i++){
-        A[i * ldA + i] = 1.0;
+        A[i * lda + i] = 1.0;
       }
       return;
     case util_Mat_Row_Constant_Drop:
@@ -1305,31 +1321,34 @@ void util_smat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N,
       row_fill = util_Vec_Small_Plus_Rand_Big;
       break;
   }
-  switch(order){
-    case rblas_Row_Major:
-      switch(transA){
-        case rblas_No_Trans:
+  switch(Order){
+    case 'r':
+    case 'R':
+      switch(TransA){
+        case 'n':
+        case 'N':
           for(i = 0; i < M; i++){
-            util_svec_fill(N, A + i * ldA, 1, row_fill, a, b);
+            util_svec_fill(N, A + i * lda, 1, row_fill, a, b);
           }
           break;
         default:
           for(i = 0; i < N; i++){
-            util_svec_fill(M, A + i, ldA, row_fill, a, b);
+            util_svec_fill(M, A + i, lda, row_fill, a, b);
           }
           break;
       }
       break;
-    case rblas_Col_Major:
-      switch(transA){
-        case rblas_No_Trans:
+    default:
+      switch(TransA){
+        case 'n':
+        case 'N':
           for(i = 0; i < M; i++){
-            util_svec_fill(N, A + i, ldA, row_fill, a, b);
+            util_svec_fill(N, A + i, lda, row_fill, a, b);
           }
           break;
         default:
           for(i = 0; i < N; i++){
-            util_svec_fill(M, A + i * ldA, 1, row_fill, a, b);
+            util_svec_fill(M, A + i * lda, 1, row_fill, a, b);
           }
           break;
       }
@@ -1337,14 +1356,14 @@ void util_smat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N,
   }
 }
 
-void util_zmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, double complex* A, int ldA, util_mat_fill_t fill, double complex a, double complex b) {
+void util_zmat_fill(char Order, char TransA, int M, int N, double complex* A, int lda, util_mat_fill_t fill, double complex a, double complex b) {
   int i;
   util_vec_fill_t row_fill;
   switch(fill){
     case util_Mat_Identity:
-      util_zmat_fill(order, transA, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
+      util_zmat_fill(Order, TransA, M, N, A, lda, util_Mat_Row_Constant, 0.0, 1.0);
       for(i = 0; i < M && i < N; i++){
-        A[i * ldA + i] = 1.0;
+        A[i * lda + i] = 1.0;
       }
       return;
     case util_Mat_Row_Constant_Drop:
@@ -1393,31 +1412,34 @@ void util_zmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N,
       row_fill = util_Vec_Small_Plus_Rand_Big;
       break;
   }
-  switch(order){
-    case rblas_Row_Major:
-      switch(transA){
-        case rblas_No_Trans:
+  switch(Order){
+    case 'r':
+    case 'R':
+      switch(TransA){
+        case 'n':
+        case 'N':
           for(i = 0; i < M; i++){
-            util_zvec_fill(N, A + i * ldA, 1, row_fill, a, b);
+            util_zvec_fill(N, A + i * lda, 1, row_fill, a, b);
           }
           break;
         default:
           for(i = 0; i < N; i++){
-            util_zvec_fill(M, A + i, ldA, row_fill, a, b);
+            util_zvec_fill(M, A + i, lda, row_fill, a, b);
           }
           break;
       }
       break;
-    case rblas_Col_Major:
-      switch(transA){
-        case rblas_No_Trans:
+    default:
+      switch(TransA){
+        case 'n':
+        case 'N':
           for(i = 0; i < M; i++){
-            util_zvec_fill(N, A + i, ldA, row_fill, a, b);
+            util_zvec_fill(N, A + i, lda, row_fill, a, b);
           }
           break;
         default:
           for(i = 0; i < N; i++){
-            util_zvec_fill(M, A + i * ldA, 1, row_fill, a, b);
+            util_zvec_fill(M, A + i * lda, 1, row_fill, a, b);
           }
           break;
       }
@@ -1425,14 +1447,14 @@ void util_zmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N,
   }
 }
 
-void util_cmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, float complex* A, int ldA, util_mat_fill_t fill, float complex a, float complex b) {
+void util_cmat_fill(char Order, char TransA, int M, int N, float complex* A, int lda, util_mat_fill_t fill, float complex a, float complex b) {
   int i;
   util_vec_fill_t row_fill;
   switch(fill){
     case util_Mat_Identity:
-      util_cmat_fill(order, transA, M, N, A, ldA, util_Mat_Row_Constant, 0.0, 1.0);
+      util_cmat_fill(Order, TransA, M, N, A, lda, util_Mat_Row_Constant, 0.0, 1.0);
       for(i = 0; i < M && i < N; i++){
-        A[i * ldA + i] = 1.0;
+        A[i * lda + i] = 1.0;
       }
       return;
     case util_Mat_Row_Constant_Drop:
@@ -1481,31 +1503,34 @@ void util_cmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N,
       row_fill = util_Vec_Small_Plus_Rand_Big;
       break;
   }
-  switch(order){
-    case rblas_Row_Major:
-      switch(transA){
-        case rblas_No_Trans:
+  switch(Order){
+    case 'r':
+    case 'R':
+      switch(TransA){
+        case 'n':
+        case 'N':
           for(i = 0; i < M; i++){
-            util_cvec_fill(N, A + i * ldA, 1, row_fill, a, b);
+            util_cvec_fill(N, A + i * lda, 1, row_fill, a, b);
           }
           break;
         default:
           for(i = 0; i < N; i++){
-            util_cvec_fill(M, A + i, ldA, row_fill, a, b);
+            util_cvec_fill(M, A + i, lda, row_fill, a, b);
           }
           break;
       }
       break;
-    case rblas_Col_Major:
-      switch(transA){
-        case rblas_No_Trans:
+    default:
+      switch(TransA){
+        case 'n':
+        case 'N':
           for(i = 0; i < M; i++){
-            util_cvec_fill(N, A + i, ldA, row_fill, a, b);
+            util_cvec_fill(N, A + i, lda, row_fill, a, b);
           }
           break;
         default:
           for(i = 0; i < N; i++){
-            util_cvec_fill(M, A + i * ldA, 1, row_fill, a, b);
+            util_cvec_fill(M, A + i * lda, 1, row_fill, a, b);
           }
           break;
       }

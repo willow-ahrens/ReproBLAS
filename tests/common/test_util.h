@@ -109,10 +109,10 @@ void util_svec_fill(int N, float* v, int inc, util_vec_fill_t fill, float a, flo
 void util_zvec_fill(int N, double complex* v, int inc, util_vec_fill_t fill, double complex a, double complex b);
 void util_cvec_fill(int N, float complex* v, int inc, util_vec_fill_t fill, float complex a, float complex b);
 
-void util_dmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, double* A, int ldA, util_mat_fill_t fill, double a, double b);
-void util_smat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, float* A, int ldA, util_mat_fill_t fill, float a, float b);
-void util_zmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, double complex* A, int ldA, util_mat_fill_t fill, double complex a, double complex b);
-void util_cmat_fill(rblas_order_t order, rblas_transpose_t transA, int M, int N, float complex* A, int ldA, util_mat_fill_t fill, float complex a, float complex b);
+void util_dmat_fill(char Order, char TransA, int M, int N, double* A, int lda, util_mat_fill_t fill, double a, double b);
+void util_smat_fill(char Order, char TransA, int M, int N, float* A, int lda, util_mat_fill_t fill, float a, float b);
+void util_zmat_fill(char Order, char TransA, int M, int N, double complex* A, int lda, util_mat_fill_t fill, double complex a, double complex b);
+void util_cmat_fill(char Order, char TransA, int M, int N, float complex* A, int lda, util_mat_fill_t fill, float complex a, float complex b);
 
 void util_random_seed(void);
 
@@ -130,38 +130,38 @@ void util_svec_sort(int N, float* V, int incV, int *P, int incP, util_comp_t com
 void util_cvec_sort(int N, float complex* V, int incV, int *P, int incP, util_comp_t comp);
 void util_dvec_sort(int N, double* V, int incV, int *P, int incP, util_comp_t comp);
 void util_zvec_sort(int N, double complex* V, int incV, int *P, int incP, util_comp_t comp);
-void util_dmat_row_sort(rblas_order_t order, rblas_transpose_t transA, int M, int N, double *A, int ldA, int *P, int incP, util_comp_t comp, int col);
-void util_smat_row_sort(rblas_order_t order, rblas_transpose_t transA, int M, int N, float *A, int ldA, int *P, int incP, util_comp_t comp, int col);
-void util_zmat_row_sort(rblas_order_t order, rblas_transpose_t transA, int M, int N, double complex *A, int ldA, int *P, int incP, util_comp_t comp, int col);
-void util_cmat_row_sort(rblas_order_t order, rblas_transpose_t transA, int M, int N, float complex *A, int ldA, int *P, int incP, util_comp_t comp, int col);
+void util_dmat_row_sort(char Order, char TransA, int M, int N, double *A, int lda, int *P, int incP, util_comp_t comp, int col);
+void util_smat_row_sort(char Order, char TransA, int M, int N, float *A, int lda, int *P, int incP, util_comp_t comp, int col);
+void util_zmat_row_sort(char Order, char TransA, int M, int N, double complex *A, int lda, int *P, int incP, util_comp_t comp, int col);
+void util_cmat_row_sort(char Order, char TransA, int M, int N, float complex *A, int lda, int *P, int incP, util_comp_t comp, int col);
 
 void util_svec_shuffle(int N, float* V, int incV, int *P, int incP);
 void util_cvec_shuffle(int N, float complex* V, int incV, int *P, int incP);
 void util_dvec_shuffle(int N, double* V, int incV, int *P, int incP);
 void util_zvec_shuffle(int N, double complex* V, int incV, int *P, int incP);
-void util_dmat_row_shuffle(rblas_order_t order, rblas_transpose_t transA, int M, int N, double *A, int ldA, int *P, int incP);
-void util_smat_row_shuffle(rblas_order_t order, rblas_transpose_t transA, int M, int N, float *A, int ldA, int *P, int incP);
-void util_zmat_row_shuffle(rblas_order_t order, rblas_transpose_t transA, int M, int N, double complex *A, int ldA, int *P, int incP);
-void util_cmat_row_shuffle(rblas_order_t order, rblas_transpose_t transA, int M, int N, float complex *A, int ldA, int *P, int incP);
+void util_dmat_row_shuffle(char Order, char TransA, int M, int N, double *A, int lda, int *P, int incP);
+void util_smat_row_shuffle(char Order, char TransA, int M, int N, float *A, int lda, int *P, int incP);
+void util_zmat_row_shuffle(char Order, char TransA, int M, int N, double complex *A, int lda, int *P, int incP);
+void util_cmat_row_shuffle(char Order, char TransA, int M, int N, float complex *A, int lda, int *P, int incP);
 
 void util_svec_reverse(int N, float* V, int incV, int *P, int incP);
 void util_dvec_reverse(int N, double* V, int incV, int *P, int incP);
 void util_cvec_reverse(int N, float complex* V, int incV, int *P, int incP);
 void util_zvec_reverse(int N, double complex* V, int incV, int *P, int incP);
-void util_dmat_row_reverse(rblas_order_t order, rblas_transpose_t transA, int M, int N, double *A, int ldA, int *P, int incP);
-void util_smat_row_reverse(rblas_order_t order, rblas_transpose_t transA, int M, int N, float *A, int ldA, int *P, int incP);
-void util_zmat_row_reverse(rblas_order_t order, rblas_transpose_t transA, int M, int N, double complex *A, int ldA, int *P, int incP);
-void util_cmat_row_reverse(rblas_order_t order, rblas_transpose_t transA, int M, int N, float complex *A, int ldA, int *P, int incP);
+void util_dmat_row_reverse(char Order, char TransA, int M, int N, double *A, int lda, int *P, int incP);
+void util_smat_row_reverse(char Order, char TransA, int M, int N, float *A, int lda, int *P, int incP);
+void util_zmat_row_reverse(char Order, char TransA, int M, int N, double complex *A, int lda, int *P, int incP);
+void util_cmat_row_reverse(char Order, char TransA, int M, int N, float complex *A, int lda, int *P, int incP);
 
 float* util_svec_alloc(int N, int incV);
 double* util_dvec_alloc(int N, int incV);
 float complex* util_cvec_alloc(int N, int incV);
 double complex* util_zvec_alloc(int N, int incV);
 
-double* util_dmat_alloc(rblas_order_t order, int M, int N, int ldA);
-float* util_smat_alloc(rblas_order_t order, int M, int N, int ldA);
-double complex* util_zmat_alloc(rblas_order_t order, int M, int N, int ldA);
-float complex* util_cmat_alloc(rblas_order_t order, int M, int N, int ldA);
+double* util_dmat_alloc(char Order, int M, int N, int lda);
+float* util_smat_alloc(char Order, int M, int N, int lda);
+double complex* util_zmat_alloc(char Order, int M, int N, int lda);
+float complex* util_cmat_alloc(char Order, int M, int N, int lda);
 
 
 int* util_identity_permutation(int N);
@@ -170,9 +170,9 @@ void util_dvec_permute(int N, double* V, int incV, int *Q, int incQ, int *P, int
 void util_svec_permute(int N, float* V, int incV, int *Q, int incQ, int *P, int incP);
 void util_zvec_permute(int N, double complex* V, int incV, int *Q, int incQ, int *P, int incP);
 void util_cvec_permute(int N, float complex* V, int incV, int *Q, int incQ, int *P, int incP);
-void util_dmat_row_permute(rblas_order_t order, rblas_transpose_t transA, int M, int N, double *A, int ldA, int *Q, int incQ, int *P, int incP);
-void util_smat_row_permute(rblas_order_t order, rblas_transpose_t transA, int M, int N, float *A, int ldA, int *Q, int incQ, int *P, int incP);
-void util_zmat_row_permute(rblas_order_t order, rblas_transpose_t transA, int M, int N, double complex *A, int ldA, int *Q, int incQ, int *P, int incP);
-void util_cmat_row_permute(rblas_order_t order, rblas_transpose_t transA, int M, int N, float complex *A, int ldA, int *Q, int incQ, int *P, int incP);
+void util_dmat_row_permute(char Order, char TransA, int M, int N, double *A, int lda, int *Q, int incQ, int *P, int incP);
+void util_smat_row_permute(char Order, char TransA, int M, int N, float *A, int lda, int *Q, int incQ, int *P, int incP);
+void util_zmat_row_permute(char Order, char TransA, int M, int N, double complex *A, int lda, int *Q, int incQ, int *P, int incP);
+void util_cmat_row_permute(char Order, char TransA, int M, int N, float complex *A, int lda, int *Q, int incQ, int *P, int incP);
 
 #endif
