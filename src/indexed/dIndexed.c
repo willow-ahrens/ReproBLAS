@@ -94,6 +94,46 @@ int dIBoundary(int fold, double max, double* M, int inc) {
   return index;
 }
 
+int diindex(double_indexed *x){
+  int index;
+
+  bounds_initialize();
+
+  if(isinf(x[0])){
+    index = bound_min_index;
+  } else if(x[0] == 0){
+    index = bound_max_index;
+  } else {
+    frexp(x[0], &index);
+    index--;
+    index /= BIN_WIDTH;
+    index = BOUND_ZERO_INDEX - index;
+  }
+  return index;
+}
+
+int dindex(double x){
+  int index;
+
+  bounds_initialize();
+
+  if(isinf(x)){
+    index = bound_min_index;
+  } else if(x == 0){
+    index = bound_max_index;
+  } else {
+    frexp(x, &index);
+    index += PREC - BIN_WIDTH - 1;
+    if(index < 0){
+      index -= BIN_WIDTH - 1; //we want to round towards -infinity
+    }
+    index /= BIN_WIDTH;
+    index = BOUND_ZERO_INDEX - 1 - index;
+  }
+  return index;
+}
+
+
 
 void dIprint1(int n, double *x, double *c, int inc) {
 int i;

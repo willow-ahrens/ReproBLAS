@@ -70,6 +70,7 @@ void dIUpdate1_(int fold, int NB, double step,
 }
 
 void dIUpdate1(int fold, double* x, double* c, int ldx, double y) {
+/*
 	if (y == 0)
 		return;
 
@@ -81,6 +82,30 @@ void dIUpdate1(int fold, double* x, double* c, int ldx, double y) {
 	double step = pow(2.0, -W);
 
 	dIUpdate1_(fold, NB, step, x, c, ldx, y);
+*/
+  if (y == 0 || isnan(x[0] || isinf(x[0])))
+    return;
+
+  if (x[0] == 0.0) {
+    dIBoundary(fold, y, x, ldx);
+    for (int i = fold; i < fold; i++) {
+      c[i * ldx] = 0.0;
+    }
+    return;
+  }
+
+  int y_index = dindex(y);
+  int d = diindex(x) - y_index;
+  if(d > 0){
+    for(int i = fold - 1; i >= d; i--){
+      x[i * ldx] = x[(i - d) * ldx];
+      c[i * ldx] = c[(i - d) * ldx];
+    }
+    dIBoundary(MIN(d, fold), y, x, ldx);
+    for(int i = 0; i < d && i < fold; i++){
+      c[i * ldx] = 0.0;
+    }
+  }
 }
 
 void zIUpdates1(int fold, double complex* x, double complex* c, int ldx, double y) {
