@@ -292,9 +292,9 @@ static int mat_row_permute_size(char Order, char TransA, int M, int N){
       switch(TransA){
         case 'n':
         case 'N':
-          return N;
-        default:
           return M;
+        default:
+          return N;
       }
   }
 }
@@ -1258,7 +1258,7 @@ void util_dmat_fill(char Order, char TransA, int M, int N, double* A, int lda, u
           }
           break;
       }
-    break;
+      break;
   }
 }
 

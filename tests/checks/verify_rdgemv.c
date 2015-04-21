@@ -18,7 +18,7 @@ static opt_option incY   = {._int.header.type       = opt_int,
                             ._int.value             = 1};
 
 static opt_option FillY  = {._named.header.type       = opt_named,
-                            ._named.header.short_name = 'h',
+                            ._named.header.short_name = 'j',
                             ._named.header.long_name  = "FillY",
                             ._named.header.help       = "Y fill type",
                             ._named.required          = 0,
@@ -115,7 +115,7 @@ void wrap_dgemvI(const char Order,
   dgemvI(o, t, M, N, A, lda, X, incX, Y, incY, DEFAULT_FOLD);
 }
 
-int verify_dgemm_reproducibility(char Order, char TransA, int M, int N, int NX, int NY, double alpha, double *A, int lda, double* X, int incX, double beta, double *Y, Idouble *YI, int incY, double *ref, Idouble *Iref, int max_num_blocks) {
+int verify_dgemv_reproducibility(char Order, char TransA, int M, int N, int NX, int NY, double alpha, double *A, int lda, double* X, int incX, double beta, double *Y, Idouble *YI, int incY, double *ref, Idouble *Iref, int max_num_blocks) {
   (void)NX;
   // GENERATE DATA
   int i;
@@ -160,10 +160,10 @@ int verify_dgemm_reproducibility(char Order, char TransA, int M, int N, int NX, 
               switch(Order){
                 case 'r':
                 case 'R':
-                  wrap_dgemvI(Order, TransA, M, block_N, A + lda * i, alpha, lda, X + i * incX, incX, beta, Ires, incY);
+                  wrap_dgemvI(Order, TransA, block_N, N, A + i * lda, alpha, lda, X + i * incX, incX, beta, Ires, incY);
                   break;
                 default:
-                  wrap_dgemvI(Order, TransA, M, block_N, A + i, alpha, lda, X + i * incX, incX, beta, Ires, incY);
+                  wrap_dgemvI(Order, TransA, block_N, N, A + i, alpha, lda, X + i * incX, incX, beta, Ires, incY);
                   break;
               }
             }
@@ -175,7 +175,7 @@ int verify_dgemm_reproducibility(char Order, char TransA, int M, int N, int NX, 
       }
       for(i = 0; i < NY; i++){
         if(res[i * incY] != ref[i * incY]){
-          printf("dgemm(A, X, Y)[num_blocks=%d,block_N=%d] = %g != %g\n", num_blocks, block_N, res[i * incY], ref[i * incY]);
+          printf("dgemv(A, X, Y)[num_blocks=%d,block_N=%d] = %g != %g\n", num_blocks, block_N, res[i * incY], ref[i * incY]);
           if (num_blocks != 1) {
             printf("Ref I_double:\n");
             dIprint(Iref[i * incY]);
@@ -212,7 +212,7 @@ const char* matvec_fill_name(int argc, char** argv){
   opt_eval_option(argc, argv, &alpha);
   opt_eval_option(argc, argv, &beta);
 
-  snprintf(name_buffer, MAX_LINE * sizeof(char), "Verify dgemm reproducibility");
+  snprintf(name_buffer, MAX_LINE * sizeof(char), "Verify dgemv reproducibility");
   return name_buffer;
 }
 
@@ -239,8 +239,8 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
       NTransA = 'T';
     break;
     default:
-      NX = N;
-      NY = M;
+      NX = M;
+      NY = N;
       NTransA = 'N';
     break;
   }
@@ -252,117 +252,108 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
 
   int *P;
 
-  util_dmat_fill(Order, TransA, N, M, A, lda, FillA, ScaleA, CondA);
+  util_dmat_fill(Order, 'n', M, N, A, lda, FillA, ScaleA, CondA);
   util_dvec_fill(NX, X, incX, FillX, ScaleX, CondX);
-  util_dvec_fill(NY, Y, incY._int.value, FillY._int.value, ScaleY._double.value, CondY._double.value);
+  util_dvec_fill(NY, Y, incY._int.value, FillY._named.value, ScaleY._double.value, CondY._double.value);
   for(int i = 0; i < NY; i++){
     didconv(Y[i * incY._int.value], YI + i * incY._int.value, DEFAULT_FOLD);
   }
-
   double *ref  = (double*)malloc(NY * incY._int.value * sizeof(double));
   Idouble *Iref = (Idouble*)malloc(NY * incY._int.value * dISize(DEFAULT_FOLD));
 
   //compute with unpermuted data
   memcpy(ref, Y, NY * incY._int.value * sizeof(double));
   memcpy(Iref, YI, NY * incY._int.value * dISize(DEFAULT_FOLD));
+
   wrap_rdgemv(Order, TransA, M, N, A, alpha._double.value, lda, X, incX, beta._double.value, ref, incY._int.value);
   wrap_dgemvI(Order, TransA, M, N, A, alpha._double.value, lda, X, incX, beta._double.value, Iref, incY._int.value);
 
-  P = util_identity_permutation(N);
-  util_dvec_reverse(N, X, incX, P, 1);
-  util_dvec_permute(N, Y, incY._int.value, P, 1, NULL, 1);
+  P = util_identity_permutation(NX);
+  util_dvec_reverse(NX, X, incX, P, 1);
   util_dmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
   free(P);
 
-  rc = verify_dgemm_reproducibility(Order, TransA, M, N, NX, NY, alpha._double.value, A, lda, X, incX, beta._double.value, Y, YI, incY._int.value, ref, Iref, max_num_blocks);
+  rc = verify_dgemv_reproducibility(Order, TransA, M, N, NX, NY, alpha._double.value, A, lda, X, incX, beta._double.value, Y, YI, incY._int.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  P = util_identity_permutation(N);
-  util_dvec_sort(N, X, incX, P, 1, util_Increasing);
-  util_dvec_permute(N, Y, incY._int.value, P, 1, NULL, 1);
+  P = util_identity_permutation(NX);
+  util_dvec_sort(NX, X, incX, P, 1, util_Increasing);
   util_dmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
   free(P);
 
-  rc = verify_dgemm_reproducibility(Order, TransA, M, N, NX, NY, alpha._double.value, A, lda, X, incX, beta._double.value, Y, YI, incY._int.value, ref, Iref, max_num_blocks);
+  rc = verify_dgemv_reproducibility(Order, TransA, M, N, NX, NY, alpha._double.value, A, lda, X, incX, beta._double.value, Y, YI, incY._int.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  P = util_identity_permutation(N);
-  util_dvec_sort(N, X, incX, P, 1, util_Decreasing);
-  util_dvec_permute(N, Y, incY._int.value, P, 1, NULL, 1);
+  P = util_identity_permutation(NX);
+  util_dvec_sort(NX, X, incX, P, 1, util_Decreasing);
   util_dmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
   free(P);
 
-  rc = verify_dgemm_reproducibility(Order, TransA, M, N, NX, NY, alpha._double.value, A, lda, X, incX, beta._double.value, Y, YI, incY._int.value, ref, Iref, max_num_blocks);
+  rc = verify_dgemv_reproducibility(Order, TransA, M, N, NX, NY, alpha._double.value, A, lda, X, incX, beta._double.value, Y, YI, incY._int.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  P = util_identity_permutation(N);
-  util_dvec_sort(N, X, incX, P, 1, util_Increasing_Magnitude);
-  util_dvec_permute(N, Y, incY._int.value, P, 1, NULL, 1);
+  P = util_identity_permutation(NX);
+  util_dvec_sort(NX, X, incX, P, 1, util_Increasing_Magnitude);
   util_dmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
   free(P);
 
-  rc = verify_dgemm_reproducibility(Order, TransA, M, N, NX, NY, alpha._double.value, A, lda, X, incX, beta._double.value, Y, YI, incY._int.value, ref, Iref, max_num_blocks);
+  rc = verify_dgemv_reproducibility(Order, TransA, M, N, NX, NY, alpha._double.value, A, lda, X, incX, beta._double.value, Y, YI, incY._int.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  P = util_identity_permutation(N);
-  util_dvec_sort(N, X, incX, P, 1, util_Decreasing_Magnitude);
-  util_dvec_permute(N, Y, incY._int.value, P, 1, NULL, 1);
+  P = util_identity_permutation(NX);
+  util_dvec_sort(NX, X, incX, P, 1, util_Decreasing_Magnitude);
   util_dmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
   free(P);
 
-  rc = verify_dgemm_reproducibility(Order, TransA, M, N, NX, NY, alpha._double.value, A, lda, X, incX, beta._double.value, Y, YI, incY._int.value, ref, Iref, max_num_blocks);
+  rc = verify_dgemv_reproducibility(Order, TransA, M, N, NX, NY, alpha._double.value, A, lda, X, incX, beta._double.value, Y, YI, incY._int.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  P = util_identity_permutation(N);
-  util_dvec_shuffle(N, X, incX, P, 1);
-  util_dvec_permute(N, Y, incY._int.value, P, 1, NULL, 1);
+  P = util_identity_permutation(NX);
+  util_dvec_shuffle(NX, X, incX, P, 1);
   util_dmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
   free(P);
 
-  rc = verify_dgemm_reproducibility(Order, TransA, M, N, NX, NY, alpha._double.value, A, lda, X, incX, beta._double.value, Y, YI, incY._int.value, ref, Iref, max_num_blocks);
+  rc = verify_dgemv_reproducibility(Order, TransA, M, N, NX, NY, alpha._double.value, A, lda, X, incX, beta._double.value, Y, YI, incY._int.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  P = util_identity_permutation(N);
-  util_dvec_shuffle(N, X, incX, P, 1);
-  util_dvec_permute(N, Y, incY._int.value, P, 1, NULL, 1);
+  P = util_identity_permutation(NX);
+  util_dvec_shuffle(NX, X, incX, P, 1);
   util_dmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
   free(P);
 
-  rc = verify_dgemm_reproducibility(Order, TransA, M, N, NX, NY, alpha._double.value, A, lda, X, incX, beta._double.value, Y, YI, incY._int.value, ref, Iref, max_num_blocks);
+  rc = verify_dgemv_reproducibility(Order, TransA, M, N, NX, NY, alpha._double.value, A, lda, X, incX, beta._double.value, Y, YI, incY._int.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  P = util_identity_permutation(N);
-  util_dvec_shuffle(N, X, incX, P, 1);
-  util_dvec_permute(N, Y, incY._int.value, P, 1, NULL, 1);
+  P = util_identity_permutation(NX);
+  util_dvec_shuffle(NX, X, incX, P, 1);
   util_dmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
   free(P);
 
-  rc = verify_dgemm_reproducibility(Order, TransA, M, N, NX, NY, alpha._double.value, A, lda, X, incX, beta._double.value, Y, YI, incY._int.value, ref, Iref, max_num_blocks);
+  rc = verify_dgemv_reproducibility(Order, TransA, M, N, NX, NY, alpha._double.value, A, lda, X, incX, beta._double.value, Y, YI, incY._int.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  P = util_identity_permutation(N);
-  util_dvec_shuffle(N, X, incX, P, 1);
-  util_dvec_permute(N, Y, incY._int.value, P, 1, NULL, 1);
+  P = util_identity_permutation(NX);
+  util_dvec_shuffle(NX, X, incX, P, 1);
   util_dmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
   free(P);
 
-  rc = verify_dgemm_reproducibility(Order, TransA, M, N, NX, NY, alpha._double.value, A, lda, X, incX, beta._double.value, Y, YI, incY._int.value, ref, Iref, max_num_blocks);
+  rc = verify_dgemv_reproducibility(Order, TransA, M, N, NX, NY, alpha._double.value, A, lda, X, incX, beta._double.value, Y, YI, incY._int.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }

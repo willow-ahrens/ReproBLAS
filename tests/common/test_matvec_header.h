@@ -8,8 +8,8 @@ int matvec_show_help(void);
 const char *matvec_name(int argc, char** argv);
 int matvec_test(int argc, char** argv, char Order, char TransA, int M, int N, int lda, int incX);
 
-static const char *Order_names[] = {"ColMajor", "RowMajor"};
-static const char *Order_descs[] = {"Column Major", "Row Major"};
+static const char *Order_names[] = {"RowMajor", "ColMajor"};
+static const char *Order_descs[] = {"Row Major", "Column Major"};
 static opt_option Order  = {._named.header.type       = opt_named,
                             ._named.header.short_name = 'O',
                             ._named.header.long_name  = "Order",
@@ -20,8 +20,8 @@ static opt_option Order  = {._named.header.type       = opt_named,
                             ._named.descs             = (char**)Order_descs,
                             ._named.value             = 0};
 
-static const char *TransA_names[] = {"Trans", "NoTrans"};
-static const char *TransA_descs[] = {"Transpose", "Don't Transpose"};
+static const char *TransA_names[] = {"NoTrans", "Trans"};
+static const char *TransA_descs[] = {"Don't Transpose", "Transpose"};
 static opt_option TransA = {._named.header.type       = opt_named,
                             ._named.header.short_name = 'T',
                             ._named.header.long_name  = "TransA",
@@ -101,7 +101,10 @@ int test(int argc, char** argv){
   opt_eval_option(argc, argv, &lda);
   opt_eval_option(argc, argv, &incX);
 
+  int lda_prime;
+
   switch(Order._named.names[Order._named.value][0]){
+    case 'r':
     case 'R':
       if(lda._int.value == 0){
         lda._int.value = N._int.value;
@@ -110,6 +113,8 @@ int test(int argc, char** argv){
         fprintf(stderr, "ReproBLAS error: row major matrix arguments inconsistent N=%d, lda=%d\n", N._int.value, lda._int.value);
         return 125;
       }
+      break;
+    case 'c':
     case 'C':
       if(lda._int.value == 0){
         lda._int.value = M._int.value;
