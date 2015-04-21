@@ -4,10 +4,10 @@
 
 #include "../common/test_vecvec_fill_header.h"
 
-int vecvec_fill_bench_desc(void);
-int vecvec_fill_bench_show_help(void);
-const char* vecvec_fill_bench_name(int argc, char** argv);
-int vecvec_fill_bench_test(int argc, char** argv, int N, int incx, int incy, int type, double scale, double cond, int trials);
+int bench_vecvec_fill_desc(void);
+int bench_vecvec_fill_show_help(void);
+const char* bench_vecvec_fill_name(int argc, char** argv);
+int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, double CondX, int incX, int FillY, double ScaleY, double CondY, int incY, int trials);
 
 static opt_option trials = {._int.header.type       = opt_int,
                             ._int.header.short_name = 'a',
@@ -25,24 +25,24 @@ static opt_option desc   = {._flag.header.type       = opt_flag,
 
 int vecvec_fill_show_help(void){
   opt_show_option(trials);
-  return vecvec_fill_bench_show_help();
+  return bench_vecvec_fill_show_help();
 }
 
 const char* vecvec_fill_name(int argc, char** argv){
   static char name_buffer[MAX_LINE];
 
   opt_eval_option(argc, argv, &trials);
-  snprintf(name_buffer, MAX_LINE * sizeof(char), "%s (%d trials)", vecvec_fill_bench_name(argc, argv), trials._int.value);
+  snprintf(name_buffer, MAX_LINE * sizeof(char), "%s (%d trials)", bench_vecvec_fill_name(argc, argv), trials._int.value);
   return name_buffer;
 }
 
-int vecvec_fill_test(int argc, char** argv, int N, int incx, int incy, int type, double scale, double cond){
+int vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, double CondX, int incX, int FillY, double ScaleY, double CondY, int incY){
   opt_eval_option(argc, argv, &desc);
   if(desc._flag.exists){
-    return vecvec_fill_bench_desc();
+    return bench_vecvec_fill_desc();
   }
 
   opt_eval_option(argc, argv, &trials);
-  int rc = vecvec_fill_bench_test(argc, argv, N, incx, incy, type, scale, cond, trials._int.value);
+  int rc = bench_vecvec_fill_test(argc, argv, N, FillX, ScaleX, CondX, incX, FillY, ScaleY, CondY, incY, trials._int.value);
   return rc;
 }

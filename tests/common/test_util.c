@@ -235,8 +235,8 @@ typedef struct vec_compare_data{
 } vec_compare_data_t;
 
 typedef struct mat_row_compare_data{
-  char     Order;
-  char TransA;
+  char              Order;
+  char              TransA;
   int               M;
   int               N;
   void              *A;
@@ -641,28 +641,6 @@ void util_cmat_row_shuffle(char Order, char TransA, int M, int N, float complex 
   shuffle(mat_row_permute_size(Order, TransA, M, N), &mat_row_swap, &swap_data);
 }
 
-static void permute(int N, int *P, int incP, swap_func swap, void *swap_data) {
-  int i, j;
-  int *permuted = (int*)malloc(N * sizeof(int));
-  for (i = 0; i < N; i++)
-  {
-    permuted[i] = 0;
-  }
-  for (i = 0; i < N; i++)
-  {
-    if(!permuted[i]){
-      j = P[i * incP];
-      while(j != i){
-        swap(i, j, swap_data);
-        j = P[j * incP];
-        permuted[j] = 1;
-      }
-      permuted[i] = 1;
-    }
-  }
-  free(permuted);
-}
-
 int* util_identity_permutation(int N){
   int i;
   int *identity = (int*)malloc(N * sizeof(int));
@@ -681,6 +659,25 @@ int* util_inverse_permutation(int N, int *P, int incP){
     P_inverse[P[i * incP]] = i;
   }
   return P_inverse;
+}
+
+static void permute(int N, int *P, int incP, swap_func swap, void *swap_data) {
+  int i, j, k;
+  int *Q = util_inverse_permutation(N, P, incP);
+  for (i = 0; i < N; i++)
+  {
+    if(Q[i] != -1){
+      j = Q[i];
+      while(j != i){
+        swap(i, j, swap_data);
+        k = j;
+        j = Q[j];
+        Q[k] = -1;
+      }
+      Q[i] = -1;
+    }
+  }
+  free(Q);
 }
 
 void util_dvec_permute(int N, double* V, int incV, int *Q, int incQ, int *P, int incP) {

@@ -47,8 +47,8 @@ int file_test(int argc, char** argv, char *fname) {
   opt_eval_option(argc, argv, &func_type);
   opt_eval_option(argc, argv, &record);
 
-  float complex *x;
-  float complex *y;
+  float complex *X;
+  float complex *Y;
 
   float complex ref;
   I_float_Complex Iref;
@@ -56,17 +56,17 @@ int file_test(int argc, char** argv, char *fname) {
   float complex res;
   I_float_Complex Ires;
 
-  file_read_vector(fname, &N, (void**)&x, sizeof(float complex));
-  y = util_cvec_alloc(N, 1);
-  //fill y with -i where necessary
-  util_cvec_fill(N, y, 1, util_Vec_Constant, -_Complex_I, 1.0);
+  file_read_vector(fname, &N, (void**)&X, sizeof(float complex));
+  Y = util_cvec_alloc(N, 1);
+  //fill Y with -i where necessary
+  util_cvec_fill(N, Y, 1, util_Vec_Constant, -_Complex_I, 1.0);
 
   ((char*)file_ext(fname))[0] = '\0';
   snprintf(ref_fname, MAX_NAME, "%s__%s.dat", fname, wrap_rcblas1_names[func_type._named.value]);
   snprintf(Iref_fname, MAX_NAME, "%s__I%s.dat", fname, wrap_rcblas1_names[func_type._named.value]);
 
-  res = (wrap_rcblas1_func(func_type._named.value))(N, x, 1, y, 1);
-  Ires = (wrap_Icblas1_func(func_type._named.value))(N, x, 1, y, 1);
+  res = (wrap_rcblas1_func(func_type._named.value))(N, X, 1, Y, 1);
+  Ires = (wrap_Icblas1_func(func_type._named.value))(N, X, 1, Y, 1);
 
   if(record._flag.exists){
     ref = res;
@@ -100,7 +100,7 @@ int file_test(int argc, char** argv, char *fname) {
     }
   }
 
-  free(x);
-  free(y);
+  free(X);
+  free(Y);
   return 0;
 }

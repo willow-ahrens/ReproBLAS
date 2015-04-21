@@ -15,7 +15,7 @@ const char* vecvec_name(int argc, char** argv) {
   return "Validate rdsum, rdasum, rddot (1Big, 1BigPosNeg)";
 }
 
-int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
+int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   (void)argc;
   (void)argv;
   double small = 1.0 / (1024.0 * 1024.0);       // 2^-20
@@ -28,11 +28,11 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   util_random_seed();
 
   //allocate vectors
-  double *x    = util_dvec_alloc(N, incx);
-  double *y    = util_dvec_alloc(N, incy);
+  double *X    = util_dvec_alloc(N, incX);
+  double *Y    = util_dvec_alloc(N, incY);
 
-  //fill y with -1 where necessary
-  util_dvec_fill(N, y, incy, util_Vec_Constant, -1.0, 1.0);
+  //fill Y with -1 where necessary
+  util_dvec_fill(N, Y, incY, util_Vec_Constant, -1.0, 1.0);
 
   //1 Big
   ref   = (N - 1) * small + big;
@@ -40,68 +40,68 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   refd  = ref * -1;
 
   //1 Big at beginning
-  util_dvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
-  x[0]         = big;
+  util_dvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
+  X[0]         = big;
 
-  res = rdsum(N, x, incx);
+  res = rdsum(N, X, incX);
   if (res != ref) {
-    printf("rdsum(x) = %g != %g (1 Big at beginning)\n", res, ref);
+    printf("rdsum(X) = %g != %g (1 Big at beginning)\n", res, ref);
     return 1;
   }
 
-  res = rdasum(N, x, incx);
+  res = rdasum(N, X, incX);
   if (res != refa) {
-    printf("rdasum(x) = %g != %g (1 Big at beginning)\n", res, refa);
+    printf("rdasum(X) = %g != %g (1 Big at beginning)\n", res, refa);
     return 1;
   }
 
-  res = rddot(N, x, incx, y, incy);
+  res = rddot(N, X, incX, Y, incY);
   if (res != refd) {
-    printf("rddot(x) = %g != %g (1 Big at beginning)\n", res, refd);
+    printf("rddot(X) = %g != %g (1 Big at beginning)\n", res, refd);
     return 1;
   }
 
   //1 Big in middle
-  util_dvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
-  x[(N/2)*incx] = big;
+  util_dvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
+  X[(N/2)*incX] = big;
 
-  res = rdsum(N, x, incx);
+  res = rdsum(N, X, incX);
   if (res != ref) {
-    printf("rdsum(x) = %g != %g (1 Big in middle)\n", res, ref);
+    printf("rdsum(X) = %g != %g (1 Big in middle)\n", res, ref);
     return 1;
   }
 
-  res = rdasum(N, x, incx);
+  res = rdasum(N, X, incX);
   if (res != refa) {
-    printf("rdasum(x) = %g != %g (1 Big in middle)\n", res, refa);
+    printf("rdasum(X) = %g != %g (1 Big in middle)\n", res, refa);
     return 1;
   }
 
-  res = rddot(N, x, incx, y, incy);
+  res = rddot(N, X, incX, Y, incY);
   if (res != refd) {
-    printf("rddot(x) = %g != %g (1 Big in middle)\n", res, refd);
+    printf("rddot(X) = %g != %g (1 Big in middle)\n", res, refd);
     return 1;
   }
 
   //1 Big at end
-  util_dvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
-  x[(N-1)*incx] = big;
+  util_dvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
+  X[(N-1)*incX] = big;
 
-  res = rdsum(N, x, incx);
+  res = rdsum(N, X, incX);
   if (res != ref) {
-    printf("rdsum(x) = %g != %g (1 Big at end)\n", res, ref);
+    printf("rdsum(X) = %g != %g (1 Big at end)\n", res, ref);
     return 1;
   }
 
-  res = rdasum(N, x, incx);
+  res = rdasum(N, X, incX);
   if (res != refa) {
-    printf("rdasum(x) = %g != %g (1 Big at end)\n", res, refa);
+    printf("rdasum(X) = %g != %g (1 Big at end)\n", res, refa);
     return 1;
   }
 
-  res = rddot(N, x, incx, y, incy);
+  res = rddot(N, X, incX, Y, incY);
   if (res != refd) {
-    printf("rddot(x) = %g != %g (1 Big at end)\n", res, refd);
+    printf("rddot(X) = %g != %g (1 Big at end)\n", res, refd);
     return 1;
   }
 
@@ -111,76 +111,76 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   refd  = ref * -1;
 
   //1 Big pos neg at beginning
-  util_dvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
-  x[0]         = big;
-  x[(N/2)*incx] = -big;
+  util_dvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
+  X[0]         = big;
+  X[(N/2)*incX] = -big;
 
-  res = rdsum(N, x, incx);
+  res = rdsum(N, X, incX);
   if (res != ref) {
-    printf("rdsum(x) = %g != %g (1 Big pos neg at beginning)\n", res, ref);
+    printf("rdsum(X) = %g != %g (1 Big pos neg at beginning)\n", res, ref);
     return 1;
   }
 
-  res = rdasum(N, x, incx);
+  res = rdasum(N, X, incX);
   if (res != refa) {
-    printf("rdasum(x) = %g != %g (1 Big pos neg at beginning)\n", res, refa);
+    printf("rdasum(X) = %g != %g (1 Big pos neg at beginning)\n", res, refa);
     return 1;
   }
 
-  res = rddot(N, x, incx, y, incy);
+  res = rddot(N, X, incX, Y, incY);
   if (res != refd) {
-    printf("rddot(x) = %g != %g (1 Big pos neg at beginning)\n", res, refd);
+    printf("rddot(X) = %g != %g (1 Big pos neg at beginning)\n", res, refd);
     return 1;
   }
 
   //1 Big pos neg at ends
-  util_dvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
-  x[0]         = big;
-  x[(N-1)*incx] = -big;
+  util_dvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
+  X[0]         = big;
+  X[(N-1)*incX] = -big;
 
-  res = rdsum(N, x, incx);
+  res = rdsum(N, X, incX);
   if (res != ref) {
-    printf("rdsum(x) = %g != %g (1 Big pos neg at ends)\n", res, ref);
+    printf("rdsum(X) = %g != %g (1 Big pos neg at ends)\n", res, ref);
     return 1;
   }
 
-  res = rdasum(N, x, incx);
+  res = rdasum(N, X, incX);
   if (res != refa) {
-    printf("rdasum(x) = %g != %g (1 Big pos neg at ends)\n", res, refa);
+    printf("rdasum(X) = %g != %g (1 Big pos neg at ends)\n", res, refa);
     return 1;
   }
 
-  res = rddot(N, x, incx, y, incy);
+  res = rddot(N, X, incX, Y, incY);
   if (res != refd) {
-    printf("rddot(x) = %g != %g (1 Big pos neg at ends)\n", res, refd);
+    printf("rddot(X) = %g != %g (1 Big pos neg at ends)\n", res, refd);
     return 1;
   }
 
   //1 Big pos neg at end
-  util_dvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
-  x[(N/2)*incx] = big;
-  x[(N-1)*incx] = -big;
+  util_dvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
+  X[(N/2)*incX] = big;
+  X[(N-1)*incX] = -big;
 
-  res = rdsum(N, x, incx);
+  res = rdsum(N, X, incX);
   if (res != ref) {
-    printf("rdsum(x) = %g != %g (1 Big pos neg at end)\n", res, ref);
+    printf("rdsum(X) = %g != %g (1 Big pos neg at end)\n", res, ref);
     return 1;
   }
 
-  res = rdasum(N, x, incx);
+  res = rdasum(N, X, incX);
   if (res != refa) {
-    printf("rdasum(x) = %g != %g (1 Big pos neg at end)\n", res, refa);
+    printf("rdasum(X) = %g != %g (1 Big pos neg at end)\n", res, refa);
     return 1;
   }
 
-  res = rddot(N, x, incx, y, incy);
+  res = rddot(N, X, incX, Y, incY);
   if (res != refd) {
-    printf("rddot(x) = %g != %g (1 Big pos neg at end)\n", res, refd);
+    printf("rddot(X) = %g != %g (1 Big pos neg at end)\n", res, refd);
     return 1;
   }
 
-  free(x);
-  free(y);
+  free(X);
+  free(Y);
 
   return 0;
 }

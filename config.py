@@ -1,3 +1,5 @@
+from multiprocessing import Pool, cpu_count
+
 import scripts.terminal as terminal
 
 def run(command_list):
@@ -6,6 +8,7 @@ def run(command_list):
   target and returns a list of their results as a list of tuples of (return
   code, output)
   """
-  return[terminal.callsafe(command) for command in command_list]
+  p = Pool(cpu_count())
+  return p.map(terminal.callsafe, command_list)
 
 version = "0.0.0"

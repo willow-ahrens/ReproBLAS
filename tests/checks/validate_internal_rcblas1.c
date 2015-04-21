@@ -15,7 +15,7 @@ const char* vecvec_name(int argc, char** argv) {
   return "Validate rcsum, rscasum, rcdotu/c (1Big, 1BigPosNeg)";
 }
 
-int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
+int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   (void)argc;
   (void)argv;
   float small = 1.0 / 1024.0; // 2^-10
@@ -29,11 +29,11 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   util_random_seed();
 
   //allocate vectors
-  float complex *x    = util_cvec_alloc(N, incx);
-  float complex *y    = util_cvec_alloc(N, incy);
+  float complex *X    = util_cvec_alloc(N, incX);
+  float complex *Y    = util_cvec_alloc(N, incY);
 
-  //fill y with -i where necessary
-  util_cvec_fill(N, y, incy, util_Vec_Constant, -_Complex_I, 1.0);
+  //fill Y with -i where necessary
+  util_cvec_fill(N, Y, incY, util_Vec_Constant, -_Complex_I, 1.0);
 
   //1 Big
   ref   = (N - 1) * small + big;
@@ -42,86 +42,86 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   refdc  = ref * _Complex_I;
 
   //1 Big at beginning
-  util_cvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
-  x[0]         = big;
+  util_cvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
+  X[0]         = big;
 
-  res = rcsum(N, x, incx);
+  res = rcsum(N, X, incX);
   if (res != ref) {
-    printf("rcsum(x) = %g + %gi != %g + %gi (1 Big at beginning)\n", CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
+    printf("rcsum(X) = %g + %gi != %g + %gi (1 Big at beginning)\n", CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
     return 1;
   }
 
-  res = rscasum(N, x, incx);
+  res = rscasum(N, X, incX);
   if (res != refa) {
-    printf("rscasum(x) = %g + %gi != %g + %gi (1 Big at beginning)\n", CREAL_(res), CIMAG_(res), CREAL_(refa), CIMAG_(refa));
+    printf("rscasum(X) = %g + %gi != %g + %gi (1 Big at beginning)\n", CREAL_(res), CIMAG_(res), CREAL_(refa), CIMAG_(refa));
     return 1;
   }
 
-  res = rcdotu(N, x, incx, y, incy);
+  res = rcdotu(N, X, incX, Y, incY);
   if (res != refdu) {
-    printf("rcdotu(x) = %g + %gi != %g + %gi (1 Big at beginning)\n", CREAL_(res), CIMAG_(res), CREAL_(refdu), CIMAG_(refdu));
+    printf("rcdotu(X) = %g + %gi != %g + %gi (1 Big at beginning)\n", CREAL_(res), CIMAG_(res), CREAL_(refdu), CIMAG_(refdu));
     return 1;
   }
 
-  res = rcdotc(N, x, incx, y, incy);
+  res = rcdotc(N, X, incX, Y, incY);
   if (res != refdc) {
-    printf("rcdotc(x) = %g + %gi != %g + %gi (1 Big at beginning)\n", CREAL_(res), CIMAG_(res), CREAL_(refdc), CIMAG_(refdc));
+    printf("rcdotc(X) = %g + %gi != %g + %gi (1 Big at beginning)\n", CREAL_(res), CIMAG_(res), CREAL_(refdc), CIMAG_(refdc));
     return 1;
   }
 
   //1 Big in middle
-  util_cvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
-  x[(N/2)*incx] = big;
+  util_cvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
+  X[(N/2)*incX] = big;
 
-  res = rcsum(N, x, incx);
+  res = rcsum(N, X, incX);
   if (res != ref) {
-    printf("rcsum(x) = %g + %gi != %g + %gi (1 Big in middle)\n", CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
+    printf("rcsum(X) = %g + %gi != %g + %gi (1 Big in middle)\n", CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
     return 1;
   }
 
-  res = rscasum(N, x, incx);
+  res = rscasum(N, X, incX);
   if (res != refa) {
-    printf("rscasum(x) = %g + %gi != %g + %gi (1 Big in middle)\n", CREAL_(res), CIMAG_(res), CREAL_(refa), CIMAG_(refa));
+    printf("rscasum(X) = %g + %gi != %g + %gi (1 Big in middle)\n", CREAL_(res), CIMAG_(res), CREAL_(refa), CIMAG_(refa));
     return 1;
   }
 
-  res = rcdotu(N, x, incx, y, incy);
+  res = rcdotu(N, X, incX, Y, incY);
   if (res != refdu) {
-    printf("rcdotu(x) = %g + %gi != %g + %gi (1 Big in middle)\n", CREAL_(res), CIMAG_(res), CREAL_(refdu), CIMAG_(refdu));
+    printf("rcdotu(X) = %g + %gi != %g + %gi (1 Big in middle)\n", CREAL_(res), CIMAG_(res), CREAL_(refdu), CIMAG_(refdu));
     return 1;
   }
 
-  res = rcdotc(N, x, incx, y, incy);
+  res = rcdotc(N, X, incX, Y, incY);
   if (res != refdc) {
-    printf("rcdotc(x) = %g + %gi != %g + %gi (1 Big in middle)\n", CREAL_(res), CIMAG_(res), CREAL_(refdc), CIMAG_(refdc));
+    printf("rcdotc(X) = %g + %gi != %g + %gi (1 Big in middle)\n", CREAL_(res), CIMAG_(res), CREAL_(refdc), CIMAG_(refdc));
     return 1;
   }
 
   //1 Big at end
-  util_cvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
-  x[(N-1)*incx] = big;
+  util_cvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
+  X[(N-1)*incX] = big;
 
-  res = rcsum(N, x, incx);
+  res = rcsum(N, X, incX);
   if (res != ref) {
-    printf("rcsum(x) = %g + %gi != %g + %gi (1 Big at end)\n", CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
+    printf("rcsum(X) = %g + %gi != %g + %gi (1 Big at end)\n", CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
     return 1;
   }
 
-  res = rscasum(N, x, incx);
+  res = rscasum(N, X, incX);
   if (res != refa) {
-    printf("rscasum(x) = %g + %gi != %g + %gi (1 Big at end)\n", CREAL_(res), CIMAG_(res), CREAL_(refa), CIMAG_(refa));
+    printf("rscasum(X) = %g + %gi != %g + %gi (1 Big at end)\n", CREAL_(res), CIMAG_(res), CREAL_(refa), CIMAG_(refa));
     return 1;
   }
 
-  res = rcdotu(N, x, incx, y, incy);
+  res = rcdotu(N, X, incX, Y, incY);
   if (res != refdu) {
-    printf("rcdotu(x) = %g + %gi != %g + %gi (1 Big at end)\n", CREAL_(res), CIMAG_(res), CREAL_(refdu), CIMAG_(refdu));
+    printf("rcdotu(X) = %g + %gi != %g + %gi (1 Big at end)\n", CREAL_(res), CIMAG_(res), CREAL_(refdu), CIMAG_(refdu));
     return 1;
   }
 
-  res = rcdotc(N, x, incx, y, incy);
+  res = rcdotc(N, X, incX, Y, incY);
   if (res != refdc) {
-    printf("rcdotc(x) = %g + %gi != %g + %gi (1 Big at end)\n", CREAL_(res), CIMAG_(res), CREAL_(refdc), CIMAG_(refdc));
+    printf("rcdotc(X) = %g + %gi != %g + %gi (1 Big at end)\n", CREAL_(res), CIMAG_(res), CREAL_(refdc), CIMAG_(refdc));
     return 1;
   }
 
@@ -132,94 +132,94 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   refdc  = ref * _Complex_I;
 
   //1 Big pos neg at beginning
-  util_cvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
-  x[0]         = big;
-  x[(N/2)*incx] = -big;
+  util_cvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
+  X[0]         = big;
+  X[(N/2)*incX] = -big;
 
-  res = rcsum(N, x, incx);
+  res = rcsum(N, X, incX);
   if (res != ref) {
-    printf("rcsum(x) = %g + %gi != %g + %gi (1 Big pos neg at beginning)\n", CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
+    printf("rcsum(X) = %g + %gi != %g + %gi (1 Big pos neg at beginning)\n", CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
     return 1;
   }
 
-  res = rscasum(N, x, incx);
+  res = rscasum(N, X, incX);
   if (res != refa) {
-    printf("rscasum(x) = %g + %gi != %g + %gi (1 Big pos neg at beginning)\n", CREAL_(res), CIMAG_(res), CREAL_(refa), CIMAG_(refa));
+    printf("rscasum(X) = %g + %gi != %g + %gi (1 Big pos neg at beginning)\n", CREAL_(res), CIMAG_(res), CREAL_(refa), CIMAG_(refa));
     return 1;
   }
 
-  res = rcdotu(N, x, incx, y, incy);
+  res = rcdotu(N, X, incX, Y, incY);
   if (res != refdu) {
-    printf("rcdotu(x) = %g + %gi != %g + %gi (1 Big pos neg at beginning)\n", CREAL_(res), CIMAG_(res), CREAL_(refdu), CIMAG_(refdu));
+    printf("rcdotu(X) = %g + %gi != %g + %gi (1 Big pos neg at beginning)\n", CREAL_(res), CIMAG_(res), CREAL_(refdu), CIMAG_(refdu));
     return 1;
   }
 
-  res = rcdotc(N, x, incx, y, incy);
+  res = rcdotc(N, X, incX, Y, incY);
   if (res != refdc) {
-    printf("rcdotc(x) = %g + %gi != %g + %gi (1 Big pos neg at beginning)\n", CREAL_(res), CIMAG_(res), CREAL_(refdc), CIMAG_(refdc));
+    printf("rcdotc(X) = %g + %gi != %g + %gi (1 Big pos neg at beginning)\n", CREAL_(res), CIMAG_(res), CREAL_(refdc), CIMAG_(refdc));
     return 1;
   }
 
   //1 Big pos neg at ends
-  util_cvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
-  x[0]         = big;
-  x[(N-1)*incx] = -big;
+  util_cvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
+  X[0]         = big;
+  X[(N-1)*incX] = -big;
 
-  res = rcsum(N, x, incx);
+  res = rcsum(N, X, incX);
   if (res != ref) {
-    printf("rcsum(x) = %g + %gi != %g + %gi (1 Big pos neg at ends)\n", CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
+    printf("rcsum(X) = %g + %gi != %g + %gi (1 Big pos neg at ends)\n", CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
     return 1;
   }
 
-  res = rscasum(N, x, incx);
+  res = rscasum(N, X, incX);
   if (res != refa) {
-    printf("rscasum(x) = %g + %gi != %g + %gi (1 Big pos neg at ends)\n", CREAL_(res), CIMAG_(res), CREAL_(refa), CIMAG_(refa));
+    printf("rscasum(X) = %g + %gi != %g + %gi (1 Big pos neg at ends)\n", CREAL_(res), CIMAG_(res), CREAL_(refa), CIMAG_(refa));
     return 1;
   }
 
-  res = rcdotu(N, x, incx, y, incy);
+  res = rcdotu(N, X, incX, Y, incY);
   if (res != refdu) {
-    printf("rcdotu(x) = %g + %gi != %g + %gi (1 Big pos neg at ends)\n", CREAL_(res), CIMAG_(res), CREAL_(refdu), CIMAG_(refdu));
+    printf("rcdotu(X) = %g + %gi != %g + %gi (1 Big pos neg at ends)\n", CREAL_(res), CIMAG_(res), CREAL_(refdu), CIMAG_(refdu));
     return 1;
   }
 
-  res = rcdotc(N, x, incx, y, incy);
+  res = rcdotc(N, X, incX, Y, incY);
   if (res != refdc) {
-    printf("rcdotc(x) = %g + %gi != %g + %gi (1 Big pos neg at ends)\n", CREAL_(res), CIMAG_(res), CREAL_(refdc), CIMAG_(refdc));
+    printf("rcdotc(X) = %g + %gi != %g + %gi (1 Big pos neg at ends)\n", CREAL_(res), CIMAG_(res), CREAL_(refdc), CIMAG_(refdc));
     return 1;
   }
 
   //1 Big pos neg at end
-  util_cvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
-  x[(N/2)*incx] = big;
-  x[(N-1)*incx] = -big;
+  util_cvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
+  X[(N/2)*incX] = big;
+  X[(N-1)*incX] = -big;
 
-  res = rcsum(N, x, incx);
+  res = rcsum(N, X, incX);
   if (res != ref) {
-    printf("rcsum(x) = %g + %gi != %g + %gi (1 Big pos neg at end)\n", CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
+    printf("rcsum(X) = %g + %gi != %g + %gi (1 Big pos neg at end)\n", CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
     return 1;
   }
 
-  res = rscasum(N, x, incx);
+  res = rscasum(N, X, incX);
   if (res != refa) {
-    printf("rscasum(x) = %g + %gi != %g + %gi (1 Big pos neg at end)\n", CREAL_(res), CIMAG_(res), CREAL_(refa), CIMAG_(refa));
+    printf("rscasum(X) = %g + %gi != %g + %gi (1 Big pos neg at end)\n", CREAL_(res), CIMAG_(res), CREAL_(refa), CIMAG_(refa));
     return 1;
   }
 
-  res = rcdotu(N, x, incx, y, incy);
+  res = rcdotu(N, X, incX, Y, incY);
   if (res != refdu) {
-    printf("rcdotu(x) = %g + %gi != %g + %gi (1 Big pos neg at end)\n", CREAL_(res), CIMAG_(res), CREAL_(refdu), CIMAG_(refdu));
+    printf("rcdotu(X) = %g + %gi != %g + %gi (1 Big pos neg at end)\n", CREAL_(res), CIMAG_(res), CREAL_(refdu), CIMAG_(refdu));
     return 1;
   }
 
-  res = rcdotc(N, x, incx, y, incy);
+  res = rcdotc(N, X, incX, Y, incY);
   if (res != refdc) {
-    printf("rcdotc(x) = %g + %gi != %g + %gi (1 Big pos neg at end)\n", CREAL_(res), CIMAG_(res), CREAL_(refdc), CIMAG_(refdc));
+    printf("rcdotc(X) = %g + %gi != %g + %gi (1 Big pos neg at end)\n", CREAL_(res), CIMAG_(res), CREAL_(refdc), CIMAG_(refdc));
     return 1;
   }
 
-  free(x);
-  free(y);
+  free(X);
+  free(Y);
 
   return 0;
 }

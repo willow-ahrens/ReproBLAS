@@ -15,7 +15,7 @@ const char* vecvec_name(int argc, char** argv) {
   return "Validate camax(m) (1Big)";
 }
 
-int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
+int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   (void)argc;
   (void)argv;
   float small = 1.0 / 1024.0;			// 2^-10
@@ -26,49 +26,49 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   util_random_seed();
 
   //allocate vectors
-  float complex *x    = util_cvec_alloc(N, incx);
-  float complex *y    = util_cvec_alloc(N, incy);
+  float complex *X    = util_cvec_alloc(N, incX);
+  float complex *Y    = util_cvec_alloc(N, incY);
 
-  //fill y with 1 where necessary
-  util_cvec_fill(N, y, incy, util_Vec_Constant, 1.0, 1.0);
+  //fill Y with 1 where necessary
+  util_cvec_fill(N, Y, incY, util_Vec_Constant, 1.0, 1.0);
 
   //1 Big
   ref   = big + _Complex_I * big;
 
   //1 Big at beginning
-  util_cvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
-  x[0]         = -big + -_Complex_I * big;
+  util_cvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
+  X[0]         = -big + -_Complex_I * big;
 
-  res = camax(N, x, incx);
+  res = camax(N, X, incX);
   if (res != ref) {
-    printf("camax(x) = %g + %gi != %g + %gi (1 Big at beginning)\n", CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
+    printf("camax(X) = %g + %gi != %g + %gi (1 Big at beginning)\n", CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
     return 1;
   }
 
-  res = camaxm(N, x, incx, y, incy);
+  res = camaxm(N, X, incX, Y, incY);
   if (res != ref) {
-    printf("camaxm(x) = %g + %gi != %g + %gi (1 Big at beginning)\n", CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
+    printf("camaxm(X) = %g + %gi != %g + %gi (1 Big at beginning)\n", CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
     return 1;
   }
 
   //1 Big at end
-  util_cvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
-  x[(N-1)*incx]         = -big + -_Complex_I * big;
+  util_cvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
+  X[(N-1)*incX]         = -big + -_Complex_I * big;
 
-  res = camax(N, x, incx);
+  res = camax(N, X, incX);
   if (res != ref) {
-    printf("camax(x) = %g + %gi != %g + %gi (1 Big at end)\n", CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
+    printf("camax(X) = %g + %gi != %g + %gi (1 Big at end)\n", CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
     return 1;
   }
 
-  res = camaxm(N, x, incx, y, incy);
+  res = camaxm(N, X, incX, Y, incY);
   if (res != ref) {
-    printf("camaxm(x) = %g + %gi != %g + %gi (1 Big at end)\n", CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
+    printf("camaxm(X) = %g + %gi != %g + %gi (1 Big at end)\n", CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
     return 1;
   }
 
-  free(x);
-  free(y);
+  free(X);
+  free(Y);
 
   return 0;
 }

@@ -6,44 +6,44 @@
 #include "../common/test_perf.h"
 #include "../common/test_BLAS.h"
 
-#include "vecvec_fill_bench_header.h"
+#include "bench_vecvec_fill_header.h"
 
-int vecvec_fill_bench_desc(void){
+int bench_vecvec_fill_desc(void){
   char *op_names[] = {"d_add", "d_mul", "d_cmp", "d_orb"};
   int op_counts[] = {2, 4, 2, 2};
   perf_output_desc(4, op_names, op_counts);
   return 0;
 }
 
-int vecvec_fill_bench_show_help(void){
+int bench_vecvec_fill_show_help(void){
   return 0;
 }
 
-const char* vecvec_fill_bench_name(int argc, char** argv){
+const char* bench_vecvec_fill_name(int argc, char** argv){
   static char name_buffer[MAX_LINE];
   snprintf(name_buffer, MAX_LINE * sizeof(char), "Benchmark [dznrm2]");
   return name_buffer;
 }
 
-int vecvec_fill_bench_test(int argc, char** argv, int N, int incx, int incy, int type, double scale, double cond, int trials){
+int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, double CondX, int incX, int FillY, double ScaleY, double CondY, int incY, int trials){
   int rc = 0;
   double complex res;
 
   util_random_seed();
 
-  double complex *x = util_zvec_alloc(N, incx);
+  double complex *X = util_zvec_alloc(N, incX);
 
-  //fill x
-  util_zvec_fill(N, x, incx, type, scale, cond);
+  //fill X
+  util_zvec_fill(N, X, incX, FillX, ScaleX, CondX);
 
   time_tic();
   for(int i = 0; i < trials; i++){
-    CALL_DZNRM2(res, N, x, incx);
+    CALL_DZNRM2(res, N, X, incX);
   }
   time_toc();
 
   perf_output_perf(time_read(), N, trials);
 
-  free(x);
+  free(X);
   return rc;
 }

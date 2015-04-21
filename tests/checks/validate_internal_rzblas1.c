@@ -15,7 +15,7 @@ const char* vecvec_name(int argc, char** argv) {
   return "Validate rzsum, rdzasum, rzdotu/c (1Big, 1BigPosNeg)";
 }
 
-int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
+int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   (void)argc;
   (void)argv;
   double small = 1.0 / (1024.0 * 1024.0);       // 2^-20
@@ -29,11 +29,11 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   util_random_seed();
 
   //allocate vectors
-  double complex *x    = util_zvec_alloc(N, incx);
-  double complex *y    = util_zvec_alloc(N, incy);
+  double complex *X    = util_zvec_alloc(N, incX);
+  double complex *Y    = util_zvec_alloc(N, incY);
 
-  //fill y with -i where necessary
-  util_zvec_fill(N, y, incy, util_Vec_Constant, -_Complex_I, 1.0);
+  //fill Y with -i where necessary
+  util_zvec_fill(N, Y, incY, util_Vec_Constant, -_Complex_I, 1.0);
 
   //1 Big
   ref   = (N - 1) * small + big;
@@ -42,86 +42,86 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   refdc  = ref * _Complex_I;
 
   //1 Big at beginning
-  util_zvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
-  x[0]         = big;
+  util_zvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
+  X[0]         = big;
 
-  res = rzsum(N, x, incx);
+  res = rzsum(N, X, incX);
   if (res != ref) {
-    printf("rzsum(x) = %g + %gi != %g + %gi (1 Big at beginning)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(ref), ZIMAG_(ref));
+    printf("rzsum(X) = %g + %gi != %g + %gi (1 Big at beginning)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(ref), ZIMAG_(ref));
     return 1;
   }
 
-  res = rdzasum(N, x, incx);
+  res = rdzasum(N, X, incX);
   if (res != refa) {
-    printf("rdzasum(x) = %g + %gi != %g + %gi (1 Big at beginning)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refa), ZIMAG_(refa));
+    printf("rdzasum(X) = %g + %gi != %g + %gi (1 Big at beginning)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refa), ZIMAG_(refa));
     return 1;
   }
 
-  res = rzdotu(N, x, incx, y, incy);
+  res = rzdotu(N, X, incX, Y, incY);
   if (res != refdu) {
-    printf("rzdotu(x) = %g + %gi != %g + %gi (1 Big at beginning)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refdu), ZIMAG_(refdu));
+    printf("rzdotu(X) = %g + %gi != %g + %gi (1 Big at beginning)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refdu), ZIMAG_(refdu));
     return 1;
   }
 
-  res = rzdotc(N, x, incx, y, incy);
+  res = rzdotc(N, X, incX, Y, incY);
   if (res != refdc) {
-    printf("rzdotc(x) = %g + %gi != %g + %gi (1 Big at beginning)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refdc), ZIMAG_(refdc));
+    printf("rzdotc(X) = %g + %gi != %g + %gi (1 Big at beginning)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refdc), ZIMAG_(refdc));
     return 1;
   }
 
   //1 Big in middle
-  util_zvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
-  x[(N/2)*incx] = big;
+  util_zvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
+  X[(N/2)*incX] = big;
 
-  res = rzsum(N, x, incx);
+  res = rzsum(N, X, incX);
   if (res != ref) {
-    printf("rzsum(x) = %g + %gi != %g + %gi (1 Big in middle)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(ref), ZIMAG_(ref));
+    printf("rzsum(X) = %g + %gi != %g + %gi (1 Big in middle)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(ref), ZIMAG_(ref));
     return 1;
   }
 
-  res = rdzasum(N, x, incx);
+  res = rdzasum(N, X, incX);
   if (res != refa) {
-    printf("rdzasum(x) = %g + %gi != %g + %gi (1 Big in middle)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refa), ZIMAG_(refa));
+    printf("rdzasum(X) = %g + %gi != %g + %gi (1 Big in middle)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refa), ZIMAG_(refa));
     return 1;
   }
 
-  res = rzdotu(N, x, incx, y, incy);
+  res = rzdotu(N, X, incX, Y, incY);
   if (res != refdu) {
-    printf("rzdotu(x) = %g + %gi != %g + %gi (1 Big in middle)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refdu), ZIMAG_(refdu));
+    printf("rzdotu(X) = %g + %gi != %g + %gi (1 Big in middle)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refdu), ZIMAG_(refdu));
     return 1;
   }
 
-  res = rzdotc(N, x, incx, y, incy);
+  res = rzdotc(N, X, incX, Y, incY);
   if (res != refdc) {
-    printf("rzdotc(x) = %g + %gi != %g + %gi (1 Big in middle)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refdc), ZIMAG_(refdc));
+    printf("rzdotc(X) = %g + %gi != %g + %gi (1 Big in middle)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refdc), ZIMAG_(refdc));
     return 1;
   }
 
   //1 Big at end
-  util_zvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
-  x[(N-1)*incx] = big;
+  util_zvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
+  X[(N-1)*incX] = big;
 
-  res = rzsum(N, x, incx);
+  res = rzsum(N, X, incX);
   if (res != ref) {
-    printf("rzsum(x) = %g + %gi != %g + %gi (1 Big at end)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(ref), ZIMAG_(ref));
+    printf("rzsum(X) = %g + %gi != %g + %gi (1 Big at end)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(ref), ZIMAG_(ref));
     return 1;
   }
 
-  res = rdzasum(N, x, incx);
+  res = rdzasum(N, X, incX);
   if (res != refa) {
-    printf("rdzasum(x) = %g + %gi != %g + %gi (1 Big at end)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refa), ZIMAG_(refa));
+    printf("rdzasum(X) = %g + %gi != %g + %gi (1 Big at end)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refa), ZIMAG_(refa));
     return 1;
   }
 
-  res = rzdotu(N, x, incx, y, incy);
+  res = rzdotu(N, X, incX, Y, incY);
   if (res != refdu) {
-    printf("rzdotu(x) = %g + %gi != %g + %gi (1 Big at end)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refdu), ZIMAG_(refdu));
+    printf("rzdotu(X) = %g + %gi != %g + %gi (1 Big at end)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refdu), ZIMAG_(refdu));
     return 1;
   }
 
-  res = rzdotc(N, x, incx, y, incy);
+  res = rzdotc(N, X, incX, Y, incY);
   if (res != refdc) {
-    printf("rzdotc(x) = %g + %gi != %g + %gi (1 Big at end)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refdc), ZIMAG_(refdc));
+    printf("rzdotc(X) = %g + %gi != %g + %gi (1 Big at end)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refdc), ZIMAG_(refdc));
     return 1;
   }
 
@@ -132,94 +132,94 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   refdc  = ref * _Complex_I;
 
   //1 Big pos neg at beginning
-  util_zvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
-  x[0]         = big;
-  x[(N/2)*incx] = -big;
+  util_zvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
+  X[0]         = big;
+  X[(N/2)*incX] = -big;
 
-  res = rzsum(N, x, incx);
+  res = rzsum(N, X, incX);
   if (res != ref) {
-    printf("rzsum(x) = %g + %gi != %g + %gi (1 Big pos neg at beginning)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(ref), ZIMAG_(ref));
+    printf("rzsum(X) = %g + %gi != %g + %gi (1 Big pos neg at beginning)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(ref), ZIMAG_(ref));
     return 1;
   }
 
-  res = rdzasum(N, x, incx);
+  res = rdzasum(N, X, incX);
   if (res != refa) {
-    printf("rdzasum(x) = %g + %gi != %g + %gi (1 Big pos neg at beginning)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refa), ZIMAG_(refa));
+    printf("rdzasum(X) = %g + %gi != %g + %gi (1 Big pos neg at beginning)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refa), ZIMAG_(refa));
     return 1;
   }
 
-  res = rzdotu(N, x, incx, y, incy);
+  res = rzdotu(N, X, incX, Y, incY);
   if (res != refdu) {
-    printf("rzdotu(x) = %g + %gi != %g + %gi (1 Big pos neg at beginning)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refdu), ZIMAG_(refdu));
+    printf("rzdotu(X) = %g + %gi != %g + %gi (1 Big pos neg at beginning)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refdu), ZIMAG_(refdu));
     return 1;
   }
 
-  res = rzdotc(N, x, incx, y, incy);
+  res = rzdotc(N, X, incX, Y, incY);
   if (res != refdc) {
-    printf("rzdotc(x) = %g + %gi != %g + %gi (1 Big pos neg at beginning)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refdc), ZIMAG_(refdc));
+    printf("rzdotc(X) = %g + %gi != %g + %gi (1 Big pos neg at beginning)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refdc), ZIMAG_(refdc));
     return 1;
   }
 
   //1 Big pos neg at ends
-  util_zvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
-  x[0]         = big;
-  x[(N-1)*incx] = -big;
+  util_zvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
+  X[0]         = big;
+  X[(N-1)*incX] = -big;
 
-  res = rzsum(N, x, incx);
+  res = rzsum(N, X, incX);
   if (res != ref) {
-    printf("rzsum(x) = %g + %gi != %g + %gi (1 Big pos neg at ends)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(ref), ZIMAG_(ref));
+    printf("rzsum(X) = %g + %gi != %g + %gi (1 Big pos neg at ends)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(ref), ZIMAG_(ref));
     return 1;
   }
 
-  res = rdzasum(N, x, incx);
+  res = rdzasum(N, X, incX);
   if (res != refa) {
-    printf("rdzasum(x) = %g + %gi != %g + %gi (1 Big pos neg at ends)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refa), ZIMAG_(refa));
+    printf("rdzasum(X) = %g + %gi != %g + %gi (1 Big pos neg at ends)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refa), ZIMAG_(refa));
     return 1;
   }
 
-  res = rzdotu(N, x, incx, y, incy);
+  res = rzdotu(N, X, incX, Y, incY);
   if (res != refdu) {
-    printf("rzdotu(x) = %g + %gi != %g + %gi (1 Big pos neg at ends)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refdu), ZIMAG_(refdu));
+    printf("rzdotu(X) = %g + %gi != %g + %gi (1 Big pos neg at ends)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refdu), ZIMAG_(refdu));
     return 1;
   }
 
-  res = rzdotc(N, x, incx, y, incy);
+  res = rzdotc(N, X, incX, Y, incY);
   if (res != refdc) {
-    printf("rzdotc(x) = %g + %gi != %g + %gi (1 Big pos neg at ends)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refdc), ZIMAG_(refdc));
+    printf("rzdotc(X) = %g + %gi != %g + %gi (1 Big pos neg at ends)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refdc), ZIMAG_(refdc));
     return 1;
   }
 
   //1 Big pos neg at end
-  util_zvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
-  x[(N/2)*incx] = big;
-  x[(N-1)*incx] = -big;
+  util_zvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
+  X[(N/2)*incX] = big;
+  X[(N-1)*incX] = -big;
 
-  res = rzsum(N, x, incx);
+  res = rzsum(N, X, incX);
   if (res != ref) {
-    printf("rzsum(x) = %g + %gi != %g + %gi (1 Big pos neg at end)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(ref), ZIMAG_(ref));
+    printf("rzsum(X) = %g + %gi != %g + %gi (1 Big pos neg at end)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(ref), ZIMAG_(ref));
     return 1;
   }
 
-  res = rdzasum(N, x, incx);
+  res = rdzasum(N, X, incX);
   if (res != refa) {
-    printf("rdzasum(x) = %g + %gi != %g + %gi (1 Big pos neg at end)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refa), ZIMAG_(refa));
+    printf("rdzasum(X) = %g + %gi != %g + %gi (1 Big pos neg at end)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refa), ZIMAG_(refa));
     return 1;
   }
 
-  res = rzdotu(N, x, incx, y, incy);
+  res = rzdotu(N, X, incX, Y, incY);
   if (res != refdu) {
-    printf("rzdotu(x) = %g + %gi != %g + %gi (1 Big pos neg at end)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refdu), ZIMAG_(refdu));
+    printf("rzdotu(X) = %g + %gi != %g + %gi (1 Big pos neg at end)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refdu), ZIMAG_(refdu));
     return 1;
   }
 
-  res = rzdotc(N, x, incx, y, incy);
+  res = rzdotc(N, X, incX, Y, incY);
   if (res != refdc) {
-    printf("rzdotc(x) = %g + %gi != %g + %gi (1 Big pos neg at end)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refdc), ZIMAG_(refdc));
+    printf("rzdotc(X) = %g + %gi != %g + %gi (1 Big pos neg at end)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(refdc), ZIMAG_(refdc));
     return 1;
   }
 
-  free(x);
-  free(y);
+  free(X);
+  free(Y);
 
   return 0;
 }

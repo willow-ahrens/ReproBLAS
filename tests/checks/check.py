@@ -41,13 +41,9 @@ check_suite.add_checks([checks.VerifyRDSUMTest(),\
                        ["N", "incX", "f"],\
                        [[4095], [1, 4],\
                         ["rand",\
-                         "2*rand-1",\
                          "rand+(rand-1)",\
-                         "normal",\
                          "sine",\
-                         "small+grow*big",\
-                         "small+rand*big",\
-                         "rand_cond"]])
+                         "small+grow*big"]])
 
 check_suite.add_checks([checks.VerifyRDDOTTest(),\
                         checks.VerifyRZDOTUTest(),\
@@ -55,16 +51,16 @@ check_suite.add_checks([checks.VerifyRDDOTTest(),\
                         checks.VerifyRSDOTTest(),\
                         checks.VerifyRCDOTUTest(),\
                         checks.VerifyRCDOTCTest()],\
-                       ["N", "incX", "incY", "f"],\
+                       ["N", "incX", "incY", "f", "g"],\
                        [[4095], [1, 4], [1, 4],\
                         ["rand",\
-                         "2*rand-1",\
                          "rand+(rand-1)",\
-                         "normal",\
                          "sine",\
-                         "small+grow*big",\
-                         "small+rand*big",\
-                         "rand_cond"]])
+                         "small+grow*big"],\
+                        ["rand",\
+                         "rand+(rand-1)",\
+                         "sine",\
+                         "small+grow*big"]])
 
 check_suite.add_checks([checks.ValidateExternalRDSUMTest(),\
                         checks.ValidateExternalRDASUMTest(),\

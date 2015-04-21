@@ -18,7 +18,7 @@ static opt_option func_type = {._named.header.type       = opt_named,
                                ._named.descs             = (char**)wrap_rzblas1_descs,
                                ._named.value             = wrap_RZSUM};
 
-int verify_rzblas1_reproducibility(int N, double complex* x, int incX, double complex* y, int incY, int func, double complex ref, I_double_Complex Iref, int max_num_blocks) {
+int verify_rzblas1_reproducibility(int N, double complex* X, int incX, double complex* Y, int incY, int func, double complex ref, I_double_Complex Iref, int max_num_blocks) {
   // GENERATE DATA
   int i;
   double complex res;
@@ -30,20 +30,20 @@ int verify_rzblas1_reproducibility(int N, double complex* x, int incX, double co
   num_blocks = 1;
   while (num_blocks < N && num_blocks <= max_num_blocks) {
     if (num_blocks == 1)
-      res = (wrap_rzblas1_func(func))(N, x, incX, y, incY);
+      res = (wrap_rzblas1_func(func))(N, X, incX, Y, incY);
     else {
       block_N =  (N + num_blocks - 1) / num_blocks;
       zISetZero(Ires);
       for (i = 0; i < N; i += block_N) {
         block_N = block_N < N - i ? block_N : (N-i);
-        zIAdd(&Ires, (wrap_Izblas1_func(func))(block_N, x + i * incX, incX, y + i * incY, incY));
+        zIAdd(&Ires, (wrap_Izblas1_func(func))(block_N, X + i * incX, incX, Y + i * incY, incY));
       }
       zziconv_sub(&Ires, &res, DEFAULT_FOLD);
     }
     if (res != ref) {
-      printf("%s(x, y)[num_blocks=%d,block_N=%d] = %g + %gi != %g + %gi\n", wrap_rzblas1_names[func], num_blocks, block_N, CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
+      printf("%s(X, Y)[num_blocks=%d,block_N=%d] = %g + %gi != %g + %gi\n", wrap_rzblas1_names[func], num_blocks, block_N, CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
       if (num_blocks == 1) {
-        Ires = (wrap_Izblas1_func(func))(N, x, incX, y, incY);
+        Ires = (wrap_Izblas1_func(func))(N, X, incX, Y, incY);
       }
       printf("Ref I_double_Complex:\n");
       zIprint(Iref);
@@ -62,7 +62,7 @@ int vecvec_fill_show_help(void){
   return 0;
 }
 
-extern const char* vecvec_fill_name(int argc, char** argv){
+const char* vecvec_fill_name(int argc, char** argv){
   static char name_buffer[MAX_LINE];
 
   opt_eval_option(argc, argv, &func_type);
@@ -70,7 +70,7 @@ extern const char* vecvec_fill_name(int argc, char** argv){
   return name_buffer;
 }
 
-extern int vecvec_fill_test(int argc, char** argv, int N, int incX, int incY, int type, double scale, double cond){
+int vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, double CondX, int incX, int FillY, double ScaleY, double CondY, int incY){
   int rc = 0;
   double complex ref;
   I_double_Complex Iref;
@@ -78,16 +78,14 @@ extern int vecvec_fill_test(int argc, char** argv, int N, int incX, int incY, in
 
   util_random_seed();
 
-  double complex *x = util_zvec_alloc(N, incX);
-  double complex *y = util_zvec_alloc(N, incY);
+  double complex *X = util_zvec_alloc(N, incX);
+  double complex *Y = util_zvec_alloc(N, incY);
+  int *P;
 
   opt_eval_option(argc, argv, &func_type);
 
-  //fill x
-  util_zvec_fill(N, x, incX, type, scale, cond);
-
-  //fill y with -i where necessary
-  util_zvec_fill(N, y, incY, util_Vec_Constant, -_Complex_I, 1.0);
+  util_zvec_fill(N, X, incX, FillX, ScaleX, CondX);
+  util_zvec_fill(N, Y, incY, FillY, ScaleY, CondY);
 
   //nrm2 doesn't make sense with more than 1 block.
   if(func_type._named.value == wrap_RDZNRM2){
@@ -95,71 +93,101 @@ extern int vecvec_fill_test(int argc, char** argv, int N, int incX, int incY, in
   }
 
   //compute with unpermuted data
-  ref  = (wrap_rzblas1_func(func_type._named.value))(N, x, incX, y, incY);
-  Iref = (wrap_Izblas1_func(func_type._named.value))(N, x, incX, y, incY);
+  ref  = (wrap_rzblas1_func(func_type._named.value))(N, X, incX, Y, incY);
+  Iref = (wrap_Izblas1_func(func_type._named.value))(N, X, incX, Y, incY);
 
-  util_zvec_reverse(N, x, incX, NULL, 1);
+  P = util_identity_permutation(N);
+  util_zvec_reverse(N, X, incX, P, 1);
+  util_zvec_permute(N, Y, incY, P, 1, NULL, 1);
+  free(P);
 
-  rc = verify_rzblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
+  rc = verify_rzblas1_reproducibility(N, X, incX, Y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  util_zvec_sort(N, x, incX, NULL, 1, util_Increasing);
+  P = util_identity_permutation(N);
+  util_zvec_sort(N, X, incX, P, 1, util_Increasing);
+  util_zvec_permute(N, Y, incY, P, 1, NULL, 1);
+  free(P);
 
-  rc = verify_rzblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
+  rc = verify_rzblas1_reproducibility(N, X, incX, Y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  util_zvec_sort(N, x, incX, NULL, 1, util_Decreasing);
+  P = util_identity_permutation(N);
+  util_zvec_sort(N, X, incX, P, 1, util_Decreasing);
+  util_zvec_permute(N, Y, incY, P, 1, NULL, 1);
+  free(P);
 
-  rc = verify_rzblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
+  rc = verify_rzblas1_reproducibility(N, X, incX, Y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  util_zvec_sort(N, x, incX, NULL, 1, util_Increasing_Magnitude);
+  P = util_identity_permutation(N);
+  util_zvec_sort(N, X, incX, P, 1, util_Increasing_Magnitude);
+  util_zvec_permute(N, Y, incY, P, 1, NULL, 1);
+  free(P);
 
-  rc = verify_rzblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
+  rc = verify_rzblas1_reproducibility(N, X, incX, Y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  util_zvec_sort(N, x, incX, NULL, 1, util_Decreasing_Magnitude);
+  P = util_identity_permutation(N);
+  util_zvec_sort(N, X, incX, P, 1, util_Decreasing_Magnitude);
+  util_zvec_permute(N, Y, incY, P, 1, NULL, 1);
+  free(P);
 
-  rc = verify_rzblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
+  rc = verify_rzblas1_reproducibility(N, X, incX, Y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  util_zvec_shuffle(N, x, incX, NULL, 1);
+  P = util_identity_permutation(N);
+  util_zvec_shuffle(N, X, incX, P, 1);
+  util_zvec_permute(N, Y, incY, P, 1, NULL, 1);
+  free(P);
 
-  rc = verify_rzblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
+  rc = verify_rzblas1_reproducibility(N, X, incX, Y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  util_zvec_shuffle(N, x, incX, NULL, 1);
+  P = util_identity_permutation(N);
+  util_zvec_shuffle(N, X, incX, P, 1);
+  util_zvec_permute(N, Y, incY, P, 1, NULL, 1);
+  free(P);
 
-  rc = verify_rzblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
+  rc = verify_rzblas1_reproducibility(N, X, incX, Y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  util_zvec_shuffle(N, x, incX, NULL, 1);
+  P = util_identity_permutation(N);
+  util_zvec_shuffle(N, X, incX, P, 1);
+  util_zvec_permute(N, Y, incY, P, 1, NULL, 1);
+  free(P);
 
-  rc = verify_rzblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
+  rc = verify_rzblas1_reproducibility(N, X, incX, Y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
 
-  util_zvec_shuffle(N, x, incX, NULL, 1);
+  P = util_identity_permutation(N);
+  util_zvec_shuffle(N, X, incX, P, 1);
+  util_zvec_permute(N, Y, incY, P, 1, NULL, 1);
+  free(P);
 
-  rc = verify_rzblas1_reproducibility(N, x, incX, y, incY, func_type._named.value, ref, Iref, max_num_blocks);
+  rc = verify_rzblas1_reproducibility(N, X, incX, Y, incY, func_type._named.value, ref, Iref, max_num_blocks);
   if(rc != 0){
     return rc;
   }
+
+  free(X);
+  free(Y);
 
   return rc;
 }

@@ -8,24 +8,28 @@ int matvec_show_help(void);
 const char *matvec_name(int argc, char** argv);
 int matvec_test(int argc, char** argv, char Order, char TransA, int M, int N, int lda, int incX);
 
+static const char *Order_names[] = {"ColMajor", "RowMajor"};
+static const char *Order_descs[] = {"Column Major", "Row Major"};
 static opt_option Order  = {._named.header.type       = opt_named,
                             ._named.header.short_name = 'O',
                             ._named.header.long_name  = "Order",
                             ._named.header.help       = "2D ordering",
                             ._named.required          = 0,
                             ._named.n_names           = 2,
-                            ._named.names             = {"ColMajor", "RowMajor"}
-                            ._named.descs             = {"Column Major", "Row Major"}
+                            ._named.names             = (char**)Order_names,
+                            ._named.descs             = (char**)Order_descs,
                             ._named.value             = 0};
 
+static const char *TransA_names[] = {"Trans", "NoTrans"};
+static const char *TransA_descs[] = {"Transpose", "Don't Transpose"};
 static opt_option TransA = {._named.header.type       = opt_named,
                             ._named.header.short_name = 'T',
                             ._named.header.long_name  = "TransA",
                             ._named.header.help       = "transpose A?",
                             ._named.required          = 0,
                             ._named.n_names           = 2,
-                            ._named.names             = {"Trans", "NoTrans"}
-                            ._named.descs             = {"Transpose", "Don't Transpose"}
+                            ._named.names             = (char**)TransA_names,
+                            ._named.descs             = (char**)TransA_descs,
                             ._named.value             = 0};
 
 static opt_option M      = {._int.header.type       = opt_int,
@@ -47,7 +51,7 @@ static opt_option N      = {._int.header.type       = opt_int,
                             ._int.value             = 2048};
 
 static opt_option lda    = {._int.header.type       = opt_int,
-                            ._int.header.short_name = "A",
+                            ._int.header.short_name = 'A',
                             ._int.header.long_name  = "lda",
                             ._int.header.help       = "leading A size (0 for auto)",
                             ._int.required          = 0,
@@ -71,7 +75,7 @@ int show_help(void){
   opt_show_option(N);
   opt_show_option(lda);
   opt_show_option(incX);
-  return vecvec_show_help();
+  return matvec_show_help();
 }
 
 const char* name(int argc, char** argv){
@@ -83,7 +87,7 @@ const char* name(int argc, char** argv){
   opt_eval_option(argc, argv, &N);
   opt_eval_option(argc, argv, &lda);
   opt_eval_option(argc, argv, &incX);
-  snprintf(name_buffer, MAX_LINE, "%s Order=%c TransA=%c M=%d N=%d lda=%d incX=%d", vecvec_name(argc, argv), Order._named.names[Order._named.value][0], TransA._named.names[TransA._named.value][0], M._int.value, N._int.value, lda._int.value, incX._int.value);
+  snprintf(name_buffer, MAX_LINE, "%s Order=%c TransA=%c M=%d N=%d lda=%d incX=%d", matvec_name(argc, argv), Order._named.names[Order._named.value][0], TransA._named.names[TransA._named.value][0], M._int.value, N._int.value, lda._int.value, incX._int.value);
   return name_buffer;
 }
 
@@ -104,7 +108,7 @@ int test(int argc, char** argv){
       }
       if(N._int.value > lda._int.value){
         fprintf(stderr, "ReproBLAS error: row major matrix arguments inconsistent N=%d, lda=%d\n", N._int.value, lda._int.value);
-        return 125:
+        return 125;
       }
     case 'C':
       if(lda._int.value == 0){
@@ -112,7 +116,7 @@ int test(int argc, char** argv){
       }
       if(M._int.value > lda._int.value){
         fprintf(stderr, "ReproBLAS error: column major matrix arguments inconsistent M=%d, lda=%d\n", M._int.value, lda._int.value);
-        return 125:
+        return 125;
       }
       break;
   }

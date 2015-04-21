@@ -15,7 +15,7 @@ const char* vecvec_name(int argc, char** argv) {
   return "Validate damax(m) (1Big)";
 }
 
-int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
+int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   (void)argc;
   (void)argv;
   double small = 1.0 / (1024.0 * 1024.0);       // 2^-20
@@ -26,49 +26,49 @@ int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
   util_random_seed();
 
   //allocate vectors
-  double *x    = util_dvec_alloc(N, incx);
-  double *y    = util_dvec_alloc(N, incy);
+  double *X    = util_dvec_alloc(N, incX);
+  double *Y    = util_dvec_alloc(N, incY);
 
-  //fill y with 1 where necessary
-  util_dvec_fill(N, y, incy, util_Vec_Constant, 1, 1.0);
+  //fill Y with 1 where necessary
+  util_dvec_fill(N, Y, incY, util_Vec_Constant, 1, 1.0);
 
   //1 Big
   ref   = big;
 
   //1 Big at beginning
-  util_dvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
-  x[0]         = -big;
+  util_dvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
+  X[0]         = -big;
 
-  res = damax(N, x, incx);
+  res = damax(N, X, incX);
   if (res != ref) {
-    printf("damax(x) = %g != %g (1 Big at beginning)\n", res, ref);
+    printf("damax(X) = %g != %g (1 Big at beginning)\n", res, ref);
     return 1;
   }
 
-  res = damaxm(N, x, incx, y, incy);
+  res = damaxm(N, X, incX, Y, incY);
   if (res != ref) {
-    printf("damaxm(x) = %g != %g (1 Big at beginning)\n", res, ref);
+    printf("damaxm(X) = %g != %g (1 Big at beginning)\n", res, ref);
     return 1;
   }
 
   //1 Big at end
-  util_dvec_fill(N, x, incx, util_Vec_Constant, small, 1.0);
-  x[(N-1)*incx]         = -big;
+  util_dvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
+  X[(N-1)*incX]         = -big;
 
-  res = damax(N, x, incx);
+  res = damax(N, X, incX);
   if (res != ref) {
-    printf("damax(x) = %g != %g (1 Big at end)\n", res, ref);
+    printf("damax(X) = %g != %g (1 Big at end)\n", res, ref);
     return 1;
   }
 
-  res = damaxm(N, x, incx, y, incy);
+  res = damaxm(N, X, incX, Y, incY);
   if (res != ref) {
-    printf("damaxm(x) = %g != %g (1 Big at end)\n", res, ref);
+    printf("damaxm(X) = %g != %g (1 Big at end)\n", res, ref);
     return 1;
   }
 
-  free(x);
-  free(y);
+  free(X);
+  free(Y);
 
   return 0;
 }

@@ -47,8 +47,8 @@ int file_test(int argc, char** argv, char *fname) {
   opt_eval_option(argc, argv, &func_type);
   opt_eval_option(argc, argv, &record);
 
-  double complex *x;
-  double complex *y;
+  double complex *X;
+  double complex *Y;
 
   double complex ref;
   I_double_Complex Iref;
@@ -56,17 +56,17 @@ int file_test(int argc, char** argv, char *fname) {
   double complex res;
   I_double_Complex Ires;
 
-  file_read_vector(fname, &N, (void**)&x, sizeof(double complex));
-  y = util_zvec_alloc(N, 1);
-  //fill y with -i where necessary
-  util_zvec_fill(N, y, 1, util_Vec_Constant, -_Complex_I, 1.0);
+  file_read_vector(fname, &N, (void**)&X, sizeof(double complex));
+  Y = util_zvec_alloc(N, 1);
+  //fill Y with -i where necessary
+  util_zvec_fill(N, Y, 1, util_Vec_Constant, -_Complex_I, 1.0);
 
   ((char*)file_ext(fname))[0] = '\0';
   snprintf(ref_fname, MAX_NAME, "%s__%s.dat", fname, wrap_rzblas1_names[func_type._named.value]);
   snprintf(Iref_fname, MAX_NAME, "%s__I%s.dat", fname, wrap_rzblas1_names[func_type._named.value]);
 
-  res = (wrap_rzblas1_func(func_type._named.value))(N, x, 1, y, 1);
-  Ires = (wrap_Izblas1_func(func_type._named.value))(N, x, 1, y, 1);
+  res = (wrap_rzblas1_func(func_type._named.value))(N, X, 1, Y, 1);
+  Ires = (wrap_Izblas1_func(func_type._named.value))(N, X, 1, Y, 1);
 
   if(record._flag.exists){
     ref = res;
@@ -100,7 +100,7 @@ int file_test(int argc, char** argv, char *fname) {
     }
   }
 
-  free(x);
-  free(y);
+  free(X);
+  free(Y);
   return 0;
 }

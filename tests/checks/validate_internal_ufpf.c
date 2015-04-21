@@ -15,33 +15,32 @@ const char* vecvec_name(int argc, char** argv) {
   return "Validate ufpf";
 }
 
-int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
+int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   (void)argc;
   (void)argv;
-  (void)incx;
-  (void)incy;
+  (void)incY;
   int i;
   float bin = 1.0;
-  float ufpx;
+  float ufpX;
 
   util_random_seed();
 
   //allocate vector
-  float *x = util_svec_alloc(N, incx);
+  float *X = util_svec_alloc(N, incX);
 
   //check
   for (i = 0; i < N; i++) {
-    x[i * incx] = 3 * bin;
+    X[i * incX] = 3 * bin;
     bin *= 2;
 
-    ufpx = ufpf(x[i * incx]);
-    if (ufpx != bin) {
-      printf("ufpf(%g) = %g != %g\n", x[i * incx], ufpx, bin);
+    ufpX = ufpf(X[i * incX]);
+    if (ufpX != bin) {
+      printf("ufpf(%g) = %g != %g\n", X[i * incX], ufpX, bin);
       return 1;
     }
   }
 
-  free(x);
+  free(X);
 
   return 0;
 }

@@ -15,28 +15,27 @@ const char* vecvec_name(int argc, char** argv) {
   return "Validate ufp";
 }
 
-int vecvec_test(int argc, char** argv, int N, int incx, int incy) {
+int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   (void)argc;
   (void)argv;
-  (void)incx;
-  (void)incy;
+  (void)incY;
   int i;
   double bin = 1.0;
-  double ufpx;
+  double ufpX;
 
   util_random_seed();
 
   //allocate vector
-  double *x = util_dvec_alloc(N, incx);
+  double *X = util_dvec_alloc(N, incX);
 
   //check
   for (i = 0; i < N; i++) {
-    x[i * incx] = 3 * bin;
+    X[i * incX] = 3 * bin;
     bin *= 2;
 
-    ufpx = ufp(x[i * incx]);
-    if (ufpx != bin) {
-      printf("ufp(%g) = %g != %g\n", x[i * incx], ufpx, bin);
+    ufpX = ufp(X[i * incX]);
+    if (ufpX != bin) {
+      printf("ufp(%g) = %g != %g\n", X[i * incX], ufpX, bin);
       return 1;
     }
   }
