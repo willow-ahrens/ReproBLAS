@@ -85,7 +85,7 @@ void dzasumI1_(int N, int NB,
 		if (status > 0)
 			continue;
 		
-		zIUpdates1(fold, BUFFER, BUFFER + fold, 1, amax);
+		zmdupdate(amax, BUFFER, 1, BUFFER + fold, 1, fold);
 
 		if (accu + lN > maxN) {
 			zIRenorm1(fold, BUFFER, BUFFER + fold, 1);

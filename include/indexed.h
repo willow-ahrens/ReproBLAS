@@ -129,17 +129,28 @@ extern void dIAddd(I_double* X, double Y);
 extern void zIAddz1(int fold, double complex* x, int inc, double complex y);
 extern void zIAddz(I_double_Complex* X, double complex Y);
 
-// UPDADATE INDEX FP BY NEW MAXIMUM ABSOLUTE VALUE
-extern void dIUpdate1 (int fold, double* x, double* c, int ldx, double y);
-extern void zIUpdates1(int fold, double complex* x, double complex* c, int ldx, double y);
-
-extern void zIUpdate1 (int fold, double complex* x, double complex* c, int ldx,double complex y);
-
-
 double dbound(int index);
 void dmbound(int index, double *repY, int increpY, int fold);
 int dindex(double X);
 int diindex(double_indexed *X);
+
+int siindex(float_indexed *X);
+int sindex(float X);
+double sbound(int index);
+void smbound(int index, float *repY, int increpY, int fold);
+
+void dmdupdate(double X, double* repY, int increpY, double* carY, int inccarY, int fold);
+void didupdate(double X, double_indexed *Y, int fold);
+void zmdupdate(double X, double* repY, int increpY, double* carY, int inccarY, int fold);
+void zidupdate(double X, double_complex_indexed *Y, int fold);
+void zmzupdate(void *X, double* repY, int increpY, double* carY, int inccarY, int fold);
+void zizupdate(void *X, double_complex_indexed *Y, int fold);
+void smsupdate(float X, float* repY, int increpY, float* carY, int inccarY, int fold);
+void sisupdate(float X, float_indexed *Y, int fold);
+void cmsupdate(float X, float* repY, int increpY, float* carY, int inccarY, int fold);
+void cisupdate(float X, float_complex_indexed *Y, int fold);
+void cmcupdate(void *X, float* repY, int increpY, float* carY, int inccarY, int fold);
+void cicupdate(void *X, float_complex_indexed *Y, int fold);
 
 // COMPUTE THE UNIT IN TH FIRST PLACE
 extern double ufp(double x);
@@ -183,11 +194,6 @@ extern void cIAddc(I_float_Complex* X, float complex Y);
 extern void sINeg1(int fold, float* x, float* c, int inc);
 extern void cINeg1(int fold, float complex* x, float* c, int inc);
 
-int siindex(float_indexed *X);
-int sindex(float X);
-double sbound(int index);
-void smbound(int index, float *repY, int increpY, int fold);
-
 // UNIT IN THE FIRST PLACE
 extern float ufpf(float x);
 
@@ -200,14 +206,7 @@ extern void cIAdd1(int fold, float complex* x, float* xc, int incx,
 	float complex* y, float* yc, int incy);
 extern void cIAdd(I_float_Complex* X, I_float_Complex Y);
 
-//====
-extern void sIUpdate1(int fold, float y, float* x, float* C, int inc);
 
-// UPDATE A COMPLEX USING A FLOAT
-extern void cIUpdates1(int K, float complex* X, float* C, int INC, float Y);
-
-// UPDATE A COMPLEX USING A COMPLEX
-extern void cIUpdate1(int K, float complex* X, float* C,int INC, float complex Y);
 
 // RENORMALIZATION TO AVOID OVERFLOW
 // [INPUT]
@@ -238,12 +237,9 @@ extern void cicconv(void *x, float_complex_indexed *y, int fold);
 
 
 // ADDING A NATIVE FP TO AN INDEXED FP
-#define dIUpdate_(X,Y) dIUpdate1(DEFAULT_FOLD,  (X).m, (X).c, 1, fabs(Y))
 #define dIAddd_(X,Y)   dIAddd1(DEFAULT_FOLD, (X).m, 1, Y)
 #define dIRenorm_(X)   dIRenorm1(DEFAULT_FOLD, (X).m, (X).c, 1)
 
-#define zIUpdate_(X,Y) zIUpdate1(DEFAULT_FOLD, 	\
-		(double complex*)((X).m),(double complex*)((X).c),1,Y)
 #define zIAddz_(X,Y) zIAddz1(DEFAULT_FOLD, (double complex*)((X).m), 1, Y)
 #define zIRenorm_(X) zIRenorm1(DEFAULT_FOLD,	\
 		(double complex*)((X).m), (double complex*)((X).c), 1)
@@ -270,11 +266,9 @@ extern void cicconv(void *x, float_complex_indexed *y, int fold);
 
 
 // ADDING A NATIVE FP TO AN INDEXED FP
-#define sIUpdate_(X,Y) sIUpdate1(DEFAULT_FOLD, fabs(Y), (X).m, (X).c, 1)
 #define sIAddf_(X,Y)   sIAddf1(DEFAULT_FOLD, (X).m, 1, Y)
 #define sIRenorm_(X)   sIRenorm1(DEFAULT_FOLD, (X).m, (X).c, 1)
 
-#define cIUpdate_(X,Y) cIUpdate1(DEFAULT_FOLD,(float complex*)((X).m),(X).c,1,Y)
 #define cIAddc_(X,Y) cIAddc1(DEFAULT_FOLD, (float complex*)((X).m), 1, Y)
 #define cIRenorm_(X) cIRenorm1(DEFAULT_FOLD,(float complex*)((X).m), (X).c, 1)
 

@@ -104,7 +104,7 @@ void scasumI1_(int N, int NB,
 		if (status > 0)
 			continue;
 		
-		cIUpdates1(fold, BUFFER, C, 1, amax);
+		cmsupdate(amax, BUFFER, 1, C, 1, fold);
 
 		for (j = 0; j < lN; j+=maxN) {
 			lB = maxN < lN - j ? maxN : lN - j;

@@ -169,7 +169,7 @@ void zdotI1_(int N, int NB,
 			accu = 0;
 		}
 
-		zIUpdate1(fold, dot, c, 1, amax);
+		zmzupdate(&amax, dot, 1, c, 1, fold);
 
 		if (conj)
 			zdotcI2(lN, v, inc, y, incy, fold, dot);

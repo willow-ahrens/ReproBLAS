@@ -184,7 +184,7 @@ void cdotI1_(int N, int NB,
 		if (status == 1)
 			continue;
 		
-		cIUpdate1(fold, dot, C, 1, amax);
+		cmcupdate(&amax, dot, 1, C, 1, fold);
 
 		for (j = 0; j < lN; j+=maxN) {
 			lB = maxN < lN - j ? maxN : lN - j;

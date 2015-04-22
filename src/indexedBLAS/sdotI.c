@@ -113,7 +113,7 @@ void sdotI1_(
 			continue;
 #		endif
 
-		sIUpdate1(fold, amax, dot, c, 1);
+		smsupdate(amax, dot, 1, c, 1, fold);
 		
 		for (j = 0; j < lN - maxN + 1; j+=maxN) {
 			sdotI2(maxN, x + j * incx, incx, y + j * incy, incy, fold, dot);

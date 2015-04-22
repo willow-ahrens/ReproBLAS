@@ -3,50 +3,55 @@
  */
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <math.h>
 #include <float.h>
 #include "indexed.h"
 #include "../Common/Common.h"
 
-#ifdef __SSE2__
-#	include <emmintrin.h>
-#endif
-
-void dIUpdate1(int fold, double* x, double* c, int ldx, double y) {
-  if (y == 0 || isnan(x[0]) || isinf(x[0]))
+void dmdupdate(double X, double* repY, int increpY, double* carY, int inccarY, int fold) {
+  if (X == 0 || isnan(repY[0]) || isinf(repY[0]))
     return;
 
-  if (x[0] == 0.0) {
-    dmbound(dindex(y), x, ldx, fold);
+  if (repY[0] == 0.0) {
+    dmbound(dindex(X), repY, increpY, fold);
     for (int i = fold; i < fold; i++) {
-      c[i * ldx] = 0.0;
+      carY[i * inccarY] = 0.0;
     }
     return;
   }
 
-  int y_index = dindex(y);
-  int d = diindex(x) - y_index;
+  int X_index = dindex(X);
+  int d = diindex(repY) - X_index;
   if(d > 0){
     for(int i = fold - 1; i >= d; i--){
-      x[i * ldx] = x[(i - d) * ldx];
-      c[i * ldx] = c[(i - d) * ldx];
+      repY[i * increpY] = repY[(i - d) * increpY];
+      carY[i * inccarY] = carY[(i - d) * inccarY];
     }
-    dmbound(y_index, x, ldx, MIN(d, fold));
+    dmbound(X_index, repY, increpY, MIN(d, fold));
     for(int i = 0; i < d && i < fold; i++){
-      c[i * ldx] = 0.0;
+      carY[i * inccarY] = 0.0;
     }
   }
 }
 
-void zIUpdates1(int fold, double complex* x, double complex* c, int ldx, double y) {
-	dIUpdate1(fold, (double*)x, (double*)(c), 2 * ldx, fabs(y));
-	dIUpdate1(fold, ((double*)x) + 1, (double*)(c) + 1, 2 * ldx, fabs(y));
+void didupdate(double X, double_indexed *Y, int fold) {
+  dmdupdate(X, Y, 1, Y + fold, 1, fold);
 }
 
-void zIUpdate1(int fold, double complex* x, double complex* c, int ldx,double complex y) {
-	double* tmp = (double*)&y;
-	dIUpdate1(fold, (double*)x, (double*)(c), 2 * ldx, fabs(tmp[0]));
-	dIUpdate1(fold, ((double*)x) + 1, (double*)(c) + 1, 2 * ldx, fabs(tmp[1]));
+void zmdupdate(double X, double* repY, int increpY, double* carY, int inccarY, int fold) {
+  dmdupdate(X, repY, 2 * increpY, carY, 2 * inccarY, fold);
+  dmdupdate(X, repY + increpY, 2 * increpY, carY + inccarY, 2 * inccarY, fold);
 }
 
+void zidupdate(double X, double_complex_indexed *Y, int fold) {
+  zmdupdate(X, Y, 1, Y + 2 * fold, 1, fold);
+}
+
+void zmzupdate(void *X, double* repY, int increpY, double* carY, int inccarY, int fold) {
+  dmdupdate(((double*)X)[0], repY, 2 * increpY, carY, 2 * inccarY, fold);
+  dmdupdate(((double*)X)[1], repY + increpY, 2 * increpY, carY + inccarY, 2 * inccarY, fold);
+}
+
+void zizupdate(void *X, double_complex_indexed *Y, int fold) {
+  zmzupdate(X, Y, 1, Y + 2 * fold, 1, fold);
+}

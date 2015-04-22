@@ -156,7 +156,7 @@ void csumI1_(int N, int NB,
 		if (status == 1)
 			continue;
 		
-		cIUpdate1(fold, sum, C, 1, amax);
+		cmcupdate(&amax, sum, 1, C, 1, fold);
 
 		for (j = 0; j < lN; j+=maxN) {
 			lB = maxN < lN - j ? maxN : lN - j;

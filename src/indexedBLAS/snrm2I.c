@@ -89,7 +89,7 @@ float snrm2I1_(int N, int NB,
 		amax *= nscale;
 		amax = amax * amax;
 
-		sIUpdate1(fold, amax, sum, c, 1);
+		smsupdate(amax, sum, 1, c, 1, fold);
 		
 		for (j = 0; j < lN - maxN + 1; j+=maxN) {
 			snrm2I2(maxN, v + j * inc, inc, nscale, fold, sum);

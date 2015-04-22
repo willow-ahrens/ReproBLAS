@@ -112,7 +112,7 @@ void dsumI1_(int N, int NB,
 			accu = 0;
 		}
 		
-		dIUpdate1(fold, sum, c, 1, amax);
+		dmdupdate(amax, sum, 1, c, 1, fold);
 		
 		// TODO: CHECK POTENTIAL FALSE INFINITY
 		dsumI2(lN, v, inc, fold, sum);

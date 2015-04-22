@@ -164,7 +164,7 @@ void zsumI1_(int N, int NB,
 			accu = 0;
 		}
 
-		zIUpdate1(fold, sum, c, 1, amax);
+		zmzupdate(&amax, sum, 1, c, 1, fold);
 
 		zsumI2(lN, v, inc, fold, sum);
 

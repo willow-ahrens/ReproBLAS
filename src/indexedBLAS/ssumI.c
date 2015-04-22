@@ -104,7 +104,7 @@ void ssumI1_(int N, int NB,
 			continue;
 #		endif
 
-		sIUpdate1(fold, amax, sum, c, 1);
+		smsupdate(amax, sum, 1, c, 1, fold);
 		
 		for (j = 0; j < lN - maxN + 1; j+=maxN) {
 			ssumI2(maxN, v + j*inc, inc, fold, sum);

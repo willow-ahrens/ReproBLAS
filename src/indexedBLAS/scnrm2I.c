@@ -121,7 +121,7 @@ float scnrm2I1_(int N, int NB,
 			amax = amax * amax;
 //			printf("\nBefore Update: \n");
 //			cIprint(fold, BUFFER);
-			cIUpdates1(fold, BUFFER, C, 1, amax);
+			cmsupdate(amax, BUFFER, 1, C, 1, fold);
 
 //			printf("\nAfter Update: \n");
 //			cIprint(fold, BUFFER);

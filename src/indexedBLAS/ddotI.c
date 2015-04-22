@@ -118,7 +118,7 @@ void ddotI1_(
 			accu = 0;
 		}
 		
-		dIUpdate1(fold, dot, c, 1, amax);
+		dmdupdate(amax, dot, 1, c, 1, fold);
 		
 		ddotI2(lN, x, incx, y, incy, fold, dot);
 

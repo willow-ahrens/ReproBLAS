@@ -105,7 +105,7 @@ double dznrm2I1_(int N, int NB,
 		amax *= nscale;
 		amax = amax * amax;
 
-		zIUpdates1(fold, BUFFER, BUFFER + fold, 1, amax);
+		zmdupdate(amax, BUFFER, 1, BUFFER + fold, 1, fold);
 		
 		// TODO: CHECK POTENTIAL FALSE INFINITY
 		dznrm2I2(lN, v, inc, nscale, fold, BUFFER);

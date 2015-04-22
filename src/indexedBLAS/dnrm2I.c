@@ -95,7 +95,7 @@ double dnrm2I1_(int N, int NB,
 		amax *= nscale;
 		amax = amax * amax;
 
-		dIUpdate1(fold, sum, c, 1, amax);
+		dmdupdate(amax, sum, 1, c, 1, fold);
 		
 		// TODO: CHECK POTENTIAL FALSE INFINITY
 		dnrm2I2(lN, v, inc, nscale, fold, sum);
