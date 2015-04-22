@@ -67,6 +67,12 @@ static void bounds_initialize() {
   bounds_initialized = 1;
 }
 
+double dbound(int index){
+  bounds_initialize();
+
+  return bounds[index];
+}
+
 // COMPUTE THE BOUNDARIES BASED ON MAXIMUM ABSOLUTE VALUE
 int dIBoundary(int fold, double max, double* M, int inc) {
   int i;
@@ -74,19 +80,7 @@ int dIBoundary(int fold, double max, double* M, int inc) {
 
   bounds_initialize();
 
-  if(isinf(max)){
-    index = bound_min_index;
-  } else if(max == 0){
-    index = bound_max_index;
-  } else {
-    frexp(max, &index);
-    index += PREC - BIN_WIDTH - 1;
-    if(index < 0){
-      index -= BIN_WIDTH - 1; //we want to round towards -infinity
-    }
-    index /= BIN_WIDTH;
-    index = BOUND_ZERO_INDEX - 1 - index;
-  }
+  index = dindex(max);
 
   for (i = 0; i < fold; i++) {
     M[i * inc] = bounds[index + i];
