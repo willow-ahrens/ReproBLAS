@@ -152,16 +152,19 @@ void cisupdate(float X, float_complex_indexed *Y, int fold);
 void cmcupdate(void *X, float* repY, int increpY, float* carY, int inccarY, int fold);
 void cicupdate(void *X, float_complex_indexed *Y, int fold);
 
+void dmrenorm(double* repX, int increpX, double* carX, int inccarX, int fold);
+void direnorm(double_indexed *X, int fold);
+void zmrenorm(double* repX, int increpX, double* carX, int inccarX, int fold);
+void zirenorm(double_complex_indexed *X, int fold);
+void smrenorm(float* repX, int increpX, float* carX, int inccarX, int fold);
+void sirenorm(float_indexed *X, int fold);
+void cmrenorm(float* repX, int increpX, float* carX, int inccarX, int fold);
+void cirenorm(float_complex_indexed *X, int fold);
+
 // COMPUTE THE UNIT IN TH FIRST PLACE
 extern double ufp(double x);
 
 // RENORMALIZATION TO AVOID OVERFLOW
-// [INPUT]
-//    FOLD  : NB OF BINS OF LEADING BITS (NB OF M TO BE COMPUTED)
-// [IN/OUTPUT]
-//    X     : INDEXED FP
-extern void dIRenorm1(int fold, double* X, double* C, int inc);
-extern void zIRenorm1(int fold, double complex* rep, double complex* c, int inc);
 
 // CONVERT A DOUBLE TO INDEXED FORMAT
 void didconv(double x, double_indexed *y, int fold);
@@ -209,13 +212,6 @@ extern void cIAdd(I_float_Complex* X, I_float_Complex Y);
 
 
 // RENORMALIZATION TO AVOID OVERFLOW
-// [INPUT]
-//    FOLD  : NB OF BINS OF LEADING BITS (NB OF M TO BE COMPUTED)
-// [IN/OUTPUT]
-//    X     : INDEXED FP
-extern void sIRenorm1(int fold, float* X, float* C, int inc);
-
-extern void cIRenorm1(int fold, float complex* sum, float* C, int inc);
 
 // CONVERSION FROM INDEXED FORMAT TO FLOAT
 extern float ssiconv(float_indexed *x, int fold);
@@ -238,11 +234,8 @@ extern void cicconv(void *x, float_complex_indexed *y, int fold);
 
 // ADDING A NATIVE FP TO AN INDEXED FP
 #define dIAddd_(X,Y)   dIAddd1(DEFAULT_FOLD, (X).m, 1, Y)
-#define dIRenorm_(X)   dIRenorm1(DEFAULT_FOLD, (X).m, (X).c, 1)
 
 #define zIAddz_(X,Y) zIAddz1(DEFAULT_FOLD, (double complex*)((X).m), 1, Y)
-#define zIRenorm_(X) zIRenorm1(DEFAULT_FOLD,	\
-		(double complex*)((X).m), (double complex*)((X).c), 1)
 
 //====================================//
 // NEGATION
@@ -267,10 +260,8 @@ extern void cicconv(void *x, float_complex_indexed *y, int fold);
 
 // ADDING A NATIVE FP TO AN INDEXED FP
 #define sIAddf_(X,Y)   sIAddf1(DEFAULT_FOLD, (X).m, 1, Y)
-#define sIRenorm_(X)   sIRenorm1(DEFAULT_FOLD, (X).m, (X).c, 1)
 
 #define cIAddc_(X,Y) cIAddc1(DEFAULT_FOLD, (float complex*)((X).m), 1, Y)
-#define cIRenorm_(X) cIRenorm1(DEFAULT_FOLD,(float complex*)((X).m), (X).c, 1)
 
 //====================================//
 // NEGATION

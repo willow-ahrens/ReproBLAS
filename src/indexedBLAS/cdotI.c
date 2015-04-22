@@ -193,7 +193,7 @@ void cdotI1_(int N, int NB,
 			else 
 				cdotuI2(lB, v+j*inc, inc, y+j*incy, incy, fold, dot);
 
-			cIRenorm1(fold, dot, C, 1);
+			cmrenorm(dot, 1, C, 1, fold);
 		}
 
 		if (status == 2) {

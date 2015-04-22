@@ -77,7 +77,7 @@ void dIAdd1(int K, double* x, double* xc, int incx, double* y, double* yc, int i
 // X += Y
 void dIAdd(I_double* X, I_double Y) {
 	dIAdd1(DEFAULT_FOLD, X->m, X->c, 1, (Y).m, (Y).c,1);
-	dIRenorm1(DEFAULT_FOLD, (X)->m, (X)->c,1);
+    direnorm(X, DEFAULT_FOLD);
 }
 
 void zIAdd1(int K,
@@ -90,7 +90,7 @@ void zIAdd1(int K,
 void zIAdd(I_double_Complex* X, I_double_Complex Y) {
 	zIAdd1(DEFAULT_FOLD,(double complex*)(X)->m,(double complex*)(X)->c,1,
 		(double complex*)(Y).m,(double complex*)(Y).c,1);
-	zIRenorm1(DEFAULT_FOLD,(double complex*)(X)->m,(double complex*)(X)->c,1);
+    zirenorm(X, DEFAULT_FOLD);
 }
 
 void dIAddd1(int fold, double* x, int inc, double y) {
@@ -114,7 +114,7 @@ void dIAddd1(int fold, double* x, int inc, double y) {
 void dIAddd(I_double* X, double Y) {
 	didupdate(fabs(Y), X, DEFAULT_FOLD);
 	dIAddd1(DEFAULT_FOLD, X->m, 1, Y);
-	dIRenorm1(DEFAULT_FOLD, X->m, X->c, 1);
+    direnorm(X, DEFAULT_FOLD);
 }
 
 void zIAddz1(int fold, double complex* x, int inc, double complex y) {
@@ -156,7 +156,7 @@ void zIAddz1(int fold, double complex* x, int inc, double complex y) {
 void zIAddz(I_double_Complex* X, double complex Y) {
 	zidupdate(fabs(Y), X, DEFAULT_FOLD);
 	zIAddz1(DEFAULT_FOLD, (double complex*)X->m, 1, Y);
-	zIRenorm1(DEFAULT_FOLD, (double complex*)X->m, (double complex*)X->c, 1);
+    zirenorm(X, DEFAULT_FOLD);
 }
 
 void dINeg1(int fold, double* x, double* c, int inc) {

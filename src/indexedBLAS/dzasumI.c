@@ -88,7 +88,7 @@ void dzasumI1_(int N, int NB,
 		zmdupdate(amax, BUFFER, 1, BUFFER + fold, 1, fold);
 
 		if (accu + lN > maxN) {
-			zIRenorm1(fold, BUFFER, BUFFER + fold, 1);
+			zmrenorm(BUFFER, 1, BUFFER + fold, 1, fold);
 			accu = 0;
 		}
 
@@ -98,7 +98,7 @@ void dzasumI1_(int N, int NB,
 		accu += lN;
 	}
 
-	zIRenorm1(fold, BUFFER, BUFFER + fold, 1);
+	zmrenorm(BUFFER, 1, BUFFER + fold, 1, fold);
 
 	for (i = 0; i < fold; i++) {
 		sum[i] = (ZREAL_(BUFFER[i])- 1.5*ufp(ZIMAG_(BUFFER[i]))) + (ZIMAG_(BUFFER[i]) );
@@ -106,6 +106,6 @@ void dzasumI1_(int N, int NB,
 	for (; i < 2 * fold; i++) {
 		sum[i] = ZREAL_(BUFFER[i]) + ZIMAG_(BUFFER[i]);
 	}
-	dIRenorm1(fold, sum, c, 1);
+	dmrenorm(sum, 1, c, 1, fold);
 }
 

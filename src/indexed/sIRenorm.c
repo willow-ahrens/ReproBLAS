@@ -9,37 +9,40 @@
 #include "indexed.h"
 #include "../Common/Common.h"
 
-#ifdef __SSE__
-#	include <xmmintrin.h>
-#endif
+void smrenorm(float* repX, int increpX, float* carX, int inccarX, int fold) {
+  int i;
+  float M;
+  float repX0;
+  for (i = 0; i < fold; i++, repX += increpX, carX += inccarX) {
+    repX0 = repX[0];
+    if (repX0 == 0.0)
+      continue;
 
-void sIRenorm1(int n, float* X, float* leading, int inc) {
-	int i;
-	float M;
-	float x;
-	for (i = 0; i < n; i++, X+=inc, leading+=inc) {
-		x = X[0];
-		if (x == 0.0)
-			continue;
-
-		M = ufpf(x);
-		if (x >= (M * 1.75)) {
-			X[0] -= M * 0.25;
-			leading[0] += 1;
-		}
-		else if (x < (M * 1.25)) {
-			X[0] += M * 0.5;
-			leading[0] -= 2;
-		}
-		else if (x < (M * 1.5)) {
-			X[0] += M * 0.25;
-			leading[0] -= 1;
-		}
-	}
+    M = ufpf(repX0);
+    if (repX0 >= (M * 1.75)) {
+      repX[0] -= M * 0.25;
+      carX[0] += 1;
+    }
+    else if (repX0 < (M * 1.25)) {
+      repX[0] += M * 0.5;
+      carX[0] -= 2;
+    }
+    else if (repX0 < (M * 1.5)) {
+      repX[0] += M * 0.25;
+      carX[0] -= 1;
+    }
+  }
 }
 
-void cIRenorm1(int K, float complex* X, float* C, int INC) {
-	sIRenorm1(K, (float*)X,     C,     2*INC);
-	sIRenorm1(K, (float*)X + 1, C + 1, 2*INC);
+void sirenorm(float_indexed *X, int fold) {
+  smrenorm(X, 1, X + fold, 1, fold);
 }
 
+void cmrenorm(float* repX, int increpX, float* carX, int inccarX, int fold) {
+  smrenorm(repX, 2 * increpX, carX, 2 * inccarX, fold);
+  smrenorm(repX + 1, 2 * increpX, carX + 1, 2 * inccarX, fold);
+}
+
+void cirenorm(float_complex_indexed *X, int fold) {
+  cmrenorm(X, 1, X + 2 * fold, 1, fold);
+}

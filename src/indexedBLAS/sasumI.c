@@ -69,12 +69,12 @@ void sasumI1_(int N, int NB,
 		
 		for (j = 0; j < lN - maxN + 1; j+=maxN) {
 			sasumI2(maxN, v + j * inc, inc, fold, sum);
-			sIRenorm1(fold, sum, c, 1);
+			smrenorm(sum, 1, c, 1, fold);
 		}
 
 		if (j < lN) {
 			sasumI2(lN - j, v + j * inc, inc, fold, sum);
-			sIRenorm1(fold, sum, c, 1);
+			smrenorm(sum, 1, c, 1, fold);
 		}
 	}
 }

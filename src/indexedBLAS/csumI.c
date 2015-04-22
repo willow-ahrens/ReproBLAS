@@ -162,7 +162,7 @@ void csumI1_(int N, int NB,
 			lB = maxN < lN - j ? maxN : lN - j;
 			csumI2(lB, v+j*inc, inc, fold, sum);
 
-			cIRenorm1(fold, sum, C, 1);
+			cmrenorm(sum, 1, C, 1, fold);
 		}
 
 		if (status == 2) {

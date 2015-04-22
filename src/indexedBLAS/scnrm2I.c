@@ -133,7 +133,7 @@ float scnrm2I1_(int N, int NB,
 
 //			printf("\nBefore renorm: \n");
 //			cIprint(fold, BUFFER);
-			cIRenorm1(fold, BUFFER, C, 1);
+			cmrenorm(BUFFER, 1, C, 1, fold);
 //			printf("\nAfter renorm: \n");
 //			cIprint(fold, BUFFER);
 		}
@@ -149,7 +149,7 @@ float scnrm2I1_(int N, int NB,
 		carry[i] = C[2*i]+ C[2*i+1];
 	}
 
-	sIRenorm1(fold, sum, carry, 1);
+	smrenorm(sum, 1, carry, 1, fold);
 
 	if (created == 1) {
 		free(work);

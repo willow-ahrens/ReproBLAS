@@ -81,7 +81,7 @@ double dznrm2I1_(int N, int NB,
 			continue;
 		
 		if (accu + lN > maxN) {
-			zIRenorm1(fold, BUFFER, BUFFER + fold, 1);
+			zmrenorm(BUFFER, 1, BUFFER + fold, 1, fold);
 			accu = 0;
 		}
 
@@ -113,14 +113,14 @@ double dznrm2I1_(int N, int NB,
 		accu += lN;
 	}
 	
-	zIRenorm1(fold, BUFFER, BUFFER + fold, 1);
+	zmrenorm(BUFFER, 1, BUFFER + fold, 1, fold);
 
 	for (i = 0; i < fold; i++) {
 		sum[i] = (ZREAL_(BUFFER[i]) - sum[i]) + ZIMAG_(BUFFER[i]);
 		c[i]   = ZREAL_(BUFFER[i+fold]) + ZIMAG_(BUFFER[i+fold]);
 	}
 
-	dIRenorm1(fold, sum, c,1);
+	dmrenorm(sum, 1, c, 1, fold);
 
 	return scale;
 }

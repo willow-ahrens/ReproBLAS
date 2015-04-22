@@ -73,7 +73,7 @@ void sIAdd1(int n, float* x, float* xc, int incx, float* y, float* yc, int incy)
 }
 void sIAdd(I_float* X, I_float Y) {
 	sIAdd1(DEFAULT_FOLD, (X)->m, (X)->c, 1, (Y).m, (Y).c, 1);
-	sIRenorm1(DEFAULT_FOLD,(X)->m,(X)->c,1);
+    sirenorm(X, DEFAULT_FOLD);
 }
 
 void cIAdd1(int K, float complex* x, float* xc, int incx,
@@ -85,7 +85,7 @@ void cIAdd1(int K, float complex* x, float* xc, int incx,
 void cIAdd(I_float_Complex* X, I_float_Complex Y) {
 	cIAdd1(DEFAULT_FOLD, (float complex*)(X)->m, (X)->c, 1,
 		(float complex*)(Y).m, (Y).c, 1);	
-	cIRenorm1(DEFAULT_FOLD, (float complex*)(X)->m, (X)->c, 1);
+    cirenorm(X, DEFAULT_FOLD);
 }
 
 // no update
@@ -107,7 +107,7 @@ void sIAddf1(int fold, float* x, int inc, float y) {
 void sIAddf(I_float* X, float Y) {
 	sisupdate(fabs(Y), X, DEFAULT_FOLD);
 	sIAddf1(DEFAULT_FOLD, (X)->m, 1, Y);
-	sIRenorm1(DEFAULT_FOLD, (X)->m, (X)->c, 1);
+    sirenorm(X, DEFAULT_FOLD);
 }
 
 void cIAddc1(int fold, float complex* x, int inc, float complex Y) {
@@ -120,7 +120,7 @@ void cIAddc1(int fold, float complex* x, int inc, float complex Y) {
 void cIAddc(I_float_Complex* X, float complex Y) {
 	cisupdate(fabs(Y), X, DEFAULT_FOLD);
 	cIAddc1(DEFAULT_FOLD, (float complex*)((X)->m), 1, Y);
-	cIRenorm1(DEFAULT_FOLD,(float complex*)((X)->m), (X)->c, 1);
+    cirenorm(X, DEFAULT_FOLD);
 }
 
 void sINeg1(int fold, float* x, float* c, int inc) {

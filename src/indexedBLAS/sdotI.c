@@ -117,12 +117,12 @@ void sdotI1_(
 		
 		for (j = 0; j < lN - maxN + 1; j+=maxN) {
 			sdotI2(maxN, x + j * incx, incx, y + j * incy, incy, fold, dot);
-			sIRenorm1(fold, dot, c, 1);
+			smrenorm(dot, 1, c, 1, fold);
 		}
 
 		if (j < lN) {
 			sdotI2(lN - j, x + j * incx, incx, y + j * incy, incy, fold, dot);
-			sIRenorm1(fold, dot, c, 1);
+			smrenorm(dot, 1, c, 1, fold);
 		}
 	}
 }

@@ -67,7 +67,7 @@ void dasumI1_(int N, int NB,
 			continue;
 		
 		if (accu + lN > maxN) {
-			dIRenorm1(fold, sum, c, 1);
+			dmrenorm(sum, 1, c, 1, fold);
 			accu = 0;
 		}
 
@@ -78,6 +78,6 @@ void dasumI1_(int N, int NB,
 
 		accu += lN;
 	}
-	dIRenorm1(fold, sum, c, 1);
+	dmrenorm(sum, 1, c, 1, fold);
 }
 
