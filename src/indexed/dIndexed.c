@@ -121,33 +121,3 @@ void dmbound(int index, double *repY, int increpY, int fold) {
     repY[i * increpY] = bounds[index + i];
   }
 }
-
-void dIprint1(int n, double *x, double *c, int inc) {
-int i;
-double M;
-for (i = 0; i < n; i++, x += inc, c += inc) {
-M = ufp(x[0]);
-printf("{M:2^%g # %g :: %g (%.16g)}", log2(M), c[0], x[0] - 1.5*M,
-(c[0] - 6) * 0.25 * M + x[0]);
-}
-}
-
-void zIprint1(int n, double complex* x, double complex* carry, int inc) {
-int i;
-double M;
-double* ptr = (double*) x;
-double* cptr = (double*) carry;
-inc *= 2;
-for (i = 0; i < n; i++, ptr += inc, cptr += inc) {
-M = ufp(ptr[0]);
-printf("M:2^%2g", log2(M));
-printf("# %4g", cptr[0]);
-printf(" %.8g (%8.3g) ", ptr[0], ptr[0] - 1.5 * M);
-
-M = ufp(ptr[1]);
-printf(" || M:2^%2g", log2(M));
-printf("# %6g", cptr[1]);
-printf(" %.8g (%8.3g) ", ptr[1], ptr[1] - 1.5 * M);
-printf("\n");
-}
-}

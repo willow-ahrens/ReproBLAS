@@ -46,9 +46,9 @@ int verify_rcblas1_reproducibility(int N, float complex* X, int incX, float comp
         Ires = (wrap_Icblas1_func(func))(N, X, incX, Y, incY);
       }
       printf("Ref I_float_Complex:\n");
-      cIprint(Iref);
+      ciprint(&Iref, DEFAULT_FOLD);
       printf("\nRes I_float_Complex:\n");
-      cIprint(Ires);
+      ciprint(&Ires, DEFAULT_FOLD);
       printf("\n");
       return 1;
     }

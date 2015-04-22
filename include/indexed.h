@@ -52,6 +52,17 @@ static inline size_t cISize(int fold){
   return 4*fold*sizeof(float);
 }
 
+// PRINT
+
+void cmprint(float* repX, int increpX, float* carX, int inccarX, int fold);
+void ciprint(float_complex_indexed *X, int fold);
+void dmprint(double *repX, int increpX, double *carX, int inccarX, int fold);
+void diprint(double_indexed *X, int fold);
+void smprint(float *repX, int increpX, float *carX, int inccarX, int fold);
+void siprint(float_indexed *X, int fold);
+void zmprint(double *repX, int increpX, double *carX, int inccarX, int fold);
+void ziprint(double_complex_indexed *X, int fold);
+
 // SET ZERO
 #define ISetZero_(K,M,C) {	\
 	int i;	\
@@ -92,8 +103,6 @@ static inline size_t cISize(int fold){
 
 extern int dIWidth();
 extern int dICapacity();
-extern void dIprint1(int n, double *x, double* c, int inc);
-extern void zIprint1(int n, double complex* x, double complex* carry, int inc);
 
 extern void dIAdd1(int K,
 		double* x, double* xc, int incx,
@@ -158,8 +167,6 @@ extern void zizconv(void *x, double_complex_indexed *y, int fold);
 extern int sICapacity();
 extern int sIWidth();
 
-extern void sIprint1(int n, float* x, float* carry, int inc);
-extern void cIprint1(int n, float complex* x, float* carry, int inc);
 
 // ADD A FLOAT TO AN INDEXED FP
 // [INPUT]
@@ -224,9 +231,6 @@ extern void cicconv(void *x, float_complex_indexed *y, int fold);
 /* WRAPPER FOR DOUBLE PRECISION            */
 /*******************************************/
 
-#define dIprint(X) dIprint1(DEFAULT_FOLD, (X).m, (X).c, 1)
-#define zIprint(X) zIprint1(DEFAULT_FOLD, \
-	(double complex*)((X).m), (double complex*)((X).c), 1)
 
 //====================================//
 // ADDITION
@@ -259,8 +263,6 @@ extern void cicconv(void *x, float_complex_indexed *y, int fold);
 /* WRAPPER FOR SINGLE PRECISION            */
 /*******************************************/
 
-#define sIprint(X) sIprint1(DEFAULT_FOLD, (X).m, (X).c, 1)
-#define cIprint(X) cIprint1(DEFAULT_FOLD, (float complex*)(X).m, (X).c, 1)
 
 //====================================//
 // ADDITION

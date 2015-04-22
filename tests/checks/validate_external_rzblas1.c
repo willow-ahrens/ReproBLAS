@@ -92,9 +92,9 @@ int file_test(int argc, char** argv, char *fname) {
       zziconv_sub(&Iref, &ref, DEFAULT_FOLD);
       printf("I%s(%s) = %g + %gi != %g + %gi\n", wrap_rzblas1_names[func_type._named.value], fname, ZREAL_(res), ZIMAG_(res), ZREAL_(ref), ZIMAG_(ref));
       printf("Ref I_double_Complex:\n");
-      zIprint(Iref);
+      ziprint(&Iref, DEFAULT_FOLD);
       printf("\nRes I_double_Complex:\n");
-      zIprint(Ires);
+      ziprint(&Ires, DEFAULT_FOLD);
       printf("\n");
       return 1;
     }

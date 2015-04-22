@@ -178,9 +178,9 @@ int verify_dgemv_reproducibility(char Order, char TransA, int M, int N, int NX, 
           printf("dgemv(A, X, Y)[num_blocks=%d,block_N=%d] = %g != %g\n", num_blocks, block_N, res[i * incY], ref[i * incY]);
           if (num_blocks != 1) {
             printf("Ref I_double:\n");
-            dIprint(Iref[i * incY]);
+            diprint(&Iref[i * incY], DEFAULT_FOLD);
             printf("\nRes I_double:\n");
-            dIprint(Ires[i * incY]);
+            diprint(&Ires[i * incY], DEFAULT_FOLD);
             printf("\n");
           }
           return 1;

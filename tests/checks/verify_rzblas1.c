@@ -46,9 +46,9 @@ int verify_rzblas1_reproducibility(int N, double complex* X, int incX, double co
         Ires = (wrap_Izblas1_func(func))(N, X, incX, Y, incY);
       }
       printf("Ref I_double_Complex:\n");
-      zIprint(Iref);
+      ziprint(&Iref, DEFAULT_FOLD);
       printf("\nRes I_double_Complex:\n");
-      zIprint(Ires);
+      ziprint(&Ires, DEFAULT_FOLD);
       printf("\n");
       return 1;
     }

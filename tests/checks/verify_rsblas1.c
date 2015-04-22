@@ -47,9 +47,9 @@ int verify_rsblas1_reproducibility(int N, float* X, int incX, float* Y, int incY
         Ires = (wrap_Isblas1_func(func))(N, X, incX, Y, incY);
       }
       printf("Ref I_float:\n");
-      sIprint(Iref);
+      siprint(&Iref, DEFAULT_FOLD);
       printf("\nRes I_float:\n");
-      sIprint(Ires);
+      siprint(&Ires, DEFAULT_FOLD);
       printf("\n");
       return 1;
     }

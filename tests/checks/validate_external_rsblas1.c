@@ -90,9 +90,9 @@ int file_test(int argc, char** argv, char *fname) {
     if(memcmp(&Iref, &Ires, sizeof(Iref)) != 0){
       printf("I%s(%s) = %g != %g\n", wrap_rsblas1_names[func_type._named.value], fname, ssiconv(&Ires, DEFAULT_FOLD), ssiconv(&Iref, DEFAULT_FOLD));
       printf("Ref I_float:\n");
-      sIprint(Iref);
+      siprint(&Iref, DEFAULT_FOLD);
       printf("\nRes I_float:\n");
-      sIprint(Ires);
+      siprint(&Ires, DEFAULT_FOLD);
       printf("\n");
       return 1;
     }

@@ -46,9 +46,9 @@ int verify_rdblas1_reproducibility(int N, double* X, int incX, double* Y, int in
         Ires = (wrap_Idblas1_func(func))(N, X, incX, Y, incY);
       }
       printf("Ref I_double:\n");
-      dIprint(Iref);
+      diprint(&Iref, DEFAULT_FOLD);
       printf("\nRes I_double:\n");
-      dIprint(Ires);
+      diprint(&Ires, DEFAULT_FOLD);
       printf("\n");
       return 1;
     }

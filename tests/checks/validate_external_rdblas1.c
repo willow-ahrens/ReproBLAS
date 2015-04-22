@@ -90,9 +90,9 @@ int file_test(int argc, char** argv, char *fname) {
     if(memcmp(&Iref, &Ires, sizeof(Iref)) != 0){
       printf("I%s(%s) = %g != %g\n", wrap_rdblas1_names[func_type._named.value], fname, ddiconv(&Ires, DEFAULT_FOLD), ddiconv(&Iref, DEFAULT_FOLD));
       printf("Ref I_double:\n");
-      dIprint(Iref);
+      diprint(&Iref, DEFAULT_FOLD);
       printf("\nRes I_double:\n");
-      dIprint(Ires);
+      diprint(&Ires, DEFAULT_FOLD);
       printf("\n");
       return 1;
     }

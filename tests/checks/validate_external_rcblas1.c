@@ -92,9 +92,9 @@ int file_test(int argc, char** argv, char *fname) {
       cciconv_sub(&Iref, &ref, DEFAULT_FOLD);
       printf("I%s(%s) = %g + %gi != %g + %gi\n", wrap_rcblas1_names[func_type._named.value], fname, CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
       printf("Ref I_float_Complex:\n");
-      cIprint(Iref);
+      ciprint(&Iref, DEFAULT_FOLD);
       printf("\nRes I_float_Complex:\n");
-      cIprint(Ires);
+      ciprint(&Ires, DEFAULT_FOLD);
       printf("\n");
       return 1;
     }

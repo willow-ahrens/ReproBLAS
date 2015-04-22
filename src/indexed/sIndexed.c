@@ -121,36 +121,3 @@ void smbound(int index, float *repY, int increpY, int fold) {
     repY[i * increpY] = bounds[index + i];
   }
 }
-
-void sIprint1(int n, float* x, float* carry, int inc) {
-	int i;
-	float M;
-	for (i = 0; i < n; i++) {
-		M = ufpf(x[i*inc]);
-		printf("{M:2^%g # %g :: %g (%g)}", log2f(M), carry[i*inc], x[i*inc] - 1.5*M, x[i*inc] + (carry[i*inc]-6)*0.25*M);
-	}
-}
-
-void cIprint1(int n, float complex* x, float* carry, int inc) {
-	/*
-	printf("\nReal: ");
-	sIprint_(n, (float*) x, carry, inc*2);
-	printf("\nImaginary: ");
-	sIprint_(n, ((float*) x) + 1, carry+1, inc*2);
-	*/
-	int i;
-	float M;
-	float* ptr = (float*) x;
-	for (i = 0; i < n; i++, ptr += 2 * inc, carry += 2 * inc) {
-		M = ufpf(ptr[0]);
-		printf("M:2^%2g", log2f(M));
-		printf("# %4g", carry[0]);
-		printf(" %8.3g (%8.3g) ", ptr[0], ptr[0] - 1.5 * M);
-
-		M = ufpf(ptr[1]);
-		printf(" || M:2^%2g", log2f(M));
-		printf("# %6g", carry[1]);
-		printf(" %8.3g (%8.3g) ", ptr[1], ptr[1] - 1.5 * M);
-		printf("\n");
-	}
-}
