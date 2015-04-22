@@ -14,7 +14,7 @@
 #endif
 
 void dIUpdate1(int fold, double* x, double* c, int ldx, double y) {
-  if (y == 0 || isnan(x[0] || isinf(x[0])))
+  if (y == 0 || isnan(x[0]) || isinf(x[0]))
     return;
 
   if (x[0] == 0.0) {

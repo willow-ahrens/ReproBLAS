@@ -67,7 +67,7 @@ float snrm2I1_(int N, int NB,
 			continue;
 #		endif
 
-		sIBoundary_(1, amax, &nscale, 1); 
+        nscale = sbound(sindex(amax));
 		nscale = ufpf(nscale);
 //		nscale = nscale / 1.5;
 //		printf("max: %g, nscale: %g \n", amax, nscale);

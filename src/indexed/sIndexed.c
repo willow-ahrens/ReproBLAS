@@ -7,192 +7,119 @@
 #include <math.h>
 #include <float.h>
 #include "indexed.h"
-#include "../Common/Common.h"
 
-#ifdef __SSE__
-#	include <xmmintrin.h>
-#endif
+#define BOUNDS_SIZE      20
+#define BOUND_ZERO_INDEX 10
+#define BIN_WIDTH        15
+#define PREC             23
 
-#define CHECK_NAN_INF
-#define POW2(x) powf(2.0,x)
+static float bounds[BOUNDS_SIZE];     //initialized in bounds_initialize
+static int   bounds_initialized = 0;  //initialized in bounds_initialize
+static int   bound_min_index    = 32; //initialized in bounds_initialize
+static int   bound_max_index    = 32; //initialized in bounds_initialize
 
-// PRE-FIXED BOUNDARIES
-#define SDEFAULT_W 15
-#define PREC 24 
-#define F_MMASK ~((1 << PREC) - 1)
-#define F_BOUDNARY_ZERO_IND 10
-static float F_BOUNDARIES[20];
-static int   F_BOUNDARIES_initialized = 0;
-static int   F_BOUNDARY_NB    = 1 << (PREC - 2 - SDEFAULT_W);
-static int   F_BIN_WIDTH      = SDEFAULT_W;
-static float F_BOUNDARY_STEP  = (float)(1 << SDEFAULT_W);
-static float F_BOUNDARY_STEP1 = 1.0/(1 << SDEFAULT_W);
-static int   F_BOUNDARY_LEFT  = 10;
-static int   F_BOUNDARY_RIGHT = 10;
-
-#define FF_ 1.5
-
-int sIWidth() { return F_BIN_WIDTH; }
-int sICapacity() { return F_BOUNDARY_NB; }
-
-void sI_Initialize_() {
-	if (F_BOUNDARIES_initialized) return;
-	F_BOUNDARIES[F_BOUDNARY_ZERO_IND] = FF_;
-	int exp = -1;
-	int ind = F_BOUDNARY_ZERO_IND + 1;
-	float bound = F_BOUNDARY_STEP1 * FF_;
-	while (exp * F_BIN_WIDTH  >= FLT_MIN_EXP) {
-		F_BOUNDARIES[ind] = bound;
-		ind++;
-		exp--;
-		bound *= F_BOUNDARY_STEP1;
-	}
-	F_BOUNDARY_RIGHT = ind;
-	while (ind < 20) {
-		F_BOUNDARIES[ind] = 0.0;
-		ind++;
-	}
-
-	exp = 1;
-	bound = F_BOUNDARY_STEP * FF_;
-	ind = F_BOUDNARY_ZERO_IND - 1;
-	while (exp * F_BIN_WIDTH <= FLT_MAX_EXP) {
-		F_BOUNDARIES[ind] = bound;
-		ind--;
-		exp++;
-		bound *= F_BOUNDARY_STEP;
-	}
-	F_BOUNDARY_LEFT = ind;
-	F_BOUNDARIES[ind--] = bound;
-
-	while (ind >= 0) {
-		F_BOUNDARIES[ind] = INFINITY;
-		ind--;
-	}
-	F_BOUNDARIES_initialized = 1;
+int sIWidth() {
+  return BIN_WIDTH;
 }
 
-float F_Ind2Boundary(int index) {
-	sI_Initialize_();
-	index = F_BOUDNARY_ZERO_IND - index;
-	return F_BOUNDARIES[index];
+int sICapacity() {
+  return 1 << (PREC - BIN_WIDTH - 2);
 }
 
-float* F_Ind2Boundares(int index) {
-	sI_Initialize_();
-	index = F_BOUDNARY_ZERO_IND - index;
-	return F_BOUNDARIES+index;
+static void bounds_initialize() {
+  int exp;
+  int index;
+  float step;
+
+  if (bounds_initialized) {
+    return;
+  }
+
+  bounds[BOUND_ZERO_INDEX] = 1.5;
+  step = ldexpf(1, BIN_WIDTH);
+
+  exp = -1;
+  index = BOUND_ZERO_INDEX + 1;
+  while (exp * BIN_WIDTH  >= FLT_MIN_EXP) {
+    bounds[index] = bounds[index - 1] / step;
+    index++;
+    exp--;
+  }
+  bound_max_index = index;
+  while (index < BOUNDS_SIZE) {
+    bounds[index] = 0.0;
+    index++;
+  }
+
+  exp = 1;
+  index = BOUND_ZERO_INDEX - 1;
+  while (exp * BIN_WIDTH <= FLT_MAX_EXP) {
+    bounds[index] = bounds[index + 1] * step;
+    index--;
+    exp++;
+  }
+  bound_min_index = index;
+  while (index >= 0) {
+    bounds[index] = bounds[bound_min_index + 1] * step;
+    index--;
+  }
+
+  bounds_initialized = 1;
 }
 
-int F_Max2Ind(float amax) {
-	sI_Initialize_();
-	if (amax == 0)
-		return F_BOUNDARY_RIGHT;
-	if (isinf(amax))
-		return F_BOUNDARY_LEFT;
-	
-	int mid = F_BOUDNARY_ZERO_IND;
-	
-	while (F_BOUNDARIES[mid] > amax) mid++;
-	mid--;
-	while (F_BOUNDARIES[mid] < amax) mid--;
+int siindex(float_indexed *X){
+  int index;
 
-	// TODO: CHECK ...
-	if (amax * (4 * FF_) * F_BOUNDARY_NB > F_BOUNDARIES[mid])
-		mid--;
-	return mid;
+  bounds_initialize();
+
+  if(isinf(X[0])){
+    index = bound_min_index;
+  } else if(X[0] == 0){
+    index = bound_max_index;
+  } else {
+    frexpf(X[0], &index);
+    index--;
+    index /= BIN_WIDTH;
+    index = BOUND_ZERO_INDEX - index;
+  }
+  return index;
 }
 
-float* F_Max2Boundaries(float amax) {
-	return F_BOUNDARIES + F_Max2Ind(amax);
-}
+int sindex(float X){
+  int index;
 
-// COMPUTE THE BOUNDARIES BASED ON MAXIMUM ABSOLUTE VALUE
-int sIBoundary_(int fold, float max, float* M, int inc) {
-	float delta;
-	int i;
-	float M0;
+  bounds_initialize();
 
-	int index;
-    index = F_Max2Ind(max);
-    for (i = 0; i < fold; i++, M += inc) {
-        M[0] = F_BOUNDARIES[index + i];
+  if(isinf(X)){
+    index = bound_min_index;
+  }else if(X == 0){
+    index = bound_max_index;
+  }else{
+    frexpf(X, &index);
+    index += PREC - BIN_WIDTH - 1;
+    if(index < 0){
+      index -= BIN_WIDTH - 1; //we want to round towards -infinity
     }
-    return index;
-
-    /*
-	if (step == F_BIN_WIDTH || step == 0) {
-		index = F_Max2Ind(max);
-		for (i = 0; i < fold; i++, M += inc) {
-			M[0] = F_BOUNDARIES[index + i];
-		}
-		return index;
-	}
-
-	// TODO: CHECK FOR INFINITY & NAN
-	int log2N = PREC - 2 - step;
-	delta = ceil(log2(max));
-	index = (int) (delta) + log2N + 2;
-	index = ((step * 1024 + index + step - 1) / step - 1024);
-
-	index *= step;
-	float dstep = powf(2.0, -step);
-
-	if (index >= FLT_MAX_EXP) {
-		// TO AVOID FALSE OVERFLOW
-		M0 = POW2( index - step);
-		M0 *= FF_;
-		M[0] = M0;
-		if (fold > 1)
-			M[1] = M0;
-	}
-	else {
-		M0 = POW2( index);
-		M0 *= FF_;
-		M[0] = M0;
-		if (fold > 1) {
-			M0 *= dstep;
-			M[inc] = M0;
-		}
-	}
-
-	for (i = 2; i < fold; i++) {
-		M0   *=  dstep;
-		M[i*inc] = M0;
-	}
-
-#ifdef DEBUG
-	fprintf(stdout, "EXTRACTION FACTORS: [%g", M[0]);
-	for (i = 1; i < fold; i++)
-		fprintf(stdout, ",%g", M[i*inc]);
-	fprintf(stdout, "]\n");
-#endif
-
-	return index / step;
-    */
+    index /= BIN_WIDTH;
+    index = BOUND_ZERO_INDEX - 1 - index;
+  }
+  return index;
 }
 
-#define USE_FREXP
-float ufpf(float x) {
-	if (x == 0.0)
-		return 0.0;
-#ifdef USE_FREXP
-	int exp;
-	frexpf(x, &exp);
-	return ldexpf(0.5, exp);
-#elif defined ( __SSE__ )
-	__m128 mX, mMask;
-	mX = _mm_load_ss(&x);
-	mMask = _mm_set_ss(INFINITY);
-	mX = _mm_and_ps(mX, mMask);
-	_mm_store_ss(&x, mX);
-	return x;
-#else
-	int_float lM;
-	lM.f = x;
-	lM.i &= F_MMASK;
-	return lM.f;
-#endif
+double sbound(int index){
+  bounds_initialize();
+
+  return bounds[index];
+}
+
+void smbound(int index, float *repY, int increpY, int fold) {
+  int i;
+
+  bounds_initialize();
+
+  for (i = 0; i < fold; i++) {
+    repY[i * increpY] = bounds[index + i];
+  }
 }
 
 void sIprint1(int n, float* x, float* carry, int inc) {
@@ -227,4 +154,3 @@ void cIprint1(int n, float complex* x, float* carry, int inc) {
 		printf("\n");
 	}
 }
-

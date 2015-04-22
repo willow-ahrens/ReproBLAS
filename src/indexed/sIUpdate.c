@@ -9,66 +9,30 @@
 #include "indexed.h"
 #include "../Common/Common.h"
 
-#ifdef __SSE__
-#	include <xmmintrin.h>
-#endif
+void sIUpdate1(int fold, float y, float* x, float* c, int ldx) {
+  if (y == 0 || isnan(x[0]) || isinf(x[0]))
+    return;
 
-#define PREC 24
+  if (x[0] == 0.0) {
+    smbound(sindex(y), x, ldx, fold);
+    for (int i = fold; i < fold; i++) {
+      c[i * ldx] = 0.0;
+    }
+    return;
+  }
 
-// CHANGE THE INDEX
-// IN FACT, IT IS A POSSIBLE SHIFTING LEFT
-void sIUpdate_work(int fold, int NB, float step,
-	float* x, float* c, int ldx, float y) {
-	int i;
-	int d;
-
-	if (y == 0)
-		return;
-
-	if (x[0] == 0) {
-		sIBoundary_(fold, fabs(y), x, ldx);
-		for (i = fold; i < 2 * fold; i++) x[i * ldx] = 0;
-		return;
-	}
-
-
-	float M = ufpf(x[0]);
-//	printf("x=%g, M = %g.", x[0], M);
-
-	M = M / NB;
-
-	// NO NEED TO UPDATE
-	if (y < M)
-		return;
-
-	step = 1.0/step;
-	
-	d = 0;
-	// EVALUATE SHIFTING DISTANCE
-	while (y >= M && d < fold) { d++; M *= step; }
-
-	// RIGHT-SHIFTING
-	for (i = fold-1; i >= d; i--) {
-		x[i * ldx] = x[(i - d) * ldx];
-		c[i * ldx] = c[(i - d) * ldx];
-	}
-
-	sIBoundary_(d, fabs(y), x, ldx);
-	for (i = 0; i < d; i++) c[i * ldx] = 0.0;
-}
-
-void sIUpdate1(int fold, float y, float* x,
-	float* c, int ldx){
-	if (y == 0 || isnan(y) || isinf(y))
-		return;
-
-	float M = ufpf(x[0]);
-	int W = sIWidth();
-	int NB     = 1 << (PREC - W);
-	M = M / NB;
-	float step = ldexp(0.5f, 1-W);
-
-	sIUpdate_work(fold, NB, step, x, c, ldx, y);
+  int y_index = sindex(y);
+  int d = siindex(x) - y_index;
+  if(d > 0){
+    for(int i = fold - 1; i >= d; i--){
+      x[i * ldx] = x[(i - d) * ldx];
+      c[i * ldx] = c[(i - d) * ldx];
+    }
+    smbound(y_index, x, ldx, MIN(d, fold));
+    for(int i = 0; i < d && i < fold; i++){
+      c[i * ldx] = 0.0;
+    }
+  }
 }
 
 void cIUpdates1(int K, float complex* X, float* C, int INC, float Y) {

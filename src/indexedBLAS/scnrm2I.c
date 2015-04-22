@@ -101,8 +101,7 @@ float scnrm2I1_(int N, int NB,
 		if (status > 0)
 			continue;
 		
-		sIBoundary_(1, amax, &nscale, 1); 
-		nscale = nscale / 1.5;
+        nscale = sbound(sindex(amax))/1.5;
 //		printf("max: %g, scale: %g, nscale: %g \n", amax, scale, nscale);
 
 		// UPDATE NEW SCALE

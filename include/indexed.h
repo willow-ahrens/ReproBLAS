@@ -176,14 +176,10 @@ extern void cIAddc(I_float_Complex* X, float complex Y);
 extern void sINeg1(int fold, float* x, float* c, int inc);
 extern void cINeg1(int fold, float complex* x, float* c, int inc);
 
-// COMPUTE BOUNDARIES BASED ON MAXIMUM ABSOLUTE VALUE
-// [INPUT]
-//    FOLD  : NB OF BINS OF LEADING BITS (NB OF M TO BE COMPUTED)
-//    W     : WIDTH OF EACH BINS
-//    MAX   : MAXIMUM ABSOLUTE VALUE OF INPUT VALUES TO BE SUMMED
-// [OUTPUT]
-//    M     : PRECOMPUTED BOUNDARIES
-extern int  sIBoundary_(int fold, float max, float* M, int inc);
+int siindex(float_indexed *X);
+int sindex(float X);
+double sbound(int index);
+void smbound(int index, float *repY, int increpY, int fold);
 
 // UNIT IN THE FIRST PLACE
 extern float ufpf(float x);

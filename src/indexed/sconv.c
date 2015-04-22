@@ -16,7 +16,7 @@ void smsconv(float x, float* repy, int increpy, float* cary, int inccary, int fo
 		}
 		return;
 	}
-	sIBoundary_(fold, fabs(x), repy, increpy);
+	smbound(sindex(fabs(x)), repy, increpy, fold);
 	for (i = 0; i < fold; i++, repy += increpy, cary += inccary) {
 		// high-order part
 		cary[0] = 0.0;
