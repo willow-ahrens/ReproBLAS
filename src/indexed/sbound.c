@@ -13,10 +13,10 @@
 #define BIN_WIDTH        15
 #define PREC             23
 
-static float bounds[BOUNDS_SIZE];     //initialized in bounds_initialize
-static int   bounds_initialized = 0;  //initialized in bounds_initialize
-static int   bound_min_index    = 32; //initialized in bounds_initialize
-static int   bound_max_index    = 32; //initialized in bounds_initialize
+static float bounds[BOUNDS_SIZE];                   //initialized in bounds_initialize
+static int   bounds_initialized = 0;                //initialized in bounds_initialize
+static int   bound_min_index    = BOUND_ZERO_INDEX; //initialized in bounds_initialize
+static int   bound_max_index    = BOUND_ZERO_INDEX; //initialized in bounds_initialize
 
 int sIWidth() {
   return BIN_WIDTH;
