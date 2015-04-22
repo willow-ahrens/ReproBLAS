@@ -126,14 +126,11 @@ extern void zIUpdates1(int fold, double complex* x, double complex* c, int ldx, 
 
 extern void zIUpdate1 (int fold, double complex* x, double complex* c, int ldx,double complex y);
 
-// COMPUTE BOUNDARIES BASED ON MAXIMUM ABSOLUTE VALUE
-// [INPUT]
-//    FOLD  : NB OF BINS OF LEADING BITS (NB OF M TO BE COMPUTED)
-//    W     : WIDTH OF EACH BINS
-//    MAX   : MAXIMUM ABSOLUTE VALUE OF INPUT VALUES TO BE SUMMED
-// [OUTPUT]
-//    M     : PRECOMPUTED BOUNDARIES
-extern int  dIBoundary(int fold, double max, double* M, int inc);
+
+double dbound(int index);
+void dmbound(int index, double *repY, int increpY, int fold);
+int dindex(double X);
+int diindex(double_indexed *X);
 
 // COMPUTE THE UNIT IN TH FIRST PLACE
 extern double ufp(double x);

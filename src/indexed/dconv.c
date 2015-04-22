@@ -20,7 +20,7 @@ void dmdconv(double x, double* repy, int increpy, double* cary, int inccary, int
 		}
 		return;
 	}
-	dIBoundary(fold, fabs(x), repy, increpy);
+	dmbound(dindex(fabs(x)), repy, increpy, fold);
 	for (i = 0; i < fold; i++, repy += increpy, cary += inccary) {
 		// high-order part
 		cary[0] = 0.0;

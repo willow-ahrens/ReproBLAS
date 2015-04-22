@@ -75,8 +75,7 @@ double dnrm2I1_(int N, int NB,
 			accu = 0;
 		}
 
-		dIBoundary(1, amax, &nscale, 1); 
-		nscale = nscale / 1.5;
+		nscale = dbound(dindex(amax))/1.5; 
 //		printf("max: %g, nscale: %g \n", amax, nscale);
 
 		// UPDATE NEW SCALE

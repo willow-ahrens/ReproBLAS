@@ -67,38 +67,17 @@ static void bounds_initialize() {
   bounds_initialized = 1;
 }
 
-double dbound(int index){
-  bounds_initialize();
-
-  return bounds[index];
-}
-
-// COMPUTE THE BOUNDARIES BASED ON MAXIMUM ABSOLUTE VALUE
-int dIBoundary(int fold, double max, double* M, int inc) {
-  int i;
+int diindex(double_indexed *X){
   int index;
 
   bounds_initialize();
 
-  index = dindex(max);
-
-  for (i = 0; i < fold; i++) {
-    M[i * inc] = bounds[index + i];
-  }
-  return index;
-}
-
-int diindex(double_indexed *x){
-  int index;
-
-  bounds_initialize();
-
-  if(isinf(x[0])){
+  if(isinf(X[0])){
     index = bound_min_index;
-  } else if(x[0] == 0){
+  } else if(X[0] == 0){
     index = bound_max_index;
   } else {
-    frexp(x[0], &index);
+    frexp(X[0], &index);
     index--;
     index /= BIN_WIDTH;
     index = BOUND_ZERO_INDEX - index;
@@ -106,17 +85,17 @@ int diindex(double_indexed *x){
   return index;
 }
 
-int dindex(double x){
+int dindex(double X){
   int index;
 
   bounds_initialize();
 
-  if(isinf(x)){
+  if(isinf(X)){
     index = bound_min_index;
-  } else if(x == 0){
+  }else if(X == 0){
     index = bound_max_index;
-  } else {
-    frexp(x, &index);
+  }else{
+    frexp(X, &index);
     index += PREC - BIN_WIDTH - 1;
     if(index < 0){
       index -= BIN_WIDTH - 1; //we want to round towards -infinity
@@ -127,7 +106,21 @@ int dindex(double x){
   return index;
 }
 
+double dbound(int index){
+  bounds_initialize();
 
+  return bounds[index];
+}
+
+void dmbound(int index, double *repY, int increpY, int fold) {
+  int i;
+
+  bounds_initialize();
+
+  for (i = 0; i < fold; i++) {
+    repY[i * increpY] = bounds[index + i];
+  }
+}
 
 void dIprint1(int n, double *x, double *c, int inc) {
 int i;
