@@ -13,8 +13,6 @@ void smsupdate(float X, float* repY, int increpY, float* carY, int inccarY, int 
     return;
 
 /*
-  printf("update X: %g, %d\n", X, sindex(X));
-  printf("update d: %g, %d\n", repY[0], siindex(repY));
   if (repY[0] == 0.0) {
     smbound(sindex(X), repY, increpY, fold);
     for (int i = 0; i < fold; i++) {
