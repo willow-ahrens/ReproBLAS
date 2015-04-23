@@ -8,9 +8,9 @@
 #include <float.h>
 #include "indexed.h"
 
-#define BOUNDS_SIZE      20
-#define BOUND_ZERO_INDEX 10
-#define BIN_WIDTH        15
+#define BOUNDS_SIZE      32
+#define BOUND_ZERO_INDEX 16
+#define BIN_WIDTH        13
 #define PREC             23
 
 static float bounds[BOUNDS_SIZE];                   //initialized in bounds_initialize
@@ -96,7 +96,7 @@ int sindex(float X){
     index = bound_max_index;
   }else{
     frexpf(X, &index);
-    index += PREC - BIN_WIDTH - 1;
+    index += PREC - BIN_WIDTH;
     if(index < 0){
       index -= BIN_WIDTH - 1; //we want to round towards -infinity
     }

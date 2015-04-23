@@ -96,7 +96,7 @@ int dindex(double X){
     index = bound_max_index;
   }else{
     frexp(X, &index);
-    index += PREC - BIN_WIDTH - 1;
+    index += PREC - BIN_WIDTH;
     if(index < 0){
       index -= BIN_WIDTH - 1; //we want to round towards -infinity
     }

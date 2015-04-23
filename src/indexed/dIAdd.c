@@ -84,7 +84,7 @@ void zIAdd1(int K,
 	double complex* x, double complex* xc, int incx,
 	double complex* y, double complex* yc, int incy) {
 	dIAdd1(K, (double*)x, (double*)xc, 2*incx, (double*)y, (double*)yc, 2*incy);
-	dIAdd1(K, (double*)x + 1, (double*)xc + 1, 2*incx, (double*)y+1, (double*)yc+1, 2*incy);
+	dIAdd1(K, ((double*)x) + 1, ((double*)xc) + 1, 2*incx, ((double*)y)+1, ((double*)yc)+1, 2*incy);
 }
 
 void zIAdd(I_double_Complex* X, I_double_Complex Y) {

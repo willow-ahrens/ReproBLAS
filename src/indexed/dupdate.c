@@ -12,13 +12,15 @@ void dmdupdate(double X, double* repY, int increpY, double* carY, int inccarY, i
   if (X == 0 || isnan(repY[0]) || isinf(repY[0]))
     return;
 
+/*
   if (repY[0] == 0.0) {
     dmbound(dindex(X), repY, increpY, fold);
-    for (int i = fold; i < fold; i++) {
+    for (int i = 0; i < fold; i++) {
       carY[i * inccarY] = 0.0;
     }
     return;
   }
+*/
 
   int X_index = dindex(X);
   int d = diindex(repY) - X_index;
@@ -40,7 +42,7 @@ void didupdate(double X, double_indexed *Y, int fold) {
 
 void zmdupdate(double X, double* repY, int increpY, double* carY, int inccarY, int fold) {
   dmdupdate(X, repY, 2 * increpY, carY, 2 * inccarY, fold);
-  dmdupdate(X, repY + increpY, 2 * increpY, carY + inccarY, 2 * inccarY, fold);
+  dmdupdate(X, repY + 1, 2 * increpY, carY + 1, 2 * inccarY, fold);
 }
 
 void zidupdate(double X, double_complex_indexed *Y, int fold) {
@@ -49,7 +51,7 @@ void zidupdate(double X, double_complex_indexed *Y, int fold) {
 
 void zmzupdate(void *X, double* repY, int increpY, double* carY, int inccarY, int fold) {
   dmdupdate(((double*)X)[0], repY, 2 * increpY, carY, 2 * inccarY, fold);
-  dmdupdate(((double*)X)[1], repY + increpY, 2 * increpY, carY + inccarY, 2 * inccarY, fold);
+  dmdupdate(((double*)X)[1], repY + 1, 2 * increpY, carY + 1, 2 * inccarY, fold);
 }
 
 void zizupdate(void *X, double_complex_indexed *Y, int fold) {

@@ -12,13 +12,17 @@ void smsupdate(float X, float* repY, int increpY, float* carY, int inccarY, int 
   if (X == 0 || isnan(repY[0]) || isinf(repY[0]))
     return;
 
+/*
+  printf("update X: %g, %d\n", X, sindex(X));
+  printf("update d: %g, %d\n", repY[0], siindex(repY));
   if (repY[0] == 0.0) {
     smbound(sindex(X), repY, increpY, fold);
-    for (int i = fold; i < fold; i++) {
+    for (int i = 0; i < fold; i++) {
       carY[i * inccarY] = 0.0;
     }
     return;
   }
+*/
 
   int X_index = sindex(X);
   int d = siindex(repY) - X_index;
@@ -49,7 +53,7 @@ void cisupdate(float X, float_complex_indexed *Y, int fold) {
 
 void cmcupdate(void *X, float* repY, int increpY, float* carY, int inccarY, int fold) {
   smsupdate(((float*)X)[0], repY, 2 * increpY, carY, 2 * inccarY, fold);
-  smsupdate(((float*)X)[1], repY + increpY, 2 * increpY, carY + inccarY, 2 * inccarY, fold);
+  smsupdate(((float*)X)[1], repY + 1, 2 * increpY, carY + 1, 2 * inccarY, fold);
 }
 
 void cicupdate(void *X, float_complex_indexed *Y, int fold) {

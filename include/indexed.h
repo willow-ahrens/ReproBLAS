@@ -261,7 +261,6 @@ extern void cicconv(void *x, float_complex_indexed *y, int fold);
 // ADDING A NATIVE FP TO AN INDEXED FP
 #define sIAddf_(X,Y)   sIAddf1(DEFAULT_FOLD, (X).m, 1, Y)
 
-#define cIAddc_(X,Y) cIAddc1(DEFAULT_FOLD, (float complex*)((X).m), 1, Y)
 
 //====================================//
 // NEGATION

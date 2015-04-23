@@ -184,13 +184,14 @@ void cdotI1_(int N, int NB,
 		if (status == 1)
 			continue;
 		
+//        printf("AMAX %g %g\n", CREAL_(amax), CIMAG_(amax));
 		cmcupdate(&amax, dot, 1, C, 1, fold);
 
 		for (j = 0; j < lN; j+=maxN) {
 			lB = maxN < lN - j ? maxN : lN - j;
 			if (conj)
 				cdotcI2(lB, v+j*inc, inc, y+j*incy, incy, fold, dot);
-			else 
+			else
 				cdotuI2(lB, v+j*inc, inc, y+j*incy, incy, fold, dot);
 
 			cmrenorm(dot, 1, C, 1, fold);
