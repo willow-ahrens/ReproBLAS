@@ -11,7 +11,7 @@
 #define BOUNDS_SIZE      32
 #define BOUND_ZERO_INDEX 16
 #define BIN_WIDTH        13
-#define PREC             23
+#define PREC             24
 
 static float bounds[BOUNDS_SIZE];                   //initialized in bounds_initialize
 static int   bounds_initialized = 0;                //initialized in bounds_initialize
