@@ -13,64 +13,47 @@
 // ADDING TWO INDEXED FP
 // X += Y
 void sIAdd1(int n, float* x, float* xc, int incx, float* y, float* yc, int incy) {
-	int i, j;
-	int d;
+    int i;
+    int shift;
+    float *repX = y;
+    int increpX = incy;
+    float *carX = yc;
+    int inccarX = incy;
+    float *repY = x;
+    int increpY = incx;
+    float *carY = xc;
+    int inccarY = incx;
+    int fold = n;
 
-	// Y  == 0
-	if (y[0] == 0.0)
+	if (repX[0] == 0.0)
 		return;
 
-	// X  == 0
-	if (x[0] == 0.0) {
-		for (i = 0; i < n; i++) {
-			x[i*incx]  = y[i*incy];
-			xc[i*incx] = yc[i*incy];
+	if (repY[0] == 0.0) {
+		for (i = 0; i < fold; i++) {
+			repY[i*increpY] = repX[i*increpX];
+			carY[i*inccarY] = carX[i*inccarX];
 		}
 		return;
 	}
 
-	// X AND Y HAVE THE SAME INDEX, JUST ADDING THE CORRESPONDING COMPONENTS
-	float MX, MY;
-	MX = ufpf(x[0]);
-	MY = ufpf(y[0]);
-	if (MX == MY) {
-		x[0]  += (y[0] - 1.5 * MX);
-		xc[0] += yc[0];
-		for (i = 1; i < n; i++) {
-			MX = ufpf(x[i*incx]);
-			x[i*incx] += (y[i*incy] - 1.5 * MX);
-			xc[i*incx] += yc[i*incy];
-		}
-		return;
-	}
-	// INDEX(X) > INDEX(Y): RIGHT-SHIFT Y BEFORE ADDING
-	if (MY < MX) {
-		d = 0;
-		while (d < n - 1 && MY < MX) MX = ufpf(x[(++d) * incx]);
-		if (MY < MX) return;
-		for (i = d, j = 0; i < n; i++, j++) {
-			MX = ufpf(x[i*incx]);
-			x[i*incx] += (y[j*incy] - 1.5*MX);
-			xc[(i )*incx] += yc[j *incy];
-		}
-		return;
-	}
-
-	// INDEX(X) < INDEX(Y): SHIFT RIGHT X
-	d = 0;
-	while (d < n - 1 && MX < MY) {
-		MY = ufpf(y[++d * incy]);
-	}
-	if (MX < MY) d = n;
-	for (i = n - 1; i >= d; i--) {
-		MX = ufpf(y[i*incy]);
-		x[i*incx] = y[i*incy] + (x[(i - d) * incx] - 1.5*MX);
-		xc[(i)*incx] = yc[(i)*incy] + xc[(i - d)*incx];
-	}
-	for (i = 0; i < d; i++) {
-		x[i*incx] = y[i*incy];
-		xc[(i)*incx] = yc[(i)*incy];
-	}
+    shift = siindex(repY) - siindex(repX);
+    if(shift > 0){
+      //shift Y upwards and add X
+      for (i = fold - 1; i >= shift, i >= 0; i--) {
+        repY[i*increpY] = repX[i*increpX] + (repY[(i - shift)*increpY] - 1.5*ufpf(repY[(i - shift)*increpY]));
+        carY[i*inccarY] = carX[i*inccarX] + carY[(i - shift)*inccarY];
+      }
+      for (i = 0; i < shift; i++) {
+        repY[i*increpY] = repX[i*increpX];
+        carY[i*inccarY] = carX[i*inccarX];
+      }
+    }else{
+      //shift X upwards and add X
+	  for (i = 0 - shift; i < fold; i++) {
+		repY[i*increpY] += repX[(i + shift)*increpX] - 1.5*ufpf(repX[(i + shift)*increpX]);
+		carY[i*inccarY] += carX[(i + shift)*inccarX];
+	  }
+    }
 }
 void sIAdd(I_float* X, I_float Y) {
 	sIAdd1(DEFAULT_FOLD, (X)->m, (X)->c, 1, (Y).m, (Y).c, 1);
