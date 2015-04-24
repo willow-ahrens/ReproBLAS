@@ -324,6 +324,11 @@ class VerifyRCDOTCTest(CheckTest):
   executable = "tests/checks/verify_rcblas1"
   name = "verify_rcdotc"
 
+class VerifyRDGEMVTest(CheckTest):
+  base_flags = ""
+  executable = "tests/checks/verify_rdgemv"
+  name = "verify_rdgemv"
+
 all_checks = {"validate_internal_ufp": ValidateInternalUFPTest,\
               "validate_internal_ufpf": ValidateInternalUFPFTest,\
               "validate_internal_damax": ValidateInternalDAMAXTest,\
