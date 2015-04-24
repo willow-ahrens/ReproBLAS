@@ -45,14 +45,14 @@ class Harness(object):
       suite.parse_output_list(output_list[:len(suite.get_command_list())])
       output_list = output_list[len(suite.get_command_list()):]
     for suite in self.suites:
-      self.table.set_cols_align(suite.get_align())
-      self.table.set_cols_dtype(suite.get_dtype())
+      tablecopy = copy.deepcopy(self.table)
+      tablecopy.set_cols_align(suite.get_align())
+      tablecopy.set_cols_dtype(suite.get_dtype())
       if self.args.format == "term":
         if suite.get_cols_width(80):
-          self.table.set_cols_width(suite.get_cols_width(80))
-      self.table.add_rows([suite.get_header()] + suite.get_rows())
-      print(self.table.draw())
-      self.table.reset()
+          tablecopy.set_cols_width(suite.get_cols_width(80))
+      tablecopy.add_rows([suite.get_header()] + suite.get_rows())
+      print(tablecopy.draw())
 
 class Suite(object):
 

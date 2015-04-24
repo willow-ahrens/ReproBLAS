@@ -188,6 +188,10 @@ class BenchZDOTUTest(BenchTest):
   name = "ZDOTU"
   executable = "tests/benchs/bench_zdotu"
 
+class BenchRDGEMVTest(BenchTest):
+  name = "RDGEMV"
+  executable = "tests/benchs/bench_rdgemv"
+
 all_benchs = {"bench_camax": BenchCAMAXTest,\
               "bench_camaxm": BenchCAMAXMTest,\
               "bench_cdotc": BenchCDOTCTest,\
@@ -231,7 +235,9 @@ all_benchs = {"bench_camax": BenchCAMAXTest,\
               "bench_zamax": BenchZAMAXTest,\
               "bench_zamaxm": BenchZAMAXMTest,\
               "bench_zdotc": BenchZDOTCTest,\
-              "bench_zdotu": BenchZDOTUTest}
+              "bench_zdotu": BenchZDOTUTest,\
+              "bench_rdgemv": BenchRDGEMVTest}
+
 
 
 #TODO THIS IS A HACK!!! we need to support many-fold testing.
