@@ -62,99 +62,15 @@ check_suite.add_checks([checks.VerifyRDDOTTest(),\
                          "sine",\
                          "small+grow*big"]])
 
-"""
-check_suite.add_checks([checks.ValidateExternalRDSUMTest(),\
-                        checks.ValidateExternalRDASUMTest(),\
-                        checks.ValidateExternalRDNRM2Test(),\
-                        checks.ValidateExternalRDDOTTest()],\
-                       ["i"],\
-                       [[os.path.join(check_dir, "data/d_2_rand-1_N4095.dat"),\
-                         os.path.join(check_dir, "data/d_normal_N4095.dat"),\
-                         os.path.join(check_dir, "data/d_rand+(rand-1)_N4095.dat"),\
-                         os.path.join(check_dir, "data/d_rand_N4095.dat"),\
-                         os.path.join(check_dir, "data/d_rand_cond_N4095.dat"),\
-                         os.path.join(check_dir, "data/d_sine_N4095.dat"),\
-                         os.path.join(check_dir, "data/d_small+grow_big_N4095.dat"),\
-                         os.path.join(check_dir, "data/d_small+rand_big_N4095.dat")]])
-
-check_suite.add_checks([checks.ValidateExternalRZSUMTest(),\
-                        checks.ValidateExternalRDZASUMTest(),\
-                        checks.ValidateExternalRDZNRM2Test(),\
-                        checks.ValidateExternalRZDOTUTest(),\
-                        checks.ValidateExternalRZDOTCTest()],\
-                       ["i"],\
-                       [[os.path.join(check_dir, "data/z_2_rand-1_N4095.dat"),\
-                         os.path.join(check_dir, "data/z_normal_N4095.dat"),\
-                         os.path.join(check_dir, "data/z_rand+(rand-1)_N4095.dat"),\
-                         os.path.join(check_dir, "data/z_rand_N4095.dat"),\
-                         os.path.join(check_dir, "data/z_rand_cond_N4095.dat"),\
-                         os.path.join(check_dir, "data/z_sine_N4095.dat"),\
-                         os.path.join(check_dir, "data/z_small+grow_big_N4095.dat"),\
-                         os.path.join(check_dir, "data/z_small+rand_big_N4095.dat")]])
-
-check_suite.add_checks([checks.ValidateExternalRSSUMTest(),\
-                        checks.ValidateExternalRSASUMTest(),\
-                        checks.ValidateExternalRSNRM2Test(),\
-                        checks.ValidateExternalRSDOTTest()],\
-                       ["i"],\
-                       [[os.path.join(check_dir, "data/s_2_rand-1_N4095.dat"),\
-                         os.path.join(check_dir, "data/s_normal_N4095.dat"),\
-                         os.path.join(check_dir, "data/s_rand+(rand-1)_N4095.dat"),\
-                         os.path.join(check_dir, "data/s_rand_N4095.dat"),\
-                         os.path.join(check_dir, "data/s_rand_cond_N4095.dat"),\
-                         os.path.join(check_dir, "data/s_sine_N4095.dat"),\
-                         os.path.join(check_dir, "data/s_small+grow_big_N4095.dat"),\
-                         os.path.join(check_dir, "data/s_small+rand_big_N4095.dat")]])
-
-check_suite.add_checks([checks.ValidateExternalRCSUMTest(),\
-                        checks.ValidateExternalRSCASUMTest(),\
-                        checks.ValidateExternalRSCNRM2Test(),\
-                        checks.ValidateExternalRCDOTUTest(),\
-                        checks.ValidateExternalRCDOTCTest()],\
-                       ["i"],\
-                       [[os.path.join(check_dir, "data/c_2_rand-1_N4095.dat"),\
-                         os.path.join(check_dir, "data/c_normal_N4095.dat"),\
-                         os.path.join(check_dir, "data/c_rand+(rand-1)_N4095.dat"),\
-                         os.path.join(check_dir, "data/c_rand_N4095.dat"),\
-                         os.path.join(check_dir, "data/c_rand_cond_N4095.dat"),\
-                         os.path.join(check_dir, "data/c_sine_N4095.dat"),\
-                         os.path.join(check_dir, "data/c_small+grow_big_N4095.dat"),\
-                         os.path.join(check_dir, "data/c_small+rand_big_N4095.dat")]])
-"""
-"""
-
-                        #checks.VerifyRCDOTUTest(),\
-                        #checks.VerifyRCSUMTest(),\
-check_suite.add_checks([\
-                        checks.VerifyRCDOTCTest()\
-                        ],\
-                       ["N", "incX", "incY", "f", "g"],\
-                       [[3], [1, 4], [1, 4],\
-                        ["small+grow*big",\
-                         "small+grow*big",\
-                         "small+grow*big",\
+check_suite.add_checks([checks.VerifyRDGEMVTest()],\
+                       ["O", "T", "N", "M", "lda", "incX", "incY", "f", "g", "j"],\
+                       [["RowMajor", "ColMajor"], ["NoTrans", "Trans"], [255], [255], [255, 257], [1, 4], [1, 4],\
+                        ["rand",\
                          "small+grow*big"],\
-                        ["2*rand-1",\
-                         "2*rand-1",\
-                         "2*rand-1",\
-                         "2*rand-1",\
-                         "2*rand-1",],\
-    ])
-
-
-check_suite.add_checks([checks.ValidateExternalRCSUMTest(),\
-                        checks.ValidateExternalRCDOTUTest(),\
-                        checks.ValidateExternalRCDOTCTest()],\
-                       ["i"],\
-                       [[os.path.join(check_dir, "data/c_2_rand-1_N4095.dat"),\
-                         os.path.join(check_dir, "data/c_normal_N4095.dat"),\
-                         os.path.join(check_dir, "data/c_rand+(rand-1)_N4095.dat"),\
-                         os.path.join(check_dir, "data/c_rand_N4095.dat"),\
-                         os.path.join(check_dir, "data/c_rand_cond_N4095.dat"),\
-                         os.path.join(check_dir, "data/c_sine_N4095.dat"),\
-                         os.path.join(check_dir, "data/c_small+grow_big_N4095.dat"),\
-                         os.path.join(check_dir, "data/c_small+rand_big_N4095.dat")]])
-"""
+                        ["rand",\
+                         "small+grow*big"],\
+                        ["rand",\
+                         "small+grow*big"]])
 
 check_harness = harness.Harness("check")
 check_harness.add_suite(check_suite)
