@@ -36,7 +36,8 @@ int verify_rcblas1_reproducibility(int N, float complex* X, int incX, float comp
       cISetZero(Ires);
       for (i = 0; i < N; i += block_N) {
         block_N = block_N < N - i ? block_N : (N-i);
-        cIAdd(&Ires, (wrap_Icblas1_func(func))(block_N, X + i * incX, incX, Y + i * incY, incY));
+        I_float_Complex foo = (wrap_Icblas1_func(func))(block_N, X + i * incX, incX, Y + i * incY, incY);
+        ciciadd(&foo, &Ires, DEFAULT_FOLD);
       }
       cciconv_sub(&Ires, &res, DEFAULT_FOLD);
     }

@@ -23,7 +23,7 @@ void dmdupdate(double X, double* repY, int increpY, double* carY, int inccarY, i
 */
 
   int X_index = dindex(X);
-  int d = diindex(repY) - X_index;
+  int d = dmindex(repY) - X_index;
   if(d > 0){
     for(int i = fold - 1; i >= d; i--){
       repY[i * increpY] = repY[(i - d) * increpY];

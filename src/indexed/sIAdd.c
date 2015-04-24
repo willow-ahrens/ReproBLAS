@@ -8,106 +8,141 @@
 #include <float.h>
 #include "indexed.h"
 #include "../Common/Common.h"
-#include "../types.h"
 
-// ADDING TWO INDEXED FP
-// X += Y
-void sIAdd1(int n, float* x, float* xc, int incx, float* y, float* yc, int incy) {
-    int i;
-    int shift;
-    float *repX = y;
-    int increpX = incy;
-    float *carX = yc;
-    int inccarX = incy;
-    float *repY = x;
-    int increpY = incx;
-    float *carY = xc;
-    int inccarY = incx;
-    int fold = n;
+void smsmadd(float *repX, int increpX, float *carX, int inccarX, float* repY, int increpY, float* carY, int inccarY, int fold) {
+  int i;
+  int shift;
 
-	if (repX[0] == 0.0)
-		return;
+  if (repX[0] == 0.0)
+    return;
 
-	if (repY[0] == 0.0) {
-		for (i = 0; i < fold; i++) {
-			repY[i*increpY] = repX[i*increpX];
-			carY[i*inccarY] = carX[i*inccarX];
-		}
-		return;
-	}
-
-    shift = siindex(repY) - siindex(repX);
-    if(shift > 0){
-      //shift Y upwards and add X
-      for (i = fold - 1; i >= shift, i >= 0; i--) {
-        repY[i*increpY] = repX[i*increpX] + (repY[(i - shift)*increpY] - 1.5*ufpf(repY[(i - shift)*increpY]));
-        carY[i*inccarY] = carX[i*inccarX] + carY[(i - shift)*inccarY];
-      }
-      for (i = 0; i < shift; i++) {
-        repY[i*increpY] = repX[i*increpX];
-        carY[i*inccarY] = carX[i*inccarX];
-      }
-    }else{
-      //shift X upwards and add X
-	  for (i = 0 - shift; i < fold; i++) {
-		repY[i*increpY] += repX[(i + shift)*increpX] - 1.5*ufpf(repX[(i + shift)*increpX]);
-		carY[i*inccarY] += carX[(i + shift)*inccarX];
-	  }
+  if (repY[0] == 0.0) {
+    for (i = 0; i < fold; i++) {
+      repY[i*increpY] = repX[i*increpX];
+      carY[i*inccarY] = carX[i*inccarX];
     }
-}
-void sIAdd(I_float* X, I_float Y) {
-	sIAdd1(DEFAULT_FOLD, (X)->m, (X)->c, 1, (Y).m, (Y).c, 1);
-    sirenorm(X, DEFAULT_FOLD);
+    return;
+  }
+
+  shift = smindex(repY) - smindex(repX);
+  if(shift > 0){
+    //shift Y upwards and add X to Y
+    for (i = fold - 1; i >= shift; i--) {
+      repY[i*increpY] = repX[i*increpX] + (repY[(i - shift)*increpY] - 1.5*ufpf(repY[(i - shift)*increpY]));
+      carY[i*inccarY] = carX[i*inccarX] + carY[(i - shift)*inccarY];
+    }
+    for (i = 0; i < shift && i < fold; i++) {
+      repY[i*increpY] = repX[i*increpX];
+      carY[i*inccarY] = carX[i*inccarX];
+    }
+  }else{
+    //shift X upwards and add X to Y
+    for (i = 0 - shift; i < fold; i++) {
+      repY[i*increpY] += repX[(i + shift)*increpX] - 1.5*ufpf(repX[(i + shift)*increpX]);
+      carY[i*inccarY] += carX[(i + shift)*inccarX];
+    }
+  }
+
+  smrenorm(repY, increpY, carY, inccarY, fold);
 }
 
-void cIAdd1(int K, float complex* x, float* xc, int incx,
-	float complex* y, float* yc, int incy) {
-	sIAdd1(K, (float*)x    , xc    , 2 * incx, (float*)y    , yc    , 2 * incy);
-	sIAdd1(K, ((float*)x) + 1, xc + 1, 2 * incx, ((float*)y) + 1, yc + 1, 2 * incy);
+void sisiadd(float_indexed *X, float_indexed *Y, int fold){
+  smsmadd(X, 1, X + fold, 1, Y, 1, Y + fold, 1, fold);
 }
 
-void cIAdd(I_float_Complex* X, I_float_Complex Y) {
-	cIAdd1(DEFAULT_FOLD, (float complex*)((X)->m), ((X)->c), 1,
-		(float complex*)((Y).m), ((Y).c), 1);	
-    cirenorm(X, DEFAULT_FOLD);
+void cmcmadd(float *repX, int increpX, float *carX, int inccarX, float* repY, int increpY, float* carY, int inccarY, int fold) {
+  smsmadd(repX, 2 * increpX, carX, 2 * inccarX, repY, 2 * increpY, carY, 2 * inccarY, fold);
+  smsmadd(repX + 1, 2 * increpX, carX + 1, 2 * inccarX, repY + 1, 2 * increpY, carY + 1, 2 * inccarY, fold);
 }
 
-// no update
-void sIAddf1(int fold, float* x, int inc, float y) {
-	float M;
-	int i;
-	int_float iM;
-	for (i = 0; i < fold; i++, x += inc) {
-		M = x[0];
-		iM.f = y;
-		iM.i |= 1;
-		iM.f += M;
-		x[0] = iM.f;
-		M    -= iM.f;
-		y    += M;
-	}
+void ciciadd(float_complex_indexed *X, float_complex_indexed *Y, int fold){
+  cmcmadd(X, 1, X + 2 * fold, 1, Y, 1, Y + 2 * fold, 1, fold);
 }
 
-void sIAddf(I_float* X, float Y) {
-    //printf("X'[0] %g Y %g\n", X->m[0], fabs(Y));
-	sisupdate(fabs(Y), X, DEFAULT_FOLD);
-    //printf("X[0] %g\n", X->m[0]);
-	sIAddf1(DEFAULT_FOLD, (X)->m, 1, Y);
-    sirenorm(X, DEFAULT_FOLD);
+void smsdeposit(float X, float *repY, int increpY, int fold){
+  float M;
+  int_float q;
+  int i;
+  for (i = 0; i < fold - 1; i++) {
+    M = repY[i * increpY];
+    q.f = X;
+    q.i |= 1;
+    q.f += M;
+    repY[i * increpY] = q.f;
+    M -= q.f;
+    X += M;
+  }
+  q.f = X;
+  q.i |= 1;
+  repY[i * increpY] += q.f;
 }
 
-void cIAddc1(int fold, float complex* x, int inc, float complex Y) {
-	float* yptr = (float*) &Y;
-	sIAddf1(fold, (float*)x, 2 * inc,yptr[0]);
-	sIAddf1(fold, ((float*)x)+1, 2*inc,yptr[1]);
+void sisdeposit(float X, float_indexed *Y, int fold){
+  smsdeposit(X, Y, 1, fold);
 }
 
-void cIAddc(I_float_Complex* X, float complex Y) {
-    CSET_(Y, fabs(CREAL_(Y)), fabs(CIMAG_(Y)));
-    cicupdate(&Y, X, DEFAULT_FOLD);
-    //cisupdate(fabs(Y), X, DEFAULT_FOLD);
-	cIAddc1(DEFAULT_FOLD, (float complex*)X, 1, Y);
-    cirenorm(X, DEFAULT_FOLD);
+void smsadd(float X, float *repY, int increpY, float *carY, int inccarY, int fold){
+  smsupdate(fabsf(X), repY, increpY, carY, inccarY, fold);
+  smsdeposit(X, repY, increpY, fold);
+  smrenorm(repY, increpY, carY, inccarY, fold);
+}
+
+void sisadd(float X, float_indexed *Y, int fold){
+  smsadd(X, Y, 1, Y + fold, 1, fold);
+}
+
+void cmcdeposit(void *X, float *repY, int increpY, fold){
+  float MR, MI;
+  int_float qR, qI;
+  int i;
+  float xR = ((float*)X)[0];
+  float xI = ((float*)X)[1];
+
+  increpY *= 2;
+
+  for (i = 0; i < fold - 1; i++) {
+    MR = repY[i * increpY];
+    MI = repY[i * increpY + 1];
+    qR.f = xR;
+    qI.f = xI;
+    qR.i |= 1;
+    qI.i |= 1;
+    qR.f += MR;
+    qI.f += MI;
+    repY[i * increpY] = qR.f;
+    repY[i * increpY + 1] = qI.f;
+    MR -= qR.f;
+    MI -= qI.f;
+    xR += MR;
+    xI += MI;
+  }
+  MR = repY[i * increpY];
+  MI = repY[i * increpY + 1];
+  qR.f = xR;
+  qI.f = xI;
+  qR.i |= 1;
+  qI.i |= 1;
+  qR.f += MR;
+  qI.f += MI;
+  repY[i * increpY] = qR.f;
+  repY[i * increpY + 1] = qI.f;
+}
+
+void cicdeposit(void *X, float_complex_indexed *Y, fold){
+  cmcdeposit(X, Y, 1, fold);
+}
+
+void cmcadd(void *X, float *repY, int increpY, float *carY, int inccarY, int fold){
+  float aX[2];
+  aX[0] = fabsf(((float*)X)[0]);
+  aX[1] = fabsf(((float*)X)[1]);
+  cmcupdate(aX, repY, increpY, carY, inccarY, fold);
+  cmcdeposit(X, repY, increpY, fold);
+  cmrenorm(repY, increpY, carY, inccarY, fold);
+}
+
+void cicadd(void *X, float_complex_indexed *Y, int fold){
+  cmcadd(X, Y, 1, Y + 2 * fold, 1, fold);
 }
 
 void sINeg1(int fold, float* x, float* c, int inc) {

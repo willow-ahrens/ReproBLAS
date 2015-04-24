@@ -30,13 +30,7 @@ void sIAdd_MPI(
 
 	for (i = 0; i < *len; i++) {
 
-		sIAdd1(fold,
-			(float*)inoutvec, (float*)(inoutvec + array_of_addresses[1]), 1,
-			(float*)invec, (float*)(invec + array_of_addresses[1]), 1
-		);
-		sIRenorm1(fold,
-			(float*)inoutvec, (float*)(inoutvec + array_of_addresses[1]), 1
-		);
+        smsmadd((float*)invec, 1, (float*)(invec + array_of_addresses[1]), 1, (float*)inoutvec, 1, (float*)(inoutvec + array_of_addresses[1]), 1, fold);
 
 		invec    = (char*)invec + size;
 		inoutvec = (char*)inoutvec + size;
@@ -67,17 +61,7 @@ void cIAdd_MPI(
 
 	for (i = 0; i < *len; i++) {
 
-		cIAdd1(fold,
-			(float complex*)inoutvec,
-			(float*)(inoutvec + array_of_addresses[1]), 1,
-			(float complex*)invec,
-			(float*)(invec + array_of_addresses[1]), 1
-		);
-		cIRenorm1(fold,
-			(float complex*)inoutvec,
-			(float*)(inoutvec + array_of_addresses[1]), 1
-		);
-
+        cmcmadd((float complex*)invec, 1, (float*)(invec + array_of_addresses[1]), 1, (float complex*)inoutvec, 1, (float*)(inoutvec + array_of_addresses[1]), 1, fold);
 		invec    = (char*)invec + size;
 		inoutvec = (char*)inoutvec + size;
 	}
@@ -133,10 +117,7 @@ void sINrm2_MPI(
 			pin[0] = scale1;
 		}
 
-		sIAdd1(fold,
-			pout + 1, (float*)(inoutvec + array_of_addresses[1]), 1,
-			pin  + 1, (float*)(invec + array_of_addresses[1]), 1
-		);
+		smsmadd(pin  + 1, 1, (float*)(invec + array_of_addresses[1]), 1, pout + 1, 1, (float*)(inoutvec + array_of_addresses[1]), 1, fold);
 
 		invec    = (char*)invec + size;
 		inoutvec = (char*)inoutvec + size;
@@ -197,16 +178,7 @@ int cIMPICreate(int fold, MPI_Datatype* newtype) {
 	array_of_displacements[0] = 0;
 	array_of_displacements[1] = fold * sizeof(float complex);
 
-	array_of_types[0] = MPI_COMPLEX;
-#if F_CARRY_OP == 0
 	array_of_types[1] = MPI_FLOAT;
-#elif F_CARRY_OP == 1
-	array_of_types[1] = MPI_DOUBLE;
-#elif F_CARRY_OP == 2
-	array_of_types[1] = MPI_INT;
-#elif F_CARRY_OP == 3
-	array_of_types[1] = MPI_LONG;
-#endif
 
 	int ret = MPI_Type_create_struct(2, array_of_blocklengths, array_of_displacements,array_of_types, newtype);
 	if (ret == MPI_SUCCESS) {

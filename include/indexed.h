@@ -63,6 +63,19 @@ void siprint(float_indexed *X, int fold);
 void zmprint(double *repX, int increpX, double *carX, int inccarX, int fold);
 void ziprint(double_complex_indexed *X, int fold);
 
+void dmdmadd(double *repX, int increpX, double *carX, int inccarX, double* repY, int increpY, double* carY, int inccarY, int fold);
+void didiadd(double_indexed *X, double_indexed *Y, int fold);
+void zmzmadd(double *repX, int increpX, double *carX, int inccarX, double* repY, int increpY, double* carY, int inccarY, int fold);
+void ziziadd(double_complex_indexed *X, double_complex_indexed *Y, int fold);
+void dmddeposit(double X, double *repY, int increpY, int fold);
+void diddeposit(double X, double_indexed *Y, int fold);
+void dmdadd(double X, double *repY, int increpY, double *carY, int inccarY, int fold);
+void didadd(double X, double_indexed *Y, int fold);
+void zmzdeposit(void *X, double *repY, int increpY, int fold);
+void zizdeposit(void *X, double_complex_indexed *Y, int fold);
+void zmzadd(void *X, double *repY, int increpY, double *carY, int inccarY, int fold);
+void zizadd(void *X, double_complex_indexed *Y, int fold);
+
 // SET ZERO
 #define ISetZero_(K,M,C) {	\
 	int i;	\
@@ -104,36 +117,19 @@ void ziprint(double_complex_indexed *X, int fold);
 extern int dIWidth();
 extern int dICapacity();
 
-extern void dIAdd1(int K,
-		double* x, double* xc, int incx,
-		double* y, double* yc, int incy);
-extern void dIAdd(I_double* X, I_double Y);
-extern void zIAdd1(int K,
-		double complex* x, double complex* xc, int incx,
-		double complex* y, double complex* yc, int incy);
-extern void zIAdd(I_double_Complex* X, I_double_Complex Y);
 
 // NEGATION
 extern void dINeg1(int fold, double* x, double* c, int inc);
 extern void zINeg1(int fold, double complex* x, double complex* c, int inc);
 
-// ADD A DOUBLE TO AN INDEXED FP
-// [INPUT]
-//    FOLD  : NB OF BINS OF LEADING BITS (NB OF M TO BE COMPUTED)
-//    Y     : FP TO BE ADDED TO X
-// [IN/OUTPUT]
-//    X     : INDEXED FP, AT RETURN X = X + Y
-extern void dIAddd1(int fold, double* x, int inc, double y);
-extern void dIAddd(I_double* X, double Y);
-
-extern void zIAddz1(int fold, double complex* x, int inc, double complex y);
-extern void zIAddz(I_double_Complex* X, double complex Y);
 
 double dbound(int index);
 void dmbound(int index, double *repY, int increpY, int fold);
 int dindex(double X);
+int dmindex(double *repX);
 int diindex(double_indexed *X);
 
+int smindex(float *repX);
 int siindex(float_indexed *X);
 int sindex(float X);
 double sbound(int index);
@@ -182,16 +178,19 @@ extern int sICapacity();
 extern int sIWidth();
 
 
-// ADD A FLOAT TO AN INDEXED FP
-// [INPUT]
-//    FOLD  : NB OF BINS OF LEADING BITS (NB OF M TO BE COMPUTED)
-//    Y     : FP TO BE ADDED TO X
-// [IN/OUTPUT]
-//    X     : INDEXED FP, AT RETURN X = X + Y
-extern void sIAddf1(int fold, float* x, int inc, float y);
-extern void sIAddf(I_float* X, float Y);
-extern void cIAddc1(int fold, float complex* x, int inc, float complex Y);
-extern void cIAddc(I_float_Complex* X, float complex Y);
+void smsmadd(float *repX, int increpX, float *carX, int inccarX, float* repY, int increpY, float* carY, int inccarY, int fold) ;
+void sisiadd(float_indexed *X, float_indexed *Y, int fold);
+void cmcmadd(float *repX, int increpX, float *carX, int inccarX, float* repY, int increpY, float* carY, int inccarY, int fold) ;
+void ciciadd(float_complex_indexed *X, float_complex_indexed *Y, int fold);
+void smsdeposit(float X, float *repY, int increpY, int fold);
+void sisdeposit(float X, float_indexed *Y, int fold);
+void smsadd(float X, float *repY, int increpY, float *carY, int inccarY, int fold);
+void sisadd(float X, float_indexed *Y, int fold);
+void cmcdeposit(void *X, float *repY, int increpY, int fold);
+void cicdeposit(void *X, float_complex_indexed *Y, int fold);
+void cmcadd(void *X, float *repY, int increpY, float *carY, int inccarY, int fold);
+void cicadd(void *X, float_complex_indexed *Y, int fold);
+
 
 // NEGATION
 extern void sINeg1(int fold, float* x, float* c, int inc);
@@ -200,14 +199,6 @@ extern void cINeg1(int fold, float complex* x, float* c, int inc);
 // UNIT IN THE FIRST PLACE
 extern float ufpf(float x);
 
-// X += Y
-extern void sIAdd1(int fold, float* x,
-	float* xc, int incx, float* y, float* yc, int incy);
-extern void sIAdd(I_float* X, I_float Y);
-
-extern void cIAdd1(int fold, float complex* x, float* xc, int incx,
-	float complex* y, float* yc, int incy);
-extern void cIAdd(I_float_Complex* X, I_float_Complex Y);
 
 
 
@@ -232,10 +223,6 @@ extern void cicconv(void *x, float_complex_indexed *y, int fold);
 //====================================//
 
 
-// ADDING A NATIVE FP TO AN INDEXED FP
-#define dIAddd_(X,Y)   dIAddd1(DEFAULT_FOLD, (X).m, 1, Y)
-
-#define zIAddz_(X,Y) zIAddz1(DEFAULT_FOLD, (double complex*)((X).m), 1, Y)
 
 //====================================//
 // NEGATION
@@ -258,8 +245,6 @@ extern void cicconv(void *x, float_complex_indexed *y, int fold);
 //====================================//
 
 
-// ADDING A NATIVE FP TO AN INDEXED FP
-#define sIAddf_(X,Y)   sIAddf1(DEFAULT_FOLD, (X).m, 1, Y)
 
 
 //====================================//

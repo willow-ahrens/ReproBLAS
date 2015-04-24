@@ -67,22 +67,26 @@ static void bounds_initialize() {
   bounds_initialized = 1;
 }
 
-int siindex(float_indexed *X){
+int smindex(float *repX){
   int index;
 
   bounds_initialize();
 
-  if(isinf(X[0])){
+  if(isinf(repX[0])){
     index = bound_min_index;
-  } else if(X[0] == 0){
+  } else if(repX[0] == 0){
     index = bound_max_index;
   } else {
-    frexpf(X[0], &index);
+    frexpf(repX[0], &index);
     index--;
     index /= BIN_WIDTH;
     index = BOUND_ZERO_INDEX - index;
   }
   return index;
+}
+
+int siindex(float_indexed *X){
+  return smindex(X);
 }
 
 int sindex(float X){

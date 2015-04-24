@@ -36,7 +36,8 @@ int verify_rdblas1_reproducibility(int N, double* X, int incX, double* Y, int in
       dISetZero(Ires);
       for (i = 0; i < N; i += block_N) {
         block_N = block_N < N - i ? block_N : (N-i);
-        dIAdd(&Ires, (wrap_Idblas1_func(func))(block_N, X + i * incX, incX, Y + i * incY, incY));
+        Idouble foo = (wrap_Idblas1_func(func))(block_N, X + i * incX, incX, Y + i * incY, incY);
+        didiadd(&foo, &Ires, DEFAULT_FOLD);
       }
       res = ddiconv(&Ires, DEFAULT_FOLD);
     }

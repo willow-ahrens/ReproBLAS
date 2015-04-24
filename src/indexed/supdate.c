@@ -23,7 +23,7 @@ void smsupdate(float X, float* repY, int increpY, float* carY, int inccarY, int 
 */
 
   int X_index = sindex(X);
-  int d = siindex(repY) - X_index;
+  int d = smindex(repY) - X_index;
   if(d > 0){
     for(int i = fold - 1; i >= d; i--){
       repY[i * increpY] = repY[(i - d) * increpY];

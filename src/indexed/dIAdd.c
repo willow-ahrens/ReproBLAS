@@ -11,167 +11,173 @@
 #include "../Common/Common.h"
 
 // ADDING TWO INDEXED FP
-// X += Y
-void dIAdd1(int K, double* x, double* xc, int incx, double* y, double* yc, int incy) {
-	int i;
-    int shift;
+// Y += X
+void dmdmadd(double *repX, int increpX, double *carX, int inccarX, double* repY, int increpY, double* carY, int inccarY, int fold) {
+  int i;
+  int shift;
 
-    double *repX = y;
-    int increpX = incy;
-    double *carX = yc;
-    int inccarX = incy;
-    double *repY = x;
-    int increpY = incx;
-    double *carY = xc;
-    int inccarY = incx;
-    int fold = K;
+  if (repX[0] == 0.0)
+    return;
 
-	if (repX[0] == 0.0)
-		return;
-
-	if (repY[0] == 0.0) {
-		for (i = 0; i < fold; i++) {
-			repY[i*increpY] = repX[i*increpX];
-			carY[i*inccarY] = carX[i*inccarX];
-		}
-		return;
-	}
-
-    shift = diindex(repY) - diindex(repX);
-    if(shift > 0){
-      //shift Y upwards and add X
-      for (i = fold - 1; i >= shift, i >= 0; i--) {
-        repY[i*increpY] = repX[i*increpX] + (repY[(i - shift)*increpY] - 1.5*ufp(repY[(i - shift)*increpY]));
-        carY[i*inccarY] = carX[i*inccarX] + carY[(i - shift)*inccarY];
-      }
-      for (i = 0; i < shift; i++) {
-        repY[i*increpY] = repX[i*increpX];
-        carY[i*inccarY] = carX[i*inccarX];
-      }
-    }else{
-      //shift X upwards and add X
-	  for (i = 0 - shift; i < fold; i++) {
-		repY[i*increpY] += repX[(i + shift)*increpX] - 1.5*ufp(repX[(i + shift)*increpX]);
-		carY[i*inccarY] += carX[(i + shift)*inccarX];
-	  }
+  if (repY[0] == 0.0) {
+    for (i = 0; i < fold; i++) {
+      repY[i*increpY] = repX[i*increpX];
+      carY[i*inccarY] = carX[i*inccarX];
     }
+    return;
+  }
+
+  shift = dmindex(repY) - dmindex(repX);
+  if(shift > 0){
+    //shift Y upwards and add X to Y
+    for (i = fold - 1; i >= shift; i--) {
+      repY[i*increpY] = repX[i*increpX] + (repY[(i - shift)*increpY] - 1.5*ufp(repY[(i - shift)*increpY]));
+      carY[i*inccarY] = carX[i*inccarX] + carY[(i - shift)*inccarY];
+    }
+    for (i = 0; i < shift && i < fold; i++) {
+      repY[i*increpY] = repX[i*increpX];
+      carY[i*inccarY] = carX[i*inccarX];
+    }
+  }else{
+    //shift X upwards and add X to Y
+    for (i = 0 - shift; i < fold; i++) {
+      repY[i*increpY] += repX[(i + shift)*increpX] - 1.5*ufp(repX[(i + shift)*increpX]);
+      carY[i*inccarY] += carX[(i + shift)*inccarX];
+    }
+  }
+
+  dmrenorm(repY, increpY, carY, inccarY, fold);
 }
 
-// X += Y
-void dIAdd(I_double* X, I_double Y) {
-	dIAdd1(DEFAULT_FOLD, X->m, X->c, 1, (Y).m, (Y).c,1);
-    direnorm(X, DEFAULT_FOLD);
+void didiadd(double_indexed *X, double_indexed *Y, int fold){
+  dmdmadd(X, 1, X + fold, 1, Y, 1, Y + fold, 1, fold);
 }
 
-void zIAdd1(int K,
-	double complex* x, double complex* xc, int incx,
-	double complex* y, double complex* yc, int incy) {
-	dIAdd1(K, (double*)x, (double*)xc, 2*incx, (double*)y, (double*)yc, 2*incy);
-	dIAdd1(K, ((double*)x) + 1, ((double*)xc) + 1, 2*incx, ((double*)y)+1, ((double*)yc)+1, 2*incy);
+void zmzmadd(double *repX, int increpX, double *carX, int inccarX, double* repY, int increpY, double* carY, int inccarY, int fold) {
+  dmdmadd(repX, 2 * increpX, carX, 2 * inccarX, repY, 2 * increpY, carY, 2 * inccarY, fold);
+  dmdmadd(repX + 1, 2 * increpX, carX + 1, 2 * inccarX, repY + 1, 2 * increpY, carY + 1, 2 * inccarY, fold);
 }
 
-void zIAdd(I_double_Complex* X, I_double_Complex Y) {
-	zIAdd1(DEFAULT_FOLD,(double complex*)(X)->m,(double complex*)(X)->c,1,
-		(double complex*)(Y).m,(double complex*)(Y).c,1);
-    zirenorm(X, DEFAULT_FOLD);
+void ziziadd(double_complex_indexed *X, double_complex_indexed *Y, int fold){
+  zmzmadd(X, 1, X + 2 * fold, 1, Y, 1, Y + 2 * fold, 1, fold);
 }
 
-void dIAddd1(int fold, double* x, int inc, double y) {
-	double M;
-	long_double lM;
-	int i;
-	for (i = 0; i < fold - 1; i++, x += inc) {
-		M = x[0];
-		lM.d = y;
-		lM.l |= 1;
-		lM.d += M;
-		x[0] = lM.d;
-		M -= lM.d;
-		y += M;
-	}
-	lM.d = y;
-	lM.l |= 1;
-	x[0] += lM.d;
+void dmddeposit(double X, double *repY, int increpY, int fold){
+  double M;
+  long_double q;
+  int i;
+  for (i = 0; i < fold - 1; i++) {
+    M = repY[i * increpY];
+    q.d = X;
+    q.l |= 1;
+    q.d += M;
+    repY[i * increpY] = q.d;
+    M -= q.d;
+    X += M;
+  }
+  q.d = X;
+  q.l |= 1;
+  repY[i * increpY] += q.d;
 }
 
-void dIAddd(I_double* X, double Y) {
-	didupdate(fabs(Y), X, DEFAULT_FOLD);
-	dIAddd1(DEFAULT_FOLD, X->m, 1, Y);
-    direnorm(X, DEFAULT_FOLD);
+void diddeposit(double X, double_indexed *Y, int fold){
+  dmddeposit(X, Y, 1, fold);
 }
 
-void zIAddz1(int fold, double complex* x, int inc, double complex y) {
-	double MR, MI;
-	long_double lMR, lMI;
-	double* xptr = (double*) x;
-	double* yptr = (double*) &y;
-
-	int i;
-	double yR = yptr[0];
-	double yI = yptr[1];
-
-	inc *= 2;
-	for (i = 0; i < fold; i++, xptr += inc) {
-		MR = xptr[0];
-		MI = xptr[1];
-
-		lMR.d = yR;
-		lMI.d = yI;
-
-		lMR.l |= 1;
-		lMI.l |= 1;
-
-		lMR.d += MR;
-		lMI.d += MI;
-
-		xptr[0] = lMR.d;
-		xptr[1] = lMI.d;
-
-		MR -= lMR.d;
-		MI -= lMI.d;
-
-		yR += MR;
-		yI += MI;
-	}
+void dmdadd(double X, double *repY, int increpY, double *carY, int inccarY, int fold){
+  dmdupdate(fabs(X), repY, increpY, carY, inccarY, fold);
+  dmddeposit(X, repY, increpY, fold);
+  dmrenorm(repY, increpY, carY, inccarY, fold);
 }
 
-//TODO use a zizupdate
-void zIAddz(I_double_Complex* X, double complex Y) {
-	zidupdate(fabs(Y), X, DEFAULT_FOLD);
-	zIAddz1(DEFAULT_FOLD, (double complex*)X->m, 1, Y);
-    zirenorm(X, DEFAULT_FOLD);
+void didadd(double X, double_indexed *Y, int fold){
+  dmdadd(X, Y, 1, Y + fold, 1, fold);
+}
+
+void zmzdeposit(void *X, double *repY, int increpY, int fold){
+  double MR, MI;
+  long_double qR, qI;
+  int i;
+  double xR = ((double*)X)[0];
+  double xI = ((double*)X)[1];
+
+  increpY *= 2;
+
+  for (i = 0; i < fold - 1; i++) {
+    MR = repY[i * increpY];
+    MI = repY[i * increpY + 1];
+    qR.d = xR;
+    qI.d = xI;
+    qR.l |= 1;
+    qI.l |= 1;
+    qR.d += MR;
+    qI.d += MI;
+    repY[i * increpY] = qR.d;
+    repY[i * increpY + 1] = qI.d;
+    MR -= qR.d;
+    MI -= qI.d;
+    xR += MR;
+    xI += MI;
+  }
+  MR = repY[i * increpY];
+  MI = repY[i * increpY + 1];
+  qR.d = xR;
+  qI.d = xI;
+  qR.l |= 1;
+  qI.l |= 1;
+  qR.d += MR;
+  qI.d += MI;
+  repY[i * increpY] = qR.d;
+  repY[i * increpY + 1] = qI.d;
+}
+
+void zizdeposit(void *X, double_complex_indexed *Y, int fold){
+  zmzdeposit(X, Y, 1, fold);
+}
+
+void zmzadd(void *X, double *repY, int increpY, double *carY, int inccarY, int fold){
+  double aX[2];
+  aX[0] = fabs(((double*)X)[0]);
+  aX[1] = fabs(((double*)X)[1]);
+  zmzupdate(aX, repY, increpY, carY, inccarY, fold);
+  zmzdeposit(X, repY, increpY, fold);
+  zmrenorm(repY, increpY, carY, inccarY, fold);
+}
+
+void zizadd(void *X, double_complex_indexed *Y, int fold){
+  zmzadd(X, Y, 1, Y + 2 * fold, 1, fold);
 }
 
 void dINeg1(int fold, double* x, double* c, int inc) {
-	double M, X;
-	int i;
-	for (i = 0; i < fold; i++, x += inc, c += inc) {
-		X = x[0];
-		M = ufp(X);
-		x[0] = (3 * M) - X;
-		c[0] = -c[0];
-	}
+  double M, X;
+  int i;
+  for (i = 0; i < fold; i++, x += inc, c += inc) {
+    X = x[0];
+    M = ufp(X);
+    x[0] = (3 * M) - X;
+    c[0] = -c[0];
+  }
 }
 
 void zINeg1(int fold, double complex* x, double complex* c, int inc) {
-	double MR, MI, BR, BI;
-	double* xptr = (double*) x;
-	double* cptr = (double*) c;
+  double MR, MI, BR, BI;
+  double* xptr = (double*) x;
+  double* cptr = (double*) c;
 
-	int i;
+  int i;
 
-	inc *= 2;
-	for (i = 0; i < fold; i++, xptr += inc, cptr += inc) {
-		BR = xptr[0];
-		BI = xptr[1];
+  inc *= 2;
+  for (i = 0; i < fold; i++, xptr += inc, cptr += inc) {
+    BR = xptr[0];
+    BI = xptr[1];
 
-		MR = ufp(BR);
-		MI = ufp(BI);
+    MR = ufp(BR);
+    MI = ufp(BI);
 
-		xptr[0] = (3 * MR) - BR;
-		xptr[1] = (3 * MI) - BI;
-		cptr[0] = -cptr[0];
-		cptr[1] = -cptr[1];
-	}
+    xptr[0] = (3 * MR) - BR;
+    xptr[1] = (3 * MI) - BI;
+    cptr[0] = -cptr[0];
+    cptr[1] = -cptr[1];
+  }
 }
 

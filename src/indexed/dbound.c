@@ -8,6 +8,7 @@
 #include <float.h>
 #include "indexed.h"
 
+//TODO adjust this to reflect MAX_FOLD
 #define BOUNDS_SIZE      64
 #define BOUND_ZERO_INDEX 32
 #define BIN_WIDTH        40
@@ -67,22 +68,26 @@ static void bounds_initialize() {
   bounds_initialized = 1;
 }
 
-int diindex(double_indexed *X){
+int dmindex(double *repX){
   int index;
 
   bounds_initialize();
 
-  if(isinf(X[0])){
+  if(isinf(repX[0])){
     index = bound_min_index;
-  } else if(X[0] == 0){
+  } else if(repX[0] == 0){
     index = bound_max_index;
   } else {
-    frexp(X[0], &index);
+    frexp(repX[0], &index);
     index--;
     index /= BIN_WIDTH;
     index = BOUND_ZERO_INDEX - index;
   }
   return index;
+}
+
+int diindex(double_indexed *X){
+  return dmindex(X);
 }
 
 int dindex(double X){

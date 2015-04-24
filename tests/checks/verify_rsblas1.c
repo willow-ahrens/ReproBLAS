@@ -37,7 +37,8 @@ int verify_rsblas1_reproducibility(int N, float* X, int incX, float* Y, int incY
       sISetZero(Ires);
       for (i = 0; i < N; i += block_N) {
         block_N = block_N < N - i ? block_N : (N-i);
-        sIAdd(&Ires, (wrap_Isblas1_func(func))(block_N, X + i * incX, incX, Y + i * incY, incY));
+        Ifloat foo = (wrap_Isblas1_func(func))(block_N, X + i * incX, incX, Y + i * incY, incY);
+        sisiadd(&foo, &Ires, DEFAULT_FOLD);
       }
       res = ssiconv(&Ires, DEFAULT_FOLD);
     }

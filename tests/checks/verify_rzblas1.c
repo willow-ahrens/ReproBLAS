@@ -36,7 +36,8 @@ int verify_rzblas1_reproducibility(int N, double complex* X, int incX, double co
       zISetZero(Ires);
       for (i = 0; i < N; i += block_N) {
         block_N = block_N < N - i ? block_N : (N-i);
-        zIAdd(&Ires, (wrap_Izblas1_func(func))(block_N, X + i * incX, incX, Y + i * incY, incY));
+        I_double_Complex foo = (wrap_Izblas1_func(func))(block_N, X + i * incX, incX, Y + i * incY, incY);
+        ziziadd(&foo, &Ires, DEFAULT_FOLD);
       }
       zziconv_sub(&Ires, &res, DEFAULT_FOLD);
     }
