@@ -13,7 +13,7 @@
 #include "reproBLAS.h"
 
 
-void prdgemv(int px, int npx, int py, int npy, rblas_order_t Order, rblas_transpose_t TransA, int M, int N, double *myA, int lda, double *myX, int incX, double *myY, int incY){
+void prdgemv(int rank, int nprocs, rblas_order_t Order, rblas_transpose_t TransA, int M, int N, double *myA, int lda, double *myX, int incX, double *Y, int incY){
     Idouble *myYI;
     Idouble *YI;
     int i;
@@ -23,9 +23,9 @@ void prdgemv(int px, int npx, int py, int npy, rblas_order_t Order, rblas_transp
     for(i = 0; i < M; i++){
       sISetZero(myYI[i]);
     }
-    dgemvI(Order, TransA, M/npy, N/npx, myA, N/npx, myX, 1, YI, 1, DEFAULT_FOLD);
+    dgemvI(Order, TransA, M, N/nprocs, myA, N/nprocs, myX, 1, YI, 1, DEFAULT_FOLD);
 
-    if(py == 0){
+    if(rank == 0){
       YI = (Idouble*)malloc(M * sizeof(Idouble));
       for(i = 0; i < M; i++){
         sISetZero(YI[i]);
@@ -34,9 +34,9 @@ void prdgemv(int px, int npx, int py, int npy, rblas_order_t Order, rblas_transp
 
     MPI_Reduce(myYI, YI, M, MPI_IDOUBLE, MPI_RSUM, 0, MPI_COMM_WORLD);
 
-    if(py == 0){
+    if(rank == 0){
       for(i = 0; i < M; i++){
-        myY[i] = ddiconv(YI + i, DEFAULT_FOLD);
+        Y[i] = ddiconv(YI + i, DEFAULT_FOLD);
       }
     }
 }
