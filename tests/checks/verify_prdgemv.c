@@ -1,8 +1,10 @@
 #include <indexedBLAS.h>
+#include <MPI_reproBLAS.h>
 #include <indexed.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <mpi.h>
 #include <string.h>
 #include "../common/test_opt.h"
 
@@ -101,7 +103,7 @@ void wrap_prdgemv(int rank, int nprocs, const char Order,
   }
   MPI_Scatter(Abuf, M * N/nprocs, MPI_DOUBLE, myA, M * N/nprocs, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   MPI_Scatter(X, N/nprocs, MPI_DOUBLE, myX, M * N/nprocs, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-  rdgemv(o, t, M, N, A, lda, X, incX, Y, incY);
+  prdgemv(rank, nprocs, o, t, M, N, A, lda, X, incX, Y, incY);
 }
 
 int verify_dgemv_reproducibility(char Order, char TransA, int M, int N, int NX, int NY, double alpha, double *A, int lda, double* X, int incX, double beta, double *Y, Idouble *YI, int incY, double *ref, Idouble *Iref, int max_num_blocks) {
@@ -122,18 +124,11 @@ int verify_dgemv_reproducibility(char Order, char TransA, int M, int N, int NX, 
     res = malloc(NY * incY * sizeof(double));
     memcpy(res, Y, NY * incY * sizeof(double));
   }
-  wrap_rdgemv(Order, TransA, M, N, A, alpha, lda, X, incX, beta, res, incY);
+  wrap_prdgemv(rank, nprocs, Order, TransA, M, N, A, alpha, lda, X, incX, beta, res, incY);
   if(rank == 0){
     for(i = 0; i < NY; i++){
       if(res[i * incY] != ref[i * incY]){
-        printf("dgemv(A, X, Y)[num_blocks=%d,block_N=%d] = %g != %g\n", num_blocks, block_N, res[i * incY], ref[i * incY]);
-        if (num_blocks != 1) {
-          printf("Ref I_double:\n");
-          diprint(&Iref[i * incY], DEFAULT_FOLD);
-          printf("\nRes I_double:\n");
-          diprint(&Ires[i * incY], DEFAULT_FOLD);
-          printf("\n");
-        }
+        printf("dgemv(A, X, Y) = %g != %g\n", res[i * incY], ref[i * incY]);
         return 1;
       }
     }
@@ -193,6 +188,8 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
       NTransA = 'N';
     break;
   }
+  int nprocs;
+  int rank;
   MPI_Init(&argc, &argv);
   MPI_Comm_size(MPI_COMM_WORLD, &nprocs);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -202,6 +199,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   double *Y;
   double *ref;
   Idouble *Iref;
+  Idouble *YI = NULL;
 
   if(rank == 0){
     A  = util_dmat_alloc(Order, M, N, lda);
@@ -219,7 +217,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
 
   int *P;
 
-  wrap_rdgemv(Order, TransA, M, N, A, alpha._double.value, lda, X, incX, beta._double.value, ref, incY._int.value);
+  wrap_prdgemv(rank, nprocs, Order, TransA, M, N, A, alpha._double.value, lda, X, incX, beta._double.value, ref, incY._int.value);
 
   if(rank == 0){
     P = util_identity_permutation(NX);
