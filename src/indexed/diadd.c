@@ -147,37 +147,3 @@ void zmzadd(void *X, double *repY, int increpY, double *carY, int inccarY, int f
 void zizadd(void *X, double_complex_indexed *Y, int fold){
   zmzadd(X, Y, 1, Y + 2 * fold, 1, fold);
 }
-
-void dINeg1(int fold, double* x, double* c, int inc) {
-  double M, X;
-  int i;
-  for (i = 0; i < fold; i++, x += inc, c += inc) {
-    X = x[0];
-    M = ufp(X);
-    x[0] = (3 * M) - X;
-    c[0] = -c[0];
-  }
-}
-
-void zINeg1(int fold, double complex* x, double complex* c, int inc) {
-  double MR, MI, BR, BI;
-  double* xptr = (double*) x;
-  double* cptr = (double*) c;
-
-  int i;
-
-  inc *= 2;
-  for (i = 0; i < fold; i++, xptr += inc, cptr += inc) {
-    BR = xptr[0];
-    BI = xptr[1];
-
-    MR = ufp(BR);
-    MI = ufp(BI);
-
-    xptr[0] = (3 * MR) - BR;
-    xptr[1] = (3 * MI) - BI;
-    cptr[0] = -cptr[0];
-    cptr[1] = -cptr[1];
-  }
-}
-

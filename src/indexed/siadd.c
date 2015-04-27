@@ -91,7 +91,7 @@ void sisadd(float X, float_indexed *Y, int fold){
   smsadd(X, Y, 1, Y + fold, 1, fold);
 }
 
-void cmcdeposit(void *X, float *repY, int increpY, fold){
+void cmcdeposit(void *X, float *repY, int increpY, int fold){
   float MR, MI;
   int_float qR, qI;
   int i;
@@ -128,7 +128,7 @@ void cmcdeposit(void *X, float *repY, int increpY, fold){
   repY[i * increpY + 1] = qI.f;
 }
 
-void cicdeposit(void *X, float_complex_indexed *Y, fold){
+void cicdeposit(void *X, float_complex_indexed *Y, int fold){
   cmcdeposit(X, Y, 1, fold);
 }
 
@@ -144,35 +144,3 @@ void cmcadd(void *X, float *repY, int increpY, float *carY, int inccarY, int fol
 void cicadd(void *X, float_complex_indexed *Y, int fold){
   cmcadd(X, Y, 1, Y + 2 * fold, 1, fold);
 }
-
-void sINeg1(int fold, float* x, float* c, int inc) {
-	float M, X;
-	int i;
-	for (i = 0; i < fold; i++, x += inc, c += inc) {
-		X = x[0];
-		M = ufpf(X);
-		x[0] = (3 * M) - X;
-		c[0] = -c[0];
-	}
-}
-
-void cINeg1(int fold, float complex* x, float* c, int inc) {
-	float MR, MI, BR, BI;
-	float* xptr = (float*) x;
-	int i;
-
-	inc *= 2;
-	for (i = 0; i < fold; i++, xptr += inc, c += inc) {
-		BR = xptr[0];
-		BI = xptr[1];
-
-		MR = ufpf(BR);
-		MI = ufpf(BI);
-
-		xptr[0] = (3 * MR) - BR;
-		xptr[1] = (3 * MI) - BI;
-		c[0] = -c[0];
-		c[1] = -c[1];
-	}
-}
-

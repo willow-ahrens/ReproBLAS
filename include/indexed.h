@@ -227,8 +227,6 @@ extern void cicconv(void *x, float_complex_indexed *y, int fold);
 //====================================//
 // NEGATION
 //====================================//
-#define dINeg(X) dINeg1(DEFAULT_FOLD, (X).m, (X).c, 1)
-#define zINeg(X) zINeg1(DEFAULT_FOLD, (double complex*)(X).m, (double complex*)(X).c, 1)
 
 //====================================//
 // CONVERSION
@@ -250,11 +248,18 @@ extern void cicconv(void *x, float_complex_indexed *y, int fold);
 //====================================//
 // NEGATION
 //====================================//
-#define sINeg(X) dINeg1(DEFAULT_FOLD, (X).m, (X).c, 1)
-#define cINeg(X) zINeg1(DEFAULT_FOLD, (float complex*)(X).m, (X).c, 1)
 
 //====================================//
 // CONVERSION
 //====================================//
 
+
+void dmnegate(const int fold, double* repX, const int increpX, double* carX, const int inccarX);
+void dinegate(const int fold, double_indexed* X);
+void zmnegate(const int fold, double* repX, const int increpX, double* carX, const int inccarX);
+void zinegate(const int fold, double_complex_indexed* X);
+void smnegate(const int fold, float* repX, const int increpX, float* carX, const int inccarX);
+void sinegate(const int fold, float_indexed* X);
+void cmnegate(const int fold, float* repX, const int increpX, float* carX, const int inccarX);
+void cinegate(const int fold, float_complex_indexed* X);
 #endif
