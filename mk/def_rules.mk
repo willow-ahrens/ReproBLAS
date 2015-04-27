@@ -37,9 +37,10 @@ echo_cmd =
 endif
 
 
-COMPILE.mpic = $(call echo_cmd,MPICC $<) $(MPICC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -x c -c
+COMPILE.mpic = $(call echo_cmd,MPICC $<) $(MPICC) $(CFLAGS) $(MPICFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -x c -c
 COMPILE.c = $(call echo_cmd,CC $<) $(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
 COMPILE.cc = $(call echo_cmd,CXX $<) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
+LINK.mpic = $(call echo_cmd,LINK $@) $(MPICC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(MPILDFLAGS) $(TARGET_ARCH)
 LINK.c = $(call echo_cmd,LINK $@) $(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH)
 LINK.cc = $(call echo_cmd,LINK $@) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH)
 

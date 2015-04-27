@@ -13,6 +13,12 @@
 #MPICC = clang
 #MPICC = mpicc
 
+# select MPI compiler flags (comment for auto)
+#MPICFLAGS = $(shell mpicc --showme compile)
+
+# select MPI linker flags (comment for auto) (note that the mpi compiler will not be used for linking, so these flags are necessary even if you have specified an mpi wrapper comiler. Most wrapper compilers have an option to dump linker flags.
+#MPILDFLAGS = $(shell mpicc --showme link)
+
 # select python (comment all for auto)
 PYTHON = python
 #PYTHON = python3

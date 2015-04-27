@@ -19,7 +19,7 @@ endif
 # turn inheritance in some part by just clearing INHERIT_DIR_VARS_$(d)
 # This is a global inheritance flag - you might want to turn it on only
 # in some directory (just set INHERIT_DIR_VARS_$(d) there).
-INHERIT_DIR_VARS := INCLUDES CPPFLAGS CFLAGS
+INHERIT_DIR_VARS := INCLUDES CPPFLAGS CFLAGS LDFLAGS MPICFLAGS MPILDFLAGS
 
 # Default optimization flags.
 ifeq ($(OPTFLAGS),)
@@ -57,6 +57,16 @@ ifeq ($(MPICC),)
   else
     MPICC := $(CC)
   endif
+endif
+
+# Detect MPI C compiler flags in the following order if MPICFLAGS hasn't been set
+ifeq ($(MPICFLAGS),)
+  MPICFLAGS := $(shell $(MPICC) --showme:compile)
+endif
+
+# Detect MPI C linker flags in the following order if MPILDFLAGS hasn't been set
+ifeq ($(MPILDFLAGS),)
+  MPILDFLAGS := $(shell $(MPICC) --showme:link)
 endif
 
 # Detect python in the following order if PYTHON hasn't been set

@@ -6,6 +6,7 @@ import tests.harness.harness as harness
 check_dir = os.path.dirname(os.path.abspath(__file__))
 
 check_suite = checks.CheckSuite()
+"""
 
 check_suite.add_checks([checks.ValidateInternalUFPTest(),\
                         checks.ValidateInternalUFPFTest()],\
@@ -61,10 +62,11 @@ check_suite.add_checks([checks.VerifyRDDOTTest(),\
                          "rand+(rand-1)",\
                          "sine",\
                          "small+grow*big"]])
+"""
 
 check_suite.add_checks([checks.VerifyRDGEMVTest()],\
                        ["O", "T", "N", "M", "lda", "incX", "incY", "f", "g", "j"],\
-                       [["RowMajor", "ColMajor"], ["NoTrans", "Trans"], [255], [255], [255, 257], [1, 4], [1, 4],\
+                       [["RowMajor", "ColMajor"], ["NoTrans", "Trans"], [1023], [1023], [1023, 1025], [1, 4], [1, 4],\
                         ["rand",\
                          "small+grow*big"],\
                         ["rand",\

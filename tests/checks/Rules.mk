@@ -7,6 +7,9 @@ TARGETS := validate_external_rdblas1$(EXE) validate_external_rzblas1$(EXE) valid
 
 SUBDIRS :=
 
+LDFLAGS += $(MPILDFLAGS)
+CFLAGS += $(MPICFLAGS)
+
 validate_external_rcblas1$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) validate_external_rcblas1.o
 validate_external_rdblas1$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) validate_external_rdblas1.o
 validate_external_rsblas1$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) validate_external_rsblas1.o
