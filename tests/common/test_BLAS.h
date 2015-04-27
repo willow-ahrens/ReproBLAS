@@ -26,7 +26,7 @@
 	extern void cblas_cdotc_sub(int, float complex*, int, float complex*, int, float complex*);
 	extern void cblas_cdotu_sub(int, float complex*, int, float complex*, int, float complex*);
 
-	extern void cblas_dgemv (char,int,int,double,double*,int,double*,int,double,double*,int);
+	extern void cblas_dgemv (char, char,int,int,double,double*,int,double*,int,double,double*,int);
 
 #	define CALL_IDAMAX(R, N, V, INC) R = cblas_idamax(N, V, INC)
 #	define CALL_ISAMAX(R, N, V, INC) R = cblas_isamax(N, V, INC)
@@ -50,8 +50,8 @@
 #	define CALL_CDOTC(R,N,V,INC,Y,INCY)  cblas_cdotc_sub(N,V,INC,Y,INCY,&R)
 #	define CALL_CDOTU(R,N,V,INC,Y,INCY)  cblas_cdotu_sub(N,V,INC,Y,INCY,&R)
 
-#	define CALL_DGEMV(TRANS,M,N,ALPHA,A,LDA,X,INCX,BETA,Y,INCY) \
-		cblas_dgemv(TRANS,M,N,ALPHA,A,LDA,X,INCX,BETA,Y,INCY);
+#	define CALL_DGEMV(ORDER, TRANS,M,N,ALPHA,A,LDA,X,INCX,BETA,Y,INCY) \
+		cblas_dgemv(ORDER, TRANS,M,N,ALPHA,A,LDA,X,INCX,BETA,Y,INCY);
 #	define CALL_DGEMM(TRANSA,TRANSB,M,N,K,ALPHA,A,LDA,B,LDB,BETA,C,LDC) \
 		cblas_dgemm(TRANSA,TRANSB,M,N,KALPHA,A,LDA,B,LDB,BETA,C,LDC);
 

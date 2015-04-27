@@ -138,16 +138,16 @@ endif
 # Determine BLAS link
 ifeq ($(strip $(BLAS)),REF)
   LDFLAGS += -lblas
-  CPPFLAGS += -DBLAS
+  CPPFLAGS += -DBLAS=1
 else ifeq ($(strip $(BLAS)),MKL)
   LDFLAGS += -lmkl_sequential
-  CPPFLAGS += -DCBLAS
+  CPPFLAGS += -DCBLAS=1
 else ifeq ($(strip $(BLAS)),ATLAS)
   LDFLAGS += -latlas
-  CPPFLAGS += -DCBLAS
+  CPPFLAGS += -DCBLAS=1
 else ifeq ($(strip $(BLAS)),ACCELERATE)
   LDFLAGS += -framework Accelerate
-  CPPFLAGS += -DCBLAS
+  CPPFLAGS += -DCBLAS=1
 endif
 
 CALL_PYTHON = PYTHONPATH=$(TOP) $(PYTHON)

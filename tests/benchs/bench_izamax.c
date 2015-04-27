@@ -31,7 +31,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double Scale
 
   util_random_seed();
 
-  double compleX *X = util_zvec_alloc(N, incX);
+  double complex *X = util_zvec_alloc(N, incX);
 
   //fill X
   util_zvec_fill(N, X, incX, FillX, ScaleX, CondX);
