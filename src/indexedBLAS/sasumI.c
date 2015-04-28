@@ -65,16 +65,16 @@ void sasumI1_(int N, int NB,
 			continue;
 #		endif
 
-		smsupdate(amax, sum, 1, c, 1, fold);
+		smsupdate(fold, amax, sum, 1, c, 1);
 		
 		for (j = 0; j < lN - maxN + 1; j+=maxN) {
 			sasumI2(maxN, v + j * inc, inc, fold, sum);
-			smrenorm(sum, 1, c, 1, fold);
+			smrenorm(fold, sum, 1, c, 1);
 		}
 
 		if (j < lN) {
 			sasumI2(lN - j, v + j * inc, inc, fold, sum);
-			smrenorm(sum, 1, c, 1, fold);
+			smrenorm(fold, sum, 1, c, 1);
 		}
 	}
 }

@@ -21,22 +21,22 @@ void rdgemv(const rblas_order_t order,
         case rblas_No_Trans:
           YI = (Idouble*)malloc(disize(DEFAULT_FOLD)*M);
           for(int i = 0; i < M; i++){
-            didconv(Y[i * incY], YI + i, DEFAULT_FOLD);
+            didconv(DEFAULT_FOLD, Y[i * incY], YI + i);
           }
-          dgemvI(order, TransA, M, N, A, lda, X, incX, YI, 1, DEFAULT_FOLD);
+          dgemvI(DEFAULT_FOLD, order, TransA, M, N, A, lda, X, incX, YI, 1);
           for(int i = 0; i < M; i++){
-            Y[i * incY] = ddiconv(YI + i, DEFAULT_FOLD);
+            Y[i * incY] = ddiconv(DEFAULT_FOLD, YI + i);
           }
           free(YI);
           break;
         default:
           YI = (Idouble*)malloc(disize(DEFAULT_FOLD)*N);
           for(int i = 0; i < N; i++){
-            didconv(Y[i * incY], YI + i, DEFAULT_FOLD);
+            didconv(DEFAULT_FOLD, Y[i * incY], YI + i);
           }
-          dgemvI(order, TransA, M, N, A, lda, X, incX, YI, 1, DEFAULT_FOLD);
+          dgemvI(DEFAULT_FOLD, order, TransA, M, N, A, lda, X, incX, YI, 1);
           for(int i = 0; i < N; i++){
-            Y[i * incY] = ddiconv(YI + i, DEFAULT_FOLD);
+            Y[i * incY] = ddiconv(DEFAULT_FOLD, YI + i);
           }
           free(YI);
           break;

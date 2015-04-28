@@ -8,13 +8,13 @@
 #include "indexed.h"
 #include "../Common/Common.h"
 
-void smsupdate(float X, float* repY, int increpY, float* carY, int inccarY, int fold) {
+void smsupdate(const int fold, float X, float* repY, int increpY, float* carY, int inccarY) {
   if (X == 0 || isnan(repY[0]) || isinf(repY[0]))
     return;
 
 /*
   if (repY[0] == 0.0) {
-    smbound(sindex(X), repY, increpY, fold);
+    smbound(fold, sindex(X), repY, increpY);
     for (int i = 0; i < fold; i++) {
       carY[i * inccarY] = 0.0;
     }
@@ -29,31 +29,31 @@ void smsupdate(float X, float* repY, int increpY, float* carY, int inccarY, int 
       repY[i * increpY] = repY[(i - d) * increpY];
       carY[i * inccarY] = carY[(i - d) * inccarY];
     }
-    smbound(X_index, repY, increpY, MIN(d, fold));
+    smbound(MIN(d, fold), X_index, repY, increpY);
     for(int i = 0; i < d && i < fold; i++){
       carY[i * inccarY] = 0.0;
     }
   }
 }
 
-void sisupdate(float X, float_indexed *Y, int fold) {
-  smsupdate(X, Y, 1, Y + fold, 1, fold);
+void sisupdate(const int fold, float X, float_indexed *Y) {
+  smsupdate(fold, X, Y, 1, Y + fold, 1);
 }
 
-void cmsupdate(float X, float* repY, int increpY, float* carY, int inccarY, int fold) {
-  smsupdate(X, repY, 2 * increpY, carY, 2 * inccarY, fold);
-  smsupdate(X, repY + 1, 2 * increpY, carY + 1, 2 * inccarY, fold);
+void cmsupdate(const int fold, float X, float* repY, int increpY, float* carY, int inccarY) {
+  smsupdate(fold, X, repY, 2 * increpY, carY, 2 * inccarY);
+  smsupdate(fold, X, repY + 1, 2 * increpY, carY + 1, 2 * inccarY);
 }
 
-void cisupdate(float X, float_complex_indexed *Y, int fold) {
-  cmsupdate(X, Y, 1, Y + 2 * fold, 1, fold);
+void cisupdate(const int fold, float X, float_complex_indexed *Y) {
+  cmsupdate(fold, X, Y, 1, Y + 2 * fold, 1);
 }
 
-void cmcupdate(void *X, float* repY, int increpY, float* carY, int inccarY, int fold) {
-  smsupdate(((float*)X)[0], repY, 2 * increpY, carY, 2 * inccarY, fold);
-  smsupdate(((float*)X)[1], repY + 1, 2 * increpY, carY + 1, 2 * inccarY, fold);
+void cmcupdate(const int fold, void *X, float* repY, int increpY, float* carY, int inccarY) {
+  smsupdate(fold, ((float*)X)[0], repY, 2 * increpY, carY, 2 * inccarY);
+  smsupdate(fold, ((float*)X)[1], repY + 1, 2 * increpY, carY + 1, 2 * inccarY);
 }
 
-void cicupdate(void *X, float_complex_indexed *Y, int fold) {
-  cmcupdate(X, Y, 1, Y + 2 * fold, 1, fold);
+void cicupdate(const int fold, void *X, float_complex_indexed *Y) {
+  cmcupdate(fold, X, Y, 1, Y + 2 * fold, 1);
 }

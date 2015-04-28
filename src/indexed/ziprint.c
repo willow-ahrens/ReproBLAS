@@ -2,7 +2,7 @@
 
 #include "indexed.h"
 
-void zmprint(double *repX, int increpX, double *carX, int inccarX, int fold){
+void zmprint(const int fold, double *repX, int increpX, double *carX, int inccarX){
   int i;
   double M;
   for (i = 0; i < fold; i++, repX += increpX, carX += inccarX) {
@@ -13,6 +13,6 @@ void zmprint(double *repX, int increpX, double *carX, int inccarX, int fold){
   }
 }
 
-void ziprint(double_complex_indexed *X, int fold){
-  zmprint(X, 2, X + 2 * fold, 2, fold);
+void ziprint(const int fold, double_complex_indexed *X){
+  zmprint(fold, X, 2, X + 2 * fold, 2);
 }

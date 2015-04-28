@@ -37,9 +37,9 @@ int verify_rdblas1_reproducibility(int N, double* X, int incX, double* Y, int in
       for (i = 0; i < N; i += block_N) {
         block_N = block_N < N - i ? block_N : (N-i);
         Idouble foo = (wrap_Idblas1_func(func))(block_N, X + i * incX, incX, Y + i * incY, incY);
-        didiadd(&foo, &Ires, DEFAULT_FOLD);
+        didiadd(DEFAULT_FOLD, &foo, &Ires);
       }
-      res = ddiconv(&Ires, DEFAULT_FOLD);
+      res = ddiconv(DEFAULT_FOLD, &Ires);
     }
     if (res != ref) {
       printf("%s(X, Y)[num_blocks=%d,block_N=%d] = %g != %g\n", wrap_rdblas1_names[func], num_blocks, block_N, res, ref);
@@ -47,9 +47,9 @@ int verify_rdblas1_reproducibility(int N, double* X, int incX, double* Y, int in
         Ires = (wrap_Idblas1_func(func))(N, X, incX, Y, incY);
       }
       printf("Ref I_double:\n");
-      diprint(&Iref, DEFAULT_FOLD);
+      diprint(DEFAULT_FOLD, &Iref);
       printf("\nRes I_double:\n");
-      diprint(&Ires, DEFAULT_FOLD);
+      diprint(DEFAULT_FOLD, &Ires);
       printf("\n");
       return 1;
     }

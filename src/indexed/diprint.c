@@ -2,7 +2,7 @@
 
 #include "indexed.h"
 
-void dmprint(double *repX, int increpX, double *carX, int inccarX, int fold) {
+void dmprint(const int fold, double *repX, int increpX, double *carX, int inccarX) {
   int i;
   double M;
   for (i = 0; i < fold; i++, repX += increpX, carX += inccarX) {
@@ -11,6 +11,6 @@ void dmprint(double *repX, int increpX, double *carX, int inccarX, int fold) {
   }
 }
 
-void diprint(double_indexed *X, int fold) {
-  dmprint(X, 1, X + fold, 1, fold);
+void diprint(const int fold, double_indexed *X) {
+  dmprint(fold, X, 1, X + fold, 1);
 }

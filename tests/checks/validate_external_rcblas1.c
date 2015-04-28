@@ -88,13 +88,13 @@ int file_test(int argc, char** argv, char *fname) {
       return 1;
     }
     if(memcmp(&Iref, &Ires, sizeof(Iref)) != 0){
-      cciconv_sub(&Ires, &res, DEFAULT_FOLD);
-      cciconv_sub(&Iref, &ref, DEFAULT_FOLD);
+      cciconv_sub(DEFAULT_FOLD, &Ires, &res);
+      cciconv_sub(DEFAULT_FOLD, &Iref, &ref);
       printf("I%s(%s) = %g + %gi != %g + %gi\n", wrap_rcblas1_names[func_type._named.value], fname, CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
       printf("Ref I_float_Complex:\n");
-      ciprint(&Iref, DEFAULT_FOLD);
+      ciprint(DEFAULT_FOLD, &Iref);
       printf("\nRes I_float_Complex:\n");
-      ciprint(&Ires, DEFAULT_FOLD);
+      ciprint(DEFAULT_FOLD, &Ires);
       printf("\n");
       return 1;
     }

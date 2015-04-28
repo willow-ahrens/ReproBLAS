@@ -89,16 +89,16 @@ float snrm2I1_(int N, int NB,
 		amax *= nscale;
 		amax = amax * amax;
 
-		smsupdate(amax, sum, 1, c, 1, fold);
+		smsupdate(fold, amax, sum, 1, c, 1);
 		
 		for (j = 0; j < lN - maxN + 1; j+=maxN) {
 			snrm2I2(maxN, v + j * inc, inc, nscale, fold, sum);
-			smrenorm(sum, 1, c, 1, fold);
+			smrenorm(fold, sum, 1, c, 1);
 		}
 
 		if (j < lN) {
 			snrm2I2(lN - j, v + j * inc, inc, nscale, fold, sum);
-			smrenorm(sum, 1, c, 1, fold);
+			smrenorm(fold, sum, 1, c, 1);
 		}
 	}
 

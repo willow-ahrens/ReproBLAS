@@ -71,7 +71,7 @@ double dnrm2I1_(int N, int NB,
 			continue;
 		
 		if (accu + lN > maxN) {
-			dmrenorm(sum, 1, c, 1, fold);
+			dmrenorm(fold, sum, 1, c, 1);
 			accu = 0;
 		}
 
@@ -95,14 +95,14 @@ double dnrm2I1_(int N, int NB,
 		amax *= nscale;
 		amax = amax * amax;
 
-		dmdupdate(amax, sum, 1, c, 1, fold);
+		dmdupdate(fold, amax, sum, 1, c, 1);
 		
 		// TODO: CHECK POTENTIAL FALSE INFINITY
 		dnrm2I2(lN, v, inc, nscale, fold, sum);
 
 		accu += lN;
 	}
-	dmrenorm(sum, 1, c, 1, fold);
+	dmrenorm(fold, sum, 1, c, 1);
 	return scale;
 }
 

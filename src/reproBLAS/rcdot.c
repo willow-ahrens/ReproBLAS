@@ -40,7 +40,7 @@ float complex rcdotc(
 	cisetzero(DEFAULT_FOLD, &dot);
     float complex ret;
 	cdotcI1(N, x, incx, y, incy, DEFAULT_FOLD, (float complex*)dot.m, dot.c);
-    cciconv_sub(&dot, &ret, DEFAULT_FOLD);
+    cciconv_sub(DEFAULT_FOLD, &dot, &ret);
     return ret;
 }
 
@@ -53,7 +53,7 @@ float complex rcdotu(
 	cisetzero(DEFAULT_FOLD, &dot);
     float complex ret;
 	cdotuI1(N, x, incx, y, incy, DEFAULT_FOLD, (float complex*)dot.m, dot.c);
-    cciconv_sub(&dot, &ret, DEFAULT_FOLD);
+    cciconv_sub(DEFAULT_FOLD, &dot, &ret);
     return ret;
 }
 

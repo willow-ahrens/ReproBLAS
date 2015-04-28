@@ -37,9 +37,9 @@ int verify_rzblas1_reproducibility(int N, double complex* X, int incX, double co
       for (i = 0; i < N; i += block_N) {
         block_N = block_N < N - i ? block_N : (N-i);
         I_double_Complex foo = (wrap_Izblas1_func(func))(block_N, X + i * incX, incX, Y + i * incY, incY);
-        ziziadd(&foo, &Ires, DEFAULT_FOLD);
+        ziziadd(DEFAULT_FOLD, &foo, &Ires);
       }
-      zziconv_sub(&Ires, &res, DEFAULT_FOLD);
+      zziconv_sub(DEFAULT_FOLD, &Ires, &res);
     }
     if (res != ref) {
       printf("%s(X, Y)[num_blocks=%d,block_N=%d] = %g + %gi != %g + %gi\n", wrap_rzblas1_names[func], num_blocks, block_N, CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
@@ -47,9 +47,9 @@ int verify_rzblas1_reproducibility(int N, double complex* X, int incX, double co
         Ires = (wrap_Izblas1_func(func))(N, X, incX, Y, incY);
       }
       printf("Ref I_double_Complex:\n");
-      ziprint(&Iref, DEFAULT_FOLD);
+      ziprint(DEFAULT_FOLD, &Iref);
       printf("\nRes I_double_Complex:\n");
-      ziprint(&Ires, DEFAULT_FOLD);
+      ziprint(DEFAULT_FOLD, &Ires);
       printf("\n");
       return 1;
     }

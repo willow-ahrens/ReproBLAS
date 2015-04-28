@@ -81,7 +81,7 @@ double dznrm2I1_(int N, int NB,
 			continue;
 		
 		if (accu + lN > maxN) {
-			zmrenorm(BUFFER, 1, BUFFER + fold, 1, fold);
+			zmrenorm(fold, BUFFER, 1, BUFFER + fold, 1);
 			accu = 0;
 		}
 
@@ -105,7 +105,7 @@ double dznrm2I1_(int N, int NB,
 		amax *= nscale;
 		amax = amax * amax;
 
-		zmdupdate(amax, BUFFER, 1, BUFFER + fold, 1, fold);
+		zmdupdate(fold, amax, BUFFER, 1, BUFFER + fold, 1);
 		
 		// TODO: CHECK POTENTIAL FALSE INFINITY
 		dznrm2I2(lN, v, inc, nscale, fold, BUFFER);
@@ -113,14 +113,14 @@ double dznrm2I1_(int N, int NB,
 		accu += lN;
 	}
 	
-	zmrenorm(BUFFER, 1, BUFFER + fold, 1, fold);
+	zmrenorm(fold, BUFFER, 1, BUFFER + fold, 1);
 
 	for (i = 0; i < fold; i++) {
 		sum[i] = (ZREAL_(BUFFER[i]) - sum[i]) + ZIMAG_(BUFFER[i]);
 		c[i]   = ZREAL_(BUFFER[i+fold]) + ZIMAG_(BUFFER[i+fold]);
 	}
 
-	dmrenorm(sum, 1, c, 1, fold);
+	dmrenorm(fold, sum, 1, c, 1);
 
 	return scale;
 }

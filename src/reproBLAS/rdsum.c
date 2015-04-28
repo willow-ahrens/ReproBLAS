@@ -20,6 +20,6 @@ double rdsum(int N, double* v, int inc) {
 	I_double sum;
 	disetzero(DEFAULT_FOLD, &sum);
 	dsumI1(N, v, inc, DEFAULT_FOLD, sum.m, sum.c);
-	return ddiconv(&sum, DEFAULT_FOLD);
+	return ddiconv(DEFAULT_FOLD, &sum);
 }
 

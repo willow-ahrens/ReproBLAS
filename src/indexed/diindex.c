@@ -117,7 +117,7 @@ double dbound(int index){
   return bounds[index];
 }
 
-void dmbound(int index, double *repY, int increpY, int fold) {
+void dmbound(const int fold, int index, double *repY, int increpY) {
   int i;
 
   bounds_initialize();

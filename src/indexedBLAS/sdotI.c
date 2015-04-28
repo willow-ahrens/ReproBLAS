@@ -113,16 +113,16 @@ void sdotI1_(
 			continue;
 #		endif
 
-		smsupdate(amax, dot, 1, c, 1, fold);
+		smsupdate(fold, amax, dot, 1, c, 1);
 		
 		for (j = 0; j < lN - maxN + 1; j+=maxN) {
 			sdotI2(maxN, x + j * incx, incx, y + j * incy, incy, fold, dot);
-			smrenorm(dot, 1, c, 1, fold);
+			smrenorm(fold, dot, 1, c, 1);
 		}
 
 		if (j < lN) {
 			sdotI2(lN - j, x + j * incx, incx, y + j * incy, incy, fold, dot);
-			smrenorm(dot, 1, c, 1, fold);
+			smrenorm(fold, dot, 1, c, 1);
 		}
 	}
 }

@@ -116,7 +116,7 @@ double sbound(int index){
   return bounds[index];
 }
 
-void smbound(int index, float *repY, int increpY, int fold) {
+void smbound(const int fold, int index, float *repY, int increpY) {
   int i;
 
   bounds_initialize();

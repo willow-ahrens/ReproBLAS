@@ -5,7 +5,7 @@
 #include "indexed.h"
 #include "../Common/Common.h"
 
-void smsconv(float x, float* repy, int increpy, float* cary, int inccary, int fold) {
+void smsconv(const int fold, float x, float* repy, int increpy, float* cary, int inccary) {
 	int i;
 	float q;
 	float s;
@@ -16,7 +16,7 @@ void smsconv(float x, float* repy, int increpy, float* cary, int inccary, int fo
 		}
 		return;
 	}
-	smbound(sindex(fabs(x)), repy, increpy, fold);
+	smbound(fold, sindex(fabs(x)), repy, increpy);
 	for (i = 0; i < fold; i++, repy += increpy, cary += inccary) {
 		// high-order part
 		cary[0] = 0.0;
@@ -29,20 +29,20 @@ void smsconv(float x, float* repy, int increpy, float* cary, int inccary, int fo
 	}
 }
 
-void sisconv(float x, float_indexed *y, int fold) {
-	smsconv(x, y, 1, y + fold, 1, fold);
+void sisconv(const int fold, float x, float_indexed *y) {
+	smsconv(fold, x, y, 1, y + fold, 1);
 }
 
-void cmcconv(void *x, float *repy, int increpy, float *cary, int inccary, int fold) {
-  smsconv(((float*)x)[0], repy, increpy * 2, cary, inccary * 2, fold);
-  smsconv(((float*)x)[1], repy + 1, increpy * 2, cary + 1, inccary * 2, fold);
+void cmcconv(const int fold, void *x, float *repy, int increpy, float *cary, int inccary) {
+  smsconv(fold, ((float*)x)[0], repy, increpy * 2, cary, inccary * 2);
+  smsconv(fold, ((float*)x)[1], repy + 1, increpy * 2, cary + 1, inccary * 2);
 }
 
-void cicconv(void *x, float_complex_indexed *y, int fold) {
-	cmcconv(x, y, 1, y + 2 * fold, 1, fold);
+void cicconv(const int fold, void *x, float_complex_indexed *y) {
+	cmcconv(fold, x, y, 1, y + 2 * fold, 1);
 }
 
-float ssmconv(float* repx, int increpx, float* carx, int inccarx, int fold) {
+float ssmconv(const int fold, float* repx, int increpx, float* carx, int inccarx) {
 	int i;
 	float y = 0.0;
 
@@ -55,7 +55,6 @@ float ssmconv(float* repx, int increpx, float* carx, int inccarx, int fold) {
 	}
 
 	// TODO: SCALING TO AVOID OVERFLOW
-	fold = (fold < 1) ? 1 : fold; //TODO wtf is this line for?
 
 	for (i = 0; i < fold; i++, repx += increpx, carx += inccarx) {
 		y += (repx[0] + (carx[0] - 6) * ufp(repx[0]) * 0.25);
@@ -64,15 +63,15 @@ float ssmconv(float* repx, int increpx, float* carx, int inccarx, int fold) {
 	return y;
 }
 
-float ssiconv(float_indexed *x, int fold) {
-  return ssmconv(x, 1, x + fold, 1, fold);
+float ssiconv(const int fold, float_indexed *x) {
+  return ssmconv(fold, x, 1, x + fold, 1);
 }
 
-void ccmconv_sub(float *repx, int increpx, float *carx, int inccarx, void *y, int fold) {
-	((float*)y)[0] = ssmconv(repx, increpx * 2, carx, inccarx + 1, fold);
-	((float*)y)[1] = ssmconv(repx + 1, increpx * 2, carx + 1, inccarx + 1, fold);
+void ccmconv_sub(const int fold, float *repx, int increpx, float *carx, int inccarx, void *y) {
+	((float*)y)[0] = ssmconv(fold, repx, increpx * 2, carx, inccarx + 1);
+	((float*)y)[1] = ssmconv(fold, repx + 1, increpx * 2, carx + 1, inccarx + 1);
 }
 
-void cciconv_sub(float_complex_indexed *x, void *y, int fold) {
-  ccmconv_sub(x, 1, x + 2 * fold, 1, y, fold);
+void cciconv_sub(const int fold, float_complex_indexed *x, void *y) {
+  ccmconv_sub(fold, x, 1, x + 2 * fold, 1, y);
 }

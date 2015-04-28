@@ -9,7 +9,7 @@
 #include "indexed.h"
 #include "../Common/Common.h"
 
-void smrenorm(float* repX, int increpX, float* carX, int inccarX, int fold) {
+void smrenorm(const int fold, float* repX, int increpX, float* carX, int inccarX) {
   int i;
   float M;
   float repX0;
@@ -34,15 +34,15 @@ void smrenorm(float* repX, int increpX, float* carX, int inccarX, int fold) {
   }
 }
 
-void sirenorm(float_indexed *X, int fold) {
-  smrenorm(X, 1, X + fold, 1, fold);
+void sirenorm(const int fold, float_indexed *X) {
+  smrenorm(fold, X, 1, X + fold, 1);
 }
 
-void cmrenorm(float* repX, int increpX, float* carX, int inccarX, int fold) {
-  smrenorm(repX, 2 * increpX, carX, 2 * inccarX, fold);
-  smrenorm(repX + 1, 2 * increpX, carX + 1, 2 * inccarX, fold);
+void cmrenorm(const int fold, float* repX, int increpX, float* carX, int inccarX) {
+  smrenorm(fold, repX, 2 * increpX, carX, 2 * inccarX);
+  smrenorm(fold, repX + 1, 2 * increpX, carX + 1, 2 * inccarX);
 }
 
-void cirenorm(float_complex_indexed *X, int fold) {
-  cmrenorm(X, 1, X + 2 * fold, 1, fold);
+void cirenorm(const int fold, float_complex_indexed *X) {
+  cmrenorm(fold, X, 1, X + 2 * fold, 1);
 }

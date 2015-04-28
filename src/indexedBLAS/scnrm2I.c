@@ -121,7 +121,7 @@ float scnrm2I1_(int N, int NB,
 			amax = amax * amax;
 //			printf("\nBefore Update: \n");
 //			cIprint(fold, BUFFER);
-			cmsupdate(amax, BUFFER, 1, C, 1, fold);
+			cmsupdate(fold, amax, BUFFER, 1, C, 1);
 
 //			printf("\nAfter Update: \n");
 //			cIprint(fold, BUFFER);
@@ -133,7 +133,7 @@ float scnrm2I1_(int N, int NB,
 
 //			printf("\nBefore renorm: \n");
 //			cIprint(fold, BUFFER);
-			cmrenorm(BUFFER, 1, C, 1, fold);
+			cmrenorm(fold, BUFFER, 1, C, 1);
 //			printf("\nAfter renorm: \n");
 //			cIprint(fold, BUFFER);
 		}
@@ -149,7 +149,7 @@ float scnrm2I1_(int N, int NB,
 		carry[i] = C[2*i]+ C[2*i+1];
 	}
 
-	smrenorm(sum, 1, carry, 1, fold);
+	smrenorm(fold, sum, 1, carry, 1);
 
 	if (created == 1) {
 		free(work);

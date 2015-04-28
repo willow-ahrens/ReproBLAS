@@ -160,11 +160,11 @@ void zsumI1_(int N, int NB,
 			continue;
 		
 		if (accu + lN > maxN) {
-//			zmrenorm(sum, 1, c, 1, fold);
+//			zmrenorm(fold, sum, 1, c, 1);
 			accu = 0;
 		}
 
-		zmzupdate(&amax, sum, 1, c, 1, fold);
+		zmzupdate(fold, &amax, sum, 1, c, 1);
 
 		zsumI2(lN, v, inc, fold, sum);
 
@@ -179,6 +179,6 @@ void zsumI1_(int N, int NB,
 				ZSET_IMAG_(sum[j], ZIMAG_(amax));
 		}
 	}
-	zmrenorm(sum, 1, c, 1, fold);
+	zmrenorm(fold, sum, 1, c, 1);
 }
 

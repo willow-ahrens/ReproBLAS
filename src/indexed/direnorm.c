@@ -9,7 +9,7 @@
 #include "indexed.h"
 #include "../Common/Common.h"
 
-void dmrenorm(double* repX, int increpX, double* carX, int inccarX, int fold) {
+void dmrenorm(const int fold, double* repX, int increpX, double* carX, int inccarX) {
   int i;
   double M;
   double repX0;
@@ -34,15 +34,15 @@ void dmrenorm(double* repX, int increpX, double* carX, int inccarX, int fold) {
   }
 }
 
-void direnorm(double_indexed *X, int fold) {
-  dmrenorm(X, 1, X + fold, 1, fold);
+void direnorm(const int fold, double_indexed *X) {
+  dmrenorm(fold, X, 1, X + fold, 1);
 }
 
-void zmrenorm(double* repX, int increpX, double* carX, int inccarX, int fold) {
-  dmrenorm(repX, 2 * increpX, carX, 2 * inccarX, fold);
-  dmrenorm(repX + 1, 2 * increpX, carX + 1, 2 * inccarX, fold);
+void zmrenorm(const int fold, double* repX, int increpX, double* carX, int inccarX) {
+  dmrenorm(fold, repX, 2 * increpX, carX, 2 * inccarX);
+  dmrenorm(fold, repX + 1, 2 * increpX, carX + 1, 2 * inccarX);
 }
 
-void zirenorm(double_complex_indexed *X, int fold) {
-  zmrenorm(X, 1, X + 2 * fold, 1, fold);
+void zirenorm(const int fold, double_complex_indexed *X) {
+  zmrenorm(fold, X, 1, X + 2 * fold, 1);
 }

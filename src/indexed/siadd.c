@@ -9,7 +9,7 @@
 #include "indexed.h"
 #include "../Common/Common.h"
 
-void smsmadd(float *repX, int increpX, float *carX, int inccarX, float* repY, int increpY, float* carY, int inccarY, int fold) {
+void smsmadd(const int fold, float *repX, int increpX, float *carX, int inccarX, float* repY, int increpY, float* carY, int inccarY) {
   int i;
   int shift;
 
@@ -43,23 +43,23 @@ void smsmadd(float *repX, int increpX, float *carX, int inccarX, float* repY, in
     }
   }
 
-  smrenorm(repY, increpY, carY, inccarY, fold);
+  smrenorm(fold, repY, increpY, carY, inccarY);
 }
 
-void sisiadd(float_indexed *X, float_indexed *Y, int fold){
-  smsmadd(X, 1, X + fold, 1, Y, 1, Y + fold, 1, fold);
+void sisiadd(const int fold, float_indexed *X, float_indexed *Y){
+  smsmadd(fold, X, 1, X + fold, 1, Y, 1, Y + fold, 1);
 }
 
-void cmcmadd(float *repX, int increpX, float *carX, int inccarX, float* repY, int increpY, float* carY, int inccarY, int fold) {
-  smsmadd(repX, 2 * increpX, carX, 2 * inccarX, repY, 2 * increpY, carY, 2 * inccarY, fold);
-  smsmadd(repX + 1, 2 * increpX, carX + 1, 2 * inccarX, repY + 1, 2 * increpY, carY + 1, 2 * inccarY, fold);
+void cmcmadd(const int fold, float *repX, int increpX, float *carX, int inccarX, float* repY, int increpY, float* carY, int inccarY) {
+  smsmadd(fold, repX, 2 * increpX, carX, 2 * inccarX, repY, 2 * increpY, carY, 2 * inccarY);
+  smsmadd(fold, repX + 1, 2 * increpX, carX + 1, 2 * inccarX, repY + 1, 2 * increpY, carY + 1, 2 * inccarY);
 }
 
-void ciciadd(float_complex_indexed *X, float_complex_indexed *Y, int fold){
-  cmcmadd(X, 1, X + 2 * fold, 1, Y, 1, Y + 2 * fold, 1, fold);
+void ciciadd(const int fold, float_complex_indexed *X, float_complex_indexed *Y){
+  cmcmadd(fold, X, 1, X + 2 * fold, 1, Y, 1, Y + 2 * fold, 1);
 }
 
-void smsdeposit(float X, float *repY, int increpY, int fold){
+void smsdeposit(const int fold, float X, float *repY, int increpY){
   float M;
   int_float q;
   int i;
@@ -77,21 +77,21 @@ void smsdeposit(float X, float *repY, int increpY, int fold){
   repY[i * increpY] += q.f;
 }
 
-void sisdeposit(float X, float_indexed *Y, int fold){
-  smsdeposit(X, Y, 1, fold);
+void sisdeposit(const int fold, float X, float_indexed *Y){
+  smsdeposit(fold, X, Y, 1);
 }
 
-void smsadd(float X, float *repY, int increpY, float *carY, int inccarY, int fold){
-  smsupdate(fabsf(X), repY, increpY, carY, inccarY, fold);
-  smsdeposit(X, repY, increpY, fold);
-  smrenorm(repY, increpY, carY, inccarY, fold);
+void smsadd(const int fold, float X, float *repY, int increpY, float *carY, int inccarY){
+  smsupdate(fold, fabsf(X), repY, increpY, carY, inccarY);
+  smsdeposit(fold, X, repY, increpY);
+  smrenorm(fold, repY, increpY, carY, inccarY);
 }
 
-void sisadd(float X, float_indexed *Y, int fold){
-  smsadd(X, Y, 1, Y + fold, 1, fold);
+void sisadd(const int fold, float X, float_indexed *Y){
+  smsadd(fold, X, Y, 1, Y + fold, 1);
 }
 
-void cmcdeposit(void *X, float *repY, int increpY, int fold){
+void cmcdeposit(const int fold, void *X, float *repY, int increpY){
   float MR, MI;
   int_float qR, qI;
   int i;
@@ -128,19 +128,19 @@ void cmcdeposit(void *X, float *repY, int increpY, int fold){
   repY[i * increpY + 1] = qI.f;
 }
 
-void cicdeposit(void *X, float_complex_indexed *Y, int fold){
-  cmcdeposit(X, Y, 1, fold);
+void cicdeposit(const int fold, void *X, float_complex_indexed *Y){
+  cmcdeposit(fold, X, Y, 1);
 }
 
-void cmcadd(void *X, float *repY, int increpY, float *carY, int inccarY, int fold){
+void cmcadd(const int fold, void *X, float *repY, int increpY, float *carY, int inccarY){
   float aX[2];
   aX[0] = fabsf(((float*)X)[0]);
   aX[1] = fabsf(((float*)X)[1]);
-  cmcupdate(aX, repY, increpY, carY, inccarY, fold);
-  cmcdeposit(X, repY, increpY, fold);
-  cmrenorm(repY, increpY, carY, inccarY, fold);
+  cmcupdate(fold, aX, repY, increpY, carY, inccarY);
+  cmcdeposit(fold, X, repY, increpY);
+  cmrenorm(fold, repY, increpY, carY, inccarY);
 }
 
-void cicadd(void *X, float_complex_indexed *Y, int fold){
-  cmcadd(X, Y, 1, Y + 2 * fold, 1, fold);
+void cicadd(const int fold, void *X, float_complex_indexed *Y){
+  cmcadd(fold, X, Y, 1, Y + 2 * fold, 1);
 }

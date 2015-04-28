@@ -38,9 +38,9 @@ int verify_rsblas1_reproducibility(int N, float* X, int incX, float* Y, int incY
       for (i = 0; i < N; i += block_N) {
         block_N = block_N < N - i ? block_N : (N-i);
         Ifloat foo = (wrap_Isblas1_func(func))(block_N, X + i * incX, incX, Y + i * incY, incY);
-        sisiadd(&foo, &Ires, DEFAULT_FOLD);
+        sisiadd(DEFAULT_FOLD, &foo, &Ires);
       }
-      res = ssiconv(&Ires, DEFAULT_FOLD);
+      res = ssiconv(DEFAULT_FOLD, &Ires);
     }
     if (res != ref) {
       printf("%s(X, Y)[num_blocks=%d,block_N=%d] = %g != %g\n", wrap_rsblas1_names[func], num_blocks, block_N, res, ref);
@@ -48,9 +48,9 @@ int verify_rsblas1_reproducibility(int N, float* X, int incX, float* Y, int incY
         Ires = (wrap_Isblas1_func(func))(N, X, incX, Y, incY);
       }
       printf("Ref I_float:\n");
-      siprint(&Iref, DEFAULT_FOLD);
+      siprint(DEFAULT_FOLD, &Iref);
       printf("\nRes I_float:\n");
-      siprint(&Ires, DEFAULT_FOLD);
+      siprint(DEFAULT_FOLD, &Ires);
       printf("\n");
       return 1;
     }

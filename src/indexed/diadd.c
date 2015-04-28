@@ -12,7 +12,7 @@
 
 // ADDING TWO INDEXED FP
 // Y += X
-void dmdmadd(double *repX, int increpX, double *carX, int inccarX, double* repY, int increpY, double* carY, int inccarY, int fold) {
+void dmdmadd(const int fold, double *repX, int increpX, double *carX, int inccarX, double* repY, int increpY, double* carY, int inccarY) {
   int i;
   int shift;
 
@@ -46,23 +46,23 @@ void dmdmadd(double *repX, int increpX, double *carX, int inccarX, double* repY,
     }
   }
 
-  dmrenorm(repY, increpY, carY, inccarY, fold);
+  dmrenorm(fold, repY, increpY, carY, inccarY);
 }
 
-void didiadd(double_indexed *X, double_indexed *Y, int fold){
-  dmdmadd(X, 1, X + fold, 1, Y, 1, Y + fold, 1, fold);
+void didiadd(const int fold, double_indexed *X, double_indexed *Y){
+  dmdmadd(fold, X, 1, X + fold, 1, Y, 1, Y + fold, 1);
 }
 
-void zmzmadd(double *repX, int increpX, double *carX, int inccarX, double* repY, int increpY, double* carY, int inccarY, int fold) {
-  dmdmadd(repX, 2 * increpX, carX, 2 * inccarX, repY, 2 * increpY, carY, 2 * inccarY, fold);
-  dmdmadd(repX + 1, 2 * increpX, carX + 1, 2 * inccarX, repY + 1, 2 * increpY, carY + 1, 2 * inccarY, fold);
+void zmzmadd(const int fold, double *repX, int increpX, double *carX, int inccarX, double* repY, int increpY, double* carY, int inccarY) {
+  dmdmadd(fold, repX, 2 * increpX, carX, 2 * inccarX, repY, 2 * increpY, carY, 2 * inccarY);
+  dmdmadd(fold, repX + 1, 2 * increpX, carX + 1, 2 * inccarX, repY + 1, 2 * increpY, carY + 1, 2 * inccarY);
 }
 
-void ziziadd(double_complex_indexed *X, double_complex_indexed *Y, int fold){
-  zmzmadd(X, 1, X + 2 * fold, 1, Y, 1, Y + 2 * fold, 1, fold);
+void ziziadd(const int fold, double_complex_indexed *X, double_complex_indexed *Y){
+  zmzmadd(fold, X, 1, X + 2 * fold, 1, Y, 1, Y + 2 * fold, 1);
 }
 
-void dmddeposit(double X, double *repY, int increpY, int fold){
+void dmddeposit(const int fold, double X, double *repY, int increpY){
   double M;
   long_double q;
   int i;
@@ -80,21 +80,21 @@ void dmddeposit(double X, double *repY, int increpY, int fold){
   repY[i * increpY] += q.d;
 }
 
-void diddeposit(double X, double_indexed *Y, int fold){
-  dmddeposit(X, Y, 1, fold);
+void diddeposit(const int fold, double X, double_indexed *Y){
+  dmddeposit(fold, X, Y, 1);
 }
 
-void dmdadd(double X, double *repY, int increpY, double *carY, int inccarY, int fold){
-  dmdupdate(fabs(X), repY, increpY, carY, inccarY, fold);
-  dmddeposit(X, repY, increpY, fold);
-  dmrenorm(repY, increpY, carY, inccarY, fold);
+void dmdadd(const int fold, double X, double *repY, int increpY, double *carY, int inccarY){
+  dmdupdate(fold, fabs(X), repY, increpY, carY, inccarY);
+  dmddeposit(fold, X, repY, increpY);
+  dmrenorm(fold, repY, increpY, carY, inccarY);
 }
 
-void didadd(double X, double_indexed *Y, int fold){
-  dmdadd(X, Y, 1, Y + fold, 1, fold);
+void didadd(const int fold, double X, double_indexed *Y){
+  dmdadd(fold, X, Y, 1, Y + fold, 1);
 }
 
-void zmzdeposit(void *X, double *repY, int increpY, int fold){
+void zmzdeposit(const int fold, void *X, double *repY, int increpY){
   double MR, MI;
   long_double qR, qI;
   int i;
@@ -131,19 +131,19 @@ void zmzdeposit(void *X, double *repY, int increpY, int fold){
   repY[i * increpY + 1] = qI.d;
 }
 
-void zizdeposit(void *X, double_complex_indexed *Y, int fold){
-  zmzdeposit(X, Y, 1, fold);
+void zizdeposit(const int fold, void *X, double_complex_indexed *Y){
+  zmzdeposit(fold, X, Y, 1);
 }
 
-void zmzadd(void *X, double *repY, int increpY, double *carY, int inccarY, int fold){
+void zmzadd(const int fold, void *X, double *repY, int increpY, double *carY, int inccarY){
   double aX[2];
   aX[0] = fabs(((double*)X)[0]);
   aX[1] = fabs(((double*)X)[1]);
-  zmzupdate(aX, repY, increpY, carY, inccarY, fold);
-  zmzdeposit(X, repY, increpY, fold);
-  zmrenorm(repY, increpY, carY, inccarY, fold);
+  zmzupdate(fold, aX, repY, increpY, carY, inccarY);
+  zmzdeposit(fold, X, repY, increpY);
+  zmrenorm(fold, repY, increpY, carY, inccarY);
 }
 
-void zizadd(void *X, double_complex_indexed *Y, int fold){
-  zmzadd(X, Y, 1, Y + 2 * fold, 1, fold);
+void zizadd(const int fold, void *X, double_complex_indexed *Y){
+  zmzadd(fold, X, Y, 1, Y + 2 * fold, 1);
 }

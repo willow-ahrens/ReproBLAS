@@ -114,16 +114,16 @@ void ddotI1_(
 #		endif
 
 		if (accu + lN > maxN) {
-			dmrenorm(dot, 1, c, 1, fold);
+			dmrenorm(fold, dot, 1, c, 1);
 			accu = 0;
 		}
 		
-		dmdupdate(amax, dot, 1, c, 1, fold);
+		dmdupdate(fold, amax, dot, 1, c, 1);
 		
 		ddotI2(lN, x, incx, y, incy, fold, dot);
 
 		accu += lN;
 	}
-	dmrenorm(dot, 1, c, 1, fold);
+	dmrenorm(fold, dot, 1, c, 1);
 }
 

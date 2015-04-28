@@ -71,34 +71,34 @@ void cisetzero(const int fold, float_complex_indexed *X);
 
 // PRINT
 
-void cmprint(float* repX, int increpX, float* carX, int inccarX, int fold);
-void ciprint(float_complex_indexed *X, int fold);
-void dmprint(double *repX, int increpX, double *carX, int inccarX, int fold);
-void diprint(double_indexed *X, int fold);
-void smprint(float *repX, int increpX, float *carX, int inccarX, int fold);
-void siprint(float_indexed *X, int fold);
-void zmprint(double *repX, int increpX, double *carX, int inccarX, int fold);
-void ziprint(double_complex_indexed *X, int fold);
+void cmprint(const int fold, float* repX, int increpX, float* carX, int inccarX);
+void ciprint(const int fold, float_complex_indexed *X);
+void dmprint(const int fold, double *repX, int increpX, double *carX, int inccarX);
+void diprint(const int fold, double_indexed *X);
+void smprint(const int fold, float *repX, int increpX, float *carX, int inccarX);
+void siprint(const int fold, float_indexed *X);
+void zmprint(const int fold, double *repX, int increpX, double *carX, int inccarX);
+void ziprint(const int fold, double_complex_indexed *X);
 
-void dmdmadd(double *repX, int increpX, double *carX, int inccarX, double* repY, int increpY, double* carY, int inccarY, int fold);
-void didiadd(double_indexed *X, double_indexed *Y, int fold);
-void zmzmadd(double *repX, int increpX, double *carX, int inccarX, double* repY, int increpY, double* carY, int inccarY, int fold);
-void ziziadd(double_complex_indexed *X, double_complex_indexed *Y, int fold);
-void dmddeposit(double X, double *repY, int increpY, int fold);
-void diddeposit(double X, double_indexed *Y, int fold);
-void dmdadd(double X, double *repY, int increpY, double *carY, int inccarY, int fold);
-void didadd(double X, double_indexed *Y, int fold);
-void zmzdeposit(void *X, double *repY, int increpY, int fold);
-void zizdeposit(void *X, double_complex_indexed *Y, int fold);
-void zmzadd(void *X, double *repY, int increpY, double *carY, int inccarY, int fold);
-void zizadd(void *X, double_complex_indexed *Y, int fold);
+void dmdmadd(const int fold, double *repX, int increpX, double *carX, int inccarX, double* repY, int increpY, double* carY, int inccarY);
+void didiadd(const int fold, double_indexed *X, double_indexed *Y);
+void zmzmadd(const int fold, double *repX, int increpX, double *carX, int inccarX, double* repY, int increpY, double* carY, int inccarY);
+void ziziadd(const int fold, double_complex_indexed *X, double_complex_indexed *Y);
+void dmddeposit(const int fold, double X, double *repY, int increpY);
+void diddeposit(const int fold, double X, double_indexed *Y);
+void dmdadd(const int fold, double X, double *repY, int increpY, double *carY, int inccarY);
+void didadd(const int fold, double X, double_indexed *Y);
+void zmzdeposit(const int fold, void *X, double *repY, int increpY);
+void zizdeposit(const int fold, void *X, double_complex_indexed *Y);
+void zmzadd(const int fold, void *X, double *repY, int increpY, double *carY, int inccarY);
+void zizadd(const int fold, void *X, double_complex_indexed *Y);
 
 extern int diwidth();
 extern int dicapacity();
 
 
 double dbound(int index);
-void dmbound(int index, double *repY, int increpY, int fold);
+void dmbound(const int fold, int index, double *repY, int increpY);
 int dindex(double X);
 int dmindex(double *repX);
 int diindex(double_indexed *X);
@@ -107,29 +107,29 @@ int smindex(float *repX);
 int siindex(float_indexed *X);
 int sindex(float X);
 double sbound(int index);
-void smbound(int index, float *repY, int increpY, int fold);
+void smbound(const int fold, int index, float *repY, int increpY);
 
-void dmdupdate(double X, double* repY, int increpY, double* carY, int inccarY, int fold);
-void didupdate(double X, double_indexed *Y, int fold);
-void zmdupdate(double X, double* repY, int increpY, double* carY, int inccarY, int fold);
-void zidupdate(double X, double_complex_indexed *Y, int fold);
-void zmzupdate(void *X, double* repY, int increpY, double* carY, int inccarY, int fold);
-void zizupdate(void *X, double_complex_indexed *Y, int fold);
-void smsupdate(float X, float* repY, int increpY, float* carY, int inccarY, int fold);
-void sisupdate(float X, float_indexed *Y, int fold);
-void cmsupdate(float X, float* repY, int increpY, float* carY, int inccarY, int fold);
-void cisupdate(float X, float_complex_indexed *Y, int fold);
-void cmcupdate(void *X, float* repY, int increpY, float* carY, int inccarY, int fold);
-void cicupdate(void *X, float_complex_indexed *Y, int fold);
+void dmdupdate(const int fold, double X, double* repY, int increpY, double* carY, int inccarY);
+void didupdate(const int fold, double X, double_indexed *Y);
+void zmdupdate(const int fold, double X, double* repY, int increpY, double* carY, int inccarY);
+void zidupdate(const int fold, double X, double_complex_indexed *Y);
+void zmzupdate(const int fold, void *X, double* repY, int increpY, double* carY, int inccarY);
+void zizupdate(const int fold, void *X, double_complex_indexed *Y);
+void smsupdate(const int fold, float X, float* repY, int increpY, float* carY, int inccarY);
+void sisupdate(const int fold, float X, float_indexed *Y);
+void cmsupdate(const int fold, float X, float* repY, int increpY, float* carY, int inccarY);
+void cisupdate(const int fold, float X, float_complex_indexed *Y);
+void cmcupdate(const int fold, void *X, float* repY, int increpY, float* carY, int inccarY);
+void cicupdate(const int fold, void *X, float_complex_indexed *Y);
 
-void dmrenorm(double* repX, int increpX, double* carX, int inccarX, int fold);
-void direnorm(double_indexed *X, int fold);
-void zmrenorm(double* repX, int increpX, double* carX, int inccarX, int fold);
-void zirenorm(double_complex_indexed *X, int fold);
-void smrenorm(float* repX, int increpX, float* carX, int inccarX, int fold);
-void sirenorm(float_indexed *X, int fold);
-void cmrenorm(float* repX, int increpX, float* carX, int inccarX, int fold);
-void cirenorm(float_complex_indexed *X, int fold);
+void dmrenorm(const int fold, double* repX, int increpX, double* carX, int inccarX);
+void direnorm(const int fold, double_indexed *X);
+void zmrenorm(const int fold, double* repX, int increpX, double* carX, int inccarX);
+void zirenorm(const int fold, double_complex_indexed *X);
+void smrenorm(const int fold, float* repX, int increpX, float* carX, int inccarX);
+void sirenorm(const int fold, float_indexed *X);
+void cmrenorm(const int fold, float* repX, int increpX, float* carX, int inccarX);
+void cirenorm(const int fold, float_complex_indexed *X);
 
 // COMPUTE THE UNIT IN TH FIRST PLACE
 extern double ufp(double x);
@@ -137,33 +137,33 @@ extern double ufp(double x);
 // RENORMALIZATION TO AVOID OVERFLOW
 
 // CONVERT A DOUBLE TO INDEXED FORMAT
-void didconv(double x, double_indexed *y, int fold);
+void didconv(const int fold, double x, double_indexed *y);
 
 // CONVERT AN INDEXED FP BACK TO DOUBLE
-double ddiconv(double_indexed *x, int fold);
+double ddiconv(const int fold, double_indexed *x);
 
 // CONVERT AN INDEXED COMPLEX TO COMPLEX
-void zziconv_sub(double_complex_indexed *x, void *y, int fold);
+void zziconv_sub(const int fold, double_complex_indexed *x, void *y);
 
 // CONVERT A DOUBLE COMPLEX TO INDEXED FORMAT
-extern void zizconv(void *x, double_complex_indexed *y, int fold);
+extern void zizconv(const int fold, void *x, double_complex_indexed *y);
 
 extern int sicapacity();
 extern int siwidth();
 
 
-void smsmadd(float *repX, int increpX, float *carX, int inccarX, float* repY, int increpY, float* carY, int inccarY, int fold) ;
-void sisiadd(float_indexed *X, float_indexed *Y, int fold);
-void cmcmadd(float *repX, int increpX, float *carX, int inccarX, float* repY, int increpY, float* carY, int inccarY, int fold) ;
-void ciciadd(float_complex_indexed *X, float_complex_indexed *Y, int fold);
-void smsdeposit(float X, float *repY, int increpY, int fold);
-void sisdeposit(float X, float_indexed *Y, int fold);
-void smsadd(float X, float *repY, int increpY, float *carY, int inccarY, int fold);
-void sisadd(float X, float_indexed *Y, int fold);
-void cmcdeposit(void *X, float *repY, int increpY, int fold);
-void cicdeposit(void *X, float_complex_indexed *Y, int fold);
-void cmcadd(void *X, float *repY, int increpY, float *carY, int inccarY, int fold);
-void cicadd(void *X, float_complex_indexed *Y, int fold);
+void smsmadd(const int fold, float *repX, int increpX, float *carX, int inccarX, float* repY, int increpY, float* carY, int inccarY) ;
+void sisiadd(const int fold, float_indexed *X, float_indexed *Y);
+void cmcmadd(const int fold, float *repX, int increpX, float *carX, int inccarX, float* repY, int increpY, float* carY, int inccarY) ;
+void ciciadd(const int fold, float_complex_indexed *X, float_complex_indexed *Y);
+void smsdeposit(const int fold, float X, float *repY, int increpY);
+void sisdeposit(const int fold, float X, float_indexed *Y);
+void smsadd(const int fold, float X, float *repY, int increpY, float *carY, int inccarY);
+void sisadd(const int fold, float X, float_indexed *Y);
+void cmcdeposit(const int fold, void *X, float *repY, int increpY);
+void cicdeposit(const int fold, void *X, float_complex_indexed *Y);
+void cmcadd(const int fold, void *X, float *repY, int increpY, float *carY, int inccarY);
+void cicadd(const int fold, void *X, float_complex_indexed *Y);
 
 
 // NEGATION
@@ -176,12 +176,12 @@ extern float ufpf(float x);
 // RENORMALIZATION TO AVOID OVERFLOW
 
 // CONVERSION FROM INDEXED FORMAT TO FLOAT
-extern float ssiconv(float_indexed *x, int fold);
-extern void cciconv_sub(float_complex_indexed *x, void *y, int fold);
+extern float ssiconv(const int fold, float_indexed *x);
+extern void cciconv_sub(const int fold, float_complex_indexed *x, void *y);
 
 // CONVERT FROM FLOAT TO INDEXED FORMAT
-extern void sisconv(float x, float_indexed *y, int fold);
-extern void cicconv(void *x, float_complex_indexed *y, int fold);
+extern void sisconv(const int fold, float x, float_indexed *y);
+extern void cicconv(const int fold, void *x, float_complex_indexed *y);
 
 
 /*******************************************/

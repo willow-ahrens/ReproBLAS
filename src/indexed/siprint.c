@@ -2,7 +2,7 @@
 
 #include "indexed.h"
 
-void smprint(float *repX, int increpX, float *carX, int inccarX, int fold) {
+void smprint(const int fold, float *repX, int increpX, float *carX, int inccarX) {
   int i;
   float M;
   for (i = 0; i < fold; i++, repX += increpX, carX += inccarX) {
@@ -11,6 +11,6 @@ void smprint(float *repX, int increpX, float *carX, int inccarX, int fold) {
   }
 }
 
-void siprint(float_indexed *X, int fold) {
-  smprint(X, 1, X + fold, 1, fold);
+void siprint(const int fold, float_indexed *X) {
+  smprint(fold, X, 1, X + fold, 1);
 }

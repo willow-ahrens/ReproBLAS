@@ -43,5 +43,5 @@ double rddot(
 
 	ddotI1(N, x, incx, y, incy, DEFAULT_FOLD, dot.m, dot.c);
 
-	return ddiconv(&dot, DEFAULT_FOLD);
+	return ddiconv(DEFAULT_FOLD, &dot);
 }

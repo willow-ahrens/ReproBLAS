@@ -165,11 +165,11 @@ void zdotI1_(int N, int NB,
 			continue;
 		
 		if (accu + lN > maxN) {
-			zmrenorm(dot, 1, c, 1, fold);
+			zmrenorm(fold, dot, 1, c, 1);
 			accu = 0;
 		}
 
-		zmzupdate(&amax, dot, 1, c, 1, fold);
+		zmzupdate(fold, &amax, dot, 1, c, 1);
 
 		if (conj)
 			zdotcI2(lN, v, inc, y, incy, fold, dot);
@@ -189,6 +189,6 @@ void zdotI1_(int N, int NB,
 		}
 
 	}
-	zmrenorm(dot, 1, c, 1, fold);
+	zmrenorm(fold, dot, 1, c, 1);
 }
 

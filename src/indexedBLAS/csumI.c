@@ -156,13 +156,13 @@ void csumI1_(int N, int NB,
 		if (status == 1)
 			continue;
 		
-		cmcupdate(&amax, sum, 1, C, 1, fold);
+		cmcupdate(fold, &amax, sum, 1, C, 1);
 
 		for (j = 0; j < lN; j+=maxN) {
 			lB = maxN < lN - j ? maxN : lN - j;
 			csumI2(lB, v+j*inc, inc, fold, sum);
 
-			cmrenorm(sum, 1, C, 1, fold);
+			cmrenorm(fold, sum, 1, C, 1);
 		}
 
 		if (status == 2) {

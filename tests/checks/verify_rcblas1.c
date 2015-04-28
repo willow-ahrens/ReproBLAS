@@ -37,9 +37,9 @@ int verify_rcblas1_reproducibility(int N, float complex* X, int incX, float comp
       for (i = 0; i < N; i += block_N) {
         block_N = block_N < N - i ? block_N : (N-i);
         I_float_Complex foo = (wrap_Icblas1_func(func))(block_N, X + i * incX, incX, Y + i * incY, incY);
-        ciciadd(&foo, &Ires, DEFAULT_FOLD);
+        ciciadd(DEFAULT_FOLD, &foo, &Ires);
       }
-      cciconv_sub(&Ires, &res, DEFAULT_FOLD);
+      cciconv_sub(DEFAULT_FOLD, &Ires, &res);
     }
     if (res != ref) {
       printf("%s(X, Y)[num_blocks=%d,block_N=%d] = %g + %gi != %g + %gi\n", wrap_rcblas1_names[func], num_blocks, block_N, CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
@@ -47,9 +47,9 @@ int verify_rcblas1_reproducibility(int N, float complex* X, int incX, float comp
         Ires = (wrap_Icblas1_func(func))(N, X, incX, Y, incY);
       }
       printf("Ref I_float_Complex:\n");
-      ciprint(&Iref, DEFAULT_FOLD);
+      ciprint(DEFAULT_FOLD, &Iref);
       printf("\nRes I_float_Complex:\n");
-      ciprint(&Ires, DEFAULT_FOLD);
+      ciprint(DEFAULT_FOLD, &Ires);
       printf("\n");
       return 1;
     }

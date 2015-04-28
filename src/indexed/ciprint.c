@@ -2,7 +2,7 @@
 
 #include "indexed.h"
 
-void cmprint(float* repX, int increpX, float* carX, int inccarX, int fold) {
+void cmprint(const int fold, float* repX, int increpX, float* carX, int inccarX) {
   int i;
   float M;
   for (i = 0; i < fold; i++, repX += increpX, carX += inccarX) {
@@ -13,6 +13,6 @@ void cmprint(float* repX, int increpX, float* carX, int inccarX, int fold) {
   }
 }
 
-void ciprint(float_complex_indexed *X, int fold) {
-  cmprint(X, 2, X + fold * 2, 2, fold);
+void ciprint(const int fold, float_complex_indexed *X) {
+  cmprint(fold, X, 2, X + fold * 2, 2);
 }

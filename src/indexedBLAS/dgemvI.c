@@ -37,10 +37,10 @@ void dgemvI(rblas_order_t Order,
     case rblas_Col_Major:
       switch(TransA){
         case rblas_No_Trans:
-          dgemvI(rblas_Row_Major, rblas_Trans, N, M, A, lda, X, incX, Y, incY, fold);
+          dgemvI(fold, rblas_Row_Major, rblas_Trans, N, M, A, lda, X, incX, Y, incY);
           break;
         default:
-          dgemvI(rblas_Row_Major, rblas_No_Trans, N, M, A, lda, X, incX, Y, incY, fold);
+          dgemvI(fold, rblas_Row_Major, rblas_No_Trans, N, M, A, lda, X, incX, Y, incY);
           break;
       }
       break;

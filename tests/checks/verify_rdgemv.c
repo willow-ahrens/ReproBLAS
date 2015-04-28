@@ -112,7 +112,7 @@ void wrap_dgemvI(const char Order,
       t = rblas_Trans;
       break;
   }
-  dgemvI(o, t, M, N, A, lda, X, incX, Y, incY, DEFAULT_FOLD);
+  dgemvI(DEFAULT_FOLD, o, t, M, N, A, lda, X, incX, Y, incY);
 }
 
 int verify_dgemv_reproducibility(char Order, char TransA, int M, int N, int NX, int NY, double alpha, double *A, int lda, double* X, int incX, double beta, double *Y, Idouble *YI, int incY, double *ref, Idouble *Iref, int max_num_blocks) {
@@ -171,16 +171,16 @@ int verify_dgemv_reproducibility(char Order, char TransA, int M, int N, int NX, 
           break;
       }
       for(i = 0; i < NY; i++){
-        res[i * incY] = ddiconv(Ires + i * incY, DEFAULT_FOLD);
+        res[i * incY] = ddiconv(DEFAULT_FOLD, Ires + i * incY);
       }
       for(i = 0; i < NY; i++){
         if(res[i * incY] != ref[i * incY]){
           printf("dgemv(A, X, Y)[num_blocks=%d,block_N=%d] = %g != %g\n", num_blocks, block_N, res[i * incY], ref[i * incY]);
           if (num_blocks != 1) {
             printf("Ref I_double:\n");
-            diprint(&Iref[i * incY], DEFAULT_FOLD);
+            diprint(DEFAULT_FOLD, &Iref[i * incY]);
             printf("\nRes I_double:\n");
-            diprint(&Ires[i * incY], DEFAULT_FOLD);
+            diprint(DEFAULT_FOLD, &Ires[i * incY]);
             printf("\n");
           }
           return 1;
@@ -256,7 +256,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   util_dvec_fill(NX, X, incX, FillX, ScaleX, CondX);
   util_dvec_fill(NY, Y, incY._int.value, FillY._named.value, ScaleY._double.value, CondY._double.value);
   for(int i = 0; i < NY; i++){
-    didconv(Y[i * incY._int.value], YI + i * incY._int.value, DEFAULT_FOLD);
+    didconv(DEFAULT_FOLD, Y[i * incY._int.value], YI + i * incY._int.value);
   }
   double *ref  = (double*)malloc(NY * incY._int.value * sizeof(double));
   Idouble *Iref = (Idouble*)malloc(NY * incY._int.value * disize(DEFAULT_FOLD));

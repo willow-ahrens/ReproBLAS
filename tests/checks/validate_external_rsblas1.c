@@ -88,11 +88,11 @@ int file_test(int argc, char** argv, char *fname) {
       return 1;
     }
     if(memcmp(&Iref, &Ires, sizeof(Iref)) != 0){
-      printf("I%s(%s) = %g != %g\n", wrap_rsblas1_names[func_type._named.value], fname, ssiconv(&Ires, DEFAULT_FOLD), ssiconv(&Iref, DEFAULT_FOLD));
+      printf("I%s(%s) = %g != %g\n", wrap_rsblas1_names[func_type._named.value], fname, ssiconv(DEFAULT_FOLD, &Ires), ssiconv(DEFAULT_FOLD, &Iref));
       printf("Ref I_float:\n");
-      siprint(&Iref, DEFAULT_FOLD);
+      siprint(DEFAULT_FOLD, &Iref);
       printf("\nRes I_float:\n");
-      siprint(&Ires, DEFAULT_FOLD);
+      siprint(DEFAULT_FOLD, &Ires);
       printf("\n");
       return 1;
     }

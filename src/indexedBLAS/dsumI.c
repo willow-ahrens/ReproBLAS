@@ -108,16 +108,16 @@ void dsumI1_(int N, int NB,
 			continue;
 
 		if (accu + lN > maxN) {
-			dmrenorm(sum, 1, c, 1, fold);
+			dmrenorm(fold, sum, 1, c, 1);
 			accu = 0;
 		}
 		
-		dmdupdate(amax, sum, 1, c, 1, fold);
+		dmdupdate(fold, amax, sum, 1, c, 1);
 		
 		// TODO: CHECK POTENTIAL FALSE INFINITY
 		dsumI2(lN, v, inc, fold, sum);
 		accu += lN;
 	}
-	dmrenorm(sum, 1, c, 1, fold);
+	dmrenorm(fold, sum, 1, c, 1);
 }
 

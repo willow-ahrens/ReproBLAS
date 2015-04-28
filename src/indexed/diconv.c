@@ -9,7 +9,7 @@
 #include "indexed.h"
 #include "../Common/Common.h"
 
-void dmdconv(double x, double* repy, int increpy, double* cary, int inccary, int fold) {
+void dmdconv(const int fold, double x, double* repy, int increpy, double* cary, int inccary) {
 	int i;
 	double q;
 	double s;
@@ -20,7 +20,7 @@ void dmdconv(double x, double* repy, int increpy, double* cary, int inccary, int
 		}
 		return;
 	}
-	dmbound(dindex(fabs(x)), repy, increpy, fold);
+	dmbound(fold, dindex(fabs(x)), repy, increpy);
 	for (i = 0; i < fold; i++, repy += increpy, cary += inccary) {
 		// high-order part
 		cary[0] = 0.0;
@@ -33,20 +33,20 @@ void dmdconv(double x, double* repy, int increpy, double* cary, int inccary, int
 	}
 }
 
-void didconv(double x, double_indexed *y, int fold) {
-	dmdconv(x, y, 1, y + fold, 1, fold);
+void didconv(const int fold, double x, double_indexed *y) {
+	dmdconv(fold, x, y, 1, y + fold, 1);
 }
 
-void zmzconv(void *x, double *repy, int increpy, double *cary, int inccary, int fold) {
-  dmdconv(((double*)x)[0], repy, increpy * 2, cary, inccary * 2, fold);
-  dmdconv(((double*)x)[1], repy + 1, increpy * 2, cary + 1, inccary * 2, fold);
+void zmzconv(const int fold, void *x, double *repy, int increpy, double *cary, int inccary) {
+  dmdconv(fold, ((double*)x)[0], repy, increpy * 2, cary, inccary * 2);
+  dmdconv(fold, ((double*)x)[1], repy + 1, increpy * 2, cary + 1, inccary * 2);
 }
 
-void zizconv(void *x, double_complex_indexed *y, int fold) {
-	zmzconv(x, y, 1, y + 2 * fold, 1, fold);
+void zizconv(const int fold, void *x, double_complex_indexed *y) {
+	zmzconv(fold, x, y, 1, y + 2 * fold, 1);
 }
 
-double ddmconv(double* repx, int increpx, double* carx, int inccarx, int fold) {
+double ddmconv(const int fold, double* repx, int increpx, double* carx, int inccarx) {
 	int i;
 	double y = 0.0;
 
@@ -59,7 +59,6 @@ double ddmconv(double* repx, int increpx, double* carx, int inccarx, int fold) {
 	}
 
 	// TODO: SCALING TO AVOID OVERFLOW
-	fold = (fold < 1) ? 1 : fold; //TODO wtf is this line for?
 
 	for (i = 0; i < fold; i++, repx += increpx, carx += inccarx) {
 		y += (repx[0] + (carx[0] - 6) * ufp(repx[0]) * 0.25);
@@ -68,15 +67,15 @@ double ddmconv(double* repx, int increpx, double* carx, int inccarx, int fold) {
 	return y;
 }
 
-double ddiconv(double_indexed *x, int fold) {
-  return ddmconv(x, 1, x + fold, 1, fold);
+double ddiconv(const int fold, double_indexed *x) {
+  return ddmconv(fold, x, 1, x + fold, 1);
 }
 
-void zzmconv_sub(double *repx, int increpx, double *carx, int inccarx, void *y, int fold) {
-	((double*)y)[0] = ddmconv(repx, increpx * 2, carx, inccarx + 1, fold);
-	((double*)y)[1] = ddmconv(repx + 1, increpx * 2, carx + 1, inccarx + 1, fold);
+void zzmconv_sub(const int fold, double *repx, int increpx, double *carx, int inccarx, void *y) {
+	((double*)y)[0] = ddmconv(fold, repx, increpx * 2, carx, inccarx + 1);
+	((double*)y)[1] = ddmconv(fold, repx + 1, increpx * 2, carx + 1, inccarx + 1);
 }
 
-void zziconv_sub(double_complex_indexed *x, void *y, int fold) {
-  zzmconv_sub(x, 1, x + 2 * fold, 1, y, fold);
+void zziconv_sub(const int fold, double_complex_indexed *x, void *y) {
+  zzmconv_sub(fold, x, 1, x + 2 * fold, 1, y);
 }

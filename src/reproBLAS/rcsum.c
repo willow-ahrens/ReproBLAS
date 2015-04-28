@@ -21,7 +21,7 @@ float complex rcsum(int N, float complex* v, int inc) {
 	cisetzero(DEFAULT_FOLD, &sum);
     float complex ret;
 	csumI1(N, v, inc, DEFAULT_FOLD, (float complex*)sum.m, sum.c);
-    cciconv_sub(&sum, &ret, DEFAULT_FOLD);
+    cciconv_sub(DEFAULT_FOLD, &sum, &ret);
     return ret;
 }
 

@@ -104,13 +104,13 @@ void scasumI1_(int N, int NB,
 		if (status > 0)
 			continue;
 		
-		cmsupdate(amax, BUFFER, 1, C, 1, fold);
+		cmsupdate(fold, amax, BUFFER, 1, C, 1);
 
 		for (j = 0; j < lN; j+=maxN) {
 			lB = maxN < lN - j ? maxN : lN - j;
 			scasumI2(lB, v+j*inc, inc, fold, BUFFER);
 
-			cmrenorm(BUFFER, 1, C, 1, fold);
+			cmrenorm(fold, BUFFER, 1, C, 1);
 		}
 
 	}
@@ -121,7 +121,7 @@ void scasumI1_(int N, int NB,
 	for (i=0 ; i < fold; i++) {
 		carry[i] = C[2*i]+ C[2*i+1];
 	}
-	smrenorm(sum, 1, carry, 1, fold);
+	smrenorm(fold, sum, 1, carry, 1);
 
 	if (created == 1) {
 		free(work);

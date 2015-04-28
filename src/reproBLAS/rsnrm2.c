@@ -28,7 +28,7 @@ float rsnrm2(int N, float* v, int inc) {
 	if (isinf(sum.m[0]))
 		return sum.m[0];
 
-	sqrt_sum = ssiconv(&sum, DEFAULT_FOLD);
+	sqrt_sum = ssiconv(DEFAULT_FOLD, &sum);
 	sqrt_sum = sqrt(sqrt_sum);
 	return scale * sqrt_sum;
 }
