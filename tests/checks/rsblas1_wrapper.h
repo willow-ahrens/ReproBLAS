@@ -64,7 +64,7 @@ Ifloat wrap_snrm2I(int N, float *x, int incx, float *y, int incy) {
   (void)y;
   (void)incy;
   Ifloat nrm2;
-  sISetZero(nrm2);
+  sisetzero(DEFAULT_FOLD, &nrm2);
   snrm2I(N, x, incx, &nrm2);
   return nrm2;
 }

@@ -22,7 +22,7 @@ double rdnrm2(int N, double* v, int inc) {
 	double sqrt_sum;
 	double scale;
 
-	dISetZero(sum);
+	disetzero(DEFAULT_FOLD, &sum);
 
 	scale = dnrm2I1(N, v, inc, DEFAULT_FOLD, sum.m, sum.c);
 

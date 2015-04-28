@@ -49,7 +49,7 @@ I_float_Complex wrap_scasumI(int N, float complex *x, int incx, float complex *y
   (void)incy;
   I_float_Complex casum;
   Ifloat asum = scasumI(N, x, incx);
-  csISet(casum, asum);
+  cisiset(DEFAULT_FOLD, &asum, &casum);
   return casum;
 }
 
@@ -80,9 +80,9 @@ I_float_Complex wrap_scnrm2I(int N, float complex *x, int incx, float complex *y
   (void)incy;
   I_float_Complex cnrm2;
   Ifloat nrm2;
-  sISetZero(nrm2);
+  sisetzero(DEFAULT_FOLD, &nrm2);
   scnrm2I(N, x, incx, &nrm2);
-  csISet(cnrm2, nrm2);
+  cisiset(DEFAULT_FOLD, &nrm2, &cnrm2);
   return cnrm2;
 }
 

@@ -33,7 +33,7 @@ int verify_rcblas1_reproducibility(int N, float complex* X, int incX, float comp
       res = (wrap_rcblas1_func(func))(N, X, incX, Y, incY);
     else {
       block_N =  (N + num_blocks - 1) / num_blocks;
-      cISetZero(Ires);
+      cisetzero(DEFAULT_FOLD, &Ires);
       for (i = 0; i < N; i += block_N) {
         block_N = block_N < N - i ? block_N : (N-i);
         I_float_Complex foo = (wrap_Icblas1_func(func))(block_N, X + i * incX, incX, Y + i * incY, incY);

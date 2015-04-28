@@ -11,11 +11,11 @@ size_t cisize(const int fold){
   return 4*fold*sizeof(float);
 }
 
-size_t sinum(const int fold){
+int sinum(const int fold){
   return 2*fold;
 }
 
-size_t cinum(const int fold){
+int cinum(const int fold){
   return 4*fold;
 }
 
@@ -27,7 +27,7 @@ float_complex_indexed *cialloc(const int fold){
   return (float_complex_indexed*)malloc(cisize(fold));
 }
 
-void smset(const int fold, const float *repX, const int increpX, const float *carX, const int inccarX, float *repY, const int increpY, float *carY, const int inccarY){
+void smsmset(const int fold, const float *repX, const int increpX, const float *carX, const int inccarX, float *repY, const int increpY, float *carY, const int inccarY){
   int i;
   for(i = 0; i < fold; i++){
     repY[i * increpY] = repX[i * increpX];
@@ -35,17 +35,26 @@ void smset(const int fold, const float *repX, const int increpX, const float *ca
   }
 }
 
-void siset(const int fold, const float_indexed *X, float_indexed *Y){
+void sisiset(const int fold, const float_indexed *X, float_indexed *Y){
   memcpy(Y, X, sisize(fold));
 }
 
-void cmset(const int fold, const float *repX, const int increpX, const float *carX, const int inccarX, float *repY, const int increpY, float *carY, const int inccarY){
-  smset(fold, repX, 2 * increpX, carX, 2 * inccarX, repY, 2 * increpY, carY, 2 * inccarY);
-  smset(fold, repX + 1, 2 * increpX, carX + 1, 2 * inccarX, repY + 1, 2 * increpY, carY + 1, 2 * inccarY);
+void cmcmset(const int fold, const float *repX, const int increpX, const float *carX, const int inccarX, float *repY, const int increpY, float *carY, const int inccarY){
+  smsmset(fold, repX, 2 * increpX, carX, 2 * inccarX, repY, 2 * increpY, carY, 2 * inccarY);
+  smsmset(fold, repX + 1, 2 * increpX, carX + 1, 2 * inccarX, repY + 1, 2 * increpY, carY + 1, 2 * inccarY);
 }
 
-void ciset(const int fold, const float_complex_indexed *X, float_complex_indexed *Y){
+void ciciset(const int fold, const float_complex_indexed *X, float_complex_indexed *Y){
   memcpy(Y, X, cisize(fold));
+}
+
+void cmsmset(const int fold, const float *repX, const int increpX, const float *carX, const int inccarX, float *repY, const int increpY, float *carY, const int inccarY){
+  smsmset(fold, repX, increpX, carX, inccarX, repY, 2 * increpY, carY, 2 * inccarY);
+  smsetzero(fold, repY + 1, 2 * increpY, carY + 1, 2 * inccarY);
+}
+
+void cisiset(const int fold, const float_indexed *X, float_complex_indexed *Y){
+  cmsmset(fold, X, 1, X + fold, 1, Y, 1, Y + 2 * fold, 1);
 }
 
 void smsetzero(const int fold, float *repX, const int increpX, float *carX, const int inccarX){

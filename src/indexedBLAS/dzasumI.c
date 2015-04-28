@@ -53,7 +53,7 @@ void dzasumI1_(int N, int NB,
 	int status;
 	int lN;
 	int accu = 0;
-	int maxN = dICapacity();
+	int maxN = dicapacity();
 	double tmp;
 	dcomplex BUFFER[2 * MAX_FOLD];
 

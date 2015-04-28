@@ -94,7 +94,7 @@ void ddotI1_(
 	int status;
 	double amax;
 	int accu = 0;
-	int maxN = dICapacity();
+	int maxN = dicapacity();
 
 	for (i = 0; i < N; i+=NB, x += NB*incx, y += NB*incy) {
 		// BLOCK SIZE

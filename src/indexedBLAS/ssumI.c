@@ -86,7 +86,7 @@ void ssumI1_(int N, int NB,
 	int i, j;
 	int status;
 	int lN;
-	int maxN = sICapacity();
+	int maxN = sicapacity();
 		
 	for (i = 0; i < N; i+=NB, v+=NB * inc) {
 		lN = NB < (N - i) ? NB:(N-i);

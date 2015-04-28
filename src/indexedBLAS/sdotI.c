@@ -97,7 +97,7 @@ void sdotI1_(
 	int lN, i, j;
 	int status;
 	float amax;
-	int maxN = sICapacity();
+	int maxN = sicapacity();
 
 	for (i = 0; i < N; i+=NB, x += NB*incx, y += NB*incy) {
 		lN = NB < (N - i) ? NB : N - i;

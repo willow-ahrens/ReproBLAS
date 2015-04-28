@@ -167,7 +167,7 @@ void cdotI1_(int N, int NB,
 	int i, j;
 	int status;
 	int lN;
-	int maxN = sICapacity() / 2;
+	int maxN = sicapacity() / 2;
 	int lB;
 		
 	for (i = 0; i < N; i+=NB, v+=NB*inc, y+=NB*incy) {

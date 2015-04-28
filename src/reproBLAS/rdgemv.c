@@ -19,7 +19,7 @@ void rdgemv(const rblas_order_t order,
     case rblas_Row_Major:
       switch(TransA){
         case rblas_No_Trans:
-          YI = (Idouble*)malloc(dISize(DEFAULT_FOLD)*M);
+          YI = (Idouble*)malloc(disize(DEFAULT_FOLD)*M);
           for(int i = 0; i < M; i++){
             didconv(Y[i * incY], YI + i, DEFAULT_FOLD);
           }
@@ -30,7 +30,7 @@ void rdgemv(const rblas_order_t order,
           free(YI);
           break;
         default:
-          YI = (Idouble*)malloc(dISize(DEFAULT_FOLD)*N);
+          YI = (Idouble*)malloc(disize(DEFAULT_FOLD)*N);
           for(int i = 0; i < N; i++){
             didconv(Y[i * incY], YI + i, DEFAULT_FOLD);
           }

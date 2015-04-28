@@ -49,7 +49,7 @@ void dasumI1_(int N, int NB,
 	int status;
 	int lN;
 	int accu = 0;
-	int maxN = dICapacity();
+	int maxN = dicapacity();
 		
 	for (i = 0; i < N; i+=NB, v+=NB * inc) {
 		lN = NB < (N - i) ? NB:(N-i);

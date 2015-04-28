@@ -24,7 +24,7 @@ I_double ddotI(
 
 	I_double dot;
 
-	dISetZero(dot);
+	disetzero(DEFAULT_FOLD, &dot);
 
 	ddotI1(N, x, incx, y, incy, DEFAULT_FOLD, dot.m, dot.c);
 
@@ -39,7 +39,7 @@ double rddot(
 
 	I_double dot;
 
-	dISetZero(dot);
+	disetzero(DEFAULT_FOLD, &dot);
 
 	ddotI1(N, x, incx, y, incy, DEFAULT_FOLD, dot.m, dot.c);
 

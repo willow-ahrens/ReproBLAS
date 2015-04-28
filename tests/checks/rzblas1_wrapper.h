@@ -48,7 +48,7 @@ I_double_Complex wrap_dzasumI(int N, double complex *x, int incx, double complex
   (void)incy;
   I_double_Complex casum;
   Idouble asum = dzasumI(N, x, incx);
-  zdISet(casum, asum);
+  zidiset(DEFAULT_FOLD, &asum, &casum);
   return casum;
 }
 
@@ -79,9 +79,9 @@ I_double_Complex wrap_dznrm2I(int N, double complex *x, int incx, double complex
   (void)incy;
   I_double_Complex cnrm2;
   Idouble nrm2;
-  dISetZero(nrm2);
+  disetzero(DEFAULT_FOLD, &nrm2);
   dznrm2I(N, x, incx, &nrm2);
-  zdISet(cnrm2, nrm2);
+  zidiset(DEFAULT_FOLD, &nrm2, &cnrm2);
   return cnrm2;
 }
 

@@ -47,7 +47,7 @@ float snrm2I1_(int N, int NB,
 	int i, j;
 	int status;
 	int lN;
-	int maxN = sICapacity();
+	int maxN = sicapacity();
 	float scale = 0.0;
 	float nscale = 0.0;
 		

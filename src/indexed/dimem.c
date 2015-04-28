@@ -11,11 +11,11 @@ size_t zisize(const int fold){
   return 4*fold*sizeof(double);
 }
 
-size_t dinum(const int fold){
+int dinum(const int fold){
   return 2*fold;
 }
 
-size_t zinum(const int fold){
+int zinum(const int fold){
   return 4*fold;
 }
 
@@ -27,7 +27,7 @@ double_complex_indexed *zialloc(const int fold){
   return (double_complex_indexed*)malloc(zisize(fold));
 }
 
-void dmset(const int fold, const double *repX, const int increpX, const double *carX, const int inccarX, double *repY, const int increpY, double *carY, const int inccarY){
+void dmdmset(const int fold, const double *repX, const int increpX, const double *carX, const int inccarX, double *repY, const int increpY, double *carY, const int inccarY){
   int i;
   for(i = 0; i < fold; i++){
     repY[i * increpY] = repX[i * increpX];
@@ -35,18 +35,28 @@ void dmset(const int fold, const double *repX, const int increpX, const double *
   }
 }
 
-void diset(const int fold, const double_indexed *X, double_indexed *Y){
+void didiset(const int fold, const double_indexed *X, double_indexed *Y){
   memcpy(Y, X, disize(fold));
 }
 
-void zmset(const int fold, const double *repX, const int increpX, const double *carX, const int inccarX, double *repY, const int increpY, double *carY, const int inccarY){
-  dmset(fold, repX, 2 * increpX, carX, 2 * inccarX, repY, 2 * increpY, carY, 2 * inccarY);
-  dmset(fold, repX + 1, 2 * increpX, carX + 1, 2 * inccarX, repY + 1, 2 * increpY, carY + 1, 2 * inccarY);
+void zmzmset(const int fold, const double *repX, const int increpX, const double *carX, const int inccarX, double *repY, const int increpY, double *carY, const int inccarY){
+  dmdmset(fold, repX, 2 * increpX, carX, 2 * inccarX, repY, 2 * increpY, carY, 2 * inccarY);
+  dmdmset(fold, repX + 1, 2 * increpX, carX + 1, 2 * inccarX, repY + 1, 2 * increpY, carY + 1, 2 * inccarY);
 }
 
-void ziset(const int fold, const double_complex_indexed *X, double_complex_indexed *Y){
+void ziziset(const int fold, const double_complex_indexed *X, double_complex_indexed *Y){
   memcpy(Y, X, zisize(fold));
 }
+
+void zmdmset(const int fold, const double *repX, const int increpX, const double *carX, const int inccarX, double *repY, const int increpY, double *carY, const int inccarY){
+  dmdmset(fold, repX, increpX, carX, inccarX, repY, 2 * increpY, carY, 2 * inccarY);
+  dmsetzero(fold, repY + 1, 2 * increpY, carY + 1, 2 * inccarY);
+}
+
+void zidiset(const int fold, const double_indexed *X, double_complex_indexed *Y){
+  zmdmset(fold, X, 1, X + fold, 1, Y, 1, Y + 2 * fold, 1);
+}
+
 
 void dmsetzero(const int fold, double *repX, const int increpX, double *carX, const int inccarX){
   int i;

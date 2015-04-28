@@ -11,14 +11,14 @@
 
 I_float_Complex csumI(int N, float complex* v, int inc) {
 	I_float_Complex sum;
-	cISetZero(sum);
+	cisetzero(DEFAULT_FOLD, &sum);
 	csumI1(N, v, inc, DEFAULT_FOLD, (float complex*)sum.m, sum.c);
 	return sum;
 }
 
 float complex rcsum(int N, float complex* v, int inc) {
 	I_float_Complex sum;
-	cISetZero(sum);
+	cisetzero(DEFAULT_FOLD, &sum);
     float complex ret;
 	csumI1(N, v, inc, DEFAULT_FOLD, (float complex*)sum.m, sum.c);
     cciconv_sub(&sum, &ret, DEFAULT_FOLD);

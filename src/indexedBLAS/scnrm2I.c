@@ -55,14 +55,14 @@ float scnrm2I1_(int N, int NB,
 	int status;
 	int lN;
 	int lB;
-	int maxN = sICapacity();
+	int maxN = sicapacity();
 	float scale = 0.0;
 	float nscale = 0.0;
 	int created = 0;
 
 	if (work == NULL) {
 		created = 1;
-		work    = (float complex*) malloc(cISize(fold));
+		work    = (float complex*) malloc(cisize(fold));
 	}
 
 

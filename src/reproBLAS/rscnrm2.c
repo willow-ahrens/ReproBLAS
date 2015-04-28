@@ -24,7 +24,7 @@ float rscnrm2(int N, float complex* v, int inc) {
 	float sqrt_sum;
 	float scale = 0.0;
 	
-	sISetZero(sum);
+	sisetzero(DEFAULT_FOLD, &sum);
 	scale = scnrm2I1(N, v, inc, DEFAULT_FOLD, sum.m, sum.c, (float complex*)&tmp);
 
 	if (isnan(scale))

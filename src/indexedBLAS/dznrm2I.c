@@ -49,7 +49,7 @@ double dznrm2I1_(int N, int NB,
 	int status;
 	int lN;
 	int accu = 0;
-	int maxN = dICapacity();
+	int maxN = dicapacity();
 	double scale = 0.0;
 	double nscale = 0.0;
 	double M;

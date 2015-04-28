@@ -11,7 +11,7 @@ I_double_Complex zdotcI(
 	double complex* y, int incy
 ) {
 	I_double_Complex dot;
-	zISetZero(dot);
+	zisetzero(DEFAULT_FOLD, &dot);
 	zdotcI1(N, x, incx, y, incy, DEFAULT_FOLD, 
 		(double complex*)dot.m, (double complex*)dot.c);
 	return dot;
@@ -23,7 +23,7 @@ double complex rzdotc(
 	double complex* y, int incy
 ) {
 	I_double_Complex dot;
-	zISetZero(dot);
+	zisetzero(DEFAULT_FOLD, &dot);
 	zdotcI1(N, x, incx, y, incy, DEFAULT_FOLD, 
 		(double complex*)dot.m, (double complex*)dot.c);
     double complex ret;
@@ -37,7 +37,7 @@ I_double_Complex zdotuI(
 	double complex* y, int incy
 ) {
 	I_double_Complex dot;
-	zISetZero(dot);
+	zisetzero(DEFAULT_FOLD, &dot);
 	zdotuI1(N, x, incx, y, incy, DEFAULT_FOLD, 
 		(double complex*)dot.m, (double complex*)dot.c);
 	return dot;
@@ -49,7 +49,7 @@ double complex rzdotu(
 	double complex* y, int incy
 ) {
 	I_double_Complex dot;
-	zISetZero(dot);
+	zisetzero(DEFAULT_FOLD, &dot);
 	zdotuI1(N, x, incx, y, incy, DEFAULT_FOLD, 
 		(double complex*)dot.m, (double complex*)dot.c);
     double complex ret;

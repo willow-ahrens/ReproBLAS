@@ -18,11 +18,11 @@ static int   bounds_initialized = 0;                //initialized in bounds_init
 static int   bound_min_index    = BOUND_ZERO_INDEX; //initialized in bounds_initialize
 static int   bound_max_index    = BOUND_ZERO_INDEX; //initialized in bounds_initialize
 
-int sIWidth() {
+int siwidth() {
   return BIN_WIDTH;
 }
 
-int sICapacity() {
+int sicapacity() {
   return 1 << (PREC - BIN_WIDTH - 2);
 }
 

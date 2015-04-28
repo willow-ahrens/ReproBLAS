@@ -15,7 +15,7 @@ I_float_Complex cdotcI(
 	float complex* y, int incy
 ) {
 	I_float_Complex dot;
-	cISetZero(dot);
+	cisetzero(DEFAULT_FOLD, &dot);
 	cdotcI1(N, x, incx, y, incy, DEFAULT_FOLD, (float complex*)dot.m, dot.c);
 	return dot;
 }
@@ -26,7 +26,7 @@ I_float_Complex cdotuI(
 	float complex* y, int incy
 ) {
 	I_float_Complex dot;
-	cISetZero(dot);
+	cisetzero(DEFAULT_FOLD, &dot);
 	cdotuI1(N, x, incx, y, incy, DEFAULT_FOLD, (float complex*)dot.m, dot.c);
 	return (dot);
 }
@@ -37,7 +37,7 @@ float complex rcdotc(
 	float complex* y, int incy
 ) {
 	I_float_Complex dot;
-	cISetZero(dot);
+	cisetzero(DEFAULT_FOLD, &dot);
     float complex ret;
 	cdotcI1(N, x, incx, y, incy, DEFAULT_FOLD, (float complex*)dot.m, dot.c);
     cciconv_sub(&dot, &ret, DEFAULT_FOLD);
@@ -50,7 +50,7 @@ float complex rcdotu(
 	float complex* y, int incy
 ) {
 	I_float_Complex dot;
-	cISetZero(dot);
+	cisetzero(DEFAULT_FOLD, &dot);
     float complex ret;
 	cdotuI1(N, x, incx, y, incy, DEFAULT_FOLD, (float complex*)dot.m, dot.c);
     cciconv_sub(&dot, &ret, DEFAULT_FOLD);

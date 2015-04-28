@@ -18,7 +18,7 @@ float rsnrm2(int N, float* v, int inc) {
 	double scale;
 	float sqrt_sum;
 
-	sISetZero(sum);
+	sisetzero(DEFAULT_FOLD, &sum);
 
 	scale = snrm2I1(N, v, inc, DEFAULT_FOLD, sum.m, sum.c);
 

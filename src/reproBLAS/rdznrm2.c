@@ -19,7 +19,7 @@ double dznrm2I(
 
 double rdznrm2(int N, double complex* v, int inc) {
 	I_double sum;
-	dISetZero(sum);
+	disetzero(DEFAULT_FOLD, &sum);
 	double scale = 0.0;
 	scale = dznrm2I1(N, v, inc, DEFAULT_FOLD, sum.m, sum.c);
 

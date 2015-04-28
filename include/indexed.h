@@ -36,21 +36,38 @@ typedef struct sIComplex_{
 	float c[2*DEFAULT_FOLD];
 } I_float_Complex;
 
-static inline size_t dISize(int fold){
-  return 2*fold*sizeof(double);
-}
-
-static inline size_t zISize(int fold){
-  return 4*fold*sizeof(double);
-}
-
-static inline size_t sISize(int fold){
-  return 2*fold*sizeof(float);
-}
-
-static inline size_t cISize(int fold){
-  return 4*fold*sizeof(float);
-}
+size_t disize(const int fold);
+size_t zisize(const int fold);
+int dinum(const int fold);
+int zinum(const int fold);
+double_indexed *dialloc(const int fold);
+double_complex_indexed *zialloc(const int fold);
+void dmdmset(const int fold, const double *repX, const int increpX, const double *carX, const int inccarX, double *repY, const int increpY, double *carY, const int inccarY);
+void didiset(const int fold, const double_indexed *X, double_indexed *Y);
+void zmzmset(const int fold, const double *repX, const int increpX, const double *carX, const int inccarX, double *repY, const int increpY, double *carY, const int inccarY);
+void ziziset(const int fold, const double_complex_indexed *X, double_complex_indexed *Y);
+void dmzmset(const int fold, const double *repX, const int increpX, const double *carX, const int inccarX, double *repY, const int increpY, double *carY, const int inccarY);
+void diziset(const int fold, const double_indexed *X, double_complex_indexed *Y);
+void dmsetzero(const int fold, double *repX, const int increpX, double *carX, const int inccarX);
+void disetzero(const int fold, double_indexed *X);
+void zmsetzero(const int fold, double *repX, const int increpX, double *carX, const int inccarX);
+void zisetzero(const int fold, double_complex_indexed *X);
+size_t sisize(const int fold);
+size_t cisize(const int fold);
+int sinum(const int fold);
+int cinum(const int fold);
+float_indexed *sialloc(const int fold);
+float_complex_indexed *cialloc(const int fold);
+void smsmset(const int fold, const float *repX, const int increpX, const float *carX, const int inccarX, float *repY, const int increpY, float *carY, const int inccarY);
+void sisiset(const int fold, const float_indexed *X, float_indexed *Y);
+void cmcmset(const int fold, const float *repX, const int increpX, const float *carX, const int inccarX, float *repY, const int increpY, float *carY, const int inccarY);
+void ciciset(const int fold, const float_complex_indexed *X, float_complex_indexed *Y);
+void cmsmset(const int fold, const float *repX, const int increpX, const float *carX, const int inccarX, float *repY, const int increpY, float *carY, const int inccarY);
+void cisiset(const int fold, const float_indexed *X, float_complex_indexed *Y);
+void smsetzero(const int fold, float *repX, const int increpX, float *carX, const int inccarX);
+void sisetzero(const int fold, float_indexed *X);
+void cmsetzero(const int fold, float *repX, const int increpX, float *carX, const int inccarX);
+void cisetzero(const int fold, float_complex_indexed *X);
 
 // PRINT
 
@@ -76,51 +93,8 @@ void zizdeposit(void *X, double_complex_indexed *Y, int fold);
 void zmzadd(void *X, double *repY, int increpY, double *carY, int inccarY, int fold);
 void zizadd(void *X, double_complex_indexed *Y, int fold);
 
-// SET ZERO
-#define ISetZero_(K,M,C) {	\
-	int i;	\
-	for (i = 0; i < K; i++) { \
-		M[i] = 0;	\
-		C[i] = 0;	\
-	}	\
-}
-#define dISetZero(I) ISetZero_(DEFAULT_FOLD, (I).m, (I).c)
-#define sISetZero(I) ISetZero_(DEFAULT_FOLD, (I).m, (I).c)
-#define zISetZero(I) ISetZero_(2*DEFAULT_FOLD, (I).m, (I).c)
-#define cISetZero(I) ISetZero_(2*DEFAULT_FOLD, (I).m, (I).c)
-
-// DI = SI
-#define ISet_(K,DI,SI) {	\
-	int i;	\
-	for (i = 0; i <  K; i++) {	\
-		(DI).m[i] = (SI).m[i]; \
-		(DI).c[i] = (SI).c[i]; \
-	}	\
-}
-#define dISet(DI,SI) ISet_(DEFAULT_FOLD, DI, SI)
-#define sISet(DI,SI) ISet_(DEFAULT_FOLD, DI, SI)
-#define zISet(DI,SI) ISet_(2*DEFAULT_FOLD, DI, SI)
-#define cISet(DI,SI) ISet_(2*DEFAULT_FOLD, DI, SI)
-
-// ZI = DI
-#define zdISet_(K,ZI,DI) {	\
-	ISetZero_(2 * K, (ZI).m, (ZI).c)\
-	int i;	\
-	for (i = 0; i <  K; i++) {	\
-		(ZI).m[2 * i] = (DI).m[i]; \
-		(ZI).c[2 * i] = (DI).c[i]; \
-	}	\
-}
-#define zdISet(ZI, DI) zdISet_(DEFAULT_FOLD, ZI, DI)
-#define csISet(CI, SI) zdISet_(DEFAULT_FOLD, CI, SI)
-
-extern int dIWidth();
-extern int dICapacity();
-
-
-// NEGATION
-extern void dINeg1(int fold, double* x, double* c, int inc);
-extern void zINeg1(int fold, double complex* x, double complex* c, int inc);
+extern int diwidth();
+extern int dicapacity();
 
 
 double dbound(int index);
@@ -174,8 +148,8 @@ void zziconv_sub(double_complex_indexed *x, void *y, int fold);
 // CONVERT A DOUBLE COMPLEX TO INDEXED FORMAT
 extern void zizconv(void *x, double_complex_indexed *y, int fold);
 
-extern int sICapacity();
-extern int sIWidth();
+extern int sicapacity();
+extern int siwidth();
 
 
 void smsmadd(float *repX, int increpX, float *carX, int inccarX, float* repY, int increpY, float* carY, int inccarY, int fold) ;
@@ -198,9 +172,6 @@ extern void cINeg1(int fold, float complex* x, float* c, int inc);
 
 // UNIT IN THE FIRST PLACE
 extern float ufpf(float x);
-
-
-
 
 // RENORMALIZATION TO AVOID OVERFLOW
 

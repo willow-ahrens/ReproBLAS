@@ -12,7 +12,7 @@
 I_float scasumI(int N, float complex* v, int inc) {
 	I_float sum;
 	I_float_Complex tmp;
-	sISetZero(sum);
+	sisetzero(DEFAULT_FOLD, &sum);
 	scasumI1(N, v, inc, DEFAULT_FOLD, sum.m, sum.c, (float complex*)&tmp);
 	return sum;
 }
@@ -20,7 +20,7 @@ I_float scasumI(int N, float complex* v, int inc) {
 float rscasum(int N, float complex* v, int inc) {
 	I_float sum;
 	I_float_Complex tmp;
-	sISetZero(sum);
+	sisetzero(DEFAULT_FOLD, &sum);
 	scasumI1(N, v, inc, DEFAULT_FOLD, sum.m, sum.c, (float complex*)&tmp);
 	return ssiconv(&sum, DEFAULT_FOLD);
 }

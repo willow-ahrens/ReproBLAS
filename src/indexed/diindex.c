@@ -19,11 +19,11 @@ static int    bounds_initialized = 0;                //initialized in bounds_ini
 static int    bound_min_index    = BOUND_ZERO_INDEX; //initialized in bounds_initialize
 static int    bound_max_index    = BOUND_ZERO_INDEX; //initialized in bounds_initialize
 
-int dIWidth() {
+int diwidth() {
   return BIN_WIDTH;
 }
 
-int dICapacity() {
+int dicapacity() {
   return 1 << (PREC - BIN_WIDTH - 2);
 }
 

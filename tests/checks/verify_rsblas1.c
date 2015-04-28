@@ -34,7 +34,7 @@ int verify_rsblas1_reproducibility(int N, float* X, int incX, float* Y, int incY
       res = (wrap_rsblas1_func(func))(N, X, incX, Y, incY);
     else {
       block_N =  (N + num_blocks - 1) / num_blocks;
-      sISetZero(Ires);
+      sisetzero(DEFAULT_FOLD, &Ires);
       for (i = 0; i < N; i += block_N) {
         block_N = block_N < N - i ? block_N : (N-i);
         Ifloat foo = (wrap_Isblas1_func(func))(block_N, X + i * incX, incX, Y + i * incY, incY);

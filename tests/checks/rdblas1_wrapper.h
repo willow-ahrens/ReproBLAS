@@ -64,7 +64,7 @@ Idouble wrap_dnrm2I(int N, double *x, int incx, double *y, int incy) {
   (void)y;
   (void)incy;
   Idouble nrm2;
-  dISetZero(nrm2);
+  disetzero(DEFAULT_FOLD, &nrm2);
   dnrm2I(N, x, incx, &nrm2);
   return nrm2;
 }

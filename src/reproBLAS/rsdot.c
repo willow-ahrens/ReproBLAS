@@ -8,7 +8,7 @@
 I_float sdotI(int N, float* x, int incx, float* y, int incy) {
 	I_float dot;
 
-	sISetZero(dot);
+	sisetzero(DEFAULT_FOLD, &dot);
 	sdotI1(N, x, incx, y, incy, DEFAULT_FOLD, dot.m, dot.c);
 
 	return dot;
@@ -17,7 +17,7 @@ I_float sdotI(int N, float* x, int incx, float* y, int incy) {
 float rsdot(int N, float* x, int incx, float* y, int incy) {
 	I_float dot;
 
-	sISetZero(dot);
+	sisetzero(DEFAULT_FOLD, &dot);
 	sdotI1(N, x, incx, y, incy, DEFAULT_FOLD, dot.m, dot.c);
 
 	return ssiconv(&dot, DEFAULT_FOLD);

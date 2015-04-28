@@ -54,7 +54,7 @@ void scasumI1_(int N, int NB,
 	int status;
 	int lN;
 	int lB;
-	int maxN = sICapacity();
+	int maxN = sicapacity();
 	int created = 0;
 
 	/*
@@ -64,7 +64,7 @@ void scasumI1_(int N, int NB,
 
 	if (work == NULL) {
 		created = 1;
-		work    = (float complex*) malloc(cISize(fold));
+		work    = (float complex*) malloc(cisize(fold));
 	}
 
 	float complex* BUFFER = work;

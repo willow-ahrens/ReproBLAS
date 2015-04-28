@@ -140,7 +140,7 @@ void csumI1_(int N, int NB,
 	int i, j;
 	int status;
 	int lN;
-	int maxN = sICapacity();
+	int maxN = sicapacity();
 	int lB;
 		
 	for (i = 0; i < N; i+=NB, v+=NB*inc) {

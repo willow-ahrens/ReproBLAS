@@ -148,7 +148,7 @@ void zdotI1_(int N, int NB,
 	int status;
 	int lN;
 	int accu = 0;
-	int maxN = dICapacity();
+	int maxN = dicapacity();
 		
 	for (i = 0; i < N; i+=NB, v+=NB*inc, y+=NB*incy) {
     double complex foo = *y;
