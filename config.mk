@@ -62,7 +62,7 @@ BLAS := ACCELERATE
 
 # set build mode (comment all for auto)
 #BUILD_MODE := release
-#BUILD_MODE := debug
+BUILD_MODE := debug
 #BUILD_MODE := profile
 
 #HOST_ARCH := profile

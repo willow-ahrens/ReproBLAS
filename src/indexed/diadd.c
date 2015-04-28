@@ -142,19 +142,19 @@ void ziziadd(const int fold, const double_complex_indexed *X, double_complex_ind
  */
 void dmddeposit(const int fold, const double X, double *repY, const int increpY){
   double M;
-  double tmpX = X;
+  double x = X;
   long_double q;
   int i;
   for (i = 0; i < fold - 1; i++) {
     M = repY[i * increpY];
-    q.d = tmpX;
+    q.d = x;
     q.l |= 1;
     q.d += M;
     repY[i * increpY] = q.d;
     M -= q.d;
-    tmpX += M;
+    x += M;
   }
-  q.d = tmpX;
+  q.d = x;
   q.l |= 1;
   repY[i * increpY] += q.d;
 }

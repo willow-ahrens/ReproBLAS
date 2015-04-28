@@ -213,22 +213,22 @@ void cmrenorm(const int fold, float* repX, int increpX, float* carX, int inccarX
 void cirenorm(const int fold, float_complex_indexed *X);
 
 
-void didconv(const int fold, double x, double_indexed *y);
-void dmdconv(const int fold, double x, double* repy, int increpy, double* cary, int inccary);
-void zizconv(const int fold, void *x, double_complex_indexed *y);
-void zmzconv(const int fold, void *x, double *repy, int increpy, double *cary, int inccary);
-void sisconv(const int fold, float x, float_indexed *y);
-void smsconv(const int fold, float x, float* repy, int increpy, float* cary, int inccary);
-void cicconv(const int fold, void *x, float_complex_indexed *y);
-void cmcconv(const int fold, void *x, float *repy, int increpy, float *cary, int inccary);
-double ddiconv(const int fold, double_indexed *x);
-double ddmconv(const int fold, double* repx, int increpx, double* carx, int inccarx);
-void zziconv_sub(const int fold, double_complex_indexed *x, void *y);
-void zzmconv_sub(const int fold, double *repx, int increpx, double *carx, int inccarx, void *y);
-float ssiconv(const int fold, float_indexed *x);
-float ssmconv(const int fold, float* repx, int increpx, float* carx, int inccarx);
-void ccmconv_sub(const int fold, float *repx, int increpx, float *carx, int inccarx, void *y);
-void cciconv_sub(const int fold, float_complex_indexed *x, void *y);
+void didconv(const int fold, double X, double_indexed *Y);
+void dmdconv(const int fold, double X, double* repY, int increpY, double* carY, int inccarY);
+void zizconv(const int fold, void *X, double_complex_indexed *Y);
+void zmzconv(const int fold, void *X, double *repY, int increpY, double *carY, int inccarY);
+void sisconv(const int fold, float X, float_indexed *Y);
+void smsconv(const int fold, float X, float* repY, int increpY, float* carY, int inccarY);
+void cicconv(const int fold, void *X, float_complex_indexed *Y);
+void cmcconv(const int fold, void *X, float *repY, int increpY, float *carY, int inccarY);
+double ddiconv(const int fold, double_indexed *X);
+double ddmconv(const int fold, double* repX, int increpX, double* carX, int inccarX);
+void zziconv_sub(const int fold, double_complex_indexed *X, void *Y);
+void zzmconv_sub(const int fold, double *repX, int increpX, double *carX, int inccarX, void *Y);
+float ssiconv(const int fold, float_indexed *X);
+float ssmconv(const int fold, float* repX, int increpX, float* carX, int inccarX);
+void ccmconv_sub(const int fold, float *repX, int increpX, float *carX, int inccarX, void *Y);
+void cciconv_sub(const int fold, float_complex_indexed *X, void *Y);
 
 void dmnegate(const int fold, double* repX, const int increpX, double* carX, const int inccarX);
 void dinegate(const int fold, double_indexed* X);
@@ -239,8 +239,8 @@ void sinegate(const int fold, float_indexed* X);
 void cmnegate(const int fold, float* repX, const int increpX, float* carX, const int inccarX);
 void cinegate(const int fold, float_complex_indexed* X);
 
-double ufp(double x);
-float ufpf(float x);
+double ufp(double X);
+float ufpf(float X);
 void dmbound(const int fold, int index, double *repY, int increpY);
 void smbound(const int fold, int index, float *repY, int increpY);
 #endif

@@ -7,17 +7,17 @@
 #include <math.h>
 #include <float.h>
 #include "indexed.h"
+#include "../../config.h"
 
-//TODO adjust this to reflect MAX_FOLD
-#define BOUNDS_SIZE      64
-#define BOUND_ZERO_INDEX 32
-#define BIN_WIDTH        40
 #define PREC             53
+#define BIN_WIDTH        40
+#define BOUNDS_SIZE      ((DBL_MAX_EXP - DBL_MIN_EXP)/BIN_WIDTH + MAX_FOLD + 2)
+#define BOUNDS_ZERO_INDEX (DBL_MAX_EXP/BIN_WIDTH + 1)
 
-static double bounds[BOUNDS_SIZE];                   //initialized in bounds_initialize
-static int    bounds_initialized = 0;                //initialized in bounds_initialize
-static int    bound_min_index    = BOUND_ZERO_INDEX; //initialized in bounds_initialize
-static int    bound_max_index    = BOUND_ZERO_INDEX; //initialized in bounds_initialize
+static double bounds[BOUNDS_SIZE];                     //initialized in bounds_initialize
+static int    bounds_initialized = 0;                  //initialized in bounds_initialize
+static int    bounds_min_index    = BOUNDS_ZERO_INDEX; //initialized in bounds_initialize
+static int    bounds_max_index    = BOUNDS_ZERO_INDEX; //initialized in bounds_initialize
 
 int diwidth() {
   return BIN_WIDTH;
@@ -36,32 +36,32 @@ static void bounds_initialize() {
     return;
   }
 
-  bounds[BOUND_ZERO_INDEX] = 1.5;
+  bounds[BOUNDS_ZERO_INDEX] = 1.5;
   step = ldexp(1, BIN_WIDTH);
 
   exp = -1;
-  index = BOUND_ZERO_INDEX + 1;
+  index = BOUNDS_ZERO_INDEX + 1;
   while (exp * BIN_WIDTH  >= DBL_MIN_EXP) {
     bounds[index] = bounds[index - 1] / step;
     index++;
     exp--;
   }
-  bound_max_index = index;
+  bounds_max_index = index;
   while (index < BOUNDS_SIZE) {
     bounds[index] = 0.0;
     index++;
   }
 
   exp = 1;
-  index = BOUND_ZERO_INDEX - 1;
+  index = BOUNDS_ZERO_INDEX - 1;
   while (exp * BIN_WIDTH <= DBL_MAX_EXP) {
     bounds[index] = bounds[index + 1] * step;
     index--;
     exp++;
   }
-  bound_min_index = index;
+  bounds_min_index = index;
   while (index >= 0) {
-    bounds[index] = bounds[bound_min_index + 1] * step;
+    bounds[index] = bounds[bounds_min_index + 1] * step;
     index--;
   }
 
@@ -74,14 +74,14 @@ int dmindex(double *repX){
   bounds_initialize();
 
   if(isinf(repX[0])){
-    index = bound_min_index;
+    index = bounds_min_index;
   } else if(repX[0] == 0){
-    index = bound_max_index;
+    index = bounds_max_index;
   } else {
     frexp(repX[0], &index);
     index--;
     index /= BIN_WIDTH;
-    index = BOUND_ZERO_INDEX - index;
+    index = BOUNDS_ZERO_INDEX - index;
   }
   return index;
 }
@@ -96,9 +96,9 @@ int dindex(double X){
   bounds_initialize();
 
   if(isinf(X)){
-    index = bound_min_index;
+    index = bounds_min_index;
   }else if(X == 0){
-    index = bound_max_index;
+    index = bounds_max_index;
   }else{
     frexp(X, &index);
     index += PREC - BIN_WIDTH;
@@ -106,7 +106,7 @@ int dindex(double X){
       index -= BIN_WIDTH - 1; //we want to round towards -infinity
     }
     index /= BIN_WIDTH;
-    index = BOUND_ZERO_INDEX - 1 - index;
+    index = BOUNDS_ZERO_INDEX - 1 - index;
   }
   return index;
 }

@@ -143,16 +143,17 @@ void smsdeposit(const int fold, float X, float *repY, int increpY){
   float M;
   int_float q;
   int i;
+  float x = X;
   for (i = 0; i < fold - 1; i++) {
     M = repY[i * increpY];
-    q.f = X;
+    q.f = x;
     q.i |= 1;
     q.f += M;
     repY[i * increpY] = q.f;
     M -= q.f;
-    X += M;
+    x += M;
   }
-  q.f = X;
+  q.f = x;
   q.i |= 1;
   repY[i * increpY] += q.f;
 }
@@ -199,34 +200,32 @@ void cmcdeposit(const int fold, void *X, float *repY, int increpY){
   float xR = ((float*)X)[0];
   float xI = ((float*)X)[1];
 
-  increpY *= 2;
-
   for (i = 0; i < fold - 1; i++) {
-    MR = repY[i * increpY];
-    MI = repY[i * increpY + 1];
+    MR = repY[i * 2 * increpY];
+    MI = repY[i * 2 * increpY + 1];
     qR.f = xR;
     qI.f = xI;
     qR.i |= 1;
     qI.i |= 1;
     qR.f += MR;
     qI.f += MI;
-    repY[i * increpY] = qR.f;
-    repY[i * increpY + 1] = qI.f;
+    repY[i * 2 * increpY] = qR.f;
+    repY[i * 2 * increpY + 1] = qI.f;
     MR -= qR.f;
     MI -= qI.f;
     xR += MR;
     xI += MI;
   }
-  MR = repY[i * increpY];
-  MI = repY[i * increpY + 1];
+  MR = repY[i * 2 * increpY];
+  MI = repY[i * 2 * increpY + 1];
   qR.f = xR;
   qI.f = xI;
   qR.i |= 1;
   qI.i |= 1;
   qR.f += MR;
   qI.f += MI;
-  repY[i * increpY] = qR.f;
-  repY[i * increpY + 1] = qI.f;
+  repY[i * 2 * increpY] = qR.f;
+  repY[i * 2 * increpY + 1] = qI.f;
 }
 
 /**
