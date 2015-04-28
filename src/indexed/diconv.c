@@ -10,6 +10,7 @@
 #include "../Common/Common.h"
 
 /**
+ * @internal
  * @brief Convert double precision to manually specified indexed double precision (X -> Y)
  *
  * @param fold the fold of the indexed types
@@ -34,10 +35,8 @@ void dmdconv(const int fold, double X, double* repY, int increpY, double* carY, 
     }
     return;
   }
-  dmbound(fold, dindex(fabs(X)), repY, increpY);
+  dmbound(fold, dindex(fabs(X)), repY, increpY, carY, inccarY);
   for (i = 0; i < fold; i++, repY += increpY, carY += inccarY) {
-    carY[0] = 0.0;
-
     s = repY[0];
     q = s + X;
     repY[0] = s;
@@ -62,6 +61,7 @@ void didconv(const int fold, double X, double_indexed *Y) {
 }
 
 /**
+ * @internal
  * @brief Convert complex double precision to manually specified indexed complex double precision (X -> Y)
  *
  * @param fold the fold of the indexed types
@@ -96,6 +96,7 @@ void zizconv(const int fold, void *X, double_complex_indexed *Y) {
 }
 
 /**
+ * @internal
  * @brief Convert manually specified indexed double precision to double precision (X -> Y)
  *
  * @param fold the fold of the indexed types
@@ -145,6 +146,7 @@ double ddiconv(const int fold, double_indexed *X) {
 }
 
 /**
+ * @internal
  * @brief Convert manually specified indexed complex double precision to complex double precision (X -> Y)
  *
  * @param fold the fold of the indexed types

@@ -10,6 +10,7 @@
 #include "../Common/Common.h"
 
 /**
+ * @internal
  * @brief Renormalize manually specified indexed double precision
  *
  * Renormalization keeps the rep vector within the necessary bounds by shifting over to the carry vector
@@ -66,6 +67,7 @@ void direnorm(const int fold, double_indexed *X) {
 }
 
 /**
+ * @internal
  * @brief Renormalize manually specified indexed complex double precision
  *
  * Renormalization keeps the rep vector within the necessary bounds by shifting over to the carry vector

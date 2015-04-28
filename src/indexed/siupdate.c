@@ -9,6 +9,7 @@
 #include "../Common/Common.h"
 
 /**
+ * @internal
  * @brief Update manually specified indexed single precision with single precision (X -> Y)
  *
  * This method updates Y to an index suitable for adding numbers with absolute value less than X
@@ -29,16 +30,13 @@ void smsupdate(const int fold, float X, float* repY, int increpY, float* carY, i
     return;
 
   int X_index = sindex(X);
-  int d = smindex(repY) - X_index;
-  if(d > 0){
-    for(int i = fold - 1; i >= d; i--){
-      repY[i * increpY] = repY[(i - d) * increpY];
-      carY[i * inccarY] = carY[(i - d) * inccarY];
+  int shift = smindex(repY) - X_index;
+  if(shift > 0){
+    for(int i = fold - 1; i >= shift; i--){
+      repY[i * increpY] = repY[(i - shift) * increpY];
+      carY[i * inccarY] = carY[(i - shift) * inccarY];
     }
-    smbound(MIN(d, fold), X_index, repY, increpY);
-    for(int i = 0; i < d && i < fold; i++){
-      carY[i * inccarY] = 0.0;
-    }
+    smbound(MIN(shift, fold), X_index, repY, increpY, carY, inccarY);
   }
 }
 
@@ -60,6 +58,7 @@ void sisupdate(const int fold, float X, float_indexed *Y) {
 }
 
 /**
+ * @internal
  * @brief Update manually specified indexed complex single precision with single precision (X -> Y)
  *
  * This method updates Y to an index suitable for adding numbers with absolute value less than X
@@ -98,6 +97,7 @@ void cisupdate(const int fold, float X, float_complex_indexed *Y) {
 }
 
 /**
+ * @internal
  * @brief Update manually specified indexed complex single precision with complex single precision (X -> Y)
  *
  * This method updates Y to an index suitable for adding numbers with absolute value of real and imaginary components less than absolute value of real and imaginary components of X respectively.

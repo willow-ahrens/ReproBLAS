@@ -3,6 +3,7 @@
 #include "indexed.h"
 
 /**
+ * @internal
  * @brief Print manually specified indexed single precision
  *
  * @param fold the fold of the indexed types
@@ -39,6 +40,7 @@ void siprint(const int fold, float_indexed *X) {
 }
 
 /**
+ * @internal
  * @brief Print manually specified indexed complex single precision
  *
  * @param fold the fold of the indexed types

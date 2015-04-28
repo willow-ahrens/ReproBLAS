@@ -84,6 +84,7 @@ double_complex_indexed *zialloc(const int fold){
 }
 
 /**
+ * @internal
  * @brief Set manually specified indexed double precision (Y = X)
  *
  * Performs the operation Y = X
@@ -128,6 +129,7 @@ void didiset(const int fold, const double_indexed *X, double_indexed *Y){
 }
 
 /**
+ * @internal
  * @brief Set manually specified indexed complex double precision (Y = X)
  *
  * Performs the operation Y = X
@@ -169,6 +171,7 @@ void ziziset(const int fold, const double_complex_indexed *X, double_complex_ind
 }
 
 /**
+ * @internal
  * @brief Set manually specified indexed complex double precision to manually specified indexed double precision (Y = X)
  *
  * Performs the operation Y = X
@@ -211,6 +214,7 @@ void zidiset(const int fold, const double_indexed *X, double_complex_indexed *Y)
 }
 
 /**
+ * @internal
  * @brief Set manually specified indexed double precision to 0 (X = 0)
  *
  * Performs the operation X = 0
@@ -250,6 +254,7 @@ void disetzero(const int fold, double_indexed *X){
 }
 
 /**
+ * @internal
  * @brief Set manually specified indexed complex double precision to 0 (X = 0)
  *
  * Performs the operation X = 0

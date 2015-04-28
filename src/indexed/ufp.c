@@ -3,6 +3,7 @@
 #include "indexed.h"
 
 /**
+ * @internal
  * @brief unit in the first place
  *
  * This method returns just the implicit 1 in the mantissa of a @c double

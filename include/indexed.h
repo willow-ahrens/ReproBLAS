@@ -23,13 +23,12 @@
  *
  * Throughout the library, complex types are specified via @c *void pointers. These routines will sometimes be suffixed by sub, to represent that a function has been made into a subroutine. This allows programmers to use whatever complex types they are already using, as long as the memory pointed to is of the form of two adjacent floating point types, the first and second representing real and imaginary components of the complex number.
  *
- * Power users of the library may find themselves wanting to manually specify the underlying rep and carry vectors of an indexed type themselves. If you do not know what these are, don't worry about the manually specified indexed types.
- *
  * The goal of using indexed types is to obtain either more accurate or reproducible summation of floating point numbers. Indexed types are composed of several adjacent bins...
  *
  * The parameter @c fold describes how many bins are used in the indexed types supplied to a subroutine. The maximum value for this parameter can be set in config.h. If you are unsure of what value to use for @fold, we recommend 3. Note that the @c fold of indexed types must be the same for all indexed types that interact with each other. Operations on more than one indexed type assume all indexed types being operated upon have the same @c fold. Note that the @c fold of an indexed type may not be changed once the type has been allocated. A common use case would be to set the value of @c fold as a global macro in your code and supply it to all indexed functions that you use.
  *
- * Power users of the library may find themselves wanting to 
+ * @internal
+ * Power users of the library may find themselves wanting to manually specify the underlying rep and carry vectors of an indexed type themselves. If you do not know what these are, don't worry about the manually specified indexed types.
  */
 
 #ifndef INDEXED_H
@@ -123,13 +122,13 @@ int dicapacity();
 int sicapacity();
 
 double dbound(int index);
+void dmbound(const int fold, int index, double *repX, int increpX, double *carX, int inccarX);
 int dindex(double X);
-int diindex(double_indexed *X);
 int dmindex(double *repX);
 
 float sbound(int index);
+void smbound(const int fold, int index, float *repX, int increpX, float *carX, int inccarX);
 int sindex(float X);
-int siindex(float_indexed *X);
 int smindex(float *repX);
 
 void ciprint(const int fold, float_complex_indexed *X);
@@ -203,14 +202,14 @@ void smsdeposit(const int fold, float X, float *repY, int increpY);
 void cicdeposit(const int fold, void *X, float_complex_indexed *Y);
 void cmcdeposit(const int fold, void *X, float *repY, int increpY);
 
-void dmrenorm(const int fold, double* repX, int increpX, double* carX, int inccarX);
 void direnorm(const int fold, double_indexed *X);
-void zmrenorm(const int fold, double* repX, int increpX, double* carX, int inccarX);
+void dmrenorm(const int fold, double* repX, int increpX, double* carX, int inccarX);
 void zirenorm(const int fold, double_complex_indexed *X);
-void smrenorm(const int fold, float* repX, int increpX, float* carX, int inccarX);
+void zmrenorm(const int fold, double* repX, int increpX, double* carX, int inccarX);
 void sirenorm(const int fold, float_indexed *X);
-void cmrenorm(const int fold, float* repX, int increpX, float* carX, int inccarX);
+void smrenorm(const int fold, float* repX, int increpX, float* carX, int inccarX);
 void cirenorm(const int fold, float_complex_indexed *X);
+void cmrenorm(const int fold, float* repX, int increpX, float* carX, int inccarX);
 
 
 void didconv(const int fold, double X, double_indexed *Y);
@@ -227,20 +226,18 @@ void zziconv_sub(const int fold, double_complex_indexed *X, void *Y);
 void zzmconv_sub(const int fold, double *repX, int increpX, double *carX, int inccarX, void *Y);
 float ssiconv(const int fold, float_indexed *X);
 float ssmconv(const int fold, float* repX, int increpX, float* carX, int inccarX);
-void ccmconv_sub(const int fold, float *repX, int increpX, float *carX, int inccarX, void *Y);
 void cciconv_sub(const int fold, float_complex_indexed *X, void *Y);
+void ccmconv_sub(const int fold, float *repX, int increpX, float *carX, int inccarX, void *Y);
 
-void dmnegate(const int fold, double* repX, const int increpX, double* carX, const int inccarX);
 void dinegate(const int fold, double_indexed* X);
-void zmnegate(const int fold, double* repX, const int increpX, double* carX, const int inccarX);
+void dmnegate(const int fold, double* repX, const int increpX, double* carX, const int inccarX);
 void zinegate(const int fold, double_complex_indexed* X);
-void smnegate(const int fold, float* repX, const int increpX, float* carX, const int inccarX);
+void zmnegate(const int fold, double* repX, const int increpX, double* carX, const int inccarX);
 void sinegate(const int fold, float_indexed* X);
-void cmnegate(const int fold, float* repX, const int increpX, float* carX, const int inccarX);
+void smnegate(const int fold, float* repX, const int increpX, float* carX, const int inccarX);
 void cinegate(const int fold, float_complex_indexed* X);
+void cmnegate(const int fold, float* repX, const int increpX, float* carX, const int inccarX);
 
 double ufp(double X);
 float ufpf(float X);
-void dmbound(const int fold, int index, double *repY, int increpY);
-void smbound(const int fold, int index, float *repY, int increpY);
 #endif

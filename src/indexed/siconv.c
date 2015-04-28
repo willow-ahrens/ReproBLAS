@@ -6,6 +6,7 @@
 #include "../Common/Common.h"
 
 /**
+ * @internal
  * @brief Convert single precision to manually specified indexed single precision (X -> Y)
  *
  * @param fold the fold of the indexed types
@@ -30,10 +31,8 @@ void smsconv(const int fold, float X, float* repY, int increpY, float* carY, int
     }
     return;
   }
-  smbound(fold, sindex(fabs(X)), repY, increpY);
+  smbound(fold, sindex(fabs(X)), repY, increpY, carY, inccarY);
   for (i = 0; i < fold; i++, repY += increpY, carY += inccarY) {
-    carY[0] = 0.0;
-
     s = repY[0];
     q = s + X;
     repY[0] = s;
@@ -58,6 +57,7 @@ void sisconv(const int fold, float X, float_indexed *Y) {
 }
 
 /**
+ * @internal
  * @brief Convert complex single precision to manually specified indexed complex single precision (X -> Y)
  *
  * @param fold the fold of the indexed types
@@ -92,6 +92,7 @@ void cicconv(const int fold, void *X, float_complex_indexed *Y) {
 }
 
 /**
+ * @internal
  * @brief Convert manually specified indexed single precision to single precision (X -> Y)
  *
  * @param fold the fold of the indexed types
@@ -141,6 +142,7 @@ float ssiconv(const int fold, float_indexed *X) {
 }
 
 /**
+ * @internal
  * @brief Convert manually specified indexed complex single precision to complex single precision (X -> Y)
  *
  * @param fold the fold of the indexed types

@@ -84,6 +84,7 @@ float_complex_indexed *cialloc(const int fold){
 }
 
 /**
+ * @internal
  * @brief Set manually specified indexed single precision (Y = X)
  *
  * Performs the operation Y = X
@@ -128,6 +129,7 @@ void sisiset(const int fold, const float_indexed *X, float_indexed *Y){
 }
 
 /**
+ * @internal
  * @brief Set manually specified indexed complex single precision (Y = X)
  *
  * Performs the operation Y = X
@@ -169,6 +171,7 @@ void ciciset(const int fold, const float_complex_indexed *X, float_complex_index
 }
 
 /**
+ * @internal
  * @brief Set manually specified indexed complex single precision to manually specified indexed single precision (Y = X)
  *
  * Performs the operation Y = X
@@ -210,6 +213,7 @@ void cisiset(const int fold, const float_indexed *X, float_complex_indexed *Y){
 }
 
 /**
+ * @internal
  * @brief Set manually specified indexed single precision to 0 (X = 0)
  *
  * Performs the operation X = 0
@@ -249,6 +253,7 @@ void sisetzero(const int fold, float_indexed *X){
 }
 
 /**
+ * @internal
  * @brief Set manually specified indexed complex single precision to 0 (X = 0)
  *
  * Performs the operation X = 0

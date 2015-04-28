@@ -1,6 +1,7 @@
 #include "indexed.h"
 
 /**
+ * @internal
  * @brief Negate manually specified indexed double precision (X = -X)
  *
  * Performs the operation X = -X
@@ -40,6 +41,7 @@ void dinegate(const int fold, double_indexed* X){
 }
 
 /**
+ * @internal
  * @brief Negate manually specified indexed complex double precision (X = -X)
  *
  * Performs the operation X = -X

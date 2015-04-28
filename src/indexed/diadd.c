@@ -11,6 +11,7 @@
 #include "../Common/Common.h"
 
 /**
+ * @internal
  * @brief  Add manually specified indexed double precision (Y += X)
  *
  * Performs the operation Y += X
@@ -84,6 +85,7 @@ void didiadd(const int fold, const double_indexed *X, double_indexed *Y){
 }
 
 /**
+ * @internal
  * @brief  Add manually specified indexed complex double precision (Y += X)
  *
  * Performs the operation Y += X
@@ -125,6 +127,7 @@ void ziziadd(const int fold, const double_complex_indexed *X, double_complex_ind
 }
 
 /**
+ * @internal
  * @brief  Add double precision to suitably indexed manually specified indexed double precision (Y += X)
  *
  * Performs the operation Y += X on an indexed type Y where the index of Y is larger than the index of X
@@ -179,6 +182,7 @@ void diddeposit(const int fold, const double X, double_indexed *Y){
 }
 
 /**
+ * @internal
  * @brief  Add complex double precision to suitably indexed manually specified indexed complex double precision (Y += X)
  *
  * Performs the operation Y += X on an indexed type Y where the index of Y is larger than the index of X
@@ -250,6 +254,7 @@ void zizdeposit(const int fold, const void *X, double_complex_indexed *Y){
 }
 
 /**
+ * @internal
  * @brief  Add double precision to manually specified indexed double precision (Y += X)
  *
  * Performs the operation Y += X on an indexed type Y
@@ -289,6 +294,7 @@ void didadd(const int fold, const double X, double_indexed *Y){
 }
 
 /**
+ * @internal
  * @brief  Add complex double precision to manually specified indexed complex double precision (Y += X)
  *
  * Performs the operation Y += X on an indexed type Y

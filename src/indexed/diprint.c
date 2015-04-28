@@ -3,6 +3,7 @@
 #include "indexed.h"
 
 /**
+ * @internal
  * @brief Print manually specified indexed double precision
  *
  * @param fold the fold of the indexed types
@@ -39,6 +40,7 @@ void diprint(const int fold, double_indexed *X) {
 }
 
 /**
+ * @internal
  * @brief Print manually specified indexed complex double precision
  *
  * @param fold the fold of the indexed types

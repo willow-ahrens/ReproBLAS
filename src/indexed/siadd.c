@@ -10,6 +10,7 @@
 #include "../Common/Common.h"
 
 /**
+ * @internal
  * @brief  Add manually specified indexed single precision (Y += X)
  *
  * Performs the operation Y += X
@@ -83,6 +84,7 @@ void sisiadd(const int fold, float_indexed *X, float_indexed *Y){
 }
 
 /**
+ * @internal
  * @brief  Add manually specified indexed complex single precision (Y += X)
  *
  * Performs the operation Y += X
@@ -124,6 +126,7 @@ void ciciadd(const int fold, float_complex_indexed *X, float_complex_indexed *Y)
 }
 
 /**
+ * @internal
  * @brief  Add single precision to suitably indexed manually specified indexed single precision (Y += X)
  *
  * Performs the operation Y += X on an indexed type Y where the index of Y is larger than the index of X
@@ -178,6 +181,7 @@ void sisdeposit(const int fold, float X, float_indexed *Y){
 }
 
 /**
+ * @internal
  * @brief  Add complex single precision to suitably indexed manually specified indexed complex single precision (Y += X)
  *
  * Performs the operation Y += X on an indexed type Y where the index of Y is larger than the index of X
@@ -249,6 +253,7 @@ void cicdeposit(const int fold, void *X, float_complex_indexed *Y){
 }
 
 /**
+ * @internal
  * @brief  Add single precision to manually specified indexed single precision (Y += X)
  *
  * Performs the operation Y += X on an indexed type Y
@@ -288,6 +293,7 @@ void sisadd(const int fold, float X, float_indexed *Y){
 }
 
 /**
+ * @internal
  * @brief  Add complex single precision to manually specified indexed complex single precision (Y += X)
  *
  * Performs the operation Y += X on an indexed type Y

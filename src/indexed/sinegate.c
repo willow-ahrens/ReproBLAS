@@ -1,6 +1,7 @@
 #include "indexed.h"
 
 /**
+ * @internal
  * @brief Negate manually specified indexed single precision (X = -X)
  *
  * Performs the operation X = -X
@@ -40,6 +41,7 @@ void sinegate(const int fold, float_indexed* X){
 }
 
 /**
+ * @internal
  * @brief Negate manually specified indexed complex single precision (X = -X)
  *
  * Performs the operation X = -X
