@@ -25,7 +25,7 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void dmdupdate(const int fold, double X, double* repY, int increpY, double* carY, int inccarY) {
+void dmdupdate(const int fold, const double X, double* repY, const int increpY, double* carY, const int inccarY) {
   if (X == 0 || isnan(repY[0]) || isinf(repY[0]))
     return;
 
@@ -53,7 +53,7 @@ void dmdupdate(const int fold, double X, double* repY, int increpY, double* carY
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void didupdate(const int fold, double X, double_indexed *Y) {
+void didupdate(const int fold, const double X, double_indexed *Y) {
   dmdupdate(fold, X, Y, 1, Y + fold, 1);
 }
 
@@ -74,7 +74,7 @@ void didupdate(const int fold, double X, double_indexed *Y) {
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zmdupdate(const int fold, double X, double* repY, int increpY, double* carY, int inccarY) {
+void zmdupdate(const int fold, const double X, double* repY, const int increpY, double* carY, const int inccarY) {
   dmdupdate(fold, X, repY, 2 * increpY, carY, 2 * inccarY);
   dmdupdate(fold, X, repY + 1, 2 * increpY, carY + 1, 2 * inccarY);
 }
@@ -92,7 +92,7 @@ void zmdupdate(const int fold, double X, double* repY, int increpY, double* carY
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zidupdate(const int fold, double X, double_complex_indexed *Y) {
+void zidupdate(const int fold, const double X, double_complex_indexed *Y) {
   zmdupdate(fold, X, Y, 1, Y + 2 * fold, 1);
 }
 
@@ -113,7 +113,7 @@ void zidupdate(const int fold, double X, double_complex_indexed *Y) {
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zmzupdate(const int fold, void *X, double* repY, int increpY, double* carY, int inccarY) {
+void zmzupdate(const int fold, const void *X, double* repY, const int increpY, double* carY, const int inccarY) {
   dmdupdate(fold, ((double*)X)[0], repY, 2 * increpY, carY, 2 * inccarY);
   dmdupdate(fold, ((double*)X)[1], repY + 1, 2 * increpY, carY + 1, 2 * inccarY);
 }
@@ -131,6 +131,6 @@ void zmzupdate(const int fold, void *X, double* repY, int increpY, double* carY,
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zizupdate(const int fold, void *X, double_complex_indexed *Y) {
+void zizupdate(const int fold, const void *X, double_complex_indexed *Y) {
   zmzupdate(fold, X, Y, 1, Y + 2 * fold, 1);
 }

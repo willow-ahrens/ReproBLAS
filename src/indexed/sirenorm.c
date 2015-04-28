@@ -25,7 +25,7 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void smrenorm(const int fold, float* repX, int increpX, float* carX, int inccarX) {
+void smrenorm(const int fold, float* repX, const int increpX, float* carX, const int inccarX) {
   int i;
   float M;
   float repX0;
@@ -82,7 +82,7 @@ void sirenorm(const int fold, float_indexed *X) {
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cmrenorm(const int fold, float* repX, int increpX, float* carX, int inccarX) {
+void cmrenorm(const int fold, float* repX, const int increpX, float* carX, const int inccarX) {
   smrenorm(fold, repX, 2 * increpX, carX, 2 * inccarX);
   smrenorm(fold, repX + 1, 2 * increpX, carX + 1, 2 * inccarX);
 }

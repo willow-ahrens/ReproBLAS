@@ -20,10 +20,11 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void smsconv(const int fold, float X, float* repY, int increpY, float* carY, int inccarY) {
+void smsconv(const int fold, const float X, float* repY, const int increpY, float* carY, const int inccarY) {
   int i;
   float q;
   float s;
+  float x;
   if (X == 0.0) {
     for (i = 0; i < fold; i++) {
       repY[i*increpY] = 0.0;
@@ -32,12 +33,13 @@ void smsconv(const int fold, float X, float* repY, int increpY, float* carY, int
     return;
   }
   smbound(fold, sindex(fabs(X)), repY, increpY, carY, inccarY);
+  x = X;
   for (i = 0; i < fold; i++, repY += increpY, carY += inccarY) {
     s = repY[0];
-    q = s + X;
+    q = s + x;
     repY[0] = s;
     q -= s;
-    X -= q;
+    x -= q;
   }
 }
 
@@ -52,7 +54,7 @@ void smsconv(const int fold, float X, float* repY, int increpY, float* carY, int
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void sisconv(const int fold, float X, float_indexed *Y) {
+void sisconv(const int fold, const float X, float_indexed *Y) {
   smsconv(fold, X, Y, 1, Y + fold, 1);
 }
 
@@ -71,7 +73,7 @@ void sisconv(const int fold, float X, float_indexed *Y) {
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cmcconv(const int fold, void *X, float *repY, int increpY, float *carY, int inccarY) {
+void cmcconv(const int fold, const void *X, float *repY, const int increpY, float *carY, const int inccarY) {
   smsconv(fold, ((float*)X)[0], repY, increpY * 2, carY, inccarY * 2);
   smsconv(fold, ((float*)X)[1], repY + 1, increpY * 2, carY + 1, inccarY * 2);
 }
@@ -87,7 +89,7 @@ void cmcconv(const int fold, void *X, float *repY, int increpY, float *carY, int
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cicconv(const int fold, void *X, float_complex_indexed *Y) {
+void cicconv(const int fold, const void *X, float_complex_indexed *Y) {
   cmcconv(fold, X, Y, 1, Y + 2 * fold, 1);
 }
 
@@ -106,7 +108,7 @@ void cicconv(const int fold, void *X, float_complex_indexed *Y) {
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-float ssmconv(const int fold, float* repX, int increpX, float* carX, int inccarX) {
+float ssmconv(const int fold, const float* repX, const int increpX, const float* carX, const int inccarX) {
   int i;
   float Y = 0.0;
 
@@ -137,7 +139,7 @@ float ssmconv(const int fold, float* repX, int increpX, float* carX, int inccarX
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-float ssiconv(const int fold, float_indexed *X) {
+float ssiconv(const int fold, const float_indexed *X) {
   return ssmconv(fold, X, 1, X + fold, 1);
 }
 
@@ -150,15 +152,15 @@ float ssiconv(const int fold, float_indexed *X) {
  * @param increpX stride within X's rep vector (use every increpX'th element)
  * @param carX X's carry vector
  * @param inccarX stride within X's carry vector (use every inccarX'th element)
- * @param Y scalar Y
+ * @param conv scalar return
  *
  * @author Hong Diep Nguyen
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void ccmconv_sub(const int fold, float *repX, int increpX, float *carX, int inccarX, void *Y) {
-  ((float*)Y)[0] = ssmconv(fold, repX, increpX * 2, carX, inccarX + 1);
-  ((float*)Y)[1] = ssmconv(fold, repX + 1, increpX * 2, carX + 1, inccarX + 1);
+void ccmconv_sub(const int fold, const float *repX, const int increpX, const float *carX, const int inccarX, void *conv) {
+  ((float*)conv)[0] = ssmconv(fold, repX, increpX * 2, carX, inccarX + 1);
+  ((float*)conv)[1] = ssmconv(fold, repX + 1, increpX * 2, carX + 1, inccarX + 1);
 }
 
 /**
@@ -166,12 +168,12 @@ void ccmconv_sub(const int fold, float *repX, int increpX, float *carX, int incc
  *
  * @param fold the fold of the indexed types
  * @param X indexed scalar X
- * @param Y scalar Y
+ * @param conv scalar return
  *
  * @author Hong Diep Nguyen
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cciconv_sub(const int fold, float_complex_indexed *X, void *Y) {
-  ccmconv_sub(fold, X, 1, X + 2 * fold, 1, Y);
+void cciconv_sub(const int fold, const float_complex_indexed *X, void *conv) {
+  ccmconv_sub(fold, X, 1, X + 2 * fold, 1, conv);
 }

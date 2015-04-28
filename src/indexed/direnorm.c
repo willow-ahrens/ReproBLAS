@@ -25,7 +25,7 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void dmrenorm(const int fold, double* repX, int increpX, double* carX, int inccarX) {
+void dmrenorm(const int fold, double* repX, const int increpX, double* carX, const int inccarX) {
   int i;
   double M;
   double repX0;
@@ -82,7 +82,7 @@ void direnorm(const int fold, double_indexed *X) {
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zmrenorm(const int fold, double* repX, int increpX, double* carX, int inccarX) {
+void zmrenorm(const int fold, double* repX, const int increpX, double* carX, const int inccarX) {
   dmrenorm(fold, repX, 2 * increpX, carX, 2 * inccarX);
   dmrenorm(fold, repX + 1, 2 * increpX, carX + 1, 2 * inccarX);
 }

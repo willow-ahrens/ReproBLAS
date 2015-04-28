@@ -24,10 +24,11 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void dmdconv(const int fold, double X, double* repY, int increpY, double* carY, int inccarY) {
+void dmdconv(const int fold, const double X, double* repY, const int increpY, double* carY, const int inccarY) {
   int i;
   double q;
   double s;
+  double x;
   if (X == 0.0) {
     for (i = 0; i < fold; i++) {
       repY[i*increpY] = 0.0;
@@ -36,12 +37,13 @@ void dmdconv(const int fold, double X, double* repY, int increpY, double* carY, 
     return;
   }
   dmbound(fold, dindex(fabs(X)), repY, increpY, carY, inccarY);
+  x = X;
   for (i = 0; i < fold; i++, repY += increpY, carY += inccarY) {
     s = repY[0];
-    q = s + X;
+    q = s + x;
     repY[0] = s;
     q -= s;
-    X -= q;
+    x -= q;
   }
 }
 
@@ -56,7 +58,7 @@ void dmdconv(const int fold, double X, double* repY, int increpY, double* carY, 
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void didconv(const int fold, double X, double_indexed *Y) {
+void didconv(const int fold, const double X, double_indexed *Y) {
   dmdconv(fold, X, Y, 1, Y + fold, 1);
 }
 
@@ -75,7 +77,7 @@ void didconv(const int fold, double X, double_indexed *Y) {
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zmzconv(const int fold, void *X, double *repY, int increpY, double *carY, int inccarY) {
+void zmzconv(const int fold, const void *X, double *repY, const int increpY, double *carY, const int inccarY) {
   dmdconv(fold, ((double*)X)[0], repY, increpY * 2, carY, inccarY * 2);
   dmdconv(fold, ((double*)X)[1], repY + 1, increpY * 2, carY + 1, inccarY * 2);
 }
@@ -91,7 +93,7 @@ void zmzconv(const int fold, void *X, double *repY, int increpY, double *carY, i
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zizconv(const int fold, void *X, double_complex_indexed *Y) {
+void zizconv(const int fold, const void *X, double_complex_indexed *Y) {
   zmzconv(fold, X, Y, 1, Y + 2 * fold, 1);
 }
 
@@ -110,7 +112,7 @@ void zizconv(const int fold, void *X, double_complex_indexed *Y) {
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-double ddmconv(const int fold, double* repX, int increpX, double* carX, int inccarX) {
+double ddmconv(const int fold, const double* repX, const int increpX, const double* carX, const int inccarX) {
   int i;
   double Y = 0.0;
 
@@ -141,7 +143,7 @@ double ddmconv(const int fold, double* repX, int increpX, double* carX, int incc
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-double ddiconv(const int fold, double_indexed *X) {
+double ddiconv(const int fold, const double_indexed *X) {
   return ddmconv(fold, X, 1, X + fold, 1);
 }
 
@@ -154,15 +156,15 @@ double ddiconv(const int fold, double_indexed *X) {
  * @param increpX stride within X's rep vector (use every increpX'th element)
  * @param carX X's carry vector
  * @param inccarX stride within X's carry vector (use every inccarX'th element)
- * @param Y scalar Y
+ * @param conv scalar return
  *
  * @author Hong Diep Nguyen
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zzmconv_sub(const int fold, double *repX, int increpX, double *carX, int inccarX, void *Y) {
-  ((double*)Y)[0] = ddmconv(fold, repX, increpX * 2, carX, inccarX + 1);
-  ((double*)Y)[1] = ddmconv(fold, repX + 1, increpX * 2, carX + 1, inccarX + 1);
+void zzmconv_sub(const int fold, const double *repX, const int increpX, const double *carX, const int inccarX, void *conv) {
+  ((double*)conv)[0] = ddmconv(fold, repX, increpX * 2, carX, inccarX + 1);
+  ((double*)conv)[1] = ddmconv(fold, repX + 1, increpX * 2, carX + 1, inccarX + 1);
 }
 
 /**
@@ -170,12 +172,12 @@ void zzmconv_sub(const int fold, double *repX, int increpX, double *carX, int in
  *
  * @param fold the fold of the indexed types
  * @param X indexed scalar X
- * @param Y scalar Y
+ * @param conv scalar return
  *
  * @author Hong Diep Nguyen
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zziconv_sub(const int fold, double_complex_indexed *X, void *Y) {
-  zzmconv_sub(fold, X, 1, X + 2 * fold, 1, Y);
+void zziconv_sub(const int fold, const double_complex_indexed *X, void *conv) {
+  zzmconv_sub(fold, X, 1, X + 2 * fold, 1, conv);
 }

@@ -102,7 +102,7 @@ static void bounds_initialize() {
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-int dmindex(double *repX){
+int dmindex(const double *repX){
   int index;
 
   bounds_initialize();
@@ -132,7 +132,7 @@ int dmindex(double *repX){
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-int dindex(double X){
+int dindex(const double X){
   int index;
 
   bounds_initialize();
@@ -162,7 +162,7 @@ int dindex(double X){
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-double dbound(int index){
+double dbound(const int index){
   bounds_initialize();
 
   return bounds[index];
@@ -184,7 +184,7 @@ double dbound(int index){
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void dmbound(const int fold, int index, double *repX, int increpX, double *carX, int inccarX) {
+void dmbound(const int fold, const int index, double *repX, const int increpX, double *carX, const int inccarX) {
   int i;
 
   bounds_initialize();

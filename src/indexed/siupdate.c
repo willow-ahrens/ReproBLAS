@@ -25,7 +25,7 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void smsupdate(const int fold, float X, float* repY, int increpY, float* carY, int inccarY) {
+void smsupdate(const int fold, const float X, float* repY, const int increpY, float* carY, const int inccarY) {
   if (X == 0 || isnan(repY[0]) || isinf(repY[0]))
     return;
 
@@ -53,7 +53,7 @@ void smsupdate(const int fold, float X, float* repY, int increpY, float* carY, i
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void sisupdate(const int fold, float X, float_indexed *Y) {
+void sisupdate(const int fold, const float X, float_indexed *Y) {
   smsupdate(fold, X, Y, 1, Y + fold, 1);
 }
 
@@ -74,7 +74,7 @@ void sisupdate(const int fold, float X, float_indexed *Y) {
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cmsupdate(const int fold, float X, float* repY, int increpY, float* carY, int inccarY) {
+void cmsupdate(const int fold, const float X, float* repY, const int increpY, float* carY, const int inccarY) {
   smsupdate(fold, X, repY, 2 * increpY, carY, 2 * inccarY);
   smsupdate(fold, X, repY + 1, 2 * increpY, carY + 1, 2 * inccarY);
 }
@@ -92,7 +92,7 @@ void cmsupdate(const int fold, float X, float* repY, int increpY, float* carY, i
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cisupdate(const int fold, float X, float_complex_indexed *Y) {
+void cisupdate(const int fold, const float X, float_complex_indexed *Y) {
   cmsupdate(fold, X, Y, 1, Y + 2 * fold, 1);
 }
 
@@ -113,7 +113,7 @@ void cisupdate(const int fold, float X, float_complex_indexed *Y) {
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cmcupdate(const int fold, void *X, float* repY, int increpY, float* carY, int inccarY) {
+void cmcupdate(const int fold, const void *X, float* repY, const int increpY, float* carY, const int inccarY) {
   smsupdate(fold, ((float*)X)[0], repY, 2 * increpY, carY, 2 * inccarY);
   smsupdate(fold, ((float*)X)[1], repY + 1, 2 * increpY, carY + 1, 2 * inccarY);
 }
@@ -131,6 +131,6 @@ void cmcupdate(const int fold, void *X, float* repY, int increpY, float* carY, i
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cicupdate(const int fold, void *X, float_complex_indexed *Y) {
+void cicupdate(const int fold, const void *X, float_complex_indexed *Y) {
   cmcupdate(fold, X, Y, 1, Y + 2 * fold, 1);
 }

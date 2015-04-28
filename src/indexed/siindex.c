@@ -101,7 +101,7 @@ static void bounds_initialize() {
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-int smindex(float *repX){
+int smindex(const float *repX){
   int index;
 
   bounds_initialize();
@@ -131,7 +131,7 @@ int smindex(float *repX){
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-int sindex(float X){
+int sindex(const float X){
   int index;
 
   bounds_initialize();
@@ -161,7 +161,7 @@ int sindex(float X){
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-float sbound(int index){
+float sbound(const int index){
   bounds_initialize();
 
   return bounds[index];
@@ -183,7 +183,7 @@ float sbound(int index){
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void smbound(const int fold, int index, float *repX, int increpX, float *carX, int inccarX) {
+void smbound(const int fold, const int index, float *repX, const int increpX, float *carX, const int inccarX) {
   int i;
 
   bounds_initialize();

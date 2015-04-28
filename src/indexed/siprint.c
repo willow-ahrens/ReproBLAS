@@ -16,7 +16,7 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void smprint(const int fold, float *repX, int increpX, float *carX, int inccarX) {
+void smprint(const int fold, const float *repX, const int increpX, const float *carX, const int inccarX) {
   int i;
   float M;
   for (i = 0; i < fold; i++, repX += increpX, carX += inccarX) {
@@ -35,7 +35,7 @@ void smprint(const int fold, float *repX, int increpX, float *carX, int inccarX)
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void siprint(const int fold, float_indexed *X) {
+void siprint(const int fold, const float_indexed *X) {
   smprint(fold, X, 1, X + fold, 1);
 }
 
@@ -53,7 +53,7 @@ void siprint(const int fold, float_indexed *X) {
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cmprint(const int fold, float* repX, int increpX, float* carX, int inccarX) {
+void cmprint(const int fold, const float* repX, const int increpX, const float* carX, const int inccarX) {
   int i;
   float M;
   for (i = 0; i < fold; i++, repX += increpX, carX += inccarX) {
@@ -74,6 +74,6 @@ void cmprint(const int fold, float* repX, int increpX, float* carX, int inccarX)
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void ciprint(const int fold, float_complex_indexed *X) {
+void ciprint(const int fold, const float_complex_indexed *X) {
   cmprint(fold, X, 2, X + fold * 2, 2);
 }

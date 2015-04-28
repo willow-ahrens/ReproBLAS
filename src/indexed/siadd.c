@@ -29,7 +29,7 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void smsmadd(const int fold, float *repX, int increpX, float *carX, int inccarX, float* repY, int increpY, float* carY, int inccarY) {
+void smsmadd(const int fold, const float *repX, const int increpX, const float *carX, const int inccarX, float* repY, const int increpY, float* carY, const int inccarY) {
   int i;
   int shift;
 
@@ -79,7 +79,7 @@ void smsmadd(const int fold, float *repX, int increpX, float *carX, int inccarX,
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void sisiadd(const int fold, float_indexed *X, float_indexed *Y){
+void sisiadd(const int fold, const float_indexed *X, float_indexed *Y){
   smsmadd(fold, X, 1, X + fold, 1, Y, 1, Y + fold, 1);
 }
 
@@ -103,7 +103,7 @@ void sisiadd(const int fold, float_indexed *X, float_indexed *Y){
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cmcmadd(const int fold, float *repX, int increpX, float *carX, int inccarX, float* repY, int increpY, float* carY, int inccarY) {
+void cmcmadd(const int fold, const float *repX, const int increpX, const float *carX, const int inccarX, float* repY, const int increpY, float* carY, const int inccarY) {
   smsmadd(fold, repX, 2 * increpX, carX, 2 * inccarX, repY, 2 * increpY, carY, 2 * inccarY);
   smsmadd(fold, repX + 1, 2 * increpX, carX + 1, 2 * inccarX, repY + 1, 2 * increpY, carY + 1, 2 * inccarY);
 }
@@ -121,7 +121,7 @@ void cmcmadd(const int fold, float *repX, int increpX, float *carX, int inccarX,
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void ciciadd(const int fold, float_complex_indexed *X, float_complex_indexed *Y){
+void ciciadd(const int fold, const float_complex_indexed *X, float_complex_indexed *Y){
   cmcmadd(fold, X, 1, X + 2 * fold, 1, Y, 1, Y + 2 * fold, 1);
 }
 
@@ -142,7 +142,7 @@ void ciciadd(const int fold, float_complex_indexed *X, float_complex_indexed *Y)
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void smsdeposit(const int fold, float X, float *repY, int increpY){
+void smsdeposit(const int fold, const float X, float *repY, const int increpY){
   float M;
   int_float q;
   int i;
@@ -176,7 +176,7 @@ void smsdeposit(const int fold, float X, float *repY, int increpY){
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void sisdeposit(const int fold, float X, float_indexed *Y){
+void sisdeposit(const int fold, const float X, float_indexed *Y){
   smsdeposit(fold, X, Y, 1);
 }
 
@@ -197,7 +197,7 @@ void sisdeposit(const int fold, float X, float_indexed *Y){
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cmcdeposit(const int fold, void *X, float *repY, int increpY){
+void cmcdeposit(const int fold, const void *X, float *repY, const int increpY){
   float MR, MI;
   int_float qR, qI;
   int i;
@@ -248,7 +248,7 @@ void cmcdeposit(const int fold, void *X, float *repY, int increpY){
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cicdeposit(const int fold, void *X, float_complex_indexed *Y){
+void cicdeposit(const int fold, const void *X, float_complex_indexed *Y){
   cmcdeposit(fold, X, Y, 1);
 }
 
@@ -269,7 +269,7 @@ void cicdeposit(const int fold, void *X, float_complex_indexed *Y){
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void smsadd(const int fold, float X, float *repY, int increpY, float *carY, int inccarY){
+void smsadd(const int fold, const float X, float *repY, const int increpY, float *carY, const int inccarY){
   smsupdate(fold, fabsf(X), repY, increpY, carY, inccarY);
   smsdeposit(fold, X, repY, increpY);
   smrenorm(fold, repY, increpY, carY, inccarY);
@@ -288,7 +288,7 @@ void smsadd(const int fold, float X, float *repY, int increpY, float *carY, int 
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void sisadd(const int fold, float X, float_indexed *Y){
+void sisadd(const int fold, const float X, float_indexed *Y){
   smsadd(fold, X, Y, 1, Y + fold, 1);
 }
 
@@ -309,7 +309,7 @@ void sisadd(const int fold, float X, float_indexed *Y){
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cmcadd(const int fold, void *X, float *repY, int increpY, float *carY, int inccarY){
+void cmcadd(const int fold, const void *X, float *repY, const int increpY, float *carY, const int inccarY){
   float aX[2];
   aX[0] = fabsf(((float*)X)[0]);
   aX[1] = fabsf(((float*)X)[1]);
@@ -331,6 +331,6 @@ void cmcadd(const int fold, void *X, float *repY, int increpY, float *carY, int 
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cicadd(const int fold, void *X, float_complex_indexed *Y){
+void cicadd(const int fold, const void *X, float_complex_indexed *Y){
   cmcadd(fold, X, Y, 1, Y + 2 * fold, 1);
 }

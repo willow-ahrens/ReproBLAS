@@ -16,7 +16,7 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void dmprint(const int fold, double *repX, int increpX, double *carX, int inccarX) {
+void dmprint(const int fold, const double *repX, const int increpX, const double *carX, const int inccarX) {
   int i;
   double M;
   for (i = 0; i < fold; i++, repX += increpX, carX += inccarX) {
@@ -35,7 +35,7 @@ void dmprint(const int fold, double *repX, int increpX, double *carX, int inccar
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void diprint(const int fold, double_indexed *X) {
+void diprint(const int fold, const double_indexed *X) {
   dmprint(fold, X, 1, X + fold, 1);
 }
 
@@ -53,7 +53,7 @@ void diprint(const int fold, double_indexed *X) {
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zmprint(const int fold, double *repX, int increpX, double *carX, int inccarX){
+void zmprint(const int fold, const double *repX, const int increpX, const double *carX, const int inccarX){
   int i;
   double M;
   for (i = 0; i < fold; i++, repX += increpX, carX += inccarX) {
@@ -74,6 +74,6 @@ void zmprint(const int fold, double *repX, int increpX, double *carX, int inccar
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void ziprint(const int fold, double_complex_indexed *X){
+void ziprint(const int fold, const double_complex_indexed *X){
   zmprint(fold, X, 2, X + 2 * fold, 2);
 }
