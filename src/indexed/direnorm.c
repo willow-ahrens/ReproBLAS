@@ -9,6 +9,21 @@
 #include "indexed.h"
 #include "../Common/Common.h"
 
+/**
+ * @brief Renormalize manually specified indexed double precision
+ *
+ * Renormalization keeps the rep vector within the necessary bounds by shifting over to the carry vector
+ *
+ * @param fold the fold of the indexed types
+ * @param repX X's rep vector
+ * @param increpX stride within X's rep vector (use every increpX'th element)
+ * @param carX X's carry vector
+ * @param inccarX stride within X's carry vector (use every inccarX'th element)
+ *
+ * @author Hong Diep Nguyen
+ * @author Peter Ahrens
+ * @date   27 Apr 2015
+ */
 void dmrenorm(const int fold, double* repX, int increpX, double* carX, int inccarX) {
   int i;
   double M;
@@ -34,15 +49,54 @@ void dmrenorm(const int fold, double* repX, int increpX, double* carX, int incca
   }
 }
 
+/**
+ * @brief Renormalize indexed double precision
+ *
+ * Renormalization keeps the rep vector within the necessary bounds by shifting over to the carry vector
+ *
+ * @param fold the fold of the indexed types
+ * @param X indexed scalar X
+ *
+ * @author Hong Diep Nguyen
+ * @author Peter Ahrens
+ * @date   27 Apr 2015
+ */
 void direnorm(const int fold, double_indexed *X) {
   dmrenorm(fold, X, 1, X + fold, 1);
 }
 
+/**
+ * @brief Renormalize manually specified indexed complex double precision
+ *
+ * Renormalization keeps the rep vector within the necessary bounds by shifting over to the carry vector
+ *
+ * @param fold the fold of the indexed types
+ * @param repX X's rep vector
+ * @param increpX stride within X's rep vector (use every increpX'th element)
+ * @param carX X's carry vector
+ * @param inccarX stride within X's carry vector (use every inccarX'th element)
+ *
+ * @author Hong Diep Nguyen
+ * @author Peter Ahrens
+ * @date   27 Apr 2015
+ */
 void zmrenorm(const int fold, double* repX, int increpX, double* carX, int inccarX) {
   dmrenorm(fold, repX, 2 * increpX, carX, 2 * inccarX);
   dmrenorm(fold, repX + 1, 2 * increpX, carX + 1, 2 * inccarX);
 }
 
+/**
+ * @brief Renormalize indexed complex double precision
+ *
+ * Renormalization keeps the rep vector within the necessary bounds by shifting over to the carry vector
+ *
+ * @param fold the fold of the indexed types
+ * @param X indexed scalar X
+ *
+ * @author Hong Diep Nguyen
+ * @author Peter Ahrens
+ * @date   27 Apr 2015
+ */
 void zirenorm(const int fold, double_complex_indexed *X) {
   zmrenorm(fold, X, 1, X + 2 * fold, 1);
 }

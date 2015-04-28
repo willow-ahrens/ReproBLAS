@@ -9,6 +9,25 @@
 #include "indexed.h"
 #include "../Common/Common.h"
 
+/**
+ * @brief  Add manually specified indexed single precision (Y += X)
+ *
+ * Performs the operation Y += X
+ *
+ * @param fold the fold of the indexed types
+ * @param repX X's rep vector
+ * @param increpX stride within X's rep vector (use every increpX'th element)
+ * @param carX X's carry vector
+ * @param inccarX stride within X's carry vector (use every inccarX'th element)
+ * @param repY Y's rep vector
+ * @param increpY stride within Y's rep vector (use every increpY'th element)
+ * @param carY Y's carry vector
+ * @param inccarY stride within Y's carry vector (use every inccarY'th element)
+ *
+ * @author Hong Diep Nguyen
+ * @author Peter Ahrens
+ * @date   27 Apr 2015
+ */
 void smsmadd(const int fold, float *repX, int increpX, float *carX, int inccarX, float* repY, int increpY, float* carY, int inccarY) {
   int i;
   int shift;
@@ -46,19 +65,80 @@ void smsmadd(const int fold, float *repX, int increpX, float *carX, int inccarX,
   smrenorm(fold, repY, increpY, carY, inccarY);
 }
 
+/**
+ * @brief  Add indexed single precision (Y += X)
+ *
+ * Performs the operation Y += X
+ *
+ * @param fold the fold of the indexed types
+ * @param X indexed scalar X
+ * @param Y indexed scalar Y
+ *
+ * @author Hong Diep Nguyen
+ * @author Peter Ahrens
+ * @date   27 Apr 2015
+ */
 void sisiadd(const int fold, float_indexed *X, float_indexed *Y){
   smsmadd(fold, X, 1, X + fold, 1, Y, 1, Y + fold, 1);
 }
 
+/**
+ * @brief  Add manually specified indexed complex single precision (Y += X)
+ *
+ * Performs the operation Y += X
+ *
+ * @param fold the fold of the indexed types
+ * @param repX X's rep vector
+ * @param increpX stride within X's rep vector (use every increpX'th element)
+ * @param carX X's carry vector
+ * @param inccarX stride within X's carry vector (use every inccarX'th element)
+ * @param repY Y's rep vector
+ * @param increpY stride within Y's rep vector (use every increpY'th element)
+ * @param carY Y's carry vector
+ * @param inccarY stride within Y's carry vector (use every inccarY'th element)
+ *
+ * @author Hong Diep Nguyen
+ * @author Peter Ahrens
+ * @date   27 Apr 2015
+ */
 void cmcmadd(const int fold, float *repX, int increpX, float *carX, int inccarX, float* repY, int increpY, float* carY, int inccarY) {
   smsmadd(fold, repX, 2 * increpX, carX, 2 * inccarX, repY, 2 * increpY, carY, 2 * inccarY);
   smsmadd(fold, repX + 1, 2 * increpX, carX + 1, 2 * inccarX, repY + 1, 2 * increpY, carY + 1, 2 * inccarY);
 }
 
+/**
+ * @brief  Add indexed complex single precision (Y += X)
+ *
+ * Performs the operation Y += X
+ *
+ * @param fold the fold of the indexed types
+ * @param X indexed scalar X
+ * @param Y indexed scalar Y
+ *
+ * @author Hong Diep Nguyen
+ * @author Peter Ahrens
+ * @date   27 Apr 2015
+ */
 void ciciadd(const int fold, float_complex_indexed *X, float_complex_indexed *Y){
   cmcmadd(fold, X, 1, X + 2 * fold, 1, Y, 1, Y + 2 * fold, 1);
 }
 
+/**
+ * @brief  Add single precision to suitably indexed manually specified indexed single precision (Y += X)
+ *
+ * Performs the operation Y += X on an indexed type Y where the index of Y is larger than the index of X
+ *
+ * @note This routine was provided as a means of allowing the you to optimize your code. After you have called smsupdate() on Y with the maximum absolute value of any elements you wish to deposit in Y, you can call this method to deposit a maximum of sicapacity() elements into Y. After calling smsdeposit() on an indexed type, you must renormalize the indexed type with smrenorm().
+ *
+ * @param fold the fold of the indexed types
+ * @param X scalar X
+ * @param repY Y's rep vector
+ * @param increpY stride within Y's rep vector (use every increpY'th element)
+ *
+ * @author Hong Diep Nguyen
+ * @author Peter Ahrens
+ * @date   27 Apr 2015
+ */
 void smsdeposit(const int fold, float X, float *repY, int increpY){
   float M;
   int_float q;
@@ -77,20 +157,41 @@ void smsdeposit(const int fold, float X, float *repY, int increpY){
   repY[i * increpY] += q.f;
 }
 
+/**
+ * @brief  Add single precision to suitably indexed indexed single precision (Y += X)
+ *
+ * Performs the operation Y += X on an indexed type Y where the index of Y is larger than the index of X
+ *
+ * @note This routine was provided as a means of allowing the you to optimize your code. After you have called sisupdate() on Y with the maximum absolute value of any elements you wish to deposit in Y, you can call this method to deposit a maximum of sicapacity() elements into Y. After calling sisdeposit() on an indexed type, you must renormalize the indexed type with sirenorm().
+ *
+ * @param fold the fold of the indexed types
+ * @param X scalar X
+ * @param Y indexed scalar Y
+ *
+ * @author Hong Diep Nguyen
+ * @author Peter Ahrens
+ * @date   27 Apr 2015
+ */
 void sisdeposit(const int fold, float X, float_indexed *Y){
   smsdeposit(fold, X, Y, 1);
 }
 
-void smsadd(const int fold, float X, float *repY, int increpY, float *carY, int inccarY){
-  smsupdate(fold, fabsf(X), repY, increpY, carY, inccarY);
-  smsdeposit(fold, X, repY, increpY);
-  smrenorm(fold, repY, increpY, carY, inccarY);
-}
-
-void sisadd(const int fold, float X, float_indexed *Y){
-  smsadd(fold, X, Y, 1, Y + fold, 1);
-}
-
+/**
+ * @brief  Add complex single precision to suitably indexed manually specified indexed complex single precision (Y += X)
+ *
+ * Performs the operation Y += X on an indexed type Y where the index of Y is larger than the index of X
+ *
+ * @note This routine was provided as a means of allowing the you to optimize your code. After you have called cmcupdate() on Y with the maximum absolute value of any elements you wish to deposit in Y, you can call this method to deposit a maximum of sicapacity() elements into Y. After calling cmcdeposit() on an indexed type, you must renormalize the indexed type with cmrenorm().
+ *
+ * @param fold the fold of the indexed types
+ * @param X scalar X
+ * @param repY Y's rep vector
+ * @param increpY stride within Y's rep vector (use every increpY'th element)
+ *
+ * @author Hong Diep Nguyen
+ * @author Peter Ahrens
+ * @date   27 Apr 2015
+ */
 void cmcdeposit(const int fold, void *X, float *repY, int increpY){
   float MR, MI;
   int_float qR, qI;
@@ -128,10 +229,81 @@ void cmcdeposit(const int fold, void *X, float *repY, int increpY){
   repY[i * increpY + 1] = qI.f;
 }
 
+/**
+ * @brief  Add complex single precision to suitably indexed manually specified indexed complex single precision (Y += X)
+ *
+ * Performs the operation Y += X on an indexed type Y where the index of Y is larger than the index of X
+ *
+ * @note This routine was provided as a means of allowing the you to optimize your code. After you have called cicupdate() on Y with the maximum absolute value of any elements you wish to deposit in Y, you can call this method to deposit a maximum of sicapacity() elements into Y. After calling cicdeposit() on an indexed type, you must renormalize the indexed type with cirenorm().
+ *
+ * @param fold the fold of the indexed types
+ * @param X scalar X
+ * @param repY Y's rep vector
+ * @param increpY stride within Y's rep vector (use every increpY'th element)
+ *
+ * @author Hong Diep Nguyen
+ * @author Peter Ahrens
+ * @date   27 Apr 2015
+ */
 void cicdeposit(const int fold, void *X, float_complex_indexed *Y){
   cmcdeposit(fold, X, Y, 1);
 }
 
+/**
+ * @brief  Add single precision to manually specified indexed single precision (Y += X)
+ *
+ * Performs the operation Y += X on an indexed type Y
+ *
+ * @param fold the fold of the indexed types
+ * @param X scalar X
+ * @param repY Y's rep vector
+ * @param increpY stride within Y's rep vector (use every increpY'th element)
+ * @param carY Y's carry vector
+ * @param inccarY stride within Y's carry vector (use every inccarY'th element)
+ *
+ * @author Hong Diep Nguyen
+ * @author Peter Ahrens
+ * @date   27 Apr 2015
+ */
+void smsadd(const int fold, float X, float *repY, int increpY, float *carY, int inccarY){
+  smsupdate(fold, fabsf(X), repY, increpY, carY, inccarY);
+  smsdeposit(fold, X, repY, increpY);
+  smrenorm(fold, repY, increpY, carY, inccarY);
+}
+
+/**
+ * @brief  Add single precision to indexed single precision (Y += X)
+ *
+ * Performs the operation Y += X on an indexed type Y
+ *
+ * @param fold the fold of the indexed types
+ * @param X scalar X
+ * @param Y indexed scalar Y
+ *
+ * @author Hong Diep Nguyen
+ * @author Peter Ahrens
+ * @date   27 Apr 2015
+ */
+void sisadd(const int fold, float X, float_indexed *Y){
+  smsadd(fold, X, Y, 1, Y + fold, 1);
+}
+
+/**
+ * @brief  Add complex single precision to manually specified indexed complex single precision (Y += X)
+ *
+ * Performs the operation Y += X on an indexed type Y
+ *
+ * @param fold the fold of the indexed types
+ * @param X scalar X
+ * @param repY Y's rep vector
+ * @param increpY stride within Y's rep vector (use every increpY'th element)
+ * @param carY Y's carry vector
+ * @param inccarY stride within Y's carry vector (use every inccarY'th element)
+ *
+ * @author Hong Diep Nguyen
+ * @author Peter Ahrens
+ * @date   27 Apr 2015
+ */
 void cmcadd(const int fold, void *X, float *repY, int increpY, float *carY, int inccarY){
   float aX[2];
   aX[0] = fabsf(((float*)X)[0]);
@@ -141,6 +313,19 @@ void cmcadd(const int fold, void *X, float *repY, int increpY, float *carY, int 
   cmrenorm(fold, repY, increpY, carY, inccarY);
 }
 
+/**
+ * @brief  Add complex single precision to indexed complex single precision (Y += X)
+ *
+ * Performs the operation Y += X on an indexed type Y
+ *
+ * @param fold the fold of the indexed types
+ * @param X scalar X
+ * @param Y indexed scalar Y
+ *
+ * @author Hong Diep Nguyen
+ * @author Peter Ahrens
+ * @date   27 Apr 2015
+ */
 void cicadd(const int fold, void *X, float_complex_indexed *Y){
   cmcadd(fold, X, Y, 1, Y + 2 * fold, 1);
 }

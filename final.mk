@@ -61,3 +61,6 @@ reference:
 
 bench:
 	$(CALL_PYTHON) $(TOP)/tests/benchs/bench.py
+
+dox:
+	cd $(TOP); doxygen config.dox; cd doc/latex;make

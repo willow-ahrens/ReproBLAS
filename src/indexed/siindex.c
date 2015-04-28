@@ -110,7 +110,7 @@ int sindex(float X){
   return index;
 }
 
-double sbound(int index){
+float sbound(int index){
   bounds_initialize();
 
   return bounds[index];
