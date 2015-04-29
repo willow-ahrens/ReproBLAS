@@ -125,8 +125,8 @@ double ddmconv(const int fold, const double* repX, const int increpX, const doub
 
   // TODO: SCALING TO AVOID OVERFLOW
 
-  for (i = 0; i < fold; i++, repX += increpX, carX += inccarX) {
-    Y += (repX[0] + (carX[0] - 6) * ufp(repX[0]) * 0.25);
+  for (i = 0; i < fold; i++) {
+    Y += (repX[i * increpX] + (carX[i * increpX] - 6) * ufp(repX[i * increpX]) * 0.25);
   }
 
   return Y;

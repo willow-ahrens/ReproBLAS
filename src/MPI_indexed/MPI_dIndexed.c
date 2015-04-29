@@ -26,7 +26,7 @@ void dIAdd_MPI(
 		pin  = (double*) invec;
 		pout = (double*) inoutvec;
 
-		dmdmadd(pin, 1, pin + fold, 1, pout, 1, pout + fold, 1, fold);
+		dmdmadd(fold, pin, 1, pin + fold, 1, pout, 1, pout + fold, 1);
 
 		invec    += size;
 		inoutvec += size;
@@ -53,7 +53,7 @@ void zIAdd_MPI(
 		pin  = (double complex*) invec;
 		pout = (double complex*) inoutvec;
 
-		zmzmadd(pin, 1, pin + fold, 1, pout,1,  pout + fold,1,  fold);
+		zmzmadd(fold, pin, 1, pin + fold, 1, pout,1,  pout + fold,1);
 
 		invec    += size;
 		inoutvec += size;
@@ -99,7 +99,7 @@ void dINrm2_MPI(
 			pin[0] = scale1;
 		}
 
-		dmdmadd(pin + 1, 1, pin + fold + 1, 1, pout + 1, 1, pout + fold + 1, 1, fold);
+		dmdmadd(fold, pin + 1, 1, pin + fold + 1, 1, pout + 1, 1, pout + fold + 1, 1);
 
 		invec    += size;
 		inoutvec += size;

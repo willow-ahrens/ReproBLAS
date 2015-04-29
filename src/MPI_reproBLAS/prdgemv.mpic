@@ -21,7 +21,7 @@ void prdgemv(int rank, int nprocs, rblas_order_t Order, rblas_transpose_t TransA
     RMPI_Init();
     myYI = (Idouble*)malloc(M * sizeof(Idouble));
     memset(myYI, 0, M * sizeof(Idouble));
-    dgemvI(Order, TransA, M, N/nprocs, myA, N/nprocs, myX, 1, myYI, 1, DEFAULT_FOLD);
+    dgemvI(DEFAULT_FOLD, Order, TransA, M, N/nprocs, myA, N/nprocs, myX, 1, myYI, 1);
     if(rank == 0){
       YI = (Idouble*)malloc(M * sizeof(Idouble));
       memset(YI, 0, M * sizeof(Idouble));
@@ -30,7 +30,7 @@ void prdgemv(int rank, int nprocs, rblas_order_t Order, rblas_transpose_t TransA
     MPI_Reduce(myYI, YI, M, MPI_IDOUBLE, MPI_RSUM, 0, MPI_COMM_WORLD);
     if(rank == 0){
       for(i = 0; i < M; i++){
-        Y[i] = ddiconv(YI + i, DEFAULT_FOLD);
+        Y[i] = ddiconv(DEFAULT_FOLD, YI + i);
       }
       free(YI);
     }
