@@ -63,4 +63,4 @@ bench:
 	$(CALL_PYTHON) $(TOP)/tests/benchs/bench.py
 
 doc:
-	cd $(TOP); doxygen config.dox; cd doc/latex;make
+	cd $(TOP); rm -rf doc/*; doxygen config.dox; cd doc/latex;make
