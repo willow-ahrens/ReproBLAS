@@ -1,0 +1,87 @@
+\contentsline {chapter}{\numberline {1}Data Structure Index}{1}{chapter.1}
+\contentsline {section}{\numberline {1.1}Data Structures}{1}{section.1.1}
+\contentsline {chapter}{\numberline {2}File Index}{3}{chapter.2}
+\contentsline {section}{\numberline {2.1}File List}{3}{section.2.1}
+\contentsline {chapter}{\numberline {3}Data Structure Documentation}{5}{chapter.3}
+\contentsline {section}{\numberline {3.1}d\discretionary {\unhbox \voidb@x \hbox {\relax \fontsize {7}{8}\selectfont $\leftarrow \joinrel \rhook $}}{}{}I\discretionary {\unhbox \voidb@x \hbox {\relax \fontsize {7}{8}\selectfont $\leftarrow \joinrel \rhook $}}{}{}Complex\discretionary {\unhbox \voidb@x \hbox {\relax \fontsize {7}{8}\selectfont $\leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\unhbox \voidb@x \hbox {\relax \fontsize {7}{8}\selectfont $\leftarrow \joinrel \rhook $}}{}{} Struct Reference}{5}{section.3.1}
+\contentsline {section}{\numberline {3.2}Idouble\discretionary {\unhbox \voidb@x \hbox {\relax \fontsize {7}{8}\selectfont $\leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\unhbox \voidb@x \hbox {\relax \fontsize {7}{8}\selectfont $\leftarrow \joinrel \rhook $}}{}{} Struct Reference}{5}{section.3.2}
+\contentsline {section}{\numberline {3.3}Ifloat\discretionary {\unhbox \voidb@x \hbox {\relax \fontsize {7}{8}\selectfont $\leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\unhbox \voidb@x \hbox {\relax \fontsize {7}{8}\selectfont $\leftarrow \joinrel \rhook $}}{}{} Struct Reference}{5}{section.3.3}
+\contentsline {section}{\numberline {3.4}s\discretionary {\unhbox \voidb@x \hbox {\relax \fontsize {7}{8}\selectfont $\leftarrow \joinrel \rhook $}}{}{}I\discretionary {\unhbox \voidb@x \hbox {\relax \fontsize {7}{8}\selectfont $\leftarrow \joinrel \rhook $}}{}{}Complex\discretionary {\unhbox \voidb@x \hbox {\relax \fontsize {7}{8}\selectfont $\leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\unhbox \voidb@x \hbox {\relax \fontsize {7}{8}\selectfont $\leftarrow \joinrel \rhook $}}{}{} Struct Reference}{6}{section.3.4}
+\contentsline {chapter}{\numberline {4}File Documentation}{7}{chapter.4}
+\contentsline {section}{\numberline {4.1}include/indexed.h File Reference}{7}{section.4.1}
+\contentsline {subsection}{\numberline {4.1.1}Detailed Description}{12}{subsection.4.1.1}
+\contentsline {subsection}{\numberline {4.1.2}Typedef Documentation}{12}{subsection.4.1.2}
+\contentsline {subsubsection}{\numberline {4.1.2.1}double\discretionary {\unhbox \voidb@x \hbox {\relax \fontsize {7}{8}\selectfont $\leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\unhbox \voidb@x \hbox {\relax \fontsize {7}{8}\selectfont $\leftarrow \joinrel \rhook $}}{}{}complex\discretionary {\unhbox \voidb@x \hbox {\relax \fontsize {7}{8}\selectfont $\leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\unhbox \voidb@x \hbox {\relax \fontsize {7}{8}\selectfont $\leftarrow \joinrel \rhook $}}{}{}indexed}{12}{subsubsection.4.1.2.1}
+\contentsline {subsubsection}{\numberline {4.1.2.2}double\discretionary {\unhbox \voidb@x \hbox {\relax \fontsize {7}{8}\selectfont $\leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\unhbox \voidb@x \hbox {\relax \fontsize {7}{8}\selectfont $\leftarrow \joinrel \rhook $}}{}{}indexed}{13}{subsubsection.4.1.2.2}
+\contentsline {subsubsection}{\numberline {4.1.2.3}float\discretionary {\unhbox \voidb@x \hbox {\relax \fontsize {7}{8}\selectfont $\leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\unhbox \voidb@x \hbox {\relax \fontsize {7}{8}\selectfont $\leftarrow \joinrel \rhook $}}{}{}complex\discretionary {\unhbox \voidb@x \hbox {\relax \fontsize {7}{8}\selectfont $\leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\unhbox \voidb@x \hbox {\relax \fontsize {7}{8}\selectfont $\leftarrow \joinrel \rhook $}}{}{}indexed}{13}{subsubsection.4.1.2.3}
+\contentsline {subsubsection}{\numberline {4.1.2.4}float\discretionary {\unhbox \voidb@x \hbox {\relax \fontsize {7}{8}\selectfont $\leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\unhbox \voidb@x \hbox {\relax \fontsize {7}{8}\selectfont $\leftarrow \joinrel \rhook $}}{}{}indexed}{13}{subsubsection.4.1.2.4}
+\contentsline {subsection}{\numberline {4.1.3}Function Documentation}{13}{subsection.4.1.3}
+\contentsline {subsubsection}{\numberline {4.1.3.1}cciconv\discretionary {\unhbox \voidb@x \hbox {\relax \fontsize {7}{8}\selectfont $\leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\unhbox \voidb@x \hbox {\relax \fontsize {7}{8}\selectfont $\leftarrow \joinrel \rhook $}}{}{}sub}{13}{subsubsection.4.1.3.1}
+\contentsline {subsubsection}{\numberline {4.1.3.2}cialloc}{14}{subsubsection.4.1.3.2}
+\contentsline {subsubsection}{\numberline {4.1.3.3}cicadd}{15}{subsubsection.4.1.3.3}
+\contentsline {subsubsection}{\numberline {4.1.3.4}cicconv}{15}{subsubsection.4.1.3.4}
+\contentsline {subsubsection}{\numberline {4.1.3.5}cicdeposit}{16}{subsubsection.4.1.3.5}
+\contentsline {subsubsection}{\numberline {4.1.3.6}ciciadd}{16}{subsubsection.4.1.3.6}
+\contentsline {subsubsection}{\numberline {4.1.3.7}ciciset}{16}{subsubsection.4.1.3.7}
+\contentsline {subsubsection}{\numberline {4.1.3.8}cicupdate}{17}{subsubsection.4.1.3.8}
+\contentsline {subsubsection}{\numberline {4.1.3.9}cinegate}{17}{subsubsection.4.1.3.9}
+\contentsline {subsubsection}{\numberline {4.1.3.10}cinum}{17}{subsubsection.4.1.3.10}
+\contentsline {subsubsection}{\numberline {4.1.3.11}ciprint}{18}{subsubsection.4.1.3.11}
+\contentsline {subsubsection}{\numberline {4.1.3.12}cirenorm}{18}{subsubsection.4.1.3.12}
+\contentsline {subsubsection}{\numberline {4.1.3.13}cisetzero}{18}{subsubsection.4.1.3.13}
+\contentsline {subsubsection}{\numberline {4.1.3.14}cisiset}{19}{subsubsection.4.1.3.14}
+\contentsline {subsubsection}{\numberline {4.1.3.15}cisize}{19}{subsubsection.4.1.3.15}
+\contentsline {subsubsection}{\numberline {4.1.3.16}cisupdate}{19}{subsubsection.4.1.3.16}
+\contentsline {subsubsection}{\numberline {4.1.3.17}dbound}{20}{subsubsection.4.1.3.17}
+\contentsline {subsubsection}{\numberline {4.1.3.18}ddiconv}{20}{subsubsection.4.1.3.18}
+\contentsline {subsubsection}{\numberline {4.1.3.19}dialloc}{20}{subsubsection.4.1.3.19}
+\contentsline {subsubsection}{\numberline {4.1.3.20}dicapacity}{21}{subsubsection.4.1.3.20}
+\contentsline {subsubsection}{\numberline {4.1.3.21}didadd}{21}{subsubsection.4.1.3.21}
+\contentsline {subsubsection}{\numberline {4.1.3.22}didconv}{21}{subsubsection.4.1.3.22}
+\contentsline {subsubsection}{\numberline {4.1.3.23}diddeposit}{22}{subsubsection.4.1.3.23}
+\contentsline {subsubsection}{\numberline {4.1.3.24}didiadd}{22}{subsubsection.4.1.3.24}
+\contentsline {subsubsection}{\numberline {4.1.3.25}didiset}{23}{subsubsection.4.1.3.25}
+\contentsline {subsubsection}{\numberline {4.1.3.26}didupdate}{23}{subsubsection.4.1.3.26}
+\contentsline {subsubsection}{\numberline {4.1.3.27}dindex}{23}{subsubsection.4.1.3.27}
+\contentsline {subsubsection}{\numberline {4.1.3.28}dinegate}{24}{subsubsection.4.1.3.28}
+\contentsline {subsubsection}{\numberline {4.1.3.29}dinum}{24}{subsubsection.4.1.3.29}
+\contentsline {subsubsection}{\numberline {4.1.3.30}diprint}{24}{subsubsection.4.1.3.30}
+\contentsline {subsubsection}{\numberline {4.1.3.31}direnorm}{25}{subsubsection.4.1.3.31}
+\contentsline {subsubsection}{\numberline {4.1.3.32}disetzero}{25}{subsubsection.4.1.3.32}
+\contentsline {subsubsection}{\numberline {4.1.3.33}disize}{25}{subsubsection.4.1.3.33}
+\contentsline {subsubsection}{\numberline {4.1.3.34}diwidth}{26}{subsubsection.4.1.3.34}
+\contentsline {subsubsection}{\numberline {4.1.3.35}sbound}{26}{subsubsection.4.1.3.35}
+\contentsline {subsubsection}{\numberline {4.1.3.36}sialloc}{26}{subsubsection.4.1.3.36}
+\contentsline {subsubsection}{\numberline {4.1.3.37}sicapacity}{27}{subsubsection.4.1.3.37}
+\contentsline {subsubsection}{\numberline {4.1.3.38}sindex}{27}{subsubsection.4.1.3.38}
+\contentsline {subsubsection}{\numberline {4.1.3.39}sinegate}{28}{subsubsection.4.1.3.39}
+\contentsline {subsubsection}{\numberline {4.1.3.40}sinum}{28}{subsubsection.4.1.3.40}
+\contentsline {subsubsection}{\numberline {4.1.3.41}siprint}{28}{subsubsection.4.1.3.41}
+\contentsline {subsubsection}{\numberline {4.1.3.42}sirenorm}{29}{subsubsection.4.1.3.42}
+\contentsline {subsubsection}{\numberline {4.1.3.43}sisadd}{30}{subsubsection.4.1.3.43}
+\contentsline {subsubsection}{\numberline {4.1.3.44}sisconv}{30}{subsubsection.4.1.3.44}
+\contentsline {subsubsection}{\numberline {4.1.3.45}sisdeposit}{31}{subsubsection.4.1.3.45}
+\contentsline {subsubsection}{\numberline {4.1.3.46}sisetzero}{31}{subsubsection.4.1.3.46}
+\contentsline {subsubsection}{\numberline {4.1.3.47}sisiadd}{31}{subsubsection.4.1.3.47}
+\contentsline {subsubsection}{\numberline {4.1.3.48}sisiset}{32}{subsubsection.4.1.3.48}
+\contentsline {subsubsection}{\numberline {4.1.3.49}sisize}{32}{subsubsection.4.1.3.49}
+\contentsline {subsubsection}{\numberline {4.1.3.50}sisupdate}{33}{subsubsection.4.1.3.50}
+\contentsline {subsubsection}{\numberline {4.1.3.51}siwidth}{34}{subsubsection.4.1.3.51}
+\contentsline {subsubsection}{\numberline {4.1.3.52}ssiconv}{34}{subsubsection.4.1.3.52}
+\contentsline {subsubsection}{\numberline {4.1.3.53}zialloc}{34}{subsubsection.4.1.3.53}
+\contentsline {subsubsection}{\numberline {4.1.3.54}zidiset}{35}{subsubsection.4.1.3.54}
+\contentsline {subsubsection}{\numberline {4.1.3.55}zidupdate}{35}{subsubsection.4.1.3.55}
+\contentsline {subsubsection}{\numberline {4.1.3.56}zinegate}{36}{subsubsection.4.1.3.56}
+\contentsline {subsubsection}{\numberline {4.1.3.57}zinum}{37}{subsubsection.4.1.3.57}
+\contentsline {subsubsection}{\numberline {4.1.3.58}ziprint}{37}{subsubsection.4.1.3.58}
+\contentsline {subsubsection}{\numberline {4.1.3.59}zirenorm}{37}{subsubsection.4.1.3.59}
+\contentsline {subsubsection}{\numberline {4.1.3.60}zisetzero}{38}{subsubsection.4.1.3.60}
+\contentsline {subsubsection}{\numberline {4.1.3.61}zisize}{38}{subsubsection.4.1.3.61}
+\contentsline {subsubsection}{\numberline {4.1.3.62}zizadd}{38}{subsubsection.4.1.3.62}
+\contentsline {subsubsection}{\numberline {4.1.3.63}zizconv}{39}{subsubsection.4.1.3.63}
+\contentsline {subsubsection}{\numberline {4.1.3.64}zizdeposit}{39}{subsubsection.4.1.3.64}
+\contentsline {subsubsection}{\numberline {4.1.3.65}ziziadd}{40}{subsubsection.4.1.3.65}
+\contentsline {subsubsection}{\numberline {4.1.3.66}ziziset}{40}{subsubsection.4.1.3.66}
+\contentsline {subsubsection}{\numberline {4.1.3.67}zizupdate}{40}{subsubsection.4.1.3.67}
+\contentsline {subsubsection}{\numberline {4.1.3.68}zziconv\discretionary {\unhbox \voidb@x \hbox {\relax \fontsize {7}{8}\selectfont $\leftarrow \joinrel \rhook $}}{}{}\_\discretionary {\unhbox \voidb@x \hbox {\relax \fontsize {7}{8}\selectfont $\leftarrow \joinrel \rhook $}}{}{}sub}{41}{subsubsection.4.1.3.68}
+\contentsline {chapter}{Index}{43}{section*.10}

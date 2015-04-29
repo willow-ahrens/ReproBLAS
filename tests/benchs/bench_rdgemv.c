@@ -141,7 +141,10 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
   util_dvec_fill(NX, X, incX, FillX, ScaleX, CondX);
   util_dvec_fill(NY, Y, incY._int.value, FillY._named.value, ScaleY._double.value, CondY._double.value);
   double *res  = (double*)malloc(NY * incY._int.value * sizeof(double));
+  double *ref  = (double*)malloc(NY * incY._int.value * sizeof(double));
   double time = 0.0;
+  memcpy(ref, Y, NY * incY._int.value * sizeof(double));
+  rdgemv(o, t, M, N, A, lda, X, incX, ref, incY._int.value);
 
   for(int i = 0; i < trials; i++){
     memcpy(res, Y, NY * incY._int.value * sizeof(double));
@@ -154,5 +157,7 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
   perf_output_perf(time, N * M, trials);
 
   free(X);
+  free(res);
+  free(ref);
   return rc;
 }

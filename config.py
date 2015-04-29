@@ -8,10 +8,10 @@ def run(command_list):
   target and returns a list of their results as a list of tuples of (return
   code, output)
   """
+  """
   p = Pool(cpu_count())
   return p.map(terminal.callsafe, command_list)
   """
   return list(map(terminal.callsafe, command_list))
-  """
 
 version = "0.0.0"

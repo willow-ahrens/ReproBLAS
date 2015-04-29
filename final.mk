@@ -29,7 +29,7 @@ install-doc: $(call get_subtree,INSTALL_DOC,$(TOP))
 	$(INSTALL) -d $(DOC_DIR)
 	$(INSTALL_DATA) -t $(DOC_DIR) $^
 
-.PHONY: params replace excise check bench reference tune
+.PHONY: params replace excise check bench reference tune doc
 
 # Creates the parameter list
 params:
@@ -62,5 +62,5 @@ reference:
 bench:
 	$(CALL_PYTHON) $(TOP)/tests/benchs/bench.py
 
-dox:
+doc:
 	cd $(TOP); doxygen config.dox; cd doc/latex;make

@@ -4,11 +4,11 @@
 #include "reproBLAS.h"
 #include <complex.h>
 
-void dgemvI(rblas_order_t Order,
+void dgemvI(int fold, rblas_order_t Order,
             rblas_transpose_t TransA, int M, int N,
             double *A, int lda,
             double *X, int incX,
-            I_double *Y, int incY, int fold);
+            I_double *Y, int incY);
 
 #define  dsumI_(N,V,INC,S) dsumI1(N,V,INC,DEFAULT_FOLD,(S).m, (S).c)
 #define dasumI_(N,V,INC,S) dasumI1(N,V,INC,DEFAULT_FOLD,(S).m, (S).c)
