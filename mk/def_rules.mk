@@ -37,10 +37,8 @@ echo_cmd =
 endif
 
 
-COMPILE.mpic = $(call echo_cmd,MPICC $<) $(MPICC) $(CFLAGS) $(MPICFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -x c -c
 COMPILE.c = $(call echo_cmd,CC $<) $(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
 COMPILE.cc = $(call echo_cmd,CXX $<) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
-LINK.mpic = $(call echo_cmd,LINK $@) $(MPICC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(MPILDFLAGS) $(TARGET_ARCH)
 LINK.c = $(call echo_cmd,LINK $@) $(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH)
 LINK.cc = $(call echo_cmd,LINK $@) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH)
 
@@ -73,7 +71,7 @@ LINK.cc = $(call echo_cmd,LINK $@) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS) $(T
 # You can add your own here.  For example to add support for Fortran you
 # would just append ".o:.f" and set COMPILE.f (actually make already
 # defines it - just take a look at output of "make -p")
-AUTO_RULES := .o:.cpp .o:.cc .o:.c .o:.mpic
+AUTO_RULES := .o:.cpp .o:.cc .o:.c
 
 # This compile command should be generic for most compilers - you should
 # just define appropriate COMPILE.suffix variable.

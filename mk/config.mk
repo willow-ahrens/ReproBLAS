@@ -50,7 +50,9 @@ ifeq ($(CC),cc)
   endif
 endif
 
-# Detect MPI C compiler in the following order if MPICC hasn't been set
+
+#TODO do some better MPI flag detection.
+# Detect MPI C compiler in the following order
 ifeq ($(MPICC),)
   ifeq ("$(shell which mpicc >/dev/null; echo $$?)", "0")
     MPICC := mpicc
