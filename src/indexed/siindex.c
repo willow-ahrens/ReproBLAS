@@ -94,24 +94,24 @@ static void bounds_initialize() {
  *
  * The index of an indexed type is the bin that it corresponds to. Higher indicies correspond to smaller bins.
  *
- * @param repX X's rep vector
+ * @param manX X's mantissa vector
  * @return X's index
  *
  * @author Hong Diep Nguyen
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-int smindex(const float *repX){
+int smindex(const float *manX){
   int index;
 
   bounds_initialize();
 
-  if(isinf(repX[0])){
+  if(isinf(manX[0])){
     index = bounds_min_index;
-  } else if(repX[0] == 0){
+  } else if(manX[0] == 0){
     index = bounds_max_index;
   } else {
-    frexpf(repX[0], &index);
+    frexpf(manX[0], &index);
     index--;
     index /= BIN_WIDTH;
     index = BOUNDS_ZERO_INDEX - index;
@@ -174,8 +174,8 @@ float sbound(const int index){
  * Set the manually specified indexed single precision X to be empty with the given index
  *
  * @param index index
- * @param repX X's rep vector
- * @param increpX stride within X's rep vector (use every increpX'th element)
+ * @param manX X's mantissa vector
+ * @param incmanX stride within X's mantissa vector (use every incmanX'th element)
  * @param carX X's carry vector
  * @param inccarX stride within X's carry vector (use every inccarY'th element)
  *
@@ -183,13 +183,13 @@ float sbound(const int index){
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void smbound(const int fold, const int index, float *repX, const int increpX, float *carX, const int inccarX) {
+void smbound(const int fold, const int index, float *manX, const int incmanX, float *carX, const int inccarX) {
   int i;
 
   bounds_initialize();
 
   for (i = 0; i < fold; i++) {
-    repX[i * increpX] = bounds[index + i];
+    manX[i * incmanX] = bounds[index + i];
     carX[i * inccarX] = 0.0;
   }
 }

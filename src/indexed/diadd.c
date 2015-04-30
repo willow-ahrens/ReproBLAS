@@ -17,12 +17,12 @@
  * Performs the operation Y += X
  *
  * @param fold the fold of the indexed types
- * @param repX X's rep vector
- * @param increpX stride within X's rep vector (use every increpX'th element)
+ * @param manX X's mantissa vector
+ * @param incmanX stride within X's mantissa vector (use every incmanX'th element)
  * @param carX X's carry vector
  * @param inccarX stride within X's carry vector (use every inccarX'th element)
- * @param repY Y's rep vector
- * @param increpY stride within Y's rep vector (use every increpY'th element)
+ * @param manY Y's mantissa vector
+ * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
  * @param carY Y's carry vector
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
@@ -30,41 +30,41 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void dmdmadd(const int fold, const double *repX, const int increpX, const double *carX, const int inccarX, double* repY, const int increpY, double* carY, const int inccarY) {
+void dmdmadd(const int fold, const double *manX, const int incmanX, const double *carX, const int inccarX, double* manY, const int incmanY, double* carY, const int inccarY) {
   int i;
   int shift;
 
-  if (repX[0] == 0.0)
+  if (manX[0] == 0.0)
     return;
 
-  if (repY[0] == 0.0) {
+  if (manY[0] == 0.0) {
     for (i = 0; i < fold; i++) {
-      repY[i*increpY] = repX[i*increpX];
+      manY[i*incmanY] = manX[i*incmanX];
       carY[i*inccarY] = carX[i*inccarX];
     }
     return;
   }
 
-  shift = dmindex(repY) - dmindex(repX);
+  shift = dmindex(manY) - dmindex(manX);
   if(shift > 0){
     //shift Y upwards and add X to Y
     for (i = fold - 1; i >= shift; i--) {
-      repY[i*increpY] = repX[i*increpX] + (repY[(i - shift)*increpY] - 1.5*ufp(repY[(i - shift)*increpY]));
+      manY[i*incmanY] = manX[i*incmanX] + (manY[(i - shift)*incmanY] - 1.5*ufp(manY[(i - shift)*incmanY]));
       carY[i*inccarY] = carX[i*inccarX] + carY[(i - shift)*inccarY];
     }
     for (i = 0; i < shift && i < fold; i++) {
-      repY[i*increpY] = repX[i*increpX];
+      manY[i*incmanY] = manX[i*incmanX];
       carY[i*inccarY] = carX[i*inccarX];
     }
   }else{
     //shift X upwards and add X to Y
     for (i = 0 - shift; i < fold; i++) {
-      repY[i*increpY] += repX[(i + shift)*increpX] - 1.5*ufp(repX[(i + shift)*increpX]);
+      manY[i*incmanY] += manX[(i + shift)*incmanX] - 1.5*ufp(manX[(i + shift)*incmanX]);
       carY[i*inccarY] += carX[(i + shift)*inccarX];
     }
   }
 
-  dmrenorm(fold, repY, increpY, carY, inccarY);
+  dmrenorm(fold, manY, incmanY, carY, inccarY);
 }
 
 /**
@@ -91,12 +91,12 @@ void didiadd(const int fold, const double_indexed *X, double_indexed *Y){
  * Performs the operation Y += X
  *
  * @param fold the fold of the indexed types
- * @param repX X's rep vector
- * @param increpX stride within X's rep vector (use every increpX'th element)
+ * @param manX X's mantissa vector
+ * @param incmanX stride within X's mantissa vector (use every incmanX'th element)
  * @param carX X's carry vector
  * @param inccarX stride within X's carry vector (use every inccarX'th element)
- * @param repY Y's rep vector
- * @param increpY stride within Y's rep vector (use every increpY'th element)
+ * @param manY Y's mantissa vector
+ * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
  * @param carY Y's carry vector
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
@@ -104,9 +104,9 @@ void didiadd(const int fold, const double_indexed *X, double_indexed *Y){
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zmzmadd(const int fold, const double *repX, const int increpX, const double *carX, const int inccarX, double* repY, const int increpY, double* carY, const int inccarY) {
-  dmdmadd(fold, repX, 2 * increpX, carX, 2 * inccarX, repY, 2 * increpY, carY, 2 * inccarY);
-  dmdmadd(fold, repX + 1, 2 * increpX, carX + 1, 2 * inccarX, repY + 1, 2 * increpY, carY + 1, 2 * inccarY);
+void zmzmadd(const int fold, const double *manX, const int incmanX, const double *carX, const int inccarX, double* manY, const int incmanY, double* carY, const int inccarY) {
+  dmdmadd(fold, manX, 2 * incmanX, carX, 2 * inccarX, manY, 2 * incmanY, carY, 2 * inccarY);
+  dmdmadd(fold, manX + 1, 2 * incmanX, carX + 1, 2 * inccarX, manY + 1, 2 * incmanY, carY + 1, 2 * inccarY);
 }
 
 /**
@@ -136,30 +136,30 @@ void ziziadd(const int fold, const double_complex_indexed *X, double_complex_ind
  *
  * @param fold the fold of the indexed types
  * @param X scalar X
- * @param repY Y's rep vector
- * @param increpY stride within Y's rep vector (use every increpY'th element)
+ * @param manY Y's mantissa vector
+ * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
  *
  * @author Hong Diep Nguyen
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void dmddeposit(const int fold, const double X, double *repY, const int increpY){
+void dmddeposit(const int fold, const double X, double *manY, const int incmanY){
   double M;
   double x = X;
   long_double q;
   int i;
   for (i = 0; i < fold - 1; i++) {
-    M = repY[i * increpY];
+    M = manY[i * incmanY];
     q.d = x;
     q.l |= 1;
     q.d += M;
-    repY[i * increpY] = q.d;
+    manY[i * incmanY] = q.d;
     M -= q.d;
     x += M;
   }
   q.d = x;
   q.l |= 1;
-  repY[i * increpY] += q.d;
+  manY[i * incmanY] += q.d;
 }
 
 /**
@@ -191,14 +191,14 @@ void diddeposit(const int fold, const double X, double_indexed *Y){
  *
  * @param fold the fold of the indexed types
  * @param X scalar X
- * @param repY Y's rep vector
- * @param increpY stride within Y's rep vector (use every increpY'th element)
+ * @param manY Y's mantissa vector
+ * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
  *
  * @author Hong Diep Nguyen
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zmzdeposit(const int fold, const void *X, double *repY, const int increpY){
+void zmzdeposit(const int fold, const void *X, double *manY, const int incmanY){
   double MR, MI;
   long_double qR, qI;
   int i;
@@ -206,31 +206,31 @@ void zmzdeposit(const int fold, const void *X, double *repY, const int increpY){
   double xI = ((double*)X)[1];
 
   for (i = 0; i < fold - 1; i++) {
-    MR = repY[i * 2 * increpY];
-    MI = repY[i * 2 * increpY + 1];
+    MR = manY[i * 2 * incmanY];
+    MI = manY[i * 2 * incmanY + 1];
     qR.d = xR;
     qI.d = xI;
     qR.l |= 1;
     qI.l |= 1;
     qR.d += MR;
     qI.d += MI;
-    repY[i * 2 * increpY] = qR.d;
-    repY[i * 2 * increpY + 1] = qI.d;
+    manY[i * 2 * incmanY] = qR.d;
+    manY[i * 2 * incmanY + 1] = qI.d;
     MR -= qR.d;
     MI -= qI.d;
     xR += MR;
     xI += MI;
   }
-  MR = repY[i * 2 * increpY];
-  MI = repY[i * 2 * increpY + 1];
+  MR = manY[i * 2 * incmanY];
+  MI = manY[i * 2 * incmanY + 1];
   qR.d = xR;
   qI.d = xI;
   qR.l |= 1;
   qI.l |= 1;
   qR.d += MR;
   qI.d += MI;
-  repY[i * 2 * increpY] = qR.d;
-  repY[i * 2 * increpY + 1] = qI.d;
+  manY[i * 2 * incmanY] = qR.d;
+  manY[i * 2 * incmanY + 1] = qI.d;
 }
 
 /**
@@ -242,8 +242,8 @@ void zmzdeposit(const int fold, const void *X, double *repY, const int increpY){
  *
  * @param fold the fold of the indexed types
  * @param X scalar X
- * @param repY Y's rep vector
- * @param increpY stride within Y's rep vector (use every increpY'th element)
+ * @param manY Y's mantissa vector
+ * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
  *
  * @author Hong Diep Nguyen
  * @author Peter Ahrens
@@ -261,8 +261,8 @@ void zizdeposit(const int fold, const void *X, double_complex_indexed *Y){
  *
  * @param fold the fold of the indexed types
  * @param X scalar X
- * @param repY Y's rep vector
- * @param increpY stride within Y's rep vector (use every increpY'th element)
+ * @param manY Y's mantissa vector
+ * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
  * @param carY Y's carry vector
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
@@ -270,10 +270,10 @@ void zizdeposit(const int fold, const void *X, double_complex_indexed *Y){
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void dmdadd(const int fold, const double X, double *repY, const int increpY, double *carY, const int inccarY){
-  dmdupdate(fold, fabs(X), repY, increpY, carY, inccarY);
-  dmddeposit(fold, X, repY, increpY);
-  dmrenorm(fold, repY, increpY, carY, inccarY);
+void dmdadd(const int fold, const double X, double *manY, const int incmanY, double *carY, const int inccarY){
+  dmdupdate(fold, fabs(X), manY, incmanY, carY, inccarY);
+  dmddeposit(fold, X, manY, incmanY);
+  dmrenorm(fold, manY, incmanY, carY, inccarY);
 }
 
 /**
@@ -301,8 +301,8 @@ void didadd(const int fold, const double X, double_indexed *Y){
  *
  * @param fold the fold of the indexed types
  * @param X scalar X
- * @param repY Y's rep vector
- * @param increpY stride within Y's rep vector (use every increpY'th element)
+ * @param manY Y's mantissa vector
+ * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
  * @param carY Y's carry vector
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
@@ -310,13 +310,13 @@ void didadd(const int fold, const double X, double_indexed *Y){
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zmzadd(const int fold, const void *X, double *repY, const int increpY, double *carY, const int inccarY){
+void zmzadd(const int fold, const void *X, double *manY, const int incmanY, double *carY, const int inccarY){
   double aX[2];
   aX[0] = fabs(((double*)X)[0]);
   aX[1] = fabs(((double*)X)[1]);
-  zmzupdate(fold, aX, repY, increpY, carY, inccarY);
-  zmzdeposit(fold, X, repY, increpY);
-  zmrenorm(fold, repY, increpY, carY, inccarY);
+  zmzupdate(fold, aX, manY, incmanY, carY, inccarY);
+  zmzdeposit(fold, X, manY, incmanY);
+  zmrenorm(fold, manY, incmanY, carY, inccarY);
 }
 
 /**

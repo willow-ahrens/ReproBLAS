@@ -7,8 +7,8 @@
  * @brief Print manually specified indexed double precision
  *
  * @param fold the fold of the indexed types
- * @param repX X's rep vector
- * @param increpX stride within X's rep vector (use every increpX'th element)
+ * @param manX X's mantissa vector
+ * @param incmanX stride within X's mantissa vector (use every incmanX'th element)
  * @param carX X's carry vector
  * @param inccarX stride within X's carry vector (use every inccarX'th element)
  *
@@ -16,12 +16,12 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void dmprint(const int fold, const double *repX, const int increpX, const double *carX, const int inccarX) {
+void dmprint(const int fold, const double *manX, const int incmanX, const double *carX, const int inccarX) {
   int i;
   double M;
-  for (i = 0; i < fold; i++, repX += increpX, carX += inccarX) {
-    M = ufp(repX[0]);
-    printf("(2^%d: %g #%g =%g)\n", (int)log2(M), repX[0] - 1.5*M, carX[0], (carX[0] - 6) * 0.25 * M + repX[0]);
+  for (i = 0; i < fold; i++, manX += incmanX, carX += inccarX) {
+    M = ufp(manX[0]);
+    printf("(2^%d: %g #%g =%g)\n", (int)log2(M), manX[0] - 1.5*M, carX[0], (carX[0] - 6) * 0.25 * M + manX[0]);
   }
 }
 
@@ -44,8 +44,8 @@ void diprint(const int fold, const double_indexed *X) {
  * @brief Print manually specified indexed complex double precision
  *
  * @param fold the fold of the indexed types
- * @param repX X's rep vector
- * @param increpX stride within X's rep vector (use every increpX'th element)
+ * @param manX X's mantissa vector
+ * @param incmanX stride within X's mantissa vector (use every incmanX'th element)
  * @param carX X's carry vector
  * @param inccarX stride within X's carry vector (use every inccarX'th element)
  *
@@ -53,14 +53,14 @@ void diprint(const int fold, const double_indexed *X) {
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zmprint(const int fold, const double *repX, const int increpX, const double *carX, const int inccarX){
+void zmprint(const int fold, const double *manX, const int incmanX, const double *carX, const int inccarX){
   int i;
   double M;
-  for (i = 0; i < fold; i++, repX += increpX, carX += inccarX) {
-    M = ufp(repX[0]);
-    printf("(2^%d: %g #%g =%g", (int)log2(M), repX[0] - 1.5*M, carX[0], (carX[0] - 6) * 0.25 * M + repX[0]);
-    M = ufp(repX[1]);
-    printf("| 2^%d: %g #%g =%g)\n", (int)log2(M), repX[1] - 1.5*M, carX[1], (carX[1] - 6) * 0.25 * M + repX[1]);
+  for (i = 0; i < fold; i++, manX += incmanX, carX += inccarX) {
+    M = ufp(manX[0]);
+    printf("(2^%d: %g #%g =%g", (int)log2(M), manX[0] - 1.5*M, carX[0], (carX[0] - 6) * 0.25 * M + manX[0]);
+    M = ufp(manX[1]);
+    printf("| 2^%d: %g #%g =%g)\n", (int)log2(M), manX[1] - 1.5*M, carX[1], (carX[1] - 6) * 0.25 * M + manX[1]);
   }
 }
 

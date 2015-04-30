@@ -7,8 +7,8 @@
  * Performs the operation X = -X
  *
  * @param fold the fold of the indexed types
- * @param repX X's rep vector
- * @param increpX stride within X's rep vector (use every increpX'th element)
+ * @param manX X's mantissa vector
+ * @param incmanX stride within X's mantissa vector (use every incmanX'th element)
  * @param carX X's carry vector
  * @param inccarX stride within X's carry vector (use every inccarX'th element)
  *
@@ -16,10 +16,10 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void smnegate(const int fold, float* repX, const int increpX, float* carX, const int inccarX) {
+void smnegate(const int fold, float* manX, const int incmanX, float* carX, const int inccarX) {
   int i;
   for (i = 0; i < fold; i++) {
-    repX[i * increpX] = (3 * ufp(repX[i * increpX])) - repX[i * increpX];
+    manX[i * incmanX] = (3 * ufp(manX[i * incmanX])) - manX[i * incmanX];
     carX[i * inccarX] = -carX[i * inccarX];
   }
 }
@@ -47,8 +47,8 @@ void sinegate(const int fold, float_indexed* X){
  * Performs the operation X = -X
  *
  * @param fold the fold of the indexed types
- * @param repX X's rep vector
- * @param increpX stride within X's rep vector (use every increpX'th element)
+ * @param manX X's mantissa vector
+ * @param incmanX stride within X's mantissa vector (use every incmanX'th element)
  * @param carX X's carry vector
  * @param inccarX stride within X's carry vector (use every inccarX'th element)
  *
@@ -56,9 +56,9 @@ void sinegate(const int fold, float_indexed* X){
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cmnegate(const int fold, float* repX, const int increpX, float* carX, const int inccarX) {
-  smnegate(fold, repX, 2 * increpX, carX, 2 * inccarX);
-  smnegate(fold, repX + 1, 2 * increpX, carX + 1, 2 * inccarX);
+void cmnegate(const int fold, float* manX, const int incmanX, float* carX, const int inccarX) {
+  smnegate(fold, manX, 2 * incmanX, carX, 2 * inccarX);
+  smnegate(fold, manX + 1, 2 * incmanX, carX + 1, 2 * inccarX);
 }
 
 /**

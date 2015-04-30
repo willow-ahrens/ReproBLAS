@@ -16,12 +16,12 @@
  * Performs the operation Y += X
  *
  * @param fold the fold of the indexed types
- * @param repX X's rep vector
- * @param increpX stride within X's rep vector (use every increpX'th element)
+ * @param manX X's mantissa vector
+ * @param incmanX stride within X's mantissa vector (use every incmanX'th element)
  * @param carX X's carry vector
  * @param inccarX stride within X's carry vector (use every inccarX'th element)
- * @param repY Y's rep vector
- * @param increpY stride within Y's rep vector (use every increpY'th element)
+ * @param manY Y's mantissa vector
+ * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
  * @param carY Y's carry vector
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
@@ -29,41 +29,41 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void smsmadd(const int fold, const float *repX, const int increpX, const float *carX, const int inccarX, float* repY, const int increpY, float* carY, const int inccarY) {
+void smsmadd(const int fold, const float *manX, const int incmanX, const float *carX, const int inccarX, float* manY, const int incmanY, float* carY, const int inccarY) {
   int i;
   int shift;
 
-  if (repX[0] == 0.0)
+  if (manX[0] == 0.0)
     return;
 
-  if (repY[0] == 0.0) {
+  if (manY[0] == 0.0) {
     for (i = 0; i < fold; i++) {
-      repY[i*increpY] = repX[i*increpX];
+      manY[i*incmanY] = manX[i*incmanX];
       carY[i*inccarY] = carX[i*inccarX];
     }
     return;
   }
 
-  shift = smindex(repY) - smindex(repX);
+  shift = smindex(manY) - smindex(manX);
   if(shift > 0){
     //shift Y upwards and add X to Y
     for (i = fold - 1; i >= shift; i--) {
-      repY[i*increpY] = repX[i*increpX] + (repY[(i - shift)*increpY] - 1.5*ufpf(repY[(i - shift)*increpY]));
+      manY[i*incmanY] = manX[i*incmanX] + (manY[(i - shift)*incmanY] - 1.5*ufpf(manY[(i - shift)*incmanY]));
       carY[i*inccarY] = carX[i*inccarX] + carY[(i - shift)*inccarY];
     }
     for (i = 0; i < shift && i < fold; i++) {
-      repY[i*increpY] = repX[i*increpX];
+      manY[i*incmanY] = manX[i*incmanX];
       carY[i*inccarY] = carX[i*inccarX];
     }
   }else{
     //shift X upwards and add X to Y
     for (i = 0 - shift; i < fold; i++) {
-      repY[i*increpY] += repX[(i + shift)*increpX] - 1.5*ufpf(repX[(i + shift)*increpX]);
+      manY[i*incmanY] += manX[(i + shift)*incmanX] - 1.5*ufpf(manX[(i + shift)*incmanX]);
       carY[i*inccarY] += carX[(i + shift)*inccarX];
     }
   }
 
-  smrenorm(fold, repY, increpY, carY, inccarY);
+  smrenorm(fold, manY, incmanY, carY, inccarY);
 }
 
 /**
@@ -90,12 +90,12 @@ void sisiadd(const int fold, const float_indexed *X, float_indexed *Y){
  * Performs the operation Y += X
  *
  * @param fold the fold of the indexed types
- * @param repX X's rep vector
- * @param increpX stride within X's rep vector (use every increpX'th element)
+ * @param manX X's mantissa vector
+ * @param incmanX stride within X's mantissa vector (use every incmanX'th element)
  * @param carX X's carry vector
  * @param inccarX stride within X's carry vector (use every inccarX'th element)
- * @param repY Y's rep vector
- * @param increpY stride within Y's rep vector (use every increpY'th element)
+ * @param manY Y's mantissa vector
+ * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
  * @param carY Y's carry vector
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
@@ -103,9 +103,9 @@ void sisiadd(const int fold, const float_indexed *X, float_indexed *Y){
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cmcmadd(const int fold, const float *repX, const int increpX, const float *carX, const int inccarX, float* repY, const int increpY, float* carY, const int inccarY) {
-  smsmadd(fold, repX, 2 * increpX, carX, 2 * inccarX, repY, 2 * increpY, carY, 2 * inccarY);
-  smsmadd(fold, repX + 1, 2 * increpX, carX + 1, 2 * inccarX, repY + 1, 2 * increpY, carY + 1, 2 * inccarY);
+void cmcmadd(const int fold, const float *manX, const int incmanX, const float *carX, const int inccarX, float* manY, const int incmanY, float* carY, const int inccarY) {
+  smsmadd(fold, manX, 2 * incmanX, carX, 2 * inccarX, manY, 2 * incmanY, carY, 2 * inccarY);
+  smsmadd(fold, manX + 1, 2 * incmanX, carX + 1, 2 * inccarX, manY + 1, 2 * incmanY, carY + 1, 2 * inccarY);
 }
 
 /**
@@ -135,30 +135,30 @@ void ciciadd(const int fold, const float_complex_indexed *X, float_complex_index
  *
  * @param fold the fold of the indexed types
  * @param X scalar X
- * @param repY Y's rep vector
- * @param increpY stride within Y's rep vector (use every increpY'th element)
+ * @param manY Y's mantissa vector
+ * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
  *
  * @author Hong Diep Nguyen
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void smsdeposit(const int fold, const float X, float *repY, const int increpY){
+void smsdeposit(const int fold, const float X, float *manY, const int incmanY){
   float M;
   int_float q;
   int i;
   float x = X;
   for (i = 0; i < fold - 1; i++) {
-    M = repY[i * increpY];
+    M = manY[i * incmanY];
     q.f = x;
     q.i |= 1;
     q.f += M;
-    repY[i * increpY] = q.f;
+    manY[i * incmanY] = q.f;
     M -= q.f;
     x += M;
   }
   q.f = x;
   q.i |= 1;
-  repY[i * increpY] += q.f;
+  manY[i * incmanY] += q.f;
 }
 
 /**
@@ -190,14 +190,14 @@ void sisdeposit(const int fold, const float X, float_indexed *Y){
  *
  * @param fold the fold of the indexed types
  * @param X scalar X
- * @param repY Y's rep vector
- * @param increpY stride within Y's rep vector (use every increpY'th element)
+ * @param manY Y's mantissa vector
+ * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
  *
  * @author Hong Diep Nguyen
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cmcdeposit(const int fold, const void *X, float *repY, const int increpY){
+void cmcdeposit(const int fold, const void *X, float *manY, const int incmanY){
   float MR, MI;
   int_float qR, qI;
   int i;
@@ -205,31 +205,31 @@ void cmcdeposit(const int fold, const void *X, float *repY, const int increpY){
   float xI = ((float*)X)[1];
 
   for (i = 0; i < fold - 1; i++) {
-    MR = repY[i * 2 * increpY];
-    MI = repY[i * 2 * increpY + 1];
+    MR = manY[i * 2 * incmanY];
+    MI = manY[i * 2 * incmanY + 1];
     qR.f = xR;
     qI.f = xI;
     qR.i |= 1;
     qI.i |= 1;
     qR.f += MR;
     qI.f += MI;
-    repY[i * 2 * increpY] = qR.f;
-    repY[i * 2 * increpY + 1] = qI.f;
+    manY[i * 2 * incmanY] = qR.f;
+    manY[i * 2 * incmanY + 1] = qI.f;
     MR -= qR.f;
     MI -= qI.f;
     xR += MR;
     xI += MI;
   }
-  MR = repY[i * 2 * increpY];
-  MI = repY[i * 2 * increpY + 1];
+  MR = manY[i * 2 * incmanY];
+  MI = manY[i * 2 * incmanY + 1];
   qR.f = xR;
   qI.f = xI;
   qR.i |= 1;
   qI.i |= 1;
   qR.f += MR;
   qI.f += MI;
-  repY[i * 2 * increpY] = qR.f;
-  repY[i * 2 * increpY + 1] = qI.f;
+  manY[i * 2 * incmanY] = qR.f;
+  manY[i * 2 * incmanY + 1] = qI.f;
 }
 
 /**
@@ -241,8 +241,8 @@ void cmcdeposit(const int fold, const void *X, float *repY, const int increpY){
  *
  * @param fold the fold of the indexed types
  * @param X scalar X
- * @param repY Y's rep vector
- * @param increpY stride within Y's rep vector (use every increpY'th element)
+ * @param manY Y's mantissa vector
+ * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
  *
  * @author Hong Diep Nguyen
  * @author Peter Ahrens
@@ -260,8 +260,8 @@ void cicdeposit(const int fold, const void *X, float_complex_indexed *Y){
  *
  * @param fold the fold of the indexed types
  * @param X scalar X
- * @param repY Y's rep vector
- * @param increpY stride within Y's rep vector (use every increpY'th element)
+ * @param manY Y's mantissa vector
+ * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
  * @param carY Y's carry vector
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
@@ -269,10 +269,10 @@ void cicdeposit(const int fold, const void *X, float_complex_indexed *Y){
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void smsadd(const int fold, const float X, float *repY, const int increpY, float *carY, const int inccarY){
-  smsupdate(fold, fabsf(X), repY, increpY, carY, inccarY);
-  smsdeposit(fold, X, repY, increpY);
-  smrenorm(fold, repY, increpY, carY, inccarY);
+void smsadd(const int fold, const float X, float *manY, const int incmanY, float *carY, const int inccarY){
+  smsupdate(fold, fabsf(X), manY, incmanY, carY, inccarY);
+  smsdeposit(fold, X, manY, incmanY);
+  smrenorm(fold, manY, incmanY, carY, inccarY);
 }
 
 /**
@@ -300,8 +300,8 @@ void sisadd(const int fold, const float X, float_indexed *Y){
  *
  * @param fold the fold of the indexed types
  * @param X scalar X
- * @param repY Y's rep vector
- * @param increpY stride within Y's rep vector (use every increpY'th element)
+ * @param manY Y's mantissa vector
+ * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
  * @param carY Y's carry vector
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
@@ -309,13 +309,13 @@ void sisadd(const int fold, const float X, float_indexed *Y){
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cmcadd(const int fold, const void *X, float *repY, const int increpY, float *carY, const int inccarY){
+void cmcadd(const int fold, const void *X, float *manY, const int incmanY, float *carY, const int inccarY){
   float aX[2];
   aX[0] = fabsf(((float*)X)[0]);
   aX[1] = fabsf(((float*)X)[1]);
-  cmcupdate(fold, aX, repY, increpY, carY, inccarY);
-  cmcdeposit(fold, X, repY, increpY);
-  cmrenorm(fold, repY, increpY, carY, inccarY);
+  cmcupdate(fold, aX, manY, incmanY, carY, inccarY);
+  cmcdeposit(fold, X, manY, incmanY);
+  cmrenorm(fold, manY, incmanY, carY, inccarY);
 }
 
 /**

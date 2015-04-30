@@ -90,12 +90,12 @@ float_complex_indexed *cialloc(const int fold){
  * Performs the operation Y = X
  *
  * @param fold the fold of the indexed types
- * @param repX X's rep vector
- * @param increpX stride within X's rep vector (use every increpX'th element)
+ * @param manX X's mantissa vector
+ * @param incmanX stride within X's mantissa vector (use every incmanX'th element)
  * @param carX X's carry vector
  * @param inccarX stride within X's carry vector (use every inccarX'th element)
- * @param repY Y's rep vector
- * @param increpY stride within Y's rep vector (use every increpY'th element)
+ * @param manY Y's mantissa vector
+ * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
  * @param carY Y's carry vector
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
@@ -103,10 +103,10 @@ float_complex_indexed *cialloc(const int fold){
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void smsmset(const int fold, const float *repX, const int increpX, const float *carX, const int inccarX, float *repY, const int increpY, float *carY, const int inccarY){
+void smsmset(const int fold, const float *manX, const int incmanX, const float *carX, const int inccarX, float *manY, const int incmanY, float *carY, const int inccarY){
   int i;
   for(i = 0; i < fold; i++){
-    repY[i * increpY] = repX[i * increpX];
+    manY[i * incmanY] = manX[i * incmanX];
     carY[i * inccarY] = carX[i * inccarX];
   }
 }
@@ -135,12 +135,12 @@ void sisiset(const int fold, const float_indexed *X, float_indexed *Y){
  * Performs the operation Y = X
  *
  * @param fold the fold of the indexed types
- * @param repX X's rep vector
- * @param increpX stride within X's rep vector (use every increpX'th element)
+ * @param manX X's mantissa vector
+ * @param incmanX stride within X's mantissa vector (use every incmanX'th element)
  * @param carX X's carry vector
  * @param inccarX stride within X's carry vector (use every inccarX'th element)
- * @param repY Y's rep vector
- * @param increpY stride within Y's rep vector (use every increpY'th element)
+ * @param manY Y's mantissa vector
+ * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
  * @param carY Y's carry vector
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
@@ -148,9 +148,9 @@ void sisiset(const int fold, const float_indexed *X, float_indexed *Y){
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cmcmset(const int fold, const float *repX, const int increpX, const float *carX, const int inccarX, float *repY, const int increpY, float *carY, const int inccarY){
-  smsmset(fold, repX, 2 * increpX, carX, 2 * inccarX, repY, 2 * increpY, carY, 2 * inccarY);
-  smsmset(fold, repX + 1, 2 * increpX, carX + 1, 2 * inccarX, repY + 1, 2 * increpY, carY + 1, 2 * inccarY);
+void cmcmset(const int fold, const float *manX, const int incmanX, const float *carX, const int inccarX, float *manY, const int incmanY, float *carY, const int inccarY){
+  smsmset(fold, manX, 2 * incmanX, carX, 2 * inccarX, manY, 2 * incmanY, carY, 2 * inccarY);
+  smsmset(fold, manX + 1, 2 * incmanX, carX + 1, 2 * inccarX, manY + 1, 2 * incmanY, carY + 1, 2 * inccarY);
 }
 
 /**
@@ -177,12 +177,12 @@ void ciciset(const int fold, const float_complex_indexed *X, float_complex_index
  * Performs the operation Y = X
  *
  * @param fold the fold of the indexed types
- * @param repX X's rep vector
- * @param increpX stride within X's rep vector (use every increpX'th element)
+ * @param manX X's mantissa vector
+ * @param incmanX stride within X's mantissa vector (use every incmanX'th element)
  * @param carX X's carry vector
  * @param inccarX stride within X's carry vector (use every inccarX'th element)
- * @param repY Y's rep vector
- * @param increpY stride within Y's rep vector (use every increpY'th element)
+ * @param manY Y's mantissa vector
+ * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
  * @param carY Y's carry vector
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
@@ -190,9 +190,9 @@ void ciciset(const int fold, const float_complex_indexed *X, float_complex_index
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cmsmset(const int fold, const float *repX, const int increpX, const float *carX, const int inccarX, float *repY, const int increpY, float *carY, const int inccarY){
-  smsmset(fold, repX, increpX, carX, inccarX, repY, 2 * increpY, carY, 2 * inccarY);
-  smsetzero(fold, repY + 1, 2 * increpY, carY + 1, 2 * inccarY);
+void cmsmset(const int fold, const float *manX, const int incmanX, const float *carX, const int inccarX, float *manY, const int incmanY, float *carY, const int inccarY){
+  smsmset(fold, manX, incmanX, carX, inccarX, manY, 2 * incmanY, carY, 2 * inccarY);
+  smsetzero(fold, manY + 1, 2 * incmanY, carY + 1, 2 * inccarY);
 }
 
 /**
@@ -219,8 +219,8 @@ void cisiset(const int fold, const float_indexed *X, float_complex_indexed *Y){
  * Performs the operation X = 0
  *
  * @param fold the fold of the indexed types
- * @param repX X's rep vector
- * @param increpX stride within X's rep vector (use every increpX'th element)
+ * @param manX X's mantissa vector
+ * @param incmanX stride within X's mantissa vector (use every incmanX'th element)
  * @param carX X's carry vector
  * @param inccarX stride within X's carry vector (use every inccarX'th element)
  *
@@ -228,10 +228,10 @@ void cisiset(const int fold, const float_indexed *X, float_complex_indexed *Y){
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void smsetzero(const int fold, float *repX, const int increpX, float *carX, const int inccarX){
+void smsetzero(const int fold, float *manX, const int incmanX, float *carX, const int inccarX){
   int i;
   for(i = 0; i < fold; i++){
-    repX[i * increpX] = 0.0;
+    manX[i * incmanX] = 0.0;
     carX[i * inccarX] = 0.0;
   }
 }
@@ -259,8 +259,8 @@ void sisetzero(const int fold, float_indexed *X){
  * Performs the operation X = 0
  *
  * @param fold the fold of the indexed types
- * @param repX X's rep vector
- * @param increpX stride within X's rep vector (use every increpX'th element)
+ * @param manX X's mantissa vector
+ * @param incmanX stride within X's mantissa vector (use every incmanX'th element)
  * @param carX X's carry vector
  * @param inccarX stride within X's carry vector (use every inccarX'th element)
  *
@@ -268,9 +268,9 @@ void sisetzero(const int fold, float_indexed *X){
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cmsetzero(const int fold, float *repX, const int increpX, float *carX, const int inccarX){
-  smsetzero(fold, repX, 2 * increpX, carX, 2 * inccarX);
-  smsetzero(fold, repX + 1, 2 * increpX, carX + 1, 2 * inccarX);
+void cmsetzero(const int fold, float *manX, const int incmanX, float *carX, const int inccarX){
+  smsetzero(fold, manX, 2 * incmanX, carX, 2 * inccarX);
+  smsetzero(fold, manX + 1, 2 * incmanX, carX + 1, 2 * inccarX);
 }
 
 /**

@@ -16,8 +16,8 @@
  *
  * @param fold the fold of the indexed types
  * @param X scalar X
- * @param repY Y's rep vector
- * @param increpY stride within Y's rep vector (use every increpY'th element)
+ * @param manY Y's mantissa vector
+ * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
  * @param carY Y's carry vector
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
@@ -25,18 +25,18 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void dmdupdate(const int fold, const double X, double* repY, const int increpY, double* carY, const int inccarY) {
-  if (X == 0 || isnan(repY[0]) || isinf(repY[0]))
+void dmdupdate(const int fold, const double X, double* manY, const int incmanY, double* carY, const int inccarY) {
+  if (X == 0 || isnan(manY[0]) || isinf(manY[0]))
     return;
 
   int X_index = dindex(X);
-  int shift = dmindex(repY) - X_index;
+  int shift = dmindex(manY) - X_index;
   if(shift > 0){
     for(int i = fold - 1; i >= shift; i--){
-      repY[i * increpY] = repY[(i - shift) * increpY];
+      manY[i * incmanY] = manY[(i - shift) * incmanY];
       carY[i * inccarY] = carY[(i - shift) * inccarY];
     }
-    dmbound(MIN(shift, fold), X_index, repY, increpY, carY, inccarY);
+    dmbound(MIN(shift, fold), X_index, manY, incmanY, carY, inccarY);
   }
 }
 
@@ -65,8 +65,8 @@ void didupdate(const int fold, const double X, double_indexed *Y) {
  *
  * @param fold the fold of the indexed types
  * @param X scalar X
- * @param repY Y's rep vector
- * @param increpY stride within Y's rep vector (use every increpY'th element)
+ * @param manY Y's mantissa vector
+ * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
  * @param carY Y's carry vector
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
@@ -74,9 +74,9 @@ void didupdate(const int fold, const double X, double_indexed *Y) {
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zmdupdate(const int fold, const double X, double* repY, const int increpY, double* carY, const int inccarY) {
-  dmdupdate(fold, X, repY, 2 * increpY, carY, 2 * inccarY);
-  dmdupdate(fold, X, repY + 1, 2 * increpY, carY + 1, 2 * inccarY);
+void zmdupdate(const int fold, const double X, double* manY, const int incmanY, double* carY, const int inccarY) {
+  dmdupdate(fold, X, manY, 2 * incmanY, carY, 2 * inccarY);
+  dmdupdate(fold, X, manY + 1, 2 * incmanY, carY + 1, 2 * inccarY);
 }
 
 /**
@@ -104,8 +104,8 @@ void zidupdate(const int fold, const double X, double_complex_indexed *Y) {
  *
  * @param fold the fold of the indexed types
  * @param X scalar X
- * @param repY Y's rep vector
- * @param increpY stride within Y's rep vector (use every increpY'th element)
+ * @param manY Y's mantissa vector
+ * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
  * @param carY Y's carry vector
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
@@ -113,9 +113,9 @@ void zidupdate(const int fold, const double X, double_complex_indexed *Y) {
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zmzupdate(const int fold, const void *X, double* repY, const int increpY, double* carY, const int inccarY) {
-  dmdupdate(fold, ((double*)X)[0], repY, 2 * increpY, carY, 2 * inccarY);
-  dmdupdate(fold, ((double*)X)[1], repY + 1, 2 * increpY, carY + 1, 2 * inccarY);
+void zmzupdate(const int fold, const void *X, double* manY, const int incmanY, double* carY, const int inccarY) {
+  dmdupdate(fold, ((double*)X)[0], manY, 2 * incmanY, carY, 2 * inccarY);
+  dmdupdate(fold, ((double*)X)[1], manY + 1, 2 * incmanY, carY + 1, 2 * inccarY);
 }
 
 /**

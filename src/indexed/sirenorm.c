@@ -13,11 +13,11 @@
  * @internal
  * @brief Renormalize manually specified indexed single precision
  *
- * Renormalization keeps the rep vector within the necessary bounds by shifting over to the carry vector
+ * Renormalization keeps the mantissa vector within the necessary bounds by shifting over to the carry vector
  *
  * @param fold the fold of the indexed types
- * @param repX X's rep vector
- * @param increpX stride within X's rep vector (use every increpX'th element)
+ * @param manX X's mantissa vector
+ * @param incmanX stride within X's mantissa vector (use every incmanX'th element)
  * @param carX X's carry vector
  * @param inccarX stride within X's carry vector (use every inccarX'th element)
  *
@@ -25,26 +25,26 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void smrenorm(const int fold, float* repX, const int increpX, float* carX, const int inccarX) {
+void smrenorm(const int fold, float* manX, const int incmanX, float* carX, const int inccarX) {
   int i;
   float M;
-  float repX0;
-  for (i = 0; i < fold; i++, repX += increpX, carX += inccarX) {
-    repX0 = repX[0];
-    if (repX0 == 0.0)
+  float manX0;
+  for (i = 0; i < fold; i++, manX += incmanX, carX += inccarX) {
+    manX0 = manX[0];
+    if (manX0 == 0.0)
       continue;
 
-    M = ufpf(repX0);
-    if (repX0 >= (M * 1.75)) {
-      repX[0] -= M * 0.25;
+    M = ufpf(manX0);
+    if (manX0 >= (M * 1.75)) {
+      manX[0] -= M * 0.25;
       carX[0] += 1;
     }
-    else if (repX0 < (M * 1.25)) {
-      repX[0] += M * 0.5;
+    else if (manX0 < (M * 1.25)) {
+      manX[0] += M * 0.5;
       carX[0] -= 2;
     }
-    else if (repX0 < (M * 1.5)) {
-      repX[0] += M * 0.25;
+    else if (manX0 < (M * 1.5)) {
+      manX[0] += M * 0.25;
       carX[0] -= 1;
     }
   }
@@ -53,7 +53,7 @@ void smrenorm(const int fold, float* repX, const int increpX, float* carX, const
 /**
  * @brief Renormalize indexed single precision
  *
- * Renormalization keeps the rep vector within the necessary bounds by shifting over to the carry vector
+ * Renormalization keeps the mantissa vector within the necessary bounds by shifting over to the carry vector
  *
  * @param fold the fold of the indexed types
  * @param X indexed scalar X
@@ -70,11 +70,11 @@ void sirenorm(const int fold, float_indexed *X) {
  * @internal
  * @brief Renormalize manually specified indexed complex single precision
  *
- * Renormalization keeps the rep vector within the necessary bounds by shifting over to the carry vector
+ * Renormalization keeps the mantissa vector within the necessary bounds by shifting over to the carry vector
  *
  * @param fold the fold of the indexed types
- * @param repX X's rep vector
- * @param increpX stride within X's rep vector (use every increpX'th element)
+ * @param manX X's mantissa vector
+ * @param incmanX stride within X's mantissa vector (use every incmanX'th element)
  * @param carX X's carry vector
  * @param inccarX stride within X's carry vector (use every inccarX'th element)
  *
@@ -82,15 +82,15 @@ void sirenorm(const int fold, float_indexed *X) {
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cmrenorm(const int fold, float* repX, const int increpX, float* carX, const int inccarX) {
-  smrenorm(fold, repX, 2 * increpX, carX, 2 * inccarX);
-  smrenorm(fold, repX + 1, 2 * increpX, carX + 1, 2 * inccarX);
+void cmrenorm(const int fold, float* manX, const int incmanX, float* carX, const int inccarX) {
+  smrenorm(fold, manX, 2 * incmanX, carX, 2 * inccarX);
+  smrenorm(fold, manX + 1, 2 * incmanX, carX + 1, 2 * inccarX);
 }
 
 /**
  * @brief Renormalize indexed complex single precision
  *
- * Renormalization keeps the rep vector within the necessary bounds by shifting over to the carry vector
+ * Renormalization keeps the mantissa vector within the necessary bounds by shifting over to the carry vector
  *
  * @param fold the fold of the indexed types
  * @param X indexed scalar X

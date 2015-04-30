@@ -90,12 +90,12 @@ double_complex_indexed *zialloc(const int fold){
  * Performs the operation Y = X
  *
  * @param fold the fold of the indexed types
- * @param repX X's rep vector
- * @param increpX stride within X's rep vector (use every increpX'th element)
+ * @param manX X's mantissa vector
+ * @param incmanX stride within X's mantissa vector (use every incmanX'th element)
  * @param carX X's carry vector
  * @param inccarX stride within X's carry vector (use every inccarX'th element)
- * @param repY Y's rep vector
- * @param increpY stride within Y's rep vector (use every increpY'th element)
+ * @param manY Y's mantissa vector
+ * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
  * @param carY Y's carry vector
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
@@ -103,10 +103,10 @@ double_complex_indexed *zialloc(const int fold){
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void dmdmset(const int fold, const double *repX, const int increpX, const double *carX, const int inccarX, double *repY, const int increpY, double *carY, const int inccarY){
+void dmdmset(const int fold, const double *manX, const int incmanX, const double *carX, const int inccarX, double *manY, const int incmanY, double *carY, const int inccarY){
   int i;
   for(i = 0; i < fold; i++){
-    repY[i * increpY] = repX[i * increpX];
+    manY[i * incmanY] = manX[i * incmanX];
     carY[i * inccarY] = carX[i * inccarX];
   }
 }
@@ -135,12 +135,12 @@ void didiset(const int fold, const double_indexed *X, double_indexed *Y){
  * Performs the operation Y = X
  *
  * @param fold the fold of the indexed types
- * @param repX X's rep vector
- * @param increpX stride within X's rep vector (use every increpX'th element)
+ * @param manX X's mantissa vector
+ * @param incmanX stride within X's mantissa vector (use every incmanX'th element)
  * @param carX X's carry vector
  * @param inccarX stride within X's carry vector (use every inccarX'th element)
- * @param repY Y's rep vector
- * @param increpY stride within Y's rep vector (use every increpY'th element)
+ * @param manY Y's mantissa vector
+ * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
  * @param carY Y's carry vector
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
@@ -148,9 +148,9 @@ void didiset(const int fold, const double_indexed *X, double_indexed *Y){
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zmzmset(const int fold, const double *repX, const int increpX, const double *carX, const int inccarX, double *repY, const int increpY, double *carY, const int inccarY){
-  dmdmset(fold, repX, 2 * increpX, carX, 2 * inccarX, repY, 2 * increpY, carY, 2 * inccarY);
-  dmdmset(fold, repX + 1, 2 * increpX, carX + 1, 2 * inccarX, repY + 1, 2 * increpY, carY + 1, 2 * inccarY);
+void zmzmset(const int fold, const double *manX, const int incmanX, const double *carX, const int inccarX, double *manY, const int incmanY, double *carY, const int inccarY){
+  dmdmset(fold, manX, 2 * incmanX, carX, 2 * inccarX, manY, 2 * incmanY, carY, 2 * inccarY);
+  dmdmset(fold, manX + 1, 2 * incmanX, carX + 1, 2 * inccarX, manY + 1, 2 * incmanY, carY + 1, 2 * inccarY);
 }
 
 /**
@@ -177,12 +177,12 @@ void ziziset(const int fold, const double_complex_indexed *X, double_complex_ind
  * Performs the operation Y = X
  *
  * @param fold the fold of the indexed types
- * @param repX X's rep vector
- * @param increpX stride within X's rep vector (use every increpX'th element)
+ * @param manX X's mantissa vector
+ * @param incmanX stride within X's mantissa vector (use every incmanX'th element)
  * @param carX X's carry vector
  * @param inccarX stride within X's carry vector (use every inccarX'th element)
- * @param repY Y's rep vector
- * @param increpY stride within Y's rep vector (use every increpY'th element)
+ * @param manY Y's mantissa vector
+ * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
  * @param carY Y's carry vector
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
@@ -190,9 +190,9 @@ void ziziset(const int fold, const double_complex_indexed *X, double_complex_ind
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zmdmset(const int fold, const double *repX, const int increpX, const double *carX, const int inccarX, double *repY, const int increpY, double *carY, const int inccarY){
-  dmdmset(fold, repX, increpX, carX, inccarX, repY, 2 * increpY, carY, 2 * inccarY);
-  dmsetzero(fold, repY + 1, 2 * increpY, carY + 1, 2 * inccarY);
+void zmdmset(const int fold, const double *manX, const int incmanX, const double *carX, const int inccarX, double *manY, const int incmanY, double *carY, const int inccarY){
+  dmdmset(fold, manX, incmanX, carX, inccarX, manY, 2 * incmanY, carY, 2 * inccarY);
+  dmsetzero(fold, manY + 1, 2 * incmanY, carY + 1, 2 * inccarY);
 }
 
 
@@ -220,8 +220,8 @@ void zidiset(const int fold, const double_indexed *X, double_complex_indexed *Y)
  * Performs the operation X = 0
  *
  * @param fold the fold of the indexed types
- * @param repX X's rep vector
- * @param increpX stride within X's rep vector (use every increpX'th element)
+ * @param manX X's mantissa vector
+ * @param incmanX stride within X's mantissa vector (use every incmanX'th element)
  * @param carX X's carry vector
  * @param inccarX stride within X's carry vector (use every inccarX'th element)
  *
@@ -229,10 +229,10 @@ void zidiset(const int fold, const double_indexed *X, double_complex_indexed *Y)
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void dmsetzero(const int fold, double *repX, const int increpX, double *carX, const int inccarX){
+void dmsetzero(const int fold, double *manX, const int incmanX, double *carX, const int inccarX){
   int i;
   for(i = 0; i < fold; i++){
-    repX[i * increpX] = 0.0;
+    manX[i * incmanX] = 0.0;
     carX[i * inccarX] = 0.0;
   }
 }
@@ -260,8 +260,8 @@ void disetzero(const int fold, double_indexed *X){
  * Performs the operation X = 0
  *
  * @param fold the fold of the indexed types
- * @param repX X's rep vector
- * @param increpX stride within X's rep vector (use every increpX'th element)
+ * @param manX X's mantissa vector
+ * @param incmanX stride within X's mantissa vector (use every incmanX'th element)
  * @param carX X's carry vector
  * @param inccarX stride within X's carry vector (use every inccarX'th element)
  *
@@ -269,9 +269,9 @@ void disetzero(const int fold, double_indexed *X){
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zmsetzero(const int fold, double *repX, const int increpX, double *carX, const int inccarX){
-  dmsetzero(fold, repX, 2 * increpX, carX, 2 * inccarX);
-  dmsetzero(fold, repX + 1, 2 * increpX, carX + 1, 2 * inccarX);
+void zmsetzero(const int fold, double *manX, const int incmanX, double *carX, const int inccarX){
+  dmsetzero(fold, manX, 2 * incmanX, carX, 2 * inccarX);
+  dmsetzero(fold, manX + 1, 2 * incmanX, carX + 1, 2 * inccarX);
 }
 
 /**

@@ -15,8 +15,8 @@
  *
  * @param fold the fold of the indexed types
  * @param X scalar X
- * @param repY Y's rep vector
- * @param increpY stride within Y's rep vector (use every increpY'th element)
+ * @param manY Y's mantissa vector
+ * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
  * @param carY Y's carry vector
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
@@ -24,24 +24,24 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void dmdconv(const int fold, const double X, double* repY, const int increpY, double* carY, const int inccarY) {
+void dmdconv(const int fold, const double X, double* manY, const int incmanY, double* carY, const int inccarY) {
   int i;
   double q;
   double s;
   double x;
   if (X == 0.0) {
     for (i = 0; i < fold; i++) {
-      repY[i*increpY] = 0.0;
+      manY[i*incmanY] = 0.0;
       carY[i*inccarY] = 0.0;
     }
     return;
   }
-  dmbound(fold, dindex(fabs(X)), repY, increpY, carY, inccarY);
+  dmbound(fold, dindex(fabs(X)), manY, incmanY, carY, inccarY);
   x = X;
-  for (i = 0; i < fold; i++, repY += increpY, carY += inccarY) {
-    s = repY[0];
+  for (i = 0; i < fold; i++, manY += incmanY, carY += inccarY) {
+    s = manY[0];
     q = s + x;
-    repY[0] = s;
+    manY[0] = s;
     q -= s;
     x -= q;
   }
@@ -68,8 +68,8 @@ void didconv(const int fold, const double X, double_indexed *Y) {
  *
  * @param fold the fold of the indexed types
  * @param X scalar X
- * @param repY Y's rep vector
- * @param increpY stride within Y's rep vector (use every increpY'th element)
+ * @param manY Y's mantissa vector
+ * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
  * @param carY Y's carry vector
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
@@ -77,9 +77,9 @@ void didconv(const int fold, const double X, double_indexed *Y) {
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zmzconv(const int fold, const void *X, double *repY, const int increpY, double *carY, const int inccarY) {
-  dmdconv(fold, ((double*)X)[0], repY, increpY * 2, carY, inccarY * 2);
-  dmdconv(fold, ((double*)X)[1], repY + 1, increpY * 2, carY + 1, inccarY * 2);
+void zmzconv(const int fold, const void *X, double *manY, const int incmanY, double *carY, const int inccarY) {
+  dmdconv(fold, ((double*)X)[0], manY, incmanY * 2, carY, inccarY * 2);
+  dmdconv(fold, ((double*)X)[1], manY + 1, incmanY * 2, carY + 1, inccarY * 2);
 }
 
 /**
@@ -102,8 +102,8 @@ void zizconv(const int fold, const void *X, double_complex_indexed *Y) {
  * @brief Convert manually specified indexed double precision to double precision (X -> Y)
  *
  * @param fold the fold of the indexed types
- * @param repX X's rep vector
- * @param increpX stride within X's rep vector (use every increpX'th element)
+ * @param manX X's mantissa vector
+ * @param incmanX stride within X's mantissa vector (use every incmanX'th element)
  * @param carX X's carry vector
  * @param inccarX stride within X's carry vector (use every inccarX'th element)
  * @return scalar Y
@@ -112,21 +112,21 @@ void zizconv(const int fold, const void *X, double_complex_indexed *Y) {
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-double ddmconv(const int fold, const double* repX, const int increpX, const double* carX, const int inccarX) {
+double ddmconv(const int fold, const double* manX, const int incmanX, const double* carX, const int inccarX) {
   int i;
   double Y = 0.0;
 
-  if (isinf(repX[0]) || isnan(repX[0]))
-    return repX[0];
+  if (isinf(manX[0]) || isnan(manX[0]))
+    return manX[0];
 
-  if (repX[0] == 0.0) {
+  if (manX[0] == 0.0) {
     return 0.0;
   }
 
   // TODO: SCALING TO AVOID OVERFLOW
 
   for (i = 0; i < fold; i++) {
-    Y += (repX[i * increpX] + (carX[i * increpX] - 6) * ufp(repX[i * increpX]) * 0.25);
+    Y += (manX[i * incmanX] + (carX[i * incmanX] - 6) * ufp(manX[i * incmanX]) * 0.25);
   }
 
   return Y;
@@ -152,8 +152,8 @@ double ddiconv(const int fold, const double_indexed *X) {
  * @brief Convert manually specified indexed complex double precision to complex double precision (X -> Y)
  *
  * @param fold the fold of the indexed types
- * @param repX X's rep vector
- * @param increpX stride within X's rep vector (use every increpX'th element)
+ * @param manX X's mantissa vector
+ * @param incmanX stride within X's mantissa vector (use every incmanX'th element)
  * @param carX X's carry vector
  * @param inccarX stride within X's carry vector (use every inccarX'th element)
  * @param conv scalar return
@@ -162,9 +162,9 @@ double ddiconv(const int fold, const double_indexed *X) {
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zzmconv_sub(const int fold, const double *repX, const int increpX, const double *carX, const int inccarX, void *conv) {
-  ((double*)conv)[0] = ddmconv(fold, repX, increpX * 2, carX, inccarX + 1);
-  ((double*)conv)[1] = ddmconv(fold, repX + 1, increpX * 2, carX + 1, inccarX + 1);
+void zzmconv_sub(const int fold, const double *manX, const int incmanX, const double *carX, const int inccarX, void *conv) {
+  ((double*)conv)[0] = ddmconv(fold, manX, incmanX * 2, carX, inccarX + 1);
+  ((double*)conv)[1] = ddmconv(fold, manX + 1, incmanX * 2, carX + 1, inccarX + 1);
 }
 
 /**
