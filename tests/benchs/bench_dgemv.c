@@ -67,15 +67,6 @@ static opt_option beta   = {._double.header.type       = opt_double,
                             ._double.max               = DBL_MAX,
                             ._double.value             = 1e3};
 
-int bench_matvec_fill_desc(void){
-  /*
-  char *op_names[] = {"d_add", "d_orb"};
-  int op_counts[] = {7, 3};
-  perf_output_desc(2, op_names, op_counts);
-  */
-  return 0;
-}
-
 int bench_matvec_fill_show_help(void){
   opt_show_option(incY);
   opt_show_option(FillY);
@@ -152,7 +143,13 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
     time += time_read();
   }
 
-  perf_output_perf(time, N * M, trials);
+  metric_load_double("time", time);
+  metric_load_int("trials", trials);
+  metric_load_int("input", N * M + N + M);
+  metric_load_int("output", NY);
+  metric_load_int("d_add", N * M);
+  metric_load_int("d_mul", N * M);
+  metric_dump();
 
   free(X);
   return rc;

@@ -8,13 +8,6 @@
 
 #include "bench_vecvec_fill_header.h"
 
-int bench_vecvec_fill_desc(void){
-  char *op_names[] = {"d_cmp", "d_orb"};
-  int op_counts[] = {2, 2};
-  perf_output_desc(2, op_names, op_counts);
-  return 0;
-}
-
 int bench_vecvec_fill_show_help(void){
   return 0;
 }
@@ -42,7 +35,13 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double Scale
   }
   time_toc();
 
-  perf_output_perf(time_read(), N, trials);
+  metric_load_double("time", time_read());
+  metric_load_int("trials", trials);
+  metric_load_int("input", N);
+  metric_load_int("output", 1);
+  metric_load_int("d_cmp", 2 * N);
+  metric_load_int("d_or", 2 * N);
+  metric_dump();
 
   free(X);
   return rc;

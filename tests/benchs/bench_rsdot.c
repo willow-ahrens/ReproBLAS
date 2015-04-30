@@ -8,13 +8,6 @@
 
 #include "bench_vecvec_fill_header.h"
 
-int bench_vecvec_fill_desc(void){
-  char *op_names[] = {"s_mul", "s_add", "s_orb"};
-  int op_counts[] = {1, 7, 3};
-  perf_output_desc(3, op_names, op_counts);
-  return 0;
-}
-
 int bench_vecvec_fill_show_help(void){
   return 0;
 }
@@ -44,7 +37,16 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double Scale
   }
   time_toc();
 
-  perf_output_perf(time_read(), N, trials);
+  //TODO make generic fold testing
+  int fold = 3;
+  metric_load_double("time", time_read());
+  metric_load_int("trials", trials);
+  metric_load_int("input", 2 * N);
+  metric_load_int("output", 1);
+  metric_load_int("s_mul", N);
+  metric_load_int("s_add", (3 * fold - 2) * N);
+  metric_load_int("s_or", fold * N);
+  metric_dump();
 
   free(X);
   free(Y);
