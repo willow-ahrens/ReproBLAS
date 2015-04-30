@@ -48,7 +48,7 @@ void metric_load_string(char *key, char *value){
 
 void metric_dump(){
   int i;
-  comma = ","
+  char *comma = ",";
   printf("{\n");
   for(i = 0; i < metric_ticker; i++){
     if (i == metric_ticker - 1){
@@ -68,4 +68,3 @@ void metric_dump(){
   }
   printf("}\n");
 }
-#endif
