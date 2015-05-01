@@ -21,26 +21,8 @@
  * @date   27 Apr 2015
  */
 void smsconv(const int fold, const float X, float* manY, const int incmanY, float* carY, const int inccarY) {
-  int i;
-  float q;
-  float s;
-  float x;
-  if (X == 0.0) {
-    for (i = 0; i < fold; i++) {
-      manY[i*incmanY] = 0.0;
-      carY[i*inccarY] = 0.0;
-    }
-    return;
-  }
-  smbound(fold, sindex(fabs(X)), manY, incmanY, carY, inccarY);
-  x = X;
-  for (i = 0; i < fold; i++, manY += incmanY, carY += inccarY) {
-    s = manY[0];
-    q = s + x;
-    manY[0] = s;
-    q -= s;
-    x -= q;
-  }
+  smsetzero(fold, manY, incmanY, carY, inccarY);
+  smsadd(fold, X, manY, incmanY, carY, inccarY);
 }
 
 /**

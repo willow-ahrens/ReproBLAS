@@ -25,26 +25,8 @@
  * @date   27 Apr 2015
  */
 void dmdconv(const int fold, const double X, double* manY, const int incmanY, double* carY, const int inccarY) {
-  int i;
-  double q;
-  double s;
-  double x;
-  if (X == 0.0) {
-    for (i = 0; i < fold; i++) {
-      manY[i*incmanY] = 0.0;
-      carY[i*inccarY] = 0.0;
-    }
-    return;
-  }
-  dmbound(fold, dindex(fabs(X)), manY, incmanY, carY, inccarY);
-  x = X;
-  for (i = 0; i < fold; i++, manY += incmanY, carY += inccarY) {
-    s = manY[0];
-    q = s + x;
-    manY[0] = s;
-    q -= s;
-    x -= q;
-  }
+  dmsetzero(fold, manY, incmanY, carY, inccarY);
+  dmdadd(fold, X, manY, incmanY, carY, inccarY);
 }
 
 /**
