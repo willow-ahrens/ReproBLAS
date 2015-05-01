@@ -67,19 +67,32 @@ def get_cpu_freq():
   info = cpuinfo.get_cpu_info()
   return info["hz_actual_raw"][0] * 10**(info["hz_actual_raw"][1])
 
+def get_fma():
+  info = cpuinfo.get_cpu_info()
+  return "fma" in info["flags"]
+
 def get_peak_time(output):
   data = {}
-  data["s_add"] = 0.0;
-  data["s_mul"] = 0.0;
-  data["s_cmp"] = 0.0;
-  data["s_or"] = 0.0;
-  data["d_add"] = 0.0;
-  data["d_mul"] = 0.0;
-  data["d_cmp"] = 0.0;
-  data["d_or"] = 0.0;
+  data["s_add"] = 0;
+  data["s_mul"] = 0;
+  data["s_fma"] = 0;
+  data["s_cmp"] = 0;
+  data["s_orb"] = 0;
+  data["d_add"] = 0;
+  data["d_mul"] = 0;
+  data["d_fma"] = 0;
+  data["d_cmp"] = 0;
+  data["d_orb"] = 0;
   data["vec"] = get_vectorization();
   data["freq"] = get_cpu_freq();
   for key in data:
     if key in output:
       data[key] = output[key]
+  if not get_fma():
+    data["d_add"] += data["d_fma"]
+    data["d_mul"] += data["d_fma"]
+    data["d_fma"] = 0
+    data["s_add"] += data["s_fma"]
+    data["s_mul"] += data["s_fma"]
+    data["s_fma"] = 0
   return config.peak_time(data)

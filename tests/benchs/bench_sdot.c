@@ -41,8 +41,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double Scale
   metric_load_int("trials", trials);
   metric_load_int("input", 2 * N);
   metric_load_int("output", 1);
-  metric_load_int("s_add", N);
-  metric_load_int("s_mul", N);
+  metric_load_int("s_fma", N);
   metric_dump();
 
   free(X);

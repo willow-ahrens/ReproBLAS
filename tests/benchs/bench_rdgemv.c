@@ -151,7 +151,7 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
   metric_load_int("output", NY);
   metric_load_int("d_mul", N * M);
   metric_load_int("d_add", (3 * fold - 2) * N * M);
-  metric_load_int("d_or", fold * N * M);
+  metric_load_int("d_orb", fold * N * M);
   metric_dump();
 
   free(X);

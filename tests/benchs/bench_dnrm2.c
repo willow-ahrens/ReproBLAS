@@ -42,7 +42,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double Scale
   metric_load_int("d_add", N);
   metric_load_int("d_mul", 2 * N);
   metric_load_int("d_cmp", N);
-  metric_load_int("d_or", N);
+  metric_load_int("d_orb", N);
   metric_dump();
 
   free(X);

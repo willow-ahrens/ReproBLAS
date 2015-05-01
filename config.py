@@ -46,12 +46,12 @@ def peak_time(data):
       d_mul - number of double precision multiplications
       d_fma - number of single precision fused multiplication and additions
       d_cmp - number of double precision comparisons
-      d_or  - number of double precision bitwise or
+      d_orb  - number of double precision bitwise or
       s_add - number of single precision additions
       s_mul - number of single precision multiplications
       s_fma - number of single precision fused multiplication and additions
       s_cmp - number of single precision comparisons
-      s_or  - number of single precision bitwise or
+      s_orb  - number of single precision bitwise or
       freq  - frequency of cpu
       vec   - best vectorization available ("AVX", "SSE", "SISD")
     peak_time(data) returns the theoretical best time in which the cpu could
@@ -66,8 +66,9 @@ def peak_time(data):
   elif data["vec"] == "AVX":
     vec_d_ops = 4
     vec_s_ops = 8
-  d_ops = max(data["d_add"] + data["d_mul"], data["d_or"])
-  s_ops = max(data["s_add"] + data["s_mul"], data["s_or"])
-  return (d_ops/vec_d_ops + s_ops/vec_s_ops)/data["freq"];
+  d_ops = max(data["d_add"] + data["d_mul"] + data["d_fma"], data["d_orb"])
+  s_ops = max(data["s_add"] + data["s_mul"] + data["s_fma"], data["s_orb"])
+  print(d_ops)
+  return float(d_ops/vec_d_ops + s_ops/vec_s_ops)/data["freq"];
 
 version = "0.0.0"
