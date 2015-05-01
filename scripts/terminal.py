@@ -69,6 +69,7 @@ def get_cpu_freq():
 
 def get_fma():
   info = cpuinfo.get_cpu_info()
+  print(info[flags])
   return "fma" in info["flags"]
 
 def get_peak_time(output):
@@ -88,6 +89,8 @@ def get_peak_time(output):
   for key in data:
     if key in output:
       data[key] = output[key]
+  """
+  #TODO this is broken! fix it!
   if not get_fma():
     data["d_add"] += data["d_fma"]
     data["d_mul"] += data["d_fma"]
@@ -95,4 +98,5 @@ def get_peak_time(output):
     data["s_add"] += data["s_fma"]
     data["s_mul"] += data["s_fma"]
     data["s_fma"] = 0
+  """
   return config.peak_time(data)
