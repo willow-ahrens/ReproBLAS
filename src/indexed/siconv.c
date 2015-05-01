@@ -18,7 +18,7 @@
  *
  * @author Hong Diep Nguyen
  * @author Peter Ahrens
- * @date   27 Apr 2015
+ * @date   30 Apr 2015
  */
 void smsconv(const int fold, const float X, float* manY, const int incmanY, float* carY, const int inccarY) {
   smsetzero(fold, manY, incmanY, carY, inccarY);

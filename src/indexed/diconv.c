@@ -22,7 +22,7 @@
  *
  * @author Hong Diep Nguyen
  * @author Peter Ahrens
- * @date   27 Apr 2015
+ * @date   30 Apr 2015
  */
 void dmdconv(const int fold, const double X, double* manY, const int incmanY, double* carY, const int inccarY) {
   dmsetzero(fold, manY, incmanY, carY, inccarY);
