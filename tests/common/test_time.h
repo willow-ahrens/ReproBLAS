@@ -3,8 +3,9 @@
 
 void time_tic();
 
-double time_toc();
+void time_toc();
 
 double time_read();
 
+void time_reset();
 #endif

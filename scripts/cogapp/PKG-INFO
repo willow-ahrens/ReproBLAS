@@ -1,0 +1,22 @@
+Metadata-Version: 1.1
+Name: cogapp
+Version: 2.4
+Summary: Cog: A code generator for executing Python snippets in source files.
+Home-page: http://nedbatchelder.com/code/cog
+Author: Ned Batchelder
+Author-email: ned@nedbatchelder.com
+License: MIT
+Description:         Docs at `http://nedbatchelder.com/code/cog <http://nedbatchelder.com/code/cog>`_.
+        
+                Code repository and issue tracker are at
+                `bitbucket.org <http://bitbucket.org/ned/cog>`_.
+                
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Software Development :: Code Generators

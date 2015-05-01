@@ -4,7 +4,6 @@
 
 #include "../common/test_matvec_fill_header.h"
 
-int bench_matvec_fill_desc(void);
 int bench_matvec_fill_show_help(void);
 const char* bench_matvec_fill_name(int argc, char** argv);
 int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int N, int FillA, double ScaleA, double CondA, int lda, int FillX, double ScaleX, double CondX, int incX, int trials);
@@ -37,10 +36,6 @@ const char* matvec_fill_name(int argc, char** argv){
 }
 
 int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int N, int FillA, double ScaleA, double CondA, int lda, int FillX, double ScaleX, double CondX, int incX){
-  opt_eval_option(argc, argv, &desc);
-  if(desc._flag.exists){
-    return bench_matvec_fill_desc();
-  }
 
   opt_eval_option(argc, argv, &trials);
   int rc = bench_matvec_fill_test(argc, argv, Order, TransA, M, N, FillA, ScaleA, CondA, lda, FillX, ScaleX, CondX, incX, trials._int.value);

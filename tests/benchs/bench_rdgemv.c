@@ -7,7 +7,7 @@
 
 #include "../common/test_opt.h"
 #include "../common/test_time.h"
-#include "../common/test_perf.h"
+#include "../common/test_metric.h"
 
 #include "bench_matvec_fill_header.h"
 
@@ -133,7 +133,6 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
   util_dvec_fill(NY, Y, incY._int.value, FillY._named.value, ScaleY._double.value, CondY._double.value);
   double *res  = (double*)malloc(NY * incY._int.value * sizeof(double));
   double *ref  = (double*)malloc(NY * incY._int.value * sizeof(double));
-  double time = 0.0;
   memcpy(ref, Y, NY * incY._int.value * sizeof(double));
   rdgemv(o, t, M, N, A, lda, X, incX, ref, incY._int.value);
 
@@ -142,7 +141,6 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
     time_tic();
     rdgemv(o, t, M, N, A, lda, X, incX, res, incY._int.value);
     time_toc();
-    time += time_read();
   }
 
   //TODO make generic fold testing

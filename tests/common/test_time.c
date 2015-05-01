@@ -2,8 +2,7 @@
 #include <stddef.h>
 static int initialized = 0;
 static struct timeval start;
-static double tic;
-static double toc;
+static double time = 0.0;
 
 static double read_clock( )
 {
@@ -20,14 +19,17 @@ static double read_clock( )
 }
 
 void time_tic() {
-  tic = read_clock();
+  time -= read_clock();
 }
 
-double time_toc() {
-  toc = read_clock();
-  return toc - tic;
+void time_toc() {
+  time += read_clock();
 }
 
 double time_read() {
-  return toc - tic;
+  return time;
+}
+
+void time_reset() {
+  time = 0.0;
 }

@@ -3,6 +3,9 @@ import multiprocessing
 import os
 import subprocess
 import sys
+import config
+
+from scripts.cpuinfo import cpuinfo
 
 def callsafe(command):
   print(command)
@@ -16,8 +19,10 @@ def callsafe(command):
   return (rc, out)
 
 def call(command):
-#  print command
-  return subprocess.check_output(command, shell=True).decode(sys.stdout.encoding)
+  print(command)
+  out = subprocess.check_output(command, shell=True).decode(sys.stdout.encoding)
+  print(out)
+  return out
 
 top = call("make top").split()[-1]
 
@@ -52,6 +57,29 @@ def flags(params, args):
   return " ".join(['-{0} "{1}"'.format(param, arg) if len(param) == 1 else '--{0} "{1}"'.format(param, arg) for (param, arg) in zip(params, args)])
 
 def get_vectorization():
-  make("scripts/get_vectorization.c", remake = True)
-  return call(make("scripts/get_vectorization", remake = True)).split()[0]
+  if get_vectorization.vectorization == "":
+    make("scripts/get_vectorization.c", remake = True)
+    get_vectorization.vectorization = call(make("scripts/get_vectorization", remake = True)).split()[0]
+  return get_vectorization.vectorization
+get_vectorization.vectorization = ""
 
+def get_cpu_freq():
+  info = cpuinfo.get_cpu_info()
+  return info["hz_actual_raw"][0] * 10**(info["hz_actual_raw"][1])
+
+def get_peak_time(output):
+  data = {}
+  data["s_add"] = 0.0;
+  data["s_mul"] = 0.0;
+  data["s_cmp"] = 0.0;
+  data["s_or"] = 0.0;
+  data["d_add"] = 0.0;
+  data["d_mul"] = 0.0;
+  data["d_cmp"] = 0.0;
+  data["d_or"] = 0.0;
+  data["vec"] = get_vectorization();
+  data["freq"] = get_cpu_freq();
+  for key in data:
+    if key in output:
+      data[key] = output[key]
+  return config.peak_time(data)

@@ -3,12 +3,12 @@
 #By peter ahrens
 #comments/code niceness to come
 
-
 import argparse
 import copy
 import itertools
 import os
 import re
+import json
 
 import config
 import scripts.terminal as terminal
@@ -114,9 +114,10 @@ class Suite(object):
 
 class MetricSuite(Suite):
 
-  def __init__(self, metrics, params, ranges):
+  def __init__(self, metrics, params, ranges, attribute):
     self.params = params
     self.ranges = ranges
+    self.attribute = attribute
     self.metric_rows = []
     self.argss = []
     self.metrics = []
@@ -130,7 +131,7 @@ class MetricSuite(Suite):
   def setup(self, **kwargs):
     for (metric_row, args) in zip(self.metric_rows, self.argss):
       for metric in metric_row:
-        metric.setup(flags = terminal.flags(self.params, args),**kwargs)
+        metric.setup(attribute = self.attribute, flags = terminal.flags(self.params, args),**kwargs)
 
   def get_command_list(self):
     command_list = []
@@ -226,14 +227,22 @@ class MetricTest(ExecutableTest):
     """
     return self.name
 
+  def setup(self, attribute="", **kwargs):
+    self.attribute = attribute
+    super(MetricTest, self).setup(**kwargs)
+
   def parse_output_list(self, output_list):
     """
     parse the output of the command set. The output will be given as a list of
     (return code, output)
     """
     assert len(output_list) == 1, "ReproBLAS error: unexpected test output"
-    self.output = output_list[0][1]
-    self.result = float(re.findall("([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)", output_list[0][1])[0][0])
+
+    self.output = json.loads(output_list[0][1]);
+    self.parse_output()
+
+  def parse_output(self):
+    raise(NotImplementedError())
 
   def get_output(self):
     """

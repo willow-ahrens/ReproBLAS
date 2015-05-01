@@ -5,12 +5,16 @@ import scripts.terminal as terminal
 import tests.harness.harness as harness
 
 class BenchSuite(harness.MetricSuite):
-  #TODO override to get % of peak if desired
   pass
 
 class BenchTest(harness.MetricTest):
-  #TODO override to get % of peak
-  pass
+  def parse_output(self):
+    if self.attribute == "time":
+      self.result = self.output["time"] / self.output["trials"]
+    elif self.attribute == "freq":
+      self.result = (self.output["trials"] * self.output["input"]) / self.output["time"]
+    elif self.attribute == "peak":
+      self.result = (terminal.get_peak_time(self.output) * self.output["trials"])/self.output["time"]
 
 class BenchCAMAXTest(BenchTest):
   name = "CAMAX"
