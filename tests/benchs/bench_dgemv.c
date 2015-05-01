@@ -142,10 +142,10 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
   }
 
   metric_load_double("time", time_read());
-  metric_load_int("trials", trials);
-  metric_load_int("input", N * M + N + M);
-  metric_load_int("output", NY);
-  metric_load_int("d_fma", N * M);
+  metric_load_long_long("trials", (long long)trials);
+  metric_load_long_long("input", (long long)N * M + N + M);
+  metric_load_long_long("output", (long long)NY);
+  metric_load_long_long("d_fma", (long long)N * M);
   metric_dump();
 
   free(X);

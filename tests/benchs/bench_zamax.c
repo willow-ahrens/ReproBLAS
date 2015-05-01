@@ -36,11 +36,11 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double Scale
   time_toc();
 
   metric_load_double("time", time_read());
-  metric_load_int("trials", trials);
-  metric_load_int("input", N);
-  metric_load_int("output", 1);
-  metric_load_int("d_cmp", 2 * N);
-  metric_load_int("d_orb", 2 * N);
+  metric_load_long_long("trials", (long long)trials);
+  metric_load_long_long("input", (long long)N);
+  metric_load_long_long("output", (long long)1);
+  metric_load_long_long("d_cmp", (long long)2 * N);
+  metric_load_long_long("d_orb", (long long)2 * N);
   metric_dump();
 
   free(X);

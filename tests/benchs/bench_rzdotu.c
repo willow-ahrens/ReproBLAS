@@ -40,12 +40,12 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double Scale
   //TODO make generic fold testing
   int fold = 3;
   metric_load_double("time", time_read());
-  metric_load_int("trials", trials);
-  metric_load_int("input", 2 * N);
-  metric_load_int("output", 1);
-  metric_load_int("d_mul", 4 * N);
-  metric_load_int("d_add", (3 * fold - 2) * 4 * N);
-  metric_load_int("d_orb", fold * 4 * N);
+  metric_load_long_long("trials", (long long)trials);
+  metric_load_long_long("input", (long long)2 * N);
+  metric_load_long_long("output", (long long)1);
+  metric_load_long_long("d_mul", (long long)4 * N);
+  metric_load_long_long("d_add", (long long)(3 * fold - 2) * 4 * N);
+  metric_load_long_long("d_orb", (long long)fold * 4 * N);
   metric_dump();
 
   free(X);
