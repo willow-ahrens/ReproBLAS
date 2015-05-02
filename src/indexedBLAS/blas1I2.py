@@ -142,13 +142,13 @@ class OneDimensionalAccumulation(Target):
     if fold == 0:
       code_block.write("for(j = 0; j < fold; j += 1){")
       code_block.indent()
-      self.vec.consolidate_into("sum", "j", 1, self.buffer_vars, sum_ptr, "j", 1, self.q_vars[0])
+      self.vec.consolidate_into("sum", "j", 1, self.buffer_vars, sum_ptr, "j", 1)
       code_block.dedent()
       code_block.write("}")
     else:
       for j in range(fold):
         #TODO consolidate_into should be a subtract and a reduce
-        self.vec.consolidate_into("sum", j, 1, self.s_vars[j], sum_ptr, j, 1, self.q_vars[0])
+        self.vec.consolidate_into("sum", j, 1, self.s_vars[j], sum_ptr, j, 1)
 
   def write_core(self, code_block, fold, max_pipe_width, max_unroll_width, incs):
     max_reg_width = self.compute_reg_width(max_pipe_width);
