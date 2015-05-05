@@ -13,7 +13,7 @@ COGGED = dasumI2.ccog dsumI2.ccog dnrm2I2.ccog ddotI2.ccog                 \
          camax.ccog camaxm.ccog \
          dmdsum.ccog dmdasum.ccog dmdnrm.ccog dmddot.ccog\
          smssum.ccog smsasum.ccog smsnrm.ccog smsdot.ccog\
-         smcnrm.ccog smcasum.ccog\
+         cmcsum.ccog smcnrm.ccog smcasum.ccog\
          zmzsum.ccog dmznrm.ccog dmzasum.ccog\
 
 PRECIOUS = dasumI2.c dsumI2.c dnrm2I2.c ddotI2.c              \
@@ -26,7 +26,7 @@ PRECIOUS = dasumI2.c dsumI2.c dnrm2I2.c ddotI2.c              \
            camax.c camaxm.c \
            smssum.c smsasum.c smsnrm.c smsdot.ccog\
            dmdsum.c dmdasum.c dmdnrm.c dmddot.ccog\
-           smcnrm.c smcasum.c\
+           cmcsum.c smcnrm.c smcasum.c\
            zmzsum.c dmznrm.c dmzasum.c\
 
 LIBINDEXEDBLAS := $(OBJPATH)/libindexedblas.a
@@ -47,6 +47,6 @@ libindexedblas.a_DEPS = $$(LIBINDEXED)                                     \
                         dIAccum.o zIAccum.o sIAccum.o cIAccum.o            \
                         dmdsum.o dmdasum.o dmdnrm.o dmddot.o \
                         smssum.o smsasum.o smsnrm.o smsdot.o \
-                        smcnrm.o smcasum.o \
+                        cmcsum.o smcnrm.o smcasum.o \
                         zmzsum.o dmznrm.o dmzasum.o \
                         dgemvI.o

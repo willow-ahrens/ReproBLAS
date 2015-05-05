@@ -1,0 +1,97 @@
+/*
+ *  Created   13/10/25   H.D. Nguyen
+ */
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
+#include <float.h>
+
+#include "../config.h"
+#include "../Common/Common.h"
+#include "indexedBLAS.h"
+
+//TODO clean up these includes with a python generated version that includes conditionally
+#include <immintrin.h>
+#include <emmintrin.h>
+
+/*[[[cog
+import cog
+import generate
+import dataTypes
+import sumI2
+]]]*/
+//[[[end]]]
+
+#define N_block_MAX 1024
+//TODO make N_block_max a parameter
+//TODO make sure to note in comments that we assume the indexed type has been renormalized before the call (probably already covered in the deposit documentation
+
+void cmcsum(const int fold, const int N, const void *X, const int incX, float *manY, const int incmanY, float *carY, const int inccarY){
+  float amax[2];
+  int i, j;
+  int N_block = MIN(N_block_MAX, dicapacity());
+  int deposits = 0;
+
+  const float *x = (const float*)X;
+
+  for (i = 0; i < N; i += N_block) {
+    N_block = MIN((N - i), N_block);
+
+    zamax_sub(N_block, x, incX, amax);
+    if (amax[0] == 0.0 && amax[1] == 0.0){
+      x += N_block * incX;
+      continue;
+    }
+
+    if (isinf(amax[0]) || isinf(manY[0])){
+      for (j = 0; j < N_block; j++){
+        if (isinf(x[j * 2 * incX]) || isnan(x[j * 2 * incX])){
+          manY[0] += x[j * 2 * incX];
+        }
+      }
+    }
+    if (isinf(amax[1]) || isinf(manY[1])){
+      for (j = 0; j < N_block; j++){
+        if (isinf(x[j * 2 * incX + 1]) || isnan(x[j * 2 * incX + 1])){
+          manY[1] += x[j * 2 * incX + 1];
+        }
+      }
+    }
+    if (isnan(manY[0]) && isnan(manY[1])){
+      return;
+    } else if (isinf(manY[0]) && isinf(manY[1])){
+      x += N_block * incX;
+      continue;
+    }
+    if (isinf(manY[0]) || isnan(manY[0])){
+      amax[0] = manY[0];
+    }
+    if (isinf(manY[1]) || isnan(manY[1])){
+      amax[1] = manY[1];
+    }
+
+    if (deposits + N_block > dicapacity()) {
+      cmrenorm(fold, manY, incmanY, carY, inccarY);
+      deposits = 0;
+    }
+
+    cmcupdate(fold, amax, manY, incmanY, carY, inccarY);
+
+    /*[[[cog
+    cog.out(generate.generate(sumI2.SumI2(dataTypes.DoubleComplex, "N_block", "x", "incX", "manY", "incmanY"), cog.inFile, args, params, mode))
+    ]]]*/
+    //[[[end]]]
+
+    if (isinf(amax[0])){
+      manY[0] = amax[0];
+    }
+    if (isinf(amax[1])){
+      manY[1] = amax[1];
+    }
+
+    deposits += N_block;
+  }
+
+  cmrenorm(fold, manY, incmanY, carY, inccarY);
+}
