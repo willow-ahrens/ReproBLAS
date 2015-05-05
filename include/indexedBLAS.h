@@ -10,6 +10,16 @@ void dgemvI(int fold, rblas_order_t Order,
             double *X, int incX,
             I_double *Y, int incY);
 
+float samax(const int N, const float *X, const int incX);
+double damax(const int N, const double *X, const int incX);
+void camax_sub(const int N, const void *X, const int incX, void *amax);
+void zamax_sub(const int N, const void *X, const int incX, void *amax);
+
+float samaxm(const int N, const float *X, const int incX, const float *Y, const int incY);
+double damaxm(const int N, const double *X, const int incX, const double *Y, const int incY);
+void camaxm_sub(const int N, const void *X, const int incX, const void *Y, const int incY, void *amaxm);
+void zamaxm_sub(const int N, const void *X, const int incX, const void *Y, const int incY, void *amaxm);
+
 void didsum(const int fold, const int N, const double *X, const int incX, double_indexed *Y);
 void dmdsum(const int fold, const int N, const double *X, const int incX, double *manY, const int incmanY, double *carY, const int inccarY);
 void didasum(const int fold, const int N, const double *X, const int incX, double_indexed *Y);
@@ -83,19 +93,10 @@ extern I_float_Complex cdotuI  (int N, float complex* x, int incx, float complex
 // UNBLOCKED VERSIONS
 
 // ++++ MAX |v[i]| ++++
-extern float    samax (int n, float* x, int incx);
-extern double   damax (int n, double* v, int inc);
-extern float complex camax (int n, float complex* x, int incx);
-extern double complex zamax (int n, double complex* x, int incx);
+;
 // ---- MAX |v[i]| ----
 
 // ++++ MAX |x[i] * y[i]| ++++
-extern float  samaxm(int n, float* x, int incx, float* y, int incy);
-extern double damaxm(int n, double* x, int incx, double* y, int incy);
-extern float  complex camaxm(int n, float complex* x, int incx,
-               float complex* y, int incy);
-extern double complex zamaxm(int n, double complex* x, int incx,
-               double complex* y, int incy);
 // ---- MAX |x[i] * y[i]| ----
 
 

@@ -44,6 +44,7 @@ void sasumI1_(int N, int NB,
 	int fold, float* sum, float* c) {
 	float amax;
 
+    return smsasum(fold, N, v, inc, sum, 1, c, 1);
 	int i, j;
 	int status;
 	int lN;

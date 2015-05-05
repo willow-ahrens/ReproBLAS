@@ -6,14 +6,12 @@
 #include <stdio.h>
 #include <math.h>
 #include <float.h>
-#include "indexedBLAS.h"
 
-#include <float.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
 #include "../config.h"
 #include "../Common/Common.h"
+#include "indexedBLAS.h"
+
+//TODO clean up these includes with a python generated version that includes conditionally
 #include <immintrin.h>
 #include <emmintrin.h>
 
@@ -44,14 +42,13 @@ void dmdsum(const int fold, const int N, const double *X, const int incX, double
       continue;
     }
 
-    if (isinf(amax)){
+    if (isinf(amax) || isinf(manY[0])){
       for (j = 0; j < N_block; j++){
-        if (isinf(X[j * incX])){
+        if (isinf(X[j * incX]) || isnan(X[j * incX])){
           manY[0] += X[j * incX];
         }
       }
     }
-
     if (isnan(manY[0])){
       return;
     } else if (isinf(manY[0])){

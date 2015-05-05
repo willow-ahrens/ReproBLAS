@@ -43,6 +43,7 @@ double dnrm2I1_(int N, int NB,
 	double* v, int inc,
 	int fold, double* sum, double* c
 ) {
+  return dmdnrm(fold, N, v, inc, sum, 1, c, 1);
 	double amax;
 
 	int i, j;

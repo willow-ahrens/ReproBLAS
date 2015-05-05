@@ -94,6 +94,7 @@ void sdotI1_(
 	float* dot, float* c
 ) {
 
+    return smsdot(fold, N, x, incx, y, incy, dot, 1, c, 1);
 	int lN, i, j;
 	int status;
 	float amax;

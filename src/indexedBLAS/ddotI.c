@@ -95,6 +95,7 @@ void ddotI1_(
 	double amax;
 	int accu = 0;
 	int maxN = dicapacity();
+    return dmddot(fold, N, x, incx, y, incy, dot, 1, c, 1);
 
 	for (i = 0; i < N; i+=NB, x += NB*incx, y += NB*incy) {
 		// BLOCK SIZE

@@ -6,12 +6,17 @@ from vectorizations import *
 from generate import *
 import itertools
 
-class Max(Target):
-  standard_incs = ["incv"]
+class AMax(Target):
+  name = "amax"
 
-  def __init__(self, data_type_class):
-    super(Max, self).__init__()
+  def __init__(self, data_type_class, N, X, incX, amax):
+    super(AMax, self).__init__()
     self.data_type_class = data_type_class
+    self.N = N
+    self.X = X
+    self.incX = incX
+    self.amax = amax
+    self.standard_incs = [incX]
 
   def get_arguments(self):
     return ["{}{}_max_unroll_width_{}".format(self.data_type_class.name_char, self.name, vectorization.name) for vectorization in vectorization_lookup.values()]
@@ -28,7 +33,6 @@ class Max(Target):
       parameters.append(IntegerParameter(name, minimum, maximum, step, default))
     return parameters
 
-
   def get_metrics(self):
     return {argument: ["bench_{}{}".format(self.data_type_class.name_char, self.name)] for argument in self.get_arguments()}
 
@@ -41,7 +45,6 @@ class Max(Target):
       max_unroll_width = self.arguments["{}{}_max_unroll_width_{}".format(self.data_type.name_char, self.name, self.vec.name)]
       max_reg_width = self.compute_reg_width(max_unroll_width)
       code_block.write("int i;")
-      code_block.define_vars(self.data_type.name, ["max"])
       code_block.new_line()
       self.define_load_ptrs(code_block, max_reg_width)
       self.define_load_vars(code_block, max_reg_width)
@@ -60,8 +63,7 @@ class Max(Target):
       self.write_core(code_block, max_reg_width, max_unroll_width, self.standard_incs)
       code_block.dedent()
       code_block.write("}")
-      self.vec.max_into("(&max)", 0, 1, self.m_vars)
-      code_block.write("return max;")
+      self.vec.max_into(self.amax, 0, 1, self.m_vars)
 
   def write_core(self, code_block, max_reg_width, max_unroll_width, incs):
     code_block.new_line()
@@ -74,27 +76,7 @@ class Max(Target):
         reg_width = self.compute_reg_width(unroll_width)
         self.preprocess(code_block, unroll_width, incs, align=align)
         self.process(code_block, reg_width)
-    self.vec.iterate_unrolled("i", "n", self.load_ptrs, incs, max_unroll_width, 1, body)
-
-  def process(self, code_block, reg_width):
-    code_block.set_equal(itertools.cycle(self.m_vars), self.vec.max(itertools.cycle(self.m_vars), self.load_vars[0][:reg_width]))
-
-class AMax(Max):
-  name = "amax"
-  standard_incs = ["incv"]
-
-  def __init__(self, data_type_class):
-    super(AMax, self).__init__(data_type_class)
-
-  def define_load_vars(self, code_block, reg_width):
-    self.load_vars = [["v_" + str(i) for i in range(reg_width)]]
-    code_block.define_vars(self.vec.type_name, self.load_vars[0])
-
-  def define_load_ptrs(self, code_block, reg_width):
-      self.load_ptrs = ["v"]
-
-  def compute_reg_width(self, unroll_width):
-    return (unroll_width * self.data_type.base_size)//self.vec.base_size
+    self.vec.iterate_unrolled("i", self.N, self.load_ptrs, incs, max_unroll_width, 1, body)
 
   def preprocess(self, code_block, unroll_width, incs, partial="", align = False):
     if partial == "":
@@ -102,25 +84,36 @@ class AMax(Max):
     else:
       code_block.set_equal(self.load_vars[0], self.vec.abs(self.vec.load_partial(self.load_ptrs[0], 0, incs[0], partial)))
 
-class AMaxM(Max):
-  name = "amaxm"
-  standard_incs = ["incv", "incy"]
+  def process(self, code_block, reg_width):
+    code_block.set_equal(itertools.cycle(self.m_vars), self.vec.max(itertools.cycle(self.m_vars), self.load_vars[0][:reg_width]))
 
-  def __init__(self, data_type_class):
-    super(AMaxM, self).__init__(data_type_class)
-
-  def write_declaration(self, code_block, settings):
-    super(AMaxM, self).write_declaration(code_block, settings)
-    code_block.write("{0} {1}amaxm(int n, {0}* v, int incv, {0}* y, int incy){{".format(self.data_type.name, self.data_type.name_char))
+  def define_load_vars(self, code_block, reg_width):
+    self.load_vars = [["{}_{}".format(self.X, i) for i in range(reg_width)]]
+    code_block.define_vars(self.vec.type_name, self.load_vars[0])
 
   def define_load_ptrs(self, code_block, reg_width):
-      self.load_ptrs = ["v", "y"]
+    self.load_ptrs = [self.X]
+
+  def compute_reg_width(self, unroll_width):
+    return (unroll_width * self.data_type.base_size)//self.vec.base_size
+
+class AMaxM(AMax):
+  name = "amaxm"
+
+  def __init__(self, data_type_class, N, X, incX, Y, incY, amaxm):
+    super(AMaxM, self).__init__(data_type_class, N, X, incX, amaxm)
+    self.Y = Y
+    self.incY = incY
+    self.standard_incs = [incX, incY]
+
+  def define_load_ptrs(self, code_block, reg_width):
+    self.load_ptrs = [self.X, self.Y]
 
   def define_load_vars(self, code_block, reg_width):
     if self.data_type.is_complex:
-      self.load_vars = [["v_" + str(i) for i in range(reg_width)], ["y_" + str(i) for i in range(reg_width//2)]]
+      self.load_vars = [["{}_{}".format(self.X, i) for i in range(reg_width)], ["{}_{}".format(self.Y, i) for i in range(reg_width//2)]]
     else:
-      self.load_vars = [["v_" + str(i) for i in range(reg_width)], ["y_" + str(i) for i in range(reg_width)]]
+      self.load_vars = [["{}_{}".format(self.X, i) for i in range(reg_width)], ["{}_{}".format(self.Y, i) for i in range(reg_width)]]
     code_block.define_vars(self.vec.type_name, self.load_vars[0])
     code_block.define_vars(self.vec.type_name, self.load_vars[1])
 
