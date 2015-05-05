@@ -167,7 +167,7 @@ class SISD(Vectorization):
     self.suf_width = self.data_type.base_size
 
   def consolidate_into(self, dst_ptr, offset, inc, src_vars, common_summand_ptr, common_summand_offset, common_summand_inc):
-    self.code_block.include("{} tmp_cons;".format(self.type_name))
+    self.code_block.include("{} cons_tmp;".format(self.type_name))
 
     if self.data_type.is_complex:
       dst_ptr = "(({0}*){1})".format(self.data_type.base_type.name, dst_ptr)
@@ -175,20 +175,20 @@ class SISD(Vectorization):
 
     if self.data_type.is_complex:
       if(len(src_vars) > 2):
-        self.code_block.write("tmp_cons = {0}[{1}];".format(common_summand_ptr, self.data_type.index(common_summand_offset, common_summand_inc, 0)))
+        self.code_block.write("cons_tmp = {0}[{1}];".format(common_summand_ptr, self.data_type.index(common_summand_offset, common_summand_inc, 0)))
       for src_var in src_vars[2::2]:
-        self.code_block.write("{0} = {0} + ({1} - tmp_cons);".format(src_vars[0], src_var))
+        self.code_block.write("{0} = {0} + ({1} - cons_tmp);".format(src_vars[0], src_var))
       if(len(src_vars) > 2):
-        self.code_block.write("tmp_cons = {0}[{1}];".format(common_summand_ptr, self.data_type.index(common_summand_offset, common_summand_inc, 1)))
+        self.code_block.write("cons_tmp = {0}[{1}];".format(common_summand_ptr, self.data_type.index(common_summand_offset, common_summand_inc, 1)))
       for src_var in src_vars[3::2]:
-        self.code_block.write("{0} = {0} + ({1} - tmp_cons);".format(src_vars[1], src_var))
+        self.code_block.write("{0} = {0} + ({1} - cons_tmp);".format(src_vars[1], src_var))
       self.code_block.write("{0}[{1}] = {2};".format(dst_ptr, self.data_type.index(offset, inc, 0), src_vars[0]))
       self.code_block.write("{0}[{1}] = {2};".format(dst_ptr, self.data_type.index(offset, inc, 1), src_vars[1]))
     else:
       if(len(src_vars) > 1):
-        self.code_block.write("tmp_cons = {0}[{1}];".format(common_summand_ptr, self.data_type.index(common_summand_offset, common_summand_inc, 0)))
+        self.code_block.write("cons_tmp = {0}[{1}];".format(common_summand_ptr, self.data_type.index(common_summand_offset, common_summand_inc, 0)))
       for src_var in src_vars[1:]:
-        self.code_block.write("{0} = {0} + ({1} - tmp_cons);".format(src_vars[0], src_var))
+        self.code_block.write("{0} = {0} + ({1} - cons_tmp);".format(src_vars[0], src_var))
       self.code_block.write("{0}[{1}] = {2};".format(dst_ptr, self.data_type.index(offset, inc, 0), src_vars[0]))
 
   def max_into(self, dst_ptr, offset, inc, src_vars):
@@ -290,24 +290,24 @@ class SIMD(Vectorization):
     self.suf_width = 1
 
   def include_max_vars(self):
-    self.code_block.include("{0} tmp_max[{1}] __attribute__((aligned({2})));".format(self.data_type.base_type.name, self.base_size, self.byte_size))
+    self.code_block.include("{0} max_tmp[{1}] __attribute__((aligned({2})));".format(self.data_type.base_type.name, self.base_size, self.byte_size))
 
   def include_consolidation_vars(self):
-    self.code_block.include("{0} tmp_cons;".format(self.type_name))
-    self.code_block.include("{0} tmp_cons_buf[{1}] __attribute__((aligned({2})));".format(self.data_type.base_type.name, self.base_size, self.byte_size))
+    self.code_block.include("{0} cons_tmp;".format(self.type_name))
+    self.code_block.include("{0} cons_buffer[{1}] __attribute__((aligned({2})));".format(self.data_type.base_type.name, self.base_size, self.byte_size))
 
   #TODO masks should be defined here and not necessarily in COMMON?
   def include_ABS_vars(self):
-    self.code_block.include("{0} mask_ABS; {1}_ABS_MASK{2}(mask_ABS);".format(self.type_name, self.name, self.data_type.base_type.name_char.upper()))
+    self.code_block.include("{0} abs_mask; {1}_ABS_MASK{2}(abs_mask);".format(self.type_name, self.name, self.data_type.base_type.name_char.upper()))
 
   def include_BLP_vars(self):
-    self.code_block.include("{0} mask_BLP; {1}_BLP_MASK{2}(mask_BLP);".format(self.type_name, self.name, self.data_type.base_type.name_char.upper()))
+    self.code_block.include("{0} blp_mask; {1}_BLP_MASK{2}(blp_mask);".format(self.type_name, self.name, self.data_type.base_type.name_char.upper()))
 
   def include_CONJ_vars(self):
-    self.code_block.include("{0} mask_CONJ; {1}_CONJ_MASK{2}(mask_CONJ);".format(self.type_name, self.name, self.data_type.base_type.name_char.upper())) 
+    self.code_block.include("{0} conj_mask; {1}_CONJ_MASK{2}(conj_mask);".format(self.type_name, self.name, self.data_type.base_type.name_char.upper())) 
 
   def include_NCONJ_vars(self):
-    self.code_block.include("{0} mask_NCONJ; {1}_NCONJ_MASK{2}(mask_NCONJ);".format(self.type_name, self.name, self.data_type.base_type.name_char.upper()))
+    self.code_block.include("{0} nconj_mask; {1}_NCONJ_MASK{2}(nconj_mask);".format(self.type_name, self.name, self.data_type.base_type.name_char.upper()))
 
 
 class SSE(SIMD):
@@ -337,15 +337,15 @@ class SSE(SIMD):
     elif self.data_type.name == "float complex":
       self.code_block.write("{0} = _mm_sub_ps({0}, _mm_set_ps({1}[{3}], {1}[{2}], 0, 0));".format(src_vars[0], common_summand_ptr, self.data_type.index(common_summand_offset, common_summand_inc, 0), self.data_type.index(common_summand_offset, common_summand_inc, 1)))
     if len(src_vars) > 1:
-      self.propagate_into(["tmp_cons"], common_summand_ptr, common_summand_offset, common_summand_inc)
+      self.propagate_into(["cons_tmp"], common_summand_ptr, common_summand_offset, common_summand_inc)
       for src_var in src_vars[1:]:
-        self.code_block.write("{0} = _mm_add_p{1}({0}, _mm_sub_p{1}({2}, tmp_cons));".format(src_vars[0], self.data_type.base_type.name_char, src_var))
-    self.code_block.write("_mm_store_p{0}(tmp_cons_buf, {1});".format(self.data_type.base_type.name_char, src_vars[0]))
+        self.code_block.write("{0} = _mm_add_p{1}({0}, _mm_sub_p{1}({2}, cons_tmp));".format(src_vars[0], self.data_type.base_type.name_char, src_var))
+    self.code_block.write("_mm_store_p{0}(cons_buffer, {1});".format(self.data_type.base_type.name_char, src_vars[0]))
     if self.data_type.is_complex:
-      self.code_block.write("{0}[{1}] = {2};".format(dst_ptr, self.data_type.index(offset, inc, 0), " + ".join(["tmp_cons_buf[{0}]".format(self.data_type.index(i, 1, 0)) for i in range(self.type_size)])))
-      self.code_block.write("{0}[{1}] = {2};".format(dst_ptr, self.data_type.index(offset, inc, 1), " + ".join(["tmp_cons_buf[{0}]".format(self.data_type.index(i, 1, 1)) for i in range(self.type_size)])))
+      self.code_block.write("{0}[{1}] = {2};".format(dst_ptr, self.data_type.index(offset, inc, 0), " + ".join(["cons_buffer[{0}]".format(self.data_type.index(i, 1, 0)) for i in range(self.type_size)])))
+      self.code_block.write("{0}[{1}] = {2};".format(dst_ptr, self.data_type.index(offset, inc, 1), " + ".join(["cons_buffer[{0}]".format(self.data_type.index(i, 1, 1)) for i in range(self.type_size)])))
     else:
-      self.code_block.write("{0}[{1}] = {2};".format(dst_ptr, self.data_type.index(offset, inc, 0), " + ".join(["tmp_cons_buf[{0}]".format(i) for i in range(self.base_size)])))
+      self.code_block.write("{0}[{1}] = {2};".format(dst_ptr, self.data_type.index(offset, inc, 0), " + ".join(["cons_buffer[{0}]".format(i) for i in range(self.base_size)])))
 
   def max_into(self, dst_ptr, offset, inc, src_vars):
     self.include_max_vars()
@@ -355,11 +355,11 @@ class SSE(SIMD):
 
     for src_var in src_vars[1:]:
       self.set_equal(self.max(src_var[0], src_var));
-    self.code_block.write("_mm_store_p{0}(tmp_max, {1});".format(self.data_type.base_type.name_char, src_vars[0]))
+    self.code_block.write("_mm_store_p{0}(max_tmp, {1});".format(self.data_type.base_type.name_char, src_vars[0]))
     for i in range(self.data_type.base_size, self.base_size):
-      self.code_block.write("tmp_max[{0}] = (tmp_max[{0}] > tmp_max[{1}] ? tmp_max[{0}]: tmp_max[{1}]);".format(i % self.data_type.base_size, i))
+      self.code_block.write("max_tmp[{0}] = (max_tmp[{0}] > max_tmp[{1}] ? max_tmp[{0}]: max_tmp[{1}]);".format(i % self.data_type.base_size, i))
     for i in range(self.data_type.base_size):
-      self.code_block.write("{0}[{1}] = tmp_max[{2}];".format(dst_ptr, self.data_type.index(offset, inc, i, True), i))
+      self.code_block.write("{0}[{1}] = max_tmp[{2}];".format(dst_ptr, self.data_type.index(offset, inc, i, True), i))
 
   def propagate_into(self, dst_vars, src_ptr, offset, inc):
     if self.data_type.is_complex:
@@ -378,7 +378,7 @@ class SSE(SIMD):
 
     self.include_BLP_vars()
     for i in range(width):
-      self.code_block.write("{0} = _mm_add_p{1}({2}, _mm_or_p{1}({3}, mask_BLP));".format(dst[i], self.data_type.base_type.name_char, src[i], blp[i]))
+      self.code_block.write("{0} = _mm_add_p{1}({2}, _mm_or_p{1}({3}, blp_mask));".format(dst[i], self.data_type.base_type.name_char, src[i], blp[i]))
 
   def load(self, src_ptr, offset, inc, n, align=False):
     assert n > 0, "n must be nonzero"
@@ -423,7 +423,7 @@ class SSE(SIMD):
 
   def abs(self, src_vars):
     self.include_ABS_vars()
-    return ["_mm_and_p{0}({1}, mask_ABS)".format(self.data_type.base_type.name_char, src_var) for src_var in src_vars]
+    return ["_mm_and_p{0}({1}, abs_mask)".format(self.data_type.base_type.name_char, src_var) for src_var in src_vars]
 
   def mul(self, src_vars, amt_vars):
     return ["_mm_mul_p{0}({1}, {2})".format(self.data_type.base_type.name_char, src_var, amt_var) for (src_var, amt_var) in zip(src_vars, amt_vars)]
@@ -434,14 +434,14 @@ class SSE(SIMD):
   def conj(self, src_vars):
     if self.data_type.is_complex:
       self.include_CONJ_vars()
-      return ["_mm_xor_p{0}({1}, mask_CONJ)".format(self.data_type.base_type.name_char, src_var) for src_var in src_vars]
+      return ["_mm_xor_p{0}({1}, conj_mask)".format(self.data_type.base_type.name_char, src_var) for src_var in src_vars]
     else:
       return src_vars
 
   def nconj(self, src_vars):
     if self.data_type.is_complex:
       self.include_NCONJ_vars()
-      return ["_mm_xor_p{0}({1}, mask_NCONJ)".format(self.data_type.base_type.name_char, src_var) for src_var in src_vars]
+      return ["_mm_xor_p{0}({1}, nconj_mask)".format(self.data_type.base_type.name_char, src_var) for src_var in src_vars]
     else:
       return src_vars
 
@@ -496,15 +496,15 @@ class AVX(SIMD):
     elif self.data_type.name == "double complex":
       self.code_block.write("{0} = _mm256_sub_pd({0}, _mm256_set_pd({1}[{3}], {1}[{2}], 0, 0));".format(src_vars[0], common_summand_ptr, self.data_type.index(common_summand_offset, common_summand_inc, 0), self.data_type.index(common_summand_offset, common_summand_inc, 1)))
     if len(src_vars) > 1:
-      self.propagate_into(["tmp_cons"], common_summand_ptr, common_summand_offset, common_summand_inc)
+      self.propagate_into(["cons_tmp"], common_summand_ptr, common_summand_offset, common_summand_inc)
       for src_var in src_vars[1:]:
-        self.code_block.write("{0} = _mm256_add_p{1}({0}, _mm256_sub_p{1}({2}, tmp_cons));".format(src_vars[0], self.data_type.base_type.name_char, src_var))
-    self.code_block.write("_mm256_store_p{0}(tmp_cons_buf, {1});".format(self.data_type.base_type.name_char, src_vars[0]))
+        self.code_block.write("{0} = _mm256_add_p{1}({0}, _mm256_sub_p{1}({2}, cons_tmp));".format(src_vars[0], self.data_type.base_type.name_char, src_var))
+    self.code_block.write("_mm256_store_p{0}(cons_buffer, {1});".format(self.data_type.base_type.name_char, src_vars[0]))
     if self.data_type.is_complex:
-      self.code_block.write("{0}[{1}] = {2};".format(dst_ptr, self.data_type.index(offset, inc, 0), " + ".join(["tmp_cons_buf[{0}]".format(2 * i) for i in range(self.type_size)])))
-      self.code_block.write("{0}[{1}] = {2};".format(dst_ptr, self.data_type.index(offset, inc, 1), " + ".join(["tmp_cons_buf[{0}]".format(2 * i + 1) for i in range(self.type_size)])))
+      self.code_block.write("{0}[{1}] = {2};".format(dst_ptr, self.data_type.index(offset, inc, 0), " + ".join(["cons_buffer[{0}]".format(2 * i) for i in range(self.type_size)])))
+      self.code_block.write("{0}[{1}] = {2};".format(dst_ptr, self.data_type.index(offset, inc, 1), " + ".join(["cons_buffer[{0}]".format(2 * i + 1) for i in range(self.type_size)])))
     else:
-      self.code_block.write("{0}[{1}] = {2};".format(dst_ptr, self.data_type.index(offset, inc, 0), " + ".join(["tmp_cons_buf[{0}]".format(i) for i in range(self.base_size)])))
+      self.code_block.write("{0}[{1}] = {2};".format(dst_ptr, self.data_type.index(offset, inc, 0), " + ".join(["cons_buffer[{0}]".format(i) for i in range(self.base_size)])))
 
   def max_into(self, dst_ptr, offset, inc, src_vars): 
     self.include_max_vars()
@@ -514,11 +514,11 @@ class AVX(SIMD):
 
     for src_var in src_vars[1:]:
       self.set_equal(self.max(src_var[0], src_var));
-    self.code_block.write("_mm256_store_p{0}(tmp_max, {1});".format(self.data_type.base_type.name_char, src_vars[0]))
+    self.code_block.write("_mm256_store_p{0}(max_tmp, {1});".format(self.data_type.base_type.name_char, src_vars[0]))
     for i in range(self.data_type.base_size, self.base_size):
-      self.code_block.write("tmp_max[{0}] = (tmp_max[{0}] > tmp_max[{1}] ? tmp_max[{0}]: tmp_max[{1}]);".format(i % self.data_type.base_size, i))
+      self.code_block.write("max_tmp[{0}] = (max_tmp[{0}] > max_tmp[{1}] ? max_tmp[{0}]: max_tmp[{1}]);".format(i % self.data_type.base_size, i))
     for i in range(self.data_type.base_size):
-      self.code_block.write("{0}[{1}] = tmp_max[{2}];".format(dst_ptr, self.data_type.index(offset, inc, i, True), i))
+      self.code_block.write("{0}[{1}] = max_tmp[{2}];".format(dst_ptr, self.data_type.index(offset, inc, i, True), i))
 
   def propagate_into(self, dst_vars, src_ptr, offset, inc):
     if self.data_type.is_complex:
@@ -536,7 +536,7 @@ class AVX(SIMD):
     assert len(blp) >= width
     self.include_BLP_vars()
     for i in range(width):
-      self.code_block.write("{0} = _mm256_add_p{1}({2}, _mm256_or_p{1}({3}, mask_BLP));".format(dst[i], self.data_type.base_type.name_char, src[i], blp[i]))
+      self.code_block.write("{0} = _mm256_add_p{1}({2}, _mm256_or_p{1}({3}, blp_mask));".format(dst[i], self.data_type.base_type.name_char, src[i], blp[i]))
 
   def load(self, src_ptr, offset, inc, n, align=False):
     assert n > 0, "n must be nonzero"
@@ -583,7 +583,7 @@ class AVX(SIMD):
 
   def abs(self, src_vars):
     self.include_ABS_vars()
-    return ["_mm256_and_p{0}({1}, mask_ABS)".format(self.data_type.base_type.name_char, src_var) for src_var in src_vars]
+    return ["_mm256_and_p{0}({1}, abs_mask)".format(self.data_type.base_type.name_char, src_var) for src_var in src_vars]
 
   def mul(self, src_vars, amt_vars):
     return ["_mm256_mul_p{0}({1}, {2})".format(self.data_type.base_type.name_char, src_var, amt_var) for (src_var, amt_var) in zip(src_vars, amt_vars)]
@@ -594,14 +594,14 @@ class AVX(SIMD):
   def conj(self, src_vars):
     if self.data_type.is_complex:
       self.include_CONJ_vars()
-      return ["_mm256_xor_p{0}({1}, mask_CONJ)".format(self.data_type.base_type.name_char, src_var) for src_var in src_vars]
+      return ["_mm256_xor_p{0}({1}, conj_mask)".format(self.data_type.base_type.name_char, src_var) for src_var in src_vars]
     else:
       return src_vars
 
   def nconj(self, src_vars):
     if self.data_type.is_complex:
       self.include_NCONJ_vars()
-      return ["_mm256_xor_p{0}({1}, mask_NCONJ)".format(self.data_type.base_type.name_char, src_var) for src_var in src_vars]
+      return ["_mm256_xor_p{0}({1}, nconj_mask)".format(self.data_type.base_type.name_char, src_var) for src_var in src_vars]
     else:
       return src_vars
     

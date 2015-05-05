@@ -98,9 +98,6 @@ class OneDimensionalAccumulation(Target):
       code_block.write("int i;")
     code_block.new_line()
     sum_ptr = "sum"
-    if self.data_type.is_complex:
-      code_block.write(self.data_type.base_type.name + "* sum_base = (" + self.data_type.base_type.name + "*) sum;")
-      sum_ptr = "sum_base"
     self.define_load_ptrs(code_block, max_reg_width * max_unroll_width)
     self.define_load_vars(code_block, max_reg_width * max_unroll_width)
     if fold == 0:
