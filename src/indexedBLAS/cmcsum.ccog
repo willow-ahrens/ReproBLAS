@@ -40,28 +40,24 @@ void cmcsum(const int fold, const int N, const void *X, const int incX, float *m
 
     zamax_sub(N_block, x, incX, amax);
     if (amax[0] == 0.0 && amax[1] == 0.0){
-      x += N_block * incX;
+      x += N_block * 2 * incX;
       continue;
     }
 
     if (isinf(amax[0]) || isinf(manY[0])){
       for (j = 0; j < N_block; j++){
-        if (isinf(x[j * 2 * incX]) || isnan(x[j * 2 * incX])){
-          manY[0] += x[j * 2 * incX];
-        }
+        manY[0] += x[j * 2 * incX];
       }
     }
     if (isinf(amax[1]) || isinf(manY[1])){
       for (j = 0; j < N_block; j++){
-        if (isinf(x[j * 2 * incX + 1]) || isnan(x[j * 2 * incX + 1])){
-          manY[1] += x[j * 2 * incX + 1];
-        }
+        manY[1] += x[j * 2 * incX + 1];
       }
     }
     if (isnan(manY[0]) && isnan(manY[1])){
       return;
     } else if (isinf(manY[0]) && isinf(manY[1])){
-      x += N_block * incX;
+      x += N_block * 2 * incX;
       continue;
     }
     if (isinf(manY[0]) || isnan(manY[0])){

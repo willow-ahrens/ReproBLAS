@@ -142,6 +142,11 @@ void zdotI1_(int N, int NB,
 	int fold, double complex* dot, double complex* c,
 	int conj) {
 
+    if(!conj){
+      zmzdotu(fold, N, v, inc, y, incy, dot, 1, c, 1);
+      return;
+    }
+
 	double complex amax;
 
 	int i, j;

@@ -44,9 +44,7 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
 
     if (isinf(amax) || isinf(manY[0])){
       for (j = 0; j < N_block; j++){
-        if (isinf(X[j * incX]) || isnan(X[j * incX])){
-          manY[0] += fabsf(X[j * incX]);
-        }
+        manY[0] += fabsf(X[j * incX]);
       }
     }
     if (isnan(manY[0])){

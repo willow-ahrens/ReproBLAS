@@ -28,8 +28,7 @@ import dotI2
 //TODO make sure to note in comments that we assume the indexed type has been renormalized before the call (probably already covered in the deposit documentation
 
 void dmddot(const int fold, const int N, const double *X, const int incX, const double *Y, const int incY, double *manZ, const int incmanZ, double *carZ, const int inccarZ){
-  double m;
-  double amax;
+  double amaxm;
   int i, j;
   int N_block = MIN(N_block_MAX, dicapacity());
   int deposits = 0;
@@ -37,19 +36,16 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
   for (i = 0; i < N; i += N_block) {
     N_block = MIN((N - i), N_block);
 
-    amax = damaxm(N_block, X, incX, Y, incY);
-    if (amax == 0.0){
+    amaxm = damaxm(N_block, X, incX, Y, incY);
+    if (amaxm == 0.0){
       X += N_block * incX;
       Y += N_block * incY;
       continue;
     }
 
-    if (isinf(amax) || isinf(manZ[0])){
+    if (isinf(amaxm) || isinf(manZ[0])){
       for (j = 0; j < N_block; j++){
-        m = X[j * incX] * Y[j * incY];
-        if (isinf(m) || isnan(m)){
-          manZ[0] += m;
-        }
+        manZ[0] += X[j * incX] * Y[j * incY];
       }
     }
     if (isnan(manZ[0])){
@@ -65,7 +61,7 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
       deposits = 0;
     }
 
-    dmdupdate(fold, amax, manZ, incmanZ, carZ, inccarZ);
+    dmdupdate(fold, amaxm, manZ, incmanZ, carZ, inccarZ);
 
     /*[[[cog
     cog.out(generate.generate(dotI2.DotI2(dataTypes.Double, "N_block", "X", "incX", "manZ", "incmanZ", "Y", "incY"), cog.inFile, args, params, mode))

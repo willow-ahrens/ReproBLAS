@@ -53,9 +53,8 @@ float smcnrm(const int fold, const int N, const void *X, const int incX, float *
 
     if (isinf(amax) || isinf(manY[0])){
       for (j = 0; j < N_block; j++){
-        if (isinf(x[j * 2 * incX]) || isnan(x[j * 2 * incX])){
-          manY[0] += fabsf(x[j * 2 * incX]);
-        }
+        manY[0] += fabsf(x[j * 2 * incX]);
+        manY[0] += fabsf(x[j * 2 * incX + 1]);
       }
     }
     if (isnan(manY[0]) || isnan(nrm[0]) || isnan(nrm[1])){
@@ -63,7 +62,7 @@ float smcnrm(const int fold, const int N, const void *X, const int incX, float *
       free(nrm);
       return 1.0;
     } else if (isinf(manY[0])){
-      x += N_block * incX;
+      x += N_block * 2 * incX;
       continue;
     }
 

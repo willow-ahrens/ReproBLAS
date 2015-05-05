@@ -50,9 +50,8 @@ void dmzasum(const int fold, const int N, const void *X, const int incX, double 
 
     if (isinf(amax) || isinf(manY[0])){
       for (j = 0; j < N_block; j++){
-        if (isinf(x[j * 2 * incX]) || isnan(x[j * 2 * incX])){
-          manY[0] += fabsf(x[j * 2 * incX]);
-        }
+        manY[0] += fabsf(x[j * 2 * incX]);
+        manY[0] += fabsf(x[j * 2 * incX + 1]);
       }
     }
     if (isnan(manY[0]) || isnan(asum[0]) || isnan(asum[1])){
@@ -60,7 +59,7 @@ void dmzasum(const int fold, const int N, const void *X, const int incX, double 
       free(asum);
       return;
     } else if (isinf(manY[0])){
-      x += N_block * incX;
+      x += N_block * 2 * incX;
       continue;
     }
 
