@@ -6,14 +6,17 @@ from vectorizations import *
 from generate import *
 
 class Deposit(Target):
-  standard_incs = ["incv"]
-
-  def __init__(self, data_type_class):
+  def __init__(self, data_type_class, N, X, incX, manY, incmanY):
     super(Deposit, self).__init__()
     self.default_fold = 3 #TODO Read this from config.h
     self.max_fold = 4 #TODO Read this from config.h
     self.max_expand_fold = min(self.max_fold, 6)
     self.data_type_class = data_type_class
+    self.N = N
+    self.X = X
+    self.incX = incX
+    self.manY = manY
+    self.incmanY = incmanY
 
   def get_arguments(self):
     arguments = []
@@ -90,7 +93,6 @@ class Deposit(Target):
     else:
       code_block.write("int i;")
     code_block.new_line()
-    sum_ptr = "sum"
     self.define_load_ptrs(code_block, max_reg_width * max_unroll_width)
     self.define_load_vars(code_block, max_reg_width * max_unroll_width)
     if fold == 0:
@@ -119,12 +121,12 @@ class Deposit(Target):
     if fold == 0:
       code_block.write("for(j = 0; j < fold; j += 1){")
       code_block.indent()
-      self.vec.propagate_into(self.buffer_vars, sum_ptr, "j", 1)
+      self.vec.propagate_into(self.buffer_vars, self.manY, "j", self.incmanY)
       code_block.dedent()
       code_block.write("}")
     else:
       for j in range(fold):
-        self.vec.propagate_into(self.s_vars[j], sum_ptr, j, 1)
+        self.vec.propagate_into(self.s_vars[j], self.manY, j, self.incmanY)
 
     self.write_increments(code_block, fold, max_pipe_width, max_unroll_width)
 
@@ -132,12 +134,23 @@ class Deposit(Target):
     if fold == 0:
       code_block.write("for(j = 0; j < fold; j += 1){")
       code_block.indent()
-      self.vec.consolidate_into("sum", "j", 1, self.buffer_vars, sum_ptr, "j", 1)
+      self.vec.consolidate_into(self.manY, "j", self.incmanY, self.buffer_vars, self.manY, "j", self.incmanY)
       code_block.dedent()
       code_block.write("}")
     else:
       for j in range(fold):
-        self.vec.consolidate_into("sum", j, 1, self.s_vars[j], sum_ptr, j, 1)
+        self.vec.consolidate_into(self.manY, j, self.incmanY, self.s_vars[j], self.manY, j, self.incmanY)
+
+  def write_increments(self, code_block, fold, max_pipe_width, max_unroll_width):
+    code_block.write("if({} == 1){{".format(self.incX))
+    code_block.indent()
+    self.write_core(code_block, fold, max_pipe_width, max_unroll_width, [1])
+    code_block.dedent()
+    code_block.write("}else{")
+    code_block.indent()
+    self.write_core(code_block, fold, max_pipe_width, max_unroll_width, [self.incX])
+    code_block.dedent()
+    code_block.write("}")
 
   def write_core(self, code_block, fold, max_pipe_width, max_unroll_width, incs):
     max_reg_width = self.compute_reg_width(max_pipe_width);
@@ -151,16 +164,14 @@ class Deposit(Target):
         reg_width = self.compute_reg_width(min(n, max_pipe_width))
         self.preprocess(code_block, n, incs, align=align)
         self.process(code_block, fold, reg_width, n // max_pipe_width)
-    self.vec.iterate_unrolled("i", "n", self.load_ptrs, incs, max_pipe_width * max_unroll_width, 1, body)
-
-  def define_load_vars(self, code_block, width):
-    raise(NotImplementedError())
-
-  def define_load_ptrs(self, code_block, width):
-    raise(NotImplementedError())
+    #TODO load_ptrs are kindof a useless construction
+    self.vec.iterate_unrolled("i", self.N, self.load_ptrs, incs, max_pipe_width * max_unroll_width, 1, body)
 
   def preprocess(self, code_block, n, incs, partial="", align = False):
-    raise(NotImplementedError())
+    if partial == "":
+      code_block.set_equal(self.load_vars[0], self.vec.load(self.load_ptrs[0], 0, incs[0], n, align))
+    else:
+      code_block.set_equal(self.load_vars[0], self.vec.load_partial(self.load_ptrs[0], 0, incs[0], partial))
 
   def process(self, code_block, fold, reg_width, unroll_width):
     if(fold == 0):
@@ -184,77 +195,58 @@ class Deposit(Target):
           code_block.set_equal(self.load_vars[0][i * reg_width:], self.vec.add(self.load_vars[0][i * reg_width:], self.q_vars[:reg_width]))
         self.vec.add_BLP_into(self.s_vars[fold - 1], self.s_vars[fold - 1], self.load_vars[0][i * reg_width:], reg_width)
 
-  def write_increments(self, code_block, fold, max_pipe_width, max_unroll_width):
-    code_block.write("if(incv == 1){")
-    code_block.indent()
-    self.write_core(code_block, fold, max_pipe_width, max_unroll_width, [1])
-    code_block.dedent()
-    code_block.write("}else{")
-    code_block.indent()
-    self.write_core(code_block, fold, max_pipe_width, max_unroll_width, self.standard_incs)
-    code_block.dedent()
-    code_block.write("}")
-
   def define_load_vars(self, code_block, width):
-    self.load_vars = [["v_" + str(i) for i in range(width)]]
+    self.load_vars = [["{}_{}".format(self.X, i) for i in range(width)]]
     code_block.define_vars(self.vec.type_name, self.load_vars[0])
 
   def define_load_ptrs(self, code_block, width):
-    if self.data_type.is_complex:
-      code_block.write(self.data_type.base_type.name + "* v_base = (" + self.data_type.base_type.name + "*) v;")
-      self.load_ptrs = ["v_base"]
-    else:
-      self.load_ptrs = ["v"]
+    self.load_ptrs = [self.X]
 
   def compute_reg_width(self, pipe_width):
     return (pipe_width * self.data_type.base_size)//self.vec.base_size
 
 class DotDeposit(Deposit):
-  standard_incs = ["incv", "incy"]
 
-  def __init__(self, data_type_class):
-    super(DotDeposit, self).__init__(data_type_class)
+  def __init__(self, data_type_class, N, X, incX, manY, incmanY, Z, incZ):
+    super(DotDeposit, self).__init__(data_type_class, N, X, incX, manY, incmanY)
+    self.Z = Z
+    self.incZ = incZ
 
   def write_increments(self, code_block, fold, max_pipe_width, max_unroll_width):
-    code_block.write("if(incv == 1){")
+    code_block.write("if({} == 1){{".format(self.incX))
     code_block.indent()
-    code_block.write("if(incy == 1){")
+    code_block.write("if({} == 1){{".format(self.incZ))
     code_block.indent()
     self.write_core(code_block, fold, max_pipe_width, max_unroll_width, [1, 1])
     code_block.dedent()
     code_block.write("}else{")
     code_block.indent()
-    self.write_core(code_block, fold, max_pipe_width, max_unroll_width, [1, "incy"])
+    self.write_core(code_block, fold, max_pipe_width, max_unroll_width, [1, self.incZ])
     code_block.dedent()
     code_block.write("}")
     code_block.dedent()
     code_block.write("}else{")
     code_block.indent()
-    code_block.write("if(incy == 1){")
+    code_block.write("if({} == 1){{".format(self.incZ))
     code_block.indent()
-    self.write_core(code_block, fold, max_pipe_width, max_unroll_width, ["incv", 1])
+    self.write_core(code_block, fold, max_pipe_width, max_unroll_width, [self.incX, 1])
     code_block.dedent()
     code_block.write("}else{")
     code_block.indent()
-    self.write_core(code_block, fold, max_pipe_width, max_unroll_width, ["incv", "incy"])
+    self.write_core(code_block, fold, max_pipe_width, max_unroll_width, [self.incX, self.incZ])
     code_block.dedent()
     code_block.write("}")
     code_block.dedent()
     code_block.write("}")
 
   def define_load_ptrs(self, code_block, width):
-    if self.data_type.is_complex:
-      code_block.write(self.data_type.base_type.name + "* v_base = (" + self.data_type.base_type.name + "*) v;")
-      code_block.write(self.data_type.base_type.name + "* y_base = (" + self.data_type.base_type.name + "*) y;")
-      self.load_ptrs = ["v_base", "y_base"]
-    else:
-      self.load_ptrs = ["v", "y"]
+      self.load_ptrs = [self.X, self.Z]
 
   def define_load_vars(self, code_block, width):
     if self.data_type.is_complex:
-      self.load_vars = [["v_" + str(i) for i in range(width)], ["y_" + str(i) for i in range(width//2)]]
+      self.load_vars = [["{}_{}".format(self.X, i) for i in range(width)], ["{}_{}".format(self.Z, i) for i in range(width//2)]]
     else:
-      self.load_vars = [["v_" + str(i) for i in range(width)], ["y_" + str(i) for i in range(width)]]
+      self.load_vars = [["{}_{}".format(self.X, i) for i in range(width)], ["{}_{}".format(self.Z, i) for i in range(width)]]
     code_block.define_vars(self.vec.type_name, self.load_vars[0])
     code_block.define_vars(self.vec.type_name, self.load_vars[1])
 

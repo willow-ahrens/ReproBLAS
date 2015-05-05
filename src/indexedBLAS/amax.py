@@ -91,10 +91,6 @@ class AMax(Max):
     code_block.define_vars(self.vec.type_name, self.load_vars[0])
 
   def define_load_ptrs(self, code_block, reg_width):
-    if self.data_type.is_complex:
-      code_block.write(self.data_type.base_type.name + "* v_base = (" + self.data_type.base_type.name + "*) v;")
-      self.load_ptrs = ["v_base"]
-    else:
       self.load_ptrs = ["v"]
 
   def compute_reg_width(self, unroll_width):
@@ -118,11 +114,6 @@ class AMaxM(Max):
     code_block.write("{0} {1}amaxm(int n, {0}* v, int incv, {0}* y, int incy){{".format(self.data_type.name, self.data_type.name_char))
 
   def define_load_ptrs(self, code_block, reg_width):
-    if self.data_type.is_complex:
-      code_block.write(self.data_type.base_type.name + "* v_base = (" + self.data_type.base_type.name + "*) v;")
-      code_block.write(self.data_type.base_type.name + "* y_base = (" + self.data_type.base_type.name + "*) y;")
-      self.load_ptrs = ["v_base", "y_base"]
-    else:
       self.load_ptrs = ["v", "y"]
 
   def define_load_vars(self, code_block, reg_width):

@@ -17,7 +17,7 @@ import dotI2
 
 void ddotI2(int n, double* v, int incv, double* y, int incy, int fold, double* sum){
   /*[[[cog
-  cog.out(generate.generate(dotI2.DotI2(dataTypes.Double), cog.inFile, args, params, mode))
+  cog.out(generate.generate(dotI2.DotI2(dataTypes.Double, "n", "v", "incv", "sum", 1, "y", "incy"), cog.inFile, args, params, mode))
   ]]]*/
   #ifdef __AVX__
     __m256d mask_BLP; AVX_BLP_MASKD(mask_BLP);

@@ -18,7 +18,7 @@ import sumI2
 
 void zsumI2(int n, double complex* v, int incv, int fold, double complex* sum){
   /*[[[cog
-  cog.out(generate.generate(sumI2.SumI2(dataTypes.DoubleComplex), cog.inFile, args, params, mode))
+  cog.out(generate.generate(sumI2.SumI2(dataTypes.DoubleComplex, "n", "v", "incv", "sum", 1), cog.inFile, args, params, mode))
   ]]]*/
   #ifdef __AVX__
     __m256d mask_BLP; AVX_BLP_MASKD(mask_BLP);

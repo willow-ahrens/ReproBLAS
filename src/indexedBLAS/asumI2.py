@@ -5,8 +5,8 @@ import dataTypes
 import blas1I2
 
 class ASumI2(blas1I2.Deposit):
-  def __init__(self, data_type_class):
-    super(ASumI2, self).__init__(data_type_class)
+  def __init__(self, data_type_class, N, X, incX, manY, incmanY):
+    super(ASumI2, self).__init__(data_type_class, N, X, incX, manY, incmanY)
     redundant_char = ""
     if self.data_type_class.is_complex:
       redundant_char = self.data_type_class.base_type.name_char

@@ -18,7 +18,7 @@ import asumI2
 
 void scasumI2(int n, float complex* v, int incv, int fold, float complex* sum){
   /*[[[cog
-  cog.out(generate.generate(asumI2.ASumI2(dataTypes.FloatComplex), cog.inFile, args, params, mode))
+  cog.out(generate.generate(asumI2.ASumI2(dataTypes.FloatComplex, "n", "v", "incv", "sum", 1), cog.inFile, args, params, mode))
   ]]]*/
   #ifdef __AVX__
     __m256 mask_ABS; AVX_ABS_MASKS(mask_ABS);

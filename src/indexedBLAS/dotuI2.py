@@ -5,9 +5,9 @@ import dataTypes
 import blas1I2
 
 class DotUI2(blas1I2.DotDeposit):
-  def __init__(self, data_type_class):
+  def __init__(self, data_type_class, N, X, incX, manY, incmanY, Z, incZ):
     assert data_type_class.is_complex, "dotu is only for complex types"
-    super(DotUI2, self).__init__(data_type_class)
+    super(DotUI2, self).__init__(data_type_class, N, X, incX, manY, incmanY, Z, incZ)
     self.name = "{0}dotuI2".format(self.data_type_class.name_char)
     self.metric_name = "r{0}dotu".format(self.data_type_class.name_char)
 

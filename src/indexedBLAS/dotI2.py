@@ -5,9 +5,9 @@ import dataTypes
 import blas1I2
 
 class DotI2(blas1I2.DotDeposit):
-  def __init__(self, data_type_class):
+  def __init__(self, data_type_class, N, X, incX, manY, incmanY, Z, incZ):
     assert not data_type_class.is_complex, "dot is only for real types"
-    super(DotI2, self).__init__(data_type_class)
+    super(DotI2, self).__init__(data_type_class, N, X, incX, manY, incmanY, Z, incZ)
     self.name = "{0}dotI2".format(self.data_type_class.name_char, self.data_type_class.name)
     self.metric_name = "r{0}dot".format(self.data_type_class.name_char, self.data_type_class.name)
 

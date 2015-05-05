@@ -17,7 +17,7 @@ import nrm2I2
 
 void snrm2I2(int n, float* v, int incv, float scale, int fold, float* sum){
   /*[[[cog
-  cog.out(generate.generate(nrm2I2.Nrm2I2(dataTypes.Float), cog.inFile, args, params, mode))
+  cog.out(generate.generate(nrm2I2.Nrm2I2(dataTypes.Float, "n", "v", "incv", "sum", 1), cog.inFile, args, params, mode))
   ]]]*/
   #ifdef __AVX__
     __m256 scale_mask = _mm256_set1_ps(scale);

@@ -17,7 +17,7 @@ import asumI2
 
 void dasumI2(int n, double* v, int incv, int fold, double* sum){
   /*[[[cog
-  cog.out(generate.generate(asumI2.ASumI2(dataTypes.Double), cog.inFile, args, params, mode))
+  cog.out(generate.generate(asumI2.ASumI2(dataTypes.Double, "n", "v", "incv", "sum", 1), cog.inFile, args, params, mode))
   ]]]*/
   #ifdef __AVX__
     __m256d mask_ABS; AVX_ABS_MASKD(mask_ABS);

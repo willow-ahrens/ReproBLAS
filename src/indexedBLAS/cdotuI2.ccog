@@ -19,7 +19,7 @@ import dotuI2
 
 void cdotuI2(int n, float complex* v, int incv, float complex* y, int incy, int fold, float complex* sum){
   /*[[[cog
-  cog.out(generate.generate(dotuI2.DotUI2(dataTypes.FloatComplex), cog.inFile, args, params, mode))
+  cog.out(generate.generate(dotuI2.DotUI2(dataTypes.FloatComplex, "n", "v", "incv", "sum", 1, "y", "incy"), cog.inFile, args, params, mode))
   ]]]*/
   #ifdef __AVX__
     __m256 mask_NCONJ; AVX_NCONJ_MASKS(mask_NCONJ);

@@ -18,7 +18,7 @@ import nrm2I2
 
 void dznrm2I2(int n, double complex* v, int incv, double scale, int fold, double complex* sum){
   /*[[[cog
-  cog.out(generate.generate(nrm2I2.Nrm2I2(dataTypes.DoubleComplex), cog.inFile, args, params, mode))
+  cog.out(generate.generate(nrm2I2.Nrm2I2(dataTypes.DoubleComplex, "n", "v", "incv", "sum", 1), cog.inFile, args, params, mode))
   ]]]*/
   #ifdef __AVX__
     __m256d scale_mask = _mm256_set1_pd(scale);
