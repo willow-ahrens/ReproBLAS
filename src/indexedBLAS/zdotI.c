@@ -145,6 +145,9 @@ void zdotI1_(int N, int NB,
     if(!conj){
       zmzdotu(fold, N, v, inc, y, incy, dot, 1, c, 1);
       return;
+    }else{
+      zmzdotc(fold, N, v, inc, y, incy, dot, 1, c, 1);
+      return;
     }
 
 	double complex amax;
