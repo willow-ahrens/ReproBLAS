@@ -2,9 +2,9 @@ import sys, os
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), "gen"))
 import generate
 import dataTypes
-import blas1I2
+import dotDeposit
 
-class DotCI2(blas1I2.DotDeposit):
+class DotCI2(dotDeposit.DotDeposit):
   def __init__(self, data_type_class, N, X, incX, manY, incmanY, Z, incZ):
     assert data_type_class.is_complex, "dotc is only for complex types"
     super(DotCI2, self).__init__(data_type_class, N, X, incX, manY, incmanY, Z, incZ)

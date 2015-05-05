@@ -3,8 +3,9 @@ sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), "gen")
 import generate
 import dataTypes
 import blas1I2
+from src.indexed import deposit
 
-class ASumI2(blas1I2.Deposit):
+class ASumI2(deposit.Deposit):
   def __init__(self, data_type_class, N, X, incX, manY, incmanY):
     super(ASumI2, self).__init__(data_type_class, N, X, incX, manY, incmanY)
     redundant_char = ""

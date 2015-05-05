@@ -2,9 +2,9 @@ import sys, os
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), "gen"))
 import generate
 import dataTypes
-import blas1I2
+import dotDeposit
 
-class DotI2(blas1I2.DotDeposit):
+class DotI2(dotDeposit.DotDeposit):
   def __init__(self, data_type_class, N, X, incX, manY, incmanY, Z, incZ):
     assert not data_type_class.is_complex, "dot is only for real types"
     super(DotI2, self).__init__(data_type_class, N, X, incX, manY, incmanY, Z, incZ)
