@@ -1,0 +1,97 @@
+/*
+ *  Created   13/10/25   H.D. Nguyen
+ */
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
+#include <float.h>
+
+#include "../config.h"
+#include "../Common/Common.h"
+#include "indexedBLAS.h"
+
+//TODO clean up these includes with a python generated version that includes conditionally
+#include <immintrin.h>
+#include <emmintrin.h>
+
+/*[[[cog
+import cog
+import generate
+import dataTypes
+import dotcI2
+]]]*/
+//[[[end]]]
+
+#define N_block_MAX 1024
+//TODO make N_block_max a parameter
+//TODO make sure to note in comments that we assume the indexed type has been renormalized before the call (probably already covered in the deposit documentation
+
+void cmcdotc(const int fold, const int N, const void *X, const int incX, const void *Y, const int incY, float *manZ, const int incmanZ, float *carZ, const int inccarZ){
+  float amaxm[2];
+  int i, j;
+  int N_block = MIN(N_block_MAX, sicapacity()/2);
+  int deposits = 0;
+
+  const float *x = (const float*)X;
+  const float *y = (const float*)Y;
+
+  for (i = 0; i < N; i += N_block) {
+    N_block = MIN((N - i), N_block);
+
+    camaxm_sub(N_block, x, incX, y, incY, amaxm);
+    if (amaxm[0] == 0.0 && amaxm[1] == 0.0){
+      x += N_block * incX;
+      y += N_block * incY;
+      continue;
+    }
+
+    if (isinf(amaxm[0]) || isinf(manZ[0])){
+      for (j = 0; j < N_block; j++){
+        manZ[0] += x[j * 2 * incX] * y[j * 2 * incY] + x[j * 2 * incX + 1] * y[j * 2 * incY + 1];
+      }
+    }
+    if (isinf(amaxm[1]) || isinf(manZ[1])){
+      for (j = 0; j < N_block; j++){
+        //TODO is this line correct?
+        manZ[1] += x[j * 2 * incX] * y[j * 2 * incY + 1] - x[j * 2 * incX + 1] * y[j * 2 * incY];
+      }
+    }
+    if (isnan(manZ[0]) && isnan(manZ[1])){
+      return;
+    } else if (isinf(manZ[0]) && isinf(manZ[1])){
+      x += N_block * 2 * incX;
+      y += N_block * 2 * incX;
+      continue;
+    }
+    if (isinf(manZ[0]) || isnan(manZ[0])){
+      amaxm[0] = manZ[0];
+    }
+    if (isinf(manZ[1]) || isnan(manZ[1])){
+      amaxm[1] = manZ[1];
+    }
+
+    if (deposits + N_block > sicapacity()/2) {
+      cmrenorm(fold, manZ, incmanZ, carZ, inccarZ);
+      deposits = 0;
+    }
+
+    cmcupdate(fold, amaxm, manZ, incmanZ, carZ, inccarZ);
+
+    /*[[[cog
+    cog.out(generate.generate(dotcI2.DotCI2(dataTypes.FloatComplex, "N_block", "x", "incX", "manZ", "incmanZ", "y", "incY"), cog.inFile, args, params, mode))
+    ]]]*/
+    //[[[end]]]
+
+    if (isinf(amaxm[0])){
+      manZ[0] = amaxm[0];
+    }
+    if (isinf(amaxm[1])){
+      manZ[1] = amaxm[1];
+    }
+
+    deposits += N_block;
+  }
+
+  cmrenorm(fold, manZ, incmanZ, carZ, inccarZ);
+}

@@ -142,6 +142,14 @@ void cdotI1_(int N, int NB,
 	float complex* y, int incy,
 	int fold, float complex* dot, float* C,
 	int conj) {
+
+  if(conj){
+    cmcdotc(fold, N, v, inc, y, incy, dot, 1, C, 1);
+  }else{
+    cmcdotu(fold, N, v, inc, y, incy, dot, 1, C, 1);
+  }
+  return;
+
 /*
  * Purpose
  *  Compute the inner product (dot product)
