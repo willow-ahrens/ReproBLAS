@@ -11,7 +11,6 @@ void sIAdd_MPI(
 	int* len, MPI_Datatype *datatype
 ) {
 	int i;
-	int* pfold;
 	int fold;
 	int size;
 
@@ -42,7 +41,6 @@ void cIAdd_MPI(
 	int* len, MPI_Datatype *datatype
 ) {
 	int i;
-	int* pfold;
 	int fold;
 	int size;
 
@@ -61,7 +59,7 @@ void cIAdd_MPI(
 
 	for (i = 0; i < *len; i++) {
 
-        cmcmadd(fold, (float complex*)invec, 1, (float*)(invec + array_of_addresses[1]), 1, (float complex*)inoutvec, 1, (float*)(inoutvec + array_of_addresses[1]), 1);
+        cmcmadd(fold, (float*)invec, 1, (float*)(invec + array_of_addresses[1]), 1, (float*)inoutvec, 1, (float*)(inoutvec + array_of_addresses[1]), 1);
 		invec    = (char*)invec + size;
 		inoutvec = (char*)inoutvec + size;
 	}
@@ -74,7 +72,6 @@ void sINrm2_MPI(
 	int i, j;
 	float* pin;
 	float* pout;
-	int* pfold;
 	int fold;
 	float scale1, scale2;
 
@@ -117,7 +114,7 @@ void sINrm2_MPI(
 			pin[0] = scale1;
 		}
 
-		smsmadd(fold, pin  + 1, 1, (float*)(invec + array_of_addresses[1]), 1, pout + 1, 1, (float*)(inoutvec + array_of_addresses[1]), 1);
+		smsmadd(fold, (float*)pin  + 1, 1, (float*)(invec + array_of_addresses[1]), 1, (float*)pout + 1, 1, (float*)(inoutvec + array_of_addresses[1]), 1);
 
 		invec    = (char*)invec + size;
 		inoutvec = (char*)inoutvec + size;

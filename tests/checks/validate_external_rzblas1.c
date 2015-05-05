@@ -51,10 +51,12 @@ int file_test(int argc, char** argv, char *fname) {
   double complex *Y;
 
   double complex ref;
-  I_double_Complex Iref;
+  double_complex_indexed *Iref = zialloc(DEFAULT_FOLD);
+  zisetzero(DEFAULT_FOLD, Iref);
 
   double complex res;
-  I_double_Complex Ires;
+  double_complex_indexed *Ires = zialloc(DEFAULT_FOLD);
+  zisetzero(DEFAULT_FOLD, Ires);
 
   file_read_vector(fname, &N, (void**)&X, sizeof(double complex));
   Y = util_zvec_alloc(N, 1);
@@ -66,40 +68,42 @@ int file_test(int argc, char** argv, char *fname) {
   snprintf(Iref_fname, MAX_NAME, "%s__I%s.dat", fname, wrap_rzblas1_names[func_type._named.value]);
 
   res = (wrap_rzblas1_func(func_type._named.value))(N, X, 1, Y, 1);
-  Ires = (wrap_Izblas1_func(func_type._named.value))(N, X, 1, Y, 1);
+  (wrap_ziblas1_func(func_type._named.value))(N, X, 1, Y, 1, Ires);
 
   if(record._flag.exists){
     ref = res;
     Iref = Ires;
 
     file_write_vector(ref_fname, 1, &ref, sizeof(ref));
-    file_write_vector(Iref_fname, 1, &Iref, sizeof(Iref));
+    file_write_vector(Iref_fname, 1, Iref, zisize(DEFAULT_FOLD));
   } else {
     void *data;
     int unused0;
     file_read_vector(ref_fname, &unused0, &data, sizeof(ref));
     ref = *(double complex*)data;
     free(data);
-    file_read_vector(Iref_fname, &unused0, &data, sizeof(Iref));
-    Iref = *(I_double_Complex*)data;
-    free(data);
+    file_read_vector(Iref_fname, &unused0, &data, zisize(DEFAULT_FOLD));
+    free(Iref);
+    Iref = data;
     if(ref != res){
       printf("%s(%s) = %g + %gi != %g + %gi\n", wrap_rzblas1_names[func_type._named.value], fname, ZREAL_(res), ZIMAG_(res), ZREAL_(ref), ZIMAG_(ref));
       return 1;
     }
     if(memcmp(&Iref, &Ires, sizeof(Iref)) != 0){
-      zziconv_sub(DEFAULT_FOLD, &Ires, &res);
-      zziconv_sub(DEFAULT_FOLD, &Iref, &ref);
+      zziconv_sub(DEFAULT_FOLD, Ires, &res);
+      zziconv_sub(DEFAULT_FOLD, Iref, &ref);
       printf("I%s(%s) = %g + %gi != %g + %gi\n", wrap_rzblas1_names[func_type._named.value], fname, ZREAL_(res), ZIMAG_(res), ZREAL_(ref), ZIMAG_(ref));
       printf("Ref I_double_Complex:\n");
-      ziprint(DEFAULT_FOLD, &Iref);
+      ziprint(DEFAULT_FOLD, Iref);
       printf("\nRes I_double_Complex:\n");
-      ziprint(DEFAULT_FOLD, &Ires);
+      ziprint(DEFAULT_FOLD, Ires);
       printf("\n");
       return 1;
     }
   }
 
+  free(Iref);
+  free(Ires);
   free(X);
   free(Y);
   return 0;

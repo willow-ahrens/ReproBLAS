@@ -36,7 +36,7 @@ int verify_rzblas1_reproducibility(int N, double complex* X, int incX, double co
       zisetzero(DEFAULT_FOLD, &Ires);
       for (i = 0; i < N; i += block_N) {
         block_N = block_N < N - i ? block_N : (N-i);
-        I_double_Complex foo = (wrap_Izblas1_func(func))(block_N, X + i * incX, incX, Y + i * incY, incY);
+        I_double_Complex foo = (wrap_ziblas1_func(func))(block_N, X + i * incX, incX, Y + i * incY, incY);
         ziziadd(DEFAULT_FOLD, &foo, &Ires);
       }
       zziconv_sub(DEFAULT_FOLD, &Ires, &res);
@@ -44,7 +44,7 @@ int verify_rzblas1_reproducibility(int N, double complex* X, int incX, double co
     if (res != ref) {
       printf("%s(X, Y)[num_blocks=%d,block_N=%d] = %g + %gi != %g + %gi\n", wrap_rzblas1_names[func], num_blocks, block_N, CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
       if (num_blocks == 1) {
-        Ires = (wrap_Izblas1_func(func))(N, X, incX, Y, incY);
+        Ires = (wrap_ziblas1_func(func))(N, X, incX, Y, incY);
       }
       printf("Ref I_double_Complex:\n");
       ziprint(DEFAULT_FOLD, &Iref);
@@ -95,7 +95,7 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, dou
 
   //compute with unpermuted data
   ref  = (wrap_rzblas1_func(func_type._named.value))(N, X, incX, Y, incY);
-  Iref = (wrap_Izblas1_func(func_type._named.value))(N, X, incX, Y, incY);
+  Iref = (wrap_ziblas1_func(func_type._named.value))(N, X, incX, Y, incY);
 
   P = util_identity_permutation(N);
   util_zvec_reverse(N, X, incX, P, 1);

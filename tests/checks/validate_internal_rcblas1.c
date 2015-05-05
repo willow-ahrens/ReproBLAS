@@ -45,7 +45,7 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   util_cvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
   X[0]         = big;
 
-  res = rcsum(N, X, incX);
+rcsum_sub(N, X, incX, &  res);
   if (res != ref) {
     printf("rcsum(X) = %g + %gi != %g + %gi (1 Big at beginning)\n", CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
     return 1;
@@ -57,13 +57,13 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
     return 1;
   }
 
-  res = rcdotu(N, X, incX, Y, incY);
+rcdotu_sub(N, X, incX, Y, incY, &  res);
   if (res != refdu) {
     printf("rcdotu(X) = %g + %gi != %g + %gi (1 Big at beginning)\n", CREAL_(res), CIMAG_(res), CREAL_(refdu), CIMAG_(refdu));
     return 1;
   }
 
-  res = rcdotc(N, X, incX, Y, incY);
+rcdotc_sub(N, X, incX, Y, incY, &  res);
   if (res != refdc) {
     printf("rcdotc(X) = %g + %gi != %g + %gi (1 Big at beginning)\n", CREAL_(res), CIMAG_(res), CREAL_(refdc), CIMAG_(refdc));
     return 1;
@@ -73,7 +73,7 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   util_cvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
   X[(N/2)*incX] = big;
 
-  res = rcsum(N, X, incX);
+rcsum_sub(N, X, incX, &  res);
   if (res != ref) {
     printf("rcsum(X) = %g + %gi != %g + %gi (1 Big in middle)\n", CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
     return 1;
@@ -85,13 +85,13 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
     return 1;
   }
 
-  res = rcdotu(N, X, incX, Y, incY);
+rcdotu_sub(N, X, incX, Y, incY, &  res);
   if (res != refdu) {
     printf("rcdotu(X) = %g + %gi != %g + %gi (1 Big in middle)\n", CREAL_(res), CIMAG_(res), CREAL_(refdu), CIMAG_(refdu));
     return 1;
   }
 
-  res = rcdotc(N, X, incX, Y, incY);
+rcdotc_sub(N, X, incX, Y, incY, &  res);
   if (res != refdc) {
     printf("rcdotc(X) = %g + %gi != %g + %gi (1 Big in middle)\n", CREAL_(res), CIMAG_(res), CREAL_(refdc), CIMAG_(refdc));
     return 1;
@@ -101,7 +101,7 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   util_cvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
   X[(N-1)*incX] = big;
 
-  res = rcsum(N, X, incX);
+rcsum_sub(N, X, incX, &  res);
   if (res != ref) {
     printf("rcsum(X) = %g + %gi != %g + %gi (1 Big at end)\n", CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
     return 1;
@@ -113,13 +113,13 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
     return 1;
   }
 
-  res = rcdotu(N, X, incX, Y, incY);
+rcdotu_sub(N, X, incX, Y, incY, &  res);
   if (res != refdu) {
     printf("rcdotu(X) = %g + %gi != %g + %gi (1 Big at end)\n", CREAL_(res), CIMAG_(res), CREAL_(refdu), CIMAG_(refdu));
     return 1;
   }
 
-  res = rcdotc(N, X, incX, Y, incY);
+rcdotc_sub(N, X, incX, Y, incY, &  res);
   if (res != refdc) {
     printf("rcdotc(X) = %g + %gi != %g + %gi (1 Big at end)\n", CREAL_(res), CIMAG_(res), CREAL_(refdc), CIMAG_(refdc));
     return 1;
@@ -136,7 +136,7 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   X[0]         = big;
   X[(N/2)*incX] = -big;
 
-  res = rcsum(N, X, incX);
+rcsum_sub(N, X, incX, &  res);
   if (res != ref) {
     printf("rcsum(X) = %g + %gi != %g + %gi (1 Big pos neg at beginning)\n", CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
     return 1;
@@ -148,13 +148,13 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
     return 1;
   }
 
-  res = rcdotu(N, X, incX, Y, incY);
+rcdotu_sub(N, X, incX, Y, incY, &  res);
   if (res != refdu) {
     printf("rcdotu(X) = %g + %gi != %g + %gi (1 Big pos neg at beginning)\n", CREAL_(res), CIMAG_(res), CREAL_(refdu), CIMAG_(refdu));
     return 1;
   }
 
-  res = rcdotc(N, X, incX, Y, incY);
+rcdotc_sub(N, X, incX, Y, incY, &  res);
   if (res != refdc) {
     printf("rcdotc(X) = %g + %gi != %g + %gi (1 Big pos neg at beginning)\n", CREAL_(res), CIMAG_(res), CREAL_(refdc), CIMAG_(refdc));
     return 1;
@@ -165,7 +165,7 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   X[0]         = big;
   X[(N-1)*incX] = -big;
 
-  res = rcsum(N, X, incX);
+rcsum_sub(N, X, incX, &  res);
   if (res != ref) {
     printf("rcsum(X) = %g + %gi != %g + %gi (1 Big pos neg at ends)\n", CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
     return 1;
@@ -177,13 +177,13 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
     return 1;
   }
 
-  res = rcdotu(N, X, incX, Y, incY);
+rcdotu_sub(N, X, incX, Y, incY, &  res);
   if (res != refdu) {
     printf("rcdotu(X) = %g + %gi != %g + %gi (1 Big pos neg at ends)\n", CREAL_(res), CIMAG_(res), CREAL_(refdu), CIMAG_(refdu));
     return 1;
   }
 
-  res = rcdotc(N, X, incX, Y, incY);
+rcdotc_sub(N, X, incX, Y, incY, &  res);
   if (res != refdc) {
     printf("rcdotc(X) = %g + %gi != %g + %gi (1 Big pos neg at ends)\n", CREAL_(res), CIMAG_(res), CREAL_(refdc), CIMAG_(refdc));
     return 1;
@@ -194,7 +194,7 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   X[(N/2)*incX] = big;
   X[(N-1)*incX] = -big;
 
-  res = rcsum(N, X, incX);
+rcsum_sub(N, X, incX, &  res);
   if (res != ref) {
     printf("rcsum(X) = %g + %gi != %g + %gi (1 Big pos neg at end)\n", CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
     return 1;
@@ -206,13 +206,13 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
     return 1;
   }
 
-  res = rcdotu(N, X, incX, Y, incY);
+rcdotu_sub(N, X, incX, Y, incY, &  res);
   if (res != refdu) {
     printf("rcdotu(X) = %g + %gi != %g + %gi (1 Big pos neg at end)\n", CREAL_(res), CIMAG_(res), CREAL_(refdu), CIMAG_(refdu));
     return 1;
   }
 
-  res = rcdotc(N, X, incX, Y, incY);
+rcdotc_sub(N, X, incX, Y, incY, &  res);
   if (res != refdc) {
     printf("rcdotc(X) = %g + %gi != %g + %gi (1 Big pos neg at end)\n", CREAL_(res), CIMAG_(res), CREAL_(refdc), CIMAG_(refdc));
     return 1;

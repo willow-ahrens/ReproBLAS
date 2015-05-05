@@ -51,10 +51,12 @@ int file_test(int argc, char** argv, char *fname) {
   float *Y;
 
   float ref;
-  I_float Iref;
+  float_indexed *Iref = sialloc(DEFAULT_FOLD);
+  sisetzero(DEFAULT_FOLD, Iref);
 
   float res;
-  I_float Ires;
+  float_indexed *Ires = sialloc(DEFAULT_FOLD);
+  sisetzero(DEFAULT_FOLD, Ires);
 
   file_read_vector(fname, &N, (void**)&X, sizeof(float));
   Y = util_svec_alloc(N, 1);
@@ -66,38 +68,41 @@ int file_test(int argc, char** argv, char *fname) {
   snprintf(Iref_fname, MAX_NAME, "%s__I%s.dat", fname, wrap_rsblas1_names[func_type._named.value]);
 
   res = (wrap_rsblas1_func(func_type._named.value))(N, X, 1, Y, 1);
-  Ires = (wrap_Isblas1_func(func_type._named.value))(N, X, 1, Y, 1);
+  (wrap_siblas1_func(func_type._named.value))(N, X, 1, Y, 1, Iref);
 
   if(record._flag.exists){
+    free(Iref);
     ref = res;
     Iref = Ires;
 
     file_write_vector(ref_fname, 1, &ref, sizeof(ref));
-    file_write_vector(Iref_fname, 1, &Iref, sizeof(Iref));
+    file_write_vector(Iref_fname, 1, Iref, sisize(DEFAULT_FOLD));
   } else {
     void *data;
     int unused0;
     file_read_vector(ref_fname, &unused0, &data, sizeof(ref));
     ref = *(float*)data;
     free(data);
-    file_read_vector(Iref_fname, &unused0, &data, sizeof(Iref));
-    Iref = *(I_float*)data;
-    free(data);
+    file_read_vector(Iref_fname, &unused0, &data, sisize(DEFAULT_FOLD));
+    free(Iref);
+    Iref = data;
     if(ref != res){
       printf("%s(%s) = %g != %g\n", wrap_rsblas1_names[func_type._named.value], fname, res, ref);
       return 1;
     }
     if(memcmp(&Iref, &Ires, sizeof(Iref)) != 0){
-      printf("I%s(%s) = %g != %g\n", wrap_rsblas1_names[func_type._named.value], fname, ssiconv(DEFAULT_FOLD, &Ires), ssiconv(DEFAULT_FOLD, &Iref));
+      printf("I%s(%s) = %g != %g\n", wrap_rsblas1_names[func_type._named.value], fname, ssiconv(DEFAULT_FOLD, Ires), ssiconv(DEFAULT_FOLD, Iref));
       printf("Ref I_float:\n");
-      siprint(DEFAULT_FOLD, &Iref);
+      siprint(DEFAULT_FOLD, Iref);
       printf("\nRes I_float:\n");
-      siprint(DEFAULT_FOLD, &Ires);
+      siprint(DEFAULT_FOLD, Ires);
       printf("\n");
       return 1;
     }
   }
 
+  free(Iref);
+  free(Ires);
   free(X);
   free(Y);
   return 0;

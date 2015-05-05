@@ -9,30 +9,16 @@
 #include "reproBLAS.h"
 #include "indexedBLAS.h"
 
-double dnrm2I(
-	int N,
-	double* x, int incx,
-	I_double* sum
-) {
-	return dnrm2I1(N, x, incx, DEFAULT_FOLD, sum->m, sum->c);
-}
+double rdnrm2(const int N, const double* X, const int incX) {
+  double_indexed *nrmi = dialloc(DEFAULT_FOLD);
+  double scale;
+  double nrm2;
 
-double rdnrm2(int N, double* v, int inc) {
-	I_double sum;
-	double sqrt_sum;
-	double scale;
+  disetzero(DEFAULT_FOLD, nrmi);
 
-	disetzero(DEFAULT_FOLD, &sum);
+  scale = didnrm(DEFAULT_FOLD, N, X, incX, nrmi);
 
-	scale = dnrm2I1(N, v, inc, DEFAULT_FOLD, sum.m, sum.c);
-
-	if (isnan(scale))
-		return scale;
-
-	if (isinf(sum.m[0]))
-		return sum.m[0];
-
-	sqrt_sum = ddiconv(DEFAULT_FOLD, &sum);
-	sqrt_sum = sqrt(sqrt_sum);
-	return scale * sqrt_sum;
+  nrm2 = scale * sqrt(ddiconv(DEFAULT_FOLD, nrmi));
+  free(nrmi);
+  return nrm2;
 }

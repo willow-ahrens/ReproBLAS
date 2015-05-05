@@ -5,6 +5,7 @@
 //#include <mpi.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "MPI_indexed.h"
 #include "../MPI_indexed/MPI_dindexed.h"
@@ -14,23 +15,25 @@
 
 
 void prdgemv(int rank, int nprocs, rblas_order_t Order, rblas_transpose_t TransA, int M, int N, double *myA, int lda, double *myX, int incX, double *Y, int incY){
-    Idouble *myYI;
-    Idouble *YI;
+    double_indexed *myYI;
+    double_indexed *YI;
     int i;
 
     RMPI_Init();
-    myYI = (Idouble*)malloc(M * sizeof(Idouble));
-    memset(myYI, 0, M * sizeof(Idouble));
+    myYI = (double_indexed*)malloc(M * sizeof(Idouble));
+    memset(myYI, 0, M * disize(DEFAULT_FOLD));
     dgemvI(DEFAULT_FOLD, Order, TransA, M, N/nprocs, myA, N/nprocs, myX, 1, myYI, 1);
     if(rank == 0){
-      YI = (Idouble*)malloc(M * sizeof(Idouble));
-      memset(YI, 0, M * sizeof(Idouble));
+      YI = (double_indexed*)malloc(M * sizeof(Idouble));
+      memset(YI, 0, M * disize(DEFAULT_FOLD));
+    }else{
+      YI = NULL;
     }
 
     MPI_Reduce(myYI, YI, M, MPI_IDOUBLE, MPI_RSUM, 0, MPI_COMM_WORLD);
     if(rank == 0){
       for(i = 0; i < M; i++){
-        Y[i] = ddiconv(DEFAULT_FOLD, YI + i);
+        Y[i] = ddiconv(DEFAULT_FOLD, YI + i * dinum(DEFAULT_FOLD));
       }
       free(YI);
     }

@@ -23,18 +23,20 @@ static const char* wrap_rzblas1_descs[] = {"rzsum",
                                            "rzdotc"};
 
 typedef double complex (*wrap_rzblas1)(int, double complex*, int, double complex*, int);
-typedef I_double_Complex (*wrap_Izblas1)(int, double complex*, int, double complex*, int);
+typedef void (*wrap_ziblas1)(int, double complex*, int, double complex*, int, double_complex_indexed*);
 
 double complex wrap_rzsum(int N, double complex *x, int incx, double complex *y, int incy) {
   (void)y;
   (void)incy;
-  return rzsum(N, x, incx);
+  double complex ret;
+  rzsum_sub(N, x, incx, &ret);
+  return ret;
 }
 
-I_double_Complex wrap_zsumI(int N, double complex *x, int incx, double complex *y, int incy) {
+void wrap_zizsum(int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {
   (void)y;
   (void)incy;
-  return zsumI(N, x, incx);
+  return zizsum(DEFAULT_FOLD, N, x, incx, z);
 }
 
 double complex wrap_rdzasum(int N, double complex *x, int incx, double complex *y, int incy) {
@@ -43,29 +45,30 @@ double complex wrap_rdzasum(int N, double complex *x, int incx, double complex *
   return (double complex)rdzasum(N, x, incx);
 }
 
-I_double_Complex wrap_dzasumI(int N, double complex *x, int incx, double complex *y, int incy) {
+void wrap_dizasum(int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {
   (void)y;
   (void)incy;
-  I_double_Complex casum;
-  Idouble asum = dzasumI(N, x, incx);
-  zidiset(DEFAULT_FOLD, &asum, &casum);
-  return casum;
+  dmzasum(DEFAULT_FOLD, N, x, incx, z, 2, z + 2 * DEFAULT_FOLD, 2);
 }
 
 double complex wrap_rzdotu(int N, double complex *x, int incx, double complex *y, int incy) {
-  return rzdotu(N, x, incx, y, incy);
+  double complex ret;
+  rzdotu_sub(N, x, incx, y, incy, &ret);
+  return ret;
 }
 
-I_double_Complex wrap_zdotuI(int N, double complex *x, int incx, double complex *y, int incy) {
-  return zdotuI(N, x, incx, y, incy);
+void wrap_zizdotu(int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {
+  return zizdotu(DEFAULT_FOLD, N, x, incx, y, incy, z);
 }
 
 double complex wrap_rzdotc(int N, double complex *x, int incx, double complex *y, int incy) {
-  return rzdotc(N, x, incx, y, incy);
+  double complex ret;
+  rzdotc_sub(N, x, incx, y, incy, &ret);
+  return ret;
 }
 
-I_double_Complex wrap_zdotcI(int N, double complex *x, int incx, double complex *y, int incy) {
-  return zdotcI(N, x, incx, y, incy);
+void wrap_zizdotc(int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {
+  return zizdotc(DEFAULT_FOLD, N, x, incx, y, incy, z);
 }
 
 double complex wrap_rdznrm2(int N, double complex *x, int incx, double complex *y, int incy) {
@@ -74,15 +77,10 @@ double complex wrap_rdznrm2(int N, double complex *x, int incx, double complex *
   return rdznrm2(N, x, incx);
 }
 
-I_double_Complex wrap_dznrm2I(int N, double complex *x, int incx, double complex *y, int incy) {
+void wrap_diznrm(int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {
   (void)y;
   (void)incy;
-  I_double_Complex cnrm2;
-  Idouble nrm2;
-  disetzero(DEFAULT_FOLD, &nrm2);
-  dznrm2I(N, x, incx, &nrm2);
-  zidiset(DEFAULT_FOLD, &nrm2, &cnrm2);
-  return cnrm2;
+  dmznrm(DEFAULT_FOLD, N, x, incx, z, 2, z + 2 * DEFAULT_FOLD, 2);
 }
 
 wrap_rzblas1 wrap_rzblas1_func(int func) {
@@ -101,18 +99,18 @@ wrap_rzblas1 wrap_rzblas1_func(int func) {
   return NULL;
 }
 
-wrap_Izblas1 wrap_Izblas1_func(int func) {
+wrap_ziblas1 wrap_ziblas1_func(int func) {
   switch(func){
     case wrap_RZSUM:
-      return wrap_zsumI;
+      return wrap_zizsum;
     case wrap_RDZASUM:
-      return wrap_dzasumI;
+      return wrap_dizasum;
     case wrap_RDZNRM2:
-      return wrap_dznrm2I;
+      return wrap_diznrm;
     case wrap_RZDOTU:
-      return wrap_zdotuI;
+      return wrap_zizdotu;
     case wrap_RZDOTC:
-      return wrap_zdotcI;
+      return wrap_zizdotc;
   }
   return NULL;
 }

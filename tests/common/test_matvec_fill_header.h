@@ -7,63 +7,74 @@ int matvec_fill_show_help(void);
 const char *matvec_fill_name(int argc, char** argv);
 int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int N, int FillA, double ScaleA, double CondA, int lda, int FillX, double ScaleX, double CondX, int incX);
 
-static opt_option FillA         = {._named.header.type       = opt_named,
-                                   ._named.header.short_name = 'f',
-                                   ._named.header.long_name  = "FillA",
-                                   ._named.header.help       = "A fill type",
-                                   ._named.required          = 0,
-                                   ._named.n_names           = (int)util_mat_fill_n_names,
-                                   ._named.names             = (char**)util_mat_fill_names,
-                                   ._named.descs             = (char**)util_mat_fill_descs,
-                                   ._named.value             = 0};
+static opt_option FillA;
+static opt_option ScaleA;
+static opt_option CondA;
+static opt_option FillX;
+static opt_option ScaleX;
+static opt_option CondX;
 
-static opt_option ScaleA        = {._double.header.type       = opt_double,
-                                   ._double.header.short_name = 's',
-                                   ._double.header.long_name  = "ScaleA",
-                                   ._double.header.help       = "A scale",
-                                   ._double.required          = 0,
-                                   ._double.min               = 0,
-                                   ._double.max               = DBL_MAX,
-                                   ._double.value             = 1.0};
+static void matvec_fill_options_initialize(void){
+  FillA._named.header.type       = opt_named;
+  FillA._named.header.short_name = 'f';
+  FillA._named.header.long_name  = "FillA";
+  FillA._named.header.help       = "A fill type";
+  FillA._named.required          = 0;
+  FillA._named.n_names           = (int)util_mat_fill_n_names;
+  FillA._named.names             = (char**)util_mat_fill_names;
+  FillA._named.descs             = (char**)util_mat_fill_descs;
+  FillA._named.value             = 0;
 
-static opt_option CondA         = {._double.header.type       = opt_double,
-                                   ._double.header.short_name = 'c',
-                                   ._double.header.long_name  = "CondA",
-                                   ._double.header.help       = "A condition number",
-                                   ._double.required          = 0,
-                                   ._double.min               = 1.0,
-                                   ._double.max               = DBL_MAX,
-                                   ._double.value             = 1e3};
+  ScaleA._double.header.type       = opt_double;
+  ScaleA._double.header.short_name = 's';
+  ScaleA._double.header.long_name  = "ScaleA";
+  ScaleA._double.header.help       = "A scale";
+  ScaleA._double.required          = 0;
+  ScaleA._double.min               = 0;
+  ScaleA._double.max               = DBL_MAX;
+  ScaleA._double.value             = 1.0;
 
-static opt_option FillX         = {._named.header.type       = opt_named,
-                                   ._named.header.short_name = 'g',
-                                   ._named.header.long_name  = "FillX",
-                                   ._named.header.help       = "X fill type",
-                                   ._named.required          = 0,
-                                   ._named.n_names           = (int)util_vec_fill_n_names,
-                                   ._named.names             = (char**)util_vec_fill_names,
-                                   ._named.descs             = (char**)util_vec_fill_descs,
-                                   ._named.value             = 0};
+  CondA._double.header.type       = opt_double;
+  CondA._double.header.short_name = 'c';
+  CondA._double.header.long_name  = "CondA";
+  CondA._double.header.help       = "A condition number";
+  CondA._double.required          = 0;
+  CondA._double.min               = 1.0;
+  CondA._double.max               = DBL_MAX;
+  CondA._double.value             = 1e3;
 
-static opt_option ScaleX        = {._double.header.type       = opt_double,
-                                   ._double.header.short_name = 't',
-                                   ._double.header.long_name  = "ScaleX",
-                                   ._double.header.help       = "X scale",
-                                   ._double.required          = 0,
-                                   ._double.min               = 0,
-                                   ._double.max               = DBL_MAX,
-                                   ._double.value             = 1.0};
+  FillX._named.header.type       = opt_named;
+  FillX._named.header.short_name = 'g';
+  FillX._named.header.long_name  = "FillX";
+  FillX._named.header.help       = "X fill type";
+  FillX._named.required          = 0;
+  FillX._named.n_names           = (int)util_vec_fill_n_names;
+  FillX._named.names             = (char**)util_vec_fill_names;
+  FillX._named.descs             = (char**)util_vec_fill_descs;
+  FillX._named.value             = 0;
 
-static opt_option CondX         = {._double.header.type       = opt_double,
-                                   ._double.header.short_name = 'd',
-                                   ._double.header.long_name  = "CondX",
-                                   ._double.header.help       = "X condition number",
-                                   ._double.required          = 0,
-                                   ._double.min               = 1.0,
-                                   ._double.max               = DBL_MAX,
-                                   ._double.value             = 1e3};
+  ScaleX._double.header.type       = opt_double;
+  ScaleX._double.header.short_name = 't';
+  ScaleX._double.header.long_name  = "ScaleX";
+  ScaleX._double.header.help       = "X scale";
+  ScaleX._double.required          = 0;
+  ScaleX._double.min               = 0;
+  ScaleX._double.max               = DBL_MAX;
+  ScaleX._double.value             = 1.0;
+
+  CondX._double.header.type       = opt_double;
+  CondX._double.header.short_name = 'd';
+  CondX._double.header.long_name  = "CondX";
+  CondX._double.header.help       = "X condition number";
+  CondX._double.required          = 0;
+  CondX._double.min               = 1.0;
+  CondX._double.max               = DBL_MAX;
+  CondX._double.value             = 1e3;
+}
 
 int matvec_show_help(void){
+  matvec_fill_options_initialize();
+
   opt_show_option(FillA);
   opt_show_option(ScaleA);
   opt_show_option(CondA);
@@ -75,6 +86,8 @@ int matvec_show_help(void){
 
 const char* matvec_name(int argc, char** argv){
   static char name_buffer[MAX_LINE];
+
+  matvec_fill_options_initialize();
 
   opt_eval_option(argc, argv, &FillA);
   opt_eval_option(argc, argv, &ScaleA);
@@ -88,6 +101,8 @@ const char* matvec_name(int argc, char** argv){
 
 int matvec_test(int argc, char** argv, char Order, char TransA, int M, int N, int lda, int incX){
   int rc;
+
+  matvec_fill_options_initialize();
 
   opt_eval_option(argc, argv, &FillA);
   opt_eval_option(argc, argv, &ScaleA);

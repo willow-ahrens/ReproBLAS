@@ -7,63 +7,74 @@ int vecvec_fill_show_help(void);
 const char* vecvec_fill_name(int argc, char** argv);
 int vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, double CondX, int incX, int FillY, double ScaleY, double CondY, int incY);
 
-static opt_option FillX = {._named.header.type       = opt_named,
-                           ._named.header.short_name = 'f',
-                           ._named.header.long_name  = "FillX",
-                           ._named.header.help       = "X fill type",
-                           ._named.required          = 0,
-                           ._named.n_names           = (int)util_vec_fill_n_names,
-                           ._named.names             = (char**)util_vec_fill_names,
-                           ._named.descs             = (char**)util_vec_fill_descs,
-                           ._named.value             = 0};
+static opt_option FillX;
+static opt_option ScaleX;
+static opt_option CondX;
+static opt_option FillY;
+static opt_option ScaleY;
+static opt_option CondY;
 
-static opt_option ScaleX = {._double.header.type       = opt_double,
-                            ._double.header.short_name = 's',
-                            ._double.header.long_name  = "ScaleX",
-                            ._double.header.help       = "X scale",
-                            ._double.required          = 0,
-                            ._double.min               = 0,
-                            ._double.max               = DBL_MAX,
-                            ._double.value             = 1.0};
+static void vecvec_fill_options_initialize(void){
+  FillX._named.header.type       = opt_named;
+  FillX._named.header.short_name = 'f';
+  FillX._named.header.long_name  = "FillX";
+  FillX._named.header.help       = "X fill type";
+  FillX._named.required          = 0;
+  FillX._named.n_names           = (int)util_vec_fill_n_names;
+  FillX._named.names             = (char**)util_vec_fill_names;
+  FillX._named.descs             = (char**)util_vec_fill_descs;
+  FillX._named.value             = 0;
 
-static opt_option CondX  = {._double.header.type       = opt_double,
-                            ._double.header.short_name = 'c',
-                            ._double.header.long_name  = "CondX",
-                            ._double.header.help       = "X condition number",
-                            ._double.required          = 0,
-                            ._double.min               = 1.0,
-                            ._double.max               = DBL_MAX,
-                            ._double.value             = 1e3};
+  ScaleX._double.header.type       = opt_double;
+  ScaleX._double.header.short_name = 's';
+  ScaleX._double.header.long_name  = "ScaleX";
+  ScaleX._double.header.help       = "X scale";
+  ScaleX._double.required          = 0;
+  ScaleX._double.min               = 0;
+  ScaleX._double.max               = DBL_MAX;
+  ScaleX._double.value             = 1.0;
 
-static opt_option FillY = {._named.header.type       = opt_named,
-                           ._named.header.short_name = 'g',
-                           ._named.header.long_name  = "FillY",
-                           ._named.header.help       = "Y fill type",
-                           ._named.required          = 0,
-                           ._named.n_names           = (int)util_vec_fill_n_names,
-                           ._named.names             = (char**)util_vec_fill_names,
-                           ._named.descs             = (char**)util_vec_fill_descs,
-                           ._named.value             = 0};
+  CondX._double.header.type       = opt_double;
+  CondX._double.header.short_name = 'c';
+  CondX._double.header.long_name  = "CondX";
+  CondX._double.header.help       = "X condition number";
+  CondX._double.required          = 0;
+  CondX._double.min               = 1.0;
+  CondX._double.max               = DBL_MAX;
+  CondX._double.value             = 1e3;
 
-static opt_option ScaleY = {._double.header.type       = opt_double,
-                            ._double.header.short_name = 't',
-                            ._double.header.long_name  = "ScaleY",
-                            ._double.header.help       = "Y scale",
-                            ._double.required          = 0,
-                            ._double.min               = 0,
-                            ._double.max               = DBL_MAX,
-                            ._double.value             = 1.0};
+  FillY._named.header.type       = opt_named;
+  FillY._named.header.short_name = 'g';
+  FillY._named.header.long_name  = "FillY";
+  FillY._named.header.help       = "Y fill type";
+  FillY._named.required          = 0;
+  FillY._named.n_names           = (int)util_vec_fill_n_names;
+  FillY._named.names             = (char**)util_vec_fill_names;
+  FillY._named.descs             = (char**)util_vec_fill_descs;
+  FillY._named.value             = 0;
 
-static opt_option CondY  = {._double.header.type       = opt_double,
-                            ._double.header.short_name = 'd',
-                            ._double.header.long_name  = "CondY",
-                            ._double.header.help       = "Y condition number",
-                            ._double.required          = 0,
-                            ._double.min               = 1.0,
-                            ._double.max               = DBL_MAX,
-                            ._double.value             = 1e3};
+  ScaleY._double.header.type       = opt_double;
+  ScaleY._double.header.short_name = 't';
+  ScaleY._double.header.long_name  = "ScaleY";
+  ScaleY._double.header.help       = "Y scale";
+  ScaleY._double.required          = 0;
+  ScaleY._double.min               = 0;
+  ScaleY._double.max               = DBL_MAX;
+  ScaleY._double.value             = 1.0;
+
+  CondY._double.header.type       = opt_double;
+  CondY._double.header.short_name = 'd';
+  CondY._double.header.long_name  = "CondY";
+  CondY._double.header.help       = "Y condition number";
+  CondY._double.required          = 0;
+  CondY._double.min               = 1.0;
+  CondY._double.max               = DBL_MAX;
+  CondY._double.value             = 1e3;
+}
 
 int vecvec_show_help(void){
+  vecvec_fill_options_initialize();
+
   opt_show_option(FillX);
   opt_show_option(ScaleX);
   opt_show_option(CondX);
@@ -75,6 +86,8 @@ int vecvec_show_help(void){
 
 const char* vecvec_name(int argc, char** argv){
   static char name_buffer[MAX_LINE];
+
+  vecvec_fill_options_initialize();
 
   opt_eval_option(argc, argv, &FillX);
   opt_eval_option(argc, argv, &ScaleX);
@@ -88,6 +101,8 @@ const char* vecvec_name(int argc, char** argv){
 
 int vecvec_test(int argc, char** argv, int N, int incX, int incY){
   int rc;
+
+  vecvec_fill_options_initialize();
 
   opt_eval_option(argc, argv, &FillX);
   opt_eval_option(argc, argv, &ScaleX);

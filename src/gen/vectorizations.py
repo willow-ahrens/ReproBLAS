@@ -167,8 +167,11 @@ class SISD(Vectorization):
     self.zero = 0
     self.suf_width = self.data_type.base_size
 
+  def include_consolidation_vars(self):
+    self.code_block.include("{} cons_tmp; (void)cons_tmp;".format(self.type_name))
+
   def consolidate_into(self, dst_ptr, offset, inc, src_vars, common_summand_ptr, common_summand_offset, common_summand_inc):
-    self.code_block.include("{} cons_tmp;".format(self.type_name))
+    self.include_consolidation_vars()
 
     if self.data_type.is_complex:
       dst_ptr = "(({0}*){1})".format(self.data_type.base_type.name, dst_ptr)
@@ -216,7 +219,7 @@ class SISD(Vectorization):
       self.code_block.write(" = ".join(dst_vars) + " = {0}[{1}];".format(src_ptr, self.data_type.index(offset, inc, 0)))
 
   def include_BLP_vars(self):
-    self.code_block.include("{0} tmp_BLP;".format(self.data_type.base_type.int_float_name))
+    self.code_block.include("{0} tmp_BLP; (void)tmp_BLP;".format(self.data_type.base_type.int_float_name))
 
   def add_BLP_into(self, dst, src, blp, width):
     assert len(dst) >= width
@@ -291,11 +294,11 @@ class SIMD(Vectorization):
     self.suf_width = 1
 
   def include_max_vars(self):
-    self.code_block.include("{0} max_tmp[{1}] __attribute__((aligned({2})));".format(self.data_type.base_type.name, self.base_size, self.byte_size))
+    self.code_block.include("{0} max_buffer[{1}] __attribute__((aligned({2}))); (void)max_buffer;".format(self.data_type.base_type.name, self.base_size, self.byte_size))
 
   def include_consolidation_vars(self):
-    self.code_block.include("{0} cons_tmp;".format(self.type_name))
-    self.code_block.include("{0} cons_buffer[{1}] __attribute__((aligned({2})));".format(self.data_type.base_type.name, self.base_size, self.byte_size))
+    self.code_block.include("{0} cons_tmp; (void)cons_tmp;".format(self.type_name))
+    self.code_block.include("{0} cons_buffer[{1}] __attribute__((aligned({2}))); (void)cons_buffer;".format(self.data_type.base_type.name, self.base_size, self.byte_size))
 
   #TODO masks should be defined here and not necessarily in COMMON?
   def include_ABS_vars(self):
@@ -356,11 +359,11 @@ class SSE(SIMD):
 
     for src_var in src_vars[1:]:
       self.set_equal(self.max(src_var[0], src_var));
-    self.code_block.write("_mm_store_p{0}(max_tmp, {1});".format(self.data_type.base_type.name_char, src_vars[0]))
+    self.code_block.write("_mm_store_p{0}(max_buffer, {1});".format(self.data_type.base_type.name_char, src_vars[0]))
     for i in range(self.data_type.base_size, self.base_size):
-      self.code_block.write("max_tmp[{0}] = (max_tmp[{0}] > max_tmp[{1}] ? max_tmp[{0}]: max_tmp[{1}]);".format(i % self.data_type.base_size, i))
+      self.code_block.write("max_buffer[{0}] = (max_buffer[{0}] > max_buffer[{1}] ? max_buffer[{0}]: max_buffer[{1}]);".format(i % self.data_type.base_size, i))
     for i in range(self.data_type.base_size):
-      self.code_block.write("{0}[{1}] = max_tmp[{2}];".format(dst_ptr, self.data_type.index(offset, inc, i, True), i))
+      self.code_block.write("{0}[{1}] = max_buffer[{2}];".format(dst_ptr, self.data_type.index(offset, inc, i, True), i))
 
   def propagate_into(self, dst_vars, src_ptr, offset, inc):
     if self.data_type.is_complex:
@@ -515,11 +518,11 @@ class AVX(SIMD):
 
     for src_var in src_vars[1:]:
       self.set_equal(self.max(src_var[0], src_var));
-    self.code_block.write("_mm256_store_p{0}(max_tmp, {1});".format(self.data_type.base_type.name_char, src_vars[0]))
+    self.code_block.write("_mm256_store_p{0}(max_buffer, {1});".format(self.data_type.base_type.name_char, src_vars[0]))
     for i in range(self.data_type.base_size, self.base_size):
-      self.code_block.write("max_tmp[{0}] = (max_tmp[{0}] > max_tmp[{1}] ? max_tmp[{0}]: max_tmp[{1}]);".format(i % self.data_type.base_size, i))
+      self.code_block.write("max_buffer[{0}] = (max_buffer[{0}] > max_buffer[{1}] ? max_buffer[{0}]: max_buffer[{1}]);".format(i % self.data_type.base_size, i))
     for i in range(self.data_type.base_size):
-      self.code_block.write("{0}[{1}] = max_tmp[{2}];".format(dst_ptr, self.data_type.index(offset, inc, i, True), i))
+      self.code_block.write("{0}[{1}] = max_buffer[{2}];".format(dst_ptr, self.data_type.index(offset, inc, i, True), i))
 
   def propagate_into(self, dst_vars, src_ptr, offset, inc):
     if self.data_type.is_complex:

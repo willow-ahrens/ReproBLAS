@@ -37,7 +37,7 @@ int verify_rsblas1_reproducibility(int N, float* X, int incX, float* Y, int incY
       sisetzero(DEFAULT_FOLD, &Ires);
       for (i = 0; i < N; i += block_N) {
         block_N = block_N < N - i ? block_N : (N-i);
-        Ifloat foo = (wrap_Isblas1_func(func))(block_N, X + i * incX, incX, Y + i * incY, incY);
+        Ifloat foo = (wrap_siblas1_func(func))(block_N, X + i * incX, incX, Y + i * incY, incY);
         sisiadd(DEFAULT_FOLD, &foo, &Ires);
       }
       res = ssiconv(DEFAULT_FOLD, &Ires);
@@ -45,7 +45,7 @@ int verify_rsblas1_reproducibility(int N, float* X, int incX, float* Y, int incY
     if (res != ref) {
       printf("%s(X, Y)[num_blocks=%d,block_N=%d] = %g != %g\n", wrap_rsblas1_names[func], num_blocks, block_N, res, ref);
       if (num_blocks == 1) {
-        Ires = (wrap_Isblas1_func(func))(N, X, incX, Y, incY);
+        Ires = (wrap_siblas1_func(func))(N, X, incX, Y, incY);
       }
       printf("Ref I_float:\n");
       siprint(DEFAULT_FOLD, &Iref);
@@ -96,7 +96,7 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, dou
 
   //compute with unpermuted data
   ref  = (wrap_rsblas1_func(func_type._named.value))(N, X, incX, Y, incY);
-  Iref = (wrap_Isblas1_func(func_type._named.value))(N, X, incX, Y, incY);
+  Iref = (wrap_siblas1_func(func_type._named.value))(N, X, incX, Y, incY);
 
   P = util_identity_permutation(N);
   util_svec_reverse(N, X, incX, P, 1);

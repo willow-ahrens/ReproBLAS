@@ -9,32 +9,16 @@
 #include "reproBLAS.h"
 #include "indexedBLAS.h"
 
-float scnrm2I(
-	int N,
-	float complex* x, int incx,
-	I_float* sum
-) {
-	I_float_Complex tmp;
-	return scnrm2I1(N, x, incx, DEFAULT_FOLD, sum->m, sum->c, (float complex*)&tmp);
-}
+float rscnrm2(const int N, const void* X, const int incX) {
+  float_indexed *nrmi = sialloc(DEFAULT_FOLD);
+  float scale;
+  float nrm2;
 
-float rscnrm2(int N, float complex* v, int inc) {
-	I_float sum;
-	I_float_Complex tmp;
-	float sqrt_sum;
-	float scale = 0.0;
-	
-	sisetzero(DEFAULT_FOLD, &sum);
-	scale = scnrm2I1(N, v, inc, DEFAULT_FOLD, sum.m, sum.c, (float complex*)&tmp);
+  sisetzero(DEFAULT_FOLD, nrmi);
 
-	if (isnan(scale))
-		return scale;
+  scale = sicnrm(DEFAULT_FOLD, N, X, incX, nrmi);
 
-	if (isinf(sum.m[0]))
-		return sum.m[0];
-
-	sqrt_sum = ssiconv(DEFAULT_FOLD, &sum);
-//	printf("scale: %g sum: %g\n", scale, sqrt_sum);
-	sqrt_sum = sqrt(sqrt_sum);
-	return scale * sqrt_sum;
+  nrm2 = scale * sqrt(ssiconv(DEFAULT_FOLD, nrmi));
+  free(nrmi);
+  return nrm2;
 }

@@ -36,7 +36,7 @@ int verify_rdblas1_reproducibility(int N, double* X, int incX, double* Y, int in
       disetzero(DEFAULT_FOLD, &Ires);
       for (i = 0; i < N; i += block_N) {
         block_N = block_N < N - i ? block_N : (N-i);
-        Idouble foo = (wrap_Idblas1_func(func))(block_N, X + i * incX, incX, Y + i * incY, incY);
+        Idouble foo = (wrap_diblas1_func(func))(block_N, X + i * incX, incX, Y + i * incY, incY);
         didiadd(DEFAULT_FOLD, &foo, &Ires);
       }
       res = ddiconv(DEFAULT_FOLD, &Ires);
@@ -44,7 +44,7 @@ int verify_rdblas1_reproducibility(int N, double* X, int incX, double* Y, int in
     if (res != ref) {
       printf("%s(X, Y)[num_blocks=%d,block_N=%d] = %g != %g\n", wrap_rdblas1_names[func], num_blocks, block_N, res, ref);
       if (num_blocks == 1) {
-        Ires = (wrap_Idblas1_func(func))(N, X, incX, Y, incY);
+        Ires = (wrap_diblas1_func(func))(N, X, incX, Y, incY);
       }
       printf("Ref I_double:\n");
       diprint(DEFAULT_FOLD, &Iref);
@@ -95,7 +95,7 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, dou
 
   //compute with unpermuted data
   ref  = (wrap_rdblas1_func(func_type._named.value))(N, X, incX, Y, incY);
-  Iref = (wrap_Idblas1_func(func_type._named.value))(N, X, incX, Y, incY);
+  Iref = (wrap_diblas1_func(func_type._named.value))(N, X, incX, Y, incY);
 
   P = util_identity_permutation(N);
   util_dvec_reverse(N, X, incX, P, 1);

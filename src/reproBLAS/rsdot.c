@@ -1,3 +1,7 @@
+/*
+ *  Created   13/10/25   H.D. Nguyen
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -5,21 +9,16 @@
 #include "reproBLAS.h"
 #include "indexedBLAS.h"
 
-I_float sdotI(int N, float* x, int incx, float* y, int incy) {
-	I_float dot;
+float rsdot(const int N, const float* X, const int incX, const float *Y, const int incY) {
+  float_indexed *doti = sialloc(DEFAULT_FOLD);
+  float dot;
 
-	sisetzero(DEFAULT_FOLD, &dot);
-	sdotI1(N, x, incx, y, incy, DEFAULT_FOLD, dot.m, dot.c);
+  sisetzero(DEFAULT_FOLD, doti);
 
-	return dot;
-}
+  sisdot(DEFAULT_FOLD, N, X, incX, Y, incY, doti);
 
-float rsdot(int N, float* x, int incx, float* y, int incy) {
-	I_float dot;
-
-	sisetzero(DEFAULT_FOLD, &dot);
-	sdotI1(N, x, incx, y, incy, DEFAULT_FOLD, dot.m, dot.c);
-
-	return ssiconv(DEFAULT_FOLD, &dot);
+  dot = ssiconv(DEFAULT_FOLD, doti);
+  free(doti);
+  return dot;
 }
 

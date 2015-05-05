@@ -20,7 +20,7 @@ static const char* wrap_rsblas1_descs[] = {"rssum",
                                            "rddot"};
 
 typedef float (*wrap_rsblas1)(int, float*, int, float*, int);
-typedef Ifloat (*wrap_Isblas1)(int, float*, int, float*, int);
+typedef void (*wrap_siblas1)(int, float*, int, float*, int, float_indexed*);
 
 float wrap_rssum(int N, float *x, int incx, float *y, int incy) {
   (void)y;
@@ -28,10 +28,10 @@ float wrap_rssum(int N, float *x, int incx, float *y, int incy) {
   return rssum(N, x, incx);
 }
 
-Ifloat wrap_ssumI(int N, float *x, int incx, float *y, int incy) {
+void wrap_sissum(int N, float *x, int incx, float *y, int incy, float_indexed *z) {
   (void)y;
   (void)incy;
-  return ssumI(N, x, incx);
+  sissum(DEFAULT_FOLD, N, x, incx, z);
 }
 
 float wrap_rsasum(int N, float *x, int incx, float *y, int incy) {
@@ -40,18 +40,18 @@ float wrap_rsasum(int N, float *x, int incx, float *y, int incy) {
   return rsasum(N, x, incx);
 }
 
-Ifloat wrap_sasumI(int N, float *x, int incx, float *y, int incy) {
+void wrap_sisasum(int N, float *x, int incx, float *y, int incy, float_indexed *z) {
   (void)y;
   (void)incy;
-  return sasumI(N, x, incx);
+  sisasum(DEFAULT_FOLD, N, x, incx, z);
 }
 
 float wrap_rsdot(int N, float *x, int incx, float *y, int incy) {
   return rsdot(N, x, incx, y, incy);
 }
 
-Ifloat wrap_sdotI(int N, float *x, int incx, float *y, int incy) {
-  return sdotI(N, x, incx, y, incy);
+void wrap_sisdot(int N, float *x, int incx, float *y, int incy, float_indexed *z) {
+  sisdot(DEFAULT_FOLD, N, x, incx, y, incy, z);
 }
 
 float wrap_rsnrm2(int N, float *x, int incx, float *y, int incy) {
@@ -60,13 +60,10 @@ float wrap_rsnrm2(int N, float *x, int incx, float *y, int incy) {
   return rsnrm2(N, x, incx);
 }
 
-Ifloat wrap_snrm2I(int N, float *x, int incx, float *y, int incy) {
+void wrap_sisnrm(int N, float *x, int incx, float *y, int incy, float_indexed *z) {
   (void)y;
   (void)incy;
-  Ifloat nrm2;
-  sisetzero(DEFAULT_FOLD, &nrm2);
-  snrm2I(N, x, incx, &nrm2);
-  return nrm2;
+  sisnrm(DEFAULT_FOLD, N, x, incx, z);
 }
 
 wrap_rsblas1 wrap_rsblas1_func(int func) {
@@ -83,16 +80,16 @@ wrap_rsblas1 wrap_rsblas1_func(int func) {
   return NULL;
 }
 
-wrap_Isblas1 wrap_Isblas1_func(int func) {
+wrap_siblas1 wrap_siblas1_func(int func) {
   switch(func){
     case wrap_RSSUM:
-      return wrap_ssumI;
+      return wrap_sissum;
     case wrap_RSASUM:
-      return wrap_sasumI;
+      return wrap_sisasum;
     case wrap_RSNRM2:
-      return wrap_snrm2I;
+      return wrap_sisnrm;
     case wrap_RSDOT:
-      return wrap_sdotI;
+      return wrap_sisdot;
   }
   return NULL;
 }

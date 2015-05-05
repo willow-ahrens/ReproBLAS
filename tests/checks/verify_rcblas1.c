@@ -36,7 +36,7 @@ int verify_rcblas1_reproducibility(int N, float complex* X, int incX, float comp
       cisetzero(DEFAULT_FOLD, &Ires);
       for (i = 0; i < N; i += block_N) {
         block_N = block_N < N - i ? block_N : (N-i);
-        I_float_Complex foo = (wrap_Icblas1_func(func))(block_N, X + i * incX, incX, Y + i * incY, incY);
+        I_float_Complex foo = (wrap_ciblas1_func(func))(block_N, X + i * incX, incX, Y + i * incY, incY);
         ciciadd(DEFAULT_FOLD, &foo, &Ires);
       }
       cciconv_sub(DEFAULT_FOLD, &Ires, &res);
@@ -44,7 +44,7 @@ int verify_rcblas1_reproducibility(int N, float complex* X, int incX, float comp
     if (res != ref) {
       printf("%s(X, Y)[num_blocks=%d,block_N=%d] = %g + %gi != %g + %gi\n", wrap_rcblas1_names[func], num_blocks, block_N, CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
       if (num_blocks == 1) {
-        Ires = (wrap_Icblas1_func(func))(N, X, incX, Y, incY);
+        Ires = (wrap_ciblas1_func(func))(N, X, incX, Y, incY);
       }
       printf("Ref I_float_Complex:\n");
       ciprint(DEFAULT_FOLD, &Iref);
@@ -95,7 +95,7 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, dou
 
   //compute with unpermuted data
   ref  = (wrap_rcblas1_func(func_type._named.value))(N, X, incX, Y, incY);
-  Iref = (wrap_Icblas1_func(func_type._named.value))(N, X, incX, Y, incY);
+  Iref = (wrap_ciblas1_func(func_type._named.value))(N, X, incX, Y, incY);
 
   P = util_identity_permutation(N);
   util_cvec_reverse(N, X, incX, P, 1);

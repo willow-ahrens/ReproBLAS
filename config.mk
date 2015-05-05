@@ -15,6 +15,8 @@
 PYTHON = python
 #PYTHON = python3
 
+CFLAGS += -Werror -Wall
+
 # enable vectorizations (comment all for auto)
 #MMX := true
 #MMX := false

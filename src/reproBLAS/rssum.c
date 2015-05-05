@@ -9,21 +9,16 @@
 #include "reproBLAS.h"
 #include "indexedBLAS.h"
 
-I_float ssumI(int N, float* v, int inc) {
-	I_float sum;
+float rssum(const int N, const float* X, const int incX) {
+  float_indexed *sumi = sialloc(DEFAULT_FOLD);
+  float sum;
 
-	sisetzero(DEFAULT_FOLD, &sum);
-	ssumI1(N, v, inc, DEFAULT_FOLD, sum.m, sum.c);
+  sisetzero(DEFAULT_FOLD, sumi);
 
-	return sum;
-}
+  sissum(DEFAULT_FOLD, N, X, incX, sumi);
 
-float rssum(int N, float* v, int inc) {
-	I_float sum;
-
-	sisetzero(DEFAULT_FOLD, &sum);
-	ssumI1(N, v, inc, DEFAULT_FOLD, sum.m, sum.c);
-
-	return ssiconv(DEFAULT_FOLD, &sum);
+  sum = ssiconv(DEFAULT_FOLD, sumi);
+  free(sumi);
+  return sum;
 }
 

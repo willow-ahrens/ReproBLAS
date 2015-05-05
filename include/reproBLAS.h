@@ -31,27 +31,26 @@ void rdgemv(const rblas_order_t order,
             const double *X, const int incX,
             double *Y, const int incY);
 
-// SEQUENTIAL REPRODUCIBLE VERSIONS
-extern double rdsum (int N, double* v, int inc);
-extern double rdasum(int N, double* v, int inc);
-extern double rdnrm2(int N, double* v, int inc);
-extern double rddot (int N, double* x, int incx, double* y, int incy);
+double rdsum(const int N, const double* X, const int incX);
+double rdasum(const int N, const double* X, const int incX);
+double rdnrm2(const int N, const double* X, const int incX);
+double rddot(const int N, const double* X, const int incX, const double* Y, const int incY);
 
-extern float  rsdot (int N, float* x, int incx, float* y, int incy);
-extern float  rsasum(int N, float* x, int incx);
-extern float  rssum  (int N, float* x, int incx);
-extern float  rsnrm2(int N, float* x, int incx);
+float rsdot(const int N, const float* X, const int incX, const float* Y, const int incY);
+float rsasum(const int N, const float* X, const int incX);
+float rssum(const int N, const float* X, const int incX);
+float rsnrm2(const int N, const float* X, const int incX);
 
-extern double         rdzasum (int N, double complex* v, int inc);
-extern double complex rzsum   (int N, double complex* v, int inc);
-extern double         rdznrm2 (int N, double complex* v, int inc);
-extern double complex rzdotc  (int N, double complex* x, int incx, double complex* y, int incy);
-extern double complex rzdotu  (int N, double complex* x, int incx, double complex* y, int incy);
+void rzsum_sub(const int N, const void* X, int incX, void *sum);
+double rdzasum(const int N, const void* X, const int incX);
+double rdznrm2(const int N, const void* X, int incX);
+void rzdotc_sub(const int N, const void* X, const int incX, const void* Y, const int incY, void *dotc);
+void rzdotu_sub(const int N, const void* X, const int incX, const void* Y, const int incY, void *dotu);
 
-extern float         rscasum (int N, float complex* v, int inc);
-extern float complex rcsum   (int N, float complex* v, int inc);
-extern float         rscnrm2 (int N, float complex* v, int inc);
-extern float complex rcdotc  (int N, float complex* x, int incx, float complex* y, int incy);
-extern float complex rcdotu  (int N, float complex* x, int incx, float complex* y, int incy);
+void rcsum_sub(const int N, const void* X, const int incX, void *sum);
+float rscasum(const int N, const void* X, const int incX);
+float rscnrm2(const int N, const void* X, const int incX);
+void rcdotc_sub(const int N, const void* X, const int incX, const void* Y, const int incY, void *dotc);
+void rcdotu_sub(const int N, const void* X, const int incX, const void* Y, const int incY, void *dotu);
 
 #endif

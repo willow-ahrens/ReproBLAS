@@ -9,39 +9,16 @@
 #include "reproBLAS.h"
 #include "indexedBLAS.h"
 
+double rddot(const int N, const double* X, const int incX, const double *Y, const int incY) {
+  double_indexed *doti = dialloc(DEFAULT_FOLD);
+  double dot;
 
+  disetzero(DEFAULT_FOLD, doti);
 
-#define MACHEPS DBL_EPSILON
-#define PREC    53
-#define OVERFLOW_THRES DBL_MAX_EXP
-#define CHECK_NAN_INF
+  diddot(DEFAULT_FOLD, N, X, incX, Y, incY, doti);
 
-I_double ddotI(
-	int N,
-	double* x, int incx,
-	double* y, int incy
-) {
-
-	I_double dot;
-
-	disetzero(DEFAULT_FOLD, &dot);
-
-	ddotI1(N, x, incx, y, incy, DEFAULT_FOLD, dot.m, dot.c);
-
-	return dot;
+  dot = ddiconv(DEFAULT_FOLD, doti);
+  free(doti);
+  return dot;
 }
 
-double rddot(
-	int N,
-	double* x, int incx,
-	double* y, int incy
-) {
-
-	I_double dot;
-
-	disetzero(DEFAULT_FOLD, &dot);
-
-	ddotI1(N, x, incx, y, incy, DEFAULT_FOLD, dot.m, dot.c);
-
-	return ddiconv(DEFAULT_FOLD, &dot);
-}

@@ -1,3 +1,8 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "test_metric.h"
+
 #define METRIC_MAX 16
 
 typedef enum metric_type{

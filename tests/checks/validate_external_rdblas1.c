@@ -51,10 +51,12 @@ int file_test(int argc, char** argv, char *fname) {
   double *Y;
 
   double ref;
-  I_double Iref;
+  double_indexed *Iref = dialloc(DEFAULT_FOLD);
+  disetzero(DEFAULT_FOLD, Iref);
 
   double res;
-  I_double Ires;
+  double_indexed *Ires = dialloc(DEFAULT_FOLD);
+  disetzero(DEFAULT_FOLD, Ires);
 
   file_read_vector(fname, &N, (void**)&X, sizeof(double));
   Y = util_dvec_alloc(N, 1);
@@ -66,38 +68,41 @@ int file_test(int argc, char** argv, char *fname) {
   snprintf(Iref_fname, MAX_NAME, "%s__I%s.dat", fname, wrap_rdblas1_names[func_type._named.value]);
 
   res = (wrap_rdblas1_func(func_type._named.value))(N, X, 1, Y, 1);
-  Ires = (wrap_Idblas1_func(func_type._named.value))(N, X, 1, Y, 1);
+  (wrap_diblas1_func(func_type._named.value))(N, X, 1, Y, 1, Ires);
 
   if(record._flag.exists){
+    free(Iref);
     ref = res;
     Iref = Ires;
 
     file_write_vector(ref_fname, 1, &ref, sizeof(ref));
-    file_write_vector(Iref_fname, 1, &Iref, sizeof(Iref));
+    file_write_vector(Iref_fname, 1, Iref, disize(DEFAULT_FOLD));
   } else {
     void *data;
     int unused0;
     file_read_vector(ref_fname, &unused0, &data, sizeof(ref));
     ref = *(double*)data;
     free(data);
-    file_read_vector(Iref_fname, &unused0, &data, sizeof(Iref));
-    Iref = *(I_double*)data;
-    free(data);
+    file_read_vector(Iref_fname, &unused0, &data, disize(DEFAULT_FOLD));
+    free(Iref);
+    Iref = data;
     if(ref != res){
       printf("%s(%s) = %g != %g\n", wrap_rdblas1_names[func_type._named.value], fname, res, ref);
       return 1;
     }
-    if(memcmp(&Iref, &Ires, sizeof(Iref)) != 0){
-      printf("I%s(%s) = %g != %g\n", wrap_rdblas1_names[func_type._named.value], fname, ddiconv(DEFAULT_FOLD, &Ires), ddiconv(DEFAULT_FOLD, &Iref));
+    if(memcmp(&Iref, &Ires, disize(DEFAULT_FOLD)) != 0){
+      printf("I%s(%s) = %g != %g\n", wrap_rdblas1_names[func_type._named.value], fname, ddiconv(DEFAULT_FOLD, Ires), ddiconv(DEFAULT_FOLD, Iref));
       printf("Ref I_double:\n");
-      diprint(DEFAULT_FOLD, &Iref);
+      diprint(DEFAULT_FOLD, Iref);
       printf("\nRes I_double:\n");
-      diprint(DEFAULT_FOLD, &Ires);
+      diprint(DEFAULT_FOLD, Ires);
       printf("\n");
       return 1;
     }
   }
 
+  free(Iref);
+  free(Ires);
   free(X);
   free(Y);
   return 0;

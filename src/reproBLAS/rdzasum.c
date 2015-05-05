@@ -9,17 +9,16 @@
 #include "reproBLAS.h"
 #include "indexedBLAS.h"
 
-I_double dzasumI(int N, double complex* v, int inc) {
-	I_double sum;
-	disetzero(DEFAULT_FOLD, &sum);
-	dzasumI1(N, v, inc, DEFAULT_FOLD, sum.m, sum.c);
-	return sum;
-}
+double rdzasum(const int N, const void* X, const int incX) {
+  double_indexed *asumi = dialloc(DEFAULT_FOLD);
+  double asum;
 
-double rdzasum(int N, double complex* v, int inc) {
-	I_double sum;
-	disetzero(DEFAULT_FOLD, &sum);
-	dzasumI1(N, v, inc, DEFAULT_FOLD,  sum.m, sum.c);
-	return ddiconv(DEFAULT_FOLD, &sum);
+  disetzero(DEFAULT_FOLD, asumi);
+
+  dizasum(DEFAULT_FOLD, N, X, incX, asumi);
+
+  asum = ddiconv(DEFAULT_FOLD, asumi);
+  free(asumi);
+  return asum;
 }
 

@@ -5,11 +5,11 @@
 #define Y_BLOCK_SIZE 16
 #define X_BLOCK_SIZE 1024
 
-void dgemvI(int fold, rblas_order_t Order,
-            rblas_transpose_t TransA, int M, int N,
-            double *A, int lda,
-            double *X, int incX,
-            double_indexed *Y, int incY){
+void dgemvI(const int fold, const rblas_order_t Order,
+            const rblas_transpose_t TransA, const int M, const int N,
+            const double *A, const int lda,
+            const double *X, const int incX,
+            double_indexed *Y, const int incY){
   switch(Order){
     case rblas_Row_Major:
       switch(TransA){

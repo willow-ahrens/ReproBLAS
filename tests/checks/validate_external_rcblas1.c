@@ -51,10 +51,12 @@ int file_test(int argc, char** argv, char *fname) {
   float complex *Y;
 
   float complex ref;
-  I_float_Complex Iref;
+  float_complex_indexed *Iref = cialloc(DEFAULT_FOLD);
+  cisetzero(DEFAULT_FOLD, Iref);
 
   float complex res;
-  I_float_Complex Ires;
+  float_complex_indexed *Ires = cialloc(DEFAULT_FOLD);
+  cisetzero(DEFAULT_FOLD, Ires);
 
   file_read_vector(fname, &N, (void**)&X, sizeof(float complex));
   Y = util_cvec_alloc(N, 1);
@@ -66,40 +68,43 @@ int file_test(int argc, char** argv, char *fname) {
   snprintf(Iref_fname, MAX_NAME, "%s__I%s.dat", fname, wrap_rcblas1_names[func_type._named.value]);
 
   res = (wrap_rcblas1_func(func_type._named.value))(N, X, 1, Y, 1);
-  Ires = (wrap_Icblas1_func(func_type._named.value))(N, X, 1, Y, 1);
+  (wrap_ciblas1_func(func_type._named.value))(N, X, 1, Y, 1, Ires);
 
   if(record._flag.exists){
+    free(Iref);
     ref = res;
     Iref = Ires;
 
     file_write_vector(ref_fname, 1, &ref, sizeof(ref));
-    file_write_vector(Iref_fname, 1, &Iref, sizeof(Iref));
+    file_write_vector(Iref_fname, 1, Iref, cisize(DEFAULT_FOLD));
   } else {
     void *data;
     int unused0;
     file_read_vector(ref_fname, &unused0, &data, sizeof(ref));
     ref = *(float complex*)data;
     free(data);
-    file_read_vector(Iref_fname, &unused0, &data, sizeof(Iref));
-    Iref = *(I_float_Complex*)data;
-    free(data);
+    file_read_vector(Iref_fname, &unused0, &data, cisize(DEFAULT_FOLD));
+    free(Iref);
+    Iref = (float_complex_indexed*)data;
     if(ref != res){
       printf("%s(%s) = %g + %gi != %g + %gi\n", wrap_rcblas1_names[func_type._named.value], fname, CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
       return 1;
     }
-    if(memcmp(&Iref, &Ires, sizeof(Iref)) != 0){
-      cciconv_sub(DEFAULT_FOLD, &Ires, &res);
-      cciconv_sub(DEFAULT_FOLD, &Iref, &ref);
+    if(memcmp(Iref, Ires, cisize(DEFAULT_FOLD)) != 0){
+      cciconv_sub(DEFAULT_FOLD, Ires, &res);
+      cciconv_sub(DEFAULT_FOLD, Iref, &ref);
       printf("I%s(%s) = %g + %gi != %g + %gi\n", wrap_rcblas1_names[func_type._named.value], fname, CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
       printf("Ref I_float_Complex:\n");
-      ciprint(DEFAULT_FOLD, &Iref);
+      ciprint(DEFAULT_FOLD, Iref);
       printf("\nRes I_float_Complex:\n");
-      ciprint(DEFAULT_FOLD, &Ires);
+      ciprint(DEFAULT_FOLD, Ires);
       printf("\n");
       return 1;
     }
   }
 
+  free(Iref);
+  free(Ires);
   free(X);
   free(Y);
   return 0;

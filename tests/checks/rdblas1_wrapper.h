@@ -11,7 +11,7 @@
 #define wrap_RDDOT  3
 
 typedef double (*wrap_rdblas1)(int, double*, int, double*, int);
-typedef Idouble (*wrap_Idblas1)(int, double*, int, double*, int);
+typedef void (*wrap_diblas1)(int, double*, int, double*, int, double_indexed*);
 static const int wrap_rdblas1_n_names = 4;
 static const char* wrap_rdblas1_names[] = {"rdsum",
                                            "rdasum",
@@ -28,10 +28,10 @@ double wrap_rdsum(int N, double *x, int incx, double *y, int incy) {
   return rdsum(N, x, incx);
 }
 
-Idouble wrap_dsumI(int N, double *x, int incx, double *y, int incy) {
+void wrap_didsum(int N, double *x, int incx, double *y, int incy, double_indexed *z) {
   (void)y;
   (void)incy;
-  return dsumI(N, x, incx);
+  didsum(DEFAULT_FOLD, N, x, incx, z);
 }
 
 double wrap_rdasum(int N, double *x, int incx, double *y, int incy) {
@@ -40,18 +40,18 @@ double wrap_rdasum(int N, double *x, int incx, double *y, int incy) {
   return rdasum(N, x, incx);
 }
 
-Idouble wrap_dasumI(int N, double *x, int incx, double *y, int incy) {
+void wrap_didasum(int N, double *x, int incx, double *y, int incy, double_indexed *z) {
   (void)y;
   (void)incy;
-  return dasumI(N, x, incx);
+  didasum(DEFAULT_FOLD, N, x, incx, z);
 }
 
 double wrap_rddot(int N, double *x, int incx, double *y, int incy) {
   return rddot(N, x, incx, y, incy);
 }
 
-Idouble wrap_ddotI(int N, double *x, int incx, double *y, int incy) {
-  return ddotI(N, x, incx, y, incy);
+void wrap_diddot(int N, double *x, int incx, double *y, int incy, double_indexed *z) {
+  diddot(DEFAULT_FOLD, N, x, incx, y, incy, z);
 }
 
 double wrap_rdnrm2(int N, double *x, int incx, double *y, int incy) {
@@ -60,13 +60,10 @@ double wrap_rdnrm2(int N, double *x, int incx, double *y, int incy) {
   return rdnrm2(N, x, incx);
 }
 
-Idouble wrap_dnrm2I(int N, double *x, int incx, double *y, int incy) {
+void wrap_didnrm(int N, double *x, int incx, double *y, int incy, double_indexed *z) {
   (void)y;
   (void)incy;
-  Idouble nrm2;
-  disetzero(DEFAULT_FOLD, &nrm2);
-  dnrm2I(N, x, incx, &nrm2);
-  return nrm2;
+  didnrm(DEFAULT_FOLD, N, x, incx, z);
 }
 
 wrap_rdblas1 wrap_rdblas1_func(int func) {
@@ -83,16 +80,16 @@ wrap_rdblas1 wrap_rdblas1_func(int func) {
   return NULL;
 }
 
-wrap_Idblas1 wrap_Idblas1_func(int func) {
+wrap_diblas1 wrap_diblas1_func(int func) {
   switch(func){
     case wrap_RDSUM:
-      return wrap_dsumI;
+      return wrap_didsum;
     case wrap_RDASUM:
-      return wrap_dasumI;
+      return wrap_didasum;
     case wrap_RDNRM2:
-      return wrap_dnrm2I;
+      return wrap_didnrm;
     case wrap_RDDOT:
-      return wrap_ddotI;
+      return wrap_diddot;
   }
   return NULL;
 }

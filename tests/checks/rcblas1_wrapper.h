@@ -23,19 +23,21 @@ static const char* wrap_rcblas1_descs[] = {"rcsum",
                                            "rcdotc"};
 
 typedef float complex (*wrap_rcblas1)(int, float complex*, int, float complex*, int);
-typedef I_float_Complex (*wrap_Icblas1)(int, float complex*, int, float complex*, int);
+typedef void (*wrap_ciblas1)(int, float complex*, int, float complex*, int, float_complex_indexed*);
 
 
 float complex wrap_rcsum(int N, float complex *x, int incx, float complex *y, int incy) {
   (void)y;
   (void)incy;
-  return rcsum(N, x, incx);
+  float complex ret;
+  rcsum_sub(N, x, incx, &ret);
+  return ret;
 }
 
-I_float_Complex wrap_csumI(int N, float complex *x, int incx, float complex *y, int incy) {
+void wrap_cicsum(int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *z) {
   (void)y;
   (void)incy;
-  return csumI(N, x, incx);
+  cicsum(DEFAULT_FOLD, N, x, incx, z);
 }
 
 float complex wrap_rscasum(int N, float complex *x, int incx, float complex *y, int incy) {
@@ -44,29 +46,30 @@ float complex wrap_rscasum(int N, float complex *x, int incx, float complex *y, 
   return (float complex)rscasum(N, x, incx);
 }
 
-I_float_Complex wrap_scasumI(int N, float complex *x, int incx, float complex *y, int incy) {
+void wrap_sicasum(int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *z) {
   (void)y;
   (void)incy;
-  I_float_Complex casum;
-  Ifloat asum = scasumI(N, x, incx);
-  cisiset(DEFAULT_FOLD, &asum, &casum);
-  return casum;
+  smcasum(DEFAULT_FOLD, N, x, incx, z, 2, z + 2 * DEFAULT_FOLD, 2);
 }
 
 float complex wrap_rcdotu(int N, float complex *x, int incx, float complex *y, int incy) {
-  return rcdotu(N, x, incx, y, incy);
+  float complex ret;
+  rcdotu_sub(N, x, incx, y, incy, &ret);
+  return ret;
 }
 
-I_float_Complex wrap_cdotuI(int N, float complex *x, int incx, float complex *y, int incy) {
-  return cdotuI(N, x, incx, y, incy);
+void wrap_cicdotu(int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *z) {
+  return cicdotu(DEFAULT_FOLD, N, x, incx, y, incy, z);
 }
 
 float complex wrap_rcdotc(int N, float complex *x, int incx, float complex *y, int incy) {
-  return rcdotc(N, x, incx, y, incy);
+  float complex ret;
+  rcdotc_sub(N, x, incx, y, incy, &ret);
+  return ret;
 }
 
-I_float_Complex wrap_cdotcI(int N, float complex *x, int incx, float complex *y, int incy) {
-  return cdotcI(N, x, incx, y, incy);
+void wrap_cicdotc(int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *z) {
+  return cicdotc(DEFAULT_FOLD, N, x, incx, y, incy, z);
 }
 
 float complex wrap_rscnrm2(int N, float complex *x, int incx, float complex *y, int incy) {
@@ -75,15 +78,10 @@ float complex wrap_rscnrm2(int N, float complex *x, int incx, float complex *y, 
   return rscnrm2(N, x, incx);
 }
 
-I_float_Complex wrap_scnrm2I(int N, float complex *x, int incx, float complex *y, int incy) {
+void wrap_sicnrm(int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *z) {
   (void)y;
   (void)incy;
-  I_float_Complex cnrm2;
-  Ifloat nrm2;
-  sisetzero(DEFAULT_FOLD, &nrm2);
-  scnrm2I(N, x, incx, &nrm2);
-  cisiset(DEFAULT_FOLD, &nrm2, &cnrm2);
-  return cnrm2;
+  smcnrm(DEFAULT_FOLD, N, x, incx, z, 2, z + 2 * DEFAULT_FOLD, 2);
 }
 
 wrap_rcblas1 wrap_rcblas1_func(int func) {
@@ -102,18 +100,18 @@ wrap_rcblas1 wrap_rcblas1_func(int func) {
   return NULL;
 }
 
-wrap_Icblas1 wrap_Icblas1_func(int func) {
+wrap_ciblas1 wrap_ciblas1_func(int func) {
   switch(func){
     case wrap_RCSUM:
-      return wrap_csumI;
+      return wrap_cicsum;
     case wrap_RSCASUM:
-      return wrap_scasumI;
+      return wrap_sicasum;
     case wrap_RSCNRM2:
-      return wrap_scnrm2I;
+      return wrap_sicnrm;
     case wrap_RCDOTU:
-      return wrap_cdotuI;
+      return wrap_cicdotu;
     case wrap_RCDOTC:
-      return wrap_cdotcI;
+      return wrap_cicdotc;
   }
   return NULL;
 }

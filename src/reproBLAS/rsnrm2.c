@@ -1,3 +1,7 @@
+/*
+ *  Created   13/10/25   H.D. Nguyen
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -5,31 +9,16 @@
 #include "reproBLAS.h"
 #include "indexedBLAS.h"
 
-float snrm2I(
-	int N,
-	float* x, int incx,
-	I_float* dot
-) {
-	return snrm2I1(N, x, incx, DEFAULT_FOLD, dot->m, dot->c);
+float rsnrm2(const int N, const float* X, const int incX) {
+  float_indexed *nrmi = sialloc(DEFAULT_FOLD);
+  float scale;
+  float nrm2;
+
+  sisetzero(DEFAULT_FOLD, nrmi);
+
+  scale = sisnrm(DEFAULT_FOLD, N, X, incX, nrmi);
+
+  nrm2 = scale * sqrt(ssiconv(DEFAULT_FOLD, nrmi));
+  free(nrmi);
+  return nrm2;
 }
-
-float rsnrm2(int N, float* v, int inc) {
-	I_float sum;
-	double scale;
-	float sqrt_sum;
-
-	sisetzero(DEFAULT_FOLD, &sum);
-
-	scale = snrm2I1(N, v, inc, DEFAULT_FOLD, sum.m, sum.c);
-
-	if (isnan(scale))
-		return scale;
-
-	if (isinf(sum.m[0]))
-		return sum.m[0];
-
-	sqrt_sum = ssiconv(DEFAULT_FOLD, &sum);
-	sqrt_sum = sqrt(sqrt_sum);
-	return scale * sqrt_sum;
-}
-

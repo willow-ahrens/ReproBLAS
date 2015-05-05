@@ -10,65 +10,76 @@ int matvec_test(int argc, char** argv, char Order, char TransA, int M, int N, in
 
 static const char *Order_names[] = {"RowMajor", "ColMajor"};
 static const char *Order_descs[] = {"Row Major", "Column Major"};
-static opt_option Order  = {._named.header.type       = opt_named,
-                            ._named.header.short_name = 'O',
-                            ._named.header.long_name  = "Order",
-                            ._named.header.help       = "2D ordering",
-                            ._named.required          = 0,
-                            ._named.n_names           = 2,
-                            ._named.names             = (char**)Order_names,
-                            ._named.descs             = (char**)Order_descs,
-                            ._named.value             = 0};
-
+static opt_option Order;
 static const char *TransA_names[] = {"NoTrans", "Trans"};
 static const char *TransA_descs[] = {"Don't Transpose", "Transpose"};
-static opt_option TransA = {._named.header.type       = opt_named,
-                            ._named.header.short_name = 'T',
-                            ._named.header.long_name  = "TransA",
-                            ._named.header.help       = "transpose A?",
-                            ._named.required          = 0,
-                            ._named.n_names           = 2,
-                            ._named.names             = (char**)TransA_names,
-                            ._named.descs             = (char**)TransA_descs,
-                            ._named.value             = 0};
+static opt_option TransA;
+static opt_option M;
+static opt_option N;
+static opt_option lda;
+static opt_option incX;
 
-static opt_option M      = {._int.header.type       = opt_int,
-                            ._int.header.short_name = 'M',
-                            ._int.header.long_name  = "M_dim",
-                            ._int.header.help       = "M dimension size",
-                            ._int.required          = 0,
-                            ._int.min               = 0,
-                            ._int.max               = INT_MAX,
-                            ._int.value             = 2048};
+static void matvec_options_initialize(void){
+  Order._named.header.type       = opt_named;
+  Order._named.header.short_name = 'O';
+  Order._named.header.long_name  = "Order";
+  Order._named.header.help       = "2D ordering";
+  Order._named.required          = 0;
+  Order._named.n_names           = 2;
+  Order._named.names             = (char**)Order_names;
+  Order._named.descs             = (char**)Order_descs;
+  Order._named.value             = 0;
 
-static opt_option N      = {._int.header.type       = opt_int,
-                            ._int.header.short_name = 'N',
-                            ._int.header.long_name  = "N_dim",
-                            ._int.header.help       = "N dimension size",
-                            ._int.required          = 0,
-                            ._int.min               = 0,
-                            ._int.max               = INT_MAX,
-                            ._int.value             = 2048};
+  TransA._named.header.type       = opt_named;
+  TransA._named.header.short_name = 'T';
+  TransA._named.header.long_name  = "TransA";
+  TransA._named.header.help       = "transpose A?";
+  TransA._named.required          = 0;
+  TransA._named.n_names           = 2;
+  TransA._named.names             = (char**)TransA_names;
+  TransA._named.descs             = (char**)TransA_descs;
+  TransA._named.value             = 0;
 
-static opt_option lda    = {._int.header.type       = opt_int,
-                            ._int.header.short_name = 'A',
-                            ._int.header.long_name  = "lda",
-                            ._int.header.help       = "leading A size (0 for auto)",
-                            ._int.required          = 0,
-                            ._int.min               = 0,
-                            ._int.max               = INT_MAX,
-                            ._int.value             = 0};
+  M._int.header.type       = opt_int;
+  M._int.header.short_name = 'M';
+  M._int.header.long_name  = "M_dim";
+  M._int.header.help       = "M dimension size";
+  M._int.required          = 0;
+  M._int.min               = 0;
+  M._int.max               = INT_MAX;
+  M._int.value             = 2048;
 
-static opt_option incX   = {._int.header.type       = opt_int,
-                            ._int.header.short_name = 'x',
-                            ._int.header.long_name  = "incX",
-                            ._int.header.help       = "X vector increment",
-                            ._int.required          = 0,
-                            ._int.min               = 1,
-                            ._int.max               = INT_MAX,
-                            ._int.value             = 1};
+  N._int.header.type       = opt_int;
+  N._int.header.short_name = 'N';
+  N._int.header.long_name  = "N_dim";
+  N._int.header.help       = "N dimension size";
+  N._int.required          = 0;
+  N._int.min               = 0;
+  N._int.max               = INT_MAX;
+  N._int.value             = 2048;
+
+  lda._int.header.type       = opt_int;
+  lda._int.header.short_name = 'A';
+  lda._int.header.long_name  = "lda";
+  lda._int.header.help       = "leading A size (0 for auto)";
+  lda._int.required          = 0;
+  lda._int.min               = 0;
+  lda._int.max               = INT_MAX;
+  lda._int.value             = 0;
+
+  incX._int.header.type       = opt_int;
+  incX._int.header.short_name = 'x';
+  incX._int.header.long_name  = "incX";
+  incX._int.header.help       = "X vector increment";
+  incX._int.required          = 0;
+  incX._int.min               = 1;
+  incX._int.max               = INT_MAX;
+  incX._int.value             = 1;
+}
 
 int show_help(void){
+  matvec_options_initialize();
+
   opt_show_option(Order);
   opt_show_option(TransA);
   opt_show_option(M);
@@ -80,6 +91,8 @@ int show_help(void){
 
 const char* name(int argc, char** argv){
   static char name_buffer[MAX_LINE];
+
+  matvec_options_initialize();
 
   opt_eval_option(argc, argv, &Order);
   opt_eval_option(argc, argv, &TransA);
@@ -94,14 +107,14 @@ const char* name(int argc, char** argv){
 int test(int argc, char** argv){
   int rc;
 
+  matvec_options_initialize();
+
   opt_eval_option(argc, argv, &Order);
   opt_eval_option(argc, argv, &TransA);
   opt_eval_option(argc, argv, &M);
   opt_eval_option(argc, argv, &N);
   opt_eval_option(argc, argv, &lda);
   opt_eval_option(argc, argv, &incX);
-
-  int lda_prime;
 
   switch(Order._named.names[Order._named.value][0]){
     case 'r':
