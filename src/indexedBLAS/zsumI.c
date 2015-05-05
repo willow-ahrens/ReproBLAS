@@ -137,6 +137,8 @@ int zsum_exception(
 void zsumI1_(int N, int NB,
 	double complex* v, int inc,
 	int fold, double complex* sum, double complex* c) {
+    zmzsum(fold, N, v, inc, sum, 1, c, 1);
+    return;
 
 	double complex amax;
 
