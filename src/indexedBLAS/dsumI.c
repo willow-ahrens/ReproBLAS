@@ -85,6 +85,10 @@ void dsumI1_(int N, int NB,
 	int fold,
 	double* sum, double* c) {
 	
+
+  dmdsum(fold, N, v, inc, sum, 1, c, 1);
+  return;
+
 	double amax;
 	int i;
 	int status;

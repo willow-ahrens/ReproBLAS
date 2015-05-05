@@ -93,6 +93,7 @@ class Vectorization(object):
         self.code_block.write("if({0} < {1}){{".format(i_var, n_var))
         self.code_block.indent()
         body("({0} - {1})".format(n_var, i_var))
+        self.code_block.write("{0};".format(self.data_type.data_increment(src_ptrs, src_incs, "({0} - {1})".format(n_var, i_var))))
         self.code_block.dedent()
         self.code_block.write("}")
         break

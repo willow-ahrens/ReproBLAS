@@ -10,6 +10,47 @@ void dgemvI(int fold, rblas_order_t Order,
             double *X, int incX,
             I_double *Y, int incY);
 
+void didsum(const int fold, const int N, const double *X, const int incX, double_indexed *Y);
+void dmdsum(const int fold, const int N, const double *X, const int incX, double *manY, const int incmanY, double *carY, const int inccarY);
+void didasum(const int fold, const int N, const double *X, const int incX, double_indexed *Y);
+void dmdasum(const int fold, const int N, const double *X, const int incX, double *manY, const int incmanY, double *carY, const int inccarY);
+double didnrm(const int fold, const int N, const double *X, const int incX, double_indexed *Y);
+double dmdnrm(const int fold, const int N, const double *X, const int incX, double *manY, const int incmanY, double *carY, const int inccarY);
+void diddot(const int fold, const int N, const double *X, const int incX, const double *Y, const int incY, double_indexed *Z);
+void dmddot(const int fold, const int N, const double *X, const int incX, const double *Y, const int incY, double *manZ, const int incmanZ, double *carZ, const int inccarZ);
+
+void zizsum(const int fold, const int N, const void *X, const int incX, double_indexed *Y);
+void zmzsum(const int fold, const int N, const void *X, const int incX, double *manY, const int incmanY, double *carY, const int inccarY);
+void dizasum(const int fold, const int N, const void *X, const int incX, double_indexed *Y);
+void dmzasum(const int fold, const int N, const void *X, const int incX, double *manY, const int incmanY, double *carY, const int inccarY);
+double diznrm(const int fold, const int N, const void *X, const int incX, double_indexed *Y);
+double dmznrm(const int fold, const int N, const void *X, const int incX, double *manY, const int incmanY, double *carY, const int inccarY);
+void zizdotu(const int fold, const int N, const void *X, const int incX, const void *Y, const int incY, double_indexed *Z);
+void zmzdotu(const int fold, const int N, const void *X, const int incX, const void *Y, const int incY, double *manZ, const int incmanZ, double *carZ, const int inccarZ);
+void zizdotc(const int fold, const int N, const void *X, const int incX, const void *Y, const int incY, double_indexed *Z);
+void zmzdotc(const int fold, const int N, const void *X, const int incX, const void *Y, const int incY, double *manZ, const int incmanZ, double *carZ, const int inccarZ);
+
+void sissum(const int fold, const int N, const float *X, const int incX, float_indexed *Y);
+void smssum(const int fold, const int N, const float *X, const int incX, float *manY, const int incmanY, float *carY, const int inccarY);
+void sisasum(const int fold, const int N, const float *X, const int incX, float_indexed *Y);
+void smsasum(const int fold, const int N, const float *X, const int incX, float *manY, const int incmanY, float *carY, const int inccarY);
+float sisnrm(const int fold, const int N, const float *X, const int incX, float_indexed *Y);
+float smsnrm(const int fold, const int N, const float *X, const int incX, float *manY, const int incmanY, float *carY, const int inccarY);
+void sisdot(const int fold, const int N, const float *X, const int incX, const float *Y, const int incY, float_indexed *Z);
+void smsdot(const int fold, const int N, const float *X, const int incX, const float *Y, const int incY, float *manZ, const int incmanZ, float *carZ, const int inccarZ);
+
+void cicsum(const int fold, const int N, const void *X, const int incX, float_indexed *Y);
+void cmcsum(const int fold, const int N, const void *X, const int incX, float *manY, const int incmanY, float *carY, const int inccarY);
+void sicasum(const int fold, const int N, const void *X, const int incX, float_indexed *Y);
+void smcasum(const int fold, const int N, const void *X, const int incX, float *manY, const int incmanY, float *carY, const int inccarY);
+float sicnrm(const int fold, const int N, const void *X, const int incX, float_indexed *Y);
+float smcnrm(const int fold, const int N, const void *X, const int incX, float *manY, const int incmanY, float *carY, const int inccarY);
+void cicdotu(const int fold, const int N, const void *X, const int incX, const void *Y, const int incY, float_indexed *Z);
+void cmcdotu(const int fold, const int N, const void *X, const int incX, const void *Y, const int incY, float *manZ, const int incmanZ, float *carZ, const int inccarZ);
+void cicdotc(const int fold, const int N, const void *X, const int incX, const void *Y, const int incY, float_indexed *Z);
+void cmcdotc(const int fold, const int N, const void *X, const int incX, const void *Y, const int incY, float *manZ, const int incmanZ, float *carZ, const int inccarZ);
+
+
 #define  dsumI_(N,V,INC,S) dsumI1(N,V,INC,DEFAULT_FOLD,(S).m, (S).c)
 #define dasumI_(N,V,INC,S) dasumI1(N,V,INC,DEFAULT_FOLD,(S).m, (S).c)
 #define dnrm2I_(N,V,INC,S) dnrm2I1(N,V,INC,DEFAULT_FOLD,(S).m, (S).c)
