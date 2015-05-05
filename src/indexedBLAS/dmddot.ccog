@@ -1,0 +1,79 @@
+/*
+ *  Created   13/10/25   H.D. Nguyen
+ */
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
+#include <float.h>
+
+#include "../config.h"
+#include "../Common/Common.h"
+#include "indexedBLAS.h"
+
+//TODO clean up these includes with a python generated version that includes conditionally
+#include <immintrin.h>
+#include <emmintrin.h>
+
+/*[[[cog
+import cog
+import generate
+import dataTypes
+import dotI2
+]]]*/
+//[[[end]]]
+
+#define N_block_MAX 1024
+//TODO make N_block_max a parameter
+//TODO make sure to note in comments that we assume the indexed type has been renormalized before the call (probably already covered in the deposit documentation
+
+void dmddot(const int fold, const int N, const double *X, const int incX, const double *Y, const int incY, double *manZ, const int incmanZ, double *carZ, const int inccarZ){
+  double m;
+  double amax;
+  int i, j;
+  int N_block = MIN(N_block_MAX, dicapacity());
+  int deposits = 0;
+
+  for (i = 0; i < N; i += N_block) {
+    N_block = MIN((N - i), N_block);
+
+    amax = damaxm(N_block, X, incX, Y, incY);
+    if (amax == 0.0){
+      X += N_block * incX;
+      Y += N_block * incY;
+      continue;
+    }
+
+    if (isinf(amax) || isinf(manZ[0])){
+      for (j = 0; j < N_block; j++){
+        m = X[j * incX] + Y[j * incY];
+        if (isinf(m) || isnan(m)){
+          manZ[0] += m;
+        }
+      }
+    }
+    if (isnan(manZ[0])){
+      return;
+    } else if (isinf(manZ[0])){
+      X += N_block * incX;
+      Y += N_block * incY;
+      continue;
+    }
+
+    if (deposits + N_block > dicapacity()) {
+      dmrenorm(fold, manZ, incmanZ, carZ, inccarZ);
+      deposits = 0;
+    }
+
+    dmdupdate(fold, amax, manZ, incmanZ, carZ, inccarZ);
+
+    /*[[[cog
+    cog.out(generate.generate(dotI2.DotI2(dataTypes.Double, "N_block", "X", "incX", "manZ", "incmanZ", "Y", "incY"), cog.inFile, args, params, mode))
+    ]]]*/
+    //[[[end]]]
+
+    deposits += N_block;
+  }
+
+  dmrenorm(fold, manZ, incmanZ, carZ, inccarZ);
+}

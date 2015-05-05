@@ -1,0 +1,109 @@
+/*
+ *  Created   13/10/25   H.D. Nguyen
+ */
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
+#include <float.h>
+
+#include "../config.h"
+#include "../Common/Common.h"
+#include "indexedBLAS.h"
+
+//TODO clean up these includes with a python generated version that includes conditionally
+#include <immintrin.h>
+#include <emmintrin.h>
+
+/*[[[cog
+  import cog
+  import generate
+  import dataTypes
+  import nrm2I2
+  ]]]*/
+//[[[end]]]
+
+#define N_block_MAX 1024
+//TODO make N_block_max a parameter
+//TODO make sure to note in comments that we assume the indexed type has been renormalized before the call (probably already covered in the deposit documentation
+
+float cmsnrm(const int fold, const int N, const void *X, const int incX, float *manY, const int incmanY, float *carY, const int inccarY){
+  float amax_tmp[2];
+  float amax;
+  float scale = 0.0;
+  float new_scale = 0.0;
+  int i, j;
+  int N_block = MIN(N_block_MAX, sicapacity());
+  int deposits = 0;
+  float_complex_indexed *nrm = cialloc(fold);
+
+  float *x = (float*)X;
+
+  for (i = 0; i < N; i += N_block) {
+    N_block = MIN((N - i), N_block);
+
+    camax_sub(N_block, (const void *)x, incX, amax);
+    if (amax[0] == 0.0 && amax[1] == 0.0){
+      x += N_block * 2 * incX;
+      continue;
+    }
+
+    if (isinf(amax[0]) || isinf(amax[1]) || isinf(manY[0])){
+      for (j = 0; j < N_block; j++){
+        if (isinf(x[j * 2 * incX]) || isnan(X[j * 2 * incX])){
+          manY[0] += fabsf(X[j * 2 * incX])
+        }
+        if (isinf(x[j * 2 * incX + 1]) || isnan(X[j * 2 * incX + 1])){
+          manY[0] += fabsf(X[j * 2 * incX + 1])
+        }
+      }
+    }
+    if (isnan(manY[0])){
+      return 1.0;
+    } else if (isinf(manY[0])){
+      x += N_block * 2 * incX;
+      continue;
+    }
+
+    if (deposits + N_block > sicapacity()) {
+      cirenorm(fold, nrm);
+      deposits = 0;
+    }
+
+    new_scale = sbound(sindex(amax))/1.5;
+    if (new_scale > scale) {
+      if (scale > 0.0) {
+        scale = scale / new_scale;
+        scale = scale * scale;
+        for (j = 0; j < fold; j++) {
+          nrm[j * 2] *= scale;
+          nrm[j * 2 + 1] *= scale;
+        }
+      }
+      scale = new_scale;
+    }
+
+    new_scale = 1.0 / scale;
+    amax[0] *= new_scale;
+    amax[1] *= new_scale;
+    amax[0] = amax[0] * amax[0];
+    amax[1] = amax[1] * amax[1];
+
+    cmcupdate(fold, amax, manY, incmanY, carY, inccarY);
+
+    /*[[[cog
+      cog.out(generate.generate(nrm2I2.Nrm2I2(dataTypes.Float, "N_block", "X", "incX", "manY", "incmanY", "new_scale"), cog.inFile, args, params, mode))
+      ]]]*/
+    //[[[end]]]
+
+    deposits += N_block;
+  }
+
+  cmrenorm(fold, nrm);
+
+  if (isinf(manY[0]) || isnan(manY[0])){
+    return 1.0;
+  } else {
+    return scale;
+  }
+}
