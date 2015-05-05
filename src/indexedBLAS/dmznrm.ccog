@@ -19,7 +19,7 @@
   import cog
   import generate
   import dataTypes
-  import nrm2I2
+  import depositNrm
   ]]]*/
 //[[[end]]]
 
@@ -53,8 +53,8 @@ double dmznrm(const int fold, const int N, const void *X, const int incX, double
 
     if (isinf(amax) || isinf(manY[0])){
       for (j = 0; j < N_block; j++){
-        manY[0] += fabsf(x[j * 2 * incX]);
-        manY[0] += fabsf(x[j * 2 * incX + 1]);
+        manY[0] += fabs(x[j * 2 * incX]);
+        manY[0] += fabs(x[j * 2 * incX + 1]);
       }
     }
     if (isnan(manY[0]) || isnan(nrm[0]) || isnan(nrm[1])){
@@ -91,7 +91,7 @@ double dmznrm(const int fold, const int N, const void *X, const int incX, double
     zidupdate(fold, amax, nrm);
 
     /*[[[cog
-      cog.out(generate.generate(nrm2I2.Nrm2I2(dataTypes.DoubleComplex, "N_block", "x", "incX", "nrm", 1, "new_scale"), cog.inFile, args, params, mode))
+      cog.out(generate.generate(depositNrm.DepositNrm(dataTypes.DoubleComplex, "N_block", "x", "incX", "nrm", 1, "new_scale"), cog.inFile, args, params, mode))
       ]]]*/
     //[[[end]]]
 

@@ -19,7 +19,7 @@
 import cog
 import generate
 import dataTypes
-import sumI2
+import depositSum
 ]]]*/
 //[[[end]]]
 
@@ -75,7 +75,7 @@ void cmcsum(const int fold, const int N, const void *X, const int incX, float *m
     cmcupdate(fold, amax, manY, incmanY, carY, inccarY);
 
     /*[[[cog
-    cog.out(generate.generate(sumI2.SumI2(dataTypes.DoubleComplex, "N_block", "x", "incX", "manY", "incmanY"), cog.inFile, args, params, mode))
+    cog.out(generate.generate(depositSum.DepositSum(dataTypes.FloatComplex, "N_block", "x", "incX", "manY", "incmanY"), cog.inFile, args, params, mode))
     ]]]*/
     //[[[end]]]
 

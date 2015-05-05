@@ -19,7 +19,7 @@
 import cog
 import generate
 import dataTypes
-import asumI2
+import depositASum
 ]]]*/
 //[[[end]]]
 
@@ -62,7 +62,7 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
     smsupdate(fold, amax, manY, incmanY, carY, inccarY);
 
     /*[[[cog
-    cog.out(generate.generate(asumI2.ASumI2(dataTypes.Float, "N_block", "X", "incX", "manY", "incmanY"), cog.inFile, args, params, mode))
+    cog.out(generate.generate(depositASum.DepositASum(dataTypes.Float, "N_block", "X", "incX", "manY", "incmanY"), cog.inFile, args, params, mode))
     ]]]*/
     //[[[end]]]
 

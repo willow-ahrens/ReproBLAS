@@ -19,7 +19,7 @@
 import cog
 import generate
 import dataTypes
-import dotI2
+import depositDot
 ]]]*/
 //[[[end]]]
 
@@ -64,7 +64,7 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
     smsupdate(fold, amaxm, manZ, incmanZ, carZ, inccarZ);
 
     /*[[[cog
-    cog.out(generate.generate(dotI2.DotI2(dataTypes.Float, "N_block", "X", "incX", "manZ", "incmanZ", "Y", "incY"), cog.inFile, args, params, mode))
+    cog.out(generate.generate(depositDot.DepositDot(dataTypes.Float, "N_block", "X", "incX", "manZ", "incmanZ", "Y", "incY"), cog.inFile, args, params, mode))
     ]]]*/
     //[[[end]]]
 

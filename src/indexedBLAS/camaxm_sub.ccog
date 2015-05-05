@@ -13,13 +13,13 @@
 import cog
 import generate
 import dataTypes
-import dotcI2
+import amaxm
 ]]]*/
 //[[[end]]]
 
-void cdotcI2(int n, float complex* v, int incv, float complex* y, int incy, int fold, float complex* sum){
+void camaxm_sub(const int N, const void *X, const int incX, const void *Y, const int incY, void *amaxm){
   /*[[[cog
-  cog.out(generate.generate(dotcI2.DotCI2(dataTypes.FloatComplex, "n", "v", "incv", "sum", 1, "y", "incy"), cog.inFile, args, params, mode))
+  cog.out(generate.generate(amaxm.AMaxM(dataTypes.FloatComplex, "N", "X", "incX", "Y", "incY", "amaxm"), cog.inFile, args, params, mode))
   ]]]*/
   //[[[end]]]
 }

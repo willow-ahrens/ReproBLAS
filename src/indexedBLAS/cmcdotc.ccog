@@ -19,7 +19,7 @@
 import cog
 import generate
 import dataTypes
-import dotcI2
+import depositDotC
 ]]]*/
 //[[[end]]]
 
@@ -79,7 +79,7 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
     cmcupdate(fold, amaxm, manZ, incmanZ, carZ, inccarZ);
 
     /*[[[cog
-    cog.out(generate.generate(dotcI2.DotCI2(dataTypes.FloatComplex, "N_block", "x", "incX", "manZ", "incmanZ", "y", "incY"), cog.inFile, args, params, mode))
+    cog.out(generate.generate(depositDotC.DepositDotC(dataTypes.FloatComplex, "N_block", "x", "incX", "manZ", "incmanZ", "y", "incY"), cog.inFile, args, params, mode))
     ]]]*/
     //[[[end]]]
 

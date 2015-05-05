@@ -19,7 +19,7 @@
   import cog
   import generate
   import dataTypes
-  import nrm2I2
+  import depositNrm
   ]]]*/
 //[[[end]]]
 
@@ -80,7 +80,7 @@ float smsnrm(const int fold, const int N, const float *X, const int incX, float 
     smsupdate(fold, amax, manY, incmanY, carY, inccarY);
 
     /*[[[cog
-      cog.out(generate.generate(nrm2I2.Nrm2I2(dataTypes.Float, "N_block", "X", "incX", "manY", "incmanY", "new_scale"), cog.inFile, args, params, mode))
+      cog.out(generate.generate(depositNrm.DepositNrm(dataTypes.Float, "N_block", "X", "incX", "manY", "incmanY", "new_scale"), cog.inFile, args, params, mode))
       ]]]*/
     //[[[end]]]
 

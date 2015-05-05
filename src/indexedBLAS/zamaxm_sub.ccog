@@ -12,13 +12,13 @@
 import cog
 import generate
 import dataTypes
-import asumI2
+import amaxm
 ]]]*/
 //[[[end]]]
 
-void scasumI2(int n, float complex* v, int incv, int fold, float complex* sum){
+void zamaxm_sub(const int N, const double *X, const int incX, const double *Y, const int incY, void *amaxm){
   /*[[[cog
-  cog.out(generate.generate(asumI2.ASumI2(dataTypes.FloatComplex, "n", "v", "incv", "sum", 1), cog.inFile, args, params, mode))
+  cog.out(generate.generate(amaxm.AMaxM(dataTypes.DoubleComplex, "N", "X", "incX", "Y", "incY", "amaxm"), cog.inFile, args, params, mode))
   ]]]*/
   //[[[end]]]
 }

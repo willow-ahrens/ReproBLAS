@@ -4,13 +4,13 @@ import generate
 import dataTypes
 from src.indexed import deposit
 
-class Nrm2I2(deposit.Deposit):
+class DepositNrm(deposit.Deposit):
   def __init__(self, data_type_class, N, X, incX, manY, incmanY, scale):
-    super(Nrm2I2, self).__init__(data_type_class, N, X, incX, manY, incmanY)
+    super(DepositNrm, self).__init__(data_type_class, N, X, incX, manY, incmanY)
     redundant_char = ""
     if self.data_type_class.is_complex:
       redundant_char = self.data_type_class.base_type.name_char
-    self.name = "{0}{1}nrm2I2".format(redundant_char, self.data_type_class.name_char)
+    self.name = "{0}{1}depositNrm".format(redundant_char, self.data_type_class.name_char)
     self.metric_name = "r{0}{1}nrm2".format(redundant_char, self.data_type_class.name_char)
     self.scale = scale
 

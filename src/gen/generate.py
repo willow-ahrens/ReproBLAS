@@ -182,7 +182,7 @@ class ParameterSpace:
 
     for parameter in target.get_parameters():
       if parameter.name in self.parameters:
-        assert False, "ReproBLAS error: duplicate parameter"
+        assert False, 'ReproBLAS error: duplicate parameter "{}"'.format(parameter.name)
       self.parameters[parameter.name] = parameter
 
   def get_value(self, argument, arguments):

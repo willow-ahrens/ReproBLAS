@@ -19,7 +19,7 @@
 import cog
 import generate
 import dataTypes
-import dotuI2
+import depositDotU
 ]]]*/
 //[[[end]]]
 
@@ -78,7 +78,7 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
     cmcupdate(fold, amaxm, manZ, incmanZ, carZ, inccarZ);
 
     /*[[[cog
-    cog.out(generate.generate(dotuI2.DotUI2(dataTypes.FloatComplex, "N_block", "x", "incX", "manZ", "incmanZ", "y", "incY"), cog.inFile, args, params, mode))
+    cog.out(generate.generate(depositDotU.DepositDotU(dataTypes.FloatComplex, "N_block", "x", "incX", "manZ", "incmanZ", "y", "incY"), cog.inFile, args, params, mode))
     ]]]*/
     //[[[end]]]
 

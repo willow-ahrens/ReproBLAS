@@ -19,7 +19,7 @@
   import cog
   import generate
   import dataTypes
-  import nrm2I2
+  import depositNrm
   ]]]*/
 //[[[end]]]
 
@@ -91,7 +91,7 @@ float smcnrm(const int fold, const int N, const void *X, const int incX, float *
     cisupdate(fold, amax, nrm);
 
     /*[[[cog
-      cog.out(generate.generate(nrm2I2.Nrm2I2(dataTypes.FloatComplex, "N_block", "x", "incX", "nrm", 1, "new_scale"), cog.inFile, args, params, mode))
+      cog.out(generate.generate(depositNrm.DepositNrm(dataTypes.FloatComplex, "N_block", "x", "incX", "nrm", 1, "new_scale"), cog.inFile, args, params, mode))
       ]]]*/
     //[[[end]]]
 

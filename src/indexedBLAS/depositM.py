@@ -6,9 +6,9 @@ from vectorizations import *
 from generate import *
 from src.indexed import deposit
 
-class DotDeposit(deposit.Deposit):
+class DepositM(deposit.Deposit):
   def __init__(self, data_type_class, N, X, incX, manY, incmanY, Z, incZ):
-    super(DotDeposit, self).__init__(data_type_class, N, X, incX, manY, incmanY)
+    super(DepositM, self).__init__(data_type_class, N, X, incX, manY, incmanY)
     self.Z = Z
     self.incZ = incZ
 

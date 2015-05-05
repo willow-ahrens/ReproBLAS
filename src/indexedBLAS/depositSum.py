@@ -4,11 +4,9 @@ import generate
 import dataTypes
 from src.indexed import deposit
 
-class SumI2(deposit.Deposit):
-  name = "sumI"
-
+class DepositSum(deposit.Deposit):
   def __init__(self, data_type_class, N, X, incX, manY, incmanY):
-    super(SumI2, self).__init__(data_type_class, N, X, incX, manY, incmanY)
-    self.name = "{0}sumI2".format(self.data_type_class.name_char)
+    super(DepositSum, self).__init__(data_type_class, N, X, incX, manY, incmanY)
+    self.name = "{0}depositSum".format(self.data_type_class.name_char)
     self.metric_name = "r{0}sum".format(self.data_type_class.name_char)
 

@@ -4,13 +4,13 @@ import generate
 import dataTypes
 from src.indexed import deposit
 
-class ASumI2(deposit.Deposit):
+class DepositASum(deposit.Deposit):
   def __init__(self, data_type_class, N, X, incX, manY, incmanY):
-    super(ASumI2, self).__init__(data_type_class, N, X, incX, manY, incmanY)
+    super(DepositASum, self).__init__(data_type_class, N, X, incX, manY, incmanY)
     redundant_char = ""
     if self.data_type_class.is_complex:
       redundant_char = self.data_type_class.base_type.name_char
-    self.name = "{0}{1}asumI2".format(redundant_char, self.data_type_class.name_char)
+    self.name = "{0}{1}depositASum".format(redundant_char, self.data_type_class.name_char)
     self.metric_name = "r{0}{1}asum".format(redundant_char, self.data_type_class.name_char)
 
   def preprocess(self, code_block, n, incs, partial="", align = False):

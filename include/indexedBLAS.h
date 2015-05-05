@@ -8,7 +8,7 @@ void dgemvI(int fold, rblas_order_t Order,
             rblas_transpose_t TransA, int M, int N,
             double *A, int lda,
             double *X, int incX,
-            I_double *Y, int incY);
+            double_indexed *Y, int incY);
 
 float samax(const int N, const float *X, const int incX);
 double damax(const int N, const double *X, const int incX);
@@ -60,7 +60,7 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
 void cicdotc(const int fold, const int N, const void *X, const int incX, const void *Y, const int incY, float_indexed *Z);
 void cmcdotc(const int fold, const int N, const void *X, const int incX, const void *Y, const int incY, float *manZ, const int incmanZ, float *carZ, const int inccarZ);
 
-
+/*
 #define  dsumI_(N,V,INC,S) dsumI1(N,V,INC,DEFAULT_FOLD,(S).m, (S).c)
 #define dasumI_(N,V,INC,S) dasumI1(N,V,INC,DEFAULT_FOLD,(S).m, (S).c)
 #define dnrm2I_(N,V,INC,S) dnrm2I1(N,V,INC,DEFAULT_FOLD,(S).m, (S).c)
@@ -307,5 +307,6 @@ extern void cIAccDestroy(cIAccum *acc);
 extern void cIAccumulate(cIAccum *acc, float complex x);
 extern void cIAccumulates(cIAccum *acc, int n, float complex* x, int inc);
 extern float complex cIAccExtract(cIAccum *acc);
+*/
 
 #endif

@@ -11,14 +11,14 @@
 import cog
 import generate
 import dataTypes
-import amax
+import amaxm
 ]]]*/
 //[[[end]]]
 
 double damaxm(const int N, const double *X, const int incX, const double *Y, const int incY){
   double amaxm;
   /*[[[cog
-  cog.out(generate.generate(amax.AMaxM(dataTypes.Double, "N", "X", "incX", "Y", "incY", "(&amaxm)"), cog.inFile, args, params, mode))
+  cog.out(generate.generate(amaxm.AMaxM(dataTypes.Double, "N", "X", "incX", "Y", "incY", "(&amaxm)"), cog.inFile, args, params, mode))
   ]]]*/
   //[[[end]]]
   return amaxm;
