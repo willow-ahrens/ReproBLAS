@@ -155,7 +155,7 @@ void zdotI1_(int N, int NB,
 		lN = NB < (N - i) ? NB:(N-i);
 
 		// LOCAL MAX ABSOLUTE
-		amax = zamaxm(lN, v, inc, y, incy);
+		zamaxm_sub(lN, v, inc, y, incy, &amax);
 		status = zdot_exception(amax, N, v, inc, y, incy, fold, dot);
 
 		// TODO: CHECK STATUS

@@ -174,7 +174,7 @@ void cdotI1_(int N, int NB,
 		lN = NB < (N - i) ? NB:(N-i);
 
 		// LOCAL MAX ABSOLUTE
-		amax = camaxm(lN, v, inc, y, incy);
+		camaxm_sub(lN, v, inc, y, incy, &amax);
 //		printf("\ndotI1, max: 2^%g 2^%g\n", log2f(amax.real), log2f(amax.imag)); //		amax = camax(lN, v, inc);
 		status = cdot_exception(amax, N, v, inc, y, incy, fold, dot);
 

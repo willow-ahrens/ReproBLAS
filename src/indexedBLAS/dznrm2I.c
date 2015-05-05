@@ -45,6 +45,7 @@ double dznrm2I1_(int N, int NB,
 	double complex amaxz;
 	double complex BUFFER[2 * MAX_FOLD];
 
+    return dmznrm(fold, N, v, inc, sum, 1, c, 1);
 	int i, j;
 	int status;
 	int lN;
@@ -63,7 +64,7 @@ double dznrm2I1_(int N, int NB,
 		lN = NB < (N - i) ? NB:(N-i);
 
 		// LOCAL MAX ABSOLUTE
-		amaxz = zamax(lN, v, inc);
+		zamax_sub(lN, v, inc, &amaxz);
 		amax = ZREAL_(amaxz) < ZIMAG_(amaxz) ? ZIMAG_(amaxz) : ZREAL_(amaxz);
 
 		if (amax == 0.0)

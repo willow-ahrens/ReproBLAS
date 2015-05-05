@@ -47,6 +47,9 @@ void scasumI1_(int N, int NB,
 	int fold, float* sum, float* carry,
 	float complex* work) {
 
+    smcasum(fold, N, v, inc, sum, 1, carry, 1);
+    return;
+
 	float amax;
 	float complex amaxz;
 
@@ -82,7 +85,7 @@ void scasumI1_(int N, int NB,
 		lN = NB < (N - i) ? NB:(N-i);
 
 		// LOCAL MAX ABSOLUTE
-		amaxz = camax(lN, v, inc);
+		camax_sub(lN, v, inc, &amaxz);
 		amax = CREAL_(amaxz) < CIMAG_(amaxz) ? CIMAG_(amaxz) : CREAL_(amaxz);
 
 		if (amax == 0.0)

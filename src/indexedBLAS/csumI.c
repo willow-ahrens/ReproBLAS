@@ -147,7 +147,7 @@ void csumI1_(int N, int NB,
 		lN = NB < (N - i) ? NB:(N-i);
 
 		// LOCAL MAX ABSOLUTE
-		amax = camax(lN, v, inc);
+		camax_sub(lN, v, inc, &amax);
 		status = csum_exception(amax, N, v, inc, fold, sum);
 
 		// TODO: CHECK STATUS

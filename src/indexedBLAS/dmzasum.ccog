@@ -1,0 +1,89 @@
+/*
+ *  Created   13/10/25   H.D. Nguyen
+ */
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
+#include <float.h>
+
+#include "../config.h"
+#include "../Common/Common.h"
+#include "indexedBLAS.h"
+
+//TODO clean up these includes with a python generated version that includes conditionally
+#include <immintrin.h>
+#include <emmintrin.h>
+
+/*[[[cog
+  import cog
+  import generate
+  import dataTypes
+  import asumI2
+  ]]]*/
+//[[[end]]]
+
+#define N_block_MAX 1024
+//TODO make N_block_max a parameter
+//TODO make sure to note in comments that we assume the indexed type has been renormalized before the call (probably already covered in the deposit documentation
+
+void dmzasum(const int fold, const int N, const void *X, const int incX, double *manY, const int incmanY, double *carY, const int inccarY){
+  double amax_tmp[2];
+  double amax;
+  int i, j;
+  int N_block = MIN(N_block_MAX, dicapacity());
+  int deposits = 0;
+  double_complex_indexed *asum = zialloc(fold);
+  zisetzero(fold, asum);
+
+  const double *x = (const double*)X;
+
+  for (i = 0; i < N; i += N_block) {
+    N_block = MIN((N - i), N_block);
+
+    zamax_sub(N_block, x, incX, amax_tmp);
+    amax = MAX(amax_tmp[0], amax_tmp[1]);
+    if (amax == 0.0){
+      x += N_block * 2 * incX;
+      continue;
+    }
+
+    if (isinf(amax) || isinf(manY[0])){
+      for (j = 0; j < N_block; j++){
+        if (isinf(x[j * 2 * incX]) || isnan(x[j * 2 * incX])){
+          manY[0] += fabsf(x[j * 2 * incX]);
+        }
+      }
+    }
+    if (isnan(manY[0]) || isnan(asum[0]) || isnan(asum[1])){
+      manY[0] += asum[0] + asum[1];
+      free(asum);
+      return;
+    } else if (isinf(manY[0])){
+      x += N_block * incX;
+      continue;
+    }
+
+    if (deposits + N_block > dicapacity()) {
+      zirenorm(fold, asum);
+      deposits = 0;
+    }
+
+    zidupdate(fold, amax, asum);
+
+    /*[[[cog
+      cog.out(generate.generate(asumI2.ASumI2(dataTypes.DoubleComplex, "N_block", "x", "incX", "asum", 1), cog.inFile, args, params, mode))
+      ]]]*/
+    //[[[end]]]
+
+    deposits += N_block;
+  }
+
+  zirenorm(fold, asum);
+  dmdmadd(fold, asum, 2, asum + 2 * fold, 2, manY, incmanY, carY, inccarY);
+  dmdmadd(fold, asum + 1, 2, asum + 2 * fold + 1, 2, manY, incmanY, carY, inccarY);
+
+  free(asum);
+
+  return;
+}

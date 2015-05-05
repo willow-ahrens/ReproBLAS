@@ -39,13 +39,13 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   util_zvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
   X[0]         = -big + -_Complex_I * big;
 
-  res = zamax(N, X, incX);
+  zamax_sub(N, X, incX, &res);
   if (res != ref) {
     printf("zamax(X) = %g + %gi != %g + %gi (1 Big at beginning)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(ref), ZIMAG_(ref));
     return 1;
   }
 
-  res = zamaxm(N, X, incX, Y, incY);
+  zamaxm_sub(N, X, incX, Y, incY, &res);
   if (res != ref) {
     printf("zamaxm(X) = %g + %gi != %g + %gi (1 Big at beginning)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(ref), ZIMAG_(ref));
     return 1;
@@ -55,13 +55,13 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   util_zvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
   X[(N-1)*incX]         = -big + -_Complex_I * big;
 
-  res = zamax(N, X, incX);
+  zamax_sub(N, X, incX, &res);
   if (res != ref) {
     printf("zamax(X) = %g + %gi != %g + %gi (1 Big at end)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(ref), ZIMAG_(ref));
     return 1;
   }
 
-  res = zamaxm(N, X, incX, Y, incY);
+  zamaxm_sub(N, X, incX, Y, incY, &res);
   if (res != ref) {
     printf("zamaxm(X) = %g + %gi != %g + %gi (1 Big at end)\n", ZREAL_(res), ZIMAG_(res), ZREAL_(ref), ZIMAG_(ref));
     return 1;

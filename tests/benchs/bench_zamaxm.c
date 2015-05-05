@@ -33,7 +33,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double Scale
 
   time_tic();
   for(int i = 0; i < trials; i++){
-    res = zamaxm(N, X, incX, Y, incY);
+    zamaxm_sub(N, X, incX, Y, incY, &res);
   }
   time_toc();
 

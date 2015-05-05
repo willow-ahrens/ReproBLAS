@@ -45,6 +45,9 @@ void dzasumI1_(int N, int NB,
 	dcomplex* v, int inc,
 	int fold, double* sum, double * c) {
 
+    dmzasum(fold, N, v, inc, sum, 1, c, 1);
+    return;
+
 	double amax;
 	double M;
 	dcomplex amaxz;
@@ -66,7 +69,7 @@ void dzasumI1_(int N, int NB,
 		lN = NB < (N - i) ? NB:(N-i);
 
 		// LOCAL MAX ABSOLUTE
-		amaxz = zamax(lN, v, inc);
+		zamax_sub(lN, v, inc, &amaxz);
 		amax = ZREAL_(amaxz) < ZIMAG_(amaxz) ? ZIMAG_(amaxz) : ZREAL_(amaxz);
 
 		if (amax == 0.0)

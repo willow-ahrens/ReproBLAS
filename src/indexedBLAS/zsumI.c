@@ -150,7 +150,7 @@ void zsumI1_(int N, int NB,
 		lN = NB < (N - i) ? NB:(N-i);
 
 		// LOCAL MAX ABSOLUTE
-		amax = zamax(lN, v, inc);
+		zamax_sub(lN, v, inc, &amax);
 		status = zsum_exception(amax, N, v, inc, fold, sum);
 
 		// TODO: CHECK STATUS

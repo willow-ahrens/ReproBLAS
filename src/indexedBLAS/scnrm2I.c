@@ -42,6 +42,8 @@ float scnrm2I1_(int N, int NB,
 	float complex* v, int inc,
 	int fold, float* sum, float* carry,
 	float complex* work) {
+
+    return smcnrm(fold, N, v, inc, sum, 1, carry, 1);
 	
 	float amax;
 	float complex amaxz;

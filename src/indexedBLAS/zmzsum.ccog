@@ -27,8 +27,8 @@ import sumI2
 //TODO make N_block_max a parameter
 //TODO make sure to note in comments that we assume the indexed type has been renormalized before the call (probably already covered in the deposit documentation
 
-void zmzsum(const int fold, const int N, const void *X, const int incX, double *manY, const int incmanY, double *carY, const int inccarY){
-  double amax[2];
+void dmdsum(const int fold, const int N, const double *X, const int incX, double *manY, const int incmanY, double *carY, const int inccarY){
+  double amax;
   int i, j;
   int N_block = MIN(N_block_MAX, dicapacity());
   int deposits = 0;
