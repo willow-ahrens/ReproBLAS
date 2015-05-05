@@ -18,8 +18,10 @@ import amaxm
 //[[[end]]]
 
 void camaxm_sub(const int N, const void *X, const int incX, const void *Y, const int incY, void *amaxm){
+  const float *x = (const float*)X;
+  const float *y = (const float*)Y;
   /*[[[cog
-  cog.out(generate.generate(amaxm.AMaxM(dataTypes.FloatComplex, "N", "X", "incX", "Y", "incY", "amaxm"), cog.inFile, args, params, mode))
+  cog.out(generate.generate(amaxm.AMaxM(dataTypes.FloatComplex, "N", "x", "incX", "y", "incY", "amaxm"), cog.inFile, args, params, mode))
   ]]]*/
   //[[[end]]]
 }

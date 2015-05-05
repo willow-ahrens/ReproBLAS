@@ -18,8 +18,9 @@ import amax
 //[[[end]]]
 
 void camax_sub(const int N, const void *X, const int incX, void *amax) {
+  const float *x = (const float*)X;
   /*[[[cog
-  cog.out(generate.generate(amax.AMax(dataTypes.FloatComplex, "N", "X", "incX", "amax"), cog.inFile, args, params, mode))
+  cog.out(generate.generate(amax.AMax(dataTypes.FloatComplex, "N", "x", "incX", "amax"), cog.inFile, args, params, mode))
   ]]]*/
   //[[[end]]]
 }

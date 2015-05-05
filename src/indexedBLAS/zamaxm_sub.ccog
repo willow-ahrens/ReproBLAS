@@ -16,9 +16,11 @@ import amaxm
 ]]]*/
 //[[[end]]]
 
-void zamaxm_sub(const int N, const double *X, const int incX, const double *Y, const int incY, void *amaxm){
+void zamaxm_sub(const int N, const void *X, const int incX, const void *Y, const int incY, void *amaxm){
+  const double *x = (const double*)X;
+  const double *y = (const double*)Y;
   /*[[[cog
-  cog.out(generate.generate(amaxm.AMaxM(dataTypes.DoubleComplex, "N", "X", "incX", "Y", "incY", "amaxm"), cog.inFile, args, params, mode))
+  cog.out(generate.generate(amaxm.AMaxM(dataTypes.DoubleComplex, "N", "x", "incX", "y", "incY", "amaxm"), cog.inFile, args, params, mode))
   ]]]*/
   //[[[end]]]
 }

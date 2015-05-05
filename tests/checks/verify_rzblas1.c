@@ -8,21 +8,24 @@
 
 #include "../common/test_vecvec_fill_header.h"
 
-static opt_option func_type = {._named.header.type       = opt_named,
-                               ._named.header.short_name = 'w',
-                               ._named.header.long_name  = "w_type",
-                               ._named.header.help       = "wrapped function type",
-                               ._named.required          = 1,
-                               ._named.n_names           = wrap_rzblas1_n_names,
-                               ._named.names             = (char**)wrap_rzblas1_names,
-                               ._named.descs             = (char**)wrap_rzblas1_descs,
-                               ._named.value             = wrap_RZSUM};
+static opt_option func_type;
+static void verify_rzblas1_options_initialize(void){
+  func_type._named.header.type       = opt_named;
+  func_type._named.header.short_name = 'w';
+  func_type._named.header.long_name  = "w_type";
+  func_type._named.header.help       = "wrapped function type";
+  func_type._named.required          = 1;
+  func_type._named.n_names           = wrap_rzblas1_n_names;
+  func_type._named.names             = (char**)wrap_rzblas1_names;
+  func_type._named.descs             = (char**)wrap_rzblas1_descs;
+  func_type._named.value             = wrap_RZSUM;
+}
 
-int verify_rzblas1_reproducibility(int N, double complex* X, int incX, double complex* Y, int incY, int func, double complex ref, I_double_Complex Iref, int max_num_blocks) {
+int verify_rzblas1_reproducibility(int N, double complex* X, int incX, double complex* Y, int incY, int func, double complex ref, double_complex_indexed *Iref, int max_num_blocks) {
   // GENERATE DATA
   int i;
   double complex res;
-  I_double_Complex Ires;
+  double_complex_indexed *Ires = zialloc(DEFAULT_FOLD);
   int num_blocks = 1;
 
   int block_N = (N + num_blocks - 1) / num_blocks;
@@ -33,38 +36,43 @@ int verify_rzblas1_reproducibility(int N, double complex* X, int incX, double co
       res = (wrap_rzblas1_func(func))(N, X, incX, Y, incY);
     else {
       block_N =  (N + num_blocks - 1) / num_blocks;
-      zisetzero(DEFAULT_FOLD, &Ires);
+      zisetzero(DEFAULT_FOLD, Ires);
       for (i = 0; i < N; i += block_N) {
         block_N = block_N < N - i ? block_N : (N-i);
-        I_double_Complex foo = (wrap_ziblas1_func(func))(block_N, X + i * incX, incX, Y + i * incY, incY);
-        ziziadd(DEFAULT_FOLD, &foo, &Ires);
+        (wrap_ziblas1_func(func))(block_N, X + i * incX, incX, Y + i * incY, incY, Ires);
       }
-      zziconv_sub(DEFAULT_FOLD, &Ires, &res);
+      zziconv_sub(DEFAULT_FOLD, Ires, &res);
     }
     if (res != ref) {
       printf("%s(X, Y)[num_blocks=%d,block_N=%d] = %g + %gi != %g + %gi\n", wrap_rzblas1_names[func], num_blocks, block_N, CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
       if (num_blocks == 1) {
-        Ires = (wrap_ziblas1_func(func))(N, X, incX, Y, incY);
+        zisetzero(DEFAULT_FOLD, Ires);
+        (wrap_ziblas1_func(func))(N, X, incX, Y, incY, Ires);
       }
       printf("Ref I_double_Complex:\n");
-      ziprint(DEFAULT_FOLD, &Iref);
+      ziprint(DEFAULT_FOLD, Iref);
       printf("\nRes I_double_Complex:\n");
-      ziprint(DEFAULT_FOLD, &Ires);
+      ziprint(DEFAULT_FOLD, Ires);
       printf("\n");
       return 1;
     }
     num_blocks *= 2;
   }
+  free(Ires);
   return 0;
 }
 
 int vecvec_fill_show_help(void){
+  verify_rzblas1_options_initialize();
+
   opt_show_option(func_type);
   return 0;
 }
 
 const char* vecvec_fill_name(int argc, char** argv){
   static char name_buffer[MAX_LINE];
+
+  verify_rzblas1_options_initialize();
 
   opt_eval_option(argc, argv, &func_type);
   snprintf(name_buffer, MAX_LINE * sizeof(char), "Verify %s reproducibility", wrap_rzblas1_names[func_type._named.value]);
@@ -74,8 +82,10 @@ const char* vecvec_fill_name(int argc, char** argv){
 int vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, double CondX, int incX, int FillY, double ScaleY, double CondY, int incY){
   int rc = 0;
   double complex ref;
-  I_double_Complex Iref;
+  double_complex_indexed *Iref = zialloc(DEFAULT_FOLD);
   int max_num_blocks = 1024;
+
+  verify_rzblas1_options_initialize();
 
   util_random_seed();
 
@@ -95,7 +105,8 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, dou
 
   //compute with unpermuted data
   ref  = (wrap_rzblas1_func(func_type._named.value))(N, X, incX, Y, incY);
-  Iref = (wrap_ziblas1_func(func_type._named.value))(N, X, incX, Y, incY);
+  zisetzero(DEFAULT_FOLD, Iref);
+  (wrap_ziblas1_func(func_type._named.value))(N, X, incX, Y, incY, Iref);
 
   P = util_identity_permutation(N);
   util_zvec_reverse(N, X, incX, P, 1);
@@ -187,6 +198,7 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, dou
     return rc;
   }
 
+  free(Iref);
   free(X);
   free(Y);
 
