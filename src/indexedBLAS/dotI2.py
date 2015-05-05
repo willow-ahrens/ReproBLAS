@@ -4,7 +4,7 @@ import generate
 import dataTypes
 import blas1I2
 
-class DotI2(blas1I2.DotOneDimensionalAccumulation):
+class DotI2(blas1I2.DotDeposit):
   def __init__(self, data_type_class):
     assert not data_type_class.is_complex, "dot is only for real types"
     super(DotI2, self).__init__(data_type_class)

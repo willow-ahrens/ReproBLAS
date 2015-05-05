@@ -4,7 +4,7 @@ import generate
 import dataTypes
 import blas1I2
 
-class SumI2(blas1I2.NonDotOneDimensionalAccumulation):
+class SumI2(blas1I2.Deposit):
   name = "sumI"
 
   def __init__(self, data_type_class):

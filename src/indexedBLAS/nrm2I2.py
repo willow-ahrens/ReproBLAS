@@ -4,7 +4,7 @@ import generate
 import dataTypes
 import blas1I2
 
-class Nrm2I2(blas1I2.NonDotOneDimensionalAccumulation):
+class Nrm2I2(blas1I2.Deposit):
   def __init__(self, data_type_class):
     super(Nrm2I2, self).__init__(data_type_class)
     redundant_char = ""

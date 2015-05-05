@@ -5,10 +5,11 @@ from dataTypes import *
 from vectorizations import *
 from generate import *
 
-class OneDimensionalAccumulation(Target):
+class Deposit(Target):
+  standard_incs = ["incv"]
 
   def __init__(self, data_type_class):
-    super(OneDimensionalAccumulation, self).__init__()
+    super(Deposit, self).__init__()
     self.default_fold = 3 #TODO Read this from config.h
     self.max_fold = 4 #TODO Read this from config.h
     self.max_expand_fold = min(self.max_fold, 6)
@@ -82,15 +83,7 @@ class OneDimensionalAccumulation(Target):
       code_block.dedent()
       code_block.write("}")
 
-  #TODO this should probably be two methods, one for generic fold and one for specific
   def write_fold(self, code_block, fold, max_pipe_width, max_unroll_width):
-#    if self.vec.name == "AVX":
-#      self.code_block.write('printf("Hi im avx {0}\\n");'.format(self.name))
-#    elif self.vec.name == "SSE":
-#      self.code_block.write('printf("Hi im sse {0}\\n");'.format(self.name))
-#    else:
-#      self.code_block.write('printf("Hi im sisd {0}\\n");'.format(self.name))
-
     max_reg_width = self.compute_reg_width(max_pipe_width)
     if fold == 0:
       code_block.write("int i, j;")
@@ -133,7 +126,7 @@ class OneDimensionalAccumulation(Target):
       for j in range(fold):
         self.vec.propagate_into(self.s_vars[j], sum_ptr, j, 1)
 
-    self.write_cores(code_block, fold, max_pipe_width, max_unroll_width)
+    self.write_increments(code_block, fold, max_pipe_width, max_unroll_width)
 
     #consolidate
     if fold == 0:
@@ -144,7 +137,6 @@ class OneDimensionalAccumulation(Target):
       code_block.write("}")
     else:
       for j in range(fold):
-        #TODO consolidate_into should be a subtract and a reduce
         self.vec.consolidate_into("sum", j, 1, self.s_vars[j], sum_ptr, j, 1)
 
   def write_core(self, code_block, fold, max_pipe_width, max_unroll_width, incs):
@@ -159,7 +151,6 @@ class OneDimensionalAccumulation(Target):
         reg_width = self.compute_reg_width(min(n, max_pipe_width))
         self.preprocess(code_block, n, incs, align=align)
         self.process(code_block, fold, reg_width, n // max_pipe_width)
-    #self.vec.iterate_unrolled_aligned("i", "n", self.load_ptrs, incs, max_pipe_width * max_unroll_width, 1, body)
     self.vec.iterate_unrolled("i", "n", self.load_ptrs, incs, max_pipe_width * max_unroll_width, 1, body)
 
   def define_load_vars(self, code_block, width):
@@ -193,16 +184,7 @@ class OneDimensionalAccumulation(Target):
           code_block.set_equal(self.load_vars[0][i * reg_width:], self.vec.add(self.load_vars[0][i * reg_width:], self.q_vars[:reg_width]))
         self.vec.add_BLP_into(self.s_vars[fold - 1], self.s_vars[fold - 1], self.load_vars[0][i * reg_width:], reg_width)
 
-  def compute_reg_width(self, pipe_width):
-    raise(NotImplementedError())
-
-class NonDotOneDimensionalAccumulation(OneDimensionalAccumulation):
-  standard_incs = ["incv"]
-
-  def __init__(self, data_type_class):
-    super(NonDotOneDimensionalAccumulation, self).__init__(data_type_class)
-
-  def write_cores(self, code_block, fold, max_pipe_width, max_unroll_width):
+  def write_increments(self, code_block, fold, max_pipe_width, max_unroll_width):
     code_block.write("if(incv == 1){")
     code_block.indent()
     self.write_core(code_block, fold, max_pipe_width, max_unroll_width, [1])
@@ -227,13 +209,13 @@ class NonDotOneDimensionalAccumulation(OneDimensionalAccumulation):
   def compute_reg_width(self, pipe_width):
     return (pipe_width * self.data_type.base_size)//self.vec.base_size
 
-class DotOneDimensionalAccumulation(OneDimensionalAccumulation):
+class DotDeposit(Deposit):
   standard_incs = ["incv", "incy"]
 
   def __init__(self, data_type_class):
-    super(DotOneDimensionalAccumulation, self).__init__(data_type_class)
+    super(DotDeposit, self).__init__(data_type_class)
 
-  def write_cores(self, code_block, fold, max_pipe_width, max_unroll_width):
+  def write_increments(self, code_block, fold, max_pipe_width, max_unroll_width):
     code_block.write("if(incv == 1){")
     code_block.indent()
     code_block.write("if(incy == 1){")

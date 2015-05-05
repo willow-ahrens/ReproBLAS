@@ -74,7 +74,6 @@ class Max(Target):
         reg_width = self.compute_reg_width(unroll_width)
         self.preprocess(code_block, unroll_width, incs, align=align)
         self.process(code_block, reg_width)
-    #self.vec.iterate_unrolled_aligned("i", "n", self.load_ptrs, incs, max_unroll_width, 1, body)
     self.vec.iterate_unrolled("i", "n", self.load_ptrs, incs, max_unroll_width, 1, body)
 
   def process(self, code_block, reg_width):
