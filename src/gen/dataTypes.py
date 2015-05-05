@@ -28,11 +28,8 @@ class DataType(object):
       return mix("*", inc, mix("+", offset, i))
 
   def data_increment(self, src_ptrs, src_incs, i):
-    #TODO This is a messy way to increment a variable. deal with this when complex types are void pointers
-    if self.is_complex:
-      return ", ".join(["{0} = ({3}*)((({1}*){0}) + {2})".format(src_ptr, self.base_type.name, mix("*", src_inc, self.base_size, i), self.name) for (src_ptr, src_inc) in zip(src_ptrs, src_incs)])
-    else:
-      return ", ".join(["{0} += {1}".format(src_ptr, mix("*", src_inc, self.base_size, i)) for (src_ptr, src_inc) in zip(src_ptrs, src_incs)])
+    #TODO make it clear in the documentation that this implies that all inputs pointers are expected to be of base_type (maybe use this as an excuse to get rid of useless casts)
+    return ", ".join(["{0} += {1}".format(src_ptr, mix("*", src_inc, self.base_size, i)) for (src_ptr, src_inc) in zip(src_ptrs, src_incs)])
  #TODO consider here the possible optimization where we multiply incv once by two if the data type is complex.
 
 class Double(DataType):
