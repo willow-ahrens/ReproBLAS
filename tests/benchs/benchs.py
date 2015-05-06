@@ -9,14 +9,14 @@ class BenchSuite(harness.MetricSuite):
 
 class BenchTest(harness.MetricTest):
   def parse_output(self):
-    if self.attribute == "time":
-      self.result = self.output["time"] / self.output["trials"]
-    elif self.attribute == "freq":
+    if self.attribute == "freq":
       self.result = (self.output["trials"] * self.output["input"]) / self.output["time"]
     elif self.attribute == "peak":
       self.result = (terminal.get_peak_time(self.output) * self.output["trials"])/self.output["time"]
     elif self.attribute == "%peak":
       self.result = (100.0 * terminal.get_peak_time(self.output) * self.output["trials"])/self.output["time"]
+    else: #self.attribute == "time":
+      self.result = self.output["time"] / self.output["trials"]
 
 class BenchCAMAXTest(BenchTest):
   name = "CAMAX"
