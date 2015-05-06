@@ -79,6 +79,8 @@ void wrap_prdgemv(int rank, int nprocs, const char Order,
                   const double *A, const double alpha, const int lda,
                   const double *X, const int incX,
                   const double beta, double *Y, const int incY){
+  (void)alpha;
+  (void)beta;
   rblas_order_t o;
   rblas_transpose_t t;
   switch(Order){

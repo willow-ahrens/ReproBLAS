@@ -13,12 +13,16 @@ int bench_vecvec_fill_show_help(void){
 }
 
 const char* bench_vecvec_fill_name(int argc, char** argv){
+  (void)argc;
+  (void)argv;
   static char name_buffer[MAX_LINE];
   snprintf(name_buffer, MAX_LINE * sizeof(char), "Benchmark [zdotu]");
   return name_buffer;
 }
 
 int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, double CondX, int incX, int FillY, double ScaleY, double CondY, int incY, int trials){
+  (void)argc;
+  (void)argv;
   int rc = 0;
   int i;
   double complex res = 0.0;

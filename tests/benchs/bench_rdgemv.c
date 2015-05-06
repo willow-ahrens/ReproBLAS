@@ -88,7 +88,8 @@ int bench_matvec_fill_show_help(void){
 }
 
 const char* bench_matvec_fill_name(int argc, char** argv){
-  bench_rdgemv_options_initialize();
+  (void)argc;
+  (void)argv;
 
   static char name_buffer[MAX_LINE];
   snprintf(name_buffer, MAX_LINE * sizeof(char), "Benchmark [rdgemv]");

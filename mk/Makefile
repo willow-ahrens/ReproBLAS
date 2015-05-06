@@ -48,11 +48,11 @@ $(eval $(value FOOTER))
 
 # Outputs the current build directory
 pbd:
-	@echo "$(call real_to_build_dir,$(RUNDIR))"
+	@echo $(call real_to_build_dir,$(RUNDIR))
 
 # Outputs the top build directory
 top:
-	@echo "$(TOP)"
+	@echo $(TOP)
 
 # Marks specified output as precious
 .PRECIOUS: $(call get_subtree,PRECIOUS,$(TOP))

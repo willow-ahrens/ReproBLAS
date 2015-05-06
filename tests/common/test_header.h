@@ -25,10 +25,13 @@ int main(int argc, char** argv){
 
   opt_eval_option(argc, argv, &help);
   if(help._flag.exists){
+    printf("this is greate!!\n");
     opt_show_option(help);
     opt_show_option(print);
+    printf("moar debuggin!!\n");
     return show_help();
   }
+
 
   opt_eval_option(argc, argv, &print);
   if(print._flag.exists){

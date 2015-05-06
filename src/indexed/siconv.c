@@ -104,7 +104,7 @@ float ssmconv(const int fold, const float* manX, const int incmanX, const float*
   // TODO: SCALING TO AVOID OVERFLOW
 
   for (i = 0; i < fold; i++) {
-    Y += (manX[i * incmanX] + (carX[i * incmanX] - 6) * ufpf(manX[i * incmanX]) * 0.25);
+    Y += (manX[i * incmanX] + (carX[i * inccarX] - 6) * ufpf(manX[i * incmanX]) * 0.25);
   }
 
   return Y;

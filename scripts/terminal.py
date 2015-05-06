@@ -24,7 +24,7 @@ def call(command):
   print(out)
   return out
 
-top = call("make top").split()[-1]
+top = call("make top").split()[-1].strip("`'")
 
 def make_clean(location):
   call("cd {0}; make clean".format(os.path.join(top, location)))
@@ -33,7 +33,7 @@ def make(executable, args = None, id = None, remake = False):
   executable_dir = os.path.join(top, os.path.split(executable)[0])
   executable_name = os.path.split(executable)[1]
   if executable_dir not in make.build_dir:
-    make.build_dir[executable_dir] = call("cd {0}; make pbd".format(executable_dir)).split()[-1]
+    make.build_dir[executable_dir] = call("cd {0}; make pbd".format(executable_dir)).split()[-1].strip("`'")
   build_dir = make.build_dir[executable_dir]
   build_name = executable_name
   if id:

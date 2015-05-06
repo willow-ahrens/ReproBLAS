@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <limits.h>
 #include "test_opt.h"
+
+#define HELP_MAX 32 //maximum number of lines in help string
 
 const int  opt_data_type_n_names  = 4;
 const char *opt_data_type_names[] = {"double", "float", "double_complex", "float_complex"};
@@ -9,7 +12,11 @@ const char *opt_data_type_descs[] = {"double precision", "single precision", "co
 
 static void opt_fprintf_option(FILE *f, opt_option option) {
   char* token;
-  token = strtok(option.header.help, "\n");
+  char buffer[LINE_MAX * HELP_MAX];
+
+  strncpy(buffer, option.header.help, LINE_MAX*HELP_MAX);
+  
+  token = strtok(buffer, "\n");
   if(token){
     fprintf(f, "-%c, --%-8s: %-64s\n", option.header.short_name, option.header.long_name, token);
     token = strtok(NULL, "\n");

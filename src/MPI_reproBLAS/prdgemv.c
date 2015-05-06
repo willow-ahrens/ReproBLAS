@@ -15,6 +15,9 @@
 
 
 void prdgemv(int rank, int nprocs, rblas_order_t Order, rblas_transpose_t TransA, int M, int N, double *myA, int lda, double *myX, int incX, double *Y, int incY){
+    (void)lda;
+    (void)incX;
+    (void)incY;
     double_indexed *myYI;
     double_indexed *YI;
     int i;

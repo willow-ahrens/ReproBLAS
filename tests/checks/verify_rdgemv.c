@@ -77,6 +77,8 @@ void wrap_rdgemv(const char Order,
                  const double *A, const double alpha, const int lda,
                  const double *X, const int incX,
                  const double beta, double *Y, const int incY){
+  (void)alpha;
+  (void)beta;
   rblas_order_t o;
   rblas_transpose_t t;
   switch(Order){
@@ -103,6 +105,8 @@ void wrap_dgemvI(const char Order,
                  const double *A, const double alpha, const int lda,
                  const double *X, const int incX,
                  const double beta, double_indexed *Y, const int incY){
+  (void)alpha;
+  (void)beta;
   rblas_order_t o;
   rblas_transpose_t t;
   switch(Order){
@@ -126,6 +130,8 @@ void wrap_dgemvI(const char Order,
 
 int verify_dgemv_reproducibility(char Order, char TransA, int M, int N, int NX, int NY, double alpha, double *A, int lda, double* X, int incX, double beta, double *Y, double_indexed *YI, int incY, double *ref, double_indexed *Iref, int max_num_blocks) {
   (void)NX;
+  (void)alpha;
+  (void)beta;
 
   // GENERATE DATA
   int i;

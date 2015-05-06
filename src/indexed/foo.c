@@ -4,6 +4,8 @@
 #include "indexed.h"
 
 int main(int argc, char **argv){
+  (void)argc;
+  (void)argv;
   float_indexed *foo = sialloc(3);
   sisetzero(3, foo);
   float bar = ldexp(0.5, FLT_MAX_EXP);
