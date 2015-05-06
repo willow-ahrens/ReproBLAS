@@ -4,6 +4,16 @@
 #CC = pgcc
 #CC = craycc
 #CC = clang
+CC = cc
+
+# add CFLAGS
+CFLAGS += -Werror -Wall
+
+# add CPPFLAGS
+CPPFLAGS +=
+
+# add LDFLAGS
+LDFLAGS +=
 
 # select MPI compiler flags (comment for auto)
 #MPICFLAGS = $(shell mpicc --showme compile)
@@ -14,8 +24,6 @@
 # select python (comment all for auto)
 PYTHON = python
 #PYTHON = python3
-
-CFLAGS += -Werror -Wall
 
 # enable vectorizations (comment all for auto)
 #MMX := true
@@ -47,7 +55,7 @@ ENDIAN := $(shell perl -le 'print unpack(N,pack(L,0x01020304)) == 0x01020304 ? b
 #BLAS := REF
 #BLAS := ATLAS
 #BLAS := MKL
-BLAS := ACCELERATE
+#BLAS := ACCELERATE
 # Custom BLAS: Link your library and select between reference fortran or cblas interface
 #BLAS := CUSTOM
 #LDFLAGS += -lblas

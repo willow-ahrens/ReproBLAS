@@ -23,16 +23,18 @@
  *
  * @author Hong Diep Nguyen
  * @author Peter Ahrens
- * @date   27 Apr 2015
+ * @date   5 May 2015
  */
 void smsupdate(const int fold, const float X, float* manY, const int incmanY, float* carY, const int inccarY) {
+  int i;
+
   if (X == 0 || isnan(manY[0]) || isinf(manY[0]))
     return;
 
   int X_index = sindex(X);
   int shift = smindex(manY) - X_index;
   if(shift > 0){
-    for(int i = fold - 1; i >= shift; i--){
+    for(i = fold - 1; i >= shift; i--){
       manY[i * incmanY] = manY[(i - shift) * incmanY];
       carY[i * inccarY] = carY[(i - shift) * inccarY];
     }

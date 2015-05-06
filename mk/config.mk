@@ -36,7 +36,7 @@ else
 endif
 
 # Detect C compiler in the following order if CC hasn't been set
-ifeq ($(CC),cc)
+ifeq ($(CC),)
   ifeq ("$(shell which gcc >/dev/null; echo $$?)", "0")
     CC := gcc
   else ifeq ("$(shell which icc >/dev/null; echo $$?)", "0")
@@ -57,18 +57,22 @@ ifeq ($(MPICC),)
   ifeq ("$(shell which mpicc >/dev/null; echo $$?)", "0")
     MPICC := mpicc
   else
-    MPICC := $(CC)
+    MPICC :=
   endif
 endif
 
 # Detect MPI C compiler flags in the following order if MPICFLAGS hasn't been set
 ifeq ($(MPICFLAGS),)
-  MPICFLAGS := $(shell $(MPICC) --showme:compile)
+  ifeq ($(MPICC), mpicc)
+    MPICFLAGS := $(shell $(MPICC) --showme:compile)
+  endif
 endif
 
 # Detect MPI C linker flags in the following order if MPILDFLAGS hasn't been set
 ifeq ($(MPILDFLAGS),)
-  MPILDFLAGS := $(shell $(MPICC) --showme:link)
+  ifeq ($(MPICC), mpicc)
+    MPILDFLAGS := $(shell $(MPICC) --showme:link)
+  endif
 endif
 
 # Detect python in the following order if PYTHON hasn't been set
