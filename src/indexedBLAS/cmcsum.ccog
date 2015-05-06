@@ -38,7 +38,7 @@ void cmcsum(const int fold, const int N, const void *X, const int incX, float *m
   for (i = 0; i < N; i += N_block) {
     N_block = MIN((N - i), N_block);
 
-    zamax_sub(N_block, x, incX, amax);
+    camax_sub(N_block, x, incX, amax);
     if (amax[0] == 0.0 && amax[1] == 0.0){
       x += N_block * 2 * incX;
       continue;
