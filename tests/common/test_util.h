@@ -1,5 +1,5 @@
-#ifndef __TEST_VEC_H
-#define __TEST_VEC_H
+#ifndef TEST_UTIL_H
+#define TEST_UTIL_H
 
 #include "../../src/types.h"
 #include "reproBLAS.h"
@@ -21,37 +21,10 @@ typedef enum util_vec_fill {
   util_Vec_Normal_Drop,
   util_Vec_Sine_Drop
 } util_vec_fill_t;
-static const int  util_vec_fill_n_names  = 15;
-static const char *util_vec_fill_names[] = {"constant",
-                                            "rand",
-                                            "2*rand-1",
-                                            "rand+(rand-1)",
-                                            "normal",
-                                            "sine",
-                                            "small+grow*big",
-                                            "small+rand*big",
-                                            "rand_cond",
-                                            "constant[drop]",
-                                            "rand[drop]",
-                                            "2*rand-1[drop]",
-                                            "rand+(rand-1)[drop]",
-                                            "normal[drop]",
-                                            "sine[drop]"};
-static const char *util_vec_fill_descs[] = {"Constant",
-                                            "Random",
-                                            "2*Random-1",
-                                            "Random+(Random-1)",
-                                            "Normal",
-                                            "Sine(2pi*(i/n))",
-                                            "Small+(i/n)*Big",
-                                            "Small+Rand*Big",
-                                            "RandomConditioned",
-                                            "Constant[drop]",
-                                            "Random[drop]",
-                                            "2*Random-1[drop]",
-                                            "Random+(Random-1)[drop]",
-                                            "Normal[drop]",
-                                            "Sine(2pi*(i/n))[drop]"};
+extern const int util_vec_fill_n_names;
+extern const char *util_vec_fill_names[];
+extern const char *util_vec_fill_descs[];
+
 typedef enum util_mat_fill {
   util_Mat_Row_Constant = 0,
   util_Mat_Row_Rand,
@@ -70,39 +43,9 @@ typedef enum util_mat_fill {
   util_Mat_Row_Sine_Drop,
   util_Mat_Identity
 } util_mat_fill_t;
-static const int  util_mat_fill_n_names  = 16;
-static const char *util_mat_fill_names[] = {"constant",
-                                            "rand",
-                                            "2*rand-1",
-                                            "rand+(rand-1)",
-                                            "normal",
-                                            "sine",
-                                            "small+grow*big",
-                                            "small+rand*big",
-                                            "rand_cond",
-                                            "constant[drop]",
-                                            "rand[drop]",
-                                            "2*rand-1[drop]",
-                                            "rand+(rand-1)[drop]",
-                                            "normal[drop]",
-                                            "sine[drop]",
-                                            "identity"};
-static const char *util_mat_fill_descs[] = {"Constant",
-                                            "Random",
-                                            "2*Random-1",
-                                            "Random+(Random-1)",
-                                            "Normal",
-                                            "Sine(2pi*(i/n))",
-                                            "Small+(i/n)*Big",
-                                            "Small+Rand*Big",
-                                            "RandomConditioned",
-                                            "Constant[drop]",
-                                            "Random[drop]",
-                                            "2*Random-1[drop]",
-                                            "Random+(Random-1)[drop]",
-                                            "Normal[drop]",
-                                            "Sine(2pi*(i/n))[drop]",
-                                            "Identity"};
+extern const int  util_mat_fill_n_names;
+extern const char *util_mat_fill_names[];
+extern const char *util_mat_fill_descs[];
 
 void util_dvec_fill(int N, double* v, int inc, util_vec_fill_t fill, double a, double b);
 void util_svec_fill(int N, float* v, int inc, util_vec_fill_t fill, float a, float b);
@@ -162,7 +105,6 @@ double* util_dmat_alloc(char Order, int M, int N, int lda);
 float* util_smat_alloc(char Order, int M, int N, int lda);
 double complex* util_zmat_alloc(char Order, int M, int N, int lda);
 float complex* util_cmat_alloc(char Order, int M, int N, int lda);
-
 
 int* util_identity_permutation(int N);
 int* util_inverse_permutation(int N, int *P, int incP);

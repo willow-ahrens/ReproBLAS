@@ -1,3 +1,4 @@
+//OBSOLETE FILE
 #ifndef __TEST_PERF_H
 #define __TEST_PERF_H
 

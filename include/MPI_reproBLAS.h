@@ -1,7 +1,7 @@
 #ifndef _REPRODUCIBLE_PAR_BLAS__H_
 #define _REPRODUCIBLE_PAR_BLAS__H_
-#include "Indexed.h"
-#include "IndexedBLAS.h"
+#include "indexed.h"
+#include "indexedBLAS.h"
 #include <mpi.h>
 
 //---- double precision

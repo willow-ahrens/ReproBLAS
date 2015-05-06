@@ -1,5 +1,5 @@
-#ifndef __TEST_METRIC_H
-#define __TEST_METRIC_H
+#ifndef TEST_METRIC_H
+#define TEST_METRIC_H
 
 void metric_load_int(char *key, int value);
 void metric_load_long(char *key, long value);

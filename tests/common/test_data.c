@@ -115,6 +115,7 @@ int main (int argc, char** argv) {
     case 1: data_type_char = 's'; break;
     case 2: data_type_char = 'z'; break;
     case 3: data_type_char = 'c'; break;
+    default: exit(125);//TODO better error
   }
   snprintf(output_file_name, MAX_NAME, "%c_%s_N%d", data_type_char, util_vec_fill_names[vec_fill_type._named.value], N._int.value);
   for(i = 0; output_file_name[i] != '\0'; i++){

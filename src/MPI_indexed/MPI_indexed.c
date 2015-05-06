@@ -3,8 +3,8 @@
  */
 
 #include "MPI_indexed.h"
-#include "MPI_dindexed.h"
-#include "MPI_sindexed.h"
+#include "MPI_dIndexed.h"
+#include "MPI_sIndexed.h"
 #include "indexed.h"
 #include <stdio.h>
 

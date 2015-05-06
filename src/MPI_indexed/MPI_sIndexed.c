@@ -3,7 +3,7 @@
  */
 
 #include "indexed.h"
-#include "MPI_sindexed.h"
+#include "MPI_sIndexed.h"
 #include <stdio.h>
 
 void sIAdd_MPI(

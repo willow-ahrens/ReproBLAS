@@ -1,5 +1,5 @@
-#ifndef __TEST_FILE_H
-#define __TEST_FILE_H
+#ifndef TEST_FILE_H
+#define TEST_FILE_H
 
 int file_exists(const char *fname);
 

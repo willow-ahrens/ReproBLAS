@@ -5,27 +5,100 @@
 #include <math.h>
 #include "test_util.h"
 
-#ifdef _MATH__COMPLEX_
-#define fabsz(X) cabs(X)
-#else
-#define fabsz(X) (fabs(X.real)+fabs(X.imag))
-#endif
+const int util_vec_fill_n_names  = 15;
+const char *util_vec_fill_names[] = {"constant",
+                                     "rand",
+                                     "2*rand-1",
+                                     "rand+(rand-1)",
+                                     "normal",
+                                     "sine",
+                                     "small+grow*big",
+                                     "small+rand*big",
+                                     "rand_cond",
+                                     "constant[drop]",
+                                     "rand[drop]",
+                                     "2*rand-1[drop]",
+                                     "rand+(rand-1)[drop]",
+                                     "normal[drop]",
+                                     "sine[drop]"};
+const char *util_vec_fill_descs[] = {"Constant",
+                                     "Random",
+                                     "2*Random-1",
+                                     "Random+(Random-1)",
+                                     "Normal",
+                                     "Sine(2pi*(i/n))",
+                                     "Small+(i/n)*Big",
+                                     "Small+Rand*Big",
+                                     "RandomConditioned",
+                                     "Constant[drop]",
+                                     "Random[drop]",
+                                     "2*Random-1[drop]",
+                                     "Random+(Random-1)[drop]",
+                                     "Normal[drop]",
+                                     "Sine(2pi*(i/n))[drop]"};
 
-#ifdef _MATH__COMPLEX_
-#define fabsc(X) cabsf(X)
-#else
-#define fabsc(X) (fabs(X.real)+fabs(X.imag))
-#endif
+const int  util_mat_fill_n_names  = 16;
+const char *util_mat_fill_names[] = {"constant",
+                                     "rand",
+                                     "2*rand-1",
+                                     "rand+(rand-1)",
+                                     "normal",
+                                     "sine",
+                                     "small+grow*big",
+                                     "small+rand*big",
+                                     "rand_cond",
+                                     "constant[drop]",
+                                     "rand[drop]",
+                                     "2*rand-1[drop]",
+                                     "rand+(rand-1)[drop]",
+                                     "normal[drop]",
+                                     "sine[drop]",
+                                     "identity"};
+const char *util_mat_fill_descs[] = {"Constant",
+                                     "Random",
+                                     "2*Random-1",
+                                     "Random+(Random-1)",
+                                     "Normal",
+                                     "Sine(2pi*(i/n))",
+                                     "Small+(i/n)*Big",
+                                     "Small+Rand*Big",
+                                     "RandomConditioned",
+                                     "Constant[drop]",
+                                     "Random[drop]",
+                                     "2*Random-1[drop]",
+                                     "Random+(Random-1)[drop]",
+                                     "Normal[drop]",
+                                     "Sine(2pi*(i/n))[drop]",
+                                     "Identity"};
 
-typedef int (*compare_func)(int i, int j, void *data);
-typedef void (*swap_func)(int i, int j, void *data);
-typedef int (*elem_compare_func)(void *a, void *b, util_comp_t comp);
+#define PI 3.14159265358979323846
 
 void util_random_seed(void) {
   struct timeval st;
   gettimeofday( &st, NULL );
-  srand48((long)(st.tv_usec + 1e6*st.tv_sec));
+  srand((long)(st.tv_usec + 1e6*st.tv_sec));
 }
+
+//TODO add random in range support (or find an external library to generate input data)
+static double util_drand48(){
+  unsigned long l = 0;
+  int i;
+  int r;
+  for(i = 0; i < 4; i++){
+    do{
+      r = rand();
+    }while(r >= (RAND_MAX/256)*256);
+    l <<= 8;
+    l += r % 256;
+  }
+  double ret =  ((double)l/1.0l);
+  printf("%g\n", ret);
+  return ret;
+}
+
+typedef int (*compare_func)(int i, int j, void *data);
+typedef void (*swap_func)(int i, int j, void *data);
+typedef int (*elem_compare_func)(void *a, void *b, util_comp_t comp);
 
 int util_dcompare(void *a, void *b, util_comp_t comp){
   double a_prime;
@@ -90,8 +163,8 @@ int util_zcompare(void *a, void *b, util_comp_t comp){
     case util_Decreasing:
       return -1 * util_zcompare(a, b, util_Increasing);
     case util_Increasing_Magnitude:
-      a_prime = fabsz(*((double complex*)a));
-      b_prime = fabsz(*((double complex*)b));
+      a_prime = cabs(*((double complex*)a));
+      b_prime = cabs(*((double complex*)b));
       return util_dcompare(&a_prime, &b_prime, util_Increasing);
     case util_Decreasing_Magnitude:
       return -1 * util_zcompare(a, b, util_Increasing_Magnitude);
@@ -112,8 +185,8 @@ int util_ccompare(void *a, void *b, util_comp_t comp){
     case util_Decreasing:
       return -1 * util_ccompare(a, b, util_Increasing);
     case util_Increasing_Magnitude:
-      a_prime = fabsc(*((float complex*)a));
-      b_prime = fabsc(*((float complex*)b));
+      a_prime = cabsf(*((float complex*)a));
+      b_prime = cabsf(*((float complex*)b));
       return util_scompare(&a_prime, &b_prime, util_Increasing);
     case util_Decreasing_Magnitude:
       return -1 * util_ccompare(a, b, util_Increasing_Magnitude);
@@ -838,7 +911,7 @@ float* util_smat_alloc(char Order, int M, int N, int lda) {
       util_smat_fill(Order, 'n', M, lda, A, lda, util_Mat_Row_Rand, 1.0, 1.0);
       util_smat_fill(Order, 'n', M, N, A, lda, util_Mat_Row_Constant, 0.0, 1.0);
       break;
-    case rblas_Col_Major:
+    default:
       A = (float*)malloc(lda * N * sizeof(float));
       //fill empty space with random data to check lda
       util_smat_fill(Order, 'n', lda, N, A, lda, util_Mat_Row_Rand, 1.0, 1.0);
@@ -902,33 +975,33 @@ void util_dvec_fill(int N, double* V, int incV, util_vec_fill_t fill, double a, 
     case util_Vec_Rand_Drop:
     case util_Vec_Rand:
       for (i = 0; i < N; i++) {
-        V[i*incV] = drand48() * (1+1e-9);
+        V[i*incV] = util_drand48() * (1+1e-9);
       }
       break;
     case util_Vec_2_Times_Rand_Minus_1_Drop:
     case util_Vec_2_Times_Rand_Minus_1:
       for (i = 0; i < N; i++) {
-        V[i*incV] = (2 * drand48() * (1+1e-9) - 1);
+        V[i*incV] = (2 * util_drand48() * (1+1e-9) - 1);
       }
       break;
     case util_Vec_Rand_Plus_Rand_Minus_1_Drop:
     case util_Vec_Rand_Plus_Rand_Minus_1:
       for (i = 0; i < N; i++) {
-        V[i*incV] = drand48() * (1+1e-9) + (drand48() * (1+1e-9) - 1);
+        V[i*incV] = util_drand48() * (1+1e-9) + (util_drand48() * (1+1e-9) - 1);
       }
       break;
     case util_Vec_Normal_Drop:
     case util_Vec_Normal:
       for (i = 0; i < N; i++) {
-        double t1 = drand48();
-        double t2 = drand48();
-        V[i * incV] = sqrt(-2.0 * log(t1)) * cos(2.0 * M_PI * t2);
+        double t1 = util_drand48();
+        double t2 = util_drand48();
+        V[i * incV] = sqrt(-2.0 * log(t1)) * cos(2.0 * PI * t2);
       }
       break;
     case util_Vec_Sine_Drop:
     case util_Vec_Sine:
       for (i = 0; i < N; i++) {
-        V[i*incV] = sin(2.0 * M_PI * ((double)i / (double)N));
+        V[i*incV] = sin(2.0 * PI * ((double)i / (double)N));
       }
       break;
     case util_Vec_Rand_Cond:
@@ -971,7 +1044,7 @@ void util_dvec_fill(int N, double* V, int incV, util_vec_fill_t fill, double a, 
       break;
     case util_Vec_Small_Plus_Rand_Big:
       for (i = 0; i < N; i++) {
-        V[i*incV] = small + (big - small) * drand48() * (1+1e-9);
+        V[i*incV] = small + (big - small) * util_drand48() * (1+1e-9);
       }
       break;
   }
@@ -1013,33 +1086,33 @@ void util_svec_fill(int N, float* V, int incV, util_vec_fill_t fill, float a, fl
     case util_Vec_Rand_Drop:
     case util_Vec_Rand:
       for (i = 0; i < N; i++) {
-        V[i*incV] = (float)drand48() * (1+1e-4);
+        V[i*incV] = (float)util_drand48() * (1+1e-4);
       }
       break;
     case util_Vec_2_Times_Rand_Minus_1_Drop:
     case util_Vec_2_Times_Rand_Minus_1:
       for (i = 0; i < N; i++) {
-        V[i*incV] = (2 * (float)drand48() * (1+1e-4) - 1);
+        V[i*incV] = (2 * (float)util_drand48() * (1+1e-4) - 1);
       }
       break;
     case util_Vec_Rand_Plus_Rand_Minus_1_Drop:
     case util_Vec_Rand_Plus_Rand_Minus_1:
       for (i = 0; i < N; i++) {
-        V[i*incV] = (float)drand48() * (1+1e-4) + ((float)drand48() * (1+1e-4) - 1);
+        V[i*incV] = (float)util_drand48() * (1+1e-4) + ((float)util_drand48() * (1+1e-4) - 1);
       }
       break;
     case util_Vec_Normal_Drop:
     case util_Vec_Normal:
       for (i = 0; i < N; i++) {
-        double t1 = drand48();
-        double t2 = drand48();
-        V[i * incV] = (float)(sqrt(-2.0 * log(t1)) * cos(2.0 * M_PI * t2));
+        double t1 = util_drand48();
+        double t2 = util_drand48();
+        V[i * incV] = (float)(sqrt(-2.0 * log(t1)) * cos(2.0 * PI * t2));
       }
       break;
     case util_Vec_Sine_Drop:
     case util_Vec_Sine:
       for (i = 0; i < N; i++) {
-        V[i*incV] = (float)sin(2.0 * M_PI * ((float)i / (float)N));
+        V[i*incV] = (float)sin(2.0 * PI * ((float)i / (float)N));
       }
       break;
     case util_Vec_Rand_Cond:
@@ -1082,7 +1155,7 @@ void util_svec_fill(int N, float* V, int incV, util_vec_fill_t fill, float a, fl
       break;
     case util_Vec_Small_Plus_Rand_Big:
       for (i = 0; i < N; i++) {
-        V[i*incV] = small + (big - small) * (float)drand48() * (1+1e-4);
+        V[i*incV] = small + (big - small) * (float)util_drand48() * (1+1e-4);
       }
       break;
   }
@@ -1226,6 +1299,8 @@ void util_dmat_fill(char Order, char TransA, int M, int N, double* A, int lda, u
     case util_Mat_Row_Small_Plus_Rand_Big:
       row_fill = util_Vec_Small_Plus_Rand_Big;
       break;
+    default:
+      exit(125);//TODO better error here
   }
   switch(Order){
     case 'r':
@@ -1317,6 +1392,8 @@ void util_smat_fill(char Order, char TransA, int M, int N, float* A, int lda, ut
     case util_Mat_Row_Small_Plus_Rand_Big:
       row_fill = util_Vec_Small_Plus_Rand_Big;
       break;
+    default:
+      exit(125); //TODO better error here
   }
   switch(Order){
     case 'r':
@@ -1408,6 +1485,8 @@ void util_zmat_fill(char Order, char TransA, int M, int N, double complex* A, in
     case util_Mat_Row_Small_Plus_Rand_Big:
       row_fill = util_Vec_Small_Plus_Rand_Big;
       break;
+    default:
+      exit(125);//TODO better error
   }
   switch(Order){
     case 'r':
@@ -1499,6 +1578,8 @@ void util_cmat_fill(char Order, char TransA, int M, int N, float complex* A, int
     case util_Mat_Row_Small_Plus_Rand_Big:
       row_fill = util_Vec_Small_Plus_Rand_Big;
       break;
+    default:
+      exit(125); //TODO better error here
   }
   switch(Order){
     case 'r':

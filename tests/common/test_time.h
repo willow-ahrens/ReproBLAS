@@ -1,5 +1,5 @@
-#ifndef __TEST_TIME_H
-#define __TEST_TIME_H
+#ifndef TEST_TIME_H
+#define TEST_TIME_H
 
 void time_tic();
 

@@ -3,6 +3,10 @@
 #include <stdlib.h>
 #include "test_opt.h"
 
+const int  opt_data_type_n_names  = 4;
+const char *opt_data_type_names[] = {"double", "float", "double_complex", "float_complex"};
+const char *opt_data_type_descs[] = {"double precision", "single precision", "complex double precision", "complex single precision"};
+
 static void opt_fprintf_option(FILE *f, opt_option option) {
   char* token;
   token = strtok(option.header.help, "\n");
