@@ -103,6 +103,9 @@ const char* bench_matvec_fill_name(int argc, char** argv){
   snprintf(name_buffer, MAX_LINE * sizeof(char), "Verify dgemv reproducibility");
   return name_buffer;
 }
+extern void blacs_get_(int , int ,int*);
+extern void blacs_gridinit_(int*, char*, int, int);
+extern void blacs_gridinfo_(int , int*, int*, int*, int*);
 
 int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int N, int FillA, double ScaleA, double CondA, int lda, int FillX, double ScaleX, double CondX, int incX, int trials){
   int rc = 0;
@@ -132,9 +135,18 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
   }
   int nprocs;
   int rank;
+  int icontext;
+  int nprow;
+  int npcol;
+  int myprow;
+  int mypcol;
   MPI_Init(&argc, &argv);
   MPI_Comm_size(MPI_COMM_WORLD, &nprocs);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  blacs_get_(0, 0, &icontext);
+  blacs_gridinit_(&icontext, "Row", 1, nprocs);
+  blacs_gridinfo_(icontext, &nprow, &npcol, &myprow, &mypcol);
+  printf("nprow %d npcol %d, myprow %d mypcol %d\n", nprow, npcol, myprow, mypcol);
 
   double *A;
   double *X;
@@ -165,24 +177,6 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
 
   double *res;
 
-  rblas_order_t o;
-  rblas_transpose_t t;
-  switch(Order){
-    case 'R':
-      o = rblas_Row_Major;
-      break;
-    default:
-      o = rblas_Col_Major;
-      break;
-  }
-  switch(TransA){
-    case 'N':
-      t = rblas_No_Trans;
-      break;
-    default:
-      t = rblas_Trans;
-      break;
-  }
   double *Abuf;
   double *myA = (double*)malloc(M*(N/nprocs)*sizeof(double));
   double *myX = (double*)malloc((N/nprocs)*sizeof(double));
@@ -212,7 +206,7 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
       res = NULL;
     }
     time_tic();
-    prdgemv(rank, nprocs, o, t, M, N, myA, lda, myX, incX, Y, incY._int.value);
+    //pdgemv(rank, nprocs, o, t, M, N, myA, lda, myX, incX, Y, incY._int.value);
     time_toc();
   }
 

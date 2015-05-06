@@ -57,14 +57,14 @@ ENDIAN := $(shell perl -le 'print unpack(N,pack(L,0x01020304)) == 0x01020304 ? b
 #BLAS := MKL
 #BLAS := ACCELERATE
 # Custom BLAS: Link your library and select between reference fortran or cblas interface
-#BLAS := CUSTOM
+BLAS := CUSTOM
 #LDFLAGS += -lblas
 #CPPFLAGS += -DBLAS=1
-#CPPFLAGS += -DCBLAS=1
+CPPFLAGS += -DCBLAS=1
 
 # set build mode (comment all for auto)
 #BUILD_MODE := release
-BUILD_MODE := debug
+#BUILD_MODE := debug
 #BUILD_MODE := profile
 
 #HOST_ARCH := profile
