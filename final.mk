@@ -53,7 +53,7 @@ excise:
 	$(foreach SOURCE, $(call get_subtree,COGGED,$(TOP)), $(COG) -r -x $(SOURCE) &&) echo
 
 check:
-	$(CALL_PYTHON) $(TOP)/tests/checks/check.py
+	$(CALL_PYTHON) $(TOP)/tests/checks/check.py --runmode parallel
 
 reference:
 	rm $(TOP)/tests/checks/data/*

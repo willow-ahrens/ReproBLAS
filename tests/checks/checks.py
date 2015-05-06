@@ -3,6 +3,7 @@ import itertools
 
 import scripts.terminal as terminal
 import tests.harness.harness as harness
+import config
 
 class CheckSuite(harness.Suite):
 

@@ -1,5 +1,5 @@
-#ifndef _RDBLAS1_WRAPPER_H
-#define _RDBLAS1_WRAPPER_H
+#ifndef RDBLAS1_WRAPPER_H
+#define RDBLAS1_WRAPPER_H
 
 #include <reproBLAS.h>
 #include <indexedBLAS.h>

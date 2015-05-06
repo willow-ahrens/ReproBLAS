@@ -2,22 +2,23 @@ import multiprocessing
 import subprocess
 import sys
 
+def callsafe(command):
+  print command
+  rc = 0
+  try:
+    out = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True).decode(sys.stdout.encoding)
+  except subprocess.CalledProcessError as e:
+    rc = e.returncode
+    out = e.output.decode(sys.stdout.encoding)
+  print out
+  return (rc, out)
+
 def run(command_list):
   """
   A function that runs the command list (a list of string commands) on the
   target and returns a list of their results as a list of tuples of (return
   code, output)
   """
-  def callsafe(command):
-    print command
-    rc = 0
-    try:
-      out = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True).decode(sys.stdout.encoding)
-    except subprocess.CalledProcessError as e:
-      rc = e.returncode
-      out = e.output.decode(sys.stdout.encoding)
-    print out
-    return (rc, out)
   return list(map(callsafe, command_list))
 
 def run_parallel(command_list):
@@ -26,16 +27,6 @@ def run_parallel(command_list):
   target (possibly in parallel) and returns a list of their results as a list 
   of tuples of (return code, output)
   """
-  def callsafe(command):
-    print command
-    rc = 0
-    try:
-      out = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True).decode(sys.stdout.encoding)
-    except subprocess.CalledProcessError as e:
-      rc = e.returncode
-      out = e.output.decode(sys.stdout.encoding)
-    print out
-    return (rc, out)
   p = multiprocessing.Pool(multiprocessing.cpu_count())
   return p.map(callsafe, command_list)
 
