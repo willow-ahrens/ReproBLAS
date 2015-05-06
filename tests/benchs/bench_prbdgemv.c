@@ -212,7 +212,7 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
       res = NULL;
     }
     time_tic();
-    prdgemv(rank, nprocs, o, t, M, N, myA, lda, myX, incX, Y, incY._int.value);
+    prbdgemv(rank, nprocs, o, t, M, N, myA, lda, myX, incX, Y, incY._int.value);
     time_toc();
   }
 

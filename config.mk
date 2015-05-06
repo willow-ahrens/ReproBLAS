@@ -35,7 +35,7 @@ PYTHON = python
 #SSE3 := true
 #SSE3 := false
 #SSE4_1 := true
-SSE4_1 := false
+#SSE4_1 := false
 #SSE4_2 := true
 #SSE4_2 := false
 #AVX := true
@@ -57,10 +57,10 @@ ENDIAN := $(shell perl -le 'print unpack(N,pack(L,0x01020304)) == 0x01020304 ? b
 #BLAS := MKL
 #BLAS := ACCELERATE
 # Custom BLAS: Link your library and select between reference fortran or cblas interface
-#BLAS := CUSTOM
+BLAS := CUSTOM
 #LDFLAGS += -lblas
 #CPPFLAGS += -DBLAS=1
-#CPPFLAGS += -DCBLAS=1
+CPPFLAGS += -DCBLAS=1
 
 # set build mode (comment all for auto)
 #BUILD_MODE := release

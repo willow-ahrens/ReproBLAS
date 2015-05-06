@@ -61,6 +61,10 @@ def make(executable, args = None, id = None, remake = False):
 make.build_dir = {}
 
 def flags(params, args):
+  params = [list(param) if type(param) == tuple else [param] for param in params]
+  args = [list(arg) if type(arg) == tuple else [arg] for arg in args]
+  params = [param for l in params for param in l]
+  args = [arg for l in args for arg in l]
   return " ".join(['-{0} "{1}"'.format(param, arg) if len(param) == 1 else '--{0} "{1}"'.format(param, arg) for (param, arg) in zip(params, args)])
 
 def get_vectorization():

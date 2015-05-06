@@ -14,7 +14,7 @@ TARGETS += bench_dasum$(EXE) bench_ddot$(EXE) bench_dnrm2$(EXE) \
            bench_sasum$(EXE) bench_sdot$(EXE) bench_snrm2$(EXE) \
            bench_cdotc$(EXE) bench_cdotu$(EXE) bench_scasum$(EXE) bench_scnrm2$(EXE) \
            bench_idamax$(EXE) bench_izamax$(EXE) bench_isamax$(EXE) bench_icamax$(EXE)\
-	   bench_dgemv$(EXE)
+	   bench_dgemv$(EXE) bench_pdgemv$(EXE) bench_prbdgemv$(EXE)
 endif
 
 SUBDIRS :=
@@ -66,4 +66,6 @@ bench_zdotu$(EXE)_DEPS = $$(LIBTEST) bench_zdotu.o
 
 bench_rdgemv$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) bench_rdgemv.o
 bench_prdgemv$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) $$(LIBMPIREPROBLAS) bench_prdgemv.o
+bench_prbdgemv$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) $$(LIBMPIREPROBLAS) bench_prbdgemv.o
+bench_pdgemv$(EXE)_DEPS = $$(LIBTEST) bench_pdgemv.o
 bench_dgemv$(EXE)_DEPS = $$(LIBTEST) bench_dgemv.o
