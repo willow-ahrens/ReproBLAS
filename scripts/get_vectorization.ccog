@@ -8,6 +8,8 @@ from src.gen import utils
 //[[[end]]]
 
 int main(int argc, char** argv){
+  (void)argc;
+  (void)argv;
   /*[[[cog
   def print_vectorization(vectorization, code_block):
     code_block.write('printf("{}\\n");'.format(vectorization.name))

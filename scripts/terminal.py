@@ -4,6 +4,7 @@ import os
 import subprocess
 import sys
 import config
+import re
 
 from scripts.cpuinfo import cpuinfo
 
@@ -24,7 +25,13 @@ def call(command):
   print(out)
   return out
 
-top = call("make top").split()[-1].strip("`'")
+def make_call(command):
+  output = call(command).split("\n")
+  for line in output[::-1]:
+    if not re.match("make\[\d+\]:", line) and line != "":
+      return line
+  
+top = make_call("make top")
 
 def make_clean(location):
   call("cd {0}; make clean".format(os.path.join(top, location)))
@@ -33,7 +40,7 @@ def make(executable, args = None, id = None, remake = False):
   executable_dir = os.path.join(top, os.path.split(executable)[0])
   executable_name = os.path.split(executable)[1]
   if executable_dir not in make.build_dir:
-    make.build_dir[executable_dir] = call("cd {0}; make pbd".format(executable_dir)).split()[-1].strip("`'")
+    make.build_dir[executable_dir] = make_call("cd {0}; make pbd".format(executable_dir))
   build_dir = make.build_dir[executable_dir]
   build_name = executable_name
   if id:
@@ -41,7 +48,7 @@ def make(executable, args = None, id = None, remake = False):
   build = os.path.join(build_dir, build_name)
   if not os.path.isfile(build) or remake:
     result = os.path.join(build_dir, executable_name)
-    callsafe("rm {}".format(result))
+    callsafe("rm -f {}".format(result))
     env = ""
     if args:
       env = "ARGS={}".format(args)

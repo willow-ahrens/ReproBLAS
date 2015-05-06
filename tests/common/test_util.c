@@ -79,7 +79,7 @@ void util_random_seed(void) {
   srand((long)(st.tv_usec + 1e6*st.tv_sec));
 }
 
-//TODO add random in range support (or find an external library to generate input data)
+//TODO if a vector/matrix data generation redesign/cleanup ever happens, better random numbers are desired (I'm thinking /dev/random if possible, and also a random in range function)
 static double util_drand48(){
   unsigned long l = 0;
   int i;
@@ -91,8 +91,7 @@ static double util_drand48(){
     l <<= 8;
     l += r % 256;
   }
-  double ret =  ((double)l/1.0l);
-  printf("%g\n", ret);
+  double ret =  ((double)l)/ldexp(0.5, 33);
   return ret;
 }
 

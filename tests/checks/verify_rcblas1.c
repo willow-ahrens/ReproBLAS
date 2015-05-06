@@ -64,7 +64,6 @@ int verify_rcblas1_reproducibility(int N, float complex* X, int incX, float comp
 
 int vecvec_fill_show_help(void){
   verify_rcblas1_options_initialize();
-  printf("foo\n");
 
   opt_show_option(func_type);
   return 0;
