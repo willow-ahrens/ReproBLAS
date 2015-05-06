@@ -64,7 +64,7 @@ ENDIAN := $(shell perl -le 'print unpack(N,pack(L,0x01020304)) == 0x01020304 ? b
 
 # set build mode (comment all for auto)
 #BUILD_MODE := release
-BUILD_MODE := debug
+#BUILD_MODE := debug
 #BUILD_MODE := profile
 
 #HOST_ARCH := profile

@@ -111,7 +111,7 @@ def run(apis):
     for api, desired_result, bench_test in zip(apis_to_run, desired_results, bench_tests):
       bench_test.parse_output_list(output_list[:len(bench_test.get_command_list())])
       output_list = output_list[len(bench_test.get_command_list()):]
-      result = Result(time=1e10/bench_test.get_result())
+      result = Result(time=1000000.0 * bench_test.get_result())
       api.report_result(desired_result, result)
 
   #parse the best configurations
