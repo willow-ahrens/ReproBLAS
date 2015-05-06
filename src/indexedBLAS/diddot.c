@@ -1,0 +1,9 @@
+/*
+ *  Created   13/10/25   H.D. Nguyen
+ */
+
+#include "indexedBLAS.h"
+
+void diddot(const int fold, const int N, const double *X, const int incX, const double *Y, const int incY, double_indexed *Z){
+  dmddot(fold, N, X, incX, Y, incY, Z, 1, Z + fold, 1);
+}
