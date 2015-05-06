@@ -18,7 +18,7 @@ static void bench_matvec_fill_options_initialize(void){
   trials._int.required          = 0;
   trials._int.min               = 1;
   trials._int.max               = INT_MAX;
-  trials._int.value             = 10000;
+  trials._int.value             = 100;
 }
 
 int matvec_fill_show_help(void){

@@ -45,6 +45,8 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double Scale
   time_toc();
 
   metric_load_double("time", time_read());
+  metric_load_float("res_real", crealf(res));
+  metric_load_float("res_imag", cimagf(res));
   metric_load_long_long("trials", (long long)trials);
   metric_load_long_long("input", (long long)N);
   metric_load_long_long("output", (long long)1);

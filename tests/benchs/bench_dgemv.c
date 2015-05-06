@@ -89,6 +89,8 @@ int bench_matvec_fill_show_help(void){
 }
 
 const char* bench_matvec_fill_name(int argc, char** argv){
+  (void)argc;
+  (void)argv;
   bench_dgemv_options_initialize();
 
   static char name_buffer[MAX_LINE];
