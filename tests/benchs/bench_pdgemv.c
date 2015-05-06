@@ -103,9 +103,11 @@ const char* bench_matvec_fill_name(int argc, char** argv){
   snprintf(name_buffer, MAX_LINE * sizeof(char), "Verify dgemv reproducibility");
   return name_buffer;
 }
-extern void blacs_get_(int , int ,int*);
-extern void blacs_gridinit_(int*, char*, int, int);
-extern void blacs_gridinfo_(int , int*, int*, int*, int*);
+extern void blacs_get_(int *, int* ,int*);
+extern void blacs_gridinit_(int*, char*, int*, int*);
+extern void blacs_gridinfo_(int *, int*, int*, int*, int*);
+
+extern void pdgemv_(char*, int*, int*, double*, double*, int*, int*, int*, double*, int*, int*, int*, int*, double*, double*, int*, int*, int*, int*);
 
 int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int N, int FillA, double ScaleA, double CondA, int lda, int FillX, double ScaleX, double CondX, int incX, int trials){
   int rc = 0;
@@ -140,12 +142,21 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
   int npcol;
   int myprow;
   int mypcol;
+  int i0;
+  int i1;
   MPI_Init(&argc, &argv);
   MPI_Comm_size(MPI_COMM_WORLD, &nprocs);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  blacs_get_(0, 0, &icontext);
-  blacs_gridinit_(&icontext, "Row", 1, nprocs);
-  blacs_gridinfo_(icontext, &nprow, &npcol, &myprow, &mypcol);
+  printf("hello from %d/%d\n", rank, nprocs);
+  i0 = 0;
+  i1 = 0;
+  blacs_get_(&i0, &i1, &icontext);
+  printf("icontext? %d\n", icontext);
+  nprow = 1;
+  npcol = nprocs;
+  blacs_gridinit_(&icontext, "Row", &nprow, &npcol);
+  printf("icontext again? %d\n", icontext);
+  blacs_gridinfo_(&icontext, &nprow, &npcol, &myprow, &mypcol);
   printf("nprow %d npcol %d, myprow %d mypcol %d\n", nprow, npcol, myprow, mypcol);
 
   double *A;
@@ -197,6 +208,44 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
   MPI_Scatter(Abuf, M * N/nprocs, MPI_DOUBLE, myA, M * N/nprocs, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   MPI_Scatter(X, N/nprocs, MPI_DOUBLE, myX, N/nprocs, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
+  int descA[9];
+  descA[0] = 1;
+  descA[1] = icontext;
+  descA[2] = N;
+  descA[3] = M;
+  descA[4] = N/nprocs;
+  descA[5] = M;
+  descA[6] = 0;
+  descA[7] = 0;
+  descA[8] = M;
+
+  int descX[9];
+  descX[0] = 1;
+  descX[1] = icontext;
+  descX[2] = N;
+  descX[3] = 1;
+  descX[4] = N/nprocs;
+  descX[5] = 1;
+  descX[6] = 0;
+  descX[7] = 0;
+  descX[8] = N;
+
+  int descY[9];
+  descY[0] = 1;
+  descY[1] = icontext;
+  descY[2] = M;
+  descY[3] = 1;
+  descY[4] = M;
+  descY[5] = 1;
+  descY[6] = 0;
+  descY[7] = 0;
+  descY[8] = M;
+  
+  char trans = 'T';
+  int nn = N/nprocs;
+  i0 = 0;
+  i1 = 1;
+
   for(i = 0; i < trials; i++){
     if(rank == 0){
       //compute with unpermuted data
@@ -206,7 +255,8 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
       res = NULL;
     }
     time_tic();
-    //pdgemv(rank, nprocs, o, t, M, N, myA, lda, myX, incX, Y, incY._int.value);
+    
+    pdgemv_(&trans, &nn, &M, &alpha._double.value, myA, &i1, &i1, descA, myX, &i1, &i1, descX, &i1, &beta._double.value, Y, &i1, &i1, descY, &i1);
     time_toc();
   }
 
