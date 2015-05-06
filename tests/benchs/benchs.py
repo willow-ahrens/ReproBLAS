@@ -202,6 +202,18 @@ class BenchDGEMVTest(BenchTest):
   name = "DGEMV"
   executable = "tests/benchs/bench_dgemv"
 
+class BenchPRDGEMVTest(BenchTest):
+  name = "PRDGEMV"
+  executable = "tests/benchs/bench_prdgemv"
+
+class BenchPRBDGEMVTest(BenchTest):
+  name = "PRBDGEMV"
+  executable = "tests/benchs/bench_prbdgemv"
+
+class BenchPDGEMVTest(BenchTest):
+  name = "PDGEMV"
+  executable = "tests/benchs/bench_pdgemv"
+
 all_benchs = {"bench_camax": BenchCAMAXTest,\
               "bench_camaxm": BenchCAMAXMTest,\
               "bench_cdotc": BenchCDOTCTest,\

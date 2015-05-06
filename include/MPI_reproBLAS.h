@@ -148,4 +148,5 @@ extern float prsdot2 (MPI_Comm comm, int root, int N,
 //====
 
 void prdgemv(int rank, int nprocs, rblas_order_t Order, rblas_transpose_t TransA, int M, int N, double *myA, int lda, double *myX, int incX, double *myY, int incY);
+void prbdgemv(int rank, int nprocs, rblas_order_t Order, rblas_transpose_t TransA, int M, int N, double *myA, int lda, double *myX, int incX, double *myY, int incY);
 #endif
