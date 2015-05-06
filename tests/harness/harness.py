@@ -242,7 +242,7 @@ class MetricTest(ExecutableTest):
     """
     assert len(output_list) == 1, "ReproBLAS error: unexpected test output"
 
-    self.output = json.loads(output_list[0][1]);
+    self.output = json.loads(output_list[0][1])
     self.parse_output()
 
   def parse_output(self):
