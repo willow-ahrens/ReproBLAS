@@ -9,6 +9,7 @@ typedef enum metric_type{
   metric_int,
   metric_long,
   metric_long_long,
+  metric_float,
   metric_double,
   metric_string
 } metric_type;
@@ -19,6 +20,7 @@ static int ints[METRIC_MAX];
 static long longs[METRIC_MAX];
 static long long long_longs[METRIC_MAX];
 static double doubles[METRIC_MAX];
+static float floats[METRIC_MAX];
 static char *strings[METRIC_MAX];
 static char *keys[METRIC_MAX];
 
@@ -54,6 +56,18 @@ void metric_load_long_long(char *key, long long value){
   long_longs[metric_ticker] = value;
   metric_ticker++;
 }
+
+void metric_load_float(char *key, float value){
+  if (metric_ticker >= METRIC_MAX) {
+    printf("ReproBLAS error: too many metrics\n");
+    exit(125);
+  }
+  keys[metric_ticker] = key;
+  types[metric_ticker] = metric_float;
+  floats[metric_ticker] = value;
+  metric_ticker++;
+}
+
 void metric_load_double(char *key, double value){
   if (metric_ticker >= METRIC_MAX) {
     printf("ReproBLAS error: too many metrics\n");
@@ -89,6 +103,9 @@ void metric_dump(){
         break;
       case metric_long_long:
         printf("\t\"%s\": %lld", keys[i], long_longs[i]);
+        break;
+      case metric_float:
+        printf("\t\"%s\": %g", keys[i], floats[i]);
         break;
       case metric_double:
         printf("\t\"%s\": %g", keys[i], doubles[i]);

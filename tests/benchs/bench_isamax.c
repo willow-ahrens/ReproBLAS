@@ -20,7 +20,8 @@ const char* bench_vecvec_fill_name(int argc, char** argv){
 
 int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, double CondX, int incX, int FillY, double ScaleY, double CondY, int incY, int trials){
   int rc = 0;
-  float res;
+  int i;
+  float res = 0.0;
 
   util_random_seed();
 
@@ -30,7 +31,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double Scale
   util_svec_fill(N, X, incX, FillX, ScaleX, CondX);
 
   time_tic();
-  for(int i = 0; i < trials; i++){
+  for(i = 0; i < trials; i++){
     CALL_ISAMAX(res, N, X, incX);
   }
   time_toc();

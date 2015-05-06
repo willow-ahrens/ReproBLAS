@@ -232,6 +232,7 @@ const char* matvec_fill_name(int argc, char** argv){
 
 int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int N, int FillA, double ScaleA, double CondA, int lda, int FillX, double ScaleX, double CondX, int incX){
   int rc = 0;
+  int i;
   int max_num_blocks = 1024;
 
   verify_rdgemv_options_initialize();
@@ -271,7 +272,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   util_dmat_fill(Order, 'n', M, N, A, lda, FillA, ScaleA, CondA);
   util_dvec_fill(NX, X, incX, FillX, ScaleX, CondX);
   util_dvec_fill(NY, Y, incY._int.value, FillY._named.value, ScaleY._double.value, CondY._double.value);
-  for(int i = 0; i < NY; i++){
+  for(i = 0; i < NY; i++){
     didconv(DEFAULT_FOLD, Y[i * incY._int.value], YI + i * incY._int.value * dinum(DEFAULT_FOLD));
   }
   double *ref  = (double*)malloc(NY * incY._int.value * sizeof(double));

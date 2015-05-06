@@ -97,6 +97,7 @@ const char* bench_matvec_fill_name(int argc, char** argv){
 
 int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int N, int FillA, double ScaleA, double CondA, int lda, int FillX, double ScaleX, double CondX, int incX, int trials){
   int rc = 0;
+  int i = 0;
 
   bench_rdgemv_options_initialize();
 
@@ -113,7 +114,6 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
   rblas_transpose_t t;
   int NX;
   int NY;
-  char NTransA;
   switch(Order){
     case 'r':
     case 'R':
@@ -129,12 +129,10 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
       t = rblas_No_Trans;
       NX = N;
       NY = M;
-      NTransA = 'T';
       break;
     default:
       NX = M;
       NY = N;
-      NTransA = 'N';
       t = rblas_Trans;
       break;
   }
@@ -151,7 +149,7 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
   memcpy(ref, Y, NY * incY._int.value * sizeof(double));
   rdgemv(o, t, M, N, A, lda, X, incX, ref, incY._int.value);
 
-  for(int i = 0; i < trials; i++){
+  for(i = 0; i < trials; i++){
     memcpy(res, Y, NY * incY._int.value * sizeof(double));
     time_tic();
     rdgemv(o, t, M, N, A, lda, X, incX, res, incY._int.value);

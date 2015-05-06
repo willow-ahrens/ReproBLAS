@@ -100,11 +100,14 @@ void wrap_prdgemv(int rank, int nprocs, const char Order,
   double *Abuf;
   double *myA = (double*)malloc(M*(N/nprocs)*sizeof(double));
   double *myX = (double*)malloc((N/nprocs)*sizeof(double));
+  int p;
+  int i;
+  int j;
   if(rank == 0){
     Abuf = (double*)malloc(N*M*sizeof(double));
-    for(int p = 0; p < nprocs; p++){
-      for(int i = 0; i < M; i++){
-        for(int j = 0; j < N/nprocs; j++){
+    for(p = 0; p < nprocs; p++){
+      for(i = 0; i < M; i++){
+        for(j = 0; j < N/nprocs; j++){
           Abuf[p * M * N/nprocs + i * N/nprocs + j] = A[i * lda + (p * N/nprocs + j)];
         }
       }

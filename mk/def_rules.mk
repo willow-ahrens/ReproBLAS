@@ -36,11 +36,15 @@ else # Verbose output
 echo_cmd =
 endif
 
+# Here we define the c compilers. Because make cannot distinguish between
+# object file types, we set the c++ linker to be the c compiler. If the 
+# project ever ends up using c++, we will need to put that compiler in 
+# the top config.mk.
 
 COMPILE.c = $(call echo_cmd,CC $<) $(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
-COMPILE.cc = $(call echo_cmd,CXX $<) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
+#COMPILE.cc = $(call echo_cmd,CXX $<) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
 LINK.c = $(call echo_cmd,LINK $@) $(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH)
-LINK.cc = $(call echo_cmd,LINK $@) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH)
+LINK.cc = $(call echo_cmd,LINK $@) $(CC) $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH)
 
 # This rule is just for running C/C++ preprocessor and saving the output
 # into the file with .E appended - sometimes this can be handy.

@@ -10,22 +10,28 @@
 
 #include "../common/test_file_header.h"
 
-static opt_option func_type = {._named.header.type       = opt_named,
-                               ._named.header.short_name = 'w',
-                               ._named.header.long_name  = "w_type",
-                               ._named.header.help       = "wrapped function type",
-                               ._named.required          = 1,
-                               ._named.n_names           = wrap_rcblas1_n_names,
-                               ._named.names             = (char**)wrap_rcblas1_names,
-                               ._named.descs             = (char**)wrap_rcblas1_descs,
-                               ._named.value             = wrap_RCSUM};
+static opt_option func_type;
+static opt_option record;
+static void validate_external_rcblas1_options_initialize(void){
+  func_type._named.header.type       = opt_named;
+  func_type._named.header.short_name = 'w';
+  func_type._named.header.long_name  = "w_type";
+  func_type._named.header.help       = "wrapped function type";
+  func_type._named.required          = 1;
+  func_type._named.n_names           = wrap_rcblas1_n_names;
+  func_type._named.names             = (char**)wrap_rcblas1_names;
+  func_type._named.descs             = (char**)wrap_rcblas1_descs;
+  func_type._named.value             = wrap_RCSUM;
 
-static opt_option record    = {._flag.header.type       = opt_flag,
-                               ._flag.header.short_name = 'r',
-                               ._flag.header.long_name  = "record",
-                               ._flag.header.help       = "record the run insted of testing"};
+  record._flag.header.type       = opt_flag;
+  record._flag.header.short_name = 'r';
+  record._flag.header.long_name  = "record";
+  record._flag.header.help       = "record the run insted of testing";
+}
 
 int file_show_help(void){
+  validate_external_rcblas1_options_initialize();
+
   opt_show_option(func_type);
   opt_show_option(record);
   return 0;
@@ -33,6 +39,8 @@ int file_show_help(void){
 
 const char* file_name(int argc, char** argv) {
   static char name_buffer[MAX_LINE];
+
+  validate_external_rcblas1_options_initialize();
 
   opt_eval_option(argc, argv, &func_type);
   snprintf(name_buffer, MAX_LINE, "Validate %s external", wrap_rcblas1_names[func_type._named.value]);
@@ -43,6 +51,8 @@ int file_test(int argc, char** argv, char *fname) {
   int N;
   char ref_fname[MAX_NAME];
   char Iref_fname[MAX_NAME];
+
+  validate_external_rcblas1_options_initialize();
 
   opt_eval_option(argc, argv, &func_type);
   opt_eval_option(argc, argv, &record);
