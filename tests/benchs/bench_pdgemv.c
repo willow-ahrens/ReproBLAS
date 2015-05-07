@@ -147,17 +147,13 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
   MPI_Init(&argc, &argv);
   MPI_Comm_size(MPI_COMM_WORLD, &nprocs);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  printf("hello from %d/%d\n", rank, nprocs);
   i0 = 0;
   i1 = 0;
   blacs_get_(&i0, &i1, &icontext);
-  printf("icontext? %d\n", icontext);
   nprow = 1;
   npcol = nprocs;
   blacs_gridinit_(&icontext, "Row", &nprow, &npcol);
-  printf("icontext again? %d\n", icontext);
   blacs_gridinfo_(&icontext, &nprow, &npcol, &myprow, &mypcol);
-  printf("nprow %d npcol %d, myprow %d mypcol %d\n", nprow, npcol, myprow, mypcol);
 
   double *A;
   double *X;
@@ -217,7 +213,7 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
   descA[5] = M;
   descA[6] = 0;
   descA[7] = 0;
-  descA[8] = M;
+  descA[8] = N;
 
   int descX[9];
   descX[0] = 1;

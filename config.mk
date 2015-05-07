@@ -7,7 +7,7 @@
 CC = cc
 
 # add CFLAGS
-CFLAGS += -Werror -Wall
+CFLAGS += -Wall
 
 # add CPPFLAGS
 CPPFLAGS +=

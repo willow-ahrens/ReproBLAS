@@ -13,7 +13,9 @@
 #include "indexedBLAS.h"
 #include "reproBLAS.h"
 #include "../../tests/common/test_BLAS.h"
+#include "../Common/Common.h"
 
+#define BLK 32
 
 void prbdgemv(int rank, int nprocs, rblas_order_t Order, rblas_transpose_t TransA, int M, int N, double *myA, int lda, double *myX, int incX, double *Y, int incY){
     (void)lda;
@@ -23,14 +25,18 @@ void prbdgemv(int rank, int nprocs, rblas_order_t Order, rblas_transpose_t Trans
     double_indexed *YI;
     double_indexed *myY;
     int i;
+    int ii;
 
     RMPI_Init();
     myYI = (double_indexed*)malloc(M * sizeof(Idouble));
     myY = (double_indexed*)malloc(M * sizeof(double));
     memset(myY, 0, M * sizeof(double));
-    CALL_DGEMV(101, 111, M,N/nprocs,1.0,myA,N/nprocs,myX,incX,1.0,myY,incY);
-    for(i = 0; i < M; i++){
-      didconv(DEFAULT_FOLD, myY[i], myYI + i * dinum(DEFAULT_FOLD));
+    for(i = 0; i < M; i+= BLK){
+      CALL_DGEMV(101, 111, MIN((M - i), BLK),N/nprocs,1.0,myA + i * N/nprocs,N/nprocs,myX,incX,1.0,myY + i,incY);
+
+      for(ii = i; ii < M && ii < i + BLK; ii++){
+        didconv(DEFAULT_FOLD, myY[ii], myYI + ii * dinum(DEFAULT_FOLD));
+      }
     }
     free(myY);
     if(rank == 0){

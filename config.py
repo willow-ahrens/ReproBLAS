@@ -57,8 +57,10 @@ def peak_time(data):
   elif data["vec"] == "AVX":
     vec_d_ops = 4
     vec_s_ops = 8
-  d_ops = max(data["d_add"] + data["d_mul"] + data["d_fma"], data["d_orb"])
-  s_ops = max(data["s_add"] + data["s_mul"] + data["s_fma"], data["s_orb"])
+  d_ops = data["d_add"] + data["d_mul"] + data["d_fma"] + data["d_orb"]
+  s_ops = data["s_add"] + data["s_mul"] + data["s_fma"] + data["s_orb"]
+#  d_ops = max(data["d_add"] + data["d_mul"] + data["d_fma"], data["d_orb"])
+#  s_ops = max(data["s_add"] + data["s_mul"] + data["s_fma"], data["s_orb"])
   print(d_ops)
   return float(d_ops/vec_d_ops + s_ops/vec_s_ops)/data["freq"];
 
