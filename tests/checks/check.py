@@ -62,15 +62,15 @@ check_suite.add_checks([checks.VerifyRDDOTTest(),\
                          "sine",\
                          "small+grow*big"]])
 
-check_suite.add_checks([checks.VerifyRDGEMVTest()],\
-                       ["O", "T", "N", "M", "lda", "incX", "incY", "f", "g", "j"],\
-                       [["RowMajor", "ColMajor"], ["NoTrans", "Trans"], [1023], [1023], [1023, 1025], [1, 4], [1, 4],\
-                        ["rand",\
-                         "small+grow*big"],\
-                        ["rand",\
-                         "small+grow*big"],\
-                        ["rand",\
-                         "small+grow*big"]])
+#check_suite.add_checks([checks.VerifyRDGEMVTest()],\
+#                       ["O", "T", "N", "M", "lda", "incX", "incY", "f", "g", "j"],\
+#                       [["RowMajor", "ColMajor"], ["NoTrans", "Trans"], [1023], [1023], [1023, 1025], [1, 4], [1, 4],\
+#                        ["rand",\
+#                         "small+grow*big"],\
+#                        ["rand",\
+#                         "small+grow*big"],\
+#                        ["rand",\
+#                         "small+grow*big"]])
 
 check_harness = harness.Harness("check")
 check_harness.add_suite(check_suite)

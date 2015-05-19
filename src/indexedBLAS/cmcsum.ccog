@@ -30,7 +30,7 @@ import depositSum
 void cmcsum(const int fold, const int N, const void *X, const int incX, float *manY, const int incmanY, float *carY, const int inccarY){
   float amax[2];
   int i, j;
-  int N_block = MIN(N_block_MAX, dicapacity());
+  int N_block = MIN(N_block_MAX, sicapacity());
   int deposits = 0;
 
   const float *x = (const float*)X;

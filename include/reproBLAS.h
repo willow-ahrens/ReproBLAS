@@ -25,12 +25,6 @@ typedef enum rblas_side {
   rblas_Right
 } rblas_side_t;
 
-void rdgemv(const rblas_order_t order,
-            const rblas_transpose_t TransA, const int M, const int N,
-            const double *A, const int lda,
-            const double *X, const int incX,
-            double *Y, const int incY);
-
 double rdsum(const int N, const double* X, const int incX);
 double rdasum(const int N, const double* X, const int incX);
 double rdnrm2(const int N, const double* X, const int incX);
@@ -53,4 +47,11 @@ float rscnrm2(const int N, const void* X, const int incX);
 void rcdotc_sub(const int N, const void* X, const int incX, const void* Y, const int incY, void *dotc);
 void rcdotu_sub(const int N, const void* X, const int incX, const void* Y, const int incY, void *dotu);
 
+/*
+void rdgemv(const rblas_order_t order,
+            const rblas_transpose_t TransA, const int M, const int N,
+            const double *A, const int lda,
+            const double *X, const int incX,
+            double *Y, const int incY);
+*/
 #endif

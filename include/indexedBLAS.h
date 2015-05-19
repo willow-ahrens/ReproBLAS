@@ -4,12 +4,6 @@
 #include "reproBLAS.h"
 #include <complex.h>
 
-void dgemvI(const int fold, const rblas_order_t Order,
-            const rblas_transpose_t TransA, const int M, const int N,
-            const double *A, const int lda,
-            const double *X, const int incX,
-            double_indexed *Y, const int incY);
-
 float samax(const int N, const float *X, const int incX);
 double damax(const int N, const double *X, const int incX);
 void camax_sub(const int N, const void *X, const int incX, void *amax);
@@ -307,6 +301,14 @@ extern void cIAccDestroy(cIAccum *acc);
 extern void cIAccumulate(cIAccum *acc, float complex x);
 extern void cIAccumulates(cIAccum *acc, int n, float complex* x, int inc);
 extern float complex cIAccExtract(cIAccum *acc);
+*/
+
+/*
+void dgemvI(const int fold, const rblas_order_t Order,
+            const rblas_transpose_t TransA, const int M, const int N,
+            const double *A, const int lda,
+            const double *X, const int incX,
+            double_indexed *Y, const int incY);
 */
 
 #endif

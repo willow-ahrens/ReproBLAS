@@ -8,8 +8,8 @@ CFLAGS += $(MPICFLAGS)
 
 LIBMPIREPROBLAS := $(OBJPATH)/libmpireproblas.a
 
-libmpireproblas.a_DEPS = $$(LIBINDEXED) $$(LIBINDEXEDBLAS) $$(LIBMPIINDEXED) \
-                         prdgemv.o prbdgemv.o
+libmpireproblas.a_DEPS = $$(LIBINDEXED) $$(LIBINDEXEDBLAS) $$(LIBMPIINDEXED) 
+                         #prdgemv.o prbdgemv.o
                          #TODO kinda
                          #prdasum.o  prdsum.o prddot.o prdnrm2.o              \
                          #prdzasum.o przsum.o przdot.o prdznrm2.o             \
