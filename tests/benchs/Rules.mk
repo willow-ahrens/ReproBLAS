@@ -6,7 +6,7 @@ TARGETS := bench_damax$(EXE) bench_damaxm$(EXE) \
            bench_rdasum$(EXE) bench_rddot$(EXE) bench_rdnrm2$(EXE) bench_rdsum$(EXE) \
            bench_rsasum$(EXE) bench_rsdot$(EXE) bench_rsnrm2$(EXE) bench_rssum$(EXE) \
            bench_rzdotc$(EXE) bench_rzdotu$(EXE) bench_rzsum$(EXE) bench_rdzasum$(EXE) bench_rdznrm2$(EXE) \
-           bench_rdgemv$(EXE) bench_prdgemv$(EXE)
+           bench_rdgemv$(EXE) bench_prdgemv$(EXE) bench_reduce$(EXE) bench_ireduce$(EXE)
 
 ifneq ($(BLAS),)
 TARGETS += bench_dasum$(EXE) bench_ddot$(EXE) bench_dnrm2$(EXE) \
@@ -69,3 +69,6 @@ bench_prdgemv$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) $$(LIBMPIREPROBLAS) benc
 bench_prbdgemv$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) $$(LIBMPIREPROBLAS) bench_prbdgemv.o
 bench_pdgemv$(EXE)_DEPS = $$(LIBTEST) bench_pdgemv.o
 bench_dgemv$(EXE)_DEPS = $$(LIBTEST) bench_dgemv.o
+bench_reduce$(EXE)_DEPS = $$(LIBTEST) bench_reduce.o
+bench_ireduce$(EXE)_DEPS = $$(LIBTEST) bench_ireduce.o $$(LIBINDEXED) $$(LIBMPIREPROBLAS)
+
