@@ -47,6 +47,36 @@ int sicapacity() {
   return 1 << (PREC - BIN_WIDTH - 2);
 }
 
+/**
+ * @internal
+ * @brief Get indexed single precision compression factor
+ *
+ * This factor is used to scale down inputs before deposition
+ *
+ * @return compression factor
+ *
+ * @author Peter Ahrens
+ * @date   19 May 2015
+ */
+float smcompression() {
+  return 1.0/(1 << (PREC - BIN_WIDTH + 1));
+}
+
+/**
+ * @internal
+ * @brief Get indexed single precision expansion factor
+ *
+ * This factor is used to scale up inputs after deposition
+ *
+ * @return expansion factor
+ *
+ * @author Peter Ahrens
+ * @date   19 May 2015
+ */
+float smexpansion() {
+  return 1.0*(1 << (PREC - BIN_WIDTH + 1));
+}
+
 static void bounds_initialize() {
   int exp;
   int index;

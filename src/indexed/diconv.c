@@ -111,7 +111,7 @@ double ddmconv(const int fold, const double* manX, const int incmanX, const doub
     Y += (manX[i * incmanX] + (carX[i * inccarX] - 6) * ufp(manX[i * incmanX]) * 0.25);
   }
 
-  return Y;
+  return Y * dmexpansion();
 }
 
 /**

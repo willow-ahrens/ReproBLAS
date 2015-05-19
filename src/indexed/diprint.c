@@ -21,7 +21,7 @@ void dmprint(const int fold, const double *manX, const int incmanX, const double
   double M;
   for (i = 0; i < fold; i++, manX += incmanX, carX += inccarX) {
     M = ufp(manX[0]);
-    printf("(2^%d: %g #%g =%g)\n", (int)log2(M), manX[0] - 1.5*M, carX[0], (carX[0] - 6) * 0.25 * M + manX[0]);
+    printf("(2^%d: %g #%g =%g)\n", (int)log2(M), manX[0] - 1.5*M, carX[0], ((carX[0] - 6) * 0.25 * M + manX[0]) * dmexpansion());
   }
 }
 
@@ -58,9 +58,9 @@ void zmprint(const int fold, const double *manX, const int incmanX, const double
   double M;
   for (i = 0; i < fold; i++, manX += incmanX, carX += inccarX) {
     M = ufp(manX[0]);
-    printf("(2^%d: %g #%g =%g", (int)log2(M), manX[0] - 1.5*M, carX[0], (carX[0] - 6) * 0.25 * M + manX[0]);
+    printf("(2^%d: %g #%g =%g", (int)log2(M), manX[0] - 1.5*M, carX[0], ((carX[0] - 6) * 0.25 * M + manX[0]) * dmexpansion());
     M = ufp(manX[1]);
-    printf("| 2^%d: %g #%g =%g)\n", (int)log2(M), manX[1] - 1.5*M, carX[1], (carX[1] - 6) * 0.25 * M + manX[1]);
+    printf("| 2^%d: %g #%g =%g)\n", (int)log2(M), manX[1] - 1.5*M, carX[1], ((carX[1] - 6) * 0.25 * M + manX[1]) * dmexpansion());
   }
 }
 

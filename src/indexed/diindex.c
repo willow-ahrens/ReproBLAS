@@ -15,7 +15,7 @@
 #define BOUNDS_ZERO_INDEX (DBL_MAX_EXP/BIN_WIDTH + 1)
 
 static double bounds[BOUNDS_SIZE];                     //initialized in bounds_initialize
-static int    bounds_initialized = 0;                  //initialized in bounds_initialize
+static int    bounds_initialized  = 0;                 //initialized in bounds_initialize
 static int    bounds_min_index    = BOUNDS_ZERO_INDEX; //initialized in bounds_initialize
 static int    bounds_max_index    = BOUNDS_ZERO_INDEX; //initialized in bounds_initialize
 
@@ -45,6 +45,36 @@ int diwidth() {
  */
 int dicapacity() {
   return 1 << (PREC - BIN_WIDTH - 2);
+}
+
+/**
+ * @internal
+ * @brief Get indexed double precision compression factor
+ *
+ * This factor is used to scale down inputs before deposition
+ *
+ * @return compression factor
+ *
+ * @author Peter Ahrens
+ * @date   19 May 2015
+ */
+double dmcompression() {
+  return 1.0/(1 << (PREC - BIN_WIDTH + 1));
+}
+
+/**
+ * @internal
+ * @brief Get indexed double precision expansion factor
+ *
+ * This factor is used to scale up inputs after deposition
+ *
+ * @return expansion factor
+ *
+ * @author Peter Ahrens
+ * @date   19 May 2015
+ */
+double dmexpansion() {
+  return 1.0*(1 << (PREC - BIN_WIDTH + 1));
 }
 
 static void bounds_initialize() {
@@ -87,7 +117,6 @@ static void bounds_initialize() {
 
   bounds_initialized = 1;
 }
-
 
 /**
  * @internal

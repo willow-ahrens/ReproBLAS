@@ -4,6 +4,7 @@ from utils import *
 from dataTypes import *
 from vectorizations import *
 from generate import *
+import itertools
 
   #SUM_WIDTH = number of indexed sums used at once
   #PIPE_WIDTH = number of independently loaded input elements processed per indexed sum
@@ -99,6 +100,9 @@ class Deposit(Target):
     code_block.new_line()
     self.define_load_ptrs(code_block, max_reg_width * max_unroll_width)
     self.define_load_vars(code_block, max_reg_width * max_unroll_width)
+    self.compression_var = ["compression"];
+    code_block.define_vars(self.vec.type_name, self.compression_var)
+    code_block.set_equal(self.compression_var, self.vec.set("{0}mcompression()".format(self.data_type.base_type.name_char)))
     if fold == 0:
       #define q variables
       self.q_vars = ["q_" + str(i) for i in range(max_reg_width)]
@@ -169,6 +173,7 @@ class Deposit(Target):
         self.preprocess(code_block, n, incs, align=align)
         self.process(code_block, fold, reg_width, n // max_pipe_width)
     #TODO load_ptrs are kindof a useless construction
+    #TODO so are load_vars. Clean this up when you have time. Instead of passing instance variables around, just use function arguments for load vars?
     self.vec.iterate_unrolled("i", self.N, self.load_ptrs, incs, max_pipe_width * max_unroll_width, 1, body)
 
   def preprocess(self, code_block, n, incs, partial="", align = False):
@@ -182,6 +187,7 @@ class Deposit(Target):
       code_block.write("for(j = 0; j < fold - 1; j++){")
       code_block.indent()
       for i in range(max(unroll_width, 1)):
+        code_block.set_equal(self.load_vars[0][i * reg_width:(i + 1) * reg_width], self.vec.mul(self.load_vars[0][i * reg_width:(i + 1) * reg_width], itertools.cycle(self.compression_var)))
         code_block.set_equal(self.s_vars[0], self.buffer_vars[:reg_width])
         self.vec.add_BLP_into(self.q_vars, self.s_vars[0], self.load_vars[0][i * reg_width:], reg_width)
         code_block.set_equal(self.buffer_vars, self.q_vars[:reg_width])
@@ -192,6 +198,7 @@ class Deposit(Target):
       self.vec.add_BLP_into(self.buffer_vars, self.buffer_vars, self.load_vars[0][i * reg_width:], reg_width)
     else:
       for i in range(max(unroll_width, 1)):
+        code_block.set_equal(self.load_vars[0][i * reg_width:(i + 1) * reg_width], self.vec.mul(self.load_vars[0][i * reg_width:(i + 1) * reg_width], itertools.cycle(self.compression_var)))
         for j in range(fold - 1):
           code_block.set_equal(self.q_vars, self.s_vars[j][:reg_width])
           self.vec.add_BLP_into(self.s_vars[j], self.s_vars[j], self.load_vars[0][i * reg_width:], reg_width)

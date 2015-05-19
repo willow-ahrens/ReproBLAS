@@ -107,7 +107,7 @@ float ssmconv(const int fold, const float* manX, const int incmanX, const float*
     Y += (manX[i * incmanX] + (carX[i * inccarX] - 6) * ufpf(manX[i * incmanX]) * 0.25);
   }
 
-  return Y;
+  return Y * smexpansion();
 }
 
 /**

@@ -146,7 +146,7 @@ void smsdeposit(const int fold, const float X, float *manY, const int incmanY){
   float M;
   int_float q;
   int i;
-  float x = X;
+  float x = X * smcompression();
   for (i = 0; i < fold - 1; i++) {
     M = manY[i * incmanY];
     q.f = x;
@@ -201,8 +201,8 @@ void cmcdeposit(const int fold, const void *X, float *manY, const int incmanY){
   float MR, MI;
   int_float qR, qI;
   int i;
-  float xR = ((float*)X)[0];
-  float xI = ((float*)X)[1];
+  float xR = ((float*)X)[0] * smcompression();
+  float xI = ((float*)X)[1] * smcompression();
 
   for (i = 0; i < fold - 1; i++) {
     MR = manY[i * 2 * incmanY];

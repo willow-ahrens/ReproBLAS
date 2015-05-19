@@ -145,7 +145,7 @@ void ziziadd(const int fold, const double_complex_indexed *X, double_complex_ind
  */
 void dmddeposit(const int fold, const double X, double *manY, const int incmanY){
   double M;
-  double x = X;
+  double x = X * dmcompression();
   long_double q;
   int i;
   for (i = 0; i < fold - 1; i++) {
@@ -202,8 +202,8 @@ void zmzdeposit(const int fold, const void *X, double *manY, const int incmanY){
   double MR, MI;
   long_double qR, qI;
   int i;
-  double xR = ((double*)X)[0];
-  double xI = ((double*)X)[1];
+  double xR = ((double*)X)[0] * dmcompression();
+  double xI = ((double*)X)[1] * dmcompression();
 
   for (i = 0; i < fold - 1; i++) {
     MR = manY[i * 2 * incmanY];

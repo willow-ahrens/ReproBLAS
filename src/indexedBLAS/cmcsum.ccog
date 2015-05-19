@@ -67,7 +67,7 @@ void cmcsum(const int fold, const int N, const void *X, const int incX, float *m
       amax[1] = manY[1];
     }
 
-    if (deposits + N_block > dicapacity()) {
+    if (deposits + N_block > sicapacity()) {
       cmrenorm(fold, manY, incmanY, carY, inccarY);
       deposits = 0;
     }
