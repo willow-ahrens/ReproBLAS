@@ -12,5 +12,9 @@ int main(int argc, char **argv){
   printf("bar %g\n", bar);
   sisadd(3, bar, foo);
   printf("foo %g\n", ssiconv(3, foo));
+  printf("Index 51 %g", dbound(51));
+  double qux = ldexp(0.75, DBL_MAX_EXP);
+  qux = 0;
+  printf("Index max %d", dindex(qux));
   return 0;
 }

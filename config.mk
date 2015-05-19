@@ -22,7 +22,7 @@ LDFLAGS +=
 #MPILDFLAGS = $(shell mpicc --showme link)
 
 # select python (comment all for auto)
-PYTHON = python
+#PYTHON = python
 #PYTHON = python3
 
 # enable vectorizations (comment all for auto)

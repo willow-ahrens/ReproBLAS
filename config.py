@@ -3,14 +3,14 @@ import subprocess
 import sys
 
 def callsafe(command):
-  print command
+  print(command)
   rc = 0
   try:
     out = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True).decode(sys.stdout.encoding)
   except subprocess.CalledProcessError as e:
     rc = e.returncode
     out = e.output.decode(sys.stdout.encoding)
-  print out
+  print(out)
   return (rc, out)
 
 def run(command_list):
@@ -24,7 +24,7 @@ def run(command_list):
 def run_parallel(command_list):
   """
   A function that runs the command list (a list of string commands) on the
-  target (possibly in parallel) and returns a list of their results as a list 
+  target (possibly in parallel) and returns a list of their results as a list
   of tuples of (return code, output)
   """
   p = multiprocessing.Pool(multiprocessing.cpu_count())

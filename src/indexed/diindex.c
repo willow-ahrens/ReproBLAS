@@ -11,13 +11,8 @@
 
 #define PREC             53
 #define BIN_WIDTH        40
-#define BOUNDS_SIZE      ((DBL_MAX_EXP - DBL_MIN_EXP)/BIN_WIDTH + MAX_FOLD + 2)
-#define BOUNDS_ZERO_INDEX (DBL_MAX_EXP/BIN_WIDTH + 1)
-
-static double bounds[BOUNDS_SIZE];                     //initialized in bounds_initialize
-static int    bounds_initialized  = 0;                 //initialized in bounds_initialize
-static int    bounds_min_index    = BOUNDS_ZERO_INDEX; //initialized in bounds_initialize
-static int    bounds_max_index    = BOUNDS_ZERO_INDEX; //initialized in bounds_initialize
+static double bounds[(DBL_MAX_EXP - DBL_MIN_EXP)/BIN_WIDTH + MAX_FOLD]; //initialized in bounds_initialize
+static int    bounds_initialized  = 0;                                  //initialized in bounds_initialize
 
 /**
  * @brief Get indexed double precision bin width
@@ -77,47 +72,6 @@ double dmexpansion() {
   return 1.0*(1 << (PREC - BIN_WIDTH + 1));
 }
 
-static void bounds_initialize() {
-  int exp;
-  int index;
-  double step;
-
-  if (bounds_initialized) {
-    return;
-  }
-
-  bounds[BOUNDS_ZERO_INDEX] = 1.5;
-  step = ldexp(1, BIN_WIDTH);
-
-  exp = -1;
-  index = BOUNDS_ZERO_INDEX + 1;
-  while (exp * BIN_WIDTH  >= DBL_MIN_EXP) {
-    bounds[index] = bounds[index - 1] / step;
-    index++;
-    exp--;
-  }
-  bounds_max_index = index;
-  while (index < BOUNDS_SIZE) {
-    bounds[index] = 0.0;
-    index++;
-  }
-
-  exp = 1;
-  index = BOUNDS_ZERO_INDEX - 1;
-  while (exp * BIN_WIDTH <= DBL_MAX_EXP) {
-    bounds[index] = bounds[index + 1] * step;
-    index--;
-    exp++;
-  }
-  bounds_min_index = index;
-  while (index >= 0) {
-    bounds[index] = bounds[bounds_min_index + 1] * step;
-    index--;
-  }
-
-  bounds_initialized = 1;
-}
-
 /**
  * @internal
  * @brief Get index of manually specified indexed double precision
@@ -127,26 +81,19 @@ static void bounds_initialize() {
  * @param manX X's mantissa vector
  * @return X's index
  *
- * @author Hong Diep Nguyen
  * @author Peter Ahrens
- * @date   27 Apr 2015
+ * @author Hong Diep Nguyen
+ * @date   19 May 2015
  */
 int dmindex(const double *manX){
-  int index;
+  int exp;
 
-  bounds_initialize();
-
-  if(isinf(manX[0])){
-    index = bounds_min_index;
-  } else if(manX[0] == 0){
-    index = bounds_max_index;
-  } else {
-    frexp(manX[0], &index);
-    index--;
-    index /= BIN_WIDTH;
-    index = BOUNDS_ZERO_INDEX - index;
+  if(manX[0] == 0.0){
+    return (DBL_MAX_EXP - DBL_MIN_EXP)/BIN_WIDTH;
+  }else{
+    frexp(manX[0], &exp);
+    return (DBL_MAX_EXP - exp)/BIN_WIDTH;
   }
-  return index;
 }
 
 /**
@@ -157,30 +104,38 @@ int dmindex(const double *manX){
  * @param X scalar X
  * @return X's index
  *
- * @author Hong Diep Nguyen
  * @author Peter Ahrens
- * @date   27 Apr 2015
+ * @author Hong Diep Nguyen
+ * @date   19 May 2015
  */
 int dindex(const double X){
+  int exp;
+
+  if(X == 0.0){
+    return (DBL_MAX_EXP - DBL_MIN_EXP)/BIN_WIDTH;
+  }else{
+    frexp(X, &exp);
+    return (DBL_MAX_EXP - exp)/BIN_WIDTH;
+  }
+}
+
+static void bounds_initialize() {
   int index;
 
-  bounds_initialize();
-
-  if(isinf(X)){
-    index = bounds_min_index;
-  }else if(X == 0){
-    index = bounds_max_index;
-  }else{
-    frexp(X, &index);
-    index += PREC - BIN_WIDTH;
-    if(index < 0){
-      index -= BIN_WIDTH - 1; //we want to round towards -infinity
-    }
-    index /= BIN_WIDTH;
-    index = BOUNDS_ZERO_INDEX - 1 - index;
+  if (bounds_initialized) {
+    return;
   }
-  return index;
+
+  for(index = 0; index <= (DBL_MAX_EXP - DBL_MIN_EXP)/BIN_WIDTH; index++){
+    bounds[index] = ldexp(0.75, (DBL_MAX_EXP - index * BIN_WIDTH));
+  }
+  for(; index < (DBL_MAX_EXP - DBL_MIN_EXP)/BIN_WIDTH + MAX_FOLD; index++){
+    bounds[index] = 0;
+  }
+
+  bounds_initialized = 1;
 }
+
 
 /**
  * @brief Get double precision bound corresponding to index
