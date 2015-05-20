@@ -11,8 +11,8 @@
 
 #define PREC             24
 #define BIN_WIDTH        13
-static double bounds[(FLT_MAX_EXP - FLT_MIN_EXP)/BIN_WIDTH + MAX_FOLD]; //initialized in bounds_initialize
-static int    bounds_initialized  = 0;                                  //initialized in bounds_initialize
+static double bounds[(FLT_MAX_EXP - FLT_MIN_EXP)/BIN_WIDTH + MAX_FOLD + 1]; //initialized in bounds_initialize
+static int    bounds_initialized  = 0;                                      //initialized in bounds_initialize
 
 /**
  * @brief Get indexed single precision bin width
@@ -89,7 +89,7 @@ int smindex(const float *manX){
   int exp;
 
   if(manX[0] == 0.0){
-    return (FLT_MAX_EXP - FLT_MIN_EXP)/BIN_WIDTH;
+    return (FLT_MAX_EXP - FLT_MIN_EXP)/BIN_WIDTH + 1;
   }else{
     frexpf(manX[0], &exp);
     return (FLT_MAX_EXP - exp)/BIN_WIDTH;
@@ -112,7 +112,7 @@ int sindex(const float X){
   int exp;
 
   if(X == 0.0){
-    return (FLT_MAX_EXP - FLT_MIN_EXP)/BIN_WIDTH;
+    return (FLT_MAX_EXP - FLT_MIN_EXP)/BIN_WIDTH + 1;
   }else{
     frexpf(X, &exp);
     return (FLT_MAX_EXP - exp)/BIN_WIDTH;
@@ -129,7 +129,7 @@ static void bounds_initialize() {
   for(index = 0; index <= (FLT_MAX_EXP - FLT_MIN_EXP)/BIN_WIDTH; index++){
     bounds[index] = ldexp(0.75, (FLT_MAX_EXP - index * BIN_WIDTH));
   }
-  for(; index < (FLT_MAX_EXP - FLT_MIN_EXP)/BIN_WIDTH + MAX_FOLD; index++){
+  for(; index < (FLT_MAX_EXP - FLT_MIN_EXP)/BIN_WIDTH + MAX_FOLD + 1; index++){
     bounds[index] = 0;
   }
 

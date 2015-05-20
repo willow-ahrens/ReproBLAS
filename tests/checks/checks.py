@@ -335,6 +335,16 @@ class VerifySINDEXTest(CheckTest):
   executable = "tests/checks/verify_sindex"
   name = "verify_sindex"
 
+class VerifyDMINDEXTest(CheckTest):
+  base_flags = ""
+  executable = "tests/checks/verify_dmindex"
+  name = "verify_dmindex"
+
+class VerifySMINDEXTest(CheckTest):
+  base_flags = ""
+  executable = "tests/checks/verify_smindex"
+  name = "verify_smindex"
+
 class VerifyRDGEMVTest(CheckTest):
   base_flags = ""
   executable = "tests/checks/verify_rdgemv"
@@ -387,4 +397,6 @@ all_checks = {"validate_internal_ufp": ValidateInternalUFPTest,\
               "verify_rcdotu": VerifyRCDOTUTest,\
               "verify_rcdotc": VerifyRCDOTCTest,\
               "verify_dindex": VerifyDINDEXTest,\
-              "verify_sindex": VerifySINDEXTest}
+              "verify_sindex": VerifySINDEXTest,\
+              "verify_dmindex": VerifyDMINDEXTest,\
+              "verify_smindex": VerifySMINDEXTest}

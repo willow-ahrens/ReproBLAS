@@ -13,7 +13,9 @@ check_suite.add_checks([checks.ValidateInternalUFPTest(),\
                        [[10], [1, 2, 4]])
 
 check_suite.add_checks([checks.VerifyDINDEXTest(),\
-                        checks.VerifySINDEXTest()],\
+                        checks.VerifySINDEXTest(),\
+                        checks.VerifyDMINDEXTest(),\
+                        checks.VerifySMINDEXTest()],\
                        ["N", "incX"],\
                        [[4], [1]])
 

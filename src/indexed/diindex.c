@@ -11,8 +11,8 @@
 
 #define PREC             53
 #define BIN_WIDTH        40
-static double bounds[(DBL_MAX_EXP - DBL_MIN_EXP)/BIN_WIDTH + MAX_FOLD]; //initialized in bounds_initialize
-static int    bounds_initialized  = 0;                                  //initialized in bounds_initialize
+static double bounds[(DBL_MAX_EXP - DBL_MIN_EXP)/BIN_WIDTH + MAX_FOLD + 1]; //initialized in bounds_initialize
+static int    bounds_initialized  = 0;                                      //initialized in bounds_initialize
 
 /**
  * @brief Get indexed double precision bin width
@@ -89,7 +89,7 @@ int dmindex(const double *manX){
   int exp;
 
   if(manX[0] == 0.0){
-    return (DBL_MAX_EXP - DBL_MIN_EXP)/BIN_WIDTH;
+    return (DBL_MAX_EXP - DBL_MIN_EXP)/BIN_WIDTH + 1;
   }else{
     frexp(manX[0], &exp);
     return (DBL_MAX_EXP - exp)/BIN_WIDTH;
@@ -112,7 +112,7 @@ int dindex(const double X){
   int exp;
 
   if(X == 0.0){
-    return (DBL_MAX_EXP - DBL_MIN_EXP)/BIN_WIDTH;
+    return (DBL_MAX_EXP - DBL_MIN_EXP)/BIN_WIDTH + 1;
   }else{
     frexp(X, &exp);
     return (DBL_MAX_EXP - exp)/BIN_WIDTH;
@@ -129,7 +129,7 @@ static void bounds_initialize() {
   for(index = 0; index <= (DBL_MAX_EXP - DBL_MIN_EXP)/BIN_WIDTH; index++){
     bounds[index] = ldexp(0.75, (DBL_MAX_EXP - index * BIN_WIDTH));
   }
-  for(; index < (DBL_MAX_EXP - DBL_MIN_EXP)/BIN_WIDTH + MAX_FOLD; index++){
+  for(; index < (DBL_MAX_EXP - DBL_MIN_EXP)/BIN_WIDTH + MAX_FOLD + 1; index++){
     bounds[index] = 0;
   }
 

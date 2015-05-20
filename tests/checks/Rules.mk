@@ -3,7 +3,8 @@ TARGETS := validate_external_rdblas1$(EXE) validate_external_rzblas1$(EXE) valid
            validate_internal_rdblas1$(EXE) validate_internal_rzblas1$(EXE) validate_internal_rsblas1$(EXE) validate_internal_rcblas1$(EXE) \
            validate_internal_ufp$(EXE) validate_internal_ufpf$(EXE) \
            verify_rdblas1$(EXE) verify_rzblas1$(EXE) verify_rsblas1$(EXE) verify_rcblas1$(EXE) \
-           verify_dindex$(EXE) verify_sindex$(EXE)
+           verify_dindex$(EXE) verify_sindex$(EXE) \
+           verify_dmindex$(EXE) verify_smindex$(EXE)
 
 SUBDIRS :=
 
@@ -30,6 +31,8 @@ verify_rsblas1$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) verify_rsblas1.o
 verify_rzblas1$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) verify_rzblas1.o
 verify_dindex$(EXE)_DEPS = $$(LIBTEST) $$(LIBINDEXED) verify_dindex.o
 verify_sindex$(EXE)_DEPS = $$(LIBTEST) $$(LIBINDEXED) verify_sindex.o
+verify_dmindex$(EXE)_DEPS = $$(LIBTEST) $$(LIBINDEXED) verify_dmindex.o
+verify_smindex$(EXE)_DEPS = $$(LIBTEST) $$(LIBINDEXED) verify_smindex.o
 
 #verify_rdgemv$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) verify_rdgemv.o
 #verify_prdgemv$(EXE)_DEPS = $$(LIBTEST) $$(LIBMPIREPROBLAS) verify_prdgemv.o

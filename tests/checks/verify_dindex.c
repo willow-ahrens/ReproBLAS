@@ -37,12 +37,12 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   for (i = 0; i < N * (DBL_MAX_EXP - DBL_MIN_EXP) + 1; i++) {
     index = dindex(X[i * incX]);
     if (dbound(index + 1) / ldexp(0.75, 53 - diwidth()) > 2 * fabs(X[i * incX]) * dmcompression()){
-      printf("2 * |x| !>= 2^(i * W)\n");
+      printf("2 * |X| !>= 2^(i * W)\n");
       printf("2 * %g !>= %g\n", fabs(X[i * incX]) * dmcompression(), dbound(index + 1)/ldexp(0.75, 53 - diwidth()));
       return 1;
     }
-    if (dbound(index) / ldexp(0.75, 53 - diwidth()) <= 2 * fabs(X[i * incX]) * dmcompression()){
-      printf("2 * |x| !< 2^((i + 1) * W)\n");
+    if (X[i * incX] != 0.0 && dbound(index) / ldexp(0.75, 53 - diwidth()) <= 2 * fabs(X[i * incX]) * dmcompression()){
+      printf("2 * |X| !< 2^((i + 1) * W)\n");
       printf("2 * %g !< %g\n", fabs(X[i * incX]) * dmcompression(), dbound(index)/ldexp(0.75, 53 - diwidth()));
       return 1;
     }

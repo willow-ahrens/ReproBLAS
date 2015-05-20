@@ -3,6 +3,7 @@
 #include <string.h>
 #include <sys/time.h>
 #include <math.h>
+
 #include "test_util.h"
 
 const int util_vec_fill_n_names  = 15;
