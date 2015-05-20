@@ -325,6 +325,16 @@ class VerifyRCDOTCTest(CheckTest):
   executable = "tests/checks/verify_rcblas1"
   name = "verify_rcdotc"
 
+class VerifyDINDEXTest(CheckTest):
+  base_flags = ""
+  executable = "tests/checks/verify_dindex"
+  name = "verify_dindex"
+
+class VerifySINDEXTest(CheckTest):
+  base_flags = ""
+  executable = "tests/checks/verify_sindex"
+  name = "verify_sindex"
+
 class VerifyRDGEMVTest(CheckTest):
   base_flags = ""
   executable = "tests/checks/verify_rdgemv"
@@ -375,4 +385,6 @@ all_checks = {"validate_internal_ufp": ValidateInternalUFPTest,\
               "verify_rscasum": VerifyRSCASUMTest,\
               "verify_rscnrm2": VerifyRSCNRM2Test,\
               "verify_rcdotu": VerifyRCDOTUTest,\
-              "verify_rcdotc": VerifyRCDOTCTest}
+              "verify_rcdotc": VerifyRCDOTCTest,\
+              "verify_dindex": VerifyDINDEXTest,\
+              "verify_sindex": VerifySINDEXTest}

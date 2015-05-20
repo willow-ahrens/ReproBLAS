@@ -80,7 +80,7 @@ void util_random_seed(void) {
 }
 
 //TODO if a vector/matrix data generation redesign/cleanup ever happens, better random numbers are desired (I'm thinking /dev/random if possible, and also a random in range function)
-static double util_drand48(){
+double util_drand48(){
   unsigned long l = 0;
   int i;
   int r;

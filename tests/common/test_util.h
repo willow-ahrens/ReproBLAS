@@ -47,6 +47,8 @@ extern const int  util_mat_fill_n_names;
 extern const char *util_mat_fill_names[];
 extern const char *util_mat_fill_descs[];
 
+double util_drand48();
+
 void util_dvec_fill(int N, double* v, int inc, util_vec_fill_t fill, double a, double b);
 void util_svec_fill(int N, float* v, int inc, util_vec_fill_t fill, float a, float b);
 void util_zvec_fill(int N, double complex* v, int inc, util_vec_fill_t fill, double complex a, double complex b);

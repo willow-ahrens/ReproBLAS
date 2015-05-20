@@ -12,6 +12,11 @@ check_suite.add_checks([checks.ValidateInternalUFPTest(),\
                        ["N", "incX"],\
                        [[10], [1, 2, 4]])
 
+check_suite.add_checks([checks.VerifyDINDEXTest(),\
+                        checks.VerifySINDEXTest()],\
+                       ["N", "incX"],\
+                       [[4], [1]])
+
 check_suite.add_checks([checks.ValidateInternalDAMAXTest(),\
                         checks.ValidateInternalZAMAXTest(),\
                         checks.ValidateInternalSAMAXTest(),\
