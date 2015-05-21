@@ -963,8 +963,8 @@ float complex* util_cmat_alloc(char Order, int M, int N, int lda) {
 
 void util_dvec_fill(int N, double* V, int incV, util_vec_fill_t fill, double a, double b) {
   int i;
-  double small = 1.0 / (1024.0 * 1024.0);			// 2^-20
-  double big   = 1024.0 * 1024.0 * 1024.0 * 32;	// 2^35
+  double small = 1.0 / (1024.0 * 1024.0 * 128.0); // 2^-27
+  double big   = 1024.0 * 1024.0 * 128.0;         // 2^27
   switch(fill){
     case util_Vec_Constant_Drop:
     case util_Vec_Constant:
@@ -1074,8 +1074,8 @@ void util_dvec_fill(int N, double* V, int incV, util_vec_fill_t fill, double a, 
 
 void util_svec_fill(int N, float* V, int incV, util_vec_fill_t fill, float a, float b) {
   int i;
-  float small = 1.0 / 1024.0;			// 2^-10
-  float big   = 1024.0 * 32;		// 2^15
+  double small = 1.0 / (1024.0 * 4.0); // 2^-12
+  double big   = 1024.0 * 8.0;  // 2^13
   switch(fill){
     case util_Vec_Constant_Drop:
     case util_Vec_Constant:

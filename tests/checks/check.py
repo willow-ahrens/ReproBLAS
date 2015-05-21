@@ -50,9 +50,9 @@ check_suite.add_checks([checks.VerifyRDSUMTest(),\
                         checks.VerifySISDEPOSITTest(),\
                         checks.VerifyRCSUMTest(),\
                         checks.VerifyRSCASUMTest(),\
-                        checks.VerifySISIADDTest(),\
-                        checks.VerifySISADDTest(),\
-                        checks.VerifySISDEPOSITTest()],\
+                        checks.VerifyCICIADDTest(),\
+                        checks.VerifyCICADDTest(),\
+                        checks.VerifyCICDEPOSITTest()],\
                        ["N", "B", "incX", "f"],\
                        [[4095], [256], [1, 4],\
                         ["rand",\
