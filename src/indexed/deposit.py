@@ -184,10 +184,10 @@ class Deposit(Target):
 
   def process(self, code_block, fold, reg_width, unroll_width):
     if(fold == 0):
+      code_block.set_equal(self.load_vars[0][:unroll_width * reg_width], self.vec.mul(self.load_vars[0], itertools.cycle(self.compression_var)))
       code_block.write("for(j = 0; j < fold - 1; j++){")
       code_block.indent()
       for i in range(max(unroll_width, 1)):
-        code_block.set_equal(self.load_vars[0][i * reg_width:(i + 1) * reg_width], self.vec.mul(self.load_vars[0][i * reg_width:(i + 1) * reg_width], itertools.cycle(self.compression_var)))
         code_block.set_equal(self.s_vars[0], self.buffer_vars[:reg_width])
         self.vec.add_BLP_into(self.q_vars, self.s_vars[0], self.load_vars[0][i * reg_width:], reg_width)
         code_block.set_equal(self.buffer_vars, self.q_vars[:reg_width])

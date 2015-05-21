@@ -350,6 +350,11 @@ class VerifyRDGEMVTest(CheckTest):
   executable = "tests/checks/verify_rdgemv"
   name = "verify_rdgemv"
 
+class VerifyDMODSUMTest(CheckTest):
+  base_flags = ""
+  executable = "tests/checks/verify_daugsum"
+  name = "verify_dmodsum"
+
 all_checks = {"validate_internal_ufp": ValidateInternalUFPTest,\
               "validate_internal_ufpf": ValidateInternalUFPFTest,\
               "validate_internal_damax": ValidateInternalDAMAXTest,\

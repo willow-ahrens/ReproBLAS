@@ -7,6 +7,20 @@ check_dir = os.path.dirname(os.path.abspath(__file__))
 
 check_suite = checks.CheckSuite()
 
+check_suite.add_checks([checks.VerifyDMODSUMTest()],\
+                       ["k", "N", "incX", "f", "w"],\
+                       [[1, 2, 3, 4], [4095], [1, 4],\
+                        ["rand",\
+                         "rand+(rand-1)",\
+                         "sine",\
+                         "small+grow*big"],\
+                        ["rdsum",\
+                         "rdasum",\
+                         "rdnrm2",\
+                         "didiadd",\
+                         "didadd",\
+                         "diddeposit"]])
+
 check_suite.add_checks([checks.ValidateInternalUFPTest(),\
                         checks.ValidateInternalUFPFTest()],\
                        ["N", "incX"],\
