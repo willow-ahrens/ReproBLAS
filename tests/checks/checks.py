@@ -237,93 +237,153 @@ class ValidateExternalRCDOTCTest(CheckTest):
 
 class VerifyRDSUMTest(CheckTest):
   base_flags = "-w rdsum"
-  executable = "tests/checks/verify_rdblas1"
+  executable = "tests/checks/verify_daugsum"
   name = "verify_rdsum"
 
 class VerifyRDASUMTest(CheckTest):
   base_flags = "-w rdasum"
-  executable = "tests/checks/verify_rdblas1"
+  executable = "tests/checks/verify_daugsum"
   name = "verify_rdasum"
 
 class VerifyRDNRM2Test(CheckTest):
   base_flags = "-w rdnrm2"
-  executable = "tests/checks/verify_rdblas1"
+  executable = "tests/checks/verify_daugsum"
   name = "verify_rdnrm2"
 
 class VerifyRDDOTTest(CheckTest):
   base_flags = "-w rddot"
-  executable = "tests/checks/verify_rdblas1"
+  executable = "tests/checks/verify_daugsum"
   name = "verify_rddot"
+
+class VerifyDIDIADDTest(CheckTest):
+  base_flags = "-w didiadd"
+  executable = "tests/checks/verify_daugsum"
+  name = "verify_didiadd"
+
+class VerifyDIDADDTest(CheckTest):
+  base_flags = "-w didadd"
+  executable = "tests/checks/verify_daugsum"
+  name = "verify_didadd"
+
+class VerifyDIDDEPOSITTest(CheckTest):
+  base_flags = "-w diddeposit"
+  executable = "tests/checks/verify_daugsum"
+  name = "verify_diddeposit"
 
 class VerifyRZSUMTest(CheckTest):
   base_flags = "-w rzsum"
-  executable = "tests/checks/verify_rzblas1"
+  executable = "tests/checks/verify_zaugsum"
   name = "verify_rzsum"
 
 class VerifyRDZASUMTest(CheckTest):
   base_flags = "-w rdzasum"
-  executable = "tests/checks/verify_rzblas1"
+  executable = "tests/checks/verify_zaugsum"
   name = "verify_rdzasum"
 
 class VerifyRDZNRM2Test(CheckTest):
   base_flags = "-w rdznrm2"
-  executable = "tests/checks/verify_rzblas1"
+  executable = "tests/checks/verify_zaugsum"
   name = "verify_rdznrm2"
 
 class VerifyRZDOTUTest(CheckTest):
   base_flags = "-w rzdotu"
-  executable = "tests/checks/verify_rzblas1"
+  executable = "tests/checks/verify_zaugsum"
   name = "verify_rzdotu"
 
 class VerifyRZDOTCTest(CheckTest):
   base_flags = "-w rzdotc"
-  executable = "tests/checks/verify_rzblas1"
+  executable = "tests/checks/verify_zaugsum"
   name = "verify_rzdotc"
+
+class VerifyZIZIADDTest(CheckTest):
+  base_flags = "-w ziziadd"
+  executable = "tests/checks/verify_zaugsum"
+  name = "verify_ziziadd"
+
+class VerifyZIZADDTest(CheckTest):
+  base_flags = "-w zizadd"
+  executable = "tests/checks/verify_zaugsum"
+  name = "verify_zizadd"
+
+class VerifyZIZDEPOSITTest(CheckTest):
+  base_flags = "-w zizdeposit"
+  executable = "tests/checks/verify_zaugsum"
+  name = "verify_zizdeposit"
 
 class VerifyRSSUMTest(CheckTest):
   base_flags = "-w rssum"
-  executable = "tests/checks/verify_rsblas1"
+  executable = "tests/checks/verify_saugsum"
   name = "verify_rssum"
 
 class VerifyRSASUMTest(CheckTest):
   base_flags = "-w rsasum"
-  executable = "tests/checks/verify_rsblas1"
+  executable = "tests/checks/verify_saugsum"
   name = "verify_rsasum"
 
 class VerifyRSNRM2Test(CheckTest):
   base_flags = "-w rsnrm2"
-  executable = "tests/checks/verify_rsblas1"
+  executable = "tests/checks/verify_saugsum"
   name = "verify_rsnrm2"
 
 class VerifyRSDOTTest(CheckTest):
   base_flags = "-w rsdot"
-  executable = "tests/checks/verify_rsblas1"
+  executable = "tests/checks/verify_saugsum"
   name = "verify_rsdot"
+
+class VerifySISIADDTest(CheckTest):
+  base_flags = "-w sisiadd"
+  executable = "tests/checks/verify_saugsum"
+  name = "verify_sisiadd"
+
+class VerifySISADDTest(CheckTest):
+  base_flags = "-w sisadd"
+  executable = "tests/checks/verify_saugsum"
+  name = "verify_sisadd"
+
+class VerifySISDEPOSITTest(CheckTest):
+  base_flags = "-w sisdeposit"
+  executable = "tests/checks/verify_saugsum"
+  name = "verify_sisdeposit"
 
 class VerifyRCSUMTest(CheckTest):
   base_flags = "-w rcsum"
-  executable = "tests/checks/verify_rcblas1"
+  executable = "tests/checks/verify_caugsum"
   name = "verify_rcsum"
 
 class VerifyRSCASUMTest(CheckTest):
   base_flags = "-w rscasum"
-  executable = "tests/checks/verify_rcblas1"
+  executable = "tests/checks/verify_caugsum"
   name = "verify_rscasum"
 
 class VerifyRSCNRM2Test(CheckTest):
   base_flags = "-w rscnrm2"
-  executable = "tests/checks/verify_rcblas1"
+  executable = "tests/checks/verify_caugsum"
   name = "verify_rscnrm2"
 
 class VerifyRCDOTUTest(CheckTest):
   base_flags = "-w rcdotu"
-  executable = "tests/checks/verify_rcblas1"
+  executable = "tests/checks/verify_caugsum"
   name = "verify_rcdotu"
 
 class VerifyRCDOTCTest(CheckTest):
   base_flags = "-w rcdotc"
-  executable = "tests/checks/verify_rcblas1"
+  executable = "tests/checks/verify_caugsum"
   name = "verify_rcdotc"
+
+class VerifyCICIADDTest(CheckTest):
+  base_flags = "-w ciciadd"
+  executable = "tests/checks/verify_caugsum"
+  name = "verify_ciciadd"
+
+class VerifyCICADDTest(CheckTest):
+  base_flags = "-w cicadd"
+  executable = "tests/checks/verify_caugsum"
+  name = "verify_cicadd"
+
+class VerifyCICDEPOSITTest(CheckTest):
+  base_flags = "-w cicdeposit"
+  executable = "tests/checks/verify_caugsum"
+  name = "verify_cicdeposit"
 
 class VerifyDINDEXTest(CheckTest):
   base_flags = ""
@@ -349,21 +409,6 @@ class VerifyRDGEMVTest(CheckTest):
   base_flags = ""
   executable = "tests/checks/verify_rdgemv"
   name = "verify_rdgemv"
-
-class VerifyDMODSUMTest(CheckTest):
-  base_flags = ""
-  executable = "tests/checks/verify_daugsum"
-  name = "verify_dmodsum"
-
-class VerifyZMODSUMTest(CheckTest):
-  base_flags = ""
-  executable = "tests/checks/verify_zaugsum"
-  name = "verify_zmodsum"
-
-class VerifySMODSUMTest(CheckTest):
-  base_flags = ""
-  executable = "tests/checks/verify_saugsum"
-  name = "verify_smodsum"
 
 all_checks = {"validate_internal_ufp": ValidateInternalUFPTest,\
               "validate_internal_ufpf": ValidateInternalUFPFTest,\
@@ -397,20 +442,32 @@ all_checks = {"validate_internal_ufp": ValidateInternalUFPTest,\
               "verify_rdasum": VerifyRDASUMTest,\
               "verify_rdnrm2": VerifyRDNRM2Test,\
               "verify_rddot": VerifyRDDOTTest,\
+              "verify_didiadd": VerifyDIDIADDTest,\
+              "verify_didadd": VerifyDIDADDTest,\
+              "verify_diddeposit": VerifyDIDDEPOSITTest,\
               "verify_rzsum": VerifyRZSUMTest,\
               "verify_rdzasum": VerifyRDZASUMTest,\
               "verify_rdznrm2": VerifyRDZNRM2Test,\
               "verify_rzdotu": VerifyRZDOTUTest,\
               "verify_rzdotc": VerifyRZDOTCTest,\
+              "verify_ziziadd": VerifyZIZIADDTest,\
+              "verify_zizadd": VerifyZIZADDTest,\
+              "verify_zizdeposit": VerifyZIZDEPOSITTest,\
               "verify_rssum": VerifyRSSUMTest,\
               "verify_rsasum": VerifyRSASUMTest,\
               "verify_rsnrm2": VerifyRSNRM2Test,\
               "verify_rsdot": VerifyRSDOTTest,\
+              "verify_sisiadd": VerifySISIADDTest,\
+              "verify_sisadd": VerifySISADDTest,\
+              "verify_sisdeposit": VerifySISDEPOSITTest,\
               "verify_rcsum": VerifyRCSUMTest,\
               "verify_rscasum": VerifyRSCASUMTest,\
               "verify_rscnrm2": VerifyRSCNRM2Test,\
               "verify_rcdotu": VerifyRCDOTUTest,\
               "verify_rcdotc": VerifyRCDOTCTest,\
+              "verify_ciciadd": VerifyCICIADDTest,\
+              "verify_cicadd": VerifyCICADDTest,\
+              "verify_cicdeposit": VerifyCICDEPOSITTest,\
               "verify_dindex": VerifyDINDEXTest,\
               "verify_sindex": VerifySINDEXTest,\
               "verify_dmindex": VerifyDMINDEXTest,\

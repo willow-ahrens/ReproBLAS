@@ -7,47 +7,6 @@ check_dir = os.path.dirname(os.path.abspath(__file__))
 
 check_suite = checks.CheckSuite()
 
-check_suite.add_checks([checks.VerifyDMODSUMTest()],\
-                       ["k", "N", "incX", "f", "w"],\
-                       [[1, 2, 3, 4], [4095], [1, 4],\
-                        ["rand",\
-                         "rand+(rand-1)",\
-                         "sine",\
-                         "small+grow*big"],\
-                        ["rdsum",\
-                         "rdasum",\
-                         "rdnrm2",\
-                         "didiadd",\
-                         "didadd",\
-                         "diddeposit"]])
-check_suite.add_checks([checks.VerifySMODSUMTest()],\
-                       ["k", "N", "incX", "f", "w"],\
-                       [[1, 2, 3, 4], [4095], [1, 4],\
-                        ["rand",\
-                         "rand+(rand-1)",\
-                         "sine",\
-                         "small+grow*big"],\
-                        ["rssum",\
-                         "rsasum",\
-                         "rsnrm2",\
-                         "sisiadd",\
-                         "sisadd",\
-                         "sisdeposit"]])
-
-check_suite.add_checks([checks.VerifyZMODSUMTest()],\
-                       ["k", "N", "incX", "f", "w"],\
-                       [[1, 2, 3, 4], [4095], [1, 4],\
-                        ["rand",\
-                         "rand+(rand-1)",\
-                         "sine",\
-                         "small+grow*big"],\
-                        ["rzsum",\
-                         "rdzasum",\
-                         "rdznrm2",\
-                         "ziziadd",\
-                         "zizadd",\
-                         "zizdeposit"]])
-
 check_suite.add_checks([checks.ValidateInternalUFPTest(),\
                         checks.ValidateInternalUFPFTest()],\
                        ["N", "incX"],\
@@ -76,18 +35,37 @@ check_suite.add_checks([checks.ValidateInternalRDBLAS1Test(),\
 
 check_suite.add_checks([checks.VerifyRDSUMTest(),\
                         checks.VerifyRDASUMTest(),\
-                        checks.VerifyRDNRM2Test(),\
+                        checks.VerifyDIDIADDTest(),\
+                        checks.VerifyDIDADDTest(),\
+                        checks.VerifyDIDDEPOSITTest(),\
                         checks.VerifyRZSUMTest(),\
                         checks.VerifyRDZASUMTest(),\
-                        checks.VerifyRDZNRM2Test(),\
+                        checks.VerifyZIZIADDTest(),\
+                        checks.VerifyZIZADDTest(),\
+                        checks.VerifyZIZDEPOSITTest(),\
                         checks.VerifyRSSUMTest(),\
                         checks.VerifyRSASUMTest(),\
-                        checks.VerifyRSNRM2Test(),\
+                        checks.VerifySISIADDTest(),\
+                        checks.VerifySISADDTest(),\
+                        checks.VerifySISDEPOSITTest(),\
                         checks.VerifyRCSUMTest(),\
                         checks.VerifyRSCASUMTest(),\
+                        checks.VerifySISIADDTest(),\
+                        checks.VerifySISADDTest(),\
+                        checks.VerifySISDEPOSITTest()],\
+                       ["N", "B", "incX", "f"],\
+                       [[4095], [256], [1, 4],\
+                        ["rand",\
+                         "rand+(rand-1)",\
+                         "sine",\
+                         "small+grow*big"]])
+
+check_suite.add_checks([checks.VerifyRDNRM2Test(),\
+                        checks.VerifyRDZNRM2Test(),\
+                        checks.VerifyRSNRM2Test(),\
                         checks.VerifyRSCNRM2Test()],\
-                       ["N", "incX", "f"],\
-                       [[4095], [1, 4],\
+                       ["N", "B", "incX", "f"],\
+                       [[4095], [1], [1, 4],\
                         ["rand",\
                          "rand+(rand-1)",\
                          "sine",\
