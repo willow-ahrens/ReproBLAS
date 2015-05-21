@@ -221,16 +221,12 @@ void zmzdeposit(const int fold, const void *X, double *manY, const int incmanY){
     xR += MR;
     xI += MI;
   }
-  MR = manY[i * 2 * incmanY];
-  MI = manY[i * 2 * incmanY + 1];
   qR.d = xR;
   qI.d = xI;
   qR.l |= 1;
   qI.l |= 1;
-  qR.d += MR;
-  qI.d += MI;
-  manY[i * 2 * incmanY] = qR.d;
-  manY[i * 2 * incmanY + 1] = qI.d;
+  manY[i * 2 * incmanY] += qR.d;
+  manY[i * 2 * incmanY + 1] += qI.d;
 }
 
 /**

@@ -355,6 +355,16 @@ class VerifyDMODSUMTest(CheckTest):
   executable = "tests/checks/verify_daugsum"
   name = "verify_dmodsum"
 
+class VerifyZMODSUMTest(CheckTest):
+  base_flags = ""
+  executable = "tests/checks/verify_zaugsum"
+  name = "verify_zmodsum"
+
+class VerifySMODSUMTest(CheckTest):
+  base_flags = ""
+  executable = "tests/checks/verify_saugsum"
+  name = "verify_smodsum"
+
 all_checks = {"validate_internal_ufp": ValidateInternalUFPTest,\
               "validate_internal_ufpf": ValidateInternalUFPFTest,\
               "validate_internal_damax": ValidateInternalDAMAXTest,\

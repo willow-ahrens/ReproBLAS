@@ -220,16 +220,12 @@ void cmcdeposit(const int fold, const void *X, float *manY, const int incmanY){
     xR += MR;
     xI += MI;
   }
-  MR = manY[i * 2 * incmanY];
-  MI = manY[i * 2 * incmanY + 1];
   qR.f = xR;
   qI.f = xI;
   qR.i |= 1;
   qI.i |= 1;
-  qR.f += MR;
-  qI.f += MI;
-  manY[i * 2 * incmanY] = qR.f;
-  manY[i * 2 * incmanY + 1] = qI.f;
+  manY[i * 2 * incmanY] += qR.f;
+  manY[i * 2 * incmanY + 1] += qI.f;
 }
 
 /**

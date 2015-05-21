@@ -20,6 +20,33 @@ check_suite.add_checks([checks.VerifyDMODSUMTest()],\
                          "didiadd",\
                          "didadd",\
                          "diddeposit"]])
+check_suite.add_checks([checks.VerifySMODSUMTest()],\
+                       ["k", "N", "incX", "f", "w"],\
+                       [[1, 2, 3, 4], [4095], [1, 4],\
+                        ["rand",\
+                         "rand+(rand-1)",\
+                         "sine",\
+                         "small+grow*big"],\
+                        ["rssum",\
+                         "rsasum",\
+                         "rsnrm2",\
+                         "sisiadd",\
+                         "sisadd",\
+                         "sisdeposit"]])
+
+check_suite.add_checks([checks.VerifyZMODSUMTest()],\
+                       ["k", "N", "incX", "f", "w"],\
+                       [[1, 2, 3, 4], [4095], [1, 4],\
+                        ["rand",\
+                         "rand+(rand-1)",\
+                         "sine",\
+                         "small+grow*big"],\
+                        ["rzsum",\
+                         "rdzasum",\
+                         "rdznrm2",\
+                         "ziziadd",\
+                         "zizadd",\
+                         "zizdeposit"]])
 
 check_suite.add_checks([checks.ValidateInternalUFPTest(),\
                         checks.ValidateInternalUFPFTest()],\

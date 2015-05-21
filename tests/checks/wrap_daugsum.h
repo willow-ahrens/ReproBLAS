@@ -5,10 +5,6 @@
 #include <indexedBLAS.h>
 #include <indexed.h>
 
-#define wrap_RDSUM  0
-#define wrap_RDASUM 1
-#define wrap_RDNRM2 2
-#define wrap_RDDOT  3
 typedef enum wrap_daugsum_func {
   wrap_daugsum_RDSUM = 0,
   wrap_daugsum_RDASUM,
@@ -79,23 +75,6 @@ void wrap_didasum(int fold, int N, double *x, int incx, double *y, int incy, dou
   didasum(fold, N, x, incx, z);
 }
 
-double wrap_rddot(int fold, int N, double *x, int incx, double *y, int incy) {
-  if(fold == DEFAULT_FOLD){
-    return rddot(N, x, incx, y, incy);
-  }else{
-    double_indexed *ires = dialloc(fold);
-    disetzero(fold, ires);
-    diddot(fold, N, x, incx, y, incy, ires);
-    double res = ddiconv(fold, ires);
-    free(ires);
-    return res;
-  }
-}
-
-void wrap_diddot(int fold, int N, double *x, int incx, double *y, int incy, double_indexed *z) {
-  diddot(fold, N, x, incx, y, incy, z);
-}
-
 double wrap_rdnrm2(int fold, int N, double *x, int incx, double *y, int incy) {
   (void)y;
   (void)incy;
@@ -115,6 +94,23 @@ void wrap_didnrm(int fold, int N, double *x, int incx, double *y, int incy, doub
   (void)y;
   (void)incy;
   didnrm(fold, N, x, incx, z);
+}
+
+double wrap_rddot(int fold, int N, double *x, int incx, double *y, int incy) {
+  if(fold == DEFAULT_FOLD){
+    return rddot(N, x, incx, y, incy);
+  }else{
+    double_indexed *ires = dialloc(fold);
+    disetzero(fold, ires);
+    diddot(fold, N, x, incx, y, incy, ires);
+    double res = ddiconv(fold, ires);
+    free(ires);
+    return res;
+  }
+}
+
+void wrap_diddot(int fold, int N, double *x, int incx, double *y, int incy, double_indexed *z) {
+  diddot(fold, N, x, incx, y, incy, z);
 }
 
 double wrap_rdidiadd(int fold, int N, double *x, int incx, double *y, int incy) {

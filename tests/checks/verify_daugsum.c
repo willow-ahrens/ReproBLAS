@@ -5,7 +5,7 @@
 #include <math.h>
 #include "../common/test_opt.h"
 #include "../../config.h"
-#include "daugsum_wrapper.h"
+#include "wrap_daugsum.h"
 
 #include "../common/test_vecvec_fill_header.h"
 
@@ -17,7 +17,7 @@ static void verify_daugsum_options_initialize(void){
   augsum_func._named.header.type       = opt_named;
   augsum_func._named.header.short_name = 'w';
   augsum_func._named.header.long_name  = "augsum_func";
-  augsum_func._named.header.help       = "wrapped modified summation function type";
+  augsum_func._named.header.help       = "augmented summation function";
   augsum_func._named.required          = 1;
   augsum_func._named.n_names           = wrap_daugsum_func_n_names;
   augsum_func._named.names             = (char**)wrap_daugsum_func_names;
