@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['dbound',['dbound',['../indexed_8h.html#acd3bccfe7fb40ce79411f21b220ecc67',1,'diindex.c']]],
+  ['dbin',['dbin',['../indexed_8h.html#ac7aeed5b0b5e0faf109b69a66bb85ca0',1,'diindex.c']]],
   ['ddiconv',['ddiconv',['../indexed_8h.html#a107650f1e9c2f53422d6a0e4a2ae050a',1,'diconv.c']]],
+  ['deposit',['Deposit',['../classsrc_1_1indexed_1_1deposit_1_1_deposit.html',1,'src::indexed::deposit']]],
   ['dialloc',['dialloc',['../indexed_8h.html#a2119834f475bb83f1939af4385869325',1,'dimem.c']]],
   ['dicapacity',['dicapacity',['../indexed_8h.html#a16324a445b3515349522860502b7e9cd',1,'diindex.c']]],
   ['dicomplex_5f',['dIComplex_',['../structd_i_complex__.html',1,'']]],

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['sbound',['sbound',['../indexed_8h.html#a32dab5cf30993a8d2699494d31579d59',1,'siindex.c']]],
+  ['sbin',['sbin',['../indexed_8h.html#a5cf7b5dc36d90d75b67edd66e3e77b69',1,'siindex.c']]],
   ['sialloc',['sialloc',['../indexed_8h.html#a6a61430e637a195cafd3285e0c926c8c',1,'simem.c']]],
   ['sicapacity',['sicapacity',['../indexed_8h.html#ace991dae3ae98d13b2c0175469553803',1,'siindex.c']]],
   ['sindex',['sindex',['../indexed_8h.html#a9153c546d18df2c48409181a80034c42',1,'siindex.c']]],
