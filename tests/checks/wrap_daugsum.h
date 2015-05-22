@@ -246,6 +246,6 @@ wrap_diaugsum wrap_diaugsum_func(wrap_daugsum_func_t func) {
   return NULL;
 }
 
-wrap_daugsum_result(int N, util_
+//wrap_daugsum_result(int N, util_
 
 #endif
