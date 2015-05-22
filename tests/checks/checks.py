@@ -133,6 +133,11 @@ class ValidateInternalRDBLAS1Test(CheckTest):
   executable = "tests/checks/validate_internal_rdblas1"
   name = "validate_internal_rdblas1"
 
+class ValidateInternalRDSUMTest(CheckTest):
+  base_flags = "-w rdsum"
+  executable = "tests/checks/validate_internal_daugsum"
+  name = "validate_internal_rdsum"
+
 class ValidateInternalRZBLAS1Test(CheckTest):
   executable = "tests/checks/validate_internal_rzblas1"
   name = "validate_internal_rzblas1"

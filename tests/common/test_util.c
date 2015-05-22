@@ -989,6 +989,7 @@ float complex* util_cmat_alloc(char Order, int M, int N, int lda) {
       break;
     default:
       A = (float complex*)malloc(lda * N * sizeof(float complex));
+      //TODO fill empty space with NaN
       //fill empty space with random data to check lda
       util_cmat_fill(Order, 'n', lda, N, A, lda, util_Mat_Row_Rand, 1.0, 1.0);
       util_cmat_fill(Order, 'n', M, N, A, lda, util_Mat_Row_Constant, 0.0, 1.0);

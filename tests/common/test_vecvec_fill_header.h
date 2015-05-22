@@ -95,7 +95,7 @@ const char* vecvec_name(int argc, char** argv){
   opt_eval_option(argc, argv, &FillY);
   opt_eval_option(argc, argv, &ScaleY);
   opt_eval_option(argc, argv, &CondY);
-  snprintf(name_buffer, MAX_LINE * sizeof(char), "%s X=%s Y=%s", vecvec_fill_name(argc, argv), util_vec_fill_names[FillX._named.value], util_vec_fill_names[FillY._named.value]);
+  snprintf(name_buffer, MAX_LINE * sizeof(char), "%s X=%s*%g Y=%s*%g", vecvec_fill_name(argc, argv), util_vec_fill_names[FillX._named.value], ScaleX._double.value, util_vec_fill_names[FillY._named.value], ScaleY._double.value);
   return name_buffer;
 }
 
