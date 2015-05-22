@@ -6,8 +6,17 @@
 
 #include "test_util.h"
 
-const int util_vec_fill_n_names  = 15;
+const int util_vec_fill_n_names  = 24;
 const char *util_vec_fill_names[] = {"constant",
+                                     "+inf",
+                                     "++inf",
+                                     "+-inf",
+                                     "nan",
+                                     "+inf_nan",
+                                     "++inf_nan",
+                                     "+big",
+                                     "++big",
+                                     "+-big",
                                      "rand",
                                      "2*rand-1",
                                      "rand+(rand-1)",
@@ -23,6 +32,15 @@ const char *util_vec_fill_names[] = {"constant",
                                      "normal[drop]",
                                      "sine[drop]"};
 const char *util_vec_fill_descs[] = {"Constant",
+                                     "+Inf",
+                                     "++Inf",
+                                     "+-Inf",
+                                     "NaN",
+                                     "+Inf_NaN",
+                                     "++Inf_NaN",
+                                     "+Big",
+                                     "++Big",
+                                     "+-Big",
                                      "Random",
                                      "2*Random-1",
                                      "Random+(Random-1)",
@@ -38,8 +56,17 @@ const char *util_vec_fill_descs[] = {"Constant",
                                      "Normal[drop]",
                                      "Sine(2pi*(i/n))[drop]"};
 
-const int  util_mat_fill_n_names  = 16;
+const int  util_mat_fill_n_names  = 25;
 const char *util_mat_fill_names[] = {"constant",
+                                     "+inf",
+                                     "++inf",
+                                     "+-inf",
+                                     "nan",
+                                     "+inf_nan",
+                                     "++inf_nan",
+                                     "+big",
+                                     "++big",
+                                     "+-big",
                                      "rand",
                                      "2*rand-1",
                                      "rand+(rand-1)",
@@ -56,6 +83,15 @@ const char *util_mat_fill_names[] = {"constant",
                                      "sine[drop]",
                                      "identity"};
 const char *util_mat_fill_descs[] = {"Constant",
+                                     "+Inf",
+                                     "++Inf",
+                                     "+-Inf",
+                                     "NaN",
+                                     "+Inf_NaN",
+                                     "++Inf_NaN",
+                                     "+Big",
+                                     "++Big",
+                                     "+-Big",
                                      "Random",
                                      "2*Random-1",
                                      "Random+(Random-1)",
@@ -972,6 +1008,75 @@ void util_dvec_fill(int N, double* V, int incV, util_vec_fill_t fill, double a, 
         V[i*incV] = 1.0;
       }
       break;
+    case util_Vec_Pos_Inf:
+      for (i = 0; i < N; i++) {
+        V[i*incV] = 1.0;
+      }
+      V[0] = 1.0/0.0;
+      break;
+    case util_Vec_Pos_Pos_Inf:
+      for (i = 0; i < N; i++) {
+        V[i*incV] = 1.0;
+      }
+      V[0] = 1.0/0.0;
+      V[(N - 1) * incV] = 1.0/0.0;
+      break;
+    case util_Vec_Pos_Neg_Inf:
+      for (i = 0; i < N; i++) {
+        V[i*incV] = 1.0;
+      }
+      V[0] = 1.0/0.0;
+      V[(N - 1) * incV] = -1.0/0.0;
+      break;
+    case util_Vec_NaN:
+      for (i = 0; i < N; i++) {
+        V[i*incV] = 1.0;
+      }
+      V[0] = 1.0/0.0;
+      break;
+    case util_Vec_Pos_Inf_NaN:
+      for (i = 0; i < N; i++) {
+        V[i*incV] = 1.0;
+      }
+      V[0] = 1.0/0.0;
+      V[(N - 1) * incV] = 0.0/0.0;
+      break;
+    case util_Vec_Pos_Pos_Inf_NaN:
+      for (i = 0; i < N; i++) {
+        V[i*incV] = 1.0;
+      }
+      V[0] = 1.0/0.0;
+      V[(N - 1) * incV] = 1.0/0.0;
+      V[(N/2) * incV] = 0.0/0.0;
+      break;
+    case util_Vec_Pos_Neg_Inf_NaN:
+      for (i = 0; i < N; i++) {
+        V[i*incV] = 1.0;
+      }
+      V[0] = 1.0/0.0;
+      V[(N - 1) * incV] = -1.0/0.0;
+      V[(N/2) * incV] = 0.0/0.0;
+      break;
+    case util_Vec_Pos_Big:
+      for (i = 0; i < N; i++) {
+        V[i*incV] = small;
+      }
+      V[0] = big;
+      break;
+    case util_Vec_Pos_Pos_Big:
+      for (i = 0; i < N; i++) {
+        V[i*incV] = small;
+      }
+      V[0] = big;
+      V[(N - 1) * incV] = big;
+      break;
+    case util_Vec_Pos_Neg_Big:
+      for (i = 0; i < N; i++) {
+        V[i*incV] = small;
+      }
+      V[0] = big;
+      V[(N - 1) * incV] = -1 * big;
+      break;
     case util_Vec_Rand_Drop:
     case util_Vec_Rand:
       for (i = 0; i < N; i++) {
@@ -1082,6 +1187,75 @@ void util_svec_fill(int N, float* V, int incV, util_vec_fill_t fill, float a, fl
       for (i = 0; i < N; i++) {
         V[i*incV] = 1.0;
       }
+      break;
+    case util_Vec_Pos_Inf:
+      for (i = 0; i < N; i++) {
+        V[i*incV] = 1.0;
+      }
+      V[0] = 1.0/0.0;
+      break;
+    case util_Vec_Pos_Pos_Inf:
+      for (i = 0; i < N; i++) {
+        V[i*incV] = 1.0;
+      }
+      V[0] = 1.0/0.0;
+      V[(N - 1) * incV] = 1.0/0.0;
+      break;
+    case util_Vec_Pos_Neg_Inf:
+      for (i = 0; i < N; i++) {
+        V[i*incV] = 1.0;
+      }
+      V[0] = 1.0/0.0;
+      V[(N - 1) * incV] = -1.0/0.0;
+      break;
+    case util_Vec_NaN:
+      for (i = 0; i < N; i++) {
+        V[i*incV] = 1.0;
+      }
+      V[0] = 1.0/0.0;
+      break;
+    case util_Vec_Pos_Inf_NaN:
+      for (i = 0; i < N; i++) {
+        V[i*incV] = 1.0;
+      }
+      V[0] = 1.0/0.0;
+      V[(N - 1) * incV] = 0.0/0.0;
+      break;
+    case util_Vec_Pos_Pos_Inf_NaN:
+      for (i = 0; i < N; i++) {
+        V[i*incV] = 1.0;
+      }
+      V[0] = 1.0/0.0;
+      V[(N - 1) * incV] = 1.0/0.0;
+      V[(N/2) * incV] = 0.0/0.0;
+      break;
+    case util_Vec_Pos_Neg_Inf_NaN:
+      for (i = 0; i < N; i++) {
+        V[i*incV] = 1.0;
+      }
+      V[0] = 1.0/0.0;
+      V[(N - 1) * incV] = -1.0/0.0;
+      V[(N/2) * incV] = 0.0/0.0;
+      break;
+    case util_Vec_Pos_Big:
+      for (i = 0; i < N; i++) {
+        V[i*incV] = small;
+      }
+      V[0] = big;
+      break;
+    case util_Vec_Pos_Pos_Big:
+      for (i = 0; i < N; i++) {
+        V[i*incV] = small;
+      }
+      V[0] = big;
+      V[(N - 1) * incV] = big;
+      break;
+    case util_Vec_Pos_Neg_Big:
+      for (i = 0; i < N; i++) {
+        V[i*incV] = small;
+      }
+      V[0] = big;
+      V[(N - 1) * incV] = -1 * big;
       break;
     case util_Vec_Rand_Drop:
     case util_Vec_Rand:
@@ -1197,6 +1371,16 @@ void util_zvec_fill(int N, double complex* V, int incV, util_vec_fill_t fill, do
       break;
     case util_Vec_Constant_Drop:
     case util_Vec_Constant:
+    case util_Vec_Pos_Inf:
+    case util_Vec_Pos_Pos_Inf:
+    case util_Vec_Pos_Neg_Inf:
+    case util_Vec_NaN:
+    case util_Vec_Pos_Inf_NaN:
+    case util_Vec_Pos_Pos_Inf_NaN:
+    case util_Vec_Pos_Neg_Inf_NaN:
+    case util_Vec_Pos_Big:
+    case util_Vec_Pos_Pos_Big:
+    case util_Vec_Pos_Neg_Big:
     case util_Vec_Normal_Drop:
     case util_Vec_Normal:
     case util_Vec_Sine_Drop:
@@ -1228,6 +1412,16 @@ void util_cvec_fill(int N, float complex* V, int incV, util_vec_fill_t fill, flo
       break;
     case util_Vec_Constant_Drop:
     case util_Vec_Constant:
+    case util_Vec_Pos_Inf:
+    case util_Vec_Pos_Pos_Inf:
+    case util_Vec_Pos_Neg_Inf:
+    case util_Vec_NaN:
+    case util_Vec_Pos_Inf_NaN:
+    case util_Vec_Pos_Pos_Inf_NaN:
+    case util_Vec_Pos_Neg_Inf_NaN:
+    case util_Vec_Pos_Big:
+    case util_Vec_Pos_Pos_Big:
+    case util_Vec_Pos_Neg_Big:
     case util_Vec_Normal_Drop:
     case util_Vec_Normal:
     case util_Vec_Sine_Drop:
@@ -1259,6 +1453,36 @@ void util_dmat_fill(char Order, char TransA, int M, int N, double* A, int lda, u
       break;
     case util_Mat_Row_Constant:
       row_fill = util_Vec_Constant;
+      break;
+    case util_Mat_Row_Pos_Inf:
+      row_fill = util_Vec_Pos_Inf;
+      break;
+    case util_Mat_Row_Pos_Pos_Inf:
+      row_fill = util_Vec_Pos_Pos_Inf;
+      break;
+    case util_Mat_Row_Pos_Neg_Inf:
+      row_fill = util_Vec_Pos_Neg_Inf;
+      break;
+    case util_Mat_Row_NaN:
+      row_fill = util_Vec_NaN;
+      break;
+    case util_Mat_Row_Pos_Inf_NaN:
+      row_fill = util_Vec_Pos_Inf_NaN;
+      break;
+    case util_Mat_Row_Pos_Pos_Inf_NaN:
+      row_fill = util_Vec_Pos_Pos_Inf_NaN;
+      break;
+    case util_Mat_Row_Pos_Neg_Inf_NaN:
+      row_fill = util_Vec_Pos_Neg_Inf_NaN;
+      break;
+    case util_Mat_Row_Pos_Big:
+      row_fill = util_Vec_Pos_Big;
+      break;
+    case util_Mat_Row_Pos_Pos_Big:
+      row_fill = util_Vec_Pos_Pos_Big;
+      break;
+    case util_Mat_Row_Pos_Neg_Big:
+      row_fill = util_Vec_Pos_Neg_Big;
       break;
     case util_Mat_Row_Rand_Drop:
       row_fill = util_Vec_Rand_Drop;
@@ -1353,6 +1577,36 @@ void util_smat_fill(char Order, char TransA, int M, int N, float* A, int lda, ut
     case util_Mat_Row_Constant:
       row_fill = util_Vec_Constant;
       break;
+    case util_Mat_Row_Pos_Inf:
+      row_fill = util_Vec_Pos_Inf;
+      break;
+    case util_Mat_Row_Pos_Pos_Inf:
+      row_fill = util_Vec_Pos_Pos_Inf;
+      break;
+    case util_Mat_Row_Pos_Neg_Inf:
+      row_fill = util_Vec_Pos_Neg_Inf;
+      break;
+    case util_Mat_Row_NaN:
+      row_fill = util_Vec_NaN;
+      break;
+    case util_Mat_Row_Pos_Inf_NaN:
+      row_fill = util_Vec_Pos_Inf_NaN;
+      break;
+    case util_Mat_Row_Pos_Pos_Inf_NaN:
+      row_fill = util_Vec_Pos_Pos_Inf_NaN;
+      break;
+    case util_Mat_Row_Pos_Neg_Inf_NaN:
+      row_fill = util_Vec_Pos_Neg_Inf_NaN;
+      break;
+    case util_Mat_Row_Pos_Big:
+      row_fill = util_Vec_Pos_Big;
+      break;
+    case util_Mat_Row_Pos_Pos_Big:
+      row_fill = util_Vec_Pos_Pos_Big;
+      break;
+    case util_Mat_Row_Pos_Neg_Big:
+      row_fill = util_Vec_Pos_Neg_Big;
+      break;
     case util_Mat_Row_Rand_Drop:
       row_fill = util_Vec_Rand_Drop;
       break;
@@ -1446,6 +1700,36 @@ void util_zmat_fill(char Order, char TransA, int M, int N, double complex* A, in
     case util_Mat_Row_Constant:
       row_fill = util_Vec_Constant;
       break;
+    case util_Mat_Row_Pos_Inf:
+      row_fill = util_Vec_Pos_Inf;
+      break;
+    case util_Mat_Row_Pos_Pos_Inf:
+      row_fill = util_Vec_Pos_Pos_Inf;
+      break;
+    case util_Mat_Row_Pos_Neg_Inf:
+      row_fill = util_Vec_Pos_Neg_Inf;
+      break;
+    case util_Mat_Row_NaN:
+      row_fill = util_Vec_NaN;
+      break;
+    case util_Mat_Row_Pos_Inf_NaN:
+      row_fill = util_Vec_Pos_Inf_NaN;
+      break;
+    case util_Mat_Row_Pos_Pos_Inf_NaN:
+      row_fill = util_Vec_Pos_Pos_Inf_NaN;
+      break;
+    case util_Mat_Row_Pos_Neg_Inf_NaN:
+      row_fill = util_Vec_Pos_Neg_Inf_NaN;
+      break;
+    case util_Mat_Row_Pos_Big:
+      row_fill = util_Vec_Pos_Big;
+      break;
+    case util_Mat_Row_Pos_Pos_Big:
+      row_fill = util_Vec_Pos_Pos_Big;
+      break;
+    case util_Mat_Row_Pos_Neg_Big:
+      row_fill = util_Vec_Pos_Neg_Big;
+      break;
     case util_Mat_Row_Rand_Drop:
       row_fill = util_Vec_Rand_Drop;
       break;
@@ -1538,6 +1822,36 @@ void util_cmat_fill(char Order, char TransA, int M, int N, float complex* A, int
       break;
     case util_Mat_Row_Constant:
       row_fill = util_Vec_Constant;
+      break;
+    case util_Mat_Row_Pos_Inf:
+      row_fill = util_Vec_Pos_Inf;
+      break;
+    case util_Mat_Row_Pos_Pos_Inf:
+      row_fill = util_Vec_Pos_Pos_Inf;
+      break;
+    case util_Mat_Row_Pos_Neg_Inf:
+      row_fill = util_Vec_Pos_Neg_Inf;
+      break;
+    case util_Mat_Row_NaN:
+      row_fill = util_Vec_NaN;
+      break;
+    case util_Mat_Row_Pos_Inf_NaN:
+      row_fill = util_Vec_Pos_Inf_NaN;
+      break;
+    case util_Mat_Row_Pos_Pos_Inf_NaN:
+      row_fill = util_Vec_Pos_Pos_Inf_NaN;
+      break;
+    case util_Mat_Row_Pos_Neg_Inf_NaN:
+      row_fill = util_Vec_Pos_Neg_Inf_NaN;
+      break;
+    case util_Mat_Row_Pos_Big:
+      row_fill = util_Vec_Pos_Big;
+      break;
+    case util_Mat_Row_Pos_Pos_Big:
+      row_fill = util_Vec_Pos_Pos_Big;
+      break;
+    case util_Mat_Row_Pos_Neg_Big:
+      row_fill = util_Vec_Pos_Neg_Big;
       break;
     case util_Mat_Row_Rand_Drop:
       row_fill = util_Vec_Rand_Drop;

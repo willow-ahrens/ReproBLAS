@@ -5,6 +5,16 @@
 
 typedef enum util_vec_fill {
   util_Vec_Constant = 0,
+  util_Vec_Pos_Inf,
+  util_Vec_Pos_Pos_Inf,
+  util_Vec_Pos_Neg_Inf,
+  util_Vec_NaN,
+  util_Vec_Pos_Inf_NaN,
+  util_Vec_Pos_Pos_Inf_NaN,
+  util_Vec_Pos_Neg_Inf_NaN,
+  util_Vec_Pos_Big,
+  util_Vec_Pos_Pos_Big,
+  util_Vec_Pos_Neg_Big,
   util_Vec_Rand,
   util_Vec_2_Times_Rand_Minus_1,
   util_Vec_Rand_Plus_Rand_Minus_1,
@@ -26,6 +36,16 @@ extern const char *util_vec_fill_descs[];
 
 typedef enum util_mat_fill {
   util_Mat_Row_Constant = 0,
+  util_Mat_Row_Pos_Inf,
+  util_Mat_Row_Pos_Pos_Inf,
+  util_Mat_Row_Pos_Neg_Inf,
+  util_Mat_Row_NaN,
+  util_Mat_Row_Pos_Inf_NaN,
+  util_Mat_Row_Pos_Pos_Inf_NaN,
+  util_Mat_Row_Pos_Neg_Inf_NaN,
+  util_Mat_Row_Pos_Big,
+  util_Mat_Row_Pos_Pos_Big,
+  util_Mat_Row_Pos_Neg_Big,
   util_Mat_Row_Rand,
   util_Mat_Row_2_Times_Rand_Minus_1,
   util_Mat_Row_Rand_Plus_Rand_Minus_1,
