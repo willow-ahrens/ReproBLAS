@@ -68,6 +68,11 @@ extern const char *util_mat_fill_descs[];
 
 double util_drand48();
 
+int util_dsoftequals(double a, double b, double bound);
+int util_zsoftequals(double complex a, double complex b, double complex bound);
+int util_ssoftequals(float a, float b, float bound);
+int util_csoftequals(float complex a, float complex b, float complex bound);
+
 void util_dvec_fill(int N, double* v, int inc, util_vec_fill_t fill, double a, double b);
 void util_svec_fill(int N, float* v, int inc, util_vec_fill_t fill, float a, float b);
 void util_zvec_fill(int N, double complex* v, int inc, util_vec_fill_t fill, double complex a, double complex b);

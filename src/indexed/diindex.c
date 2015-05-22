@@ -87,13 +87,7 @@ double dmexpansion() {
  * @date   21 May 2015
  */
 double dibound(const int fold, const int N, const double X) {
-  int X_exp;
-  double X_man;
-  int N_exp;
-  double N_man;
-  X_man = frexp(X, &X_exp);
-  N_man = frexp((double)N, &N_exp);
-  return X_man * N_man * ldexp(0.5, (1 - fold)*(BIN_WIDTH - 1) + X_exp + N_exp + 1);
+  return X * ldexp(0.5, (1 - fold)*(BIN_WIDTH - 1) + 1) * N;
 }
 
 /**

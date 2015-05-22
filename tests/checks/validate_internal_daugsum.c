@@ -36,12 +36,16 @@ static void validate_internal_daugsum_options_initialize(void){
 int validate_internal_daugsum(int fold, int N, double* X, int incX, double* Y, int incY, int func, double ref) {
   // GENERATE DATA
   double res;
+  double error;
+  double bound;
   double_indexed *ires = dialloc(fold);
 
   res = (wrap_daugsum_func(func))(fold, N, X, incX, Y, incY);
-  if (res != ref) {
+  error = fabs(res - ref);
+  bound = wrap_daugsum_bound(fold, N, func, X, incX, Y, incY, res, ref);
+  if (!util_dsoftequals(res, ref, bound)) {
     //TODO these error messages need to go to stderr for all tests.
-    printf("%s(X, Y) = %g != %g\n", wrap_daugsum_func_names[func], res, ref);
+    printf("%s(X, Y) = %g, |%g - %g|>%g\n", wrap_daugsum_func_names[func], res, res, ref, bound);
     disetzero(fold, ires);
     (wrap_diaugsum_func(func))(fold, N, X, incX, Y, incY, ires);
     printf("\nres double_indexed:\n");
@@ -88,7 +92,6 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, dou
 
   util_dvec_fill(N, X, incX, FillX, ScaleX, CondX);
   util_dvec_fill(N, Y, incY, FillY, ScaleY, CondY);
-
 
   //compute with unpermuted data
   ref = wrap_daugsum_result(N, augsum_func._named.value, FillX, ScaleX, CondX, FillY, ScaleY, CondY);

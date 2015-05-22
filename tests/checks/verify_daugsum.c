@@ -123,7 +123,6 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, dou
   double *Y = util_dvec_alloc(N, incY);
   int *P;
 
-
   max_num_blocks = max_blocks._int.value;
   //nrm2 doesn't make sense with more than 1 block.
   if(augsum_func._named.value == wrap_daugsum_RDNRM2){

@@ -87,13 +87,7 @@ float smexpansion() {
  * @date   21 May 2015
  */
 float sibound(const int fold, const int N, const float X) {
-  int X_exp;
-  float X_man;
-  int N_exp;
-  float N_man;
-  X_man = frexpf(X, &X_exp);
-  N_man = frexpf((float)N, &N_exp);
-  return X_man * N_man * ldexpf(0.5, (1 - fold)*(BIN_WIDTH - 1) + X_exp + N_exp + 1);
+  return X * ldexpf(0.5, (1 - fold)*(BIN_WIDTH - 1) + 1) * N;
 }
 
 /**

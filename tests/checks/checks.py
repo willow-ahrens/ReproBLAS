@@ -59,10 +59,10 @@ class CheckSuite(harness.Suite):
         rows.append([check.get_name(), "Pass"])
         passed += 1
       elif check.get_result() == 125:
-        rows.append([check.get_output(), "N/A"])
+        rows.append([check.get_name() + "\n" + check.get_output(), "N/A"])
         na += 1
       else:
-        rows.append([check.get_output(), "Fail"])
+        rows.append([check.get_name() + "\n" + check.get_output(), "Fail"])
         failed += 1
     emoticon = ":("
     if passed == len(self.checks):
@@ -82,16 +82,24 @@ class CheckTest(harness.ExecutableTest):
     """
     return the name of the test
     """
-    return "{} {}".format(self.name, self.flags)
+    return self.name
+
+  def get_command_list(self):
+    """
+    return a list of commands that constitute the test to be run on the
+    target architecture
+    """
+    return ["{} {} {}".format(self.executable_output, self.base_flags, self.flags), "{} {} {}".format(self.executable_output, self.base_flags, self.flags + " -p")]
 
   def parse_output_list(self, output_list):
     """
     parse the output of the command set. The output will be given as a list of
     (return code, output)
     """
-    assert len(output_list) == 1, "ReproBLAS error: unexpected test output"
+    assert len(output_list) == 2, "ReproBLAS error: unexpected test output"
     self.output = output_list[0][1]
     self.result = output_list[0][0]
+    self.name = output_list[1][1]
 
   def get_output(self):
     """
@@ -137,6 +145,31 @@ class ValidateInternalRDSUMTest(CheckTest):
   base_flags = "-w rdsum"
   executable = "tests/checks/validate_internal_daugsum"
   name = "validate_internal_rdsum"
+
+class ValidateInternalRDASUMTest(CheckTest):
+  base_flags = "-w rdasum"
+  executable = "tests/checks/validate_internal_daugsum"
+  name = "validate_internal_rdasum"
+
+class ValidateInternalRDNRM2Test(CheckTest):
+  base_flags = "-w rdnrm2"
+  executable = "tests/checks/validate_internal_daugsum"
+  name = "validate_internal_rdrnm2"
+
+class ValidateInternalDIDIADDTest(CheckTest):
+  base_flags = "-w didiadd"
+  executable = "tests/checks/validate_internal_daugsum"
+  name = "validate_internal_didiadd"
+
+class ValidateInternalDIDADDTest(CheckTest):
+  base_flags = "-w didadd"
+  executable = "tests/checks/validate_internal_daugsum"
+  name = "validate_internal_didadd"
+
+class ValidateInternalDIDDEPOSITTest(CheckTest):
+  base_flags = "-w diddeposit"
+  executable = "tests/checks/validate_internal_daugsum"
+  name = "validate_internal_diddeposit"
 
 class ValidateInternalRZBLAS1Test(CheckTest):
   executable = "tests/checks/validate_internal_rzblas1"

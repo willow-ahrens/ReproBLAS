@@ -14,6 +14,7 @@ const char *util_vec_fill_names[] = {"constant",
                                      "nan",
                                      "+inf_nan",
                                      "++inf_nan",
+                                     "+-inf_nan",
                                      "+big",
                                      "++big",
                                      "+-big",
@@ -38,6 +39,7 @@ const char *util_vec_fill_descs[] = {"Constant",
                                      "NaN",
                                      "+Inf_NaN",
                                      "++Inf_NaN",
+                                     "+-Inf_NaN",
                                      "+Big",
                                      "++Big",
                                      "+-Big",
@@ -64,6 +66,7 @@ const char *util_mat_fill_names[] = {"constant",
                                      "nan",
                                      "+inf_nan",
                                      "++inf_nan",
+                                     "+-inf_nan",
                                      "+big",
                                      "++big",
                                      "+-big",
@@ -89,6 +92,7 @@ const char *util_mat_fill_descs[] = {"Constant",
                                      "NaN",
                                      "+Inf_NaN",
                                      "++Inf_NaN",
+                                     "+-Inf_NaN",
                                      "+Big",
                                      "++Big",
                                      "+-Big",
@@ -130,6 +134,40 @@ double util_drand48(){
   }
   double ret =  ((double)l)/ldexp(0.5, 33);
   return ret;
+}
+
+int util_dsoftequals(double a, double b, double bound){
+  if(isnan(a) && isnan(b)){
+    return 1;
+  }
+  if(isinf(a) && isinf(b) && ((a > 0.0 && b > 0.0) || (a < 0.0 && b < 0.0))){
+    return 1;
+  }
+  if(fabs(a - b) <= bound){
+    return 1;
+  }
+  return 0;
+}
+
+int util_zsoftequals(double complex a, double complex b, double complex bound){
+  return util_dsoftequals(creal(a), creal(b), creal(bound)) && util_dsoftequals(cimag(a), cimag(b), cimag(bound));
+}
+
+int util_ssoftequals(float a, float b, float bound){
+  if(isnan(a) && isnan(b)){
+    return 1;
+  }
+  if(isinf(a) && isinf(b) && ((a > 0.0 && b > 0.0) || (a < 0.0 && b < 0.0))){
+    return 1;
+  }
+  if(fabs(a - b) <= bound){
+    return 1;
+  }
+  return 0;
+}
+
+int util_csoftequals(float complex a, float complex b, float complex bound){
+  return util_ssoftequals(crealf(a), crealf(b), crealf(bound)) && util_ssoftequals(cimagf(a), cimagf(b), cimagf(bound));
 }
 
 typedef int (*compare_func)(int i, int j, void *data);
@@ -1033,7 +1071,7 @@ void util_dvec_fill(int N, double* V, int incV, util_vec_fill_t fill, double a, 
       for (i = 0; i < N; i++) {
         V[i*incV] = 1.0;
       }
-      V[0] = 1.0/0.0;
+      V[0] = 0.0/0.0;
       break;
     case util_Vec_Pos_Inf_NaN:
       for (i = 0; i < N; i++) {
@@ -1106,8 +1144,12 @@ void util_dvec_fill(int N, double* V, int incV, util_vec_fill_t fill, double a, 
       break;
     case util_Vec_Sine_Drop:
     case util_Vec_Sine:
-      for (i = 0; i < N; i++) {
+      for (i = 0; i < (N + 1)/2; i++) {
         V[i*incV] = sin(2.0 * PI * ((double)i / (double)N));
+      }
+      V[0] = 0.0;
+      for (; i < N; i++) {
+        V[i*incV] = -1 * V[(i - N/2)*incV];
       }
       break;
     case util_Vec_Rand_Cond:
@@ -1213,7 +1255,7 @@ void util_svec_fill(int N, float* V, int incV, util_vec_fill_t fill, float a, fl
       for (i = 0; i < N; i++) {
         V[i*incV] = 1.0;
       }
-      V[0] = 1.0/0.0;
+      V[0] = 0.0/0.0;
       break;
     case util_Vec_Pos_Inf_NaN:
       for (i = 0; i < N; i++) {
@@ -1286,8 +1328,12 @@ void util_svec_fill(int N, float* V, int incV, util_vec_fill_t fill, float a, fl
       break;
     case util_Vec_Sine_Drop:
     case util_Vec_Sine:
-      for (i = 0; i < N; i++) {
-        V[i*incV] = (float)sin(2.0 * PI * ((float)i / (float)N));
+      for (i = 0; i < (N + 1)/2; i++) {
+        V[i*incV] = (float)sin(2.0 * PI * ((double)i / (double)N));
+      }
+      V[0] = 0.0;
+      for (; i < N; i++) {
+        V[i*incV] = -1 * V[(i - N/2)*incV];
       }
       break;
     case util_Vec_Rand_Cond:

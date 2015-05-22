@@ -33,6 +33,26 @@ check_suite.add_checks([checks.ValidateInternalRDBLAS1Test(),\
                        ["N", "incX", "incY"],\
                        [[4095], [1, 4], [1, 4]])
 
+check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
+                        checks.ValidateInternalDIDIADDTest(),\
+                        checks.ValidateInternalDIDADDTest(),\
+                        checks.ValidateInternalDIDDEPOSITTest(),\
+                        ],\
+                       ["N", "incX", "scaleX", "f"],\
+                       [[4095], [1, 4], [0.0, 1.0],\
+                        ["constant",\
+                         "+inf",\
+                         "++inf",\
+                         "+-inf",\
+                         "nan",\
+                         "+inf_nan",\
+                         "++inf_nan",\
+                         "+big",\
+                         "++big",\
+                         "+-big",\
+                         "sine"]])
+
+"""
 check_suite.add_checks([checks.VerifyRDSUMTest(),\
                         checks.VerifyRDASUMTest(),\
                         checks.VerifyDIDIADDTest(),\
@@ -87,6 +107,7 @@ check_suite.add_checks([checks.VerifyRDDOTTest(),\
                          "rand+(rand-1)",\
                          "sine",\
                          "small+grow*big"]])
+"""
 
 #check_suite.add_checks([checks.VerifyRDGEMVTest()],\
 #                       ["O", "T", "N", "M", "lda", "incX", "incY", "f", "g", "j"],\
