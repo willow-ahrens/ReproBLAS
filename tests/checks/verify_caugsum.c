@@ -67,7 +67,7 @@ int verify_caugsum_reproducibility(int fold, int N, float complex* X, int incX, 
       cciconv_sub(fold, ires, &res);
     }
     if (res != ref) {
-      printf("%s(X, Y)[num_blocks=%d,block_N=%d] = %g + %gi != %g + %gi\n", wrap_caugsum_func_names[func], num_blocks, block_N, creal(res), cimag(res), creal(ref), cimag(ref));
+      printf("%s(X, Y)[num_blocks=%d,block_N=%d] = %g + %gi != %g + %gi\n", wrap_caugsum_func_names[func], num_blocks, block_N, crealf(res), cimagf(res), crealf(ref), cimagf(ref));
       if (num_blocks == 1) {
         cisetzero(fold, ires);
         (wrap_ciaugsum_func(func))(fold, N, X, incX, Y, incY, ires);

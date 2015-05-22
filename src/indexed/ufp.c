@@ -15,11 +15,11 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-double ufp(double x) {
+double ufp(double X) {
   int exp;
-  if (x == 0.0) {
+  if (X == 0.0) {
     return 0.0;
   }
-  frexp(x, &exp);
+  frexp(X, &exp);
   return ldexp(0.5, exp);
 }

@@ -38,7 +38,7 @@ void dmdupdate(const int fold, const double X, double* manY, const int incmanY, 
       manY[i * incmanY] = manY[(i - shift) * incmanY];
       carY[i * inccarY] = carY[(i - shift) * inccarY];
     }
-    dmbound(MIN(shift, fold), X_index, manY, incmanY, carY, inccarY);
+    dmbin(MIN(shift, fold), X_index, manY, incmanY, carY, inccarY);
   }
 }
 

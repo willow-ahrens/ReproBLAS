@@ -71,7 +71,7 @@ float smcnrm(const int fold, const int N, const void *X, const int incX, float *
       deposits = 0;
     }
 
-    new_scale = sbound(sindex(amax))/1.5;
+    new_scale = sbin(sindex(amax))/1.5;
     if (new_scale > scale) {
       if (scale > 0.0) {
         scale = scale / new_scale;

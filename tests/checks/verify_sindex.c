@@ -36,14 +36,14 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   X[i * incX] = 0.0;
   for (i = 0; i < N * (FLT_MAX_EXP - FLT_MIN_EXP) + 1; i++) {
     index = sindex(X[i * incX]);
-    if (sbound(index + 1) / ldexpf(0.75, 24 - siwidth()) > 2 * fabsf(X[i * incX]) * smcompression()){
+    if (sbin(index + 1) / ldexpf(0.75, 24 - siwidth()) > 2 * fabsf(X[i * incX]) * smcompression()){
       printf("2 * |X| !>= 2^(i * W)\n");
-      printf("2 * %g !>= %g\n", fabsf(X[i * incX]) * smcompression(), sbound(index + 1)/ldexpf(0.75, 24 - siwidth()));
+      printf("2 * %g !>= %g\n", fabsf(X[i * incX]) * smcompression(), sbin(index + 1)/ldexpf(0.75, 24 - siwidth()));
       return 1;
     }
-    if (X[i * incX] != 0.0 && sbound(index) / ldexpf(0.75, 24 - siwidth()) <= 2 * fabsf(X[i * incX]) * smcompression()){
+    if (X[i * incX] != 0.0 && sbin(index) / ldexpf(0.75, 24 - siwidth()) <= 2 * fabsf(X[i * incX]) * smcompression()){
       printf("2 * |X| !< 2^((i + 1) * W)\n");
-      printf("2 * %g !< %g\n", fabsf(X[i * incX]) * smcompression(), sbound(index)/ldexpf(0.75, 24 - siwidth()));
+      printf("2 * %g !< %g\n", fabsf(X[i * incX]) * smcompression(), sbin(index)/ldexpf(0.75, 24 - siwidth()));
       return 1;
     }
   }

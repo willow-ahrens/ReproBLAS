@@ -15,11 +15,11 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-float ufpf(float x) {
+float ufpf(float X) {
   int exp;
-  if (x == 0.0){
+  if (X == 0.0){
     return 0.0;
   }
-  frexpf(x, &exp);
+  frexpf(X, &exp);
   return ldexpf(0.5, exp);
 }

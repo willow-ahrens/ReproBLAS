@@ -13,7 +13,7 @@
  * @internal
  * @brief Renormalize manually specified indexed double precision
  *
- * Renormalization keeps the mantissa vector within the necessary bounds by shifting over to the carry vector
+ * Renormalization keeps the mantissa vector within the necessary bins by shifting over to the carry vector
  *
  * @param fold the fold of the indexed types
  * @param manX X's mantissa vector
@@ -53,7 +53,7 @@ void dmrenorm(const int fold, double* manX, const int incmanX, double* carX, con
 /**
  * @brief Renormalize indexed double precision
  *
- * Renormalization keeps the mantissa vector within the necessary bounds by shifting over to the carry vector
+ * Renormalization keeps the mantissa vector within the necessary bins by shifting over to the carry vector
  *
  * @param fold the fold of the indexed types
  * @param X indexed scalar X
@@ -70,7 +70,7 @@ void direnorm(const int fold, double_indexed *X) {
  * @internal
  * @brief Renormalize manually specified indexed complex double precision
  *
- * Renormalization keeps the mantissa vector within the necessary bounds by shifting over to the carry vector
+ * Renormalization keeps the mantissa vector within the necessary bins by shifting over to the carry vector
  *
  * @param fold the fold of the indexed types
  * @param manX X's mantissa vector
@@ -90,7 +90,7 @@ void zmrenorm(const int fold, double* manX, const int incmanX, double* carX, con
 /**
  * @brief Renormalize indexed complex double precision
  *
- * Renormalization keeps the mantissa vector within the necessary bounds by shifting over to the carry vector
+ * Renormalization keeps the mantissa vector within the necessary bins by shifting over to the carry vector
  *
  * @param fold the fold of the indexed types
  * @param X indexed scalar X

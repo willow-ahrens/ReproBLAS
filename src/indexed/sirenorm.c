@@ -13,7 +13,7 @@
  * @internal
  * @brief Renormalize manually specified indexed single precision
  *
- * Renormalization keeps the mantissa vector within the necessary bounds by shifting over to the carry vector
+ * Renormalization keeps the mantissa vector within the necessary bins by shifting over to the carry vector
  *
  * @param fold the fold of the indexed types
  * @param manX X's mantissa vector
@@ -53,7 +53,7 @@ void smrenorm(const int fold, float* manX, const int incmanX, float* carX, const
 /**
  * @brief Renormalize indexed single precision
  *
- * Renormalization keeps the mantissa vector within the necessary bounds by shifting over to the carry vector
+ * Renormalization keeps the mantissa vector within the necessary bins by shifting over to the carry vector
  *
  * @param fold the fold of the indexed types
  * @param X indexed scalar X
@@ -70,7 +70,7 @@ void sirenorm(const int fold, float_indexed *X) {
  * @internal
  * @brief Renormalize manually specified indexed complex single precision
  *
- * Renormalization keeps the mantissa vector within the necessary bounds by shifting over to the carry vector
+ * Renormalization keeps the mantissa vector within the necessary bins by shifting over to the carry vector
  *
  * @param fold the fold of the indexed types
  * @param manX X's mantissa vector
@@ -90,7 +90,7 @@ void cmrenorm(const int fold, float* manX, const int incmanX, float* carX, const
 /**
  * @brief Renormalize indexed complex single precision
  *
- * Renormalization keeps the mantissa vector within the necessary bounds by shifting over to the carry vector
+ * Renormalization keeps the mantissa vector within the necessary bins by shifting over to the carry vector
  *
  * @param fold the fold of the indexed types
  * @param X indexed scalar X

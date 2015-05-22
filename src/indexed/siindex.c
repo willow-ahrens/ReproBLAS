@@ -11,8 +11,8 @@
 
 #define PREC             24
 #define BIN_WIDTH        13
-static double bounds[(FLT_MAX_EXP - FLT_MIN_EXP)/BIN_WIDTH + MAX_FOLD + 1]; //initialized in bounds_initialize
-static int    bounds_initialized  = 0;                                      //initialized in bounds_initialize
+static double bins[(FLT_MAX_EXP - FLT_MIN_EXP)/BIN_WIDTH + MAX_FOLD + 1]; //initialized in bins_initialize
+static int    bins_initialized  = 0;                                      //initialized in bins_initialize
 
 /**
  * @brief Get indexed single precision bin width
@@ -73,6 +73,30 @@ float smexpansion() {
 }
 
 /**
+ * @brief Get indexed single precision summation error bin
+ *
+ * This is a bin on the absolute error of a summation using indexed types
+ *
+ * @param fold the fold of the indexed types
+ * @param N the number of single precision floating point summands
+ * @param X the maximum absolute value of the summands
+ * @return error bin
+ *
+ * @author Peter Ahrens
+ * @author Hong Diep Nguyen
+ * @date   21 May 2015
+ */
+float sibound(const int fold, const int N, const float X) {
+  int X_exp;
+  float X_man;
+  int N_exp;
+  float N_man;
+  X_man = frexpf(X, &X_exp);
+  N_man = frexpf((float)N, &N_exp);
+  return X_man * N_man * ldexpf(0.5, (1 - fold)*(BIN_WIDTH - 1) + X_exp + N_exp + 1);
+}
+
+/**
  * @internal
  * @brief Get index of manually specified indexed single precision
  *
@@ -119,61 +143,61 @@ int sindex(const float X){
   }
 }
 
-static void bounds_initialize() {
+static void bins_initialize() {
   int index;
 
-  if (bounds_initialized) {
+  if (bins_initialized) {
     return;
   }
 
   for(index = 0; index <= (FLT_MAX_EXP - FLT_MIN_EXP)/BIN_WIDTH; index++){
-    bounds[index] = ldexp(0.75, (FLT_MAX_EXP - index * BIN_WIDTH));
+    bins[index] = ldexp(0.75, (FLT_MAX_EXP - index * BIN_WIDTH));
   }
   for(; index < (FLT_MAX_EXP - FLT_MIN_EXP)/BIN_WIDTH + MAX_FOLD + 1; index++){
-    bounds[index] = 0;
+    bins[index] = 0;
   }
 
-  bounds_initialized = 1;
+  bins_initialized = 1;
 }
 
 /**
- * @brief Get single precision bound corresponding to index
+ * @brief Get single precision bin corresponding to index
  *
- * @param index index
- * @return bound (bin)
+ * @param X index
+ * @return bin (bin)
  *
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-float sbound(const int index){
-  bounds_initialize();
+float sbin(const int X){
+  bins_initialize();
 
-  return bounds[index];
+  return bins[X];
 }
 
 /**
  * @internal
- * @brief Set manually specified indexed single precision bounds
+ * @brief Set manually specified indexed single precision bins
  *
  * Set the manually specified indexed single precision X to be empty with the given index
  *
- * @param index index
- * @param manX X's mantissa vector
- * @param incmanX stride within X's mantissa vector (use every incmanX'th element)
- * @param carX X's carry vector
- * @param inccarX stride within X's carry vector (use every inccarY'th element)
+ * @param X index
+ * @param manY Y's mantissa vector
+ * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
+ * @param carY Y's carry vector
+ * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
  * @author Hong Diep Nguyen
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void smbound(const int fold, const int index, float *manX, const int incmanX, float *carX, const int inccarX) {
+void smbin(const int fold, const int X, float *manY, const int incmanY, float *carY, const int inccarY) {
   int i;
 
-  bounds_initialize();
+  bins_initialize();
 
   for (i = 0; i < fold; i++) {
-    manX[i * incmanX] = bounds[index + i];
-    carX[i * inccarX] = 0.0;
+    manY[i * incmanY] = bins[X + i];
+    carY[i * inccarY] = 0.0;
   }
 }

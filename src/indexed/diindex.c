@@ -11,8 +11,8 @@
 
 #define PREC             53
 #define BIN_WIDTH        40
-static double bounds[(DBL_MAX_EXP - DBL_MIN_EXP)/BIN_WIDTH + MAX_FOLD + 1]; //initialized in bounds_initialize
-static int    bounds_initialized  = 0;                                      //initialized in bounds_initialize
+static double bins[(DBL_MAX_EXP - DBL_MIN_EXP)/BIN_WIDTH + MAX_FOLD + 1]; //initialized in bins_initialize
+static int    bins_initialized  = 0;                                      //initialized in bins_initialize
 
 /**
  * @brief Get indexed double precision bin width
@@ -73,6 +73,30 @@ double dmexpansion() {
 }
 
 /**
+ * @brief Get indexed double precision summation error bin
+ *
+ * This is a bin on the absolute error of a summation using indexed types
+ *
+ * @param fold the fold of the indexed types
+ * @param N the number of double precision floating point summands
+ * @param X the maximum absolute value of the summands
+ * @return error bin
+ *
+ * @author Peter Ahrens
+ * @author Hong Diep Nguyen
+ * @date   21 May 2015
+ */
+double dibound(const int fold, const int N, const double X) {
+  int X_exp;
+  double X_man;
+  int N_exp;
+  double N_man;
+  X_man = frexp(X, &X_exp);
+  N_man = frexp((double)N, &N_exp);
+  return X_man * N_man * ldexp(0.5, (1 - fold)*(BIN_WIDTH - 1) + X_exp + N_exp + 1);
+}
+
+/**
  * @internal
  * @brief Get index of manually specified indexed double precision
  *
@@ -119,62 +143,63 @@ int dindex(const double X){
   }
 }
 
-static void bounds_initialize() {
+static void bins_initialize() {
   int index;
 
-  if (bounds_initialized) {
+  if (bins_initialized) {
     return;
   }
 
   for(index = 0; index <= (DBL_MAX_EXP - DBL_MIN_EXP)/BIN_WIDTH; index++){
-    bounds[index] = ldexp(0.75, (DBL_MAX_EXP - index * BIN_WIDTH));
+    bins[index] = ldexp(0.75, (DBL_MAX_EXP - index * BIN_WIDTH));
   }
   for(; index < (DBL_MAX_EXP - DBL_MIN_EXP)/BIN_WIDTH + MAX_FOLD + 1; index++){
-    bounds[index] = 0;
+    bins[index] = 0;
   }
 
-  bounds_initialized = 1;
+  bins_initialized = 1;
 }
 
 
 /**
- * @brief Get double precision bound corresponding to index
+ * @brief Get double precision bin corresponding to index
  *
- * @param index index
- * @return bound (bin)
+ * @param X index
+ * @return bin
  *
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-double dbound(const int index){
-  bounds_initialize();
+double dbin(const int X){
+  bins_initialize();
 
-  return bounds[index];
+  return bins[X];
 }
 
 /**
  * @internal
- * @brief Set manually specified indexed double precision bounds
+ * @brief Set manually specified indexed double precision bins
  *
  * Set the manually specified indexed double precision X to be empty with the given index
  *
- * @param index index
- * @param manX X's mantissa vector
- * @param incmanX stride within X's mantissa vector (use every incmanX'th element)
- * @param carX X's carry vector
- * @param inccarX stride within X's carry vector (use every inccarY'th element)
+ * @param fold the fold of the indexed type
+ * @param X index
+ * @param manY Y's mantissa vector
+ * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
+ * @param carY Y's carry vector
+ * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
  * @author Hong Diep Nguyen
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void dmbound(const int fold, const int index, double *manX, const int incmanX, double *carX, const int inccarX) {
+void dmbin(const int fold, const int X, double *manY, const int incmanY, double *carY, const int inccarY) {
   int i;
 
-  bounds_initialize();
+  bins_initialize();
 
   for (i = 0; i < fold; i++) {
-    manX[i * incmanX] = bounds[index + i];
-    carX[i * inccarX] = 0.0;
+    manY[i * incmanY] = bins[X + i];
+    carY[i * inccarY] = 0.0;
   }
 }

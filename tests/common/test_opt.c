@@ -114,7 +114,7 @@ void opt_eval_option(int argc, char **argv, opt_option *option){
           exit(125);
         }
         if(option->_int.value > option->_int.max || option->_int.value < option->_int.min){
-          fprintf(stderr, "error: integer out of bounds %d\n", option->_int.value);
+          fprintf(stderr, "error: integer out of bins %d\n", option->_int.value);
           opt_fprintf_option(stderr, *option);
           exit(125);
         }
@@ -157,7 +157,7 @@ void opt_eval_option(int argc, char **argv, opt_option *option){
           exit(125);
         }
         if(option->_double.value > option->_double.max || option->_double.value < option->_double.min){
-          fprintf(stderr, "error: double out of bounds %f\n", option->_double.value);
+          fprintf(stderr, "error: double out of bins %f\n", option->_double.value);
           opt_fprintf_option(stderr, *option);
           exit(125);
         }
@@ -184,7 +184,7 @@ void opt_eval_option(int argc, char **argv, opt_option *option){
           exit(125);
         }
         if(option->_float.value > option->_float.max || option->_float.value < option->_float.min){
-          fprintf(stderr, "error: float out of bounds %f\n", option->_float.value);
+          fprintf(stderr, "error: float out of bins %f\n", option->_float.value);
           opt_fprintf_option(stderr, *option);
           exit(125);
         }

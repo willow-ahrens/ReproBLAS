@@ -38,7 +38,7 @@ void smsupdate(const int fold, const float X, float* manY, const int incmanY, fl
       manY[i * incmanY] = manY[(i - shift) * incmanY];
       carY[i * inccarY] = carY[(i - shift) * inccarY];
     }
-    smbound(MIN(shift, fold), X_index, manY, incmanY, carY, inccarY);
+    smbin(MIN(shift, fold), X_index, manY, incmanY, carY, inccarY);
   }
 }
 

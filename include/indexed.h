@@ -123,15 +123,17 @@ int sicapacity();
 
 double dmexpansion();
 double dmcompression();
-double dbound(const int index);
-void dmbound(const int fold, const int index, double *manX, const int incmanX, double *carX, const int inccarX);
+double dierror(const int fold, const int N, const double X);
+double dbin(const int X);
+void dmbin(const int fold, const int X, double *manY, const int incmanY, double *carY, const int inccarY);
 int dindex(const double X);
 int dmindex(const double *manX);
 
 float smexpansion();
 float smcompression();
-float sbound(const int index);
-void smbound(const int fold, const int index, float *manX, const int incmanX, float *carX, const int inccarX);
+float sierror(const int fold, const int N, const float X);
+float sbin(const int X);
+void smbin(const int fold, const int X, float *manY, const int incmanY, float *carY, const int inccarY);
 int sindex(const float X);
 int smindex(const float *manX);
 
