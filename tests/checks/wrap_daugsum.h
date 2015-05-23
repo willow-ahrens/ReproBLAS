@@ -4,6 +4,7 @@
 #include <reproBLAS.h>
 #include <indexedBLAS.h>
 #include <indexed.h>
+#include <float.h>
 
 #include "../common/test_util.h"
 
@@ -463,8 +464,10 @@ double wrap_daugsum_bound(int fold, int N, wrap_daugsum_func_t func, double *X, 
       return dibound(fold, N, damax(N, X, incX));
     case wrap_daugsum_RDNRM2:
       {
+        int exp_ref;
+        frexp(ref, &exp_ref);
         double amax = damax(N, X, incX);
-        return dibound(fold, N, amax) * (amax / (res + ref));
+        return dibound(fold, N, amax) * (amax / (res + ref)) + ldexp(0.5, exp_ref - DBL_MANT_DIG + 1); //this fudge factor is here because we are comparing the square roots of the results
       }
     case wrap_daugsum_RDDOT:
       return dibound(fold, N, damaxm(N, X, incX, Y, incY));

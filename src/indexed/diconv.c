@@ -97,6 +97,7 @@ void zizconv(const int fold, const void *X, double_complex_indexed *Y) {
 double ddmconv(const int fold, const double* manX, const int incmanX, const double* carX, const int inccarX) {
   int i;
   double Y = 0.0;
+  double M;
 
   if (isinf(manX[0]) || isnan(manX[0]))
     return manX[0];
@@ -105,10 +106,9 @@ double ddmconv(const int fold, const double* manX, const int incmanX, const doub
     return 0.0;
   }
 
-  // TODO: SCALING TO AVOID OVERFLOW
-
   for (i = 0; i < fold; i++) {
-    Y += (manX[i * incmanX] + (carX[i * inccarX] - 6) * ufp(manX[i * incmanX]) * 0.25);
+    M = ufp(manX[i * incmanX]);
+    Y += (manX[i * incmanX] - 1.5 * M) + carX[i * inccarX] * (0.25 * M);
   }
 
   return Y * dmexpansion();

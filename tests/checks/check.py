@@ -52,6 +52,34 @@ check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
                          "+-big",\
                          "sine"]])
 
+check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
+                        checks.ValidateInternalDIDIADDTest(),\
+                        checks.ValidateInternalDIDADDTest(),\
+                        checks.ValidateInternalDIDDEPOSITTest(),\
+                        ],\
+                       ["N", "incX", "ScaleX", "f"],\
+                       [[64], [1, 4], [0.75 * 2.0**1023],\
+                        ["sine"]])
+
+check_suite.add_checks([checks.ValidateInternalRDASUMTest(),\
+                        ],\
+                       ["N", "incX", "ScaleX", "f"],\
+                       [[64], [1, 4], [(0.75 * 2.0**1017)],\
+                        ["constant"]])
+
+check_suite.add_checks([checks.ValidateInternalRDNRM2Test(),\
+                        ],\
+                       ["N", "incX", "ScaleX", "f"],\
+                       [[64], [1, 4], [(0.75 * 2.0**1019)],\
+                        ["constant", "sine"]])
+
+check_suite.add_checks([checks.ValidateInternalRDDOTTest(),\
+                        ],\
+                       ["N", "incX", "ScaleX", "f", "g"],\
+                       [[64], [1, 4], [(0.75 * 2.0**1019)],\
+                        ["sine"],\
+                        ["sine"]])
+
 """
 check_suite.add_checks([checks.VerifyRDSUMTest(),\
                         checks.VerifyRDASUMTest(),\

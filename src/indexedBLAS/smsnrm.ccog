@@ -61,7 +61,7 @@ float smsnrm(const int fold, const int N, const float *X, const int incX, float 
       deposits = 0;
     }
 
-    new_scale = sbin(sindex(amax))/1.5;
+    new_scale = sbin(sindex(amax))/(1.5 * (1 << (FLT_MAX_EXP + FLT_MIN_EXP)));
     if (new_scale > scale) {
       if (scale > 0.0) {
         scale = scale / new_scale;

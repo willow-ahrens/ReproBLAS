@@ -156,6 +156,11 @@ class ValidateInternalRDNRM2Test(CheckTest):
   executable = "tests/checks/validate_internal_daugsum"
   name = "validate_internal_rdrnm2"
 
+class ValidateInternalRDDOTTest(CheckTest):
+  base_flags = "-w rddot"
+  executable = "tests/checks/validate_internal_daugsum"
+  name = "validate_internal_rddot"
+
 class ValidateInternalDIDIADDTest(CheckTest):
   base_flags = "-w didiadd"
   executable = "tests/checks/validate_internal_daugsum"
