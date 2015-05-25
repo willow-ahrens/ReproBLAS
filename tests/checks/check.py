@@ -6,7 +6,7 @@ import tests.harness.harness as harness
 check_dir = os.path.dirname(os.path.abspath(__file__))
 
 check_suite = checks.CheckSuite()
-
+"""
 check_suite.add_checks([checks.ValidateInternalUFPTest(),\
                         checks.ValidateInternalUFPFTest()],\
                        ["N", "incX"],\
@@ -148,6 +148,31 @@ check_suite.add_checks([checks.VerifyRDSUMTest(),\
                         checks.VerifyCICIADDTest(),\
                         checks.VerifyCICADDTest(),\
                         checks.VerifyCICDEPOSITTest()],\
+                       ["N", "B", "incX", "ScaleX", "f"],\
+                       [[4095], [256], [1, 4], [0],\
+                        ["rand"]])
+
+"""
+check_suite.add_checks([checks.VerifyRDSUMTest(),\
+                        checks.VerifyRDASUMTest(),\
+                        checks.VerifyDIDIADDTest(),\
+                        checks.VerifyDIDADDTest(),\
+                        checks.VerifyDIDDEPOSITTest(),\
+                        checks.VerifyRZSUMTest(),\
+                        checks.VerifyRDZASUMTest(),\
+                        checks.VerifyZIZIADDTest(),\
+                        checks.VerifyZIZADDTest(),\
+                        checks.VerifyZIZDEPOSITTest(),\
+                        checks.VerifyRSSUMTest(),\
+                        checks.VerifyRSASUMTest(),\
+                        checks.VerifySISIADDTest(),\
+                        checks.VerifySISADDTest(),\
+                        checks.VerifySISDEPOSITTest(),\
+                        checks.VerifyRCSUMTest(),\
+                        checks.VerifyRSCASUMTest(),\
+                        checks.VerifyCICIADDTest(),\
+                        checks.VerifyCICADDTest(),\
+                        checks.VerifyCICDEPOSITTest()],\
                        ["N", "B", "incX", "f"],\
                        [[4095], [256], [1, 4],\
                         ["rand",\
@@ -182,6 +207,7 @@ check_suite.add_checks([checks.VerifyRDDOTTest(),\
                          "rand+(rand-1)",\
                          "sine",\
                          "small+grow*big"]])
+
 """
 
 #check_suite.add_checks([checks.VerifyRDGEMVTest()],\
