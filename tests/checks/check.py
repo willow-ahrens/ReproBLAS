@@ -38,8 +38,8 @@ check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
                         checks.ValidateInternalDIDADDTest(),\
                         checks.ValidateInternalDIDDEPOSITTest(),\
                         ],\
-                       ["N", "incX", "scaleX", "f"],\
-                       [[4095], [1, 4], [0.0, 1.0],\
+                       ["N", "incX", "ScaleX", "f"],\
+                       [[4095], [1, 4], [1.0],\
                         ["constant",\
                          "+inf",\
                          "++inf",\
@@ -51,6 +51,53 @@ check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
                          "++big",\
                          "+-big",\
                          "sine"]])
+
+check_suite.add_checks([checks.ValidateInternalRDNRM2Test(),\
+                        ],\
+                       ["N", "incX", "ScaleX", "f"],\
+                       [[4095], [1, 4], [1.0],\
+                        ["constant",\
+                         "+inf",\
+                         "++inf",\
+                         "+-inf",\
+                         "nan",\
+                         "+inf_nan",\
+                         "++inf_nan",\
+                         "+big",\
+                         "++big",\
+                         "+-big"]])
+
+check_suite.add_checks([checks.ValidateInternalRDDOTTest(),\
+                        ],\
+                       ["N", "incX", "ScaleX", "ScaleY", "f", "g"],\
+                       [[4095], [1, 4], [1.0], [1.0],\
+                        ["constant",\
+                         "+inf",\
+                         "++inf",\
+                         "+-inf",\
+                         "nan",\
+                         "+inf_nan",\
+                         "++inf_nan"],\
+                        ["constant",\
+                         "+inf",\
+                         "++inf",\
+                         "+-inf",\
+                         "nan",\
+                         "+inf_nan",\
+                         "++inf_nan"]])
+
+check_suite.add_checks([checks.ValidateInternalRDDOTTest(),\
+                        ],\
+                       ["N", "incX", "ScaleX", "ScaleY", "f", "g"],\
+                       [[4095], [1, 4], [1.0], [1.0],\
+                        ["constant",\
+                         "+big",\
+                         "++big",\
+                         "+-big"],\
+                        ["constant",\
+                         "+big",\
+                         "++big",\
+                         "+-big"]])
 
 check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
                         checks.ValidateInternalDIDIADDTest(),\
@@ -71,14 +118,14 @@ check_suite.add_checks([checks.ValidateInternalRDNRM2Test(),\
                         ],\
                        ["N", "incX", "ScaleX", "f"],\
                        [[64], [1, 4], [(0.75 * 2.0**1019)],\
-                        ["constant", "sine"]])
+                        ["constant"]])
 
 check_suite.add_checks([checks.ValidateInternalRDDOTTest(),\
                         ],\
-                       ["N", "incX", "ScaleX", "f", "g"],\
-                       [[64], [1, 4], [(0.75 * 2.0**1019)],\
-                        ["sine"],\
-                        ["sine"]])
+                       ["N", "incX", "ScaleX", "ScaleY", "f", "g"],\
+                       [[64], [1, 4], [(0.75 * 2.0**510)], [(0.75 * 2.0**509)],\
+                        ["constant"],\
+                        ["constant"]])
 
 """
 check_suite.add_checks([checks.VerifyRDSUMTest(),\

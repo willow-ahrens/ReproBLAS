@@ -9,9 +9,8 @@
 #include "indexed.h"
 #include "../../config.h"
 
-#define PREC             53
-#define BIN_WIDTH        40
-static double bins[(DBL_MAX_EXP - DBL_MIN_EXP)/BIN_WIDTH + MAX_FOLD + 1]; //initialized in bins_initialize
+#define DBL_BIN_DIG        40
+static double bins[(DBL_MAX_EXP - DBL_MIN_EXP)/DBL_BIN_DIG + MAX_FOLD + 1]; //initialized in bins_initialize
 static int    bins_initialized  = 0;                                      //initialized in bins_initialize
 
 /**
@@ -24,7 +23,7 @@ static int    bins_initialized  = 0;                                      //init
  * @date   27 Apr 2015
  */
 int diwidth() {
-  return BIN_WIDTH;
+  return DBL_BIN_DIG;
 }
 
 /**
@@ -39,7 +38,7 @@ int diwidth() {
  * @date   27 Apr 2015
  */
 int dicapacity() {
-  return 1 << (PREC - BIN_WIDTH - 2);
+  return 1 << (DBL_MANT_DIG - DBL_BIN_DIG - 2);
 }
 
 /**
@@ -54,7 +53,7 @@ int dicapacity() {
  * @date   19 May 2015
  */
 double dmcompression() {
-  return 1.0/(1 << (PREC - BIN_WIDTH + 1));
+  return 1.0/(1 << (DBL_MANT_DIG - DBL_BIN_DIG + 1));
 }
 
 /**
@@ -69,7 +68,7 @@ double dmcompression() {
  * @date   19 May 2015
  */
 double dmexpansion() {
-  return 1.0*(1 << (PREC - BIN_WIDTH + 1));
+  return 1.0*(1 << (DBL_MANT_DIG - DBL_BIN_DIG + 1));
 }
 
 /**
@@ -87,7 +86,7 @@ double dmexpansion() {
  * @date   21 May 2015
  */
 double dibound(const int fold, const int N, const double X) {
-  return X * ldexp(0.5, (1 - fold)*(BIN_WIDTH - 1) + 1) * N;
+  return X * ldexp(0.5, (1 - fold)*(DBL_BIN_DIG - 1) + 1) * N;
 }
 
 /**
@@ -107,10 +106,10 @@ int dmindex(const double *manX){
   int exp;
 
   if(manX[0] == 0.0){
-    return (DBL_MAX_EXP - DBL_MIN_EXP)/BIN_WIDTH + 1;
+    return (DBL_MAX_EXP - DBL_MIN_EXP)/DBL_BIN_DIG + 1;
   }else{
     frexp(manX[0], &exp);
-    return (DBL_MAX_EXP - exp)/BIN_WIDTH;
+    return (DBL_MAX_EXP - exp)/DBL_BIN_DIG;
   }
 }
 
@@ -130,10 +129,10 @@ int dindex(const double X){
   int exp;
 
   if(X == 0.0){
-    return (DBL_MAX_EXP - DBL_MIN_EXP)/BIN_WIDTH + 1;
+    return (DBL_MAX_EXP - DBL_MIN_EXP)/DBL_BIN_DIG + 1;
   }else{
     frexp(X, &exp);
-    return (DBL_MAX_EXP - exp)/BIN_WIDTH;
+    return (DBL_MAX_EXP - exp)/DBL_BIN_DIG;
   }
 }
 
@@ -144,10 +143,10 @@ static void bins_initialize() {
     return;
   }
 
-  for(index = 0; index <= (DBL_MAX_EXP - DBL_MIN_EXP)/BIN_WIDTH; index++){
-    bins[index] = ldexp(0.75, (DBL_MAX_EXP - index * BIN_WIDTH));
+  for(index = 0; index <= (DBL_MAX_EXP - DBL_MIN_EXP)/DBL_BIN_DIG; index++){
+    bins[index] = ldexp(0.75, (DBL_MAX_EXP - index * DBL_BIN_DIG));
   }
-  for(; index < (DBL_MAX_EXP - DBL_MIN_EXP)/BIN_WIDTH + MAX_FOLD + 1; index++){
+  for(; index < (DBL_MAX_EXP - DBL_MIN_EXP)/DBL_BIN_DIG + MAX_FOLD + 1; index++){
     bins[index] = 0;
   }
 

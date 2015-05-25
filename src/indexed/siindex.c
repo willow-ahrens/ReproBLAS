@@ -9,9 +9,8 @@
 #include "indexed.h"
 #include "../../config.h"
 
-#define PREC             24
-#define BIN_WIDTH        13
-static double bins[(FLT_MAX_EXP - FLT_MIN_EXP)/BIN_WIDTH + MAX_FOLD + 1]; //initialized in bins_initialize
+#define FLT_BIN_DIG        13
+static double bins[(FLT_MAX_EXP - FLT_MIN_EXP)/FLT_BIN_DIG + MAX_FOLD + 1]; //initialized in bins_initialize
 static int    bins_initialized  = 0;                                      //initialized in bins_initialize
 
 /**
@@ -24,7 +23,7 @@ static int    bins_initialized  = 0;                                      //init
  * @date   27 Apr 2015
  */
 int siwidth() {
-  return BIN_WIDTH;
+  return FLT_BIN_DIG;
 }
 
 /**
@@ -39,7 +38,7 @@ int siwidth() {
  * @date   27 Apr 2015
  */
 int sicapacity() {
-  return 1 << (PREC - BIN_WIDTH - 2);
+  return 1 << (FLT_MANT_DIG - FLT_BIN_DIG - 2);
 }
 
 /**
@@ -54,7 +53,7 @@ int sicapacity() {
  * @date   19 May 2015
  */
 float smcompression() {
-  return 1.0/(1 << (PREC - BIN_WIDTH + 1));
+  return 1.0/(1 << (FLT_MANT_DIG - FLT_BIN_DIG + 1));
 }
 
 /**
@@ -69,7 +68,7 @@ float smcompression() {
  * @date   19 May 2015
  */
 float smexpansion() {
-  return 1.0*(1 << (PREC - BIN_WIDTH + 1));
+  return 1.0*(1 << (FLT_MANT_DIG - FLT_BIN_DIG + 1));
 }
 
 /**
@@ -87,7 +86,7 @@ float smexpansion() {
  * @date   21 May 2015
  */
 float sibound(const int fold, const int N, const float X) {
-  return X * ldexpf(0.5, (1 - fold)*(BIN_WIDTH - 1) + 1) * N;
+  return X * ldexpf(0.5, (1 - fold)*(FLT_BIN_DIG - 1) + 1) * N;
 }
 
 /**
@@ -107,10 +106,10 @@ int smindex(const float *manX){
   int exp;
 
   if(manX[0] == 0.0){
-    return (FLT_MAX_EXP - FLT_MIN_EXP)/BIN_WIDTH + 1;
+    return (FLT_MAX_EXP - FLT_MIN_EXP)/FLT_BIN_DIG + 1;
   }else{
     frexpf(manX[0], &exp);
-    return (FLT_MAX_EXP - exp)/BIN_WIDTH;
+    return (FLT_MAX_EXP - exp)/FLT_BIN_DIG;
   }
 }
 
@@ -130,10 +129,10 @@ int sindex(const float X){
   int exp;
 
   if(X == 0.0){
-    return (FLT_MAX_EXP - FLT_MIN_EXP)/BIN_WIDTH + 1;
+    return (FLT_MAX_EXP - FLT_MIN_EXP)/FLT_BIN_DIG + 1;
   }else{
     frexpf(X, &exp);
-    return (FLT_MAX_EXP - exp)/BIN_WIDTH;
+    return (FLT_MAX_EXP - exp)/FLT_BIN_DIG;
   }
 }
 
@@ -144,10 +143,10 @@ static void bins_initialize() {
     return;
   }
 
-  for(index = 0; index <= (FLT_MAX_EXP - FLT_MIN_EXP)/BIN_WIDTH; index++){
-    bins[index] = ldexp(0.75, (FLT_MAX_EXP - index * BIN_WIDTH));
+  for(index = 0; index <= (FLT_MAX_EXP - FLT_MIN_EXP)/FLT_BIN_DIG; index++){
+    bins[index] = ldexp(0.75, (FLT_MAX_EXP - index * FLT_BIN_DIG));
   }
-  for(; index < (FLT_MAX_EXP - FLT_MIN_EXP)/BIN_WIDTH + MAX_FOLD + 1; index++){
+  for(; index < (FLT_MAX_EXP - FLT_MIN_EXP)/FLT_BIN_DIG + MAX_FOLD + 1; index++){
     bins[index] = 0;
   }
 

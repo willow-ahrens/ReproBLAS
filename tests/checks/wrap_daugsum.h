@@ -322,9 +322,6 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
         case util_Vec_Pos_Pos_Big:
         case util_Vec_Pos_Neg_Big:
           return sqrt(((N - 2) * small * small + big * big) + big * big) * fabs(ScaleX);
-        case util_Vec_Sine:
-          //The sum of sin^2 on evenly spaced intervals over the range [0, 2*pi) is N/2
-          return sqrt(N / 2.0) * fabs(ScaleX);
         default:
           fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], ScaleX);
           exit(125);
@@ -440,9 +437,6 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
           switch(FillY){
             case util_Vec_Constant:
               return ScaleX * ScaleY - ScaleX * ScaleY;
-            case util_Vec_Sine:
-              //The sum of sin^2 on evenly spaced intervals over the range [0, 2*pi) is N/2
-              return (N / 2.0) * ScaleX * ScaleY;
             default:
               fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g, %s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], ScaleX, util_vec_fill_descs[FillY], ScaleY);
               exit(125);
@@ -464,10 +458,8 @@ double wrap_daugsum_bound(int fold, int N, wrap_daugsum_func_t func, double *X, 
       return dibound(fold, N, damax(N, X, incX));
     case wrap_daugsum_RDNRM2:
       {
-        int exp_ref;
-        frexp(ref, &exp_ref);
         double amax = damax(N, X, incX);
-        return dibound(fold, N, amax) * (amax / (res + ref)) + ldexp(0.5, exp_ref - DBL_MANT_DIG + 1); //this fudge factor is here because we are comparing the square roots of the results
+        return dibound(fold, N, amax) * (amax / (res + ref));
       }
     case wrap_daugsum_RDDOT:
       return dibound(fold, N, damaxm(N, X, incX, Y, incY));

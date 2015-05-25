@@ -2,13 +2,11 @@
  *  Created   13/10/25   H.D. Nguyen
  */
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <math.h>
 #include <float.h>
-#include <complex.h>
-#include "indexed.h"
+
 #include "../Common/Common.h"
+#include "indexed.h"
 
 /**
  * @internal
