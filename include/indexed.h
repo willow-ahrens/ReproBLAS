@@ -1,4 +1,4 @@
-//@todo provide a working explanation for indexed types
+//TODO provide a working explanation for indexed types
 /**
  * @file  indexed.h
  * @brief indexed.h defines the indexed types and the lower level functions associated with their use.
