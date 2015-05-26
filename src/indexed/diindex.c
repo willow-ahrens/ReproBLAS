@@ -71,14 +71,14 @@ double dmexpansion() {
 }
 
 /**
- * @brief Get indexed double precision summation error bin
+ * @brief Get indexed double precision summation error bound
  *
- * This is a bin on the absolute error of a summation using indexed types
+ * This is a bound on the absolute error of a summation using indexed types
  *
  * @param fold the fold of the indexed types
  * @param N the number of double precision floating point summands
  * @param X the maximum absolute value of the summands
- * @return error bin
+ * @return error bound
  *
  * @author Peter Ahrens
  * @author Hong Diep Nguyen
