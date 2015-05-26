@@ -6,7 +6,7 @@ import tests.harness.harness as harness
 check_dir = os.path.dirname(os.path.abspath(__file__))
 
 check_suite = checks.CheckSuite()
-"""
+
 check_suite.add_checks([checks.ValidateInternalUFPTest(),\
                         checks.ValidateInternalUFPFTest()],\
                        ["N", "incX"],\
@@ -127,7 +127,6 @@ check_suite.add_checks([checks.ValidateInternalRDDOTTest(),\
                         ["constant"],\
                         ["constant"]])
 
-"""
 check_suite.add_checks([checks.VerifyRDSUMTest(),\
                         checks.VerifyRDASUMTest(),\
                         checks.VerifyDIDIADDTest(),\

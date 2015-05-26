@@ -23,7 +23,7 @@
 void smsupdate(const int fold, const float X, float* manY, const int incmanY, float* carY, const int inccarY) {
   int i;
 
-  if (X == 0 || isnan(manY[0]) || isinf(manY[0]))
+  if (isnan(manY[0]) || isinf(manY[0]))
     return;
 
   int X_index = sindex(X);
