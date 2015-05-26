@@ -37,6 +37,10 @@ check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
                         checks.ValidateInternalDIDIADDTest(),\
                         checks.ValidateInternalDIDADDTest(),\
                         checks.ValidateInternalDIDDEPOSITTest(),\
+                        checks.ValidateInternalRSSUMTest(),\
+                        checks.ValidateInternalSISIADDTest(),\
+                        checks.ValidateInternalSISADDTest(),\
+                        checks.ValidateInternalSISDEPOSITTest(),\
                         ],\
                        ["N", "incX", "ScaleX", "f"],\
                        [[4095], [1, 4], [1.0],\
@@ -53,6 +57,7 @@ check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
                          "sine"]])
 
 check_suite.add_checks([checks.ValidateInternalRDNRM2Test(),\
+                        checks.ValidateInternalRSNRM2Test(),\
                         ],\
                        ["N", "incX", "ScaleX", "f"],\
                        [[4095], [1, 4], [1.0],\
@@ -68,6 +73,7 @@ check_suite.add_checks([checks.ValidateInternalRDNRM2Test(),\
                          "+-big"]])
 
 check_suite.add_checks([checks.ValidateInternalRDDOTTest(),\
+                        checks.ValidateInternalRSDOTTest(),\
                         ],\
                        ["N", "incX", "ScaleX", "ScaleY", "f", "g"],\
                        [[4095], [1, 4], [1.0], [1.0],\
@@ -87,6 +93,7 @@ check_suite.add_checks([checks.ValidateInternalRDDOTTest(),\
                          "++inf_nan"]])
 
 check_suite.add_checks([checks.ValidateInternalRDDOTTest(),\
+                        checks.ValidateInternalRSDOTTest(),\
                         ],\
                        ["N", "incX", "ScaleX", "ScaleY", "f", "g"],\
                        [[4095], [1, 4], [1.0], [1.0],\
@@ -108,10 +115,25 @@ check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
                        [[64], [1, 4], [0.75 * 2.0**1023],\
                         ["sine"]])
 
+check_suite.add_checks([checks.ValidateInternalRSSUMTest(),\
+                        checks.ValidateInternalSISIADDTest(),\
+                        checks.ValidateInternalSISADDTest(),\
+                        checks.ValidateInternalSISDEPOSITTest(),\
+                        ],\
+                       ["N", "incX", "ScaleX", "f"],\
+                       [[64], [1, 4], [0.75 * 2.0**127],\
+                        ["sine"]])
+
 check_suite.add_checks([checks.ValidateInternalRDASUMTest(),\
                         ],\
                        ["N", "incX", "ScaleX", "f"],\
                        [[64], [1, 4], [(0.75 * 2.0**1017)],\
+                        ["constant"]])
+
+check_suite.add_checks([checks.ValidateInternalRSASUMTest(),\
+                        ],\
+                       ["N", "incX", "ScaleX", "f"],\
+                       [[64], [1, 4], [(0.75 * 2.0**121)],\
                         ["constant"]])
 
 check_suite.add_checks([checks.ValidateInternalRDNRM2Test(),\
@@ -120,10 +142,23 @@ check_suite.add_checks([checks.ValidateInternalRDNRM2Test(),\
                        [[64], [1, 4], [(0.75 * 2.0**1019)],\
                         ["constant"]])
 
+check_suite.add_checks([checks.ValidateInternalRSNRM2Test(),\
+                        ],\
+                       ["N", "incX", "ScaleX", "f"],\
+                       [[64], [1, 4], [(0.75 * 2.0**123)],\
+                        ["constant"]])
+
 check_suite.add_checks([checks.ValidateInternalRDDOTTest(),\
                         ],\
                        ["N", "incX", "ScaleX", "ScaleY", "f", "g"],\
                        [[64], [1, 4], [(0.75 * 2.0**510)], [(0.75 * 2.0**509)],\
+                        ["constant"],\
+                        ["constant"]])
+
+check_suite.add_checks([checks.ValidateInternalRSDOTTest(),\
+                        ],\
+                       ["N", "incX", "ScaleX", "ScaleY", "f", "g"],\
+                       [[64], [1, 4], [(0.75 * 2.0**62)], [(0.75 * 2.0**61)],\
                         ["constant"],\
                         ["constant"]])
 

@@ -176,6 +176,41 @@ class ValidateInternalDIDDEPOSITTest(CheckTest):
   executable = "tests/checks/validate_internal_daugsum"
   name = "validate_internal_diddeposit"
 
+class ValidateInternalRSSUMTest(CheckTest):
+  base_flags = "-w rssum"
+  executable = "tests/checks/validate_internal_saugsum"
+  name = "validate_internal_rssum"
+
+class ValidateInternalRSASUMTest(CheckTest):
+  base_flags = "-w rsasum"
+  executable = "tests/checks/validate_internal_saugsum"
+  name = "validate_internal_rsasum"
+
+class ValidateInternalRSNRM2Test(CheckTest):
+  base_flags = "-w rsnrm2"
+  executable = "tests/checks/validate_internal_saugsum"
+  name = "validate_internal_rsrnm2"
+
+class ValidateInternalRSDOTTest(CheckTest):
+  base_flags = "-w rsdot"
+  executable = "tests/checks/validate_internal_saugsum"
+  name = "validate_internal_rsdot"
+
+class ValidateInternalSISIADDTest(CheckTest):
+  base_flags = "-w sisiadd"
+  executable = "tests/checks/validate_internal_saugsum"
+  name = "validate_internal_sisiadd"
+
+class ValidateInternalSISADDTest(CheckTest):
+  base_flags = "-w sisadd"
+  executable = "tests/checks/validate_internal_saugsum"
+  name = "validate_internal_sisadd"
+
+class ValidateInternalSISDEPOSITTest(CheckTest):
+  base_flags = "-w sisdeposit"
+  executable = "tests/checks/validate_internal_saugsum"
+  name = "validate_internal_sisdeposit"
+
 class ValidateInternalRZBLAS1Test(CheckTest):
   executable = "tests/checks/validate_internal_rzblas1"
   name = "validate_internal_rzblas1"

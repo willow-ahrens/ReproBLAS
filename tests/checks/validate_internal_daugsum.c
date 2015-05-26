@@ -93,7 +93,6 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, dou
   util_dvec_fill(N, X, incX, FillX, ScaleX, CondX);
   util_dvec_fill(N, Y, incY, FillY, ScaleY, CondY);
 
-  //compute with unpermuted data
   ref = wrap_daugsum_result(N, augsum_func._named.value, FillX, ScaleX, CondX, FillY, ScaleY, CondY);
 
   rc = validate_internal_daugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);

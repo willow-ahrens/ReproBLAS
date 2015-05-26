@@ -250,8 +250,8 @@ wrap_diaugsum wrap_diaugsum_func(wrap_daugsum_func_t func) {
 }
 
 double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t FillX, double ScaleX, double CondX, util_vec_fill_t FillY, double ScaleY, double CondY){
-  double small = 1.0 / (1024.0 * 1024.0 * 128.0); // 2^-27
-  double big   = 1024.0 * 1024.0 * 128.0;         // 2^27
+  float small = 1.0 / (1024.0 * 1024.0 * 128.0); // 2^-27
+  float big   = 1024.0 * 1024.0 * 128.0;         // 2^27
   switch(func){
     case wrap_daugsum_RDSUM:
     case wrap_daugsum_DIDIADD:
