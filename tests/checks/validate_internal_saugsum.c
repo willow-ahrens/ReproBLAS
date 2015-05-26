@@ -41,7 +41,7 @@ int validate_internal_saugsum(int fold, int N, float* X, int incX, float* Y, int
   float_indexed *ires = sialloc(fold);
 
   res = (wrap_saugsum_func(func))(fold, N, X, incX, Y, incY);
-  error = fabs(res - ref);
+  error = fabsf(res - ref);
   bound = wrap_saugsum_bound(fold, N, func, X, incX, Y, incY, res, ref);
   if (!util_ssoftequals(res, ref, bound)) {
     //TODO these error messages need to go to stderr for all tests.

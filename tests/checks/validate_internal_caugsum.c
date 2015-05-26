@@ -5,23 +5,23 @@
 #include <math.h>
 #include "../common/test_opt.h"
 #include "../../config.h"
-#include "wrap_saugsum.h"
+#include "wrap_caugsum.h"
 
 #include "../common/test_vecvec_fill_header.h"
 
 static opt_option augsum_func;
 static opt_option fold;
 
-static void validate_internal_saugsum_options_initialize(void){
+static void validate_internal_caugsum_options_initialize(void){
   augsum_func._named.header.type       = opt_named;
   augsum_func._named.header.short_name = 'w';
   augsum_func._named.header.long_name  = "augsum_func";
   augsum_func._named.header.help       = "augmented summation function";
   augsum_func._named.required          = 1;
-  augsum_func._named.n_names           = wrap_saugsum_func_n_names;
-  augsum_func._named.names             = (char**)wrap_saugsum_func_names;
-  augsum_func._named.descs             = (char**)wrap_saugsum_func_descs;
-  augsum_func._named.value             = wrap_saugsum_RSSUM;
+  augsum_func._named.n_names           = wrap_caugsum_func_n_names;
+  augsum_func._named.names             = (char**)wrap_caugsum_func_names;
+  augsum_func._named.descs             = (char**)wrap_caugsum_func_descs;
+  augsum_func._named.value             = wrap_caugsum_RCSUM;
 
   fold._int.header.type       = opt_int;
   fold._int.header.short_name = 'k';
@@ -33,23 +33,23 @@ static void validate_internal_saugsum_options_initialize(void){
   fold._int.value             = DEFAULT_FOLD;
 }
 
-int validate_internal_saugsum(int fold, int N, float* X, int incX, float* Y, int incY, int func, float ref) {
+int validate_internal_caugsum(int fold, int N, float complex* X, int incX, float complex* Y, int incY, int func, float complex ref) {
   // GENERATE DATA
-  float res;
-  float error;
-  float bound;
-  float_indexed *ires = sialloc(fold);
+  float complex res;
+  float complex error;
+  float complex bound;
+  float_complex_indexed *ires = cialloc(fold);
 
-  res = (wrap_saugsum_func(func))(fold, N, X, incX, Y, incY);
-  error = fabs(res - ref);
-  bound = wrap_saugsum_bound(fold, N, func, X, incX, Y, incY, res, ref);
-  if (!util_ssoftequals(res, ref, bound)) {
+  res = (wrap_caugsum_func(func))(fold, N, X, incX, Y, incY);
+  error = fabsf(crealf(res) - crealf(ref)) + I * fabsf(cimagf(res) - cimagf(ref));
+  bound = wrap_caugsum_bound(fold, N, func, X, incX, Y, incY, res, ref);
+  if (!util_csoftequals(res, ref, bound)) {
     //TODO these error messages need to go to stderr for all tests.
-    printf("%s(X, Y) = %g, |%g - %g| = %g > %g\n", wrap_saugsum_func_names[func], res, res, ref, error, bound);
-    sisetzero(fold, ires);
-    (wrap_siaugsum_func(func))(fold, N, X, incX, Y, incY, ires);
-    printf("\nres float_indexed:\n");
-    siprint(fold, ires);
+    printf("%s(X, Y) = %g + %gi, |%g - %g| = %g > %g and/or |%gi - %gi| = %g > %g\n", wrap_caugsum_func_names[func], crealf(res), cimagf(res), crealf(res), crealf(ref), crealf(error), crealf(bound), cimagf(res), cimagf(ref), cimagf(error), cimagf(bound));
+    cisetzero(fold, ires);
+    (wrap_ciaugsum_func(func))(fold, N, X, incX, Y, incY, ires);
+    printf("\nres float_complex_indexed:\n");
+    ciprint(fold, ires);
     printf("\n");
     return 1;
   }
@@ -58,7 +58,7 @@ int validate_internal_saugsum(int fold, int N, float* X, int incX, float* Y, int
 }
 
 int vecvec_fill_show_help(void){
-  validate_internal_saugsum_options_initialize();
+  validate_internal_caugsum_options_initialize();
 
   opt_show_option(augsum_func);
   opt_show_option(fold);
@@ -68,124 +68,124 @@ int vecvec_fill_show_help(void){
 const char* vecvec_fill_name(int argc, char** argv){
   static char name_buffer[MAX_LINE];
 
-  validate_internal_saugsum_options_initialize();
+  validate_internal_caugsum_options_initialize();
 
   opt_eval_option(argc, argv, &augsum_func);
-  snprintf(name_buffer, MAX_LINE * sizeof(char), "Validate %s internally", wrap_saugsum_func_names[augsum_func._named.value]);
+  snprintf(name_buffer, MAX_LINE * sizeof(char), "Validate %s internally", wrap_caugsum_func_names[augsum_func._named.value]);
   return name_buffer;
 }
 
 int vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, double CondX, int incX, int FillY, double ScaleY, double CondY, int incY){
   int rc = 0;
-  float ref;
+  float complex ref;
 
-  validate_internal_saugsum_options_initialize();
+  validate_internal_caugsum_options_initialize();
 
   util_random_seed();
 
   opt_eval_option(argc, argv, &augsum_func);
   opt_eval_option(argc, argv, &fold);
 
-  float *X = util_svec_alloc(N, incX);
-  float *Y = util_svec_alloc(N, incY);
+  float complex *X = util_cvec_alloc(N, incX);
+  float complex *Y = util_cvec_alloc(N, incY);
   int *P;
 
-  util_svec_fill(N, X, incX, FillX, ScaleX, CondX);
-  util_svec_fill(N, Y, incY, FillY, ScaleY, CondY);
+  util_cvec_fill(N, X, incX, FillX, ScaleX, CondX);
+  util_cvec_fill(N, Y, incY, FillY, ScaleY, CondY);
 
-  ref = wrap_saugsum_result(N, augsum_func._named.value, FillX, ScaleX, CondX, FillY, ScaleY, CondY);
+  ref = wrap_caugsum_result(N, augsum_func._named.value, FillX, ScaleX, CondX, FillY, ScaleY, CondY);
 
-  rc = validate_internal_saugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
+  rc = validate_internal_caugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
   if(rc != 0){
     return rc;
   }
 
   P = util_identity_permutation(N);
-  util_svec_reverse(N, X, incX, P, 1);
-  util_svec_permute(N, Y, incY, P, 1, NULL, 1);
+  util_cvec_reverse(N, X, incX, P, 1);
+  util_cvec_permute(N, Y, incY, P, 1, NULL, 1);
   free(P);
 
-  rc = validate_internal_saugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
+  rc = validate_internal_caugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
   if(rc != 0){
     return rc;
   }
 
   P = util_identity_permutation(N);
-  util_svec_sort(N, X, incX, P, 1, util_Increasing);
-  util_svec_permute(N, Y, incY, P, 1, NULL, 1);
+  util_cvec_sort(N, X, incX, P, 1, util_Increasing);
+  util_cvec_permute(N, Y, incY, P, 1, NULL, 1);
   free(P);
 
-  rc = validate_internal_saugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
+  rc = validate_internal_caugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
   if(rc != 0){
     return rc;
   }
 
   P = util_identity_permutation(N);
-  util_svec_sort(N, X, incX, P, 1, util_Decreasing);
-  util_svec_permute(N, Y, incY, P, 1, NULL, 1);
+  util_cvec_sort(N, X, incX, P, 1, util_Decreasing);
+  util_cvec_permute(N, Y, incY, P, 1, NULL, 1);
   free(P);
 
-  rc = validate_internal_saugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
+  rc = validate_internal_caugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
   if(rc != 0){
     return rc;
   }
 
   P = util_identity_permutation(N);
-  util_svec_sort(N, X, incX, P, 1, util_Increasing_Magnitude);
-  util_svec_permute(N, Y, incY, P, 1, NULL, 1);
+  util_cvec_sort(N, X, incX, P, 1, util_Increasing_Magnitude);
+  util_cvec_permute(N, Y, incY, P, 1, NULL, 1);
   free(P);
 
-  rc = validate_internal_saugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
+  rc = validate_internal_caugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
   if(rc != 0){
     return rc;
   }
 
   P = util_identity_permutation(N);
-  util_svec_sort(N, X, incX, P, 1, util_Decreasing_Magnitude);
-  util_svec_permute(N, Y, incY, P, 1, NULL, 1);
+  util_cvec_sort(N, X, incX, P, 1, util_Decreasing_Magnitude);
+  util_cvec_permute(N, Y, incY, P, 1, NULL, 1);
   free(P);
 
-  rc = validate_internal_saugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
+  rc = validate_internal_caugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
   if(rc != 0){
     return rc;
   }
 
   P = util_identity_permutation(N);
-  util_svec_shuffle(N, X, incX, P, 1);
-  util_svec_permute(N, Y, incY, P, 1, NULL, 1);
+  util_cvec_shuffle(N, X, incX, P, 1);
+  util_cvec_permute(N, Y, incY, P, 1, NULL, 1);
   free(P);
 
-  rc = validate_internal_saugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
+  rc = validate_internal_caugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
   if(rc != 0){
     return rc;
   }
 
   P = util_identity_permutation(N);
-  util_svec_shuffle(N, X, incX, P, 1);
-  util_svec_permute(N, Y, incY, P, 1, NULL, 1);
+  util_cvec_shuffle(N, X, incX, P, 1);
+  util_cvec_permute(N, Y, incY, P, 1, NULL, 1);
   free(P);
 
-  rc = validate_internal_saugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
+  rc = validate_internal_caugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
   if(rc != 0){
     return rc;
   }
 
   P = util_identity_permutation(N);
-  util_svec_shuffle(N, X, incX, P, 1);
-  util_svec_permute(N, Y, incY, P, 1, NULL, 1);
+  util_cvec_shuffle(N, X, incX, P, 1);
+  util_cvec_permute(N, Y, incY, P, 1, NULL, 1);
   free(P);
 
-  rc = validate_internal_saugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
+  rc = validate_internal_caugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
   if(rc != 0){
     return rc;
   }
 
   P = util_identity_permutation(N);
-  util_svec_shuffle(N, X, incX, P, 1);
-  util_svec_permute(N, Y, incY, P, 1, NULL, 1);
+  util_cvec_shuffle(N, X, incX, P, 1);
+  util_cvec_permute(N, Y, incY, P, 1, NULL, 1);
   free(P);
 
-  rc = validate_internal_saugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
+  rc = validate_internal_caugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
   if(rc != 0){
     return rc;
   }
