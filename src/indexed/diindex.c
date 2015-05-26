@@ -8,9 +8,9 @@
 #include "indexed.h"
 #include "../../config.h"
 
-#define DBL_BIN_DIG        40
-static double bins[(DBL_MAX_EXP - DBL_MIN_EXP)/DBL_BIN_DIG + MAX_FOLD]; //initialized in bins_initialize
-static int    bins_initialized  = 0;                                      //initialized in bins_initialize
+#define DBL_BIN_DIG        41
+static double bins[(DBL_MAX_EXP - DBL_MIN_EXP - DBL_MANT_DIG - 1)/DBL_BIN_DIG + MAX_FOLD]; //initialized in bins_initialize
+static int    bins_initialized  = 0;                                                       //initialized in bins_initialize
 
 /**
  * @brief Get indexed double precision bin width
@@ -105,7 +105,7 @@ int dmindex(const double *manX){
   int exp;
 
   if(manX[0] == 0.0){
-    return (DBL_MAX_EXP - DBL_MIN_EXP)/DBL_BIN_DIG + MAX_FOLD;
+    return (DBL_MAX_EXP - DBL_MIN_EXP - DBL_MANT_DIG - 1)/DBL_BIN_DIG + MAX_FOLD;
   }else{
     frexp(manX[0], &exp);
     return (DBL_MAX_EXP - exp)/DBL_BIN_DIG;
@@ -128,7 +128,7 @@ int dindex(const double X){
   int exp;
 
   if(X == 0.0){
-    return (DBL_MAX_EXP - DBL_MIN_EXP)/DBL_BIN_DIG;
+    return (DBL_MAX_EXP - DBL_MIN_EXP - DBL_MANT_DIG - 1)/DBL_BIN_DIG;
   }else{
     frexp(X, &exp);
     return (DBL_MAX_EXP - exp)/DBL_BIN_DIG;
@@ -142,10 +142,10 @@ static void bins_initialize() {
     return;
   }
 
-  for(index = 0; index <= (DBL_MAX_EXP - DBL_MIN_EXP)/DBL_BIN_DIG; index++){
+  for(index = 0; index <= (DBL_MAX_EXP - DBL_MIN_EXP - DBL_MANT_DIG - 1)/DBL_BIN_DIG; index++){
     bins[index] = ldexp(0.75, (DBL_MAX_EXP - index * DBL_BIN_DIG));
   }
-  for(; index < (DBL_MAX_EXP - DBL_MIN_EXP)/DBL_BIN_DIG + MAX_FOLD; index++){
+  for(; index < (DBL_MAX_EXP - DBL_MIN_EXP - DBL_MANT_DIG - 1)/DBL_BIN_DIG + MAX_FOLD; index++){
     bins[index] = bins[index - 1];
   }
 
