@@ -10,8 +10,8 @@
 
 static opt_option incY;
 static opt_option FillY;
-static opt_option ScaleY;
-static opt_option CondY;
+static opt_option RealScaleY;
+static opt_option ImagScaleY;
 static opt_option alpha;
 static opt_option beta;
 
@@ -35,23 +35,23 @@ static void verify_rdgemv_options_initialize(void){
   FillY._named.descs             = (char**)util_vec_fill_descs;
   FillY._named.value             = 0;
 
-  ScaleY._double.header.type       = opt_double;
-  ScaleY._double.header.short_name = 'v';
-  ScaleY._double.header.long_name  = "ScaleY";
-  ScaleY._double.header.help       = "Y scale";
-  ScaleY._double.required          = 0;
-  ScaleY._double.min               = 0;
-  ScaleY._double.max               = DBL_MAX;
-  ScaleY._double.value             = 1.0;
+  RealScaleY._double.header.type       = opt_double;
+  RealScaleY._double.header.short_name = 'v';
+  RealScaleY._double.header.long_name  = "RealScaleY";
+  RealScaleY._double.header.help       = "Y scale";
+  RealScaleY._double.required          = 0;
+  RealScaleY._double.min               = 0;
+  RealScaleY._double.max               = DBL_MAX;
+  RealScaleY._double.value             = 1.0;
 
-  CondY._double.header.type       = opt_double;
-  CondY._double.header.short_name = 'e';
-  CondY._double.header.long_name  = "CondY";
-  CondY._double.header.help       = "Y condition number";
-  CondY._double.required          = 0;
-  CondY._double.min               = 1.0;
-  CondY._double.max               = DBL_MAX;
-  CondY._double.value             = 1e3;
+  ImagScaleY._double.header.type       = opt_double;
+  ImagScaleY._double.header.short_name = 'e';
+  ImagScaleY._double.header.long_name  = "ImagScaleY";
+  ImagScaleY._double.header.help       = "Y condition number";
+  ImagScaleY._double.required          = 0;
+  ImagScaleY._double.min               = 1.0;
+  ImagScaleY._double.max               = DBL_MAX;
+  ImagScaleY._double.value             = 1e3;
 
   alpha._double.header.type       = opt_double;
   alpha._double.header.short_name = 'l';
@@ -213,8 +213,8 @@ int matvec_fill_show_help(void){
 
   opt_show_option(incY);
   opt_show_option(FillY);
-  opt_show_option(ScaleY);
-  opt_show_option(CondY);
+  opt_show_option(RealScaleY);
+  opt_show_option(ImagScaleY);
   opt_show_option(alpha);
   opt_show_option(beta);
   return 0;
@@ -227,8 +227,8 @@ const char* matvec_fill_name(int argc, char** argv){
 
   opt_eval_option(argc, argv, &incY);
   opt_eval_option(argc, argv, &FillY);
-  opt_eval_option(argc, argv, &ScaleY);
-  opt_eval_option(argc, argv, &CondY);
+  opt_eval_option(argc, argv, &RealScaleY);
+  opt_eval_option(argc, argv, &ImagScaleY);
   opt_eval_option(argc, argv, &alpha);
   opt_eval_option(argc, argv, &beta);
 
@@ -236,7 +236,7 @@ const char* matvec_fill_name(int argc, char** argv){
   return name_buffer;
 }
 
-int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int N, int FillA, double ScaleA, double CondA, int lda, int FillX, double ScaleX, double CondX, int incX){
+int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int N, int FillA, double RealScaleA, double ImagScaleA, int lda, int FillX, double RealScaleX, double ImagScaleX, int incX){
   int rc = 0;
   int i;
   int max_num_blocks = 1024;
@@ -245,8 +245,8 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
 
   opt_eval_option(argc, argv, &incY);
   opt_eval_option(argc, argv, &FillY);
-  opt_eval_option(argc, argv, &ScaleY);
-  opt_eval_option(argc, argv, &CondY);
+  opt_eval_option(argc, argv, &RealScaleY);
+  opt_eval_option(argc, argv, &ImagScaleY);
   opt_eval_option(argc, argv, &alpha);
   opt_eval_option(argc, argv, &beta);
 
@@ -275,9 +275,9 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
 
   int *P;
 
-  util_dmat_fill(Order, 'n', M, N, A, lda, FillA, ScaleA, CondA);
-  util_dvec_fill(NX, X, incX, FillX, ScaleX, CondX);
-  util_dvec_fill(NY, Y, incY._int.value, FillY._named.value, ScaleY._double.value, CondY._double.value);
+  util_dmat_fill(Order, 'n', M, N, A, lda, FillA, RealScaleA, ImagScaleA);
+  util_dvec_fill(NX, X, incX, FillX, RealScaleX, ImagScaleX);
+  util_dvec_fill(NY, Y, incY._int.value, FillY._named.value, RealScaleY._double.value, ImagScaleY._double.value);
   for(i = 0; i < NY; i++){
     didconv(DEFAULT_FOLD, Y[i * incY._int.value], YI + i * incY._int.value * dinum(DEFAULT_FOLD));
   }

@@ -6,7 +6,7 @@
 
 int bench_vecvec_fill_show_help(void);
 const char* bench_vecvec_fill_name(int argc, char** argv);
-int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, double CondX, int incX, int FillY, double ScaleY, double CondY, int incY, int trials);
+int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX, double ImagScaleX, int incX, int FillY, double RealScaleY, double ImagScaleY, int incY, int trials);
 
 static opt_option trials;
 
@@ -38,10 +38,10 @@ const char* vecvec_fill_name(int argc, char** argv){
   return name_buffer;
 }
 
-int vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, double CondX, int incX, int FillY, double ScaleY, double CondY, int incY){
+int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX, double ImagScaleX, int incX, int FillY, double RealScaleY, double ImagScaleY, int incY){
   bench_vecvec_fill_options_initialize();
 
   opt_eval_option(argc, argv, &trials);
-  int rc = bench_vecvec_fill_test(argc, argv, N, FillX, ScaleX, CondX, incX, FillY, ScaleY, CondY, incY, trials._int.value);
+  int rc = bench_vecvec_fill_test(argc, argv, N, FillX, RealScaleX, ImagScaleX, incX, FillY, RealScaleY, ImagScaleY, incY, trials._int.value);
   return rc;
 }

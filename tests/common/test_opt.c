@@ -18,17 +18,17 @@ static void opt_fprintf_option(FILE *f, opt_option option) {
   
   token = strtok(buffer, "\n");
   if(token){
-    fprintf(f, "-%c, --%-8s: %-64s\n", option.header.short_name, option.header.long_name, token);
+    fprintf(f, "-%c, --%-12s: %-60s\n", option.header.short_name, option.header.long_name, token);
     token = strtok(NULL, "\n");
     while(token){
-      fprintf(f, "                %64s\n", token);
+      fprintf(f, "                    %60s\n", token);
       token = strtok(NULL, "\n");
     }
   }else{
-    fprintf(f, "-%c, --%-8s:\n", option.header.short_name, option.header.long_name);
+    fprintf(f, "-%c, --%-12s:\n", option.header.short_name, option.header.long_name);
   }
   token = strtok(NULL, "\n");
-  fprintf(f, "                (");
+  fprintf(f, "                    (");
   switch(option.type){
     case opt_flag:
       fprintf(f, "flag)\n");
@@ -65,9 +65,9 @@ static void opt_fprintf_option(FILE *f, opt_option option) {
       {
         int i;
         for(i = 0; i < option._named.n_names - 1; i++){
-          fprintf(f, "                  %-30s: %-32s\n", option._named.names[i], option._named.descs[i]);
+          fprintf(f, "                      %-26s: %-32s\n", option._named.names[i], option._named.descs[i]);
         }
-        fprintf(f, "                  %-30s: %-31s]\n", option._named.names[option._named.n_names-1], option._named.descs[option._named.n_names-1]);
+        fprintf(f, "                      %-26s: %-31s]\n", option._named.names[option._named.n_names-1], option._named.descs[option._named.n_names-1]);
       }
       break;
   }
@@ -87,12 +87,12 @@ void opt_show_option(opt_option option) {
 }
 
 void opt_eval_option(int argc, char **argv, opt_option *option){
-  char flag[11];
+  char flag[16];
   int i_flag;
-  snprintf(flag, 11 * sizeof(char), "-%c", option->header.short_name);
+  snprintf(flag, 16 * sizeof(char), "-%c", option->header.short_name);
   i_flag = opt_find_flag(argc, argv, flag);
   if(i_flag < 0){
-    snprintf(flag, 11 * sizeof(char), "--%s", option->header.long_name);
+    snprintf(flag, 16 * sizeof(char), "--%s", option->header.long_name);
     i_flag = opt_find_flag(argc, argv, flag);
   }
   switch(option->type){
@@ -114,7 +114,7 @@ void opt_eval_option(int argc, char **argv, opt_option *option){
           exit(125);
         }
         if(option->_int.value > option->_int.max || option->_int.value < option->_int.min){
-          fprintf(stderr, "error: integer out of bins %d\n", option->_int.value);
+          fprintf(stderr, "error: integer out of bounds %d\n", option->_int.value);
           opt_fprintf_option(stderr, *option);
           exit(125);
         }
@@ -157,7 +157,7 @@ void opt_eval_option(int argc, char **argv, opt_option *option){
           exit(125);
         }
         if(option->_double.value > option->_double.max || option->_double.value < option->_double.min){
-          fprintf(stderr, "error: double out of bins %f\n", option->_double.value);
+          fprintf(stderr, "error: double out of bounds %f\n", option->_double.value);
           opt_fprintf_option(stderr, *option);
           exit(125);
         }
@@ -184,7 +184,7 @@ void opt_eval_option(int argc, char **argv, opt_option *option){
           exit(125);
         }
         if(option->_float.value > option->_float.max || option->_float.value < option->_float.min){
-          fprintf(stderr, "error: float out of bins %f\n", option->_float.value);
+          fprintf(stderr, "error: float out of bounds %f\n", option->_float.value);
           opt_fprintf_option(stderr, *option);
           exit(125);
         }

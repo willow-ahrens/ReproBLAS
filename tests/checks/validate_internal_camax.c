@@ -41,13 +41,13 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
 
   camax_sub(N, X, incX, &res);
   if (res != ref) {
-    printf("camax(X) = %g + %gi != %g + %gi (1 Big at beginning)\n", CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
+    printf("camax(X) = %g + %gi != %g + %gi (1 Big at beginning)\n", crealf(res), cimagf(res), crealf(ref), cimagf(ref));
     return 1;
   }
 
   camaxm_sub(N, X, incX, Y, incY, &res);
   if (res != ref) {
-    printf("camaxm(X) = %g + %gi != %g + %gi (1 Big at beginning)\n", CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
+    printf("camaxm(X) = %g + %gi != %g + %gi (1 Big at beginning)\n", crealf(res), cimagf(res), crealf(ref), cimagf(ref));
     return 1;
   }
 
@@ -57,13 +57,13 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
 
   camax_sub(N, X, incX, &res);
   if (res != ref) {
-    printf("camax(X) = %g + %gi != %g + %gi (1 Big at end)\n", CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
+    printf("camax(X) = %g + %gi != %g + %gi (1 Big at end)\n", crealf(res), cimagf(res), crealf(ref), cimagf(ref));
     return 1;
   }
 
   camaxm_sub(N, X, incX, Y, incY, &res);
   if (res != ref) {
-    printf("camaxm(X) = %g + %gi != %g + %gi (1 Big at end)\n", CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
+    printf("camaxm(X) = %g + %gi != %g + %gi (1 Big at end)\n", crealf(res), cimagf(res), crealf(ref), cimagf(ref));
     return 1;
   }
 

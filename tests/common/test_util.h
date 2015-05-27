@@ -1,7 +1,7 @@
 #ifndef TEST_UTIL_H
 #define TEST_UTIL_H
 
-#include "../../src/types.h"
+#include <complex.h>
 
 typedef enum util_vec_fill {
   util_Vec_Constant = 0,
@@ -22,7 +22,7 @@ typedef enum util_vec_fill {
   util_Vec_Sine,
   util_Vec_Small_Plus_Increasing_Big,
   util_Vec_Small_Plus_Rand_Big,
-  util_Vec_Rand_Cond,
+  util_Vec_Rand_Cond3,
   util_Vec_Constant_Drop,
   util_Vec_Rand_Drop,
   util_Vec_2_Times_Rand_Minus_1_Drop,
@@ -53,7 +53,7 @@ typedef enum util_mat_fill {
   util_Mat_Row_Sine,
   util_Mat_Row_Small_Plus_Increasing_Big,
   util_Mat_Row_Small_Plus_Rand_Big,
-  util_Mat_Row_Rand_Cond,
+  util_Mat_Row_Rand_Cond3,
   util_Mat_Row_Constant_Drop,
   util_Mat_Row_Rand_Drop,
   util_Mat_Row_2_Times_Rand_Minus_1_Drop,
@@ -68,20 +68,28 @@ extern const char *util_mat_fill_descs[];
 
 double util_drand48();
 
+#ifndef MIN
+  #define MIN(A, B) (((A) < (B))? (A): (B))
+#endif
+
+#ifndef MAX
+  #define MAX(A, B) (((A) > (B))? (A): (B))
+#endif
+
 int util_dsoftequals(double a, double b, double bound);
 int util_zsoftequals(double complex a, double complex b, double complex bound);
 int util_ssoftequals(float a, float b, float bound);
 int util_csoftequals(float complex a, float complex b, float complex bound);
 
-void util_dvec_fill(int N, double* v, int inc, util_vec_fill_t fill, double a, double b);
-void util_svec_fill(int N, float* v, int inc, util_vec_fill_t fill, float a, float b);
-void util_zvec_fill(int N, double complex* v, int inc, util_vec_fill_t fill, double complex a, double complex b);
-void util_cvec_fill(int N, float complex* v, int inc, util_vec_fill_t fill, float complex a, float complex b);
+void util_dvec_fill(int N, double* v, int inc, util_vec_fill_t Fill, double RealScale, double ImagScale);
+void util_svec_fill(int N, float* v, int inc, util_vec_fill_t Fill, float RealScale, float ImagScale);
+void util_zvec_fill(int N, double complex* v, int inc, util_vec_fill_t Fill, double RealScale, double ImagScale);
+void util_cvec_fill(int N, float complex* v, int inc, util_vec_fill_t Fill, float RealScale, float ImagScale);
 
-void util_dmat_fill(char Order, char TransA, int M, int N, double* A, int lda, util_mat_fill_t fill, double a, double b);
-void util_smat_fill(char Order, char TransA, int M, int N, float* A, int lda, util_mat_fill_t fill, float a, float b);
-void util_zmat_fill(char Order, char TransA, int M, int N, double complex* A, int lda, util_mat_fill_t fill, double complex a, double complex b);
-void util_cmat_fill(char Order, char TransA, int M, int N, float complex* A, int lda, util_mat_fill_t fill, float complex a, float complex b);
+void util_dmat_fill(char Order, char TransA, int M, int N, double* A, int lda, util_mat_fill_t Fill, double RealScale, double ImagScale);
+void util_smat_fill(char Order, char TransA, int M, int N, float* A, int lda, util_mat_fill_t Fill, float RealScale, float ImagScale);
+void util_zmat_fill(char Order, char TransA, int M, int N, double complex* A, int lda, util_mat_fill_t Fill, double RealScale, double ImagScale);
+void util_cmat_fill(char Order, char TransA, int M, int N, float complex* A, int lda, util_mat_fill_t Fill, float RealScale, float ImagScale);
 
 void util_random_seed(void);
 

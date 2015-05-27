@@ -20,7 +20,7 @@ const char* bench_vecvec_fill_name(int argc, char** argv){
   return name_buffer;
 }
 
-int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, double CondX, int incX, int FillY, double ScaleY, double CondY, int incY, int trials){
+int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX, double ImagScaleX, int incX, int FillY, double RealScaleY, double ImagScaleY, int incY, int trials){
   (void)argc;
   (void)argv;
   int rc = 0;
@@ -33,8 +33,8 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double Scale
   float complex *Y = util_cvec_alloc(N, incY);
 
   //fill X and Y
-  util_cvec_fill(N, X, incX, FillX, ScaleX, CondX);
-  util_cvec_fill(N, Y, incY, FillY, ScaleY, CondY);
+  util_cvec_fill(N, X, incX, FillX, RealScaleX, ImagScaleX);
+  util_cvec_fill(N, Y, incY, FillY, RealScaleY, ImagScaleY);
 
   time_tic();
   for(i = 0; i < trials; i++){

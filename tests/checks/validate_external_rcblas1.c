@@ -97,13 +97,13 @@ int file_test(int argc, char** argv, char *fname) {
     free(Iref);
     Iref = (float_complex_indexed*)data;
     if(ref != res){
-      printf("%s(%s) = %g + %gi != %g + %gi\n", wrap_rcblas1_names[func_type._named.value], fname, CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
+      printf("%s(%s) = %g + %gi != %g + %gi\n", wrap_rcblas1_names[func_type._named.value], fname, crealf(res), cimagf(res), crealf(ref), cimagf(ref));
       return 1;
     }
     if(memcmp(Iref, Ires, cisize(DEFAULT_FOLD)) != 0){
       cciconv_sub(DEFAULT_FOLD, Ires, &res);
       cciconv_sub(DEFAULT_FOLD, Iref, &ref);
-      printf("I%s(%s) = %g + %gi != %g + %gi\n", wrap_rcblas1_names[func_type._named.value], fname, CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
+      printf("I%s(%s) = %g + %gi != %g + %gi\n", wrap_rcblas1_names[func_type._named.value], fname, crealf(res), cimagf(res), crealf(ref), cimagf(ref));
       printf("Ref I_float_Complex:\n");
       ciprint(DEFAULT_FOLD, Iref);
       printf("\nRes I_float_Complex:\n");

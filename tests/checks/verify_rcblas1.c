@@ -44,7 +44,7 @@ int verify_rcblas1_reproducibility(int N, float complex* X, int incX, float comp
       cciconv_sub(DEFAULT_FOLD, Ires, &res);
     }
     if (res != ref) {
-      printf("%s(X, Y)[num_blocks=%d,block_N=%d] = %g + %gi != %g + %gi\n", wrap_rcblas1_names[func], num_blocks, block_N, CREAL_(res), CIMAG_(res), CREAL_(ref), CIMAG_(ref));
+      printf("%s(X, Y)[num_blocks=%d,block_N=%d] = %g + %gi != %g + %gi\n", wrap_rcblas1_names[func], num_blocks, block_N, crealf(res), cimagf(res), crealf(ref), cimagf(ref));
       if (num_blocks == 1) {
         cisetzero(DEFAULT_FOLD, Ires);
         (wrap_ciblas1_func(func))(N, X, incX, Y, incY, Ires);
@@ -79,7 +79,7 @@ const char* vecvec_fill_name(int argc, char** argv){
   return name_buffer;
 }
 
-int vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, double CondX, int incX, int FillY, double ScaleY, double CondY, int incY){
+int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX, double ImagScaleX, int incX, int FillY, double RealScaleY, double ImagScaleY, int incY){
   int rc = 0;
   float complex ref;
   float_complex_indexed *Iref = cialloc(DEFAULT_FOLD);
@@ -95,8 +95,8 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, dou
 
   opt_eval_option(argc, argv, &func_type);
 
-  util_cvec_fill(N, X, incX, FillX, ScaleX, CondX);
-  util_cvec_fill(N, Y, incY, FillY, ScaleY, CondY);
+  util_cvec_fill(N, X, incX, FillX, RealScaleX, ImagScaleX);
+  util_cvec_fill(N, Y, incY, FillY, RealScaleY, ImagScaleY);
 
   //nrm2 doesn't make sense with more than 1 block.
   if(func_type._named.value == wrap_RSCNRM2){

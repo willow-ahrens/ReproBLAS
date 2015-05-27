@@ -6,7 +6,7 @@
 
 int bench_matvec_fill_show_help(void);
 const char* bench_matvec_fill_name(int argc, char** argv);
-int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int N, int FillA, double ScaleA, double CondA, int lda, int FillX, double ScaleX, double CondX, int incX, int trials);
+int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int N, int FillA, double RealScaleA, double ImagScaleA, int lda, int FillX, double RealScaleX, double ImagScaleX, int incX, int trials);
 
 static opt_option trials;
 
@@ -38,10 +38,10 @@ const char* matvec_fill_name(int argc, char** argv){
   return name_buffer;
 }
 
-int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int N, int FillA, double ScaleA, double CondA, int lda, int FillX, double ScaleX, double CondX, int incX){
+int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int N, int FillA, double RealScaleA, double ImagScaleA, int lda, int FillX, double RealScaleX, double ImagScaleX, int incX){
   bench_matvec_fill_options_initialize();
 
   opt_eval_option(argc, argv, &trials);
-  int rc = bench_matvec_fill_test(argc, argv, Order, TransA, M, N, FillA, ScaleA, CondA, lda, FillX, ScaleX, CondX, incX, trials._int.value);
+  int rc = bench_matvec_fill_test(argc, argv, Order, TransA, M, N, FillA, RealScaleA, ImagScaleA, lda, FillX, RealScaleX, ImagScaleX, incX, trials._int.value);
   return rc;
 }

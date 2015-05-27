@@ -5,14 +5,14 @@
 
 int vecvec_fill_show_help(void);
 const char* vecvec_fill_name(int argc, char** argv);
-int vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, double CondX, int incX, int FillY, double ScaleY, double CondY, int incY);
+int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX, double ImagScaleX, int incX, int FillY, double RealScaleY, double ImagScaleY, int incY);
 
 static opt_option FillX;
-static opt_option ScaleX;
-static opt_option CondX;
+static opt_option RealScaleX;
+static opt_option ImagScaleX;
 static opt_option FillY;
-static opt_option ScaleY;
-static opt_option CondY;
+static opt_option RealScaleY;
+static opt_option ImagScaleY;
 
 static void vecvec_fill_options_initialize(void){
   FillX._named.header.type       = opt_named;
@@ -25,23 +25,23 @@ static void vecvec_fill_options_initialize(void){
   FillX._named.descs             = (char**)util_vec_fill_descs;
   FillX._named.value             = 0;
 
-  ScaleX._double.header.type       = opt_double;
-  ScaleX._double.header.short_name = 's';
-  ScaleX._double.header.long_name  = "ScaleX";
-  ScaleX._double.header.help       = "X scale";
-  ScaleX._double.required          = 0;
-  ScaleX._double.min               = 0;
-  ScaleX._double.max               = DBL_MAX;
-  ScaleX._double.value             = 1.0;
+  RealScaleX._double.header.type       = opt_double;
+  RealScaleX._double.header.short_name = 's';
+  RealScaleX._double.header.long_name  = "RealScaleX";
+  RealScaleX._double.header.help       = "X scale (real)";
+  RealScaleX._double.required          = 0;
+  RealScaleX._double.min               = -1 * DBL_MAX;
+  RealScaleX._double.max               = DBL_MAX;
+  RealScaleX._double.value             = 1.0;
 
-  CondX._double.header.type       = opt_double;
-  CondX._double.header.short_name = 'c';
-  CondX._double.header.long_name  = "CondX";
-  CondX._double.header.help       = "X condition number";
-  CondX._double.required          = 0;
-  CondX._double.min               = 1.0;
-  CondX._double.max               = DBL_MAX;
-  CondX._double.value             = 1e3;
+  ImagScaleX._double.header.type       = opt_double;
+  ImagScaleX._double.header.short_name = 'c';
+  ImagScaleX._double.header.long_name  = "ImagScaleX";
+  ImagScaleX._double.header.help       = "X scale (imaginary)";
+  ImagScaleX._double.required          = 0;
+  ImagScaleX._double.min               = -1 * DBL_MAX;
+  ImagScaleX._double.max               = DBL_MAX;
+  ImagScaleX._double.value             = 0.0;
 
   FillY._named.header.type       = opt_named;
   FillY._named.header.short_name = 'g';
@@ -53,34 +53,34 @@ static void vecvec_fill_options_initialize(void){
   FillY._named.descs             = (char**)util_vec_fill_descs;
   FillY._named.value             = 0;
 
-  ScaleY._double.header.type       = opt_double;
-  ScaleY._double.header.short_name = 't';
-  ScaleY._double.header.long_name  = "ScaleY";
-  ScaleY._double.header.help       = "Y scale";
-  ScaleY._double.required          = 0;
-  ScaleY._double.min               = 0;
-  ScaleY._double.max               = DBL_MAX;
-  ScaleY._double.value             = 1.0;
+  RealScaleY._double.header.type       = opt_double;
+  RealScaleY._double.header.short_name = 't';
+  RealScaleY._double.header.long_name  = "RealScaleY";
+  RealScaleY._double.header.help       = "Y scale (real)";
+  RealScaleY._double.required          = 0;
+  RealScaleY._double.min               = -1 * DBL_MAX;
+  RealScaleY._double.max               = DBL_MAX;
+  RealScaleY._double.value             = 1.0;
 
-  CondY._double.header.type       = opt_double;
-  CondY._double.header.short_name = 'd';
-  CondY._double.header.long_name  = "CondY";
-  CondY._double.header.help       = "Y condition number";
-  CondY._double.required          = 0;
-  CondY._double.min               = 1.0;
-  CondY._double.max               = DBL_MAX;
-  CondY._double.value             = 1e3;
+  ImagScaleY._double.header.type       = opt_double;
+  ImagScaleY._double.header.short_name = 'd';
+  ImagScaleY._double.header.long_name  = "ImagScaleY";
+  ImagScaleY._double.header.help       = "Y scale (imaginary)";
+  ImagScaleY._double.required          = 0;
+  ImagScaleY._double.min               = -1 * DBL_MAX;
+  ImagScaleY._double.max               = DBL_MAX;
+  ImagScaleY._double.value             = 0.0;
 }
 
 int vecvec_show_help(void){
   vecvec_fill_options_initialize();
 
   opt_show_option(FillX);
-  opt_show_option(ScaleX);
-  opt_show_option(CondX);
+  opt_show_option(RealScaleX);
+  opt_show_option(ImagScaleX);
   opt_show_option(FillY);
-  opt_show_option(ScaleY);
-  opt_show_option(CondY);
+  opt_show_option(RealScaleY);
+  opt_show_option(ImagScaleY);
   return vecvec_fill_show_help();
 }
 
@@ -90,12 +90,12 @@ const char* vecvec_name(int argc, char** argv){
   vecvec_fill_options_initialize();
 
   opt_eval_option(argc, argv, &FillX);
-  opt_eval_option(argc, argv, &ScaleX);
-  opt_eval_option(argc, argv, &CondX);
+  opt_eval_option(argc, argv, &RealScaleX);
+  opt_eval_option(argc, argv, &ImagScaleX);
   opt_eval_option(argc, argv, &FillY);
-  opt_eval_option(argc, argv, &ScaleY);
-  opt_eval_option(argc, argv, &CondY);
-  snprintf(name_buffer, MAX_LINE * sizeof(char), "%s X=%s*%g Y=%s*%g", vecvec_fill_name(argc, argv), util_vec_fill_names[FillX._named.value], ScaleX._double.value, util_vec_fill_names[FillY._named.value], ScaleY._double.value);
+  opt_eval_option(argc, argv, &RealScaleY);
+  opt_eval_option(argc, argv, &ImagScaleY);
+  snprintf(name_buffer, MAX_LINE * sizeof(char), "%s X=%s*(%g+%gi) Y=%s*(%g+%gi)", vecvec_fill_name(argc, argv), util_vec_fill_names[FillX._named.value], RealScaleX._double.value, ImagScaleX._double.value, util_vec_fill_names[FillY._named.value], RealScaleY._double.value, ImagScaleY._double.value);
   return name_buffer;
 }
 
@@ -105,11 +105,11 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY){
   vecvec_fill_options_initialize();
 
   opt_eval_option(argc, argv, &FillX);
-  opt_eval_option(argc, argv, &ScaleX);
-  opt_eval_option(argc, argv, &CondX);
+  opt_eval_option(argc, argv, &RealScaleX);
+  opt_eval_option(argc, argv, &ImagScaleX);
   opt_eval_option(argc, argv, &FillY);
-  opt_eval_option(argc, argv, &ScaleY);
-  opt_eval_option(argc, argv, &CondY);
-  rc = vecvec_fill_test(argc, argv, N, FillX._named.value, ScaleX._double.value, CondX._double.value, incX, FillY._named.value, ScaleY._double.value, CondY._double.value, incY);
+  opt_eval_option(argc, argv, &RealScaleY);
+  opt_eval_option(argc, argv, &ImagScaleY);
+  rc = vecvec_fill_test(argc, argv, N, FillX._named.value, RealScaleX._double.value, ImagScaleX._double.value, incX, FillY._named.value, RealScaleY._double.value, ImagScaleY._double.value, incY);
   return rc;
 }

@@ -103,7 +103,7 @@ const char* vecvec_fill_name(int argc, char** argv){
   return name_buffer;
 }
 
-int vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, double CondX, int incX, int FillY, double ScaleY, double CondY, int incY){
+int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX, double ImagScaleX, int incX, int FillY, double RealScaleY, double ImagScaleY, int incY){
   int rc = 0;
   double ref;
   double_indexed *iref;
@@ -129,8 +129,8 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, dou
     max_num_blocks = 1;
   }
 
-  util_dvec_fill(N, X, incX, FillX, ScaleX, CondX);
-  util_dvec_fill(N, Y, incY, FillY, ScaleY, CondY);
+  util_dvec_fill(N, X, incX, FillX, RealScaleX, ImagScaleX);
+  util_dvec_fill(N, Y, incY, FillY, RealScaleY, ImagScaleY);
 
 
   //compute with unpermuted data

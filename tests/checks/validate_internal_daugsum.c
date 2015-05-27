@@ -45,7 +45,7 @@ int validate_internal_daugsum(int fold, int N, double* X, int incX, double* Y, i
   bound = wrap_daugsum_bound(fold, N, func, X, incX, Y, incY, res, ref);
   if (!util_dsoftequals(res, ref, bound)) {
     //TODO these error messages need to go to stderr for all tests.
-    printf("%s(X, Y) = %g, |%g - %g| = %g > %g\n", wrap_daugsum_func_names[func], res, res, ref, error, bound);
+    printf("%s(X, Y) = %g != %g\n|%g - %g| = %g > %g\n", wrap_daugsum_func_names[func], res, ref, res, ref, error, bound);
     disetzero(fold, ires);
     (wrap_diaugsum_func(func))(fold, N, X, incX, Y, incY, ires);
     printf("\nres double_indexed:\n");
@@ -75,7 +75,7 @@ const char* vecvec_fill_name(int argc, char** argv){
   return name_buffer;
 }
 
-int vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, double CondX, int incX, int FillY, double ScaleY, double CondY, int incY){
+int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX, double ImagScaleX, int incX, int FillY, double RealScaleY, double ImagScaleY, int incY){
   int rc = 0;
   double ref;
 
@@ -90,10 +90,10 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, dou
   double *Y = util_dvec_alloc(N, incY);
   int *P;
 
-  util_dvec_fill(N, X, incX, FillX, ScaleX, CondX);
-  util_dvec_fill(N, Y, incY, FillY, ScaleY, CondY);
+  util_dvec_fill(N, X, incX, FillX, RealScaleX, ImagScaleX);
+  util_dvec_fill(N, Y, incY, FillY, RealScaleY, ImagScaleY);
 
-  ref = wrap_daugsum_result(N, augsum_func._named.value, FillX, ScaleX, CondX, FillY, ScaleY, CondY);
+  ref = wrap_daugsum_result(N, augsum_func._named.value, FillX, RealScaleX, ImagScaleX, FillY, RealScaleY, ImagScaleY);
 
   rc = validate_internal_daugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
   if(rc != 0){

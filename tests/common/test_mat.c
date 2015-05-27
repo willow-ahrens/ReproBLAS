@@ -840,7 +840,7 @@ const char* mat_fill_name(int type) {
     case mat_fill_SINE:
       return "Sine";
     case mat_fill_RAND_COND:
-      return "RandomConditioned";
+      return "RandomImagScaleitioned";
     case mat_fill_SMALL_PLUS_INCREASING_BIG:
       return "Small+(i/N*Big)";
     case mat_fill_SMALL_PLUS_RAND_BIG:

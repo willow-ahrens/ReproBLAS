@@ -12,7 +12,7 @@ int main (int argc, char** args) {
 		show_opt("--check", "check the correctness of written data");
 		show_opt("-d", "data type  [default 0] (0: double, 1: float)");
 		show_opt("-t", "input type [default 1] (0: non-negative, 1: float)");
-		show_opt("-K", "Condition number [default: 1e3]");
+		show_opt("-K", "ImagScaleition number [default: 1e3]");
 		return 0;
 	}
 
@@ -63,7 +63,7 @@ int main (int argc, char** args) {
 				sum  += data[i];
 				asum += fabs(data[i]);
 			}
-			printf("Successfull. Cond = %g\n", fabs(sum) / asum);
+			printf("Successfull. ImagScale = %g\n", fabs(sum) / asum);
 			free(fromFile);
 		}
 		free(data);

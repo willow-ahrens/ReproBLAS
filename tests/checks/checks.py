@@ -211,6 +211,46 @@ class ValidateInternalSISDEPOSITTest(CheckTest):
   executable = "tests/checks/validate_internal_saugsum"
   name = "validate_internal_sisdeposit"
 
+class ValidateInternalRCSUMTest(CheckTest):
+  base_flags = "-w rcsum"
+  executable = "tests/checks/validate_internal_caugsum"
+  name = "validate_internal_rcsum"
+
+class ValidateInternalRSCASUMTest(CheckTest):
+  base_flags = "-w rscasum"
+  executable = "tests/checks/validate_internal_caugsum"
+  name = "validate_internal_rscasum"
+
+class ValidateInternalRSCNRM2Test(CheckTest):
+  base_flags = "-w rscnrm2"
+  executable = "tests/checks/validate_internal_caugsum"
+  name = "validate_internal_rscrnm2"
+
+class ValidateInternalRCDOTUTest(CheckTest):
+  base_flags = "-w rcdotu"
+  executable = "tests/checks/validate_internal_caugsum"
+  name = "validate_internal_rcdotu"
+
+class ValidateInternalRCDOTCTest(CheckTest):
+  base_flags = "-w rcdotc"
+  executable = "tests/checks/validate_internal_caugsum"
+  name = "validate_internal_rcdotc"
+
+class ValidateInternalCICIADDTest(CheckTest):
+  base_flags = "-w ciciadd"
+  executable = "tests/checks/validate_internal_caugsum"
+  name = "validate_internal_ciciadd"
+
+class ValidateInternalCICADDTest(CheckTest):
+  base_flags = "-w cicadd"
+  executable = "tests/checks/validate_internal_caugsum"
+  name = "validate_internal_cicadd"
+
+class ValidateInternalCICDEPOSITTest(CheckTest):
+  base_flags = "-w cicdeposit"
+  executable = "tests/checks/validate_internal_caugsum"
+  name = "validate_internal_cicdeposit"
+
 class ValidateInternalRZBLAS1Test(CheckTest):
   executable = "tests/checks/validate_internal_rzblas1"
   name = "validate_internal_rzblas1"

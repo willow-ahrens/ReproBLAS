@@ -41,11 +41,11 @@ int validate_internal_caugsum(int fold, int N, float complex* X, int incX, float
   float_complex_indexed *ires = cialloc(fold);
 
   res = (wrap_caugsum_func(func))(fold, N, X, incX, Y, incY);
-  error = fabsf(crealf(res) - crealf(ref)) + I * fabsf(cimagf(res) - cimagf(ref));
+  error = res - ref;
   bound = wrap_caugsum_bound(fold, N, func, X, incX, Y, incY, res, ref);
   if (!util_csoftequals(res, ref, bound)) {
     //TODO these error messages need to go to stderr for all tests.
-    printf("%s(X, Y) = %g + %gi, |%g - %g| = %g > %g and/or |%gi - %gi| = %g > %g\n", wrap_caugsum_func_names[func], crealf(res), cimagf(res), crealf(res), crealf(ref), crealf(error), crealf(bound), cimagf(res), cimagf(ref), cimagf(error), cimagf(bound));
+    printf("%s(X, Y) = %g + %gi != %g + %gi\n|%g - %g| = %g > %g and/or |%gi - %gi| = %g > %g\n", wrap_caugsum_func_names[func], crealf(res), cimagf(res), crealf(ref), cimagf(ref), crealf(res), crealf(ref), crealf(error), crealf(bound), cimagf(res), cimagf(ref), cimagf(error), cimagf(bound));
     cisetzero(fold, ires);
     (wrap_ciaugsum_func(func))(fold, N, X, incX, Y, incY, ires);
     printf("\nres float_complex_indexed:\n");
@@ -75,7 +75,7 @@ const char* vecvec_fill_name(int argc, char** argv){
   return name_buffer;
 }
 
-int vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, double CondX, int incX, int FillY, double ScaleY, double CondY, int incY){
+int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX, double ImagScaleX, int incX, int FillY, double RealScaleY, double ImagScaleY, int incY){
   int rc = 0;
   float complex ref;
 
@@ -90,10 +90,10 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, dou
   float complex *Y = util_cvec_alloc(N, incY);
   int *P;
 
-  util_cvec_fill(N, X, incX, FillX, ScaleX, CondX);
-  util_cvec_fill(N, Y, incY, FillY, ScaleY, CondY);
+  util_cvec_fill(N, X, incX, FillX, RealScaleX, ImagScaleX);
+  util_cvec_fill(N, Y, incY, FillY, RealScaleY, ImagScaleY);
 
-  ref = wrap_caugsum_result(N, augsum_func._named.value, FillX, ScaleX, CondX, FillY, ScaleY, CondY);
+  ref = wrap_caugsum_result(N, augsum_func._named.value, FillX, RealScaleX, ImagScaleX, FillY, RealScaleY, ImagScaleY);
 
   rc = validate_internal_caugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
   if(rc != 0){

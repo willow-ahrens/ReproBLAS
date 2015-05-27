@@ -80,7 +80,7 @@ const char* vecvec_fill_name(int argc, char** argv){
   return name_buffer;
 }
 
-int vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, double CondX, int incX, int FillY, double ScaleY, double CondY, int incY){
+int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX, double ImagScaleX, int incX, int FillY, double RealScaleY, double ImagScaleY, int incY){
   int rc = 0;
   float ref;
   float_indexed *Iref = sialloc(DEFAULT_FOLD);
@@ -96,8 +96,8 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double ScaleX, dou
 
   opt_eval_option(argc, argv, &func_type);
 
-  util_svec_fill(N, X, incX, FillX, ScaleX, CondX);
-  util_svec_fill(N, Y, incY, FillY, ScaleY, CondY);
+  util_svec_fill(N, X, incX, FillX, RealScaleX, ImagScaleX);
+  util_svec_fill(N, Y, incY, FillY, RealScaleY, ImagScaleY);
 
   //nrm2 doesn't make sense with more than 1 block.
   if(func_type._named.value == wrap_RSNRM2){

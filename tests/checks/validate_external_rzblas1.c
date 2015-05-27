@@ -96,13 +96,13 @@ int file_test(int argc, char** argv, char *fname) {
     free(Iref);
     Iref = data;
     if(ref != res){
-      printf("%s(%s) = %g + %gi != %g + %gi\n", wrap_rzblas1_names[func_type._named.value], fname, ZREAL_(res), ZIMAG_(res), ZREAL_(ref), ZIMAG_(ref));
+      printf("%s(%s) = %g + %gi != %g + %gi\n", wrap_rzblas1_names[func_type._named.value], fname, creal(res), cimag(res), creal(ref), cimag(ref));
       return 1;
     }
     if(memcmp(&Iref, &Ires, sizeof(Iref)) != 0){
       zziconv_sub(DEFAULT_FOLD, Ires, &res);
       zziconv_sub(DEFAULT_FOLD, Iref, &ref);
-      printf("I%s(%s) = %g + %gi != %g + %gi\n", wrap_rzblas1_names[func_type._named.value], fname, ZREAL_(res), ZIMAG_(res), ZREAL_(ref), ZIMAG_(ref));
+      printf("I%s(%s) = %g + %gi != %g + %gi\n", wrap_rzblas1_names[func_type._named.value], fname, creal(res), cimag(res), creal(ref), cimag(ref));
       printf("Ref I_double_Complex:\n");
       ziprint(DEFAULT_FOLD, Iref);
       printf("\nRes I_double_Complex:\n");
