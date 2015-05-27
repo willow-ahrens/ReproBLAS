@@ -45,7 +45,7 @@ int validate_internal_caugsum(int fold, int N, float complex* X, int incX, float
   bound = wrap_caugsum_bound(fold, N, func, X, incX, Y, incY, res, ref);
   if (!util_csoftequals(res, ref, bound)) {
     //TODO these error messages need to go to stderr for all tests.
-    printf("%s(X, Y) = %g + %gi != %g + %gi\n|%g - %g| = %g > %g and/or |%gi - %gi| = %g > %g\n", wrap_caugsum_func_names[func], crealf(res), cimagf(res), crealf(ref), cimagf(ref), crealf(res), crealf(ref), crealf(error), crealf(bound), cimagf(res), cimagf(ref), cimagf(error), cimagf(bound));
+    printf("%s(X, Y) = %g + %gi != %g + %gi\n|%g - %g| = %g > %g and/or |%gi - %gi| = %g > %g\n", wrap_caugsum_func_names[func], crealf(res), cimagf(res), crealf(ref), cimagf(ref), crealf(res), crealf(ref), fabsf(crealf(error)), crealf(bound), cimagf(res), cimagf(ref), fabsf(cimagf(error)), cimagf(bound));
     cisetzero(fold, ires);
     (wrap_ciaugsum_func(func))(fold, N, X, incX, Y, incY, ires);
     printf("\nres float_complex_indexed:\n");

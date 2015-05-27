@@ -491,7 +491,7 @@ float complex wrap_caugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill
   }
 }
 
-float wrap_caugsum_bound(int fold, int N, wrap_caugsum_func_t func, float complex *X, int incX, float complex *Y, int incY, float res, float ref){
+float complex wrap_caugsum_bound(int fold, int N, wrap_caugsum_func_t func, float complex *X, int incX, float complex *Y, int incY, float res, float ref){
   switch(func){
     case wrap_caugsum_RCSUM:
     case wrap_caugsum_CICIADD:

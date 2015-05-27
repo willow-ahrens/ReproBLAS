@@ -86,10 +86,10 @@ double wrap_rdnrm2(int fold, int N, double *x, int incx, double *y, int incy) {
   }else{
     double_indexed *ires = dialloc(fold);
     disetzero(fold, ires);
-    double RealScale = didnrm(fold, N, x, incx, ires);
+    double Scale = didnrm(fold, N, x, incx, ires);
     double res = ddiconv(fold, ires);
     free(ires);
-    return RealScale * sqrt(res);
+    return Scale * sqrt(res);
   }
 }
 
@@ -249,7 +249,7 @@ wrap_diaugsum wrap_diaugsum_func(wrap_daugsum_func_t func) {
   return NULL;
 }
 
-double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t FillX, double RealScaleX, double ImagScaleX, util_vec_fill_t FillY, double RealScaleY, double ImagScaleY){
+double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t FillX, double ScaleX, double CondX, util_vec_fill_t FillY, double ScaleY, double CondY){
   float small = 1.0 / (1024.0 * 1024.0 * 128.0); // 2^-27
   float big   = 1024.0 * 1024.0 * 128.0;         // 2^27
   switch(func){
@@ -259,10 +259,10 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
     case wrap_daugsum_DIDDEPOSIT:
       switch(FillX){
         case util_Vec_Constant:
-          return N * RealScaleX;
+          return N * ScaleX;
         case util_Vec_Pos_Inf:
         case util_Vec_Pos_Pos_Inf:
-          return RealScaleX/0.0;
+          return ScaleX/0.0;
         case util_Vec_Pos_Neg_Inf:
         case util_Vec_NaN:
         case util_Vec_Pos_Inf_NaN:
@@ -270,60 +270,60 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
         case util_Vec_Pos_Neg_Inf_NaN:
           return 0.0/0.0;
         case util_Vec_Pos_Big:
-          return (N - 1) * RealScaleX * small + RealScaleX * big;
+          return (N - 1) * ScaleX * small + ScaleX * big;
         case util_Vec_Pos_Pos_Big:
-          return ((N - 2) * RealScaleX * small + RealScaleX * big) + RealScaleX * big;
+          return ((N - 2) * ScaleX * small + ScaleX * big) + ScaleX * big;
         case util_Vec_Pos_Neg_Big:
-          return (N - 2) * RealScaleX * small;
+          return (N - 2) * ScaleX * small;
         case util_Vec_Sine:
-          return RealScaleX - RealScaleX;
+          return ScaleX - ScaleX;
         default:
           printf("foobar %d %d\n", FillX, util_Vec_Sine);
-          fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX);
+          fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], ScaleX);
           exit(125);
       }
     case wrap_daugsum_RDASUM:
       switch(FillX){
         case util_Vec_Constant:
-          return N * fabs(RealScaleX);
+          return N * fabs(ScaleX);
         case util_Vec_Pos_Inf:
         case util_Vec_Pos_Pos_Inf:
         case util_Vec_Pos_Neg_Inf:
-          return fabs(RealScaleX)/0.0;
+          return fabs(ScaleX)/0.0;
         case util_Vec_NaN:
         case util_Vec_Pos_Inf_NaN:
         case util_Vec_Pos_Pos_Inf_NaN:
         case util_Vec_Pos_Neg_Inf_NaN:
           return 0.0/0.0;
         case util_Vec_Pos_Big:
-          return (N - 1) * fabs(RealScaleX) * small + fabs(RealScaleX) * big;
+          return (N - 1) * fabs(ScaleX) * small + fabs(ScaleX) * big;
         case util_Vec_Pos_Pos_Big:
         case util_Vec_Pos_Neg_Big:
-          return ((N - 2) * fabs(RealScaleX) * small + fabs(RealScaleX) * big) + fabs(RealScaleX) * big;
+          return ((N - 2) * fabs(ScaleX) * small + fabs(ScaleX) * big) + fabs(ScaleX) * big;
         default:
-          fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX);
+          fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], ScaleX);
           exit(125);
       }
     case wrap_daugsum_RDNRM2:
       switch(FillX){
         case util_Vec_Constant:
-          return sqrt(N * cabs(ScaleX));
+          return sqrt(N) * ScaleX;
         case util_Vec_Pos_Inf:
         case util_Vec_Pos_Pos_Inf:
         case util_Vec_Pos_Neg_Inf:
-          return fabs(RealScaleX)/0.0;
+          return fabs(ScaleX)/0.0;
         case util_Vec_NaN:
         case util_Vec_Pos_Inf_NaN:
         case util_Vec_Pos_Pos_Inf_NaN:
         case util_Vec_Pos_Neg_Inf_NaN:
           return 0.0/0.0;
         case util_Vec_Pos_Big:
-          return sqrt((N - 1) * small * small + big * big) * fabs(RealScaleX);
+          return sqrt((N - 1) * small * small + big * big) * fabs(ScaleX);
         case util_Vec_Pos_Pos_Big:
         case util_Vec_Pos_Neg_Big:
-          return sqrt(((N - 2) * small * small + big * big) + big * big) * fabs(RealScaleX);
+          return sqrt(((N - 2) * small * small + big * big) + big * big) * fabs(ScaleX);
         default:
-          fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX);
+          fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], ScaleX);
           exit(125);
       }
     case wrap_daugsum_RDDOT:
@@ -331,10 +331,10 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
         case util_Vec_Constant:
           switch(FillY){
             case util_Vec_Constant:
-              return N * RealScaleX * RealScaleY;
+              return N * ScaleX * ScaleY;
             case util_Vec_Pos_Inf:
             case util_Vec_Pos_Pos_Inf:
-              return (RealScaleX * RealScaleY)/0.0;
+              return (ScaleX * ScaleY)/0.0;
             case util_Vec_Pos_Neg_Inf:
             case util_Vec_NaN:
             case util_Vec_Pos_Inf_NaN:
@@ -342,15 +342,15 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
             case util_Vec_Pos_Neg_Inf_NaN:
               return 0.0/0.0;
             case util_Vec_Pos_Big:
-              return (N - 1) * RealScaleX * RealScaleY * small + RealScaleX * RealScaleY * big;
+              return (N - 1) * ScaleX * ScaleY * small + ScaleX * ScaleY * big;
             case util_Vec_Pos_Pos_Big:
-              return ((N - 2) * RealScaleX * RealScaleY * small + RealScaleX * RealScaleY * big) + RealScaleX * RealScaleY * big;
+              return ((N - 2) * ScaleX * ScaleY * small + ScaleX * ScaleY * big) + ScaleX * ScaleY * big;
             case util_Vec_Pos_Neg_Big:
-              return (N - 2) * RealScaleX * RealScaleY * small;
+              return (N - 2) * ScaleX * ScaleY * small;
             case util_Vec_Sine:
-              return RealScaleX * RealScaleY - RealScaleX * RealScaleY;
+              return ScaleX * ScaleY - ScaleX * ScaleY;
             default:
-              fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g, %s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, util_vec_fill_descs[FillY], RealScaleY);
+              fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g, %s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], ScaleX, util_vec_fill_descs[FillY], ScaleY);
               exit(125);
           }
         case util_Vec_Pos_Inf:
@@ -359,7 +359,7 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
             case util_Vec_Constant:
             case util_Vec_Pos_Inf:
             case util_Vec_Pos_Pos_Inf:
-              return (RealScaleX * RealScaleY)/0.0;
+              return (ScaleX * ScaleY)/0.0;
             case util_Vec_Pos_Neg_Inf:
             case util_Vec_NaN:
             case util_Vec_Pos_Inf_NaN:
@@ -367,7 +367,7 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
             case util_Vec_Pos_Neg_Inf_NaN:
               return 0.0/0.0;
             default:
-              fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g, %s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, util_vec_fill_descs[FillY], RealScaleY);
+              fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g, %s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], ScaleX, util_vec_fill_descs[FillY], ScaleY);
               exit(125);
           }
         case util_Vec_Pos_Neg_Inf:
@@ -381,9 +381,9 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
             case util_Vec_Pos_Neg_Inf_NaN:
               return 0.0/0.0;
             case util_Vec_Pos_Neg_Inf:
-              return (RealScaleX * RealScaleY)/0.0;
+              return (ScaleX * ScaleY)/0.0;
             default:
-              fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g, %s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, util_vec_fill_descs[FillY], RealScaleY);
+              fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g, %s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], ScaleX, util_vec_fill_descs[FillY], ScaleY);
               exit(125);
           }
         case util_Vec_NaN:
@@ -394,55 +394,55 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
         case util_Vec_Pos_Big:
           switch(FillY){
             case util_Vec_Constant:
-              return (N - 1) * RealScaleX * RealScaleY * small + RealScaleX * RealScaleY * big;
+              return (N - 1) * ScaleX * ScaleY * small + ScaleX * ScaleY * big;
             case util_Vec_Pos_Big:
-              return (N - 1) * RealScaleX * RealScaleY * small * small + RealScaleX * RealScaleY * big * big;
+              return (N - 1) * ScaleX * ScaleY * small * small + ScaleX * ScaleY * big * big;
             case util_Vec_Pos_Pos_Big:
-              return ((N - 2) * RealScaleX * RealScaleY * small * small + RealScaleX * RealScaleY * big * small) + RealScaleX * RealScaleY * big * big;
+              return ((N - 2) * ScaleX * ScaleY * small * small + ScaleX * ScaleY * big * small) + ScaleX * ScaleY * big * big;
             case util_Vec_Pos_Neg_Big:
-              return ((N - 2) * RealScaleX * RealScaleY * small * small - RealScaleX * RealScaleY * big * small) + RealScaleX * RealScaleY * big * big;
+              return ((N - 2) * ScaleX * ScaleY * small * small - ScaleX * ScaleY * big * small) + ScaleX * ScaleY * big * big;
             default:
-              fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g, %s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, util_vec_fill_descs[FillY], RealScaleY);
+              fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g, %s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], ScaleX, util_vec_fill_descs[FillY], ScaleY);
               exit(125);
           }
         case util_Vec_Pos_Pos_Big:
           switch(FillY){
             case util_Vec_Constant:
-              return ((N - 2) * RealScaleX * RealScaleY * small + RealScaleX * RealScaleY * big) + RealScaleX * RealScaleY * big;
+              return ((N - 2) * ScaleX * ScaleY * small + ScaleX * ScaleY * big) + ScaleX * ScaleY * big;
             case util_Vec_Pos_Big:
-              return ((N - 2) * RealScaleX * RealScaleY * small * small + RealScaleX * RealScaleY * big * small) + RealScaleX * RealScaleY * big * big;
+              return ((N - 2) * ScaleX * ScaleY * small * small + ScaleX * ScaleY * big * small) + ScaleX * ScaleY * big * big;
             case util_Vec_Pos_Pos_Big:
-              return ((N - 2) * RealScaleX * RealScaleY * small * small + RealScaleX * RealScaleY * big * big) + RealScaleX * RealScaleY * big * big;
+              return ((N - 2) * ScaleX * ScaleY * small * small + ScaleX * ScaleY * big * big) + ScaleX * ScaleY * big * big;
             case util_Vec_Pos_Neg_Big:
-              return (N - 2) * RealScaleX * RealScaleY * small * small;
+              return (N - 2) * ScaleX * ScaleY * small * small;
             default:
-              fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g, %s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, util_vec_fill_descs[FillY], RealScaleY);
+              fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g, %s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], ScaleX, util_vec_fill_descs[FillY], ScaleY);
               exit(125);
           }
         case util_Vec_Pos_Neg_Big:
           switch(FillY){
             case util_Vec_Constant:
-              return (N - 2) * RealScaleX * RealScaleY * small;
+              return (N - 2) * ScaleX * ScaleY * small;
             case util_Vec_Pos_Big:
-              return ((N - 2) * RealScaleX * RealScaleY * small * small - RealScaleX * RealScaleY * big * small) + RealScaleX * RealScaleY * big * big;
+              return ((N - 2) * ScaleX * ScaleY * small * small - ScaleX * ScaleY * big * small) + ScaleX * ScaleY * big * big;
             case util_Vec_Pos_Pos_Big:
-              return (N - 2) * RealScaleX * RealScaleY * small * small;
+              return (N - 2) * ScaleX * ScaleY * small * small;
             case util_Vec_Pos_Neg_Big:
-              return ((N - 2) * RealScaleX * RealScaleY * small * small + RealScaleX * RealScaleY * big * big) + RealScaleX * RealScaleY * big * big;
+              return ((N - 2) * ScaleX * ScaleY * small * small + ScaleX * ScaleY * big * big) + ScaleX * ScaleY * big * big;
             default:
-              fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g, %s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, util_vec_fill_descs[FillY], RealScaleY);
+              fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g, %s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], ScaleX, util_vec_fill_descs[FillY], ScaleY);
               exit(125);
           }
         case util_Vec_Sine:
           switch(FillY){
             case util_Vec_Constant:
-              return RealScaleX * RealScaleY - RealScaleX * RealScaleY;
+              return ScaleX * ScaleY - ScaleX * ScaleY;
             default:
-              fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g, %s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, util_vec_fill_descs[FillY], RealScaleY);
+              fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g, %s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], ScaleX, util_vec_fill_descs[FillY], ScaleY);
               exit(125);
           }
         default:
-          fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g, %s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, util_vec_fill_descs[FillY], RealScaleY);
+          fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g, %s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], ScaleX, util_vec_fill_descs[FillY], ScaleY);
           exit(125);
       }
   }
