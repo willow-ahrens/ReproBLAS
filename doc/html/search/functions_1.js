@@ -3,6 +3,7 @@ var searchData=
   ['dbin',['dbin',['../indexed_8h.html#ac7aeed5b0b5e0faf109b69a66bb85ca0',1,'diindex.c']]],
   ['ddiconv',['ddiconv',['../indexed_8h.html#a107650f1e9c2f53422d6a0e4a2ae050a',1,'diconv.c']]],
   ['dialloc',['dialloc',['../indexed_8h.html#a2119834f475bb83f1939af4385869325',1,'dimem.c']]],
+  ['dibound',['dibound',['../indexed_8h.html#a491f5caaab9ab24ddc5bef11ccffb519',1,'diindex.c']]],
   ['dicapacity',['dicapacity',['../indexed_8h.html#a16324a445b3515349522860502b7e9cd',1,'diindex.c']]],
   ['didadd',['didadd',['../indexed_8h.html#a775ec83d9974465ef7e6bb7fcbf626ef',1,'diadd.c']]],
   ['didconv',['didconv',['../indexed_8h.html#a2bad329ce9945e51dc70da42500b7dbd',1,'diconv.c']]],

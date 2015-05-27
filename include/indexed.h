@@ -217,7 +217,6 @@ void smrenorm(const int fold, float* manX, const int incmanX, float* carX, const
 void cirenorm(const int fold, float_complex_indexed *X);
 void cmrenorm(const int fold, float* manX, const int incmanX, float* carX, const int inccarX);
 
-
 void didconv(const int fold, const double X, double_indexed *Y);
 void dmdconv(const int fold, const double X, double* manY, const int incmanY, double* carY, const int inccarY);
 void zizconv(const int fold, const void *X, double_complex_indexed *Y);

@@ -1,3 +1,34 @@
+/**
+ * @file  indexedBLAS.h
+ * @brief indexedBLAS.h defines BLAS Methods that operate on indexed types.
+ *
+ * This header is modeled after cblas.h, and as such functions are prefixed with character sets describing the data types they operate upon. For example, the function @c dfoo would perform the function @c foo on @c double possibly returning a @c double.
+ *
+ * If two character sets are prefixed, the first set of characters describes the output and the second the input type. For example, the function @c dzbar would perform the function @c bar on @c double @c complex and return a @c double.
+ *
+ * Such character sets are listed as follows:
+ * - d - double (@c double)
+ * - z - complex double (@c *void)
+ * - s - float (@c float)
+ * - c - complex float (@c *void)
+ * - di - indexed double (#double_indexed)
+ * - zi - indexed complex double (#double_complex_indexed)
+ * - si - indexed float (#float_indexed)
+ * - ci - indexed complex float (#float_complex_indexed)
+ * - dm - manually specified indexed double (@c double, @c double)
+ * - zm - manually specified indexed complex double (@c double, @c double)
+ * - sm - manually specified indexed float (@c float, @c float)
+ * - cm - manually specified indexed complex float (@c float, @c float)
+ *
+ * Throughout the library, complex types are specified via @c *void pointers. These routines will sometimes be suffixed by sub, to represent that a function has been made into a subroutine. This allows programmers to use whatever complex types they are already using, as long as the memory pointed to is of the form of two adjacent floating point types, the first and second representing real and imaginary components of the complex number.
+ *
+ * The goal of using indexed types is to obtain either more accurate or reproducible summation of floating point numbers. Indexed types are composed of several adjacent bins...
+ *
+ * The parameter @c fold describes how many bins are used in the indexed types supplied to a subroutine. The maximum value for this parameter can be set in config.h. If you are unsure of what value to use for @fold, we recommend 3. Note that the @c fold of indexed types must be the same for all indexed types that interact with each other. Operations on more than one indexed type assume all indexed types being operated upon have the same @c fold. Note that the @c fold of an indexed type may not be changed once the type has been allocated. A common use case would be to set the value of @c fold as a global macro in your code and supply it to all indexed functions that you use.
+ *
+ * @internal
+ * Power users of the library may find themselves wanting to manually specify the underlying mantissa and carry vectors of an indexed type themselves. If you do not know what these are, don't worry about the manually specified indexed types.
+ */
 #ifndef _INDEXED_BLAS__H_
 #define _INDEXED_BLAS__H_
 #include "indexed.h"

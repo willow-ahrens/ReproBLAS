@@ -8,33 +8,10 @@
 {\ttfamily \#include $<$complex.\+h$>$}\\*
 {\ttfamily \#include $<$math.\+h$>$}\\*
 {\ttfamily \#include $<$stddef.\+h$>$}\\*
-\subsection*{Data Structures}
-\begin{DoxyCompactItemize}
-\item 
-struct \hyperlink{struct_idouble__}{Idouble\+\_\+}
-\item 
-struct \hyperlink{structd_i_complex__}{d\+I\+Complex\+\_\+}
-\item 
-struct \hyperlink{struct_ifloat__}{Ifloat\+\_\+}
-\item 
-struct \hyperlink{structs_i_complex__}{s\+I\+Complex\+\_\+}
-\end{DoxyCompactItemize}
 \subsection*{Macros}
 \begin{DoxyCompactItemize}
 \item 
 \hypertarget{indexed_8h_a7faa719140c9185b579053769e4a5cdc}{}\#define {\bfseries D\+E\+F\+A\+U\+L\+T\+\_\+\+F\+O\+L\+D}~3\label{indexed_8h_a7faa719140c9185b579053769e4a5cdc}
-
-\item 
-\hypertarget{indexed_8h_a13a7f523f106ed47fc826102d59cc425}{}\#define {\bfseries Idouble}~\hyperlink{struct_idouble__}{I\+\_\+double}\label{indexed_8h_a13a7f523f106ed47fc826102d59cc425}
-
-\item 
-\hypertarget{indexed_8h_aa78e39693038a4eab202ce7d4923d567}{}\#define {\bfseries Ifloat}~\hyperlink{struct_ifloat__}{I\+\_\+float}\label{indexed_8h_aa78e39693038a4eab202ce7d4923d567}
-
-\item 
-\hypertarget{indexed_8h_a4606404ae09e54f631356adcd2e13351}{}\#define {\bfseries d\+Icomplex}~\hyperlink{structd_i_complex__}{I\+\_\+double\+\_\+\+Complex}\label{indexed_8h_a4606404ae09e54f631356adcd2e13351}
-
-\item 
-\hypertarget{indexed_8h_abe38a4e1801cf59725f7ddf1d3282881}{}\#define {\bfseries s\+Icomplex}~\hyperlink{structs_i_complex__}{I\+\_\+float\+\_\+\+Complex}\label{indexed_8h_abe38a4e1801cf59725f7ddf1d3282881}
 
 \end{DoxyCompactItemize}
 \subsection*{Typedefs}
@@ -47,19 +24,7 @@ typedef double \hyperlink{indexed_8h_a1f2eabe291f8e4804c5d19c036a62292}{double\+
 typedef float \hyperlink{indexed_8h_ad8c164750f0c6d25d7e5e2e15b463965}{float\+\_\+indexed}
 \begin{DoxyCompactList}\small\item\em The indexed float datatype. \end{DoxyCompactList}\item 
 typedef float \hyperlink{indexed_8h_a87fb6b6c787120ead562dd4558003b73}{float\+\_\+complex\+\_\+indexed}
-\begin{DoxyCompactList}\small\item\em The indexed complex float datatype. \end{DoxyCompactList}\item 
-\hypertarget{indexed_8h_a25c153e49f2215aece722435f898566b}{}typedef struct \hyperlink{struct_idouble__}{Idouble\+\_\+} {\bfseries I\+\_\+double}\label{indexed_8h_a25c153e49f2215aece722435f898566b}
-
-\item 
-\hypertarget{indexed_8h_ac413d00983dfe325985d7a671967aa55}{}typedef struct \hyperlink{structd_i_complex__}{d\+I\+Complex\+\_\+} {\bfseries I\+\_\+double\+\_\+\+Complex}\label{indexed_8h_ac413d00983dfe325985d7a671967aa55}
-
-\item 
-\hypertarget{indexed_8h_a2577902d4b28b477b9e9223340e8e1dc}{}typedef struct \hyperlink{struct_ifloat__}{Ifloat\+\_\+} {\bfseries I\+\_\+float}\label{indexed_8h_a2577902d4b28b477b9e9223340e8e1dc}
-
-\item 
-\hypertarget{indexed_8h_a506a779448383ca9f035705a811b6f6c}{}typedef struct \hyperlink{structs_i_complex__}{s\+I\+Complex\+\_\+} {\bfseries I\+\_\+float\+\_\+\+Complex}\label{indexed_8h_a506a779448383ca9f035705a811b6f6c}
-
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em The indexed complex float datatype. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -101,9 +66,8 @@ int \hyperlink{indexed_8h_ace991dae3ae98d13b2c0175469553803}{sicapacity} ()
 \hypertarget{indexed_8h_a4a1e08ad78dcd6ef117cee286177bf9b}{}double {\bfseries dmcompression} ()\label{indexed_8h_a4a1e08ad78dcd6ef117cee286177bf9b}
 
 \item 
-\hypertarget{indexed_8h_a5412ae6cd0096ccf60df42d87c8cb79b}{}double {\bfseries dierror} (const int fold, const int N, const double X)\label{indexed_8h_a5412ae6cd0096ccf60df42d87c8cb79b}
-
-\item 
+double \hyperlink{indexed_8h_a491f5caaab9ab24ddc5bef11ccffb519}{dibound} (const int fold, const int N, const double X)
+\begin{DoxyCompactList}\small\item\em Get indexed double precision summation error bound. \end{DoxyCompactList}\item 
 double \hyperlink{indexed_8h_ac7aeed5b0b5e0faf109b69a66bb85ca0}{dbin} (const int X)
 \begin{DoxyCompactList}\small\item\em Get double precision bin corresponding to index. \end{DoxyCompactList}\item 
 \hypertarget{indexed_8h_a92e63cab16d614a5471fa0a35d10c176}{}void {\bfseries dmbin} (const int fold, const int X, double $\ast$man\+Y, const int incman\+Y, double $\ast$car\+Y, const int inccar\+Y)\label{indexed_8h_a92e63cab16d614a5471fa0a35d10c176}
@@ -120,9 +84,8 @@ int \hyperlink{indexed_8h_a84238583da9fae4e259933d230005b23}{dindex} (const doub
 \hypertarget{indexed_8h_aa1dbb8eb23ef65d955448268a5cb6b8d}{}float {\bfseries smcompression} ()\label{indexed_8h_aa1dbb8eb23ef65d955448268a5cb6b8d}
 
 \item 
-\hypertarget{indexed_8h_a66b9df43bb8d187b66e342c8eebca98e}{}float {\bfseries sierror} (const int fold, const int N, const float X)\label{indexed_8h_a66b9df43bb8d187b66e342c8eebca98e}
-
-\item 
+float \hyperlink{indexed_8h_a3dc79ca843eb563aee215f836168fa0a}{sibound} (const int fold, const int N, const float X)
+\begin{DoxyCompactList}\small\item\em Get indexed single precision summation error bound. \end{DoxyCompactList}\item 
 float \hyperlink{indexed_8h_a5cf7b5dc36d90d75b67edd66e3e77b69}{sbin} (const int X)
 \begin{DoxyCompactList}\small\item\em Get single precision bin corresponding to index. \end{DoxyCompactList}\item 
 \hypertarget{indexed_8h_aa703a07e226e479aa247d8e7c5210c25}{}void {\bfseries smbin} (const int fold, const int X, float $\ast$man\+Y, const int incman\+Y, float $\ast$car\+Y, const int inccar\+Y)\label{indexed_8h_aa703a07e226e479aa247d8e7c5210c25}
@@ -1022,6 +985,41 @@ Peter Ahrens
 \begin{DoxyDate}{Date}
 27 Apr 2015 
 \end{DoxyDate}
+\hypertarget{indexed_8h_a491f5caaab9ab24ddc5bef11ccffb519}{}\index{indexed.\+h@{indexed.\+h}!dibound@{dibound}}
+\index{dibound@{dibound}!indexed.\+h@{indexed.\+h}}
+\subsubsection[{dibound}]{\setlength{\rightskip}{0pt plus 5cm}double dibound (
+\begin{DoxyParamCaption}
+\item[{const int}]{fold, }
+\item[{const int}]{N, }
+\item[{const double}]{X}
+\end{DoxyParamCaption}
+)}\label{indexed_8h_a491f5caaab9ab24ddc5bef11ccffb519}
+
+
+Get indexed double precision summation error bound. 
+
+This is a bound on the absolute error of a summation using indexed types
+
+
+\begin{DoxyParams}{Parameters}
+{\em fold} & the fold of the indexed types \\
+\hline
+{\em N} & the number of double precision floating point summands \\
+\hline
+{\em X} & the maximum absolute value of the summands \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+error bound
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+Peter Ahrens 
+
+Hong Diep Nguyen 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+21 May 2015 
+\end{DoxyDate}
 \hypertarget{indexed_8h_a16324a445b3515349522860502b7e9cd}{}\index{indexed.\+h@{indexed.\+h}!dicapacity@{dicapacity}}
 \index{dicapacity@{dicapacity}!indexed.\+h@{indexed.\+h}}
 \subsubsection[{dicapacity}]{\setlength{\rightskip}{0pt plus 5cm}int dicapacity (
@@ -1505,6 +1503,41 @@ Peter Ahrens
 \end{DoxyAuthor}
 \begin{DoxyDate}{Date}
 27 Apr 2015 
+\end{DoxyDate}
+\hypertarget{indexed_8h_a3dc79ca843eb563aee215f836168fa0a}{}\index{indexed.\+h@{indexed.\+h}!sibound@{sibound}}
+\index{sibound@{sibound}!indexed.\+h@{indexed.\+h}}
+\subsubsection[{sibound}]{\setlength{\rightskip}{0pt plus 5cm}float sibound (
+\begin{DoxyParamCaption}
+\item[{const int}]{fold, }
+\item[{const int}]{N, }
+\item[{const float}]{X}
+\end{DoxyParamCaption}
+)}\label{indexed_8h_a3dc79ca843eb563aee215f836168fa0a}
+
+
+Get indexed single precision summation error bound. 
+
+This is a bound on the absolute error of a summation using indexed types
+
+
+\begin{DoxyParams}{Parameters}
+{\em fold} & the fold of the indexed types \\
+\hline
+{\em N} & the number of single precision floating point summands \\
+\hline
+{\em X} & the maximum absolute value of the summands \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+error bound
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+Peter Ahrens 
+
+Hong Diep Nguyen 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+21 May 2015 
 \end{DoxyDate}
 \hypertarget{indexed_8h_ace991dae3ae98d13b2c0175469553803}{}\index{indexed.\+h@{indexed.\+h}!sicapacity@{sicapacity}}
 \index{sicapacity@{sicapacity}!indexed.\+h@{indexed.\+h}}
