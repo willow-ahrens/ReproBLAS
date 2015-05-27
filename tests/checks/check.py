@@ -195,11 +195,6 @@ check_suite.add_checks([checks.ValidateInternalRCDOTUTest(),\
                        ["N", "incX", ("RealScaleX", "ImagScaleX"), ("RealScaleY", "ImagScaleY"), "f", "g"],\
                        [[4095], [1, 4], [(1.0, 0.0), (1.0, 1.0), (0.0, 1.0)], [(1.0, 0.0), (1.0, 1.0), (0.0, 1.0)],\
                         ["constant",\
-                         "++inf_nan"],\
-                        ["constant",\
-                         "++inf_nan"]])
-"""
-                        ["constant",\
                          "+inf",\
                          "++inf",\
                          "+-inf",\
@@ -213,7 +208,6 @@ check_suite.add_checks([checks.ValidateInternalRCDOTUTest(),\
                          "nan",\
                          "+inf_nan",\
                          "++inf_nan"]])
-"""
 
 check_suite.add_checks([checks.ValidateInternalRCDOTUTest(),\
                         checks.ValidateInternalRCDOTCTest(),\
@@ -228,7 +222,7 @@ check_suite.add_checks([checks.ValidateInternalRCDOTUTest(),\
                          "+big",\
                          "++big",\
                          "+-big"]])
-
+"""
 #TODO Z
 check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
                         checks.ValidateInternalDIDIADDTest(),\
@@ -313,7 +307,7 @@ check_suite.add_checks([checks.VerifyRDSUMTest(),\
                        ["N", "B", "incX", "RealScaleX", "f"],\
                        [[4095], [256], [1, 4], [0],\
                         ["rand"]])
-
+"""
 """
 check_suite.add_checks([checks.VerifyRDSUMTest(),\
                         checks.VerifyRDASUMTest(),\

@@ -302,13 +302,13 @@ float complex wrap_caugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill
           return N * ScaleX;
         case util_Vec_Pos_Inf:
         case util_Vec_Pos_Pos_Inf:
-          return ScaleX/0.0;
+          return 1.0/0.0 * ScaleX;
         case util_Vec_Pos_Neg_Inf:
         case util_Vec_NaN:
         case util_Vec_Pos_Inf_NaN:
         case util_Vec_Pos_Pos_Inf_NaN:
         case util_Vec_Pos_Neg_Inf_NaN:
-          return ScaleX * 0.0/0.0;
+          return 0.0/0.0 * ScaleX;
         case util_Vec_Pos_Big:
           return (N - 1) * ScaleX * small + ScaleX * big;
         case util_Vec_Pos_Pos_Big:
@@ -318,7 +318,6 @@ float complex wrap_caugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill
         case util_Vec_Sine:
           return ScaleX - ScaleX;
         default:
-          printf("foobar %d %d\n", FillX, util_Vec_Sine);
           fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi))\n", wrap_caugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX);
           exit(125);
       }
@@ -329,7 +328,7 @@ float complex wrap_caugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill
         case util_Vec_Pos_Inf:
         case util_Vec_Pos_Pos_Inf:
         case util_Vec_Pos_Neg_Inf:
-          return cabs(ScaleX)/0.0;
+          return fabs(RealScaleX)*1.0/0.0 + fabs(ImagScaleX)*1.0/0.0;
         case util_Vec_NaN:
         case util_Vec_Pos_Inf_NaN:
         case util_Vec_Pos_Pos_Inf_NaN:
@@ -345,14 +344,12 @@ float complex wrap_caugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill
           exit(125);
       }
     case wrap_caugsum_RSCNRM2:
-      
       switch(FillX){
         case util_Vec_Constant:
           return sqrt(N) * sqrt(ScaleX*ScaleXConj);
         case util_Vec_Pos_Inf:
         case util_Vec_Pos_Pos_Inf:
         case util_Vec_Pos_Neg_Inf:
-          return sqrt(ScaleX * ScaleXConj)/0.0;
         case util_Vec_NaN:
         case util_Vec_Pos_Inf_NaN:
         case util_Vec_Pos_Pos_Inf_NaN:
@@ -377,7 +374,7 @@ float complex wrap_caugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill
               return N * (ScaleX * ScaleY);
             case util_Vec_Pos_Inf:
             case util_Vec_Pos_Pos_Inf:
-              return (ScaleX * ScaleY)/0.0;
+              return (ScaleX * ScaleY) * 1.0/0.0;
             case util_Vec_Pos_Neg_Inf:
             case util_Vec_NaN:
             case util_Vec_Pos_Inf_NaN:
@@ -424,7 +421,7 @@ float complex wrap_caugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill
             case util_Vec_Pos_Neg_Inf_NaN:
               return (ScaleX * ScaleY) * 0.0/0.0;
             case util_Vec_Pos_Neg_Inf:
-              return (ScaleX * ScaleY)/0.0;
+              return (ScaleX * ScaleY) * 1.0/0.0;
             default:
               fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_caugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
               exit(125);

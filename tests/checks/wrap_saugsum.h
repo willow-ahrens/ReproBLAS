@@ -277,7 +277,6 @@ float wrap_saugsum_result(int N, wrap_saugsum_func_t func, util_vec_fill_t FillX
         case util_Vec_Sine:
           return RealScaleX - RealScaleX;
         default:
-          printf("foobar %d %d\n", FillX, util_Vec_Sine);
           fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g)\n", wrap_saugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX);
           exit(125);
       }

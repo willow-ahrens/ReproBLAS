@@ -56,7 +56,7 @@ class CheckSuite(harness.Suite):
     rows = []
     for check in self.checks:
       if check.get_result() == 0:
-        rows.append([check.get_name(), "Pass"])
+        rows.append([check.get_name() + "\n" + check.get_output(), "Pass"])
         passed += 1
       elif check.get_result() == 125:
         rows.append([check.get_name() + "\n" + check.get_output(), "N/A"])

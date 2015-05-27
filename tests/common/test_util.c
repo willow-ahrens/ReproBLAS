@@ -1436,8 +1436,28 @@ void util_zvec_fill(int N, double complex* V, int incV, util_vec_fill_t Fill, do
       break;
   }
   double complex Scale = RealScale + ImagScale * I;
-  for (i = 0; i < N; i++) {
-    V[i*incV] *= Scale;
+  double tmp;
+  if(RealScale == 0.0){
+    if(ImagScale == 0.0){
+      for (i = 0; i < N; i++) {
+        V[i * incV] = 0.0;
+      }
+    }else{
+      for (i = 0; i < N; i++) {
+        tmp = ((double*)V)[i * 2 * incV];
+        ((double*)V)[i * 2 * incV] = ((double*)V)[i * 2 * incV + 1] * -1 * ImagScale;
+        ((double*)V)[i * 2 * incV + 1] = tmp * ImagScale;
+      }
+    }
+  }else if(ImagScale == 0.0){
+    for (i = 0; i < N; i++) {
+      ((double*)V)[i * 2 * incV] *= RealScale;
+      ((double*)V)[i * 2 * incV + 1] *= RealScale;
+    }
+  }else{
+    for (i = 0; i < N; i++) {
+      V[i*incV] *= Scale;
+    }
   }
 }
 
@@ -1476,8 +1496,28 @@ void util_cvec_fill(int N, float complex* V, int incV, util_vec_fill_t Fill, flo
       break;
   }
   float complex Scale = RealScale + ImagScale * I;
-  for (i = 0; i < N; i++) {
-    V[i*incV] *= Scale;
+  float tmp;
+  if(RealScale == 0.0){
+    if(ImagScale == 0.0){
+      for (i = 0; i < N; i++) {
+        V[i * incV] = 0.0;
+      }
+    }else{
+      for (i = 0; i < N; i++) {
+        tmp = ((float*)V)[i * 2 * incV];
+        ((float*)V)[i * 2 * incV] = ((float*)V)[i * 2 * incV + 1] * -1 * ImagScale;
+        ((float*)V)[i * 2 * incV + 1] = tmp * ImagScale;
+      }
+    }
+  }else if(ImagScale == 0.0){
+    for (i = 0; i < N; i++) {
+      ((float*)V)[i * 2 * incV] *= RealScale;
+      ((float*)V)[i * 2 * incV + 1] *= RealScale;
+    }
+  }else{
+    for (i = 0; i < N; i++) {
+      V[i*incV] *= Scale;
+    }
   }
 }
 

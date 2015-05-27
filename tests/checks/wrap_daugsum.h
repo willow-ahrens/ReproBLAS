@@ -278,7 +278,6 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
         case util_Vec_Sine:
           return ScaleX - ScaleX;
         default:
-          printf("foobar %d %d\n", FillX, util_Vec_Sine);
           fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], ScaleX);
           exit(125);
       }
