@@ -284,4 +284,378 @@ wrap_ziaugsum wrap_ziaugsum_func(wrap_zaugsum_func_t func) {
   return NULL;
 }
 
+double complex wrap_zaugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill_t FillX, double RealScaleX, double ImagScaleX, util_vec_fill_t FillY, double RealScaleY, double ImagScaleY){
+  double small              = 1.0 / (1024.0 * 4.0); // 2^-12
+  double big                = 1024.0 * 8.0;  // 2^13
+  double complex ScaleX     = RealScaleX + ImagScaleX * I;
+  double complex ScaleY     = RealScaleY + ImagScaleY * I;
+  double complex tmpX0;
+  double *tmpX0_base = (double*)&tmpX0;
+  double complex tmpX1;
+  double *tmpX1_base = (double*)&tmpX1;
+  double complex tmpY0;
+  double *tmpY0_base = (double*)&tmpY0;
+  double complex tmpY1;
+  double *tmpY1_base = (double*)&tmpY1;
+  switch(func){
+    case wrap_zaugsum_RZSUM:
+    case wrap_zaugsum_ZIZIADD:
+    case wrap_zaugsum_ZIZADD:
+    case wrap_zaugsum_ZIZDEPOSIT:
+      switch(FillX){
+        case util_Vec_Constant:
+          return N * ScaleX;
+        case util_Vec_Pos_Inf:
+        case util_Vec_Pos_Pos_Inf:
+        case util_Vec_Pos_Neg_Inf:
+        case util_Vec_NaN:
+        case util_Vec_Pos_Inf_NaN:
+        case util_Vec_Pos_Pos_Inf_NaN:
+        case util_Vec_Pos_Neg_Inf_NaN:
+          switch(FillX){
+            case util_Vec_Pos_Inf:
+            case util_Vec_Pos_Pos_Inf:
+              tmpX0_base[0] = 1.0/0.0 * RealScaleX;
+              tmpX0_base[1] = 1.0/0.0 * ImagScaleX;
+              break;
+            case util_Vec_Pos_Neg_Inf:
+            case util_Vec_NaN:
+            case util_Vec_Pos_Inf_NaN:
+            case util_Vec_Pos_Pos_Inf_NaN:
+            case util_Vec_Pos_Neg_Inf_NaN:
+              tmpX0_base[0] = 0.0/0.0;
+              tmpX0_base[1] = 0.0/0.0;
+              break;
+            default:
+              fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_zaugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
+              exit(125);
+          }
+          if(RealScaleX == 0.0){
+            tmpX0_base[0] = 0.0;
+          }
+          if(ImagScaleX == 0.0){
+            tmpX0_base[1] = 0.0;
+          }
+          return tmpX0;
+        case util_Vec_Pos_Big:
+          return (N - 1) * ScaleX * small + ScaleX * big;
+        case util_Vec_Pos_Pos_Big:
+          return ((N - 2) * ScaleX * small + ScaleX * big) + ScaleX * big;
+        case util_Vec_Pos_Neg_Big:
+          return (N - 2) * ScaleX * small;
+        case util_Vec_Sine:
+          return 0.0;
+        default:
+          fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi))\n", wrap_zaugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX);
+          exit(125);
+      }
+
+    case wrap_zaugsum_RDZASUM:
+      switch(FillX){
+        case util_Vec_Constant:
+          return N * cabs(ScaleX);
+        case util_Vec_Pos_Inf:
+        case util_Vec_Pos_Pos_Inf:
+        case util_Vec_Pos_Neg_Inf:
+        case util_Vec_NaN:
+        case util_Vec_Pos_Inf_NaN:
+        case util_Vec_Pos_Pos_Inf_NaN:
+        case util_Vec_Pos_Neg_Inf_NaN:
+          switch(FillX){
+            case util_Vec_Pos_Inf:
+            case util_Vec_Pos_Pos_Inf:
+            case util_Vec_Pos_Neg_Inf:
+              tmpX0_base[0] = 1.0/0.0;
+              tmpX0_base[1] = 1.0/0.0;
+              break;
+            case util_Vec_NaN:
+            case util_Vec_Pos_Inf_NaN:
+            case util_Vec_Pos_Pos_Inf_NaN:
+            case util_Vec_Pos_Neg_Inf_NaN:
+              tmpX0_base[0] = 0.0/0.0;
+              tmpX0_base[1] = 0.0/0.0;
+              break;
+            default:
+              fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_zaugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
+              exit(125);
+          }
+          if(RealScaleX == 0.0){
+            tmpX0_base[0] = 0.0;
+          }
+          if(ImagScaleX == 0.0){
+            tmpX0_base[1] = 0.0;
+          }
+          return tmpX0_base[0] + tmpX0_base[1];
+        case util_Vec_Pos_Big:
+          return (N - 1) * cabs(ScaleX) * small + cabs(ScaleX) * big;
+        case util_Vec_Pos_Pos_Big:
+        case util_Vec_Pos_Neg_Big:
+          return ((N - 2) * cabs(ScaleX) * small + cabs(ScaleX) * big) + cabs(ScaleX) * big;
+        default:
+          fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi))\n", wrap_zaugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX);
+          exit(125);
+      }
+
+    case wrap_zaugsum_RDZNRM2:
+      double new_scale = MAX(fabs(RealScaleX), fabs(ImagScaleX));
+      switch(FillX){
+        case util_Vec_Constant:
+          return sqrt(N) * sqrt((RealScaleX/new_scale) * (RealScaleX/new_scale) + (ImagScaleX/new_scale) * (ImagScaleX/new_scale)) * new_scale;
+        case util_Vec_Pos_Inf:
+        case util_Vec_Pos_Pos_Inf:
+        case util_Vec_Pos_Neg_Inf:
+          return 1.0/0.0;
+        case util_Vec_NaN:
+        case util_Vec_Pos_Inf_NaN:
+        case util_Vec_Pos_Pos_Inf_NaN:
+        case util_Vec_Pos_Neg_Inf_NaN:
+          return 0.0/0.0;
+        case util_Vec_Pos_Big:
+          return sqrt((N - 1) * small * small + big * big) * sqrt((RealScaleX/new_scale) * (RealScaleX/new_scale) + (ImagScaleX/new_scale) * (ImagScaleX/new_scale)) * new_scale;
+        case util_Vec_Pos_Pos_Big:
+        case util_Vec_Pos_Neg_Big:
+          return sqrt(((N - 2) * small * small + big * big) + big * big) * sqrt((RealScaleX/new_scale) * (RealScaleX/new_scale) + (ImagScaleX/new_scale) * (ImagScaleX/new_scale)) * new_scale;
+        default:
+          fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi))\n", wrap_zaugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX);
+          exit(125);
+      }
+
+    case wrap_zaugsum_RZDOTC:
+      ScaleX = RealScaleX - ImagScaleX * I;
+      ImagScaleX = -1 * ImagScaleX;
+
+    case wrap_zaugsum_RZDOTU:
+      switch(FillX){
+        case util_Vec_Constant:
+          switch(FillY){
+            case util_Vec_Constant:
+              return N * (ScaleX * ScaleY);
+            case util_Vec_Pos_Inf:
+            case util_Vec_Pos_Pos_Inf:
+            case util_Vec_Pos_Neg_Inf:
+            case util_Vec_NaN:
+            case util_Vec_Pos_Inf_NaN:
+            case util_Vec_Pos_Pos_Inf_NaN:
+            case util_Vec_Pos_Neg_Inf_NaN:
+              switch(FillY){
+                case util_Vec_Pos_Inf:
+                case util_Vec_Pos_Pos_Inf:
+                  tmpY0_base[0] = 1.0/0.0 * RealScaleY;
+                  tmpY0_base[1] = 1.0/0.0 * ImagScaleY;
+                  break;
+                case util_Vec_Pos_Neg_Inf:
+                case util_Vec_NaN:
+                case util_Vec_Pos_Inf_NaN:
+                case util_Vec_Pos_Pos_Inf_NaN:
+                case util_Vec_Pos_Neg_Inf_NaN:
+                  tmpY0_base[0] = 0.0/0.0;
+                  tmpY0_base[1] = 0.0/0.0;
+                  break;
+                default:
+                  fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_zaugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
+                  exit(125);
+              }
+              if(RealScaleY == 0.0){
+                tmpY0_base[0] = 0.0;
+              }
+              if(ImagScaleY == 0.0){
+                tmpY0_base[1] = 0.0;
+              }
+              return tmpY0 * ScaleX;
+            case util_Vec_Pos_Big:
+              return (N - 1) * ScaleX * ScaleY * small + ScaleX * ScaleY * big;
+            case util_Vec_Pos_Pos_Big:
+              return ((N - 2) * ScaleX * ScaleY * small + ScaleX * ScaleY * big) + ScaleX * ScaleY * big;
+            case util_Vec_Pos_Neg_Big:
+              return (N - 2) * ScaleX * ScaleY * small;
+            case util_Vec_Sine:
+              return 0.0;
+            default:
+              fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_zaugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
+              exit(125);
+          }
+        case util_Vec_Pos_Inf:
+        case util_Vec_Pos_Pos_Inf:
+        case util_Vec_Pos_Neg_Inf:
+        case util_Vec_NaN:
+        case util_Vec_Pos_Inf_NaN:
+        case util_Vec_Pos_Pos_Inf_NaN:
+        case util_Vec_Pos_Neg_Inf_NaN:
+          switch(FillX){
+            case util_Vec_Pos_Inf:
+              tmpX0_base[0] = 1.0/0.0 * RealScaleX;
+              tmpX0_base[1] = 1.0/0.0 * ImagScaleX;
+              tmpX1_base[0] = 0.0;
+              tmpX1_base[1] = 0.0;
+            case util_Vec_Pos_Pos_Inf:
+              tmpX0_base[0] = 1.0/0.0 * RealScaleX;
+              tmpX0_base[1] = 1.0/0.0 * ImagScaleX;
+              tmpX1_base[0] = 1.0/0.0 * RealScaleX;
+              tmpX1_base[1] = 1.0/0.0 * ImagScaleX;
+              break;
+            case util_Vec_Pos_Neg_Inf:
+              tmpX0_base[0] = 1.0/0.0 * RealScaleX;
+              tmpX0_base[1] = 1.0/0.0 * ImagScaleX;
+              tmpX1_base[0] = -1.0/0.0 * RealScaleX;
+              tmpX1_base[1] = -1.0/0.0 * ImagScaleX;
+              break;
+            case util_Vec_NaN:
+            case util_Vec_Pos_Inf_NaN:
+            case util_Vec_Pos_Pos_Inf_NaN:
+            case util_Vec_Pos_Neg_Inf_NaN:
+              tmpX0_base[0] = 0.0/0.0;
+              tmpX0_base[1] = 0.0/0.0;
+              tmpX1_base[0] = 0.0;
+              tmpX1_base[1] = 0.0;
+              break;
+            default:
+              fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_zaugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
+              exit(125);
+          }
+          if(RealScaleX == 0.0){
+            tmpX0_base[0] = 0.0;
+            tmpX1_base[0] = 0.0;
+          }
+          if(ImagScaleX == 0.0){
+            tmpX0_base[1] = 0.0;
+            tmpX1_base[1] = 0.0;
+          }
+          switch(FillY){
+            case util_Vec_Constant:
+              return tmpX0 * ScaleY + tmpX1 * ScaleY;
+            case util_Vec_Pos_Inf:
+            case util_Vec_Pos_Pos_Inf:
+            case util_Vec_Pos_Neg_Inf:
+            case util_Vec_NaN:
+            case util_Vec_Pos_Inf_NaN:
+            case util_Vec_Pos_Pos_Inf_NaN:
+            case util_Vec_Pos_Neg_Inf_NaN:
+              switch(FillY){
+                case util_Vec_Pos_Inf:
+                  tmpY0_base[0] = 1.0/0.0 * RealScaleY;
+                  tmpY0_base[1] = 1.0/0.0 * ImagScaleY;
+                  tmpY1_base[0] = 0.0;
+                  tmpY1_base[1] = 0.0;
+                case util_Vec_Pos_Pos_Inf:
+                  tmpY0_base[0] = 1.0/0.0 * RealScaleY;
+                  tmpY0_base[1] = 1.0/0.0 * ImagScaleY;
+                  tmpY1_base[0] = 1.0/0.0 * RealScaleY;
+                  tmpY1_base[1] = 1.0/0.0 * ImagScaleY;
+                  break;
+                case util_Vec_Pos_Neg_Inf:
+                  tmpY0_base[0] = 1.0/0.0 * RealScaleY;
+                  tmpY0_base[1] = 1.0/0.0 * ImagScaleY;
+                  tmpY1_base[0] = -1.0/0.0 * RealScaleY;
+                  tmpY1_base[1] = -1.0/0.0 * ImagScaleY;
+                  break;
+                case util_Vec_NaN:
+                case util_Vec_Pos_Inf_NaN:
+                case util_Vec_Pos_Pos_Inf_NaN:
+                case util_Vec_Pos_Neg_Inf_NaN:
+                  tmpY0_base[0] = 0.0/0.0;
+                  tmpY0_base[1] = 0.0/0.0;
+                  tmpY1_base[0] = 0.0;
+                  tmpY1_base[1] = 0.0;
+                  break;
+                default:
+                  fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_zaugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
+                  exit(125);
+              }
+              if(RealScaleY == 0.0){
+                tmpY0_base[0] = 0.0;
+                tmpY1_base[0] = 0.0;
+              }
+              if(ImagScaleY == 0.0){
+                tmpY0_base[1] = 0.0;
+                tmpY1_base[1] = 0.0;
+              }
+              return tmpX0 * tmpY0 + tmpX1 * tmpY1;
+            default:
+              fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_zaugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
+              exit(125);
+          }
+        case util_Vec_Pos_Pos_Big:
+          switch(FillY){
+            case util_Vec_Constant:
+              return ((N - 2) * ScaleX * ScaleY * small + ScaleX * ScaleY * big) + ScaleX * ScaleY * big;
+            case util_Vec_Pos_Big:
+              return ((N - 2) * ScaleX * ScaleY * small * small + ScaleX * ScaleY * big * small) + ScaleX * ScaleY * big * big;
+            case util_Vec_Pos_Pos_Big:
+              return ((N - 2) * ScaleX * ScaleY * small * small + ScaleX * ScaleY * big * big) + ScaleX * ScaleY * big * big;
+            case util_Vec_Pos_Neg_Big:
+              return (N - 2) * ScaleX * ScaleY * small * small;
+            default:
+              fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_zaugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
+              exit(125);
+          }
+        case util_Vec_Pos_Neg_Big:
+          switch(FillY){
+            case util_Vec_Constant:
+              return (N - 2) * ScaleX * ScaleY * small;
+            case util_Vec_Pos_Big:
+              return ((N - 2) * ScaleX * ScaleY * small * small - ScaleX * ScaleY * big * small) + ScaleX * ScaleY * big * big;
+            case util_Vec_Pos_Pos_Big:
+              return (N - 2) * ScaleX * ScaleY * small * small;
+            case util_Vec_Pos_Neg_Big:
+              return ((N - 2) * ScaleX * ScaleY * small * small + ScaleX * ScaleY * big * big) + ScaleX * ScaleY * big * big;
+            default:
+              fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_zaugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
+              exit(125);
+          }
+        case util_Vec_Sine:
+          switch(FillY){
+            case util_Vec_Constant:
+              return 0.0;
+            default:
+              fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_zaugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
+              exit(125);
+          }
+        default:
+          fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_zaugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
+          exit(125);
+      }
+  }
+}
+
+double complex wrap_zaugsum_bound(int fold, int N, wrap_caugsum_func_t func, double complex *X, int incX, double complex *Y, int incY, double res, double ref){
+  switch(func){
+    case wrap_zaugsum_RZSUM:
+    case wrap_zaugsum_ZIZIADD:
+    case wrap_zaugsum_ZIZADD:
+    case wrap_zaugsum_ZIZDEPOSIT:
+      {
+        double complex amax;
+        double complex bound;
+        double *bound_base = (double*)&bound;
+        zamax_sub(N, X, incX, &amax);
+        bound_base[0] = dibound(fold, N, crealf(amax));
+        bound_base[1] = dibound(fold, N, cimagf(amax));
+        return bound;
+      }
+    case wrap_zaugsum_RDZASUM:
+      {
+        double complex amax;
+        zamax_sub(N, X, incX, &amax);
+        return dibound(fold, N, MAX(crealf(amax), cimagf(amax)));
+      }
+    case wrap_zaugsum_RDZNRM2:
+      {
+        double amax;
+        zamaxm_sub(N, X, incX, X, incX, &amax);
+        return dibound(fold, N, crealf(amax)) * (crealf(amax) / (res + ref));
+      }
+    case wrap_zaugsum_RZDOTU:
+    case wrap_zaugsum_RZDOTC:
+      {
+        double complex amaxm;
+        double complex bound;
+        double *bound_base = (double*)&bound;
+        zamaxm_sub(N, X, incX, Y, incY, &amaxm);
+        bound_base[0] = dibound(fold, N, crealf(amaxm));
+        bound_base[1] = dibound(fold, N, cimagf(amaxm));
+        return bound;
+      }
+  }
+}
+
 #endif
