@@ -221,6 +221,7 @@ check_suite.add_checks([checks.ValidateInternalRSCNRM2Test(),\
                          "+inf_nan",\
                          "++inf_nan"]])
 """
+"""
 check_suite.add_checks([checks.ValidateInternalRCDOTUTest(),\
                         checks.ValidateInternalRCDOTCTest(),\
                         ],\
@@ -242,6 +243,7 @@ check_suite.add_checks([checks.ValidateInternalRCDOTUTest(),\
                          "++inf_nan"]])
 
 """
+"""
 check_suite.add_checks([checks.ValidateInternalRCDOTUTest(),\
                         checks.ValidateInternalRCDOTCTest(),\
                         ],\
@@ -256,7 +258,6 @@ check_suite.add_checks([checks.ValidateInternalRCDOTUTest(),\
                          "++big",\
                          "+-big"]])
 """
-"""
 #TODO Z
 check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
                         checks.ValidateInternalDIDIADDTest(),\
@@ -264,8 +265,9 @@ check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
                         checks.ValidateInternalDIDDEPOSITTest(),\
                         ],\
                        ["N", "incX", "RealScaleX", "f"],\
-                       [[64], [1, 4], [0.75 * 2.0**1023],\
+                       [[64], [1, 4], [(0.75 * 2.0**1023) * 2.0],\
                         ["sine"]])
+"""
 
 check_suite.add_checks([checks.ValidateInternalRCSUMTest(),\
                         checks.ValidateInternalCICIADDTest(),\
@@ -275,14 +277,16 @@ check_suite.add_checks([checks.ValidateInternalRCSUMTest(),\
                        ["N", "incX", "RealScaleX", "ImagScaleX", "f"],\
                        [[64], [1, 4], [0.75 * 2.0**127], [0.75 * 2.0**127],\
                         ["sine"]])
+"""
 
 #TODO Z
 check_suite.add_checks([checks.ValidateInternalRDASUMTest(),\
                         ],\
                        ["N", "incX", "RealScaleX", "f"],\
-                       [[64], [1, 4], [(0.75 * 2.0**1017)],\
+                       [[1], [1, 4], [((0.75 * 2.0**1023) * 2)],\
                         ["constant"]])
 
+"""
 check_suite.add_checks([checks.ValidateInternalRSCASUMTest(),\
                         ],\
                        ["N", "incX", "RealScaleX", "ImagScaleX", "f"],\
