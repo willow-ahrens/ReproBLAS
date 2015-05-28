@@ -170,6 +170,7 @@ check_suite.add_checks([checks.ValidateInternalRCSUMTest(),\
                          "sine"]])
 
 """
+"""
 check_suite.add_checks([checks.ValidateInternalRCSUMTest(),\
                         checks.ValidateInternalCICIADDTest(),\
                         checks.ValidateInternalCICADDTest(),\
@@ -185,6 +186,19 @@ check_suite.add_checks([checks.ValidateInternalRCSUMTest(),\
                          "++inf_nan"]])
 
 """
+"""
+check_suite.add_checks([checks.ValidateInternalRSCASUMTest(),\
+                        ],\
+                       ["N", "incX", ("RealScaleX", "ImagScaleX"), "f"],\
+                       [[4095], [1, 4], [(1.0, 0.0), (1.0, 1.0), (0.0, 1.0)],\
+                        ["+inf",\
+                         "++inf",\
+                         "+-inf",\
+                         "nan",\
+                         "+inf_nan",\
+                         "++inf_nan"]])
+"""
+"""
 check_suite.add_checks([checks.ValidateInternalRSCNRM2Test(),\
                         ],\
                        ["N", "incX", ("RealScaleX", "ImagScaleX"), "f"],\
@@ -195,6 +209,7 @@ check_suite.add_checks([checks.ValidateInternalRSCNRM2Test(),\
                          "+-big"]])
 """
 
+"""
 check_suite.add_checks([checks.ValidateInternalRSCNRM2Test(),\
                         ],\
                        ["N", "incX", ("RealScaleX", "ImagScaleX"), "f"],\
@@ -225,7 +240,6 @@ check_suite.add_checks([checks.ValidateInternalRCDOTUTest(),\
                          "nan",\
                          "+inf_nan",\
                          "++inf_nan"]])
-"""
 
 """
 check_suite.add_checks([checks.ValidateInternalRCDOTUTest(),\
