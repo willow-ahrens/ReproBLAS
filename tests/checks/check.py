@@ -163,51 +163,53 @@ check_suite.add_checks([checks.ValidateInternalRCSUMTest(),\
                        ["N", "incX", ("RealScaleX", "ImagScaleX"), "f"],\
                        [[4095], [1, 4], [(1.0, 0.0), (1.0, 1.0), (0.0, 1.0)],\
                         ["constant",\
-                         "+inf",\
-                         "++inf",\
-                         "+-inf",\
-                         "nan",\
-                         "+inf_nan",\
-                         "++inf_nan",\
                          "+big",\
                          "++big",\
                          "+-big",\
                          "sine"]])
+
+#                         "+inf",\
+#                         "++inf",\
+#                         "+-inf",\
+#                         "nan",\
+#                         "+inf_nan",\
+#                         "++inf_nan",\
 
 check_suite.add_checks([checks.ValidateInternalRSCNRM2Test(),\
                         ],\
                        ["N", "incX", ("RealScaleX", "ImagScaleX"), "f"],\
                        [[4095], [1, 4], [(1.0, 0.0), (1.0, 1.0), (0.0, 1.0)],\
                         ["constant",\
-                         "+inf",\
-                         "++inf",\
-                         "+-inf",\
-                         "nan",\
-                         "+inf_nan",\
-                         "++inf_nan",\
                          "+big",\
                          "++big",\
                          "+-big"]])
 
-check_suite.add_checks([checks.ValidateInternalRCDOTUTest(),\
-                        checks.ValidateInternalRCDOTCTest(),\
-                        ],\
-                       ["N", "incX", ("RealScaleX", "ImagScaleX"), ("RealScaleY", "ImagScaleY"), "f", "g"],\
-                       [[4095], [1, 4], [(1.0, 0.0), (1.0, 1.0), (0.0, 1.0)], [(1.0, 0.0), (1.0, 1.0), (0.0, 1.0)],\
-                        ["constant",\
-                         "+inf",\
-                         "++inf",\
-                         "+-inf",\
-                         "nan",\
-                         "+inf_nan",\
-                         "++inf_nan"],\
-                        ["constant",\
-                         "+inf",\
-                         "++inf",\
-                         "+-inf",\
-                         "nan",\
-                         "+inf_nan",\
-                         "++inf_nan"]])
+#                         "+inf",\
+#                         "++inf",\
+#                         "+-inf",\
+#                         "nan",\
+#                         "+inf_nan",\
+#                         "++inf_nan",\
+
+#check_suite.add_checks([checks.ValidateInternalRCDOTUTest(),\
+#                        checks.ValidateInternalRCDOTCTest(),\
+#                        ],\
+#                       ["N", "incX", ("RealScaleX", "ImagScaleX"), ("RealScaleY", "ImagScaleY"), "f", "g"],\
+#                       [[4095], [1, 4], [(1.0, 0.0), (1.0, 1.0), (0.0, 1.0)], [(1.0, 0.0), (1.0, 1.0), (0.0, 1.0)],\
+#                        ["constant",\
+#                         "+inf",\
+#                         "++inf",\
+#                         "+-inf",\
+#                         "nan",\
+#                         "+inf_nan",\
+#                         "++inf_nan"],\
+#                        ["constant",\
+#                         "+inf",\
+#                         "++inf",\
+#                         "+-inf",\
+#                         "nan",\
+#                         "+inf_nan",\
+#                         "++inf_nan"]])
 
 check_suite.add_checks([checks.ValidateInternalRCDOTUTest(),\
                         checks.ValidateInternalRCDOTCTest(),\

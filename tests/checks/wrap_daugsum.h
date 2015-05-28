@@ -276,7 +276,7 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
         case util_Vec_Pos_Neg_Big:
           return (N - 2) * ScaleX * small;
         case util_Vec_Sine:
-          return ScaleX - ScaleX;
+          return 0.0;
         default:
           fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], ScaleX);
           exit(125);
@@ -347,7 +347,7 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
             case util_Vec_Pos_Neg_Big:
               return (N - 2) * ScaleX * ScaleY * small;
             case util_Vec_Sine:
-              return ScaleX * ScaleY - ScaleX * ScaleY;
+              return 0.0;
             default:
               fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g, %s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], ScaleX, util_vec_fill_descs[FillY], ScaleY);
               exit(125);
@@ -435,7 +435,7 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
         case util_Vec_Sine:
           switch(FillY){
             case util_Vec_Constant:
-              return ScaleX * ScaleY - ScaleX * ScaleY;
+              return 0.0;
             default:
               fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g, %s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], ScaleX, util_vec_fill_descs[FillY], ScaleY);
               exit(125);

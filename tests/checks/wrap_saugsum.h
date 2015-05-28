@@ -275,7 +275,7 @@ float wrap_saugsum_result(int N, wrap_saugsum_func_t func, util_vec_fill_t FillX
         case util_Vec_Pos_Neg_Big:
           return (N - 2) * RealScaleX * small;
         case util_Vec_Sine:
-          return RealScaleX - RealScaleX;
+          return 0.0;
         default:
           fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g)\n", wrap_saugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX);
           exit(125);
@@ -346,7 +346,7 @@ float wrap_saugsum_result(int N, wrap_saugsum_func_t func, util_vec_fill_t FillX
             case util_Vec_Pos_Neg_Big:
               return (N - 2) * RealScaleX * RealScaleY * small;
             case util_Vec_Sine:
-              return RealScaleX * RealScaleY - RealScaleX * RealScaleY;
+              return 0.0;
             default:
               fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g, %s * %g)\n", wrap_saugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, util_vec_fill_descs[FillY], RealScaleY);
               exit(125);
@@ -434,7 +434,7 @@ float wrap_saugsum_result(int N, wrap_saugsum_func_t func, util_vec_fill_t FillX
         case util_Vec_Sine:
           switch(FillY){
             case util_Vec_Constant:
-              return RealScaleX * RealScaleY - RealScaleX * RealScaleY;
+              return 0.0;
             default:
               fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g, %s * %g)\n", wrap_saugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, util_vec_fill_descs[FillY], RealScaleY);
               exit(125);
