@@ -38,11 +38,6 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
     N_block = MIN((N - i), N_block);
 
     amaxm = damaxm(N_block, X, incX, Y, incY);
-    if (amaxm == 0.0){
-      X += N_block * incX;
-      Y += N_block * incY;
-      continue;
-    }
 
     if (isinf(amaxm) || isinf(manZ[0])){
       for (j = 0; j < N_block; j++){

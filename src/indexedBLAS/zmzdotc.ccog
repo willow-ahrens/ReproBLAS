@@ -40,11 +40,6 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
     N_block = MIN((N - i), N_block);
 
     zamaxm_sub(N_block, x, incX, y, incY, amaxm);
-    if (amaxm[0] == 0.0 && amaxm[1] == 0.0){
-      x += N_block * incX;
-      y += N_block * incY;
-      continue;
-    }
 
     if (isinf(amaxm[0]) || isinf(manZ[0])){
       for (j = 0; j < N_block; j++){

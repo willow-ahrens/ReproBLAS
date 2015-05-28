@@ -43,10 +43,6 @@ void dmzasum(const int fold, const int N, const void *X, const int incX, double 
 
     zamax_sub(N_block, x, incX, amax_tmp);
     amax = MAX(amax_tmp[0], amax_tmp[1]);
-    if (amax == 0.0){
-      x += N_block * 2 * incX;
-      continue;
-    }
 
     if (isinf(amax) || isinf(manY[0])){
       for (j = 0; j < N_block; j++){

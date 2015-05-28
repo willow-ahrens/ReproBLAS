@@ -37,10 +37,6 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
     N_block = MIN((N - i), N_block);
 
     amax = samax(N_block, X, incX);
-    if (amax == 0.0){
-      X += N_block * incX;
-      continue;
-    }
 
     if (isinf(amax) || isinf(manY[0])){
       for (j = 0; j < N_block; j++){
