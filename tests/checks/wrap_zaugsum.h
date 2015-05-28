@@ -5,6 +5,8 @@
 #include <indexedBLAS.h>
 #include <indexed.h>
 
+#include "../common/test_util.h"
+
 typedef enum wrap_zaugsum_func {
   wrap_zaugsum_RZSUM = 0,
   wrap_zaugsum_RDZASUM,
@@ -284,7 +286,7 @@ wrap_ziaugsum wrap_ziaugsum_func(wrap_zaugsum_func_t func) {
   return NULL;
 }
 
-double complex wrap_zaugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill_t FillX, double RealScaleX, double ImagScaleX, util_vec_fill_t FillY, double RealScaleY, double ImagScaleY){
+double complex wrap_zaugsum_result(int N, wrap_zaugsum_func_t func, util_vec_fill_t FillX, double RealScaleX, double ImagScaleX, util_vec_fill_t FillY, double RealScaleY, double ImagScaleY){
   double small              = 1.0 / (1024.0 * 4.0); // 2^-12
   double big                = 1024.0 * 8.0;  // 2^13
   double complex ScaleX     = RealScaleX + ImagScaleX * I;
@@ -397,27 +399,29 @@ double complex wrap_zaugsum_result(int N, wrap_caugsum_func_t func, util_vec_fil
       }
 
     case wrap_zaugsum_RDZNRM2:
-      double new_scale = MAX(fabs(RealScaleX), fabs(ImagScaleX));
-      switch(FillX){
-        case util_Vec_Constant:
-          return sqrt(N) * sqrt((RealScaleX/new_scale) * (RealScaleX/new_scale) + (ImagScaleX/new_scale) * (ImagScaleX/new_scale)) * new_scale;
-        case util_Vec_Pos_Inf:
-        case util_Vec_Pos_Pos_Inf:
-        case util_Vec_Pos_Neg_Inf:
-          return 1.0/0.0;
-        case util_Vec_NaN:
-        case util_Vec_Pos_Inf_NaN:
-        case util_Vec_Pos_Pos_Inf_NaN:
-        case util_Vec_Pos_Neg_Inf_NaN:
-          return 0.0/0.0;
-        case util_Vec_Pos_Big:
-          return sqrt((N - 1) * small * small + big * big) * sqrt((RealScaleX/new_scale) * (RealScaleX/new_scale) + (ImagScaleX/new_scale) * (ImagScaleX/new_scale)) * new_scale;
-        case util_Vec_Pos_Pos_Big:
-        case util_Vec_Pos_Neg_Big:
-          return sqrt(((N - 2) * small * small + big * big) + big * big) * sqrt((RealScaleX/new_scale) * (RealScaleX/new_scale) + (ImagScaleX/new_scale) * (ImagScaleX/new_scale)) * new_scale;
-        default:
-          fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi))\n", wrap_zaugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX);
-          exit(125);
+      {
+        double new_scale = MAX(fabs(RealScaleX), fabs(ImagScaleX));
+        switch(FillX){
+          case util_Vec_Constant:
+            return sqrt(N) * sqrt((RealScaleX/new_scale) * (RealScaleX/new_scale) + (ImagScaleX/new_scale) * (ImagScaleX/new_scale)) * new_scale;
+          case util_Vec_Pos_Inf:
+          case util_Vec_Pos_Pos_Inf:
+          case util_Vec_Pos_Neg_Inf:
+            return 1.0/0.0;
+          case util_Vec_NaN:
+          case util_Vec_Pos_Inf_NaN:
+          case util_Vec_Pos_Pos_Inf_NaN:
+          case util_Vec_Pos_Neg_Inf_NaN:
+            return 0.0/0.0;
+          case util_Vec_Pos_Big:
+            return sqrt((N - 1) * small * small + big * big) * sqrt((RealScaleX/new_scale) * (RealScaleX/new_scale) + (ImagScaleX/new_scale) * (ImagScaleX/new_scale)) * new_scale;
+          case util_Vec_Pos_Pos_Big:
+          case util_Vec_Pos_Neg_Big:
+            return sqrt(((N - 2) * small * small + big * big) + big * big) * sqrt((RealScaleX/new_scale) * (RealScaleX/new_scale) + (ImagScaleX/new_scale) * (ImagScaleX/new_scale)) * new_scale;
+          default:
+            fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi))\n", wrap_zaugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX);
+            exit(125);
+        }
       }
 
     case wrap_zaugsum_RZDOTC:
@@ -617,7 +621,7 @@ double complex wrap_zaugsum_result(int N, wrap_caugsum_func_t func, util_vec_fil
   }
 }
 
-double complex wrap_zaugsum_bound(int fold, int N, wrap_caugsum_func_t func, double complex *X, int incX, double complex *Y, int incY, double res, double ref){
+double complex wrap_zaugsum_bound(int fold, int N, wrap_zaugsum_func_t func, double complex *X, int incX, double complex *Y, int incY, double res, double ref){
   switch(func){
     case wrap_zaugsum_RZSUM:
     case wrap_zaugsum_ZIZIADD:

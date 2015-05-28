@@ -176,6 +176,46 @@ class ValidateInternalDIDDEPOSITTest(CheckTest):
   executable = "tests/checks/validate_internal_daugsum"
   name = "validate_internal_diddeposit"
 
+class ValidateInternalRZSUMTest(CheckTest):
+  base_flags = "-w rzsum"
+  executable = "tests/checks/validate_internal_zaugsum"
+  name = "validate_internal_rzsum"
+
+class ValidateInternalRDZASUMTest(CheckTest):
+  base_flags = "-w rdzasum"
+  executable = "tests/checks/validate_internal_zaugsum"
+  name = "validate_internal_rdzasum"
+
+class ValidateInternalRDZNRM2Test(CheckTest):
+  base_flags = "-w rdznrm2"
+  executable = "tests/checks/validate_internal_zaugsum"
+  name = "validate_internal_rdzrnm2"
+
+class ValidateInternalRZDOTUTest(CheckTest):
+  base_flags = "-w rzdotu"
+  executable = "tests/checks/validate_internal_zaugsum"
+  name = "validate_internal_rzdotu"
+
+class ValidateInternalRZDOTCTest(CheckTest):
+  base_flags = "-w rzdotc"
+  executable = "tests/checks/validate_internal_zaugsum"
+  name = "validate_internal_rzdotc"
+
+class ValidateInternalZIZIADDTest(CheckTest):
+  base_flags = "-w ziziadd"
+  executable = "tests/checks/validate_internal_zaugsum"
+  name = "validate_internal_ziziadd"
+
+class ValidateInternalZIZADDTest(CheckTest):
+  base_flags = "-w zizadd"
+  executable = "tests/checks/validate_internal_zaugsum"
+  name = "validate_internal_zizadd"
+
+class ValidateInternalZIZDEPOSITTest(CheckTest):
+  base_flags = "-w zizdeposit"
+  executable = "tests/checks/validate_internal_zaugsum"
+  name = "validate_internal_zizdeposit"
+
 class ValidateInternalRSSUMTest(CheckTest):
   base_flags = "-w rssum"
   executable = "tests/checks/validate_internal_saugsum"

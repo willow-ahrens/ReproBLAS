@@ -399,27 +399,29 @@ float complex wrap_caugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill
       }
 
     case wrap_caugsum_RSCNRM2:
-      float new_scale = MAX(fabs(RealScaleX), fabs(ImagScaleX));
-      switch(FillX){
-        case util_Vec_Constant:
-          return sqrt(N) * sqrt((RealScaleX/new_scale) * (RealScaleX/new_scale) + (ImagScaleX/new_scale) * (ImagScaleX/new_scale)) * new_scale;
-        case util_Vec_Pos_Inf:
-        case util_Vec_Pos_Pos_Inf:
-        case util_Vec_Pos_Neg_Inf:
-          return 1.0/0.0;
-        case util_Vec_NaN:
-        case util_Vec_Pos_Inf_NaN:
-        case util_Vec_Pos_Pos_Inf_NaN:
-        case util_Vec_Pos_Neg_Inf_NaN:
-          return 0.0/0.0;
-        case util_Vec_Pos_Big:
-          return sqrt((N - 1) * small * small + big * big) * sqrt((RealScaleX/new_scale) * (RealScaleX/new_scale) + (ImagScaleX/new_scale) * (ImagScaleX/new_scale)) * new_scale;
-        case util_Vec_Pos_Pos_Big:
-        case util_Vec_Pos_Neg_Big:
-          return sqrt(((N - 2) * small * small + big * big) + big * big) * sqrt((RealScaleX/new_scale) * (RealScaleX/new_scale) + (ImagScaleX/new_scale) * (ImagScaleX/new_scale)) * new_scale;
-        default:
-          fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi))\n", wrap_caugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX);
-          exit(125);
+      {
+        float new_scale = MAX(fabs(RealScaleX), fabs(ImagScaleX));
+        switch(FillX){
+          case util_Vec_Constant:
+            return sqrt(N) * sqrt((RealScaleX/new_scale) * (RealScaleX/new_scale) + (ImagScaleX/new_scale) * (ImagScaleX/new_scale)) * new_scale;
+          case util_Vec_Pos_Inf:
+          case util_Vec_Pos_Pos_Inf:
+          case util_Vec_Pos_Neg_Inf:
+            return 1.0/0.0;
+          case util_Vec_NaN:
+          case util_Vec_Pos_Inf_NaN:
+          case util_Vec_Pos_Pos_Inf_NaN:
+          case util_Vec_Pos_Neg_Inf_NaN:
+            return 0.0/0.0;
+          case util_Vec_Pos_Big:
+            return sqrt((N - 1) * small * small + big * big) * sqrt((RealScaleX/new_scale) * (RealScaleX/new_scale) + (ImagScaleX/new_scale) * (ImagScaleX/new_scale)) * new_scale;
+          case util_Vec_Pos_Pos_Big:
+          case util_Vec_Pos_Neg_Big:
+            return sqrt(((N - 2) * small * small + big * big) + big * big) * sqrt((RealScaleX/new_scale) * (RealScaleX/new_scale) + (ImagScaleX/new_scale) * (ImagScaleX/new_scale)) * new_scale;
+          default:
+            fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi))\n", wrap_caugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX);
+            exit(125);
+        }
       }
 
     case wrap_caugsum_RCDOTC:
