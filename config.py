@@ -1,3 +1,4 @@
+import itertools
 import multiprocessing
 import subprocess
 import sys
@@ -11,7 +12,8 @@ def status(i, n):
   sys.stdout.write("\r[{}{}] {:7.3f}%".format(done * "#", remaining * " ", (100.0*i)/n))
   sys.stdout.flush()
 
-def execute(command, verbose):
+def execute(command_verbose):
+  (command, verbose) = command_verbose
   if verbose == "true":
     print(command)
   rc = 0
@@ -30,20 +32,14 @@ def run(command_list, verbose="false"):
   target and returns a list of their results as a list of tuples of (return
   code, output)
   """
-  result = []
-  for (i, command) in enumerate(command_list):
-    result.append(execute(command, verbose))
+  result_list = []
+  for (i, result) in enumerate(itertools.imap(execute, itertools.izip(command_list, itertools.repeat(verbose)))):
     if verbose != "true":
-      status(i, len(command_list))
+      status(i, len(command_list));
+    result_list.append(result)
   if verbose != "true":
     print()
-  return result
-
-def execute_parallel(command_completed_verbose):
-  command, completed, verbose = command_completed_verbose
-  (rc, out) = execute(command, verbose)
-  completed.put(command)
-  return (rc, out)
+  return result_list
 
 def run_parallel(command_list, verbose="false"):
   """
@@ -52,16 +48,14 @@ def run_parallel(command_list, verbose="false"):
   of tuples of (return code, output)
   """
   p = multiprocessing.Pool(multiprocessing.cpu_count())
-  m = multiprocessing.Manager()
-  completed = m.Queue()
-  result = p.map_async(execute_parallel, [(command, completed, verbose) for command in command_list])
-  while not result.ready():
+  result_list = []
+  for (i, result) in enumerate(p.imap(execute, [(command, verbose) for command in command_list], chunksize=multiprocessing.cpu_count() * 16)):
     if verbose != "true":
-      status(completed.qsize(), len(command_list))
-    time.sleep(1);
+      status(i, len(command_list));
+    result_list.append(result)
   if verbose != "true":
     print()
-  return list(result.get())
+  return result_list
 
 def peak_time(data):
   """
