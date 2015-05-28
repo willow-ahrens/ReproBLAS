@@ -1,34 +1,67 @@
 import multiprocessing
 import subprocess
 import sys
+import time
 
-def callsafe(command):
-  print(command)
+def status(i, n):
+  i += 1
+  width = 80
+  done = (i * (width - 2))//n
+  remaining = width - 2 - done
+  sys.stdout.write("\r[{}{}] {:7.3f}%".format(done * "#", remaining * " ", (100.0*i)/n))
+  sys.stdout.flush()
+
+def execute(command, verbose):
+  if verbose == "true":
+    print(command)
   rc = 0
   try:
     out = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True).decode(sys.stdout.encoding)
   except subprocess.CalledProcessError as e:
     rc = e.returncode
     out = e.output.decode(sys.stdout.encoding)
-  print(out)
+  if verbose == "true":
+    print(out)
   return (rc, out)
 
-def run(command_list):
+def run(command_list, verbose="false"):
   """
   A function that runs the command list (a list of string commands) on the
   target and returns a list of their results as a list of tuples of (return
   code, output)
   """
-  return list(map(callsafe, command_list))
+  result = []
+  for (i, command) in enumerate(command_list):
+    result.append(execute(command, verbose))
+    if verbose != "true":
+      status(i, len(command_list))
+  if verbose != "true":
+    print()
+  return result
 
-def run_parallel(command_list):
+def execute_parallel(command_completed_verbose):
+  command, completed, verbose = command_completed_verbose
+  (rc, out) = execute(command, verbose)
+  completed.put(command)
+  return (rc, out)
+
+def run_parallel(command_list, verbose="false"):
   """
   A function that runs the command list (a list of string commands) on the
   target (possibly in parallel) and returns a list of their results as a list
   of tuples of (return code, output)
   """
   p = multiprocessing.Pool(multiprocessing.cpu_count())
-  return p.map(callsafe, command_list)
+  m = multiprocessing.Manager()
+  completed = m.Queue()
+  result = p.map_async(execute_parallel, [(command, completed, verbose) for command in command_list])
+  while not result.ready():
+    if verbose != "true":
+      status(completed.qsize(), len(command_list))
+    time.sleep(1);
+  if verbose != "true":
+    print()
+  return list(result.get())
 
 def peak_time(data):
   """

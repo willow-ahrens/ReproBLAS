@@ -20,6 +20,7 @@ class Harness(object):
     parser = argparse.ArgumentParser(description = name)
     parser.add_argument('-f', '--format', default="term", choices=["term", "csv"], help='output format')
     parser.add_argument('-r', '--runmode', default="sequential", choices=["sequential", "parallel"], help='run mode')
+    parser.add_argument('-v', '--verbose', default="true", choices=["true", "false"], help='verbose')
     self.args = parser.parse_args()
     if self.args.format == "term":
       self.table = texttable.Texttable(max_width = 80)
@@ -39,12 +40,12 @@ class Harness(object):
   def run(self, **kwargs):
     command_list = []
     for suite in self.suites:
-      suite.setup(**kwargs)
+      suite.setup(verbose = self.args.verbose, **kwargs)
       command_list += suite.get_command_list()
     if self.args.runmode == "sequential":
-      output_list = config.run(command_list)
+      output_list = config.run(command_list, verbose = self.args.verbose)
     else:
-      output_list = config.run_parallel(command_list)
+      output_list = config.run_parallel(command_list, verbose=self.args.verbose)
     for suite in self.suites:
       suite.parse_output_list(output_list[:len(suite.get_command_list())])
       output_list = output_list[len(suite.get_command_list()):]

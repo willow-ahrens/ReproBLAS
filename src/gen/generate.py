@@ -76,7 +76,6 @@ class BooleanParameter(Parameter):
     data["default"] = self.default
     return data
 
-
 class IntegerParameter(Parameter):
   def __init__(self, name, minimum, maximum, step, default):
     super(IntegerParameter, self).__init__(name)

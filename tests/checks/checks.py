@@ -21,10 +21,11 @@ class CheckSuite(harness.Suite):
       self.params.append(params)
       self.args.append(args)
 
-  def setup(self, **kwargs):
+  def setup(self, verbose = "false", **kwargs):
+    self.verbose = verbose;
     for check_row, params, args in zip(self.check_rows, self.params, self.args):
       for check in check_row:
-        check.setup(flags = terminal.flags(params, args), **kwargs)
+        check.setup(flags = terminal.flags(params, args), verbose=verbose, **kwargs)
 
   def get_command_list(self):
     command_list = []
@@ -55,7 +56,7 @@ class CheckSuite(harness.Suite):
     na = 0
     rows = []
     for check in self.checks:
-      if check.get_result() == 0:
+      if self.verbose == "true" and check.get_result() == 0:
         rows.append([check.get_name(), "Pass"])
         passed += 1
       elif check.get_result() == 125:
@@ -136,10 +137,6 @@ class ValidateInternalSAMAXTest(CheckTest):
 class ValidateInternalCAMAXTest(CheckTest):
   executable = "tests/checks/validate_internal_camax"
   name = "validate_internal_camax"
-
-class ValidateInternalRDBLAS1Test(CheckTest):
-  executable = "tests/checks/validate_internal_rdblas1"
-  name = "validate_internal_rdblas1"
 
 class ValidateInternalRDSUMTest(CheckTest):
   base_flags = "-w rdsum"
@@ -563,10 +560,10 @@ class VerifySMINDEXTest(CheckTest):
   executable = "tests/checks/verify_smindex"
   name = "verify_smindex"
 
-class VerifyRDGEMVTest(CheckTest):
-  base_flags = ""
-  executable = "tests/checks/verify_rdgemv"
-  name = "verify_rdgemv"
+#class VerifyRDGEMVTest(CheckTest):
+#  base_flags = ""
+#  executable = "tests/checks/verify_rdgemv"
+#  name = "verify_rdgemv"
 
 all_checks = {"validate_internal_ufp": ValidateInternalUFPTest,\
               "validate_internal_ufpf": ValidateInternalUFPFTest,\
@@ -574,10 +571,36 @@ all_checks = {"validate_internal_ufp": ValidateInternalUFPTest,\
               "validate_internal_zamax": ValidateInternalZAMAXTest,\
               "validate_internal_samax": ValidateInternalSAMAXTest,\
               "validate_internal_camax": ValidateInternalCAMAXTest,\
-              "validate_internal_rdblas1": ValidateInternalRDBLAS1Test,\
-              "validate_internal_rzblas1": ValidateInternalRZBLAS1Test,\
-              "validate_internal_rsblas1": ValidateInternalRSBLAS1Test,\
-              "validate_internal_rcblas1": ValidateInternalRCBLAS1Test,\
+              "validate_internal_rdsum": ValidateInternalRDSUMTest,\
+              "validate_internal_rdasum": ValidateInternalRDASUMTest,\
+              "validate_internal_rdnrm2": ValidateInternalRDNRM2Test,\
+              "validate_internal_rddot": ValidateInternalRDDOTTest,\
+              "validate_internal_didiadd": ValidateInternalDIDIADDTest,\
+              "validate_internal_didadd": ValidateInternalDIDADDTest,\
+              "validate_internal_diddeposit": ValidateInternalDIDDEPOSITTest,\
+              "validate_internal_rzsum": ValidateInternalRZSUMTest,\
+              "validate_internal_rdzasum": ValidateInternalRDZASUMTest,\
+              "validate_internal_rdznrm2": ValidateInternalRDZNRM2Test,\
+              "validate_internal_rzdotu": ValidateInternalRZDOTUTest,\
+              "validate_internal_rzdotc": ValidateInternalRZDOTCTest,\
+              "validate_internal_ziziadd": ValidateInternalZIZIADDTest,\
+              "validate_internal_zizadd": ValidateInternalZIZADDTest,\
+              "validate_internal_zizdeposit": ValidateInternalZIZDEPOSITTest,\
+              "validate_internal_rssum": ValidateInternalRSSUMTest,\
+              "validate_internal_rsasum": ValidateInternalRSASUMTest,\
+              "validate_internal_rsnrm2": ValidateInternalRSNRM2Test,\
+              "validate_internal_rsdot": ValidateInternalRSDOTTest,\
+              "validate_internal_sisiadd": ValidateInternalSISIADDTest,\
+              "validate_internal_sisadd": ValidateInternalSISADDTest,\
+              "validate_internal_sisdeposit": ValidateInternalSISDEPOSITTest,\
+              "validate_internal_rcsum": ValidateInternalRCSUMTest,\
+              "validate_internal_rscasum": ValidateInternalRSCASUMTest,\
+              "validate_internal_rscnrm2": ValidateInternalRSCNRM2Test,\
+              "validate_internal_rcdotu": ValidateInternalRCDOTUTest,\
+              "validate_internal_rcdotc": ValidateInternalRCDOTCTest,\
+              "validate_internal_ciciadd": ValidateInternalCICIADDTest,\
+              "validate_internal_cicadd": ValidateInternalCICADDTest,\
+              "validate_internal_cicdeposit": ValidateInternalCICDEPOSITTest,\
               "validate_external_rdsum": ValidateExternalRDSUMTest,\
               "validate_external_rdasum": ValidateExternalRDASUMTest,\
               "validate_external_rdnrm2": ValidateExternalRDNRM2Test,\

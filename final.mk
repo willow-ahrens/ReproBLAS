@@ -53,14 +53,14 @@ excise:
 	$(foreach SOURCE, $(call get_subtree,COGGED,$(TOP)), $(COG) -r -x $(SOURCE) &&) echo
 
 check:
-	$(CALL_PYTHON) $(TOP)/tests/checks/check.py --runmode parallel
+	$(CALL_PYTHON) $(TOP)/tests/checks/check.py --runmode parallel --verbose $(VERBOSE)
 
 reference:
 	rm $(TOP)/tests/checks/data/*
 	$(CALL_PYTHON) $(TOP)/tests/checks/reference.py
 
 bench:
-	$(CALL_PYTHON) $(TOP)/tests/benchs/bench.py
+	$(CALL_PYTHON) $(TOP)/tests/benchs/bench.py --verbose $(VERBOSE)
 
 doc:
 	cd $(TOP); rm -rf doc/*; doxygen config.dox; cd doc/latex;make
