@@ -56,7 +56,7 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
       return;
     } else if (isinf(manZ[0]) && isinf(manZ[1])){
       x += N_block * 2 * incX;
-      y += N_block * 2 * incX;
+      y += N_block * 2 * incY;
       continue;
     }
     if (isinf(manZ[0]) || isnan(manZ[0])){
