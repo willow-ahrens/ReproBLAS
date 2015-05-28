@@ -400,6 +400,7 @@ float complex wrap_caugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill
         case util_Vec_Pos_Inf:
         case util_Vec_Pos_Pos_Inf:
         case util_Vec_Pos_Neg_Inf:
+          return 1.0/0.0;
         case util_Vec_NaN:
         case util_Vec_Pos_Inf_NaN:
         case util_Vec_Pos_Pos_Inf_NaN:
@@ -587,8 +588,12 @@ float complex wrap_caugsum_bound(int fold, int N, wrap_caugsum_func_t func, floa
     case wrap_caugsum_CICDEPOSIT:
       {
         float complex amax;
+        float complex bound;
+        float *bound_base = (float*)&bound;
         camax_sub(N, X, incX, &amax);
-        return sibound(fold, N, crealf(amax)) + sibound(fold, N, cimagf(amax)) * I;
+        bound_base[0] = sibound(fold, N, crealf(amax));
+        bound_base[1] = sibound(fold, N, cimagf(amax));
+        return bound;
       }
     case wrap_caugsum_RSCASUM:
       {
@@ -606,8 +611,12 @@ float complex wrap_caugsum_bound(int fold, int N, wrap_caugsum_func_t func, floa
     case wrap_caugsum_RCDOTC:
       {
         float complex amaxm;
+        float complex bound;
+        float *bound_base = (float*)&bound;
         camaxm_sub(N, X, incX, Y, incY, &amaxm);
-        return sibound(fold, N, crealf(amaxm)) + sibound(fold, N, cimagf(amaxm)) * I;
+        bound_base[0] = sibound(fold, N, crealf(amaxm));
+        bound_base[1] = sibound(fold, N, cimagf(amaxm));
+        return bound;
       }
   }
 }
