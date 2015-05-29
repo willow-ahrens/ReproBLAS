@@ -129,4 +129,4 @@ def peak_time(data):
 #  @author Peter Ahrens
 #  @date   28 May 2015
 #
-version = "0.0.0"
+version = "2.0.0"
