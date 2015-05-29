@@ -17,9 +17,11 @@ LDFLAGS +=
 
 # select MPI compiler flags (comment for auto)
 #MPICFLAGS = $(shell mpicc --showme compile)
+#MPICFLAGS = $(shell mpicc -compile_info)
 
 # select MPI linker flags (comment for auto)
 #MPILDFLAGS = $(shell mpicc --showme link)
+#MPICFLAGS = $(shell mpicc -link_info)
 
 # select python (comment all for auto)
 #PYTHON = python
@@ -50,8 +52,8 @@ LDFLAGS +=
 # building - if you're cross compiling then you should set this manually)
 ENDIAN := $(shell perl -le 'print unpack(N,pack(L,0x01020304)) == 0x01020304 ? big : little')
 
-# select BLAS library from preconfigured or "CUSTOM" options. (comment all to
-# not use external BLAS library. Corresponding parts of ReproBLAS won't build)
+# select BLAS library from preconfigured or CUSTOM options. (comment all to not
+# use external BLAS library. Corresponding parts of ReproBLAS won't build)
 #BLAS := REF
 #BLAS := ATLAS
 #BLAS := MKL
@@ -71,13 +73,20 @@ BLAS := ACCELERATE
 
 #HOST_ARCH := profile
 
+# select arguments file (This file contains all of the values for tuning
+# parameters in the library. One can give this parameter on the command line as
+# well. If you have run the autotuner, you can point this at the output file to
+# use the tuned arguments.)
 ARGS = $(TOP)/src/default_args.json
+
+# select parameters file (This file contains all tuning parameters in the
+# library. This parameter likely does not need modification.)
 PARAMS = $(TOP)/src/params.json
 
-# Make the compiler invocation lines verbose - if it is not defined or
-# set to value other then "true" you'll see just indication of what is
-# being compiled (without details about options)
-VERBOSE := true
+# select verbosity (if VERBOSE is not defined or set to value other than "true"
+# you'll see just indication of what is being compiled or run (without details
+# about options))
+#VERBOSE := true
 
-# Uncomment if you don't like coloring of the output
+# select coloring (Uncomment if you don't like coloring of the output)
 #COLOR_TTY := false

@@ -20,7 +20,7 @@ class Harness(object):
     parser = argparse.ArgumentParser(description = name)
     parser.add_argument('-f', '--format', default="term", choices=["term", "csv"], help='output format')
     parser.add_argument('-r', '--runmode', default="sequential", choices=["sequential", "parallel"], help='run mode')
-    parser.add_argument('-v', '--verbose', default="true", type=str, help='verbose if "true"')
+    parser.add_argument('-v', '--verbose', default="false", type=str, nargs="?", help='verbose if "true"')
     self.args = parser.parse_args()
     if self.args.format == "term":
       self.table = texttable.Texttable(max_width = 80)

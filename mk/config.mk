@@ -50,8 +50,6 @@ ifeq ($(CC),)
   endif
 endif
 
-
-#TODO do some better MPI flag detection.
 # Detect MPI C compiler in the following order
 ifeq ($(MPICC),)
   ifeq ("$(shell which mpicc >/dev/null; echo $$?)", "0")
@@ -64,14 +62,22 @@ endif
 # Detect MPI C compiler flags in the following order if MPICFLAGS hasn't been set
 ifeq ($(MPICFLAGS),)
   ifeq ($(MPICC), mpicc)
-    MPICFLAGS := $(shell $(MPICC) --showme:compile)
+    ifeq ("$(shell mpicc --showme:compile >/dev/null; echo $$?)", "0")
+      MPICFLAGS := $(shell $(MPICC) --showme:compile)
+    else ifeq ("$(shell mpicc -compile_info >/dev/null; echo $$?)", "0")
+      MPICFLAGS := $(shell $(MPICC) -compile_info)
+    endif
   endif
 endif
 
 # Detect MPI C linker flags in the following order if MPILDFLAGS hasn't been set
 ifeq ($(MPILDFLAGS),)
   ifeq ($(MPICC), mpicc)
-    MPILDFLAGS := $(shell $(MPICC) --showme:link)
+    ifeq ("$(shell mpicc --showme:link >/dev/null; echo $$?)", "0")
+      MPILDFLAGS := $(shell $(MPICC) --showme:link)
+    else ifeq ("$(shell mpicc -link_info >/dev/null; echo $$?)", "0")
+      MPILDFLAGS := $(shell $(MPICC) -link_info)
+    endif
   endif
 endif
 

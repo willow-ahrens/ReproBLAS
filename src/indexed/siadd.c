@@ -43,6 +43,11 @@ void smsmadd(const int fold, const float *manX, const int incmanX, const float *
     return;
   }
 
+  if (isinf(manX[0]) || isnan(manX[0]) || isinf(manY[0]) || isnan(manY[0])) {
+    manY[0] += manX[0];
+    return;
+  }
+
   shift = smindex(manY) - smindex(manX);
   if(shift > 0){
     //shift Y upwards and add X to Y
@@ -146,6 +151,12 @@ void smsdeposit(const int fold, const float X, float *manY, const int incmanY){
   int_float q;
   int i;
   float x = X * smcompression();
+
+  if (isinf(x) || isnan(x) || isinf(manY[0]) || isnan(manY[0])) {
+    manY[0] += x;
+    return;
+  }
+
   for (i = 0; i < fold - 1; i++) {
     M = manY[i * incmanY];
     q.f = x;
@@ -202,6 +213,17 @@ void cmcdeposit(const int fold, const void *X, float *manY, const int incmanY){
   int i;
   float xR = ((float*)X)[0] * smcompression();
   float xI = ((float*)X)[1] * smcompression();
+
+  if (isinf(xR) || isnan(xR) || isinf(manY[0]) || isnan(manY[0])) {
+    manY[0] += xR;
+    smsdeposit(fold, xI, manY + incmanY, 2 * incmanY);
+    return;
+  }
+  if (isinf(xI) || isnan(xI) || isinf(manY[1]) || isnan(manY[1])) {
+    manY[1] += xI;
+    smsdeposit(fold, xR, manY, 2 * incmanY);
+    return;
+  }
 
   for (i = 0; i < fold - 1; i++) {
     MR = manY[i * 2 * incmanY];

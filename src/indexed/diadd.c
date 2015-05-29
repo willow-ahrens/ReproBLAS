@@ -43,6 +43,11 @@ void dmdmadd(const int fold, const double *manX, const int incmanX, const double
     return;
   }
 
+  if (isinf(manX[0]) || isnan(manX[0]) || isinf(manY[0]) || isnan(manY[0])) {
+    manY[0] += manX[0];
+    return;
+  }
+
   shift = dmindex(manY) - dmindex(manX);
   if(shift > 0){
     //shift Y upwards and add X to Y
@@ -146,6 +151,12 @@ void dmddeposit(const int fold, const double X, double *manY, const int incmanY)
   double x = X * dmcompression();
   long_double q;
   int i;
+
+  if (isinf(x) || isnan(x) || isinf(manY[0]) || isnan(manY[0])) {
+    manY[0] += x;
+    return;
+  }
+
   for (i = 0; i < fold - 1; i++) {
     M = manY[i * incmanY];
     q.d = x;
@@ -202,6 +213,17 @@ void zmzdeposit(const int fold, const void *X, double *manY, const int incmanY){
   int i;
   double xR = ((double*)X)[0] * dmcompression();
   double xI = ((double*)X)[1] * dmcompression();
+
+  if (isinf(xR) || isnan(xR) || isinf(manY[0]) || isnan(manY[0])) {
+    manY[0] += xR;
+    dmddeposit(fold, xI, manY + incmanY, 2 * incmanY);
+    return;
+  }
+  if (isinf(xI) || isnan(xI) || isinf(manY[1]) || isnan(manY[1])) {
+    manY[1] += xI;
+    dmddeposit(fold, xR, manY, 2 * incmanY);
+    return;
+  }
 
   for (i = 0; i < fold - 1; i++) {
     MR = manY[i * 2 * incmanY];
