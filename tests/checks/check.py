@@ -43,6 +43,7 @@ check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
                          "+-big",\
                          "sine"]])
 
+"""
 check_suite.add_checks([checks.ValidateInternalRZSUMTest(),\
                         checks.ValidateInternalZIZIADDTest(),\
                         checks.ValidateInternalZIZADDTest(),\
@@ -307,6 +308,7 @@ check_suite.add_checks([checks.VerifyRDDOTTest(),\
 #                         "small+grow*big"],\
 #                        ["rand",\
 #                         "small+grow*big"]])
+"""
 
 check_harness = harness.Harness("check")
 check_harness.add_suite(check_suite)

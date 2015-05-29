@@ -9,7 +9,7 @@
 #include "../../config.h"
 
 #define FLT_BIN_DIG        13
-static float bins[(FLT_MAX_EXP - FLT_MIN_EXP - FLT_MANT_DIG - 1)/FLT_BIN_DIG + MAX_FOLD]; //initialized in bins_initialize
+static float bins[(FLT_MAX_EXP - FLT_MIN_EXP)/FLT_BIN_DIG + MAX_FOLD]; //initialized in bins_initialize
 static int   bins_initialized  = 0;                                    //initialized in bins_initialize
 
 /**
@@ -105,11 +105,36 @@ int smindex(const float *manX){
   int exp;
 
   if(manX[0] == 0.0){
-    return (FLT_MAX_EXP - FLT_MIN_EXP - FLT_MANT_DIG - 1)/FLT_BIN_DIG + MAX_FOLD;
+    return (FLT_MAX_EXP - FLT_MIN_EXP)/FLT_BIN_DIG + MAX_FOLD;
   }else{
     frexpf(manX[0], &exp);
-    return (FLT_MAX_EXP - exp)/FLT_BIN_DIG;
+    if(exp == FLT_MAX_EXP){
+      return 0;
+    }
+    return (FLT_MAX_EXP + FLT_MANT_DIG - FLT_BIN_DIG + 1 - exp)/FLT_BIN_DIG;
   }
+}
+
+/**
+ * @internal
+ * @brief Check if index of manually specified indexed single precision is 0
+ *
+ * A quick check to determine if the index is 0
+ *
+ * @param manX X's mantissa vector
+ * @return 1 if x has index 0, 0 otherwise.
+ *
+ * @author Peter Ahrens
+ * @date   19 May 2015
+ */
+int smindex0(const float *manX){
+  int exp;
+
+  frexpf(manX[0], &exp);
+  if(exp == FLT_MAX_EXP){
+    return 1;
+  }
+  return 0;
 }
 
 /**
@@ -128,7 +153,7 @@ int sindex(const float X){
   int exp;
 
   if(X == 0.0){
-    return (FLT_MAX_EXP - FLT_MIN_EXP - FLT_MANT_DIG - 1)/FLT_BIN_DIG;
+    return (FLT_MAX_EXP - FLT_MIN_EXP)/FLT_BIN_DIG;
   }else{
     frexpf(X, &exp);
     return (FLT_MAX_EXP - exp)/FLT_BIN_DIG;
@@ -142,10 +167,11 @@ static void bins_initialize() {
     return;
   }
 
-  for(index = 0; index <= (FLT_MAX_EXP - FLT_MIN_EXP - FLT_MANT_DIG - 1)/FLT_BIN_DIG; index++){
-    bins[index] = ldexp(0.75, (FLT_MAX_EXP - index * FLT_BIN_DIG));
+  bins[0] = ldexpf(0.75, FLT_MAX_EXP);
+  for(index = 1; index <= (FLT_MAX_EXP - FLT_MIN_EXP)/FLT_BIN_DIG; index++){
+    bins[index] = ldexpf(0.75, (FLT_MAX_EXP + FLT_MANT_DIG - FLT_BIN_DIG + 1 - index * FLT_BIN_DIG));
   }
-  for(; index < (FLT_MAX_EXP - FLT_MIN_EXP - FLT_MANT_DIG - 1)/FLT_BIN_DIG + MAX_FOLD; index++){
+  for(; index < (FLT_MAX_EXP - FLT_MIN_EXP)/FLT_BIN_DIG + MAX_FOLD; index++){
     bins[index] = bins[index - 1];
   }
 

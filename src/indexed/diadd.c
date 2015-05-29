@@ -148,27 +148,51 @@ void ziziadd(const int fold, const double_complex_indexed *X, double_complex_ind
  */
 void dmddeposit(const int fold, const double X, double *manY, const int incmanY){
   double M;
-  double x = X * dmcompression();
   long_double q;
   int i;
+  double x = X;
 
   if (isinf(x) || isnan(x) || isinf(manY[0]) || isnan(manY[0])) {
     manY[0] += x;
     return;
   }
 
-  for (i = 0; i < fold - 1; i++) {
-    M = manY[i * incmanY];
-    q.d = x;
+  if(dmindex0(manY)){
+    M = manY[0];
+    q.d = x * dmcompression();
     q.l |= 1;
     q.d += M;
-    manY[i * incmanY] = q.d;
+    manY[0] = q.d;
     M -= q.d;
-    x += M;
+    x += M * dmexpansion();
+    for (i = 1; i < fold - 2; i++) {
+      M = manY[i * incmanY];
+      q.d = x;
+      q.l |= 1;
+      q.d += M;
+      manY[i * incmanY] = q.d;
+      M -= q.d;
+      x += M;
+    }
+    if (fold > 1) {
+      q.d = x;
+      q.l |= 1;
+      manY[i * incmanY] += q.d;
+    }
+  }else{
+    for (i = 0; i < fold - 1; i++) {
+      M = manY[i * incmanY];
+      q.d = x;
+      q.l |= 1;
+      q.d += M;
+      manY[i * incmanY] = q.d;
+      M -= q.d;
+      x += M;
+    }
+    q.d = x;
+    q.l |= 1;
+    manY[i * incmanY] += q.d;
   }
-  q.d = x;
-  q.l |= 1;
-  manY[i * incmanY] += q.d;
 }
 
 /**
@@ -211,17 +235,23 @@ void zmzdeposit(const int fold, const void *X, double *manY, const int incmanY){
   double MR, MI;
   long_double qR, qI;
   int i;
-  double xR = ((double*)X)[0] * dmcompression();
-  double xI = ((double*)X)[1] * dmcompression();
+  double xR = ((double*)X)[0];
+  double xI = ((double*)X)[1];
 
   if (isinf(xR) || isnan(xR) || isinf(manY[0]) || isnan(manY[0])) {
     manY[0] += xR;
-    dmddeposit(fold, xI, manY + incmanY, 2 * incmanY);
+    dmddeposit(fold, xI, manY + 1, 2 * incmanY);
     return;
   }
   if (isinf(xI) || isnan(xI) || isinf(manY[1]) || isnan(manY[1])) {
     manY[1] += xI;
     dmddeposit(fold, xR, manY, 2 * incmanY);
+    return;
+  }
+
+  if(dmindex0(manY) || dmindex0(manY + 1)){
+    dmddeposit(fold, xR, manY, 2 * incmanY);
+    dmddeposit(fold, xI, manY + 1, 2 * incmanY);
     return;
   }
 

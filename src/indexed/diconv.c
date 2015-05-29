@@ -90,7 +90,7 @@ void zizconv(const int fold, const void *X, double_complex_indexed *Y) {
  * @date   27 Apr 2015
  */
 double ddmconv(const int fold, const double* manX, const int incmanX, const double* carX, const int inccarX) {
-  int i;
+  int i = 0;
   double Y = 0.0;
   double M;
 
@@ -101,12 +101,18 @@ double ddmconv(const int fold, const double* manX, const int incmanX, const doub
     return 0.0;
   }
 
-  for (i = 0; i < fold; i++) {
+  if(dmindex0(manX)){
+    M = ufp(manX[i * incmanX]);
+    Y = ((manX[i * incmanX] - 1.5 * M) + carX[i * inccarX] * (0.25 * M)) * dmexpansion();
+    i = 1;
+  }
+
+  for (; i < fold; i++) {
     M = ufp(manX[i * incmanX]);
     Y += (manX[i * incmanX] - 1.5 * M) + carX[i * inccarX] * (0.25 * M);
   }
 
-  return Y * dmexpansion();
+  return Y;
 }
 
 /**

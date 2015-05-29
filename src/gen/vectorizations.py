@@ -71,6 +71,9 @@ class Vectorization(object):
   def set(self, src_var):
     raise(NotImplementedError())
 
+  def set_real_imag(self, real_src_var, imag_src_var):
+    raise(NotImplementedError())
+
   def rep_evens(self, src_vars):
     raise(NotImplementedError())
 
@@ -250,6 +253,10 @@ class SISD(Vectorization):
 
   def set(self, src_var):
     return [src_var]
+
+  def set_real_imag(self, real_src_var, imag_src_var):
+    assert self.data_type.is_complex, "cannot set real and imaginary portions of noncomplex"
+    return [real_src_var, imag_src_var]
 
   def sub(self, src_vars, amt_vars):
     return ["{0} - {1}".format(src_var, amt_var) for (src_var, amt_var) in zip(src_vars, amt_vars)]
@@ -454,6 +461,14 @@ class SSE(SIMD):
   def set(self, src_var):
     return ["_mm_set1_p{0}({1})".format(self.data_type.base_type.name_char, src_var)]
 
+  def set_real_imag(self, real_src_var, imag_src_var):
+    assert self.data_type.is_complex, "cannot set real and imaginary portions of noncomplex"
+    return [real_src_var, imag_src_var]
+    if self.data_type.name == "double complex":
+      return ["_mm_set_pd({0}, {1})".format(real_src_var, imag_src_var)]
+    elif self.data_type.name == "float complex":
+      return ["_mm_set_ps({0}, {1}, {0}, {1})".format(real_src_var, imag_src_var)]
+
   def rep_evens(self, src_vars):
     if self.data_type.base_type.name == "double":
       return ["_mm_shuffle_pd({0}, {0}, 0b00)".format(src_var) for src_var in src_vars]
@@ -611,9 +626,16 @@ class AVX(SIMD):
       return ["_mm256_xor_p{0}({1}, nconj_mask)".format(self.data_type.base_type.name_char, src_var) for src_var in src_vars]
     else:
       return src_vars
-    
+
   def set(self, src_var):
     return ["_mm256_set1_p{0}({1})".format(self.data_type.base_type.name_char, src_var)]
+
+  def set_real_imag(self, real_src_var, imag_src_var):
+    assert self.data_type.is_complex, "cannot set real and imaginary portions of noncomplex"
+    if self.data_type.name == "double complex":
+      return ["_mm256_set_pd({0}, {1}, {0}, {1})".format(real_src_var, imag_src_var)]
+    elif self.data_type.name == "float complex":
+      return ["_mm256_set_ps({0}, {1}, {0}, {1}, {0}, {1}, {0}, {1})".format(real_src_var, imag_src_var)]
 
   def rep_evens(self, src_vars):
     if self.data_type.base_type.name == "double":

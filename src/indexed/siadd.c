@@ -150,25 +150,49 @@ void smsdeposit(const int fold, const float X, float *manY, const int incmanY){
   float M;
   int_float q;
   int i;
-  float x = X * smcompression();
+  float x = X;
 
   if (isinf(x) || isnan(x) || isinf(manY[0]) || isnan(manY[0])) {
     manY[0] += x;
     return;
   }
 
-  for (i = 0; i < fold - 1; i++) {
-    M = manY[i * incmanY];
-    q.f = x;
+  if(smindex0(manY)){
+    M = manY[0];
+    q.f = x * smcompression();
     q.i |= 1;
     q.f += M;
-    manY[i * incmanY] = q.f;
+    manY[0] = q.f;
     M -= q.f;
-    x += M;
+    x += M * smexpansion();
+    for (i = 1; i < fold - 2; i++) {
+      M = manY[i * incmanY];
+      q.f = x;
+      q.i |= 1;
+      q.f += M;
+      manY[i * incmanY] = q.f;
+      M -= q.f;
+      x += M;
+    }
+    if (fold > 1) {
+      q.f = x;
+      q.i |= 1;
+      manY[i * incmanY] += q.f;
+    }
+  }else{
+    for (i = 0; i < fold - 1; i++) {
+      M = manY[i * incmanY];
+      q.f = x;
+      q.i |= 1;
+      q.f += M;
+      manY[i * incmanY] = q.f;
+      M -= q.f;
+      x += M;
+    }
+    q.f = x;
+    q.i |= 1;
+    manY[i * incmanY] += q.f;
   }
-  q.f = x;
-  q.i |= 1;
-  manY[i * incmanY] += q.f;
 }
 
 /**
@@ -211,17 +235,23 @@ void cmcdeposit(const int fold, const void *X, float *manY, const int incmanY){
   float MR, MI;
   int_float qR, qI;
   int i;
-  float xR = ((float*)X)[0] * smcompression();
-  float xI = ((float*)X)[1] * smcompression();
+  float xR = ((float*)X)[0];
+  float xI = ((float*)X)[1];
 
   if (isinf(xR) || isnan(xR) || isinf(manY[0]) || isnan(manY[0])) {
     manY[0] += xR;
-    smsdeposit(fold, xI, manY + incmanY, 2 * incmanY);
+    smsdeposit(fold, xI, manY + 1, 2 * incmanY);
     return;
   }
   if (isinf(xI) || isnan(xI) || isinf(manY[1]) || isnan(manY[1])) {
     manY[1] += xI;
     smsdeposit(fold, xR, manY, 2 * incmanY);
+    return;
+  }
+
+  if(smindex0(manY) || smindex0(manY + 1)){
+    smsdeposit(fold, xR, manY, 2 * incmanY);
+    smsdeposit(fold, xI, manY + 1, 2 * incmanY);
     return;
   }
 

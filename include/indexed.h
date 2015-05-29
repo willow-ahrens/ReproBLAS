@@ -128,6 +128,7 @@ double dbin(const int X);
 void dmbin(const int fold, const int X, double *manY, const int incmanY, double *carY, const int inccarY);
 int dindex(const double X);
 int dmindex(const double *manX);
+int dmindex0(const double *manX);
 
 float smexpansion();
 float smcompression();
@@ -136,6 +137,7 @@ float sbin(const int X);
 void smbin(const int fold, const int X, float *manY, const int incmanY, float *carY, const int inccarY);
 int sindex(const float X);
 int smindex(const float *manX);
+int smindex0(const float *manX);
 
 void ciprint(const int fold, const float_complex_indexed *X);
 void cmprint(const int fold, const float* manX, const int incmanX, const float* carX, const int inccarX);

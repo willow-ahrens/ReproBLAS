@@ -37,14 +37,17 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   X[i * incX] = 0.0;
   for (i = 0; i < N * (DBL_MAX_EXP - DBL_MIN_EXP) + 1; i++) {
     index = dindex(X[i * incX]);
-    if (X[i * incX] >= ldexp(0.5, DBL_MIN_EXP + DBL_MANT_DIG + diwidth() + 2) && dbin(index + 1) / ldexp(0.75, DBL_MANT_DIG - diwidth()) > 2 * fabs(X[i * incX]) * dmcompression()){
+    if (index == 0){
+      X[i * incX] *= dmcompression();
+    }
+    if (X[i * incX] != 0.0 && dbin(index) / ldexp(0.75, DBL_MANT_DIG) > 2 * fabs(X[i * incX])){
       printf("2 * |X| !>= 2^(i * W)\n");
-      printf("2 * %g !>= %g\n", fabs(X[i * incX]) * dmcompression(), dbin(index + 1)/ldexp(0.75, DBL_MANT_DIG - diwidth()));
+      printf("2 * %g !>= %g\n", fabs(X[i * incX]), dbin(index + 1)/ldexp(0.75, DBL_MANT_DIG - diwidth()));
       return 1;
     }
-    if (dbin(index) / ldexp(0.75, DBL_MANT_DIG - diwidth()) <= 2 * fabs(X[i * incX]) * dmcompression()){
+    if (dbin(index) / ldexp(0.75, DBL_MANT_DIG - diwidth()) <= 2 * fabs(X[i * incX])){
       printf("2 * |X| !< 2^((i + 1) * W)\n");
-      printf("2 * %g !< %g\n", fabs(X[i * incX]) * dmcompression(), dbin(index)/ldexp(0.75, DBL_MANT_DIG - diwidth()));
+      printf("2 * %g !< %g\n", fabs(X[i * incX]), dbin(index)/ldexp(0.75, DBL_MANT_DIG - diwidth()));
       return 1;
     }
   }

@@ -86,7 +86,7 @@ void cicconv(const int fold, const void *X, float_complex_indexed *Y) {
  * @date   27 Apr 2015
  */
 float ssmconv(const int fold, const float* manX, const int incmanX, const float* carX, const int inccarX) {
-  int i;
+  int i = 0;
   float Y = 0.0;
   float M;
 
@@ -97,12 +97,18 @@ float ssmconv(const int fold, const float* manX, const int incmanX, const float*
     return 0.0;
   }
 
-  for (i = 0; i < fold; i++) {
+  if(smindex0(manX)){
+    M = ufpf(manX[i * incmanX]);
+    Y = ((manX[i * incmanX] - 1.5 * M) + carX[i * inccarX] * (0.25 * M)) * smexpansion();
+    i = 1;
+  }
+
+  for (; i < fold; i++) {
     M = ufpf(manX[i * incmanX]);
     Y += (manX[i * incmanX] - 1.5 * M) + carX[i * inccarX] * (0.25 * M);
   }
 
-  return Y * smexpansion();
+  return Y;
 }
 
 /**
