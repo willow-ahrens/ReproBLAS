@@ -1,4 +1,7 @@
 build/*
 tests/common/test_data
+doc/*
+*.DS_Store
 *.pyc
 *.log
+

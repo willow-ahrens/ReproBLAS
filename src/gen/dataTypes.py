@@ -27,10 +27,16 @@ class DataType(object):
     else:
       return mix("*", inc, mix("+", offset, i))
 
+  ##
+  #  @brief the standard loop increment string
+  #
+  #  @param src_ptrs names of pointers to source variables to be incremented(must be of type base_type)
+  #  @param src_incs names of increment variables
+  #  @param i how much to increment
+  #  @return a string that performs the increment by i of all source pointers
+  #
   def data_increment(self, src_ptrs, src_incs, i):
-    #TODO make it clear in the documentation that this implies that all inputs pointers are expected to be of base_type (maybe use this as an excuse to get rid of useless casts)
     return ", ".join(["{0} += {1}".format(src_ptr, mix("*", src_inc, self.base_size, i)) for (src_ptr, src_inc) in zip(src_ptrs, src_incs)])
- #TODO consider here the possible optimization where we multiply incv once by two if the data type is complex.
 
 class Double(DataType):
   name_char = 'd'

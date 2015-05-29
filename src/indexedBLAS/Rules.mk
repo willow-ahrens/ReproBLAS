@@ -36,6 +36,4 @@ libindexedblas.a_DEPS = $$(LIBINDEXED)                                 \
                         sissum.o sisasum.o sisnrm.o sisdot.o           \
                         cicsum.o sicasum.o sicnrm.o cicdotu.o cicdotc.o\
                         zizsum.o dizasum.o diznrm.o zizdotu.o zizdotc.o
-#                        dgemvI.o
-                        #TODO rename *_sub files
                         #TODO dIAccum.o zIAccum.o sIAccum.o cIAccum.o        \
