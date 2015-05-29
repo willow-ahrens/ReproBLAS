@@ -1222,7 +1222,7 @@ void util_dvec_fill(int N, double* V, int incV, util_vec_fill_t Fill, double Rea
 void util_svec_fill(int N, float* V, int incV, util_vec_fill_t Fill, float RealScale, float ImagScale) {
   int i;
   double small = 1.0 / (1024.0 * 4.0); // 2^-12
-  double big   = 1024.0 * 8.0;  // 2^13
+  double big   = 1024.0 * 8.0;         // 2^13
   switch(Fill){
     case util_Vec_Constant_Drop:
     case util_Vec_Constant:

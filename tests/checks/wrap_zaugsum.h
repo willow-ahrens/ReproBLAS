@@ -287,8 +287,8 @@ wrap_ziaugsum wrap_ziaugsum_func(wrap_zaugsum_func_t func) {
 }
 
 double complex wrap_zaugsum_result(int N, wrap_zaugsum_func_t func, util_vec_fill_t FillX, double RealScaleX, double ImagScaleX, util_vec_fill_t FillY, double RealScaleY, double ImagScaleY){
-  double small              = 1.0 / (1024.0 * 4.0); // 2^-12
-  double big                = 1024.0 * 8.0;  // 2^13
+  double small = 1.0 / (1024.0 * 1024.0 * 128.0); // 2^-27
+  double big   = 1024.0 * 1024.0 * 128.0;         // 2^27
   double complex ScaleX     = RealScaleX + ImagScaleX * I;
   double complex ScaleY     = RealScaleY + ImagScaleY * I;
   double complex tmpX0;
@@ -401,18 +401,44 @@ double complex wrap_zaugsum_result(int N, wrap_zaugsum_func_t func, util_vec_fil
     case wrap_zaugsum_RDZNRM2:
       {
         double new_scale = MAX(fabs(RealScaleX), fabs(ImagScaleX));
+        if(new_scale == 0.0){
+          new_scale = 1.0;
+        }
         switch(FillX){
           case util_Vec_Constant:
             return sqrt(N) * sqrt((RealScaleX/new_scale) * (RealScaleX/new_scale) + (ImagScaleX/new_scale) * (ImagScaleX/new_scale)) * new_scale;
           case util_Vec_Pos_Inf:
           case util_Vec_Pos_Pos_Inf:
           case util_Vec_Pos_Neg_Inf:
-            return 1.0/0.0;
           case util_Vec_NaN:
           case util_Vec_Pos_Inf_NaN:
           case util_Vec_Pos_Pos_Inf_NaN:
           case util_Vec_Pos_Neg_Inf_NaN:
-            return 0.0/0.0;
+            switch(FillX){
+              case util_Vec_Pos_Inf:
+              case util_Vec_Pos_Pos_Inf:
+              case util_Vec_Pos_Neg_Inf:
+                tmpX0_base[0] = 1.0/0.0;
+                tmpX0_base[1] = 1.0/0.0;
+                break;
+              case util_Vec_NaN:
+              case util_Vec_Pos_Inf_NaN:
+              case util_Vec_Pos_Pos_Inf_NaN:
+              case util_Vec_Pos_Neg_Inf_NaN:
+                tmpX0_base[0] = 0.0/0.0;
+                tmpX0_base[1] = 0.0/0.0;
+                break;
+              default:
+                fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_zaugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
+                exit(125);
+            }
+            if(RealScaleX == 0.0){
+              tmpX0_base[0] = 0.0;
+            }
+            if(ImagScaleX == 0.0){
+              tmpX0_base[1] = 0.0;
+            }
+            return tmpX0_base[0] + tmpX0_base[1];
           case util_Vec_Pos_Big:
             return sqrt((N - 1) * small * small + big * big) * sqrt((RealScaleX/new_scale) * (RealScaleX/new_scale) + (ImagScaleX/new_scale) * (ImagScaleX/new_scale)) * new_scale;
           case util_Vec_Pos_Pos_Big:
@@ -578,6 +604,20 @@ double complex wrap_zaugsum_result(int N, wrap_zaugsum_func_t func, util_vec_fil
               fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_zaugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
               exit(125);
           }
+        case util_Vec_Pos_Big:
+          switch(FillY){
+            case util_Vec_Constant:
+              return (N - 1) * ScaleX * ScaleY * small + ScaleX * ScaleY * big;
+            case util_Vec_Pos_Big:
+              return (N - 1) * ScaleX * ScaleY * small * small + ScaleX * ScaleY * big * big;
+            case util_Vec_Pos_Pos_Big:
+              return ((N - 2) * ScaleX * ScaleY * small * small + ScaleX * ScaleY * big * small) + ScaleX * ScaleY * big * big;
+            case util_Vec_Pos_Neg_Big:
+              return ((N - 2) * ScaleX * ScaleY * small * small - ScaleX * ScaleY * big * small) + ScaleX * ScaleY * big * big;
+            default:
+              fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_zaugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
+              exit(125);
+          }
         case util_Vec_Pos_Pos_Big:
           switch(FillY){
             case util_Vec_Constant:
@@ -632,21 +672,24 @@ double complex wrap_zaugsum_bound(int fold, int N, wrap_zaugsum_func_t func, dou
         double complex bound;
         double *bound_base = (double*)&bound;
         zamax_sub(N, X, incX, &amax);
-        bound_base[0] = dibound(fold, N, crealf(amax));
-        bound_base[1] = dibound(fold, N, cimagf(amax));
+        bound_base[0] = dibound(fold, N, creal(amax));
+        bound_base[1] = dibound(fold, N, cimag(amax));
         return bound;
       }
     case wrap_zaugsum_RDZASUM:
       {
         double complex amax;
         zamax_sub(N, X, incX, &amax);
-        return dibound(fold, N, MAX(crealf(amax), cimagf(amax)));
+        return dibound(fold, N, MAX(creal(amax), cimag(amax)));
       }
     case wrap_zaugsum_RDZNRM2:
       {
         double amax;
         zamaxm_sub(N, X, incX, X, incX, &amax);
-        return dibound(fold, N, crealf(amax)) * (crealf(amax) / (res + ref));
+        if (creal(amax) == 0.0){
+          return 0.0;
+        }
+        return dibound(fold, N, creal(amax)) * (creal(amax) / (res + ref));
       }
     case wrap_zaugsum_RZDOTU:
     case wrap_zaugsum_RZDOTC:
@@ -655,8 +698,8 @@ double complex wrap_zaugsum_bound(int fold, int N, wrap_zaugsum_func_t func, dou
         double complex bound;
         double *bound_base = (double*)&bound;
         zamaxm_sub(N, X, incX, Y, incY, &amaxm);
-        bound_base[0] = dibound(fold, N, crealf(amaxm));
-        bound_base[1] = dibound(fold, N, cimagf(amaxm));
+        bound_base[0] = dibound(fold, N, creal(amaxm));
+        bound_base[1] = dibound(fold, N, cimag(amaxm));
         return bound;
       }
   }

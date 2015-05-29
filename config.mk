@@ -1,10 +1,10 @@
 # select compiler (comment all for auto)
+#CC = cc
 #CC = gcc
 #CC = icc
 #CC = pgcc
 #CC = craycc
 #CC = clang
-CC = cc
 
 # add CFLAGS
 CFLAGS += -Wall
@@ -25,7 +25,7 @@ LDFLAGS +=
 #PYTHON = python
 #PYTHON = python3
 
-# enable vectorizations (comment all for auto)
+# select vectorization (comment all for auto)
 #MMX := true
 #MMX := false
 #SSE := true
@@ -43,27 +43,28 @@ LDFLAGS +=
 #AVX2 := true
 #AVX2 := false
 
-# optimization flags (comment for auto)
+# select optimization flags (comment for auto)
 #OPTFLAGS := -O2
 
-# Again, by default we are running on the same architecture we are
-# building - if you're cross compiling then you should set this manually
+# select endianness (by default we are running on the same architecture we are
+# building - if you're cross compiling then you should set this manually)
 ENDIAN := $(shell perl -le 'print unpack(N,pack(L,0x01020304)) == 0x01020304 ? big : little')
 
-# Select BLAS library from the following options. If BLAS is not defined, corresponding parts of ReproBLAS will not be built.
-# Preconfigured BLAS:
+# select BLAS library from preconfigured or "CUSTOM" options. (comment all to
+# not use external BLAS library. Corresponding parts of ReproBLAS won't build)
 #BLAS := REF
 #BLAS := ATLAS
 #BLAS := MKL
 BLAS := ACCELERATE
 #BLAS := CUSTOM
-#CUSTOM BLAS: Link your library.
+
+# select CUSTOM BLAS LDFLAGS (if BLAS == CUSTOM)
 #LDFLAGS += -lblas
-#CUSTOM BLAS: Select between reference fortran or cblas interface.
+# select CUSTOM BLAS interface (reference fortran or cblas) (if BLAS == CUSTOM)
 #CPPFLAGS += -DBLAS=1
 #CPPFLAGS += -DCBLAS=1
 
-# set build mode (comment all for auto)
+# select build mode (comment all for auto)
 #BUILD_MODE := release
 #BUILD_MODE := debug
 #BUILD_MODE := profile

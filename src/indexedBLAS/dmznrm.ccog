@@ -43,7 +43,7 @@ double dmznrm(const int fold, const int N, const void *X, const int incX, double
   for (i = 0; i < N; i += N_block) {
     N_block = MIN((N - i), N_block);
 
-    camax_sub(N_block, x, incX, amax_tmp);
+    zamax_sub(N_block, x, incX, amax_tmp);
     amax = MAX(amax_tmp[0], amax_tmp[1]);
 
     if (isinf(amax) || isinf(manY[0])){

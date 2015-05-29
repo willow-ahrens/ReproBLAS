@@ -288,7 +288,7 @@ wrap_ciaugsum wrap_ciaugsum_func(wrap_caugsum_func_t func) {
 
 float complex wrap_caugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill_t FillX, double RealScaleX, double ImagScaleX, util_vec_fill_t FillY, double RealScaleY, double ImagScaleY){
   float small              = 1.0 / (1024.0 * 4.0); // 2^-12
-  float big                = 1024.0 * 8.0;  // 2^13
+  float big                = 1024.0 * 8.0;         // 2^13
   float complex ScaleX     = RealScaleX + ImagScaleX * I;
   float complex ScaleY     = RealScaleY + ImagScaleY * I;
   float complex tmpX0;
@@ -400,19 +400,45 @@ float complex wrap_caugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill
 
     case wrap_caugsum_RSCNRM2:
       {
-        float new_scale = MAX(fabs(RealScaleX), fabs(ImagScaleX));
+        double new_scale = MAX(fabs(RealScaleX), fabs(ImagScaleX));
+        if(new_scale == 0.0){
+          new_scale = 1.0;
+        }
         switch(FillX){
           case util_Vec_Constant:
             return sqrt(N) * sqrt((RealScaleX/new_scale) * (RealScaleX/new_scale) + (ImagScaleX/new_scale) * (ImagScaleX/new_scale)) * new_scale;
           case util_Vec_Pos_Inf:
           case util_Vec_Pos_Pos_Inf:
           case util_Vec_Pos_Neg_Inf:
-            return 1.0/0.0;
           case util_Vec_NaN:
           case util_Vec_Pos_Inf_NaN:
           case util_Vec_Pos_Pos_Inf_NaN:
           case util_Vec_Pos_Neg_Inf_NaN:
-            return 0.0/0.0;
+            switch(FillX){
+              case util_Vec_Pos_Inf:
+              case util_Vec_Pos_Pos_Inf:
+              case util_Vec_Pos_Neg_Inf:
+                tmpX0_base[0] = 1.0/0.0;
+                tmpX0_base[1] = 1.0/0.0;
+                break;
+              case util_Vec_NaN:
+              case util_Vec_Pos_Inf_NaN:
+              case util_Vec_Pos_Pos_Inf_NaN:
+              case util_Vec_Pos_Neg_Inf_NaN:
+                tmpX0_base[0] = 0.0/0.0;
+                tmpX0_base[1] = 0.0/0.0;
+                break;
+              default:
+                fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_caugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
+                exit(125);
+            }
+            if(RealScaleX == 0.0){
+              tmpX0_base[0] = 0.0;
+            }
+            if(ImagScaleX == 0.0){
+              tmpX0_base[1] = 0.0;
+            }
+            return tmpX0_base[0] + tmpX0_base[1];
           case util_Vec_Pos_Big:
             return sqrt((N - 1) * small * small + big * big) * sqrt((RealScaleX/new_scale) * (RealScaleX/new_scale) + (ImagScaleX/new_scale) * (ImagScaleX/new_scale)) * new_scale;
           case util_Vec_Pos_Pos_Big:
@@ -578,6 +604,20 @@ float complex wrap_caugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill
               fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_caugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
               exit(125);
           }
+        case util_Vec_Pos_Big:
+          switch(FillY){
+            case util_Vec_Constant:
+              return (N - 1) * ScaleX * ScaleY * small + ScaleX * ScaleY * big;
+            case util_Vec_Pos_Big:
+              return (N - 1) * ScaleX * ScaleY * small * small + ScaleX * ScaleY * big * big;
+            case util_Vec_Pos_Pos_Big:
+              return ((N - 2) * ScaleX * ScaleY * small * small + ScaleX * ScaleY * big * small) + ScaleX * ScaleY * big * big;
+            case util_Vec_Pos_Neg_Big:
+              return ((N - 2) * ScaleX * ScaleY * small * small - ScaleX * ScaleY * big * small) + ScaleX * ScaleY * big * big;
+            default:
+              fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_caugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
+              exit(125);
+          }
         case util_Vec_Pos_Pos_Big:
           switch(FillY){
             case util_Vec_Constant:
@@ -646,6 +686,9 @@ float complex wrap_caugsum_bound(int fold, int N, wrap_caugsum_func_t func, floa
       {
         float amax;
         camaxm_sub(N, X, incX, X, incX, &amax);
+        if (crealf(amax) == 0.0){
+          return 0.0;
+        }
         return sibound(fold, N, crealf(amax)) * (crealf(amax) / (res + ref));
       }
     case wrap_caugsum_RCDOTU:

@@ -1,8 +1,8 @@
 /**
  * @file  config.h
- * @brief config.h is the configuration file for c code in the library.
+ * @brief config.h is the configuration file for c code in ReproBLAS.
  *
- * Feel free to modify anything here, but be sure to read the comments describing all of the fields
+ * Feel free to modify anything here, but be sure to read the comments describing functionality
  */
 
 /**
