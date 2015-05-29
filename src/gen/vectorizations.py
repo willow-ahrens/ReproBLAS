@@ -14,6 +14,7 @@ from dataTypes import *
 class Vectorization(object):
   name = ""
   defined_macro = ""
+  header = None
 
   def __init__(self, code_block, data_type_class):
     self.code_block = code_block
@@ -31,7 +32,7 @@ class Vectorization(object):
     else:
       return "UNROLL_STEP_" + self.name + "_" + str(fold) + "-FOLD"
 
-  def consolidate_into(self, dst_ptr, offset, inc, src_vars, common_summand_ptr, common_summand_offset, common_summand_inc): 
+  def consolidate_into(self, dst_ptr, offset, inc, src_vars, common_summand_ptr, common_summand_offset, common_summand_inc):
     raise(NotImplementedError())
 
   #propagates the value pointed to by pointer to the variables listed in variables
@@ -317,6 +318,7 @@ class SIMD(Vectorization):
 class SSE(SIMD):
   name = "SSE"
   defined_macro = "__SSE2__"
+  header = "emmintrin.h"
 
   def __init__(self, code_block, data_type_class):
     super(SSE, self).__init__(code_block, data_type_class)
@@ -473,6 +475,7 @@ class SSE(SIMD):
 class AVX(SIMD):
   name = "AVX"
   defined_macro = "__AVX__"
+  header = "immintrin.h"
 
   def __init__(self, code_block, data_type_class):
     super(AVX, self).__init__(code_block, data_type_class)
@@ -648,3 +651,9 @@ def iterate_all_vectorizations(f, code_block):
     code_block.dedent()
   if len(all_vectorizations) > 1:
     code_block.write("#endif")
+
+def conditionally_include_vectorizations(code_block):
+  def include_vectorization(vectorization, code_block):
+    if vectorization.header:
+      code_block.write("#include <{}>".format(vectorization.header))
+  iterate_all_vectorizations(include_vectorization, code_block)

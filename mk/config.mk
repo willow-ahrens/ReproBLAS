@@ -21,11 +21,6 @@ endif
 # in some directory (just set INHERIT_DIR_VARS_$(d) there).
 INHERIT_DIR_VARS := INCLUDES CPPFLAGS CFLAGS LDFLAGS MPICFLAGS MPILDFLAGS
 
-# Default optimization flags.
-ifeq ($(OPTFLAGS),)
-  OPTFLAGS := -O3
-endif
-
 # Here's a good place to translate some of these settings into
 # compilation flags/variables.  As an example a preprocessor macro for
 # target endianess
@@ -48,6 +43,11 @@ ifeq ($(CC),)
   else ifeq ("$(shell which clang >/dev/null; echo $$?)", "0")
     CC := clang
   endif
+endif
+
+# Default optimization flags.
+ifeq ($(OPTFLAGS),)
+  OPTFLAGS := -O3
 endif
 
 # Detect MPI C compiler in the following order

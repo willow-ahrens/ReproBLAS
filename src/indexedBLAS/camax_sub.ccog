@@ -6,14 +6,17 @@
 #include "../config.h"
 #include "../Common/Common.h"
 #include "indexedBLAS.h"
-#include <immintrin.h>
-#include <emmintrin.h>
 
 /*[[[cog
 import cog
 import generate
 import dataTypes
 import amax
+import vectorizations
+
+code_block = generate.CodeBlock()
+vectorizations.conditionally_include_vectorizations(code_block)
+cog.out(str(code_block))
 ]]]*/
 //[[[end]]]
 

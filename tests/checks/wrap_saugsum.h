@@ -280,6 +280,7 @@ float wrap_saugsum_result(int N, wrap_saugsum_func_t func, util_vec_fill_t FillX
           fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g)\n", wrap_saugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX);
           exit(125);
       }
+
     case wrap_saugsum_RSASUM:
       switch(FillX){
         case util_Vec_Constant:
@@ -302,6 +303,7 @@ float wrap_saugsum_result(int N, wrap_saugsum_func_t func, util_vec_fill_t FillX
           fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g)\n", wrap_saugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX);
           exit(125);
       }
+
     case wrap_saugsum_RSNRM2:
       switch(FillX){
         case util_Vec_Constant:
@@ -324,6 +326,7 @@ float wrap_saugsum_result(int N, wrap_saugsum_func_t func, util_vec_fill_t FillX
           fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g)\n", wrap_saugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX);
           exit(125);
       }
+
     case wrap_saugsum_RSDOT:
       switch(FillX){
         case util_Vec_Constant:

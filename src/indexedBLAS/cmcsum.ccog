@@ -11,15 +11,16 @@
 #include "../Common/Common.h"
 #include "indexedBLAS.h"
 
-//TODO clean up these includes with a python generated version that includes conditionally
-#include <immintrin.h>
-#include <emmintrin.h>
-
 /*[[[cog
 import cog
 import generate
 import dataTypes
 import depositSum
+import vectorizations
+
+code_block = generate.CodeBlock()
+vectorizations.conditionally_include_vectorizations(code_block)
+cog.out(str(code_block))
 ]]]*/
 //[[[end]]]
 

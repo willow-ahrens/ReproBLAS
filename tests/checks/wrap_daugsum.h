@@ -281,6 +281,7 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
           fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], ScaleX);
           exit(125);
       }
+
     case wrap_daugsum_RDASUM:
       switch(FillX){
         case util_Vec_Constant:
@@ -303,6 +304,7 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
           fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], ScaleX);
           exit(125);
       }
+
     case wrap_daugsum_RDNRM2:
       switch(FillX){
         case util_Vec_Constant:
@@ -325,6 +327,7 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
           fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], ScaleX);
           exit(125);
       }
+
     case wrap_daugsum_RDDOT:
       switch(FillX){
         case util_Vec_Constant:

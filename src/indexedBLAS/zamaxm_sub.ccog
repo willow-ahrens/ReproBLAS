@@ -5,14 +5,18 @@
 #include <math.h>
 #include "../config.h"
 #include "../Common/Common.h"
-#include <immintrin.h>
-#include <emmintrin.h>
+#include "indexedBLAS.h"
 
 /*[[[cog
 import cog
 import generate
 import dataTypes
 import amaxm
+import vectorizations
+
+code_block = generate.CodeBlock()
+vectorizations.conditionally_include_vectorizations(code_block)
+cog.out(str(code_block))
 ]]]*/
 //[[[end]]]
 
