@@ -15,13 +15,15 @@ CPPFLAGS +=
 # add LDFLAGS
 LDFLAGS +=
 
-# select MPI compiler flags (comment for auto)
+# select MPI compiler flags (comment all for auto)
 #MPICFLAGS = $(shell mpicc --showme compile)
 #MPICFLAGS = $(shell mpicc -compile_info)
+#MPICFLAGS =
 
-# select MPI linker flags (comment for auto)
+# select MPI linker flags (comment all for auto)
 #MPILDFLAGS = $(shell mpicc --showme link)
 #MPICFLAGS = $(shell mpicc -link_info)
+#MPICFLAGS =
 
 # select python (comment all for auto)
 #PYTHON = python
@@ -73,14 +75,14 @@ BLAS := ACCELERATE
 
 #HOST_ARCH := profile
 
-# select arguments file (This file contains all of the values for tuning
-# parameters in the library. One can give this parameter on the command line as
-# well. If you have run the autotuner, you can point this at the output file to
-# use the tuned arguments.)
+# select arguments file (contains all of the values for tuning parameters in the
+# library. One can give this parameter on the command line as well. If you have
+# run the autotuner, you can point this at the output file to use the tuned
+# arguments)
 ARGS = $(TOP)/src/default_args.json
 
-# select parameters file (This file contains all tuning parameters in the
-# library. This parameter likely does not need modification.)
+# select parameters file (contains all tuning parameters in the library. This 
+# parameter likely does not need modification)
 PARAMS = $(TOP)/src/params.json
 
 # select verbosity (if VERBOSE is not defined or set to value other than "true"
@@ -88,5 +90,5 @@ PARAMS = $(TOP)/src/params.json
 # about options))
 #VERBOSE := true
 
-# select coloring (Uncomment if you don't like coloring of the output)
+# select coloring (uncomment if you don't like coloring of the output)
 #COLOR_TTY := false
