@@ -99,7 +99,8 @@ const char* vecvec_fill_name(int argc, char** argv){
   verify_daugsum_options_initialize();
 
   opt_eval_option(argc, argv, &augsum_func);
-  snprintf(name_buffer, MAX_LINE * sizeof(char), "Verify %s reproducibility", wrap_daugsum_func_names[augsum_func._named.value]);
+  opt_eval_option(argc, argv, &fold);
+  snprintf(name_buffer, MAX_LINE * sizeof(char), "Verify %s reproducibility fold=%d", wrap_daugsum_func_names[augsum_func._named.value], fold._int.value);
   return name_buffer;
 }
 

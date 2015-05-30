@@ -12,14 +12,14 @@ int vecvec_show_help(void){
 const char* vecvec_name(int argc, char** argv) {
   (void)argc;
   (void)argv;
-  return "Validate zamax(m) (1Big)";
+  return "Validate zamax(m) X=+big";
 }
 
 int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   (void)argc;
   (void)argv;
-  double small = 1.0 / (1024.0 * 1024.0);       // 2^-20
-  double big   = 1024.0 * 1024.0 * 1024.0 * 32; // 2^35
+  double small = 1.0 / (1024.0 * 1024.0 * 128.0); // 2^-27
+  double big   = 1024.0 * 1024.0 * 128.0;         // 2^27
   double complex ref;
   double complex res;
 

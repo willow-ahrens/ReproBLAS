@@ -265,7 +265,9 @@ class Deposit(Target):
         code_block.set_equal(self.buffer_vars, self.q_vars[:reg_width])
         code_block.set_equal(self.q_vars, self.vec.sub(self.s_vars[0], self.q_vars[:reg_width]))
         code_block.set_equal(self.load_vars[0][i * reg_width:], self.vec.add(self.load_vars[0][i * reg_width:], self.vec.mul(self.q_vars[:reg_width], itertools.cycle(self.expansion_vars))))
-      code_block.write("for(j = 0; j < fold - 2; j++){")
+      code_block.write("if(fold > 1){")
+      code_block.indent()
+      code_block.write("for(j = 0; j < fold - 1; j++){")
       code_block.indent()
       for i in range(max(unroll_width, 1)):
         code_block.set_equal(self.s_vars[0], self.buffer_vars[:reg_width])
@@ -275,14 +277,11 @@ class Deposit(Target):
         code_block.set_equal(self.load_vars[0][i * reg_width:], self.vec.add(self.load_vars[0][i * reg_width:], self.q_vars[:reg_width]))
       code_block.dedent()
       code_block.write("}")
-      code_block.write("if(fold > 1){")
-      code_block.indent()
       self.vec.add_BLP_into(self.buffer_vars, self.buffer_vars, self.load_vars[0][i * reg_width:], reg_width)
       code_block.dedent()
       code_block.write("}")
     else:
       for i in range(max(unroll_width, 1)):
-        code_block.set_equal(self.load_vars[0][i * reg_width:(i + 1) * reg_width], self.vec.mul(self.load_vars[0][i * reg_width:(i + 1) * reg_width], itertools.cycle(self.compression_vars)))
         if(fold == 1):
           self.vec.add_BLP_into(self.s_vars[0], self.s_vars[0], self.vec.mul(self.load_vars[0][i * reg_width:], itertools.cycle(self.compression_vars)), reg_width)
         else:

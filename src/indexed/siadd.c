@@ -163,18 +163,18 @@ void smsdeposit(const int fold, const float X, float *manY, const int incmanY){
     q.i |= 1;
     q.f += M;
     manY[0] = q.f;
-    M -= q.f;
-    x += M * smexpansion();
-    for (i = 1; i < fold - 2; i++) {
-      M = manY[i * incmanY];
-      q.f = x;
-      q.i |= 1;
-      q.f += M;
-      manY[i * incmanY] = q.f;
-      M -= q.f;
-      x += M;
-    }
     if (fold > 1) {
+      M -= q.f;
+      x += M * smexpansion();
+      for (i = 1; i < fold - 1; i++) {
+        M = manY[i * incmanY];
+        q.f = x;
+        q.i |= 1;
+        q.f += M;
+        manY[i * incmanY] = q.f;
+        M -= q.f;
+        x += M;
+      }
       q.f = x;
       q.i |= 1;
       manY[i * incmanY] += q.f;

@@ -47,6 +47,8 @@ def execute(command_verbose):
 #
 def run(command_list, verbose="false"):
   result_list = []
+  if verbose != "true":
+    status(0, len(command_list));
   for (i, result) in enumerate(itertools.imap(execute, itertools.izip(command_list, itertools.repeat(verbose)))):
     if verbose != "true":
       status(i, len(command_list));
@@ -70,6 +72,8 @@ def run(command_list, verbose="false"):
 def run_parallel(command_list, verbose="false"):
   p = multiprocessing.Pool(multiprocessing.cpu_count())
   result_list = []
+  if verbose != "true":
+    status(0, len(command_list));
   for (i, result) in enumerate(p.imap(execute, [(command, verbose) for command in command_list], chunksize=multiprocessing.cpu_count() * 16)):
     if verbose != "true":
       status(i, len(command_list));

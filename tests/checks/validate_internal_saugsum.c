@@ -71,7 +71,8 @@ const char* vecvec_fill_name(int argc, char** argv){
   validate_internal_saugsum_options_initialize();
 
   opt_eval_option(argc, argv, &augsum_func);
-  snprintf(name_buffer, MAX_LINE * sizeof(char), "Validate %s internally", wrap_saugsum_func_names[augsum_func._named.value]);
+  opt_eval_option(argc, argv, &fold);
+  snprintf(name_buffer, MAX_LINE * sizeof(char), "Validate %s internally fold=%d", wrap_saugsum_func_names[augsum_func._named.value], fold._int.value);
   return name_buffer;
 }
 

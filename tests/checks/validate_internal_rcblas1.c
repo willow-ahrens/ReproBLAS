@@ -12,14 +12,14 @@ int vecvec_show_help(void){
 const char* vecvec_name(int argc, char** argv) {
   (void)argc;
   (void)argv;
-  return "Validate rcsum, rscasum, rcdotu/c (1Big, 1BigPosNeg)";
+  return "Validate rcsum, rscasum, rcdotu/c (+Big, +-Big)";
 }
 
 int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   (void)argc;
   (void)argv;
-  float small = 1.0 / 1024.0; // 2^-10
-  float big   = 1024.0 * 32;  // 2^15
+  float small = 1.0 / (1024.0 * 4.0); // 2^-12
+  float big   = 1024.0 * 8.0;         // 2^13
   float complex ref;
   float complex refa;
   float complex refdu;

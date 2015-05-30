@@ -163,18 +163,18 @@ void dmddeposit(const int fold, const double X, double *manY, const int incmanY)
     q.l |= 1;
     q.d += M;
     manY[0] = q.d;
-    M -= q.d;
-    x += M * dmexpansion();
-    for (i = 1; i < fold - 2; i++) {
-      M = manY[i * incmanY];
-      q.d = x;
-      q.l |= 1;
-      q.d += M;
-      manY[i * incmanY] = q.d;
-      M -= q.d;
-      x += M;
-    }
     if (fold > 1) {
+      M -= q.d;
+      x += M * dmexpansion();
+      for (i = 1; i < fold - 1; i++) {
+        M = manY[i * incmanY];
+        q.d = x;
+        q.l |= 1;
+        q.d += M;
+        manY[i * incmanY] = q.d;
+        M -= q.d;
+        x += M;
+      }
       q.d = x;
       q.l |= 1;
       manY[i * incmanY] += q.d;

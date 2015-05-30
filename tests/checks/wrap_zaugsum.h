@@ -71,9 +71,9 @@ double complex wrap_rdzasum(int fold, int N, double complex *x, int incx, double
     double_indexed *ires = dialloc(fold);
     disetzero(fold, ires);
     dizasum(fold, N, x, incx, ires);
-    double complex res = ddiconv(fold, ires);
+    double res = ddiconv(fold, ires);
     free(ires);
-    return res;
+    return (double complex)res;
   }
 }
 
@@ -91,10 +91,10 @@ double complex wrap_rdznrm2(int fold, int N, double complex *x, int incx, double
   }else{
     double_indexed *ires = dialloc(fold);
     disetzero(fold, ires);
-    double complex scale = diznrm(fold, N, x, incx, ires);
-    double complex res = ddiconv(fold, ires);
+    double scale = diznrm(fold, N, x, incx, ires);
+    double res = ddiconv(fold, ires);
     free(ires);
-    return scale * sqrt(res);
+    return (double complex)(scale * sqrt(res));
   }
 }
 

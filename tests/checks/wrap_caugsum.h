@@ -62,7 +62,7 @@ void wrap_cicsum(int fold, int N, float complex *x, int incx, float complex *y, 
   cicsum(fold, N, x, incx, c);
 }
 
-float complex wrap_rdcasum(int fold, int N, float complex *x, int incx, float complex *y, int incy) {
+float complex wrap_rscasum(int fold, int N, float complex *x, int incx, float complex *y, int incy) {
   (void)y;
   (void)incy;
   if(fold == DEFAULT_FOLD){
@@ -71,9 +71,9 @@ float complex wrap_rdcasum(int fold, int N, float complex *x, int incx, float co
     float_indexed *ires = sialloc(fold);
     sisetzero(fold, ires);
     sicasum(fold, N, x, incx, ires);
-    float complex res = ssiconv(fold, ires);
+    float res = ssiconv(fold, ires);
     free(ires);
-    return res;
+    return (float complex)res;
   }
 }
 
@@ -83,7 +83,7 @@ void wrap_sicasum(int fold, int N, float complex *x, int incx, float complex *y,
   smcasum(fold, N, x, incx, c, 2, c + 2 * fold, 2);
 }
 
-float complex wrap_rdcnrm2(int fold, int N, float complex *x, int incx, float complex *y, int incy) {
+float complex wrap_rscnrm2(int fold, int N, float complex *x, int incx, float complex *y, int incy) {
   (void)y;
   (void)incy;
   if(fold == DEFAULT_FOLD){
@@ -91,10 +91,10 @@ float complex wrap_rdcnrm2(int fold, int N, float complex *x, int incx, float co
   }else{
     float_indexed *ires = sialloc(fold);
     sisetzero(fold, ires);
-    float complex scale = sicnrm(fold, N, x, incx, ires);
-    float complex res = ssiconv(fold, ires);
+    float scale = sicnrm(fold, N, x, incx, ires);
+    float res = ssiconv(fold, ires);
     free(ires);
-    return scale * sqrt(res);
+    return (float complex)(scale * sqrt(res));
   }
 }
 
@@ -247,9 +247,9 @@ wrap_caugsum wrap_caugsum_func(wrap_caugsum_func_t func) {
     case wrap_caugsum_RCSUM:
       return wrap_rcsum;
     case wrap_caugsum_RSCASUM:
-      return wrap_rdcasum;
+      return wrap_rscasum;
     case wrap_caugsum_RSCNRM2:
-      return wrap_rdcnrm2;
+      return wrap_rscnrm2;
     case wrap_caugsum_RCDOTU:
       return wrap_rcdotu;
     case wrap_caugsum_RCDOTC:

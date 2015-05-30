@@ -7,6 +7,10 @@ check_dir = os.path.dirname(os.path.abspath(__file__))
 
 check_suite = checks.CheckSuite()
 
+#folds = [1, 2, 3, 4]
+folds = [3]
+inf_folds = [1, 3, 4]
+
 check_suite.add_checks([checks.ValidateInternalUFPTest(),\
                         checks.ValidateInternalUFPFTest()],\
                        ["N", "incX"],\
@@ -18,6 +22,7 @@ check_suite.add_checks([checks.VerifyDINDEXTest(),\
                         checks.VerifySMINDEXTest()],\
                        ["N", "incX"],\
                        [[4], [1]])
+"""
 
 check_suite.add_checks([checks.ValidateInternalDAMAXTest(),\
                         checks.ValidateInternalZAMAXTest(),\
@@ -35,8 +40,8 @@ check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
                         checks.ValidateInternalSISADDTest(),\
                         checks.ValidateInternalSISDEPOSITTest(),\
                         ],\
-                       ["N", "incX", "RealScaleX", "f"],\
-                       [[4095], [1, 4], [1.0, -1.0],\
+                       ["N", "fold", "incX", "RealScaleX", "f"],\
+                       [[4095], folds, [1, 4], [1.0, -1.0],\
                         ["constant",\
                          "+big",\
                          "++big",\
@@ -51,8 +56,8 @@ check_suite.add_checks([checks.ValidateInternalRZSUMTest(),\
                         checks.ValidateInternalCICIADDTest(),\
                         checks.ValidateInternalCICADDTest(),\
                         checks.ValidateInternalCICDEPOSITTest()],\
-                       ["N", "incX", "RealScaleX", "ImagScaleX", "f"],\
-                       [[4095], [1, 4], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0],\
+                       ["N", "fold", "incX", "RealScaleX", "ImagScaleX", "f"],\
+                       [[4095], folds, [1, 4], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0],\
                         ["constant",\
                          "+big",\
                          "++big",\
@@ -64,8 +69,8 @@ check_suite.add_checks([checks.ValidateInternalRDNRM2Test(),\
                         checks.ValidateInternalRSNRM2Test(),\
                         checks.ValidateInternalRSASUMTest(),\
                         ],\
-                       ["N", "incX", "RealScaleX", "f"],\
-                       [[4095], [1, 4], [1.0, -1.0],\
+                       ["N", "fold", "incX", "RealScaleX", "f"],\
+                       [[4095], folds, [1, 4], [1.0, -1.0],\
                         ["constant",\
                          "+big",\
                          "++big",\
@@ -76,8 +81,8 @@ check_suite.add_checks([checks.ValidateInternalRDZNRM2Test(),\
                         checks.ValidateInternalRSCNRM2Test(),\
                         checks.ValidateInternalRSCASUMTest(),\
                         ],\
-                       ["N", "incX", ("RealScaleX", "ImagScaleX"), "f"],\
-                       [[4095], [1, 4], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0],\
+                       ["N", "fold", "incX", ("RealScaleX", "ImagScaleX"), "f"],\
+                       [[4095], folds, [1, 4], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0],\
                         ["constant",\
                          "+big",\
                          "++big",\
@@ -86,8 +91,8 @@ check_suite.add_checks([checks.ValidateInternalRDZNRM2Test(),\
 check_suite.add_checks([checks.ValidateInternalRDDOTTest(),\
                         checks.ValidateInternalRSDOTTest(),\
                         ],\
-                       ["N", "incX", "RealScaleX", "RealScaleY", "f", "g"],\
-                       [[4095], [1, 4], [1.0, -1.0], [1.0, -1.0],\
+                       ["N", "fold", "incX", "RealScaleX", "RealScaleY", "f", "g"],\
+                       [[4095], folds, [1, 4], [1.0, -1.0], [1.0, -1.0],\
                         ["constant",\
                          "+big",\
                          "++big",\
@@ -102,8 +107,8 @@ check_suite.add_checks([checks.ValidateInternalRZDOTUTest(),\
                         checks.ValidateInternalRCDOTUTest(),\
                         checks.ValidateInternalRCDOTCTest(),\
                         ],\
-                       ["N", "incX", "RealScaleX", "ImagScaleX", "RealScaleY", "ImagScaleY", "f", "g"],\
-                       [[4095], [1, 4], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0],\
+                       ["N", "fold", "incX", "RealScaleX", "ImagScaleX", "RealScaleY", "ImagScaleY", "f", "g"],\
+                       [[4095], folds, [1, 4], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0],\
                         ["constant",\
                          "+big",\
                          "++big",\
@@ -118,113 +123,101 @@ check_suite.add_checks([checks.ValidateInternalRZDOTUTest(),\
                         checks.ValidateInternalRCDOTUTest(),\
                         checks.ValidateInternalRCDOTCTest(),\
                         ],\
-                       ["N", "incX", "RealScaleX", "ImagScaleX", "RealScaleY", "ImagScaleY", ("f", "g")],\
-                       [[4095], [1, 4], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0],\
+                       ["N", "fold", "incX", "RealScaleX", "ImagScaleX", "RealScaleY", "ImagScaleY", ("f", "g")],\
+                       [[4095], folds, [1, 4], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0],\
                         [("constant", "sine"),\
                          ("sine", "constant")]])
 
 check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
+                        checks.ValidateInternalRDASUMTest(),\
+                        checks.ValidateInternalRDNRM2Test(),\
                         checks.ValidateInternalDIDIADDTest(),\
                         checks.ValidateInternalDIDADDTest(),\
                         checks.ValidateInternalDIDDEPOSITTest(),\
                         checks.ValidateInternalRSSUMTest(),\
+                        checks.ValidateInternalRSASUMTest(),\
+                        checks.ValidateInternalRSNRM2Test(),\
                         checks.ValidateInternalSISIADDTest(),\
                         checks.ValidateInternalSISADDTest(),\
                         checks.ValidateInternalSISDEPOSITTest(),\
                         ],\
-                       ["N", "incX", "RealScaleX", "f"],\
-                       [[4095], [1, 4], [1.0, -1.0],\
+                       ["N", "fold", "incX", "RealScaleX", "f"],\
+                       [[4095], inf_folds, [1, 4], [1.0, -1.0],\
                         ["+inf",\
                          "++inf",\
                          "+-inf",\
                          "nan",\
                          "+inf_nan",\
-                         "++inf_nan"]])
+                         "++inf_nan",\
+                         "+-inf_nan"]])
 
 check_suite.add_checks([checks.ValidateInternalRZSUMTest(),\
+                        checks.ValidateInternalRDZASUMTest(),\
+                        checks.ValidateInternalRDZNRM2Test(),\
                         checks.ValidateInternalZIZIADDTest(),\
                         checks.ValidateInternalZIZADDTest(),\
                         checks.ValidateInternalZIZDEPOSITTest(),\
                         checks.ValidateInternalRCSUMTest(),\
+                        checks.ValidateInternalRSCASUMTest(),\
+                        checks.ValidateInternalRSCNRM2Test(),\
                         checks.ValidateInternalCICIADDTest(),\
                         checks.ValidateInternalCICADDTest(),\
                         checks.ValidateInternalCICDEPOSITTest()],\
-                       ["N", "incX", "RealScaleX", "ImagScaleX", "f"],\
-                       [[4095], [1, 4], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0],\
+                       ["N", "fold", "incX", "RealScaleX", "ImagScaleX", "f"],\
+                       [[4095], inf_folds, [1, 4], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0],\
                         ["+inf",\
                          "++inf",\
                          "+-inf",\
                          "nan",\
                          "+inf_nan",\
-                         "++inf_nan"]])
-
-check_suite.add_checks([checks.ValidateInternalRDNRM2Test(),\
-                        checks.ValidateInternalRSNRM2Test(),\
-                        ],\
-                       ["N", "incX", "RealScaleX", "f"],\
-                       [[4095], [1, 4], [1.0, -1.0],\
-                        ["+inf",\
-                         "++inf",\
-                         "+-inf",\
-                         "nan",\
-                         "+inf_nan",\
-                         "++inf_nan"]])
-
-check_suite.add_checks([checks.ValidateInternalRDZNRM2Test(),\
-                        checks.ValidateInternalRDZASUMTest(),\
-                        checks.ValidateInternalRSCNRM2Test(),\
-                        checks.ValidateInternalRSCASUMTest(),\
-                        ],\
-                       ["N", "incX", ("RealScaleX", "ImagScaleX"), "f"],\
-                       [[4095], [1, 4], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0],\
-                        ["+inf",\
-                         "++inf",\
-                         "+-inf",\
-                         "nan",\
-                         "+inf_nan",\
-                         "++inf_nan"]])
+                         "++inf_nan",\
+                         "+-inf_nan"]])
 
 check_suite.add_checks([checks.ValidateInternalRDDOTTest(),\
                         checks.ValidateInternalRSDOTTest(),\
                         ],\
-                       ["N", "incX", "RealScaleX", "RealScaleY", "f", "g"],\
-                       [[4095], [1, 4], [1.0, -1.0], [1.0, -1.0],\
+                       ["N", "fold", "incX", "RealScaleX", "RealScaleY", "f", "g"],\
+                       [[4095], inf_folds, [1, 4], [1.0, -1.0], [1.0, -1.0],\
                         ["constant",\
                          "+inf",\
                          "++inf",\
                          "+-inf",\
                          "nan",\
                          "+inf_nan",\
-                         "++inf_nan"],\
+                         "++inf_nan",\
+                         "+-inf_nan"],\
                         ["constant",\
                          "+inf",\
                          "++inf",\
                          "+-inf",\
                          "nan",\
                          "+inf_nan",\
-                         "++inf_nan"]])
+                         "++inf_nan",\
+                         "+-inf_nan"]])
 
 check_suite.add_checks([checks.ValidateInternalRZDOTUTest(),\
                         checks.ValidateInternalRZDOTCTest(),\
                         checks.ValidateInternalRCDOTUTest(),\
                         checks.ValidateInternalRCDOTCTest(),\
                         ],\
-                       ["N", "incX", "RealScaleX", "ImagScaleX", "RealScaleY", "ImagScaleY", "f", "g"],\
-                       [[4095], [1, 4], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0],
+                       ["N", "fold", "incX", "RealScaleX", "ImagScaleX", "RealScaleY", "ImagScaleY", "f", "g"],\
+                       [[4095], inf_folds, [1, 4], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0],
                         ["constant",\
                          "+inf",\
                          "++inf",\
                          "+-inf",\
                          "nan",\
                          "+inf_nan",\
-                         "++inf_nan"],\
+                         "++inf_nan",\
+                         "+-inf_nan"],\
                         ["constant",\
                          "+inf",\
                          "++inf",\
                          "+-inf",\
                          "nan",\
                          "+inf_nan",\
-                         "++inf_nan"]])
+                         "++inf_nan",\
+                         "+-inf_nan"]])
 
 check_suite.add_checks([checks.VerifyRDSUMTest(),\
                         checks.VerifyRDASUMTest(),\
@@ -246,8 +239,8 @@ check_suite.add_checks([checks.VerifyRDSUMTest(),\
                         checks.VerifyCICIADDTest(),\
                         checks.VerifyCICADDTest(),\
                         checks.VerifyCICDEPOSITTest()],\
-                       ["N", "B", "incX", "RealScaleX", "f"],\
-                       [[4095], [256], [1, 4], [0],\
+                       ["N", "fold", "B", "incX", "RealScaleX", "f"],\
+                       [[4095], folds, [256], [1, 4], [0],\
                         ["rand"]])
 
 check_suite.add_checks([checks.VerifyRDSUMTest(),\
@@ -274,8 +267,8 @@ check_suite.add_checks([checks.VerifyRDSUMTest(),\
                         checks.VerifyCICIADDTest(),\
                         checks.VerifyCICADDTest(),\
                         checks.VerifyCICDEPOSITTest()],\
-                       ["N", "B", "incX", "f"],\
-                       [[4095], [256], [1, 4],\
+                       ["N", "fold", "B", "incX", "f"],\
+                       [[4095], folds, [256], [1, 4],\
                         ["rand",\
                          "rand+(rand-1)",\
                          "sine",\
@@ -287,8 +280,8 @@ check_suite.add_checks([checks.VerifyRDDOTTest(),\
                         checks.VerifyRSDOTTest(),\
                         checks.VerifyRCDOTUTest(),\
                         checks.VerifyRCDOTCTest()],\
-                       ["N", "incX", "incY", "f", "g"],\
-                       [[4095], [1, 4], [1, 4],\
+                       ["N", "fold", "incX", "incY", "f", "g"],\
+                       [[4095], folds, [1, 4], [1, 4],\
                         ["rand",\
                          "rand+(rand-1)",\
                          "sine",\
@@ -297,6 +290,87 @@ check_suite.add_checks([checks.VerifyRDDOTTest(),\
                          "rand+(rand-1)",\
                          "sine",\
                          "small+grow*big"]])
+"""
+
+DBL_BIN_WIDTH=40
+DBL_MAX_EXP=1024
+DBL_BIG_EXP=27
+DBL_SMALL_EXP=-27
+DBL_MIN_EXP=-1021
+
+for i in range(DBL_BIN_WIDTH + 2):
+  check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
+                          checks.ValidateInternalDIDIADDTest(),\
+                          checks.ValidateInternalDIDADDTest(),\
+                          checks.ValidateInternalDIDDEPOSITTest(),\
+                          checks.ValidateInternalRDNRM2Test(),\
+                          checks.ValidateInternalRDASUMTest(),\
+                          checks.ValidateInternalRDDOTTest()],\
+                         ["N", "fold", "incX", "RealScaleX", "f", "g"],\
+                         [[32], folds, [1, 4],\
+                         [1.5 * 2**(DBL_MAX_EXP-DBL_BIG_EXP-6-i), 0.75 * 2**(DBL_MIN_EXP - DBL_SMALL_EXP + i)],\
+                          ["constant",\
+                           "+big",\
+                           "++big",\
+                           "+-big"],\
+                          ["constant"]])
+
+"""
+  check_suite.add_checks([checks.ValidateInternalRZSUMTest(),\
+                          checks.ValidateInternalZIZIADDTest(),\
+                          checks.ValidateInternalZIZADDTest(),\
+                          checks.ValidateInternalZIZDEPOSITTest(),\
+                          checks.ValidateInternalRZDOTUTest(),\
+                          checks.ValidateInternalRZDOTCTest()],\
+                         ["N", "fold", "incX", "RealScaleX", "ImagScaleX", "f", "g"],\
+                         [[16], folds, [1, 4],\
+                          [1.5 * 2**(DBL_MAX_EXP-DBL_BIG_EXP-6-i), 0.75 * 2**(DBL_MIN_EXP - DBL_SMALL_EXP + i)],\
+                          [1.5 * 2**(DBL_MAX_EXP-DBL_BIG_EXP-6-i), 0.75 * 2**(DBL_MIN_EXP - DBL_SMALL_EXP + i)],\
+                          ["constant",\
+                           "+big",\
+                           "++big",\
+                           "+-big"],\
+                          ["constant"]])
+
+FLT_BIN_WIDTH=13
+FLT_MAX_EXP=128
+FLT_BIG_EXP=13
+FLT_SMALL_EXP=-12
+FLT_MIN_EXP=-125
+
+for i in range(FLT_BIN_WIDTH + 2):
+  check_suite.add_checks([checks.ValidateInternalRSSUMTest(),\
+                          checks.ValidateInternalSISIADDTest(),\
+                          checks.ValidateInternalSISADDTest(),\
+                          checks.ValidateInternalSISDEPOSITTest(),\
+                          checks.ValidateInternalRSNRM2Test(),\
+                          checks.ValidateInternalRSASUMTest(),\
+                          checks.ValidateInternalRSDOTTest()],\
+                         ["N", "fold", "incX", "RealScaleX", "f", "g"],\
+                         [[32], folds, [1, 4],\
+                         [1.5 * 2**(FLT_MAX_EXP-FLT_BIG_EXP-6-i), 0.75 * 2**(FLT_MIN_EXP - FLT_SMALL_EXP + i)],\
+                          ["constant",\
+                           "+big",\
+                           "++big",\
+                           "+-big"],\
+                          ["constant"]])
+
+  check_suite.add_checks([checks.ValidateInternalRCSUMTest(),\
+                          checks.ValidateInternalCICIADDTest(),\
+                          checks.ValidateInternalCICADDTest(),\
+                          checks.ValidateInternalCICDEPOSITTest(),\
+                          checks.ValidateInternalRCDOTUTest(),\
+                          checks.ValidateInternalRCDOTCTest()],\
+                         ["N", "fold", "incX", "RealScaleX", "ImagScaleX", "f", "g"],\
+                         [[16], folds, [1, 4],\
+                          [1.5 * 2**(FLT_MAX_EXP-FLT_BIG_EXP-6-i), 0.75 * 2**(FLT_MIN_EXP - FLT_SMALL_EXP + i)],\
+                          [1.5 * 2**(FLT_MAX_EXP-FLT_BIG_EXP-6-i), 0.75 * 2**(FLT_MIN_EXP - FLT_SMALL_EXP + i)],\
+                          ["constant",\
+                           "+big",\
+                           "++big",\
+                           "+-big"],\
+                          ["constant"]])
+"""
 
 #check_suite.add_checks([checks.VerifyRDGEMVTest()],\
 #                       ["O", "T", "N", "M", "lda", "incX", "incY", "f", "g", "j"],\

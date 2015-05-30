@@ -67,7 +67,7 @@ double dmznrm(const int fold, const int N, const void *X, const int incX, double
       deposits = 0;
     }
 
-    new_scale = dbin(dindex(amax))/(1.5 * (1 << (DBL_MAX_EXP + DBL_MIN_EXP)));
+    new_scale = dbin(dindex(amax))/1.5;
     if (new_scale > scale) {
       if (scale > 0.0) {
         scale = scale / new_scale;
