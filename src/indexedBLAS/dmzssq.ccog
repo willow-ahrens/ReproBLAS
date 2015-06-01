@@ -28,54 +28,53 @@ cog.out(str(code_block))
 //TODO make N_block_max a parameter
 //TODO make sure to note in comments that we assume the indexed type has been renormalized before the call (probably already covered in the deposit documentation
 
-float smcnrm(const int fold, const int N, const void *X, const int incX, float *manY, const int incmanY, float *carY, const int inccarY){
-  float amax_tmp[2];
-  float amax;
-  float scale = 0.0;
-  float new_scale = 0.0;
+double dmzssq(const int fold, const int N, const void *X, const int incX, const double scaleY, double *manY, const int incmanY, double *carY, const int inccarY){
+  double amax_tmp[2];
+  double amax;
+  double scale = 0.0;
+  double new_scale = 0.0;
   int i, j;
-  int N_block = MIN(N_block_MAX, sicapacity());
+  int N_block = MIN(N_block_MAX, dicapacity());
   int deposits = 0;
-  float_complex_indexed *nrm = cialloc(fold);
-  cisetzero(fold, nrm);
+  double_complex_indexed *ssq = zialloc(fold);
+  zisetzero(fold, ssq);
 
-  const float *x = (const float*)X;
-
+  const double *x = (const double*)X;
 
   for (i = 0; i < N; i += N_block) {
     N_block = MIN((N - i), N_block);
 
-    camax_sub(N_block, x, incX, amax_tmp);
+    zamax_sub(N_block, x, incX, amax_tmp);
     amax = MAX(amax_tmp[0], amax_tmp[1]);
 
     if (isinf(amax) || isinf(manY[0])){
       for (j = 0; j < N_block; j++){
-        manY[0] += fabsf(x[j * 2 * incX]);
-        manY[0] += fabsf(x[j * 2 * incX + 1]);
+        manY[0] += fabs(x[j * 2 * incX]);
+        manY[0] += fabs(x[j * 2 * incX + 1]);
       }
     }
-    if (isnan(manY[0]) || isnan(nrm[0]) || isnan(nrm[1])){
-      manY[0] += nrm[0] + nrm[1];
-      free(nrm);
+    if (isnan(manY[0]) || isnan(ssq[0]) || isnan(ssq[1])){
+      manY[0] += ssq[0] + ssq[1];
+      free(ssq);
       return 1.0;
     } else if (isinf(manY[0])){
       x += N_block * 2 * incX;
       continue;
     }
 
-    if (deposits + N_block > sicapacity()) {
-      cirenorm(fold, nrm);
+    if (deposits + N_block > dicapacity()) {
+      zirenorm(fold, ssq);
       deposits = 0;
     }
 
-    new_scale = sbin(sindex(amax))/1.5;
+    new_scale = dbin(dindex(amax))/1.5;
     if (new_scale > scale) {
       if (scale > 0.0) {
         scale = scale / new_scale;
         scale = scale * scale;
         for (j = 0; j < fold; j++) {
-          nrm[j * 2] *= scale;
-          nrm[j * 2 + 1] *= scale;
+          ssq[j * 2] *= scale;
+          ssq[j * 2 + 1] *= scale;
         }
       }
       scale = new_scale;
@@ -85,21 +84,21 @@ float smcnrm(const int fold, const int N, const void *X, const int incX, float *
     amax *= new_scale;
     amax = amax * amax;
 
-    cisupdate(fold, amax, nrm);
+    zidupdate(fold, amax, ssq);
 
     /*[[[cog
-      cog.out(generate.generate(depositNrm.DepositNrm(dataTypes.FloatComplex, "N_block", "x", "incX", "nrm", 1, "new_scale"), cog.inFile, args, params, mode))
+      cog.out(generate.generate(depositNrm.DepositNrm(dataTypes.DoubleComplex, "N_block", "x", "incX", "ssq", 1, "new_scale"), cog.inFile, args, params, mode))
       ]]]*/
     //[[[end]]]
 
     deposits += N_block;
   }
 
-  cirenorm(fold, nrm);
-  smsmadd(fold, nrm, 2, nrm + 2 * fold, 2, manY, incmanY, carY, inccarY);
-  smsmadd(fold, nrm + 1, 2, nrm + 2 * fold + 1, 2, manY, incmanY, carY, inccarY);
+  zirenorm(fold, ssq);
+  dmdmadd(fold, ssq, 2, ssq + 2 * fold, 2, manY, incmanY, carY, inccarY);
+  dmdmadd(fold, ssq + 1, 2, ssq + 2 * fold + 1, 2, manY, incmanY, carY, inccarY);
 
-  free(nrm);
+  free(ssq);
 
   if (isinf(manY[0]) || isnan(manY[0])){
     return 1.0;
