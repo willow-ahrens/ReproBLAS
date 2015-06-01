@@ -245,6 +245,9 @@ void smnegate(const int fold, float* manX, const int incmanX, float* carX, const
 void cinegate(const int fold, float_complex_indexed* X);
 void cmnegate(const int fold, float* manX, const int incmanX, float* carX, const int inccarX);
 
+void dmdrescale(const int fold, double *manX, const int incmanX, double *carX, const int inccarX, const double ScaleX, const double NewScaleX);
+double discale(const double X);
+
 double ufp(const double X);
 float ufpf(const float X);
 #endif
