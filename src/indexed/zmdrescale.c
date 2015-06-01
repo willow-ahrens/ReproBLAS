@@ -2,9 +2,9 @@
 
 /**
  * @internal
- * @brief rescale manually specified indexed double precision sum of squares
+ * @brief rescale manually specified indexed complex double precision sum of squares
  *
- * Rescale an indexed double precision sum of squares X to X' such that X / (scaleX * scaleX) == X' / (newscaleX * newscaleX) and #dmindex(X) == #dindex(1.0)
+ * Rescale an indexed complex double precision sum of squares X to X' such that X / (scaleX * scaleX) == X' / (newscaleX * newscaleX) and #dmindex(X) == #dindex(1.0)
  *
  * Note that X is assumed to have an index smaller than the index of 1.0, and that newscaleX >= scaleX
  *
@@ -19,7 +19,7 @@
  * @author Peter Ahrens
  * @date   1 Jun 2015
  */
-void dmdrescale(const int fold, const double newscaleX, double *manX, const int incmanX, double *carX, const int inccarX, const double scaleX){
+void zmdrescale(const int fold, const double newscaleX, double *manX, const int incmanX, double *carX, const int inccarX, const double scaleX){
   int i;
   double rescaleX;
 
@@ -31,8 +31,9 @@ void dmdrescale(const int fold, const double newscaleX, double *manX, const int 
   rescaleX *= rescaleX;
   for(i = 0; i < fold; i++){
     manX[i * incmanX] /= rescaleX;
+    manX[i * incmanX + 1] /= rescaleX;
     if(manX[i * incmanX] == 0.0){
-      dmdupdate(fold - i, 0.0, manX + i * incmanX, incmanX, carX + i * inccarX, inccarX);
+      zmdupdate(fold - i, 0.0, manX + 2 * i * incmanX, incmanX, carX + 2 * i * inccarX, inccarX);
       break;
     }
   }

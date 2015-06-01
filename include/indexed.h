@@ -245,8 +245,16 @@ void smnegate(const int fold, float* manX, const int incmanX, float* carX, const
 void cinegate(const int fold, float_complex_indexed* X);
 void cmnegate(const int fold, float* manX, const int incmanX, float* carX, const int inccarX);
 
-void dmdrescale(const int fold, double *manX, const int incmanX, double *carX, const int inccarX, const double ScaleX, const double NewScaleX);
 double dscale(const double X);
+float sscale(const float X);
+
+void dmdrescale(const int fold, const double newscaleX, double *manX, const int incmanX, double *carX, const int inccarX, const double scaleX);
+void dmzrescale(const int fold, const double newscaleX, double *manX, const int incmanX, double *carX, const int inccarX, const double scaleX);
+void smsrescale(const int fold, const float newscaleX, float *manX, const int incmanX, float *carX, const int inccarX, const float scaleX);
+void smcrescale(const int fold, const float newscaleX, float *manX, const int incmanX, float *carX, const int inccarX, const float scaleX);
+
+double dmdmaddsq(const int fold, const double *manX, const int incmanX, const double *carX, const int inccarX, const double scaleX, double* manY, const int incmanY, double* carY, const int inccarY, const double scaleY);
+float smsmaddsq(const int fold, const float *manX, const int incmanX, const float *carX, const int inccarX, const float scaleX, float* manY, const int incmanY, float* carY, const int inccarY, const float scaleY);
 
 double ufp(const double X);
 float ufpf(const float X);

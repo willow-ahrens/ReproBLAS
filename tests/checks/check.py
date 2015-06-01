@@ -12,7 +12,7 @@ folds = [3]
 inf_folds = [1, 3, 4]
 
 check_suite.add_checks([checks.ValidateInternalDSCALETest(),\
-                        checks.ValidateInternalDSCALETest()],\
+                        checks.ValidateInternalSSCALETest()],\
                        ["N", "incX"],\
                        [[4], [1]])
 

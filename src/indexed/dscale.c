@@ -3,9 +3,11 @@
 
 /**
  * @internal
- * @brief Get a reproducible scale Y such that #dindex(X/Y) == #dindex(1.0)
+ * @brief Get a reproducible double precision scale Y representing the magnitude of elements in X's bin.
  *
- * @param X the input number to be scaled
+ * A property of this value is that #dindex(X/Y) == #dindex(1.0)
+ *
+ * @param X double precision number to be scaled
  * @return reproducible scaling factor (if X == 0.0, returns smallest valid scale)
  *
  * @author Peter Ahrens

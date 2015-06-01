@@ -546,6 +546,11 @@ class ValidateInternalDSCALETest(CheckTest):
   executable = "tests/checks/validate_internal_dscale"
   name = "validate_internal_dscale"
 
+class ValidateInternalSSCALETest(CheckTest):
+  base_flags = ""
+  executable = "tests/checks/validate_internal_sscale"
+  name = "validate_internal_sscale"
+
 class ValidateInternalDINDEXTest(CheckTest):
   base_flags = ""
   executable = "tests/checks/validate_internal_dindex"
@@ -656,6 +661,8 @@ all_checks = {"validate_internal_ufp": ValidateInternalUFPTest,\
               "verify_cicadd": VerifyCICADDTest,\
               "verify_cicdeposit": VerifyCICDEPOSITTest,\
               "validate_internal_dscale": ValidateInternalDSCALETest,\
+              "validate_internal_dscale": ValidateInternalDSCALETest,\
+              "validate_internal_sscale": ValidateInternalSSCALETest,\
               "validate_internal_dindex": ValidateInternalDINDEXTest,\
               "validate_internal_sindex": ValidateInternalSINDEXTest,\
               "validate_internal_dmindex": ValidateInternalDMINDEXTest,\
