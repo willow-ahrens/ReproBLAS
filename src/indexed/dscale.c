@@ -11,7 +11,7 @@
  * @author Peter Ahrens
  * @date   1 Jun 2015
  */
-double discale(const double X){
+double dscale(const double X){
   int exp;
   frexp(X, &exp);
   if(X == 0.0){

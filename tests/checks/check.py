@@ -11,18 +11,23 @@ check_suite = checks.CheckSuite()
 folds = [3]
 inf_folds = [1, 3, 4]
 
+check_suite.add_checks([checks.ValidateInternalDSCALETest(),\
+                        checks.ValidateInternalDSCALETest()],\
+                       ["N", "incX"],\
+                       [[4], [1]])
+
+"""
 check_suite.add_checks([checks.ValidateInternalUFPTest(),\
                         checks.ValidateInternalUFPFTest()],\
                        ["N", "incX"],\
                        [[10], [1, 2, 4]])
 
-check_suite.add_checks([checks.VerifyDINDEXTest(),\
-                        checks.VerifySINDEXTest(),\
-                        checks.VerifyDMINDEXTest(),\
-                        checks.VerifySMINDEXTest()],\
+check_suite.add_checks([checks.ValidateInternalDINDEXTest(),\
+                        checks.ValidateInternalSINDEXTest(),\
+                        checks.ValidateInternalDMINDEXTest(),\
+                        checks.ValidateInternalSMINDEXTest()],\
                        ["N", "incX"],\
                        [[4], [1]])
-"""
 
 check_suite.add_checks([checks.ValidateInternalDAMAXTest(),\
                         checks.ValidateInternalZAMAXTest(),\
@@ -290,7 +295,6 @@ check_suite.add_checks([checks.VerifyRDDOTTest(),\
                          "rand+(rand-1)",\
                          "sine",\
                          "small+grow*big"]])
-"""
 
 DBL_BIN_WIDTH=40
 DBL_MAX_EXP=1024
@@ -487,6 +491,7 @@ for i in range(FLT_BIN_WIDTH + 2):
                            "+big",\
                            "++big",\
                            "+-big"]])
+"""
 
 #check_suite.add_checks([checks.VerifyRDGEMVTest()],\
 #                       ["O", "T", "N", "M", "lda", "incX", "incY", "f", "g", "j"],\

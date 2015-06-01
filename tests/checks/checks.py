@@ -541,25 +541,30 @@ class VerifyCICDEPOSITTest(CheckTest):
   executable = "tests/checks/verify_caugsum"
   name = "verify_cicdeposit"
 
-class VerifyDINDEXTest(CheckTest):
+class ValidateInternalDSCALETest(CheckTest):
   base_flags = ""
-  executable = "tests/checks/verify_dindex"
-  name = "verify_dindex"
+  executable = "tests/checks/validate_internal_dscale"
+  name = "validate_internal_dscale"
 
-class VerifySINDEXTest(CheckTest):
+class ValidateInternalDINDEXTest(CheckTest):
   base_flags = ""
-  executable = "tests/checks/verify_sindex"
-  name = "verify_sindex"
+  executable = "tests/checks/validate_internal_dindex"
+  name = "validate_internal_dindex"
 
-class VerifyDMINDEXTest(CheckTest):
+class ValidateInternalSINDEXTest(CheckTest):
   base_flags = ""
-  executable = "tests/checks/verify_dmindex"
-  name = "verify_dmindex"
+  executable = "tests/checks/validate_internal_sindex"
+  name = "validate_internal_sindex"
 
-class VerifySMINDEXTest(CheckTest):
+class ValidateInternalDMINDEXTest(CheckTest):
   base_flags = ""
-  executable = "tests/checks/verify_smindex"
-  name = "verify_smindex"
+  executable = "tests/checks/validate_internal_dmindex"
+  name = "validate_internal_dmindex"
+
+class ValidateInternalSMINDEXTest(CheckTest):
+  base_flags = ""
+  executable = "tests/checks/validate_internal_smindex"
+  name = "validate_internal_smindex"
 
 #class VerifyRDGEMVTest(CheckTest):
 #  base_flags = ""
@@ -650,7 +655,8 @@ all_checks = {"validate_internal_ufp": ValidateInternalUFPTest,\
               "verify_ciciadd": VerifyCICIADDTest,\
               "verify_cicadd": VerifyCICADDTest,\
               "verify_cicdeposit": VerifyCICDEPOSITTest,\
-              "verify_dindex": VerifyDINDEXTest,\
-              "verify_sindex": VerifySINDEXTest,\
-              "verify_dmindex": VerifyDMINDEXTest,\
-              "verify_smindex": VerifySMINDEXTest}
+              "validate_internal_dscale": ValidateInternalDSCALETest,\
+              "validate_internal_dindex": ValidateInternalDINDEXTest,\
+              "validate_internal_sindex": ValidateInternalSINDEXTest,\
+              "validate_internal_dmindex": ValidateInternalDMINDEXTest,\
+              "validate_internal_smindex": ValidateInternalSMINDEXTest}
