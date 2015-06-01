@@ -15,7 +15,7 @@
 import cog
 import generate
 import dataTypes
-import depositNrm
+import depositSSq
 import vectorizations
 
 code_block = generate.CodeBlock()
@@ -31,8 +31,8 @@ cog.out(str(code_block))
 float smcssq(const int fold, const int N, const void *X, const int incX, const float scaleY, float *manY, const int incmanY, float *carY, const int inccarY){
   float amax_tmp[2];
   float amax;
-  float scale = 0.0;
-  float new_scale = 0.0;
+  float scl = 0.0;
+  float new_scl;
   int i, j;
   int N_block = MIN(N_block_MAX, sicapacity());
   int deposits = 0;
@@ -68,27 +68,21 @@ float smcssq(const int fold, const int N, const void *X, const int incX, const f
       deposits = 0;
     }
 
-    new_scale = sbin(sindex(amax))/1.5;
-    if (new_scale > scale) {
-      if (scale > 0.0) {
-        scale = scale / new_scale;
-        scale = scale * scale;
-        for (j = 0; j < fold; j++) {
-          ssq[j * 2] *= scale;
-          ssq[j * 2 + 1] *= scale;
-        }
+    new_scl = sscale(amax);
+    if (new_scl > scl) {
+      if(scl > 0.0){
+        cmsrescale(fold, new_scl, scl, ssq, 1, ssq + 2 * fold, 1);
       }
-      scale = new_scale;
+      scl = new_scl;
     }
 
-    new_scale = 1.0 / scale;
-    amax *= new_scale;
+    amax /= scl;
     amax = amax * amax;
 
     cisupdate(fold, amax, ssq);
 
     /*[[[cog
-      cog.out(generate.generate(depositNrm.DepositNrm(dataTypes.FloatComplex, "N_block", "x", "incX", "ssq", 1, "new_scale"), cog.inFile, args, params, mode))
+      cog.out(generate.generate(depositSSq.DepositSSq(dataTypes.FloatComplex, "N_block", "x", "incX", "ssq", 1, "scl"), cog.inFile, args, params, mode))
       ]]]*/
     //[[[end]]]
 
@@ -96,14 +90,14 @@ float smcssq(const int fold, const int N, const void *X, const int incX, const f
   }
 
   cirenorm(fold, ssq);
-  smsmadd(fold, ssq, 2, ssq + 2 * fold, 2, manY, incmanY, carY, inccarY);
-  smsmadd(fold, ssq + 1, 2, ssq + 2 * fold + 1, 2, manY, incmanY, carY, inccarY);
+  new_scl = smsmaddsq(fold, scl, ssq, 2, ssq + 2 * fold, 2, scaleY, manY, incmanY, carY, inccarY);
+  scl = smsmaddsq(fold, scl, ssq + 1, 2, ssq + 2 * fold + 1, 2, new_scl, manY, incmanY, carY, inccarY);
 
   free(ssq);
 
   if (isinf(manY[0]) || isnan(manY[0])){
     return 1.0;
   } else {
-    return scale;
+    return scl;
   }
 }

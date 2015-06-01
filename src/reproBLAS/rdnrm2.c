@@ -16,7 +16,7 @@ double rdnrm2(const int N, const double* X, const int incX) {
 
   disetzero(DEFAULT_FOLD, nrmi);
 
-  scale = didnrm(DEFAULT_FOLD, N, X, incX, nrmi);
+  scale = didssq(DEFAULT_FOLD, N, X, incX, nrmi, 0.0);
 
   nrm2 = scale * sqrt(ddiconv(DEFAULT_FOLD, nrmi));
   free(nrmi);

@@ -4,35 +4,35 @@
  * @internal
  * @brief rescale manually specified indexed single precision sum of squares
  *
- * Rescale an indexed single precision sum of squares X to X' such that X / (scaleX * scaleX) == X' / (newscaleX * newscaleX) and #smindex(X) == #sindex(1.0)
+ * Rescale an indexed single precision sum of squares Y to Y' such that Y / (scaleY * scaleY) == Y' / (X * X) and #smindex(Y) == #sindex(1.0)
  *
- * Note that X is assumed to have an index smaller than the index of 1.0, and that newscaleX >= scaleX
+ * Note that Y is assumed to have an index smaller than the index of 1.0, and that X >= scaleY
  *
- * @param newscaleX X's new scaleX (newscaleX == #sscale(Y) for some @c float Y) (newscaleX >= scaleX)
  * @param fold the fold of the indexed types
- * @param manX X's mantissa vector (#smindex(X) >= #sindex(1.0))
- * @param incmanX stride within X's mantissa vector (use every incmanX'th element)
- * @param carX X's carry vector
- * @param inccarX stride within X's carry vector (use every inccarX'th element)
- * @param scaleX X's current scaleX (scaleX == #sscale(Y) for some @c float Y) (newscaleX >= scaleX)
+ * @param X Y's new scaleY (X == #sscale(Y) for some @c float Y) (X >= scaleY)
+ * @param scaleY Y's current scaleY (scaleY == #sscale(Y) for some @c float Y) (X >= scaleY)
+ * @param manY Y's mantissa vector (#smindex(Y) >= #sindex(1.0))
+ * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
+ * @param carY Y's carry vector
+ * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
  * @author Peter Ahrens
  * @date   1 Jun 2015
  */
-void smsrescale(const int fold, const float newscaleX, float *manX, const int incmanX, float *carX, const int inccarX, const float scaleX){
+void smsrescale(const int fold, const float X, const float scaleY, float *manY, const int incmanY, float *carY, const int inccarY){
   int i;
-  float rescaleX;
+  float rescaleY;
 
-  if(newscaleX == scaleX){
+  if(X == scaleY){
     return;
   }
 
-  rescaleX = newscaleX/scaleX;
-  rescaleX *= rescaleX;
+  rescaleY = X/scaleY;
+  rescaleY *= rescaleY;
   for(i = 0; i < fold; i++){
-    manX[i * incmanX] /= rescaleX;
-    if(manX[i * incmanX] == 0.0){
-      smsupdate(fold - i, 0.0, manX + i * incmanX, incmanX, carX + i * inccarX, inccarX);
+    manY[i * incmanY] /= rescaleY;
+    if(manY[i * incmanY] == 0.0){
+      smsupdate(fold - i, 0.0, manY + i * incmanY, incmanY, carY + i * inccarY, inccarY);
       break;
     }
   }

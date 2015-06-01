@@ -248,13 +248,13 @@ void cmnegate(const int fold, float* manX, const int incmanX, float* carX, const
 double dscale(const double X);
 float sscale(const float X);
 
-void dmdrescale(const int fold, const double newscaleX, double *manX, const int incmanX, double *carX, const int inccarX, const double scaleX);
-void dmzrescale(const int fold, const double newscaleX, double *manX, const int incmanX, double *carX, const int inccarX, const double scaleX);
-void smsrescale(const int fold, const float newscaleX, float *manX, const int incmanX, float *carX, const int inccarX, const float scaleX);
-void smcrescale(const int fold, const float newscaleX, float *manX, const int incmanX, float *carX, const int inccarX, const float scaleX);
+void dmdrescale(const int fold, const double X, const double scaleY, double *manY, const int incmanY, double *carY, const int inccarY);
+void zmdrescale(const int fold, const double X, const double scaleY, double *manY, const int incmanY, double *carY, const int inccarY);
+void smsrescale(const int fold, const float X, const float scaleY, float *manY, const int incmanY, float *carY, const int inccarY);
+void cmsrescale(const int fold, const float X, const float scaleY, float *manY, const int incmanY, float *carY, const int inccarY);
 
-double dmdmaddsq(const int fold, const double *manX, const int incmanX, const double *carX, const int inccarX, const double scaleX, double* manY, const int incmanY, double* carY, const int inccarY, const double scaleY);
-float smsmaddsq(const int fold, const float *manX, const int incmanX, const float *carX, const int inccarX, const float scaleX, float* manY, const int incmanY, float* carY, const int inccarY, const float scaleY);
+double dmdmaddsq(const int fold, const double scaleX, const double *manX, const int incmanX, const double *carX, const int inccarX, const double scaleY, double* manY, const int incmanY, double* carY, const int inccarY);
+float smsmaddsq(const int fold, const float scaleX, const float *manX, const int incmanX, const float *carX, const int inccarX, const float scaleY, float* manY, const int incmanY, float* carY, const int inccarY);
 
 double ufp(const double X);
 float ufpf(const float X);

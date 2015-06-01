@@ -59,6 +59,9 @@ class Vectorization(object):
   def mul(self, src_vars, amt_vars):
     raise(NotImplementedError())
 
+  def div(self, src_vars, amt_vars):
+    raise(NotImplementedError())
+
   def max(self, src1_vars, src2_vars):
     raise(NotImplementedError())
 
@@ -270,6 +273,9 @@ class SISD(Vectorization):
   def mul(self, src_vars, amt_vars):
     return ["{0} * {1}".format(src_var, amt_var) for (src_var, amt_var) in zip(src_vars, amt_vars)]
 
+  def div(self, src_vars, amt_vars):
+    return ["{0} / {1}".format(src_var, amt_var) for (src_var, amt_var) in zip(src_vars, amt_vars)]
+
   def max(self, src1_vars, src2_vars):
     return ["({0} > {1}? {0}: {1})".format(src1_var, src2_var) for (src1_var, src2_var) in zip(src1_vars, src2_vars)]
 
@@ -441,6 +447,9 @@ class SSE(SIMD):
   def mul(self, src_vars, amt_vars):
     return ["_mm_mul_p{0}({1}, {2})".format(self.data_type.base_type.name_char, src_var, amt_var) for (src_var, amt_var) in zip(src_vars, amt_vars)]
 
+  def div(self, src_vars, amt_vars):
+    return ["_mm_div_p{0}({1}, {2})".format(self.data_type.base_type.name_char, src_var, amt_var) for (src_var, amt_var) in zip(src_vars, amt_vars)]
+
   def max(self, src1_vars, src2_vars):
     return ["_mm_max_p{0}({1}, {2})".format(self.data_type.base_type.name_char, src1_var, src2_var) for (src1_var, src2_var) in zip(src1_vars, src2_vars)]
 
@@ -609,6 +618,9 @@ class AVX(SIMD):
 
   def mul(self, src_vars, amt_vars):
     return ["_mm256_mul_p{0}({1}, {2})".format(self.data_type.base_type.name_char, src_var, amt_var) for (src_var, amt_var) in zip(src_vars, amt_vars)]
+
+  def div(self, src_vars, amt_vars):
+    return ["_mm256_div_p{0}({1}, {2})".format(self.data_type.base_type.name_char, src_var, amt_var) for (src_var, amt_var) in zip(src_vars, amt_vars)]
 
   def max(self, src1_vars, src2_vars):
     return ["_mm256_max_p{0}({1}, {2})".format(self.data_type.base_type.name_char, src1_var, src2_var) for (src1_var, src2_var) in zip(src1_vars, src2_vars)]

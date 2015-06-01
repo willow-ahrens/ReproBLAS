@@ -4,6 +4,6 @@
 
 #include "indexedBLAS.h"
 
-float sicnrm(const int fold, const int N, const void *X, const int incX, const float scaleY, float_indexed *Y){
-  return smcnrm(fold, N, X, incX, scaleY, Y, 1, Y + fold, 1);
+float sicssq(const int fold, const int N, const void *X, const int incX, const float scaleY, float_indexed *Y){
+  return smcssq(fold, N, X, incX, scaleY, Y, 1, Y + fold, 1);
 }

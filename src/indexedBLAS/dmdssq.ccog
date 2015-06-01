@@ -15,7 +15,7 @@
 import cog
 import generate
 import dataTypes
-import depositNrm
+import depositSSq
 import vectorizations
 
 code_block = generate.CodeBlock()
@@ -30,8 +30,8 @@ cog.out(str(code_block))
 
 double dmdssq(const int fold, const int N, const double *X, const int incX, const double scaleY, double *manY, const int incmanY, double *carY, const int inccarY){
   double amax;
-  double scale = 0.0;
-  double new_scale = 0.0;
+  double scl = scaleY;
+  double new_scl;
   int i, j;
   int N_block = MIN(N_block_MAX, dicapacity());
   int deposits = 0;
@@ -58,26 +58,21 @@ double dmdssq(const int fold, const int N, const double *X, const int incX, cons
       deposits = 0;
     }
 
-    new_scale = dbin(dindex(amax))/1.5;
-    if (new_scale > scale) {
-      if (scale > 0.0) {
-        scale = scale / new_scale;
-        scale = scale * scale;
-        for (j = 0; j < fold; j++) {
-          manY[j * incmanY] *= scale;
-        }
+    new_scl = dscale(amax);
+    if (new_scl > scl) {
+      if(scl > 0.0){
+        dmdrescale(fold, new_scl, scl, manY, incmanY, carY, inccarY);
       }
-      scale = new_scale;
+      scl = new_scl;
     }
 
-    new_scale = 1.0 / scale;
-    amax *= new_scale;
+    amax /= scl;
     amax = amax * amax;
 
     dmdupdate(fold, amax, manY, incmanY, carY, inccarY);
 
     /*[[[cog
-      cog.out(generate.generate(depositNrm.DepositNrm(dataTypes.Double, "N_block", "X", "incX", "manY", "incmanY", "new_scale"), cog.inFile, args, params, mode))
+      cog.out(generate.generate(depositSSq.DepositSSq(dataTypes.Double, "N_block", "X", "incX", "manY", "incmanY", "scl"), cog.inFile, args, params, mode))
       ]]]*/
     //[[[end]]]
 
@@ -89,6 +84,6 @@ double dmdssq(const int fold, const int N, const double *X, const int incX, cons
   if (isinf(manY[0]) || isnan(manY[0])){
     return 1.0;
   } else {
-    return scale;
+    return scl;
   }
 }

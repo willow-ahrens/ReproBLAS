@@ -15,7 +15,7 @@
 import cog
 import generate
 import dataTypes
-import depositNrm
+import depositSSq
 import vectorizations
 
 code_block = generate.CodeBlock()
@@ -30,8 +30,8 @@ cog.out(str(code_block))
 
 float smsssq(const int fold, const int N, const float *X, const int incX, const float scaleY, float *manY, const int incmanY, float *carY, const int inccarY){
   float amax;
-  float scale = 0.0;
-  float new_scale = 0.0;
+  float scl = scaleY;
+  float new_scl;
   int i, j;
   int N_block = MIN(N_block_MAX, sicapacity());
   int deposits = 0;
@@ -58,26 +58,21 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
       deposits = 0;
     }
 
-    new_scale = sbin(sindex(amax))/1.5;
-    if (new_scale > scale) {
-      if (scale > 0.0) {
-        scale = scale / new_scale;
-        scale = scale * scale;
-        for (j = 0; j < fold; j++) {
-          manY[j * incmanY] *= scale;
-        }
+    new_scl = sscale(amax);
+    if (new_scl > scl) {
+      if(scl > 0.0){
+        smsrescale(fold, new_scl, scl, manY, incmanY, carY, inccarY);
       }
-      scale = new_scale;
+      scl = new_scl;
     }
 
-    new_scale = 1.0 / scale;
-    amax *= new_scale;
+    amax /= scl;
     amax = amax * amax;
 
     smsupdate(fold, amax, manY, incmanY, carY, inccarY);
 
     /*[[[cog
-      cog.out(generate.generate(depositNrm.DepositNrm(dataTypes.Float, "N_block", "X", "incX", "manY", "incmanY", "new_scale"), cog.inFile, args, params, mode))
+      cog.out(generate.generate(depositSSq.DepositSSq(dataTypes.Float, "N_block", "X", "incX", "manY", "incmanY", "scl"), cog.inFile, args, params, mode))
       ]]]*/
     //[[[end]]]
 
@@ -89,6 +84,6 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
   if (isinf(manY[0]) || isnan(manY[0])){
     return 1.0;
   } else {
-    return scale;
+    return scl;
   }
 }
