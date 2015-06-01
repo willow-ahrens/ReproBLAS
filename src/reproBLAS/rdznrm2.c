@@ -10,15 +10,15 @@
 #include "indexedBLAS.h"
 
 double rdznrm2(const int N, const void* X, const int incX) {
-  double_indexed *nrmi = dialloc(DEFAULT_FOLD);
-  double scale;
+  double_indexed *ssq = dialloc(DEFAULT_FOLD);
+  double scl;
   double nrm2;
 
-  disetzero(DEFAULT_FOLD, nrmi);
+  disetzero(DEFAULT_FOLD, ssq);
 
-  scale = diznrm(DEFAULT_FOLD, N, X, incX, nrmi);
+  scl = dizssq(DEFAULT_FOLD, N, X, incX, 0.0, ssq);
 
-  nrm2 = scale * sqrt(ddiconv(DEFAULT_FOLD, nrmi));
-  free(nrmi);
+  nrm2 = scl * sqrt(ddiconv(DEFAULT_FOLD, ssq));
+  free(ssq);
   return nrm2;
 }

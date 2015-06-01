@@ -10,15 +10,15 @@
 #include "indexedBLAS.h"
 
 float rscnrm2(const int N, const void* X, const int incX) {
-  float_indexed *nrmi = sialloc(DEFAULT_FOLD);
-  float scale;
+  float_indexed *ssq = sialloc(DEFAULT_FOLD);
+  float scl;
   float nrm2;
 
-  sisetzero(DEFAULT_FOLD, nrmi);
+  sisetzero(DEFAULT_FOLD, ssq);
 
-  scale = sicnrm(DEFAULT_FOLD, N, X, incX, nrmi);
+  scl = sicssq(DEFAULT_FOLD, N, X, incX, 0.0, ssq);
 
-  nrm2 = scale * sqrt(ssiconv(DEFAULT_FOLD, nrmi));
-  free(nrmi);
+  nrm2 = scl * sqrt(ssiconv(DEFAULT_FOLD, ssq));
+  free(ssq);
   return nrm2;
 }
