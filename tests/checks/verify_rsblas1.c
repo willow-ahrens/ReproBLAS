@@ -76,8 +76,7 @@ const char* vecvec_fill_name(int argc, char** argv){
   verify_rsblas1_options_intitialize();
 
   opt_eval_option(argc, argv, &func_type);
-  opt_eval_option(argc, argv, &fold);
-  snprintf(name_buffer, MAX_LINE * sizeof(char), "Verify %s reproducibility fold=%d", wrap_rsblas1_names[func_type._named.value], fold._int.value);
+  snprintf(name_buffer, MAX_LINE * sizeof(char), "Verify %s reproducibility", wrap_rsblas1_names[func_type._named.value]);
   return name_buffer;
 }
 

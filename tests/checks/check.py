@@ -303,34 +303,93 @@ for i in range(DBL_BIN_WIDTH + 2):
                           checks.ValidateInternalDIDIADDTest(),\
                           checks.ValidateInternalDIDADDTest(),\
                           checks.ValidateInternalDIDDEPOSITTest(),\
-                          checks.ValidateInternalRDNRM2Test(),\
                           checks.ValidateInternalRDASUMTest(),\
-                          checks.ValidateInternalRDDOTTest()],\
+                          #checks.ValidateInternalRDNRM2Test(),\
+                          checks.ValidateInternalRDDOTTest(),\
+                          ],\
                          ["N", "fold", "incX", "RealScaleX", "f", "g"],\
                          [[32], folds, [1, 4],\
-                         [1.5 * 2**(DBL_MAX_EXP-DBL_BIG_EXP-6-i), 0.75 * 2**(DBL_MIN_EXP - DBL_SMALL_EXP + i)],\
+                         [1.5 * 2**(DBL_MAX_EXP - DBL_BIG_EXP - 6 - i), 0.75 * 2**(DBL_MIN_EXP - DBL_SMALL_EXP + i)],\
                           ["constant",\
                            "+big",\
                            "++big",\
                            "+-big"],\
                           ["constant"]])
 
-"""
+  check_suite.add_checks([checks.ValidateInternalRDDOTTest(),\
+                          ],\
+                         ["N", "fold", "incX", "RealScaleX", "f", "g"],\
+                         [[32], folds, [1, 4],\
+                         [1.5 * 2**(DBL_MAX_EXP - DBL_BIG_EXP - 6 - i), 0.75 * 2**(DBL_MIN_EXP - DBL_SMALL_EXP + i)],\
+                          ["constant"],\
+                          ["constant",\
+                           "+big",\
+                           "++big",\
+                           "+-big"]])
+
+  check_suite.add_checks([checks.ValidateInternalRDDOTTest(),\
+                          ],\
+                         ["N", "fold", "incX", "RealScaleX", "f", "g"],\
+                         [[32], folds, [1, 4],\
+                         [1.5 * 2**(DBL_MAX_EXP - 2 * DBL_BIG_EXP - 6 - i), 0.75 * 2**(DBL_MIN_EXP - 2 * DBL_SMALL_EXP + i)],\
+                          ["constant",\
+                           "+big",\
+                           "++big",\
+                           "+-big"],\
+                          ["constant",\
+                           "+big",\
+                           "++big",\
+                           "+-big"]])
+
   check_suite.add_checks([checks.ValidateInternalRZSUMTest(),\
                           checks.ValidateInternalZIZIADDTest(),\
                           checks.ValidateInternalZIZADDTest(),\
                           checks.ValidateInternalZIZDEPOSITTest(),\
+                          checks.ValidateInternalRDZASUMTest(),\
+                          #checks.ValidateInternalRDZNRM2Test(),\
                           checks.ValidateInternalRZDOTUTest(),\
-                          checks.ValidateInternalRZDOTCTest()],\
+                          checks.ValidateInternalRZDOTCTest(),\
+                          ],\
                          ["N", "fold", "incX", "RealScaleX", "ImagScaleX", "f", "g"],\
                          [[16], folds, [1, 4],\
-                          [1.5 * 2**(DBL_MAX_EXP-DBL_BIG_EXP-6-i), 0.75 * 2**(DBL_MIN_EXP - DBL_SMALL_EXP + i)],\
-                          [1.5 * 2**(DBL_MAX_EXP-DBL_BIG_EXP-6-i), 0.75 * 2**(DBL_MIN_EXP - DBL_SMALL_EXP + i)],\
+                          [1.5 * 2**(DBL_MAX_EXP - DBL_BIG_EXP - 6 - i), 0.75 * 2**(DBL_MIN_EXP - DBL_SMALL_EXP + i)],\
+                          [1.5 * 2**(DBL_MAX_EXP - DBL_BIG_EXP - 6 - i), 0.75 * 2**(DBL_MIN_EXP - DBL_SMALL_EXP + i)],\
                           ["constant",\
                            "+big",\
                            "++big",\
                            "+-big"],\
                           ["constant"]])
+
+  check_suite.add_checks([checks.ValidateInternalRZDOTUTest(),\
+                          checks.ValidateInternalRZDOTCTest(),\
+                          ],\
+                         ["N", "fold", "incX", "RealScaleX", "ImagScaleX", "f", "g"],\
+                         [[16], folds, [1, 4],\
+                          [1.5 * 2**(DBL_MAX_EXP - DBL_BIG_EXP - 6 - i), 0.75 * 2**(DBL_MIN_EXP - DBL_SMALL_EXP + i)],\
+                          [1.5 * 2**(DBL_MAX_EXP - DBL_BIG_EXP - 6 - i), 0.75 * 2**(DBL_MIN_EXP - DBL_SMALL_EXP + i)],\
+                          ["constant"],\
+                          ["constant",\
+                           "+big",\
+                           "++big",\
+                           "+-big"]])
+
+  check_suite.add_checks([checks.ValidateInternalRZDOTUTest(),\
+                          checks.ValidateInternalRZDOTCTest(),\
+                          ],\
+                         ["N", "fold", "incX", "RealScaleX", "ImagScaleX", "f", "g"],\
+                         [[16], folds, [1, 4],\
+                          [1.5 * 2**(DBL_MAX_EXP - 2 * DBL_BIG_EXP - 6 - i), 0.75 * 2**(DBL_MIN_EXP - 2 * DBL_SMALL_EXP + i)],\
+                          [1.5 * 2**(DBL_MAX_EXP - 2 * DBL_BIG_EXP - 6 - i), 0.75 * 2**(DBL_MIN_EXP - 2 * DBL_SMALL_EXP + i)],\
+                          ["constant",\
+                           "+big",\
+                           "++big",\
+                           "+-big"],\
+                          ["constant",\
+                           "+big",\
+                           "++big",\
+                           "+-big"]])
+
+
 
 FLT_BIN_WIDTH=13
 FLT_MAX_EXP=128
@@ -343,34 +402,91 @@ for i in range(FLT_BIN_WIDTH + 2):
                           checks.ValidateInternalSISIADDTest(),\
                           checks.ValidateInternalSISADDTest(),\
                           checks.ValidateInternalSISDEPOSITTest(),\
-                          checks.ValidateInternalRSNRM2Test(),\
                           checks.ValidateInternalRSASUMTest(),\
-                          checks.ValidateInternalRSDOTTest()],\
+                          #checks.ValidateInternalRSNRM2Test(),\
+                          checks.ValidateInternalRSDOTTest(),\
+                          ],\
                          ["N", "fold", "incX", "RealScaleX", "f", "g"],\
                          [[32], folds, [1, 4],\
-                         [1.5 * 2**(FLT_MAX_EXP-FLT_BIG_EXP-6-i), 0.75 * 2**(FLT_MIN_EXP - FLT_SMALL_EXP + i)],\
+                         [1.5 * 2**(FLT_MAX_EXP - FLT_BIG_EXP - 6 - i), 0.75 * 2**(FLT_MIN_EXP - FLT_SMALL_EXP + i)],\
                           ["constant",\
                            "+big",\
                            "++big",\
                            "+-big"],\
                           ["constant"]])
 
+  check_suite.add_checks([checks.ValidateInternalRSDOTTest(),\
+                          ],\
+                         ["N", "fold", "incX", "RealScaleX", "f", "g"],\
+                         [[32], folds, [1, 4],\
+                         [1.5 * 2**(FLT_MAX_EXP - FLT_BIG_EXP - 6 - i), 0.75 * 2**(FLT_MIN_EXP - FLT_SMALL_EXP + i)],\
+                          ["constant"],\
+                          ["constant",\
+                           "+big",\
+                           "++big",\
+                           "+-big"]])
+
+  check_suite.add_checks([checks.ValidateInternalRSDOTTest(),\
+                          ],\
+                         ["N", "fold", "incX", "RealScaleX", "f", "g"],\
+                         [[32], folds, [1, 4],\
+                         [1.5 * 2**(FLT_MAX_EXP - 2 * FLT_BIG_EXP - 6 - i), 0.75 * 2**(FLT_MIN_EXP - 2 * FLT_SMALL_EXP + i)],\
+                          ["constant",\
+                           "+big",\
+                           "++big",\
+                           "+-big"],\
+                          ["constant",\
+                           "+big",\
+                           "++big",\
+                           "+-big"]])
+
   check_suite.add_checks([checks.ValidateInternalRCSUMTest(),\
                           checks.ValidateInternalCICIADDTest(),\
                           checks.ValidateInternalCICADDTest(),\
                           checks.ValidateInternalCICDEPOSITTest(),\
+                          checks.ValidateInternalRSCASUMTest(),\
+                          #checks.ValidateInternalRSCNRM2Test(),\
                           checks.ValidateInternalRCDOTUTest(),\
-                          checks.ValidateInternalRCDOTCTest()],\
+                          checks.ValidateInternalRCDOTCTest(),\
+                          ],\
                          ["N", "fold", "incX", "RealScaleX", "ImagScaleX", "f", "g"],\
                          [[16], folds, [1, 4],\
-                          [1.5 * 2**(FLT_MAX_EXP-FLT_BIG_EXP-6-i), 0.75 * 2**(FLT_MIN_EXP - FLT_SMALL_EXP + i)],\
-                          [1.5 * 2**(FLT_MAX_EXP-FLT_BIG_EXP-6-i), 0.75 * 2**(FLT_MIN_EXP - FLT_SMALL_EXP + i)],\
+                          [1.5 * 2**(FLT_MAX_EXP - FLT_BIG_EXP - 6 - i), 0.75 * 2**(FLT_MIN_EXP - FLT_SMALL_EXP + i)],\
+                          [1.5 * 2**(FLT_MAX_EXP - FLT_BIG_EXP - 6 - i), 0.75 * 2**(FLT_MIN_EXP - FLT_SMALL_EXP + i)],\
                           ["constant",\
                            "+big",\
                            "++big",\
                            "+-big"],\
                           ["constant"]])
-"""
+
+  check_suite.add_checks([checks.ValidateInternalRCDOTUTest(),\
+                          checks.ValidateInternalRCDOTCTest(),\
+                          ],\
+                         ["N", "fold", "incX", "RealScaleX", "ImagScaleX", "f", "g"],\
+                         [[16], folds, [1, 4],\
+                          [1.5 * 2**(FLT_MAX_EXP - FLT_BIG_EXP - 6 - i), 0.75 * 2**(FLT_MIN_EXP - FLT_SMALL_EXP + i)],\
+                          [1.5 * 2**(FLT_MAX_EXP - FLT_BIG_EXP - 6 - i), 0.75 * 2**(FLT_MIN_EXP - FLT_SMALL_EXP + i)],\
+                          ["constant"],\
+                          ["constant",\
+                           "+big",\
+                           "++big",\
+                           "+-big"]])
+
+  check_suite.add_checks([checks.ValidateInternalRCDOTUTest(),\
+                          checks.ValidateInternalRCDOTCTest(),\
+                          ],\
+                         ["N", "fold", "incX", "RealScaleX", "ImagScaleX", "f", "g"],\
+                         [[16], folds, [1, 4],\
+                          [1.5 * 2**(FLT_MAX_EXP - 2 * FLT_BIG_EXP - 6 - i), 0.75 * 2**(FLT_MIN_EXP - 2 * FLT_SMALL_EXP + i)],\
+                          [1.5 * 2**(FLT_MAX_EXP - 2 * FLT_BIG_EXP - 6 - i), 0.75 * 2**(FLT_MIN_EXP - 2 * FLT_SMALL_EXP + i)],\
+                          ["constant",\
+                           "+big",\
+                           "++big",\
+                           "+-big"],\
+                          ["constant",\
+                           "+big",\
+                           "++big",\
+                           "+-big"]])
 
 #check_suite.add_checks([checks.VerifyRDGEMVTest()],\
 #                       ["O", "T", "N", "M", "lda", "incX", "incY", "f", "g", "j"],\

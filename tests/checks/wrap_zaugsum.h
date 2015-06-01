@@ -342,7 +342,7 @@ double complex wrap_zaugsum_result(int N, wrap_zaugsum_func_t func, util_vec_fil
         case util_Vec_Pos_Big:
           return (N - 1) * ScaleX * small + ScaleX * big;
         case util_Vec_Pos_Pos_Big:
-          return ((N - 2) * ScaleX * small + ScaleX * big) + ScaleX * big;
+          return (N - 2) * ScaleX * small + (ScaleX * big + ScaleX * big);
         case util_Vec_Pos_Neg_Big:
           return (N - 2) * ScaleX * small;
         case util_Vec_Sine:
@@ -392,7 +392,7 @@ double complex wrap_zaugsum_result(int N, wrap_zaugsum_func_t func, util_vec_fil
           return (N - 1) * (fabs(RealScaleX) + fabs(ImagScaleX)) * small + (fabs(RealScaleX) + fabs(ImagScaleX)) * big;
         case util_Vec_Pos_Pos_Big:
         case util_Vec_Pos_Neg_Big:
-          return ((N - 2) * (fabs(RealScaleX) + fabs(ImagScaleX)) * small + (fabs(RealScaleX) + fabs(ImagScaleX)) * big) + (fabs(RealScaleX) + fabs(ImagScaleX)) * big;
+          return (N - 2) * (fabs(RealScaleX) + fabs(ImagScaleX)) * small + ((fabs(RealScaleX) + fabs(ImagScaleX)) * big + (fabs(RealScaleX) + fabs(ImagScaleX)) * big);
         default:
           fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi))\n", wrap_zaugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX);
           exit(125);
@@ -495,7 +495,7 @@ double complex wrap_zaugsum_result(int N, wrap_zaugsum_func_t func, util_vec_fil
             case util_Vec_Pos_Big:
               return (N - 1) * ScaleX * ScaleY * small + ScaleX * ScaleY * big;
             case util_Vec_Pos_Pos_Big:
-              return ((N - 2) * ScaleX * ScaleY * small + ScaleX * ScaleY * big) + ScaleX * ScaleY * big;
+              return (N - 2) * ScaleX * ScaleY * small + (ScaleX * ScaleY * big + ScaleX * ScaleY * big);
             case util_Vec_Pos_Neg_Big:
               return (N - 2) * ScaleX * ScaleY * small;
             case util_Vec_Sine:
@@ -621,11 +621,11 @@ double complex wrap_zaugsum_result(int N, wrap_zaugsum_func_t func, util_vec_fil
         case util_Vec_Pos_Pos_Big:
           switch(FillY){
             case util_Vec_Constant:
-              return ((N - 2) * ScaleX * ScaleY * small + ScaleX * ScaleY * big) + ScaleX * ScaleY * big;
+              return (N - 2) * ScaleX * ScaleY * small + (ScaleX * ScaleY * big + ScaleX * ScaleY * big);
             case util_Vec_Pos_Big:
               return ((N - 2) * ScaleX * ScaleY * small * small + ScaleX * ScaleY * big * small) + ScaleX * ScaleY * big * big;
             case util_Vec_Pos_Pos_Big:
-              return ((N - 2) * ScaleX * ScaleY * small * small + ScaleX * ScaleY * big * big) + ScaleX * ScaleY * big * big;
+              return (N - 2) * ScaleX * ScaleY * small * small + (ScaleX * ScaleY * big * big + ScaleX * ScaleY * big * big);
             case util_Vec_Pos_Neg_Big:
               return (N - 2) * ScaleX * ScaleY * small * small;
             default:
@@ -641,7 +641,7 @@ double complex wrap_zaugsum_result(int N, wrap_zaugsum_func_t func, util_vec_fil
             case util_Vec_Pos_Pos_Big:
               return (N - 2) * ScaleX * ScaleY * small * small;
             case util_Vec_Pos_Neg_Big:
-              return ((N - 2) * ScaleX * ScaleY * small * small + ScaleX * ScaleY * big * big) + ScaleX * ScaleY * big * big;
+              return (N - 2) * ScaleX * ScaleY * small * small + (ScaleX * ScaleY * big * big + ScaleX * ScaleY * big * big);
             default:
               fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_zaugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
               exit(125);

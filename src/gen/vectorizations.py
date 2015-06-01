@@ -465,9 +465,9 @@ class SSE(SIMD):
     assert self.data_type.is_complex, "cannot set real and imaginary portions of noncomplex"
     return [real_src_var, imag_src_var]
     if self.data_type.name == "double complex":
-      return ["_mm_set_pd({0}, {1})".format(real_src_var, imag_src_var)]
+      return ["_mm_set_pd({1}, {0})".format(real_src_var, imag_src_var)]
     elif self.data_type.name == "float complex":
-      return ["_mm_set_ps({0}, {1}, {0}, {1})".format(real_src_var, imag_src_var)]
+      return ["_mm_set_ps({1}, {0}, {1}, {0})".format(real_src_var, imag_src_var)]
 
   def rep_evens(self, src_vars):
     if self.data_type.base_type.name == "double":
@@ -633,9 +633,9 @@ class AVX(SIMD):
   def set_real_imag(self, real_src_var, imag_src_var):
     assert self.data_type.is_complex, "cannot set real and imaginary portions of noncomplex"
     if self.data_type.name == "double complex":
-      return ["_mm256_set_pd({0}, {1}, {0}, {1})".format(real_src_var, imag_src_var)]
+      return ["_mm256_set_pd({1}, {0}, {1}, {0})".format(real_src_var, imag_src_var)]
     elif self.data_type.name == "float complex":
-      return ["_mm256_set_ps({0}, {1}, {0}, {1}, {0}, {1}, {0}, {1})".format(real_src_var, imag_src_var)]
+      return ["_mm256_set_ps({1}, {0}, {1}, {0}, {1}, {0}, {1}, {0})".format(real_src_var, imag_src_var)]
 
   def rep_evens(self, src_vars):
     if self.data_type.base_type.name == "double":
