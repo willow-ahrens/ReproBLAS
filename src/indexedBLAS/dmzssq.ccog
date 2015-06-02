@@ -56,7 +56,7 @@ double dmzssq(const int fold, const int N, const void *X, const int incX, const 
     if (isnan(manY[0]) || isnan(ssq[0]) || isnan(ssq[1])){
       manY[0] += ssq[0] + ssq[1];
       free(ssq);
-      return 1.0;
+      return dscale(1.0);
     } else if (isinf(manY[0])){
       x += N_block * 2 * incX;
       continue;
@@ -95,7 +95,7 @@ double dmzssq(const int fold, const int N, const void *X, const int incX, const 
   free(ssq);
 
   if (isinf(manY[0]) || isnan(manY[0])){
-    return 1.0;
+    return dscale(1.0);
   } else {
     return scl;
   }

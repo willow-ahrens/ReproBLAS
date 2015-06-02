@@ -68,7 +68,6 @@ check_suite.add_checks([checks.ValidateInternalRZSUMTest(),\
                          "++big",\
                          "+-big",\
                          "sine"]])
-"""
 
 check_suite.add_checks([checks.ValidateInternalRDNRM2Test(),\
                         checks.ValidateInternalRDASUMTest(),\
@@ -94,7 +93,6 @@ check_suite.add_checks([checks.ValidateInternalRDZNRM2Test(),\
                          "++big",\
                          "+-big"]])
 
-"""
 
 check_suite.add_checks([checks.ValidateInternalRDDOTTest(),\
                         checks.ValidateInternalRSDOTTest(),\
@@ -135,7 +133,6 @@ check_suite.add_checks([checks.ValidateInternalRZDOTUTest(),\
                        [[4095], folds, [1, 4], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0],\
                         [("constant", "sine"),\
                          ("sine", "constant")]])
-"""
 
 check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
                         checks.ValidateInternalRDASUMTest(),\
@@ -181,7 +178,6 @@ check_suite.add_checks([checks.ValidateInternalRZSUMTest(),\
                          "+inf_nan",\
                          "++inf_nan",\
                          "+-inf_nan"]])
-"""
 
 check_suite.add_checks([checks.ValidateInternalRDDOTTest(),\
                         checks.ValidateInternalRSDOTTest(),\
@@ -300,6 +296,7 @@ check_suite.add_checks([checks.VerifyRDDOTTest(),\
                          "rand+(rand-1)",\
                          "sine",\
                          "small+grow*big"]])
+"""
 
 DBL_BIN_WIDTH=40
 DBL_MAX_EXP=1024
@@ -313,7 +310,7 @@ for i in range(DBL_BIN_WIDTH + 2):
                           checks.ValidateInternalDIDADDTest(),\
                           checks.ValidateInternalDIDDEPOSITTest(),\
                           checks.ValidateInternalRDASUMTest(),\
-                          #checks.ValidateInternalRDNRM2Test(),\
+                          checks.ValidateInternalRDNRM2Test(),\
                           checks.ValidateInternalRDDOTTest(),\
                           ],\
                          ["N", "fold", "incX", "RealScaleX", "f", "g"],\
@@ -355,7 +352,7 @@ for i in range(DBL_BIN_WIDTH + 2):
                           checks.ValidateInternalZIZADDTest(),\
                           checks.ValidateInternalZIZDEPOSITTest(),\
                           checks.ValidateInternalRDZASUMTest(),\
-                          #checks.ValidateInternalRDZNRM2Test(),\
+                          checks.ValidateInternalRDZNRM2Test(),\
                           checks.ValidateInternalRZDOTUTest(),\
                           checks.ValidateInternalRZDOTCTest(),\
                           ],\
@@ -368,6 +365,7 @@ for i in range(DBL_BIN_WIDTH + 2):
                            "++big",\
                            "+-big"],\
                           ["constant"]])
+"""
 
   check_suite.add_checks([checks.ValidateInternalRZDOTUTest(),\
                           checks.ValidateInternalRZDOTCTest(),\
@@ -400,6 +398,8 @@ for i in range(DBL_BIN_WIDTH + 2):
 
 
 
+"""
+
 FLT_BIN_WIDTH=13
 FLT_MAX_EXP=128
 FLT_BIG_EXP=13
@@ -412,7 +412,7 @@ for i in range(FLT_BIN_WIDTH + 2):
                           checks.ValidateInternalSISADDTest(),\
                           checks.ValidateInternalSISDEPOSITTest(),\
                           checks.ValidateInternalRSASUMTest(),\
-                          #checks.ValidateInternalRSNRM2Test(),\
+                          checks.ValidateInternalRSNRM2Test(),\
                           checks.ValidateInternalRSDOTTest(),\
                           ],\
                          ["N", "fold", "incX", "RealScaleX", "f", "g"],\
@@ -454,7 +454,7 @@ for i in range(FLT_BIN_WIDTH + 2):
                           checks.ValidateInternalCICADDTest(),\
                           checks.ValidateInternalCICDEPOSITTest(),\
                           checks.ValidateInternalRSCASUMTest(),\
-                          #checks.ValidateInternalRSCNRM2Test(),\
+                          checks.ValidateInternalRSCNRM2Test(),\
                           checks.ValidateInternalRCDOTUTest(),\
                           checks.ValidateInternalRCDOTCTest(),\
                           ],\
@@ -468,6 +468,7 @@ for i in range(FLT_BIN_WIDTH + 2):
                            "+-big"],\
                           ["constant"]])
 
+"""
   check_suite.add_checks([checks.ValidateInternalRCDOTUTest(),\
                           checks.ValidateInternalRCDOTCTest(),\
                           ],\
@@ -496,8 +497,8 @@ for i in range(FLT_BIN_WIDTH + 2):
                            "+big",\
                            "++big",\
                            "+-big"]])
-"""
 
+"""
 #check_suite.add_checks([checks.VerifyRDGEMVTest()],\
 #                       ["O", "T", "N", "M", "lda", "incX", "incY", "f", "g", "j"],\
 #                       [["RowMajor", "ColMajor"], ["NoTrans", "Trans"], [1023], [1023], [1023, 1025], [1, 4], [1, 4],\

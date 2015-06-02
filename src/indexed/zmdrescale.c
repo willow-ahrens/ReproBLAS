@@ -6,7 +6,7 @@
  *
  * Rescale an indexed complex double precision sum of squares Y to Y' such that Y / (scaleY * scaleY) == Y' / (X * X) and #dmindex(Y) == #dindex(1.0)
  *
- * Note that Y is assumed to have an index smaller than the index of 1.0, and that X >= scaleY
+ * Note that Y is assumed to have an index at least the the index of 1.0, and that X >= scaleY
  *
  * @param fold the fold of the indexed types
  * @param X Y's new scaleY (X == #dscale(Y) for some @c double Y) (X >= scaleY)
@@ -23,7 +23,12 @@ void zmdrescale(const int fold, const double X, const double scaleY, double *man
   int i;
   double rescaleY;
 
-  if(X == scaleY || X == 0.0 || scaleY == 0.0){
+  if(X == scaleY || X == 0.0){
+    return;
+  }
+
+  if(scaleY == 0.0){
+    zmdupdate(fold, 0.0, manY, incmanY, carY, inccarY);
     return;
   }
 

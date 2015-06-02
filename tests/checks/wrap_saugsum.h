@@ -305,26 +305,41 @@ float wrap_saugsum_result(int N, wrap_saugsum_func_t func, util_vec_fill_t FillX
       }
 
     case wrap_saugsum_RSNRM2:
-      switch(FillX){
-        case util_Vec_Constant:
-          return sqrt(N) * RealScaleX;
-        case util_Vec_Pos_Inf:
-        case util_Vec_Pos_Pos_Inf:
-        case util_Vec_Pos_Neg_Inf:
-          return fabs(RealScaleX)/0.0;
-        case util_Vec_NaN:
-        case util_Vec_Pos_Inf_NaN:
-        case util_Vec_Pos_Pos_Inf_NaN:
-        case util_Vec_Pos_Neg_Inf_NaN:
-          return 0.0/0.0;
-        case util_Vec_Pos_Big:
-          return sqrt((N - 1) * small * small + big * big) * fabs(RealScaleX);
-        case util_Vec_Pos_Pos_Big:
-        case util_Vec_Pos_Neg_Big:
-          return sqrt(((N - 2) * small * small + big * big) + big * big) * fabs(RealScaleX);
-        default:
-          fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g)\n", wrap_saugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX);
-          exit(125);
+      {
+        float new_scale;
+        switch(FillX){
+          case util_Vec_Constant:
+              new_scale = sscale(RealScaleX);
+              RealScaleX /= new_scale;
+              return sqrtf(N * RealScaleX * RealScaleX) * new_scale;
+          case util_Vec_Pos_Inf:
+          case util_Vec_Pos_Pos_Inf:
+          case util_Vec_Pos_Neg_Inf:
+            return fabs(RealScaleX)/0.0;
+          case util_Vec_NaN:
+          case util_Vec_Pos_Inf_NaN:
+          case util_Vec_Pos_Pos_Inf_NaN:
+          case util_Vec_Pos_Neg_Inf_NaN:
+            return 0.0/0.0;
+          case util_Vec_Pos_Big:
+            new_scale = sscale(RealScaleX * big);
+            small *= RealScaleX;
+            small /= new_scale;
+            big *= RealScaleX;
+            big /= new_scale;
+            return sqrtf((N - 1) * small * small + big * big) * new_scale;
+          case util_Vec_Pos_Pos_Big:
+          case util_Vec_Pos_Neg_Big:
+            new_scale = sscale(RealScaleX * big);
+            small *= RealScaleX;
+            small /= new_scale;
+            big *= RealScaleX;
+            big /= new_scale;
+            return sqrtf(((N - 2) * small * small + big * big) + big * big) * new_scale;
+          default:
+            fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g)\n", wrap_saugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX);
+            exit(125);
+        }
       }
 
     case wrap_saugsum_RSDOT:

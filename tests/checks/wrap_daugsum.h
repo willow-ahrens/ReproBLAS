@@ -250,8 +250,8 @@ wrap_diaugsum wrap_diaugsum_func(wrap_daugsum_func_t func) {
 }
 
 double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t FillX, double RealScaleX, double ImagScaleX, util_vec_fill_t FillY, double RealScaleY, double ImagScaleY){
-  float small = 1.0 / (1024.0 * 1024.0 * 128.0); // 2^-27
-  float big   = 1024.0 * 1024.0 * 128.0;         // 2^27
+  double small = 1.0 / (1024.0 * 1024.0 * 128.0); // 2^-27
+  double big   = 1024.0 * 1024.0 * 128.0;         // 2^27
   switch(func){
     case wrap_daugsum_RDSUM:
     case wrap_daugsum_DIDIADD:
@@ -306,26 +306,41 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
       }
 
     case wrap_daugsum_RDNRM2:
-      switch(FillX){
-        case util_Vec_Constant:
-          return sqrt(N) * RealScaleX;
-        case util_Vec_Pos_Inf:
-        case util_Vec_Pos_Pos_Inf:
-        case util_Vec_Pos_Neg_Inf:
-          return fabs(RealScaleX)/0.0;
-        case util_Vec_NaN:
-        case util_Vec_Pos_Inf_NaN:
-        case util_Vec_Pos_Pos_Inf_NaN:
-        case util_Vec_Pos_Neg_Inf_NaN:
-          return 0.0/0.0;
-        case util_Vec_Pos_Big:
-          return sqrt((N - 1) * small * small + big * big) * fabs(RealScaleX);
-        case util_Vec_Pos_Pos_Big:
-        case util_Vec_Pos_Neg_Big:
-          return sqrt(((N - 2) * small * small + big * big) + big * big) * fabs(RealScaleX);
-        default:
-          fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX);
-          exit(125);
+      {
+        double new_scale;
+        switch(FillX){
+          case util_Vec_Constant:
+            new_scale = dscale(RealScaleX);
+            RealScaleX /= new_scale;
+            return sqrt(N * RealScaleX * RealScaleX) * new_scale;
+          case util_Vec_Pos_Inf:
+          case util_Vec_Pos_Pos_Inf:
+          case util_Vec_Pos_Neg_Inf:
+            return fabs(RealScaleX)/0.0;
+          case util_Vec_NaN:
+          case util_Vec_Pos_Inf_NaN:
+          case util_Vec_Pos_Pos_Inf_NaN:
+          case util_Vec_Pos_Neg_Inf_NaN:
+            return 0.0/0.0;
+          case util_Vec_Pos_Big:
+            new_scale = dscale(RealScaleX * big);
+            small *= RealScaleX;
+            small /= new_scale;
+            big = big * RealScaleX;
+            big /= new_scale;
+            return sqrt((N - 1) * small * small + big * big) * new_scale;
+          case util_Vec_Pos_Pos_Big:
+          case util_Vec_Pos_Neg_Big:
+            new_scale = dscale(RealScaleX * big);
+            small *= RealScaleX;
+            small /= new_scale;
+            big *= RealScaleX;
+            big /= new_scale;
+            return sqrt(((N - 2) * small * small + big * big) + big * big) * new_scale;
+          default:
+            fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX);
+            exit(125);
+        }
       }
 
     case wrap_daugsum_RDDOT:

@@ -401,12 +401,16 @@ double complex wrap_zaugsum_result(int N, wrap_zaugsum_func_t func, util_vec_fil
     case wrap_zaugsum_RDZNRM2:
       {
         double new_scale = MAX(fabs(RealScaleX), fabs(ImagScaleX));
-        if(new_scale == 0.0){
-          new_scale = 1.0;
-        }
+        double big_real;
+        double big_imag;
+        double small_real;
+        double small_imag;
         switch(FillX){
           case util_Vec_Constant:
-            return sqrt(N * ((RealScaleX/new_scale) * (RealScaleX/new_scale) + (ImagScaleX/new_scale) * (ImagScaleX/new_scale))) * new_scale;
+            new_scale = dscale(new_scale);
+            RealScaleX /= new_scale;
+            ImagScaleX /= new_scale;
+            return sqrt(N * (RealScaleX * RealScaleX + ImagScaleX * ImagScaleX)) * new_scale;
           case util_Vec_Pos_Inf:
           case util_Vec_Pos_Pos_Inf:
           case util_Vec_Pos_Neg_Inf:
@@ -440,10 +444,20 @@ double complex wrap_zaugsum_result(int N, wrap_zaugsum_func_t func, util_vec_fil
             }
             return tmpX0_base[0] + tmpX0_base[1];
           case util_Vec_Pos_Big:
-            return sqrt(((N - 1) * small * small + big * big) * ((RealScaleX/new_scale) * (RealScaleX/new_scale) + (ImagScaleX/new_scale) * (ImagScaleX/new_scale))) * new_scale;
+            new_scale = dscale(new_scale * big);
+            big_real = (big * RealScaleX)/new_scale;
+            big_imag = (big * ImagScaleX)/new_scale;
+            small_real = (small * RealScaleX)/new_scale;
+            small_imag = (small * ImagScaleX)/new_scale;
+            return sqrt((N - 1) * (small_real * small_real + small_imag * small_imag) + big_real * big_real + big_imag * big_imag) * new_scale;
           case util_Vec_Pos_Pos_Big:
           case util_Vec_Pos_Neg_Big:
-            return sqrt((((N - 2) * small * small + big * big) + big * big) * ((RealScaleX/new_scale) * (RealScaleX/new_scale) + (ImagScaleX/new_scale) * (ImagScaleX/new_scale))) * new_scale;
+            new_scale = dscale(new_scale * big);
+            big_real = (big * RealScaleX)/new_scale;
+            big_imag = (big * ImagScaleX)/new_scale;
+            small_real = (small * RealScaleX)/new_scale;
+            small_imag = (small * ImagScaleX)/new_scale;
+            return sqrt(((N - 2) * (small_real * small_real + small_imag * small_imag) + big_real * big_real + big_imag + big_imag) + big_real * big_real + big_imag + big_imag) * new_scale
           default:
             fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi))\n", wrap_zaugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX);
             exit(125);
