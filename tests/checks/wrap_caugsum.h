@@ -433,7 +433,7 @@ float complex wrap_caugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill
                 tmpX0_base[1] = 0.0/0.0;
                 break;
               default:
-                fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_zaugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
+                fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_caugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
                 exit(125);
             }
             if(RealScaleX == 0.0){
@@ -457,9 +457,9 @@ float complex wrap_caugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill
             big_imag = (big * ImagScaleX)/new_scale;
             small_real = (small * RealScaleX)/new_scale;
             small_imag = (small * ImagScaleX)/new_scale;
-            return sqrt(((N - 2) * (small_real * small_real + small_imag * small_imag) + big_real * big_real + big_imag + big_imag) + big_real * big_real + big_imag + big_imag) * new_scale
+            return sqrt((N - 2) * (small_real * small_real + small_imag * small_imag) + (big_real * big_real + big_imag * big_imag + big_real * big_real + big_imag * big_imag)) * new_scale;
           default:
-            fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi))\n", wrap_zaugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX);
+            fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi))\n", wrap_caugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX);
             exit(125);
         }
       }

@@ -457,7 +457,7 @@ double complex wrap_zaugsum_result(int N, wrap_zaugsum_func_t func, util_vec_fil
             big_imag = (big * ImagScaleX)/new_scale;
             small_real = (small * RealScaleX)/new_scale;
             small_imag = (small * ImagScaleX)/new_scale;
-            return sqrt(((N - 2) * (small_real * small_real + small_imag * small_imag) + big_real * big_real + big_imag + big_imag) + big_real * big_real + big_imag + big_imag) * new_scale
+            return sqrt((N - 2) * (small_real * small_real + small_imag * small_imag) + (big_real * big_real + big_imag * big_imag + big_real * big_real + big_imag * big_imag)) * new_scale;
           default:
             fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi))\n", wrap_zaugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX);
             exit(125);

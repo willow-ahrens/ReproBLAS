@@ -326,7 +326,7 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
             new_scale = dscale(RealScaleX * big);
             small *= RealScaleX;
             small /= new_scale;
-            big = big * RealScaleX;
+            big *= RealScaleX;
             big /= new_scale;
             return sqrt((N - 1) * small * small + big * big) * new_scale;
           case util_Vec_Pos_Pos_Big:

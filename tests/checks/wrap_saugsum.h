@@ -309,9 +309,9 @@ float wrap_saugsum_result(int N, wrap_saugsum_func_t func, util_vec_fill_t FillX
         float new_scale;
         switch(FillX){
           case util_Vec_Constant:
-              new_scale = sscale(RealScaleX);
-              RealScaleX /= new_scale;
-              return sqrtf(N * RealScaleX * RealScaleX) * new_scale;
+            new_scale = sscale(RealScaleX);
+            RealScaleX /= new_scale;
+            return sqrtf(N * RealScaleX * RealScaleX) * new_scale;
           case util_Vec_Pos_Inf:
           case util_Vec_Pos_Pos_Inf:
           case util_Vec_Pos_Neg_Inf:
