@@ -7,6 +7,7 @@
 
 #include "indexed.h"
 #include "../../config.h"
+#include "../Common/Common.h"
 
 #define FLT_BIN_DIG        13
 static float bins[(FLT_MAX_EXP - FLT_MIN_EXP)/FLT_BIN_DIG + MAX_FOLD]; //initialized in bins_initialize
@@ -90,10 +91,11 @@ float sibound(const int fold, const int N, const float X) {
 
 /**
  * @internal
- * @brief Get a reproducible single precision scale Y
+ * @brief Get a reproducible single precision scale
  *
- * A property of this value is that #sindex(X/Y) == #sindex(1.0) or 
- * #sindex(X/Y) == #sindex(1.0) - 1
+ * The scaling factor Y returned for given X is the smallest value that will fit in X's bin (The smallest representable value with the same index as X)
+ *
+ * Perhaps the most useful property of this number is that 1.0 <= X/Y < 2^#siwidth()
  *
  * @param X single precision number to be scaled
  * @return reproducible scaling factor (if X == 0.0, returns smallest valid scale)
@@ -102,15 +104,7 @@ float sibound(const int fold, const int N, const float X) {
  * @date   1 Jun 2015
  */
 float sscale(const float X){
-  int exp;
-  frexpf(X, &exp);
-  if(X == 0.0){
-    exp = FLT_MIN_EXP;
-  }
-  //Note that this routine must never return a number with exponent larger than
-  //-FLT_MIN_EXP or FLT_MAX_EXP. Because of the particular values of these
-  //constants on IEEE compliant platforms, we do not need to check for this.
-  return ldexpf(0.5, (exp / FLT_BIN_DIG) * FLT_BIN_DIG);
+  return ldexpf(0.5, MAX((FLT_MAX_EXP - FLT_BIN_DIG + 1 - sindex(X) * FLT_BIN_DIG), FLT_MIN_EXP));
 }
 
 /**

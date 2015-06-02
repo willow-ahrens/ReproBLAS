@@ -23,6 +23,9 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   (void)argv;
   (void)incY;
   int i;
+  float scale;
+  float ratio;
+  float bound;
 
   util_random_seed();
 
@@ -34,11 +37,21 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
     X[i * incX] = ldexpf(0.5 + 0.5 * util_drand48(), (i/N) + FLT_MIN_EXP);
   }
   for (i = 0; i < N * (FLT_MAX_EXP - FLT_MIN_EXP); i++) {
-    if (abs(sindex(X[i * incX]/sscale(X[i * incX])) - sindex(1.0)) > 1){
-      printf("|sindex(%g/sscale(%g)) - sindex(1.0)| > 1\n", X[i * incX], X[i * incX]);
-      printf("|sindex(%g/%g) - sindex(1.0)| > 1\n", X[i * incX], sscale(X[i * incX]));
-      printf("|sindex(%g) - sindex(1.0)| > 1\n", X[i * incX]/sscale(X[i * incX]));
-      printf("|%d - %d| > 1\n", sindex(X[i * incX]/sscale(X[i * incX])), sindex(1.0));
+    scale = sscale(X[i * incX]);
+    bound = ldexpf(0.5, siwidth() + 1);
+    ratio = X[i * incX] * (1.0/scale);
+    if(ratio < 1.0){
+      printf("%g * (1.0/sscale(%g) !>= 1.0\n", X[i * incX], X[i * incX]);
+      printf("%g * (1.0/%g) !>= 1.0\n", X[i * incX], scale);
+      printf("%g * (%g) !>= 1.0\n", X[i * incX], 1.0/scale);
+      printf("%g !>= 1.0\n", ratio);
+      return 1;
+    }
+    if(ratio >= bound){
+      printf("%g * (1.0/sscale(%g)) !< 2^siwidth()\n", X[i * incX], X[i * incX]);
+      printf("%g * (1.0/%g) !< %g\n", X[i * incX], scale, bound);
+      printf("%g * (%g) !< %g\n", X[i * incX], 1.0/scale, bound);
+      printf("%g !< %g\n", ratio, bound);
       return 1;
     }
   }

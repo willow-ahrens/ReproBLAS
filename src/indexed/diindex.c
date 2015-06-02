@@ -7,6 +7,7 @@
 
 #include "indexed.h"
 #include "../../config.h"
+#include "../Common/Common.h"
 
 #define DBL_BIN_DIG        40
 static double bins[(DBL_MAX_EXP - DBL_MIN_EXP)/DBL_BIN_DIG + MAX_FOLD]; //initialized in bins_initialize
@@ -90,10 +91,11 @@ double dibound(const int fold, const int N, const double X) {
 
 /**
  * @internal
- * @brief Get a reproducible double precision scale Y
+ * @brief Get a reproducible double precision scale
  *
- * A property of this value is that #dindex(X/Y) == #dindex(1.0) or
- * #dindex(X/Y) == #dindex(1.0) - 1
+ * The scaling factor Y returned for given X is the smallest value that will fit in X's bin (The smallest representable value with the same index as X)
+ *
+ * Perhaps the most useful property of this number is that 1.0 <= X/Y < 2^#diwidth()
  *
  * @param X double precision number to be scaled
  * @return reproducible scaling factor (if X == 0.0, returns smallest valid scale)
@@ -102,15 +104,7 @@ double dibound(const int fold, const int N, const double X) {
  * @date   1 Jun 2015
  */
 double dscale(const double X){
-  int exp;
-  frexp(X, &exp);
-  if(X == 0.0){
-    exp = DBL_MIN_EXP;
-  }
-  //Note that this routine must never return a number with exponent larger than
-  //-DBL_MIN_EXP or DBL_MAX_EXP. Because of the particular values of these
-  //constants on IEEE compliant platforms, we do not need to check for this.
-  return ldexp(0.5, (exp / DBL_BIN_DIG) * DBL_BIN_DIG);
+  return ldexp(0.5, MAX((DBL_MAX_EXP - DBL_BIN_DIG + 1 - dindex(X) * DBL_BIN_DIG), DBL_MIN_EXP));
 }
 
 /**
