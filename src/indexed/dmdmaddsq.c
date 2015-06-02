@@ -25,16 +25,16 @@
  */
 double dmdmaddsq(const int fold, const double scaleX, const double *manX, const int incmanX, const double *carX, const int inccarX, const double scaleY, double* manY, const int incmanY, double* carY, const int inccarY) {
   if (scaleX > scaleY){
-    dmdrescale(fold, scaleX, manY, incmanY, carY, inccarY, scaleY);
+    dmdrescale(fold, scaleX, scaleY, manY, incmanY, carY, inccarY);
     dmdmadd(fold, manX, incmanX, carX, inccarX, manY, incmanY, carY, inccarY);
     return scaleX;
   }else if(scaleX == scaleY){
     dmdmadd(fold, manX, incmanX, carX, inccarX, manY, incmanY, carY, inccarY);
     return scaleX;
   }else{
-    double_indexed tmp_X = dialloc(fold);
+    double_indexed *tmp_X = dialloc(fold);
     dmdmset(fold, manX, incmanX, carX, inccarX, tmp_X, 1, tmp_X + fold, 1);
-    dmdrescale(fold, scaleY, tmpX, 1, tmpX + fold, 1, scaleX);
+    dmdrescale(fold, scaleY, scaleX, tmp_X, 1, tmp_X + fold, 1);
     dmdmadd(fold, tmp_X, 1, tmp_X + fold, 1, manY, incmanY, carY, inccarY);
     return scaleY;
   }

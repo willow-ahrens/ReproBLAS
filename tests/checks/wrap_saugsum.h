@@ -85,17 +85,17 @@ float wrap_rsnrm2(int fold, int N, float *x, int incx, float *y, int incy) {
   }else{
     float_indexed *ires = sialloc(fold);
     sisetzero(fold, ires);
-    float scale = sisnrm(fold, N, x, incx, ires);
+    float scale = sisssq(fold, N, x, incx, 0.0, ires);
     float res = ssiconv(fold, ires);
     free(ires);
     return scale * sqrt(res);
   }
 }
 
-void wrap_sisnrm(int fold, int N, float *x, int incx, float *y, int incy, float_indexed *z) {
+void wrap_sisssq(int fold, int N, float *x, int incx, float *y, int incy, float_indexed *z) {
   (void)y;
   (void)incy;
-  sisnrm(fold, N, x, incx, z);
+  sisssq(fold, N, x, incx, 0.0, z);
 }
 
 float wrap_rsdot(int fold, int N, float *x, int incx, float *y, int incy) {
@@ -235,7 +235,7 @@ wrap_siaugsum wrap_siaugsum_func(wrap_saugsum_func_t func) {
     case wrap_saugsum_RSASUM:
       return wrap_sisasum;
     case wrap_saugsum_RSNRM2:
-      return wrap_sisnrm;
+      return wrap_sisssq;
     case wrap_saugsum_RSDOT:
       return wrap_sisdot;
     case wrap_saugsum_SISIADD:

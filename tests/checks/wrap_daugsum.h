@@ -86,17 +86,17 @@ double wrap_rdnrm2(int fold, int N, double *x, int incx, double *y, int incy) {
   }else{
     double_indexed *ires = dialloc(fold);
     disetzero(fold, ires);
-    double Scale = didnrm(fold, N, x, incx, ires);
+    double scale = didssq(fold, N, x, incx, 0.0, ires);
     double res = ddiconv(fold, ires);
     free(ires);
-    return Scale * sqrt(res);
+    return scale * sqrt(res);
   }
 }
 
-void wrap_didnrm(int fold, int N, double *x, int incx, double *y, int incy, double_indexed *z) {
+void wrap_didssq(int fold, int N, double *x, int incx, double *y, int incy, double_indexed *z) {
   (void)y;
   (void)incy;
-  didnrm(fold, N, x, incx, z);
+  didssq(fold, N, x, incx, 0.0, z);
 }
 
 double wrap_rddot(int fold, int N, double *x, int incx, double *y, int incy) {
@@ -236,7 +236,7 @@ wrap_diaugsum wrap_diaugsum_func(wrap_daugsum_func_t func) {
     case wrap_daugsum_RDASUM:
       return wrap_didasum;
     case wrap_daugsum_RDNRM2:
-      return wrap_didnrm;
+      return wrap_didssq;
     case wrap_daugsum_RDDOT:
       return wrap_diddot;
     case wrap_daugsum_DIDIADD:

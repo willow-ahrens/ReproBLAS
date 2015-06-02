@@ -68,6 +68,7 @@ check_suite.add_checks([checks.ValidateInternalRZSUMTest(),\
                          "++big",\
                          "+-big",\
                          "sine"]])
+"""
 
 check_suite.add_checks([checks.ValidateInternalRDNRM2Test(),\
                         checks.ValidateInternalRDASUMTest(),\
@@ -92,6 +93,8 @@ check_suite.add_checks([checks.ValidateInternalRDZNRM2Test(),\
                          "+big",\
                          "++big",\
                          "+-big"]])
+
+"""
 
 check_suite.add_checks([checks.ValidateInternalRDDOTTest(),\
                         checks.ValidateInternalRSDOTTest(),\
@@ -132,6 +135,7 @@ check_suite.add_checks([checks.ValidateInternalRZDOTUTest(),\
                        [[4095], folds, [1, 4], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0],\
                         [("constant", "sine"),\
                          ("sine", "constant")]])
+"""
 
 check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
                         checks.ValidateInternalRDASUMTest(),\
@@ -177,6 +181,7 @@ check_suite.add_checks([checks.ValidateInternalRZSUMTest(),\
                          "+inf_nan",\
                          "++inf_nan",\
                          "+-inf_nan"]])
+"""
 
 check_suite.add_checks([checks.ValidateInternalRDDOTTest(),\
                         checks.ValidateInternalRSDOTTest(),\

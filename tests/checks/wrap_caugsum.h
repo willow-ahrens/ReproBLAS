@@ -91,17 +91,17 @@ float complex wrap_rscnrm2(int fold, int N, float complex *x, int incx, float co
   }else{
     float_indexed *ires = sialloc(fold);
     sisetzero(fold, ires);
-    float scale = sicnrm(fold, N, x, incx, ires);
+    float scale = sicssq(fold, N, x, incx, 0.0, ires);
     float res = ssiconv(fold, ires);
     free(ires);
     return (float complex)(scale * sqrt(res));
   }
 }
 
-void wrap_sicnrm(int fold, int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *c) {
+void wrap_sicssq(int fold, int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *c) {
   (void)y;
   (void)incy;
-  smcnrm(fold, N, x, incx, c, 2, c + 2 * fold, 2);
+  smcssq(fold, N, x, incx, 0.0, c, 2, c + 2 * fold, 2);
 }
 
 float complex wrap_rcdotu(int fold, int N, float complex *x, int incx, float complex *y, int incy) {
@@ -271,7 +271,7 @@ wrap_ciaugsum wrap_ciaugsum_func(wrap_caugsum_func_t func) {
     case wrap_caugsum_RSCASUM:
       return wrap_sicasum;
     case wrap_caugsum_RSCNRM2:
-      return wrap_sicnrm;
+      return wrap_sicssq;
     case wrap_caugsum_RCDOTU:
       return wrap_cicdotu;
     case wrap_caugsum_RCDOTC:

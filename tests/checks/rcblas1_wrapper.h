@@ -81,7 +81,7 @@ float complex wrap_rscnrm2(int N, float complex *x, int incx, float complex *y, 
 void wrap_sicnrm(int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *z) {
   (void)y;
   (void)incy;
-  smcnrm(DEFAULT_FOLD, N, x, incx, z, 2, z + 2 * DEFAULT_FOLD, 2);
+  smcssq(DEFAULT_FOLD, N, x, incx, 0.0, z, 2, z + 2 * DEFAULT_FOLD, 2);
 }
 
 wrap_rcblas1 wrap_rcblas1_func(int func) {

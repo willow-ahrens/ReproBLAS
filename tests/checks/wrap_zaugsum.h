@@ -91,17 +91,17 @@ double complex wrap_rdznrm2(int fold, int N, double complex *x, int incx, double
   }else{
     double_indexed *ires = dialloc(fold);
     disetzero(fold, ires);
-    double scale = diznrm(fold, N, x, incx, ires);
+    double scale = dizssq(fold, N, x, incx, 0.0, ires);
     double res = ddiconv(fold, ires);
     free(ires);
     return (double complex)(scale * sqrt(res));
   }
 }
 
-void wrap_diznrm(int fold, int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {
+void wrap_dizssq(int fold, int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {
   (void)y;
   (void)incy;
-  dmznrm(fold, N, x, incx, z, 2, z + 2 * fold, 2);
+  dmzssq(fold, N, x, incx, 0.0, z, 2, z + 2 * fold, 2);
 }
 
 double complex wrap_rzdotu(int fold, int N, double complex *x, int incx, double complex *y, int incy) {
@@ -271,7 +271,7 @@ wrap_ziaugsum wrap_ziaugsum_func(wrap_zaugsum_func_t func) {
     case wrap_zaugsum_RDZASUM:
       return wrap_dizasum;
     case wrap_zaugsum_RDZNRM2:
-      return wrap_diznrm;
+      return wrap_dizssq;
     case wrap_zaugsum_RZDOTU:
       return wrap_zizdotu;
     case wrap_zaugsum_RZDOTC:

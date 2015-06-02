@@ -80,7 +80,7 @@ double complex wrap_rdznrm2(int N, double complex *x, int incx, double complex *
 void wrap_diznrm(int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {
   (void)y;
   (void)incy;
-  dmznrm(DEFAULT_FOLD, N, x, incx, z, 2, z + 2 * DEFAULT_FOLD, 2);
+  dmzssq(DEFAULT_FOLD, N, x, incx, 0.0, z, 2, z + 2 * DEFAULT_FOLD, 2);
 }
 
 wrap_rzblas1 wrap_rzblas1_func(int func) {

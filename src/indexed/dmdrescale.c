@@ -23,7 +23,7 @@ void dmdrescale(const int fold, const double X, const double scaleY, double *man
   int i;
   double rescaleY;
 
-  if(X == scaleY){
+  if(X == scaleY || X == 0.0 || scaleY == 0.0){
     return;
   }
 

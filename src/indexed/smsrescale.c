@@ -23,7 +23,7 @@ void smsrescale(const int fold, const float X, const float scaleY, float *manY, 
   int i;
   float rescaleY;
 
-  if(X == scaleY){
+  if(X == scaleY || X == 0.0 || scaleY == 0.0){
     return;
   }
 

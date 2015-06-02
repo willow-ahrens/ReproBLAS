@@ -63,7 +63,7 @@ float wrap_rsnrm2(int N, float *x, int incx, float *y, int incy) {
 void wrap_sisnrm(int N, float *x, int incx, float *y, int incy, float_indexed *z) {
   (void)y;
   (void)incy;
-  sisnrm(DEFAULT_FOLD, N, x, incx, z);
+  sisssq(DEFAULT_FOLD, N, x, incx, 0.0, z);
 }
 
 wrap_rsblas1 wrap_rsblas1_func(int func) {

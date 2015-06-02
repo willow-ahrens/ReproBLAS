@@ -25,16 +25,16 @@
  */
 float smsmaddsq(const int fold, const float scaleX, const float *manX, const int incmanX, const float *carX, const int inccarX, const float scaleY, float* manY, const int incmanY, float* carY, const int inccarY) {
   if (scaleX > scaleY){
-    smrescale(fold, scaleX, manY, incmanY, carY, inccarY, scaleY);
+    smsrescale(fold, scaleX, scaleY, manY, incmanY, carY, inccarY);
     smsmadd(fold, manX, incmanX, carX, inccarX, manY, incmanY, carY, inccarY);
     return scaleX;
   }else if(scaleX == scaleY){
     smsmadd(fold, manX, incmanX, carX, inccarX, manY, incmanY, carY, inccarY);
     return scaleX;
   }else{
-    float_indexed tmp_X = sialloc(fold);
+    float_indexed *tmp_X = sialloc(fold);
     smsmset(fold, manX, incmanX, carX, inccarX, tmp_X, 1, tmp_X + fold, 1);
-    smrescale(fold, scaleY, tmpX, 1, tmpX + fold, 1, scaleX);
+    smsrescale(fold, scaleY, scaleX, tmp_X, 1, tmp_X + fold, 1);
     smsmadd(fold, tmp_X, 1, tmp_X + fold, 1, manY, incmanY, carY, inccarY);
     return scaleY;
   }

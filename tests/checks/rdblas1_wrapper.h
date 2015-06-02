@@ -63,7 +63,7 @@ double wrap_rdnrm2(int N, double *x, int incx, double *y, int incy) {
 void wrap_didnrm(int N, double *x, int incx, double *y, int incy, double_indexed *z) {
   (void)y;
   (void)incy;
-  didnrm(DEFAULT_FOLD, N, x, incx, z);
+  didssq(DEFAULT_FOLD, N, x, incx, 0.0, z);
 }
 
 wrap_rdblas1 wrap_rdblas1_func(int func) {
