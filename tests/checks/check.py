@@ -11,12 +11,12 @@ check_suite = checks.CheckSuite()
 folds = [3]
 inf_folds = [1, 3, 4]
 
-"""
 check_suite.add_checks([checks.ValidateInternalDSCALETest(),\
                         checks.ValidateInternalSSCALETest()],\
                        ["N", "incX"],\
                        [[4], [1]])
 
+"""
 check_suite.add_checks([checks.ValidateInternalUFPTest(),\
                         checks.ValidateInternalUFPFTest()],\
                        ["N", "incX"],\
@@ -248,7 +248,6 @@ check_suite.add_checks([checks.VerifyRDSUMTest(),\
                        ["N", "fold", "B", "incX", "RealScaleX", "f"],\
                        [[4095], folds, [256], [1, 4], [0],\
                         ["rand"]])
-"""
 
 check_suite.add_checks([checks.VerifyRDSUMTest(),\
                         checks.VerifyRDASUMTest(),\
@@ -284,7 +283,6 @@ check_suite.add_checks([checks.VerifyRDSUMTest(),\
                          "rand+(rand-1)",\
                          "sine",\
                          "small+grow*big"]])
-"""
 
 check_suite.add_checks([checks.VerifyRDDOTTest(),\
                         checks.VerifyRZDOTUTest(),\
