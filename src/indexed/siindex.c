@@ -90,6 +90,31 @@ float sibound(const int fold, const int N, const float X) {
 
 /**
  * @internal
+ * @brief Get a reproducible single precision scale Y
+ *
+ * A property of this value is that #sindex(X/Y) == #sindex(1.0) or 
+ * #sindex(X/Y) == #sindex(1.0) - 1
+ *
+ * @param X single precision number to be scaled
+ * @return reproducible scaling factor (if X == 0.0, returns smallest valid scale)
+ *
+ * @author Peter Ahrens
+ * @date   1 Jun 2015
+ */
+float sscale(const float X){
+  int exp;
+  frexpf(X, &exp);
+  if(X == 0.0){
+    exp = FLT_MIN_EXP;
+  }
+  //Note that this routine must never return a number with exponent larger than
+  //-FLT_MIN_EXP or FLT_MAX_EXP. Because of the particular values of these
+  //constants on IEEE compliant platforms, we do not need to check for this.
+  return ldexpf(0.5, (exp / FLT_BIN_DIG) * FLT_BIN_DIG);
+}
+
+/**
+ * @internal
  * @brief Get index of manually specified indexed single precision
  *
  * The index of an indexed type is the bin that it corresponds to. Higher indicies correspond to smaller bins.

@@ -75,13 +75,14 @@ double dmzssq(const int fold, const int N, const void *X, const int incX, const 
       scl = new_scl;
     }
 
-    amax /= scl;
+    new_scl = 1.0/scl;
+    amax *= new_scl;
     amax = amax * amax;
 
     zidupdate(fold, amax, ssq);
 
     /*[[[cog
-      cog.out(generate.generate(depositSSq.DepositSSq(dataTypes.DoubleComplex, "N_block", "x", "incX", "ssq", 1, "scl"), cog.inFile, args, params, mode))
+      cog.out(generate.generate(depositSSq.DepositSSq(dataTypes.DoubleComplex, "N_block", "x", "incX", "ssq", 1, "new_scl"), cog.inFile, args, params, mode))
       ]]]*/
     //[[[end]]]
 

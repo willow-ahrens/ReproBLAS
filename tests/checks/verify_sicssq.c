@@ -39,13 +39,13 @@ int verify_sicssq_reproducibility(int fold, int N, float complex* X, int incX, f
   float resscl = 0.0;
   float resssq;
   float_indexed *ires = sialloc(fold);
-  sisetzero(fold, ires);
   int num_blocks = 1;
 
   int block_N = (N + num_blocks - 1) / num_blocks;
 
   num_blocks = 1;
   while (num_blocks < N && num_blocks <= max_num_blocks) {
+    sisetzero(fold, ires);
     if (num_blocks == 1)
       resscl = sicssq(fold, N, X, incX, resscl, ires);
     else {
@@ -57,7 +57,7 @@ int verify_sicssq_reproducibility(int fold, int N, float complex* X, int incX, f
     }
     resssq = ssiconv(fold, ires);
     if (resssq != refssq || resscl != refscl) {
-      printf("sicssq(X)[num_blocks=%d,block_N=%d] = %g * %g != %g * %g\n", num_blocks, block_N, resscl, resssq, refscl, refssq);
+      printf("sicssq(X)[num_blocks=%d,block_N=%d] = %g * (%g) != %g * (%g)\n", num_blocks, block_N, resscl, resssq, refscl, refssq);
       printf("ref float_complex_indexed:\n");
       siprint(fold, iref);
       printf("\nres float_complex_indexed:\n");

@@ -90,6 +90,31 @@ double dibound(const int fold, const int N, const double X) {
 
 /**
  * @internal
+ * @brief Get a reproducible double precision scale Y
+ *
+ * A property of this value is that #dindex(X/Y) == #dindex(1.0) or
+ * #dindex(X/Y) == #dindex(1.0) - 1
+ *
+ * @param X double precision number to be scaled
+ * @return reproducible scaling factor (if X == 0.0, returns smallest valid scale)
+ *
+ * @author Peter Ahrens
+ * @date   1 Jun 2015
+ */
+double dscale(const double X){
+  int exp;
+  frexp(X, &exp);
+  if(X == 0.0){
+    exp = DBL_MIN_EXP;
+  }
+  //Note that this routine must never return a number with exponent larger than
+  //-DBL_MIN_EXP or DBL_MAX_EXP. Because of the particular values of these
+  //constants on IEEE compliant platforms, we do not need to check for this.
+  return ldexp(0.5, (exp / DBL_BIN_DIG) * DBL_BIN_DIG);
+}
+
+/**
+ * @internal
  * @brief Get index of manually specified indexed double precision
  *
  * The index of an indexed type is the bin that it corresponds to. Higher indicies correspond to smaller bins.

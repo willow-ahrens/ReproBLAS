@@ -66,13 +66,14 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
       scl = new_scl;
     }
 
-    amax /= scl;
+    new_scl = 1.0/scl;
+    amax *= new_scl;
     amax = amax * amax;
 
     smsupdate(fold, amax, manY, incmanY, carY, inccarY);
 
     /*[[[cog
-      cog.out(generate.generate(depositSSq.DepositSSq(dataTypes.Float, "N_block", "X", "incX", "manY", "incmanY", "scl"), cog.inFile, args, params, mode))
+      cog.out(generate.generate(depositSSq.DepositSSq(dataTypes.Float, "N_block", "X", "incX", "manY", "incmanY", "new_scl"), cog.inFile, args, params, mode))
       ]]]*/
     //[[[end]]]
 
