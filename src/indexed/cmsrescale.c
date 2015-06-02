@@ -35,10 +35,10 @@ void cmsrescale(const int fold, const float X, const float scaleY, float *manY, 
   rescaleY = X/scaleY;
   rescaleY *= rescaleY;
   for(i = 0; i < fold; i++){
-    manY[i * incmanY] /= rescaleY;
-    manY[i * incmanY + 1] /= rescaleY;
+    manY[i * 2 * incmanY] /= rescaleY;
+    manY[i * 2 * incmanY + 1] /= rescaleY;
     if(manY[i * incmanY] == 0.0){
-      cmsupdate(fold - i, 0.0, manY + 2 * i * incmanY, incmanY, carY + 2 * i * inccarY, inccarY);
+      cmsupdate(fold - i, 0.0, manY + i * 2 * incmanY, incmanY, carY + i * 2 * inccarY, inccarY);
       return;
     }
   }

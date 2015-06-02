@@ -23,7 +23,6 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   (void)argv;
   (void)incY;
   int i;
-  float scale;
 
   util_random_seed();
 
@@ -35,7 +34,7 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
     X[i * incX] = ldexpf(0.5 + 0.5 * util_drand48(), (i/N) + FLT_MIN_EXP);
   }
   for (i = 0; i < N * (FLT_MAX_EXP - FLT_MIN_EXP); i++) {
-    if (fabsf(sindex(X[i * incX]/sscale(X[i * incX])) - sindex(1.0)) > 1){
+    if (abs(sindex(X[i * incX]/sscale(X[i * incX])) - sindex(1.0)) > 1){
       printf("|sindex(%g/sscale(%g)) - sindex(1.0)| > 1\n", X[i * incX], X[i * incX]);
       printf("|sindex(%g/%g) - sindex(1.0)| > 1\n", X[i * incX], sscale(X[i * incX]));
       printf("|sindex(%g) - sindex(1.0)| > 1\n", X[i * incX]/sscale(X[i * incX]));

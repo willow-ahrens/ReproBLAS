@@ -541,6 +541,10 @@ class VerifyCICDEPOSITTest(CheckTest):
   executable = "tests/checks/verify_caugsum"
   name = "verify_cicdeposit"
 
+class VerifySICSSQTest(CheckTest):
+  executable = "tests/checks/verify_sicssq"
+  name = "verify_sicssq"
+
 class ValidateInternalDSCALETest(CheckTest):
   base_flags = ""
   executable = "tests/checks/validate_internal_dscale"
@@ -660,6 +664,7 @@ all_checks = {"validate_internal_ufp": ValidateInternalUFPTest,\
               "verify_ciciadd": VerifyCICIADDTest,\
               "verify_cicadd": VerifyCICADDTest,\
               "verify_cicdeposit": VerifyCICDEPOSITTest,\
+              "verify_sicssq": VerifySICSSQTest,\
               "validate_internal_dscale": ValidateInternalDSCALETest,\
               "validate_internal_dscale": ValidateInternalDSCALETest,\
               "validate_internal_sscale": ValidateInternalSSCALETest,\

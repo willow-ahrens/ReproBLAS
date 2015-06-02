@@ -70,9 +70,12 @@ float smcssq(const int fold, const int N, const void *X, const int incX, const f
 
     new_scl = sscale(amax);
     if (new_scl > scl) {
+    /*
       if(scl > 0.0){
         cmsrescale(fold, new_scl, scl, ssq, 1, ssq + 2 * fold, 1);
       }
+    */
+        cmsrescale(fold, new_scl, scl, ssq, 1, ssq + 2 * fold, 1);
       scl = new_scl;
     }
 
