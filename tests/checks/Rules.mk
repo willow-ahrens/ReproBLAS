@@ -2,12 +2,12 @@ TARGETS := validate_external_rdblas1$(EXE) validate_external_rzblas1$(EXE) valid
            validate_internal_damax$(EXE) validate_internal_zamax$(EXE) validate_internal_samax$(EXE) validate_internal_camax$(EXE) \
            validate_internal_ufp$(EXE) validate_internal_ufpf$(EXE) \
            verify_rdblas1$(EXE) verify_rzblas1$(EXE) verify_rsblas1$(EXE) verify_rcblas1$(EXE) \
-           validate_internal_dscale$(EXE) validate_internal_sscale$(EXE)\
+           validate_internal_dscale$(EXE) validate_internal_sscale$(EXE) \
            validate_internal_dindex$(EXE) validate_internal_sindex$(EXE) \
            validate_internal_dmindex$(EXE) validate_internal_smindex$(EXE) \
            verify_daugsum$(EXE) verify_zaugsum$(EXE) verify_saugsum$(EXE) verify_caugsum$(EXE) \
-           validate_internal_daugsum$(EXE) validate_internal_zaugsum$(EXE) validate_internal_saugsum$(EXE) validate_internal_caugsum$(EXE)\
-           verify_sicssq$(EXE)
+           verify_didssq$(EXE) verify_dizssq$(EXE) verify_sisssq$(EXE) verify_sicssq$(EXE) \
+           validate_internal_daugsum$(EXE) validate_internal_zaugsum$(EXE) validate_internal_saugsum$(EXE) validate_internal_caugsum$(EXE)
 
 SUBDIRS :=
 
@@ -38,6 +38,9 @@ verify_daugsum$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) verify_daugsum.o
 verify_zaugsum$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) verify_zaugsum.o
 verify_saugsum$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) verify_saugsum.o
 verify_caugsum$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) verify_caugsum.o
+verify_didssq$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) verify_didssq.o
+verify_dizssq$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) verify_dizssq.o
+verify_sisssq$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) verify_sisssq.o
 verify_sicssq$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) verify_sicssq.o
 validate_internal_daugsum$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) validate_internal_daugsum.o
 validate_internal_zaugsum$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) validate_internal_zaugsum.o

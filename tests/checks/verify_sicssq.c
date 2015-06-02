@@ -9,7 +9,6 @@
 
 #include "../common/test_vecvec_fill_header.h"
 
-static opt_option augsum_func;
 static opt_option max_blocks;
 static opt_option fold;
 
@@ -58,9 +57,9 @@ int verify_sicssq_reproducibility(int fold, int N, float complex* X, int incX, f
     resssq = ssiconv(fold, ires);
     if (resssq != refssq || resscl != refscl) {
       printf("sicssq(X)[num_blocks=%d,block_N=%d] = %g * (%g) != %g * (%g)\n", num_blocks, block_N, resscl, resssq, refscl, refssq);
-      printf("ref float_complex_indexed:\n");
+      printf("ref float_indexed:\n");
       siprint(fold, iref);
-      printf("\nres float_complex_indexed:\n");
+      printf("\nres float_indexed:\n");
       siprint(fold, ires);
       printf("\n");
       return 1;
@@ -74,7 +73,6 @@ int verify_sicssq_reproducibility(int fold, int N, float complex* X, int incX, f
 int vecvec_fill_show_help(void){
   verify_sicssq_options_initialize();
 
-  opt_show_option(augsum_func);
   opt_show_option(max_blocks);
   opt_show_option(fold);
   return 0;
@@ -85,7 +83,6 @@ const char* vecvec_fill_name(int argc, char** argv){
 
   verify_sicssq_options_initialize();
 
-  opt_eval_option(argc, argv, &augsum_func);
   opt_eval_option(argc, argv, &fold);
   snprintf(name_buffer, MAX_LINE * sizeof(char), "Verify sicssq reproducibility fold=%d", fold._int.value);
   return name_buffer;
@@ -102,7 +99,6 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX,
 
   util_random_seed();
 
-  opt_eval_option(argc, argv, &augsum_func);
   opt_eval_option(argc, argv, &max_blocks);
   opt_eval_option(argc, argv, &fold);
 

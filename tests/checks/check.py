@@ -253,18 +253,21 @@ check_suite.add_checks([checks.VerifyRDSUMTest(),\
 check_suite.add_checks([checks.VerifyRDSUMTest(),\
                         checks.VerifyRDASUMTest(),\
                         checks.VerifyRDNRM2Test(),\
+                        checks.VerifyDIDSSQTest(),\
                         checks.VerifyDIDIADDTest(),\
                         checks.VerifyDIDADDTest(),\
                         checks.VerifyDIDDEPOSITTest(),\
                         checks.VerifyRZSUMTest(),\
                         checks.VerifyRDZASUMTest(),\
                         checks.VerifyRDZNRM2Test(),\
+                        checks.VerifyDIZSSQTest(),\
                         checks.VerifyZIZIADDTest(),\
                         checks.VerifyZIZADDTest(),\
                         checks.VerifyZIZDEPOSITTest(),\
                         checks.VerifyRSSUMTest(),\
                         checks.VerifyRSASUMTest(),\
                         checks.VerifyRSNRM2Test(),\
+                        checks.VerifySISSSQTest(),\
                         checks.VerifySISIADDTest(),\
                         checks.VerifySISADDTest(),\
                         checks.VerifySISDEPOSITTest(),\
