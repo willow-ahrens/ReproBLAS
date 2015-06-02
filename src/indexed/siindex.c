@@ -95,7 +95,7 @@ float sibound(const int fold, const int N, const float X) {
  *
  * The scaling factor Y returned for given X is the smallest value that will fit in X's bin (The smallest representable value with the same index as X)
  *
- * Perhaps the most useful property of this number is that 1.0 <= X/Y < 2^#siwidth()
+ * Perhaps the most useful property of this number is that 1.0 <= X * (1.0/Y) < 2^#siwidth()
  *
  * @param X single precision number to be scaled
  * @return reproducible scaling factor (if X == 0.0, returns smallest valid scale)
