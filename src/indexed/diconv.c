@@ -74,6 +74,30 @@ void zizconv(const int fold, const void *X, double_complex_indexed *Y) {
   zmzconv(fold, X, Y, 1, Y + 2 * fold, 1);
 }
 
+static void ddpd(double* a, double b) {
+  double q;
+  double s1, s2, t1, t2;
+
+  // Add hi words
+  s1 = a[0] + b;
+  q = s1 - a[0];
+  s2 = ((b - q) + (a[0] - (s1 - q)));
+
+  t1 = a[1] + s2;
+  q = t1 - a[1];
+  t2 = ((s2 - q) + (a[1] - (t1 - q)));
+
+  s2 = t1;
+
+  // Renormalize (s1, s2)  to  (t1, s2)
+  t1 = s1 + s2;
+  t2 += s2 - (t1 - s1);
+
+  // Renormalize (t1, t2)
+  a[0] = t1 + t2;
+  a[1] = t2 - (a[0] - t1);
+}
+
 /**
  * @internal
  * @brief Convert manually specified indexed double precision to double precision (X -> Y)
@@ -91,7 +115,7 @@ void zizconv(const int fold, const void *X, double_complex_indexed *Y) {
  */
 double ddmconv(const int fold, const double* manX, const int incmanX, const double* carX, const int inccarX) {
   int i = 0;
-  double Y = 0.0;
+  double Y[2] = {0.0, 0.0};
   double M;
 
   if (isinf(manX[0]) || isnan(manX[0]))
@@ -103,16 +127,18 @@ double ddmconv(const int fold, const double* manX, const int incmanX, const doub
 
   if(dmindex0(manX)){
     M = ufp(manX[i * incmanX]);
-    Y = ((manX[i * incmanX] - 1.5 * M) + carX[i * inccarX] * (0.25 * M)) * dmexpansion();
+    ddpd(Y, carX[i * inccarX] * 0.25 * M * smexpansion());
+    ddpd(Y, (manX[i * incmanX] - 1.5 * M) * smexpansion());
     i = 1;
   }
 
   for (; i < fold; i++) {
     M = ufp(manX[i * incmanX]);
-    Y += (manX[i * incmanX] - 1.5 * M) + carX[i * inccarX] * (0.25 * M);
+    ddpd(Y, carX[i * inccarX] * 0.25 * M);
+    ddpd(Y, manX[i * incmanX] - 1.5 * M);
   }
 
-  return Y;
+  return Y[0] + Y[1];
 }
 
 /**

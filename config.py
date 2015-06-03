@@ -54,7 +54,7 @@ def run(command_list, verbose="false"):
       status(i, len(command_list));
     result_list.append(result)
   if verbose != "true":
-    print()
+    print("")
   return result_list
 
 ##

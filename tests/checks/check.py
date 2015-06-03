@@ -11,6 +11,7 @@ check_suite = checks.CheckSuite()
 folds = [3]
 inf_folds = [1, 3, 4]
 
+"""
 check_suite.add_checks([checks.ValidateInternalDSCALETest(),\
                         checks.ValidateInternalSSCALETest()],\
                        ["N", "incX"],\
@@ -299,6 +300,7 @@ check_suite.add_checks([checks.VerifyRDDOTTest(),\
                          "rand+(rand-1)",\
                          "sine",\
                          "small+grow*big"]])
+"""
 
 DBL_BIN_WIDTH=40
 DBL_MAX_EXP=1024
