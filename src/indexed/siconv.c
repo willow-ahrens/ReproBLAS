@@ -99,15 +99,13 @@ float ssmconv(const int fold, const float* manX, const int incmanX, const float*
 
   if(smindex0(manX)){
     M = ufpf(manX[i * incmanX]);
-    Y += carX[i * inccarX] * 0.25 * M * smexpansion();
-    Y += (manX[i * incmanX] - 1.5 * M) * smexpansion();
+    Y += (carX[i * inccarX] * 0.25 * M + (manX[i * incmanX] - 1.5 * M)) * smexpansion();
     i = 1;
   }
 
   for (; i < fold; i++) {
     M = ufpf(manX[i * incmanX]);
-    Y += carX[i * inccarX] * 0.25 * M;
-    Y += manX[i * incmanX] - 1.5 * M;
+    Y += carX[i * inccarX] * 0.25 * M + (manX[i * incmanX] - 1.5 * M);
   }
 
   return Y;

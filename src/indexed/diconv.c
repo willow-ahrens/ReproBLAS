@@ -115,7 +115,7 @@ static void ddpd(double* a, double b) {
  */
 double ddmconv(const int fold, const double* manX, const int incmanX, const double* carX, const int inccarX) {
   int i = 0;
-  double Y[2] = {0.0, 0.0};
+  long double Y = 0.0;
   double M;
 
   if (isinf(manX[0]) || isnan(manX[0]))
@@ -127,18 +127,16 @@ double ddmconv(const int fold, const double* manX, const int incmanX, const doub
 
   if(dmindex0(manX)){
     M = ufp(manX[i * incmanX]);
-    ddpd(Y, carX[i * inccarX] * 0.25 * M * smexpansion());
-    ddpd(Y, (manX[i * incmanX] - 1.5 * M) * smexpansion());
+    Y += (carX[i * inccarX] * 0.25 * M + (manX[i * incmanX] - 1.5 * M)) * dmexpansion();
     i = 1;
   }
 
   for (; i < fold; i++) {
     M = ufp(manX[i * incmanX]);
-    ddpd(Y, carX[i * inccarX] * 0.25 * M);
-    ddpd(Y, manX[i * incmanX] - 1.5 * M);
+    Y += carX[i * inccarX] * 0.25 * M + (manX[i * incmanX] - 1.5 * M);
   }
 
-  return Y[0] + Y[1];
+  return Y;
 }
 
 /**
