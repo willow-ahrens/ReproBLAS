@@ -13,7 +13,7 @@
 #include "indexedBLAS.h"
 #include "reproBLAS.h"
 #include "../../tests/common/test_BLAS.h"
-#include "../Common/Common.h"
+#include "../common/common.h"
 
 #define BLK 32
 

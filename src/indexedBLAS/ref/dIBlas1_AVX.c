@@ -15,7 +15,7 @@
 //possibly include -march=native
 
 #include "../config.h"
-#include "../Common/Common.h"
+#include "../common/common.h"
 #include "dIBlas1.h"
 
 /*

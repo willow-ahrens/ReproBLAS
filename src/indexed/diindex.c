@@ -7,7 +7,7 @@
 
 #include "indexed.h"
 #include "../../config.h"
-#include "../Common/Common.h"
+#include "../common/common.h"
 
 #define DBL_BIN_DIG        40
 static double bins[(DBL_MAX_EXP - DBL_MIN_EXP)/DBL_BIN_DIG + MAX_FOLD]; //initialized in bins_initialize

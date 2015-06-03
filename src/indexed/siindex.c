@@ -7,7 +7,7 @@
 
 #include "indexed.h"
 #include "../../config.h"
-#include "../Common/Common.h"
+#include "../common/common.h"
 
 #define FLT_BIN_DIG        13
 static float bins[(FLT_MAX_EXP - FLT_MIN_EXP)/FLT_BIN_DIG + MAX_FOLD]; //initialized in bins_initialize

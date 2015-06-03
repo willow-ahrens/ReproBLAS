@@ -12,7 +12,7 @@
 #include <xmmintrin.h>
 
 #include "../config.h"
-#include "../Common/Common.h"
+#include "../common/common.h"
 #include "sIBlas1.h"
 
 /*

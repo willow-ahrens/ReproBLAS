@@ -1,6 +1,6 @@
 #include "indexedBLAS.h"
 #include "indexed.h"
-#include "../Common/Common.h"
+#include "../common/common.h"
 
 #define Y_BLOCK_SIZE 16
 #define X_BLOCK_SIZE 1024

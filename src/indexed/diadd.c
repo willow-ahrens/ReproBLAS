@@ -5,7 +5,7 @@
 #include <math.h>
 #include <float.h>
 
-#include "../Common/Common.h"
+#include "../common/common.h"
 #include "indexed.h"
 
 /**

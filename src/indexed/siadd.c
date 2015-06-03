@@ -6,7 +6,7 @@
 #include <float.h>
 
 #include "indexed.h"
-#include "../Common/Common.h"
+#include "../common/common.h"
 
 /**
  * @internal

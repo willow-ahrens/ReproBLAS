@@ -8,7 +8,7 @@
 #include <emmintrin.h>
 
 #include "../config.h"
-#include "../Common/Common.h"
+#include "../common/common.h"
 #include "cIBlas1.h"
 #include "../rblas1.h"
 
