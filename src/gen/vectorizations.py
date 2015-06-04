@@ -7,6 +7,7 @@
 #                                                            Peter Ahrens 2014 #
 ################################################################################
 
+
 import math
 from utils import *
 from dataTypes import *
@@ -39,7 +40,7 @@ class Vectorization(object):
   def propagate_into(self, dst_vars, src_ptr, offset, inc):
     raise(NotImplementedError())
 
-  def add_BLP_into(dst, src, blp, width):
+  def add_blp_into(dst, src, blp, width):
     raise(NotImplementedError())
 
   #loads n values from pointer into the variables listed in variables (n must be a multiple of type_size)
@@ -225,19 +226,19 @@ class SISD(Vectorization):
     else:
       self.code_block.write(" = ".join(dst_vars) + " = {0}[{1}];".format(src_ptr, self.data_type.index(offset, inc, 0)))
 
-  def include_BLP_vars(self):
-    self.code_block.include("{0} tmp_BLP; (void)tmp_BLP;".format(self.data_type.base_type.int_float_name))
+  def include_blp_vars(self):
+    self.code_block.include("{0} blp_tmp; (void)blp_tmp;".format(self.data_type.base_type.int_float_name))
 
-  def add_BLP_into(self, dst, src, blp, width):
+  def add_blp_into(self, dst, src, blp, width):
     assert len(dst) >= width
     assert len(src) >= width
     assert len(blp) >= width
 
-    self.include_BLP_vars()
+    self.include_blp_vars()
     for i in range(width):
-      self.code_block.write("tmp_BLP.{0} = {1};".format(self.data_type.base_type.float_char, blp[i]))
-      self.code_block.write("tmp_BLP.{0} |= 1;".format(self.data_type.base_type.int_char))
-      self.code_block.write("{0} = {1} + tmp_BLP.{2};".format(dst[i], src[i], self.data_type.base_type.float_char))
+      self.code_block.write("blp_tmp.{0} = {1};".format(self.data_type.base_type.float_char, blp[i]))
+      self.code_block.write("blp_tmp.{0} |= 1;".format(self.data_type.base_type.int_char))
+      self.code_block.write("{0} = {1} + blp_tmp.{2};".format(dst[i], src[i], self.data_type.base_type.float_char))
 
   def load(self, src_ptr, offset, inc, n, align=False):
     assert n > 0, "n must be nonzero"
@@ -268,7 +269,10 @@ class SISD(Vectorization):
     return ["{0} + {1}".format(src_var, amt_var) for (src_var, amt_var) in zip(src_vars, amt_vars)]
 
   def abs(self, src_vars):
-    return ["fabs({0})".format(src_var) for src_var in src_vars]
+    if self.data_type.base_type.name == "double":
+      return ["fabs({0})".format(src_var) for src_var in src_vars]
+    else:
+      return ["fabsf({0})".format(src_var) for src_var in src_vars]
 
   def mul(self, src_vars, amt_vars):
     return ["{0} * {1}".format(src_var, amt_var) for (src_var, amt_var) in zip(src_vars, amt_vars)]
@@ -308,24 +312,11 @@ class SIMD(Vectorization):
     self.suf_width = 1
 
   def include_max_vars(self):
-    self.code_block.include("{0} max_buffer[{1}] __attribute__((aligned({2}))); (void)max_buffer;".format(self.data_type.base_type.name, self.base_size, self.byte_size))
+    self.code_block.include("{0} max_buffer_tmp[{1}] __attribute__((aligned({2}))); (void)max_buffer_tmp;".format(self.data_type.base_type.name, self.base_size, self.byte_size))
 
   def include_consolidation_vars(self):
     self.code_block.include("{0} cons_tmp; (void)cons_tmp;".format(self.type_name))
-    self.code_block.include("{0} cons_buffer[{1}] __attribute__((aligned({2}))); (void)cons_buffer;".format(self.data_type.base_type.name, self.base_size, self.byte_size))
-
-  #TODO masks should be defined here and not necessarily in COMMON?
-  def include_ABS_vars(self):
-    self.code_block.include("{0} abs_mask; {1}_ABS_MASK{2}(abs_mask);".format(self.type_name, self.name, self.data_type.base_type.name_char.upper()))
-
-  def include_BLP_vars(self):
-    self.code_block.include("{0} blp_mask; {1}_BLP_MASK{2}(blp_mask);".format(self.type_name, self.name, self.data_type.base_type.name_char.upper()))
-
-  def include_CONJ_vars(self):
-    self.code_block.include("{0} conj_mask; {1}_CONJ_MASK{2}(conj_mask);".format(self.type_name, self.name, self.data_type.base_type.name_char.upper())) 
-
-  def include_NCONJ_vars(self):
-    self.code_block.include("{0} nconj_mask; {1}_NCONJ_MASK{2}(nconj_mask);".format(self.type_name, self.name, self.data_type.base_type.name_char.upper()))
+    self.code_block.include("{0} cons_buffer_tmp[{1}] __attribute__((aligned({2}))); (void)cons_buffer_tmp;".format(self.data_type.base_type.name, self.base_size, self.byte_size))
 
 
 class SSE(SIMD):
@@ -341,6 +332,82 @@ class SSE(SIMD):
     self.base_size = self.bit_size//self.data_type.base_type.bit_size
     self.type_size = self.bit_size//self.data_type.bit_size
     self.zero = "_mm_setzero_p{0}()".format(self.data_type.base_type.name_char)
+
+  def include_abs_vars(self):
+    if self.data_type.base_type.name == "double":
+      self.code_block.include("__m128d abs_mask_tmp;\n"
+                              "{\n"
+                              "  __m128d tmp;\n"
+                              "  tmp = _mm_set1_pd(1);\n"
+                              "  abs_mask_tmp = _mm_set1_pd(-1);\n"
+                              "  abs_mask_tmp = _mm_xor_pd(abs_mask_tmp, tmp);\n"
+                              "  tmp = _mm_cmpeq_pd(tmp, tmp);\n"
+                              "  abs_mask_tmp = _mm_xor_pd(abs_mask_tmp, tmp);\n"
+                              "}")
+    else:
+      self.code_block.include("__m128 abs_mask_tmp;\n"
+                              "{\n"
+                              "  __m128 tmp;\n"
+                              "  tmp = _mm_set1_ps(1);\n"
+                              "  abs_mask_tmp = _mm_set1_ps(-1);\n"
+                              "  abs_mask_tmp = _mm_xor_ps(abs_mask_tmp, tmp);\n"
+                              "  tmp = _mm_cmpeq_ps(tmp, tmp);\n"
+                              "  abs_mask_tmp = _mm_xor_ps(abs_mask_tmp, tmp);\n"
+                              "}")
+
+  def include_blp_vars(self):
+    if self.data_type.base_type.name == "double":
+      self.code_block.include("__m128d blp_mask_tmp;\n"
+                              "{\n"
+                              "  __m128d tmp;\n"
+                              "  blp_mask_tmp = _mm_set1_pd(1.0);\n"
+                              "  tmp = _mm_set1_pd(1.0 + (DBL_EPSILON * 1.0001));\n"
+                              "  blp_mask_tmp = _mm_xor_pd(blp_mask_tmp, tmp);\n"
+                              "}")
+    else:
+      self.code_block.include("__m128 blp_mask_tmp;\n"
+                              "{\n"
+                              "  __m128 tmp;\n"
+                              "  blp_mask_tmp = _mm_set1_ps(1.0);\n"
+                              "  tmp = _mm_set1_ps(1.0 + (FLT_EPSILON * 1.0001));\n"
+                              "  blp_mask_tmp = _mm_xor_ps(blp_mask_tmp, tmp);\n"
+                              "}")
+
+  def include_conj_vars(self):
+    if self.data_type.base_type.name == "double":
+      self.code_block.include("__m128d conj_mask_tmp;\n"
+                              "{\n"
+                              "  __m128d tmp;\n"
+                              "  tmp = _mm_set_pd(1, 0);\n"
+                              "  conj_mask_tmp = _mm_set_pd(-1, 0);\n"
+                              "  conj_mask_tmp = _mm_xor_pd(conj_mask_tmp, tmp);\n"
+                              "}")
+    else:
+      self.code_block.include("__m128 conj_mask_tmp;\n"
+                              "{\n"
+                              "  __m128 tmp;\n"
+                              "  tmp = _mm_set_ps(1, 0, 1, 0);\n"
+                              "  conj_mask_tmp = _mm_set_ps(-1, 0, -1, 0);\n"
+                              "  conj_mask_tmp = _mm_xor_ps(conj_mask_tmp, tmp);\n"
+                              "}")
+
+  def include_nconj_vars(self):
+    if self.data_type.base_type.name == "double":
+      self.code_block.include("__m128d nconj_mask_tmp;\n"
+                              "{\n"
+                              "  __m128d tmp;\n"
+                              "  tmp = _mm_set_pd(0, 1);\n"
+                              "  nconj_mask_tmp = _mm_set_pd(0, -1);\n"
+                              "  nconj_mask_tmp = _mm_xor_pd(nconj_mask_tmp, tmp);\n"
+                              "}")
+    else:
+      self.code_block.include("__m128 nconj_mask_tmp;\n"
+                              "{\n"
+                              "  __m128 tmp;\n"
+                              "  tmp = _mm_set_ps(0, 1, 0, 1);\n"
+                              "  nconj_mask_tmp = _mm_set_ps(0, -1, 0, -1);\n"
+                              "  nconj_mask_tmp = _mm_xor_ps(nconj_mask_tmp, tmp);\n"
+                              "}")
 
   def consolidate_into(self, dst_ptr, offset, inc, src_vars, common_summand_ptr, common_summand_offset, common_summand_inc):
     self.include_consolidation_vars()
@@ -359,12 +426,12 @@ class SSE(SIMD):
       self.propagate_into(["cons_tmp"], common_summand_ptr, common_summand_offset, common_summand_inc)
       for src_var in src_vars[1:]:
         self.code_block.write("{0} = _mm_add_p{1}({0}, _mm_sub_p{1}({2}, cons_tmp));".format(src_vars[0], self.data_type.base_type.name_char, src_var))
-    self.code_block.write("_mm_store_p{0}(cons_buffer, {1});".format(self.data_type.base_type.name_char, src_vars[0]))
+    self.code_block.write("_mm_store_p{0}(cons_buffer_tmp, {1});".format(self.data_type.base_type.name_char, src_vars[0]))
     if self.data_type.is_complex:
-      self.code_block.write("{0}[{1}] = {2};".format(dst_ptr, self.data_type.index(offset, inc, 0), " + ".join(["cons_buffer[{0}]".format(self.data_type.index(i, 1, 0)) for i in range(self.type_size)])))
-      self.code_block.write("{0}[{1}] = {2};".format(dst_ptr, self.data_type.index(offset, inc, 1), " + ".join(["cons_buffer[{0}]".format(self.data_type.index(i, 1, 1)) for i in range(self.type_size)])))
+      self.code_block.write("{0}[{1}] = {2};".format(dst_ptr, self.data_type.index(offset, inc, 0), " + ".join(["cons_buffer_tmp[{0}]".format(self.data_type.index(i, 1, 0)) for i in range(self.type_size)])))
+      self.code_block.write("{0}[{1}] = {2};".format(dst_ptr, self.data_type.index(offset, inc, 1), " + ".join(["cons_buffer_tmp[{0}]".format(self.data_type.index(i, 1, 1)) for i in range(self.type_size)])))
     else:
-      self.code_block.write("{0}[{1}] = {2};".format(dst_ptr, self.data_type.index(offset, inc, 0), " + ".join(["cons_buffer[{0}]".format(i) for i in range(self.base_size)])))
+      self.code_block.write("{0}[{1}] = {2};".format(dst_ptr, self.data_type.index(offset, inc, 0), " + ".join(["cons_buffer_tmp[{0}]".format(i) for i in range(self.base_size)])))
 
   def max_into(self, dst_ptr, offset, inc, src_vars):
     self.include_max_vars()
@@ -374,11 +441,11 @@ class SSE(SIMD):
 
     for src_var in src_vars[1:]:
       self.set_equal(self.max(src_var[0], src_var));
-    self.code_block.write("_mm_store_p{0}(max_buffer, {1});".format(self.data_type.base_type.name_char, src_vars[0]))
+    self.code_block.write("_mm_store_p{0}(max_buffer_tmp, {1});".format(self.data_type.base_type.name_char, src_vars[0]))
     for i in range(self.data_type.base_size, self.base_size):
-      self.code_block.write("max_buffer[{0}] = (max_buffer[{0}] > max_buffer[{1}] ? max_buffer[{0}]: max_buffer[{1}]);".format(i % self.data_type.base_size, i))
+      self.code_block.write("max_buffer_tmp[{0}] = (max_buffer_tmp[{0}] > max_buffer_tmp[{1}] ? max_buffer_tmp[{0}]: max_buffer_tmp[{1}]);".format(i % self.data_type.base_size, i))
     for i in range(self.data_type.base_size):
-      self.code_block.write("{0}[{1}] = max_buffer[{2}];".format(dst_ptr, self.data_type.index(offset, inc, i, True), i))
+      self.code_block.write("{0}[{1}] = max_buffer_tmp[{2}];".format(dst_ptr, self.data_type.index(offset, inc, i, True), i))
 
   def propagate_into(self, dst_vars, src_ptr, offset, inc):
     if self.data_type.is_complex:
@@ -390,14 +457,14 @@ class SSE(SIMD):
       broadcast = "_mm_load1_p{0}({{0}});".format(self.data_type.name_char)
     self.code_block.write(" = ".join(dst_vars) + " = " + broadcast.format(mix("+", src_ptr, self.data_type.index(offset, inc, 0), paren=False)))
 
-  def add_BLP_into(self, dst, src, blp, width):
+  def add_blp_into(self, dst, src, blp, width):
     assert len(dst) >= width
     assert len(src) >= width
     assert len(blp) >= width
 
-    self.include_BLP_vars()
+    self.include_blp_vars()
     for i in range(width):
-      self.code_block.write("{0} = _mm_add_p{1}({2}, _mm_or_p{1}({3}, blp_mask));".format(dst[i], self.data_type.base_type.name_char, src[i], blp[i]))
+      self.code_block.write("{0} = _mm_add_p{1}({2}, _mm_or_p{1}({3}, blp_mask_tmp));".format(dst[i], self.data_type.base_type.name_char, src[i], blp[i]))
 
   def load(self, src_ptr, offset, inc, n, align=False):
     assert n > 0, "n must be nonzero"
@@ -441,8 +508,8 @@ class SSE(SIMD):
     return ["_mm_add_p{0}({1}, {2})".format(self.data_type.base_type.name_char, src_var, amt_var) for (src_var, amt_var) in zip(src_vars, amt_vars)]
 
   def abs(self, src_vars):
-    self.include_ABS_vars()
-    return ["_mm_and_p{0}({1}, abs_mask)".format(self.data_type.base_type.name_char, src_var) for src_var in src_vars]
+    self.include_abs_vars()
+    return ["_mm_and_p{0}({1}, abs_mask_tmp)".format(self.data_type.base_type.name_char, src_var) for src_var in src_vars]
 
   def mul(self, src_vars, amt_vars):
     return ["_mm_mul_p{0}({1}, {2})".format(self.data_type.base_type.name_char, src_var, amt_var) for (src_var, amt_var) in zip(src_vars, amt_vars)]
@@ -455,15 +522,15 @@ class SSE(SIMD):
 
   def conj(self, src_vars):
     if self.data_type.is_complex:
-      self.include_CONJ_vars()
-      return ["_mm_xor_p{0}({1}, conj_mask)".format(self.data_type.base_type.name_char, src_var) for src_var in src_vars]
+      self.include_conj_vars()
+      return ["_mm_xor_p{0}({1}, conj_mask_tmp)".format(self.data_type.base_type.name_char, src_var) for src_var in src_vars]
     else:
       return src_vars
 
   def nconj(self, src_vars):
     if self.data_type.is_complex:
-      self.include_NCONJ_vars()
-      return ["_mm_xor_p{0}({1}, nconj_mask)".format(self.data_type.base_type.name_char, src_var) for src_var in src_vars]
+      self.include_nconj_vars()
+      return ["_mm_xor_p{0}({1}, nconj_mask_tmp)".format(self.data_type.base_type.name_char, src_var) for src_var in src_vars]
     else:
       return src_vars
 
@@ -504,12 +571,87 @@ class AVX(SIMD):
   def __init__(self, code_block, data_type_class):
     super(AVX, self).__init__(code_block, data_type_class)
     self.bit_size = 256
-    self.byte_size = 32 
+    self.byte_size = 32
     self.type_name = {"float": "__m256", "double": "__m256d"}[self.data_type.base_type.name]
     self.base_size = self.bit_size//self.data_type.base_type.bit_size
     self.type_size = self.bit_size//self.data_type.bit_size
     self.zero = "_mm256_setzero_p{0}()".format(self.data_type.base_type.name_char)
 
+  def include_abs_vars(self):
+    if self.data_type.base_type.name == "double":
+      self.code_block.include("__m256d abs_mask_tmp;\n"
+                              "{\n"
+                              "  __m256d tmp;\n"
+                              "  tmp = _mm256_set1_pd(1);\n"
+                              "  abs_mask_tmp = _mm256_set1_pd(-1);\n"
+                              "  abs_mask_tmp = _mm256_xor_pd(abs_mask_tmp, tmp);\n"
+                              "  tmp = _mm256_cmp_pd(tmp, tmp, 0);\n"
+                              "  abs_mask_tmp = _mm256_xor_pd(abs_mask_tmp, tmp);\n"
+                              "}")
+    else:
+      self.code_block.include("__m256 abs_mask_tmp;\n"
+                              "{\n"
+                              "  __m256 tmp;\n"
+                              "  tmp = _mm256_set1_ps(1);\n"
+                              "  abs_mask_tmp = _mm256_set1_ps(-1);\n"
+                              "  abs_mask_tmp = _mm256_xor_ps(abs_mask_tmp, tmp);\n"
+                              "  tmp = _mm256_cmp_ps(tmp, tmp, 0);\n"
+                              "  abs_mask_tmp = _mm256_xor_ps(abs_mask_tmp, tmp);\n"
+                              "}")
+
+  def include_blp_vars(self):
+    if self.data_type.base_type.name == "double":
+      self.code_block.include("__m256d blp_mask_tmp;\n"
+                              "{\n"
+                              "  __m256d tmp;\n"
+                              "  blp_mask_tmp = _mm256_set1_pd(1.0);\n"
+                              "  tmp = _mm256_set1_pd(1.0 + (DBL_EPSILON * 1.0001));\n"
+                              "  blp_mask_tmp = _mm256_xor_pd(blp_mask_tmp, tmp);\n"
+                              "}")
+    else:
+      self.code_block.include("__m256 blp_mask_tmp;\n"
+                              "{\n"
+                              "  __m256 tmp;\n"
+                              "  blp_mask_tmp = _mm256_set1_ps(1.0);\n"
+                              "  tmp = _mm256_set1_ps(1.0 + (FLT_EPSILON * 1.0001));\n"
+                              "  blp_mask_tmp = _mm256_xor_ps(blp_mask_tmp, tmp);\n"
+                              "}")
+
+  def include_conj_vars(self):
+    if self.data_type.base_type.name == "double":
+      self.code_block.include("__m256d conj_mask_tmp;\n"
+                              "{\n"
+                              "  __m256d tmp;\n"
+                              "  tmp = _mm256_set_pd(1, 0, 1, 0);\n"
+                              "  conj_mask_tmp = _mm256_set_pd(-1, 0, -1, 0);\n"
+                              "  conj_mask_tmp = _mm256_xor_pd(conj_mask_tmp, tmp);\n"
+                              "}")
+    else:
+      self.code_block.include("__m256 conj_mask_tmp;\n"
+                              "{\n"
+                              "  __m256 tmp;\n"
+                              "  tmp = _mm256_set_ps(1, 0, 1, 0, 1, 0, 1, 0);\n"
+                              "  conj_mask_tmp = _mm256_set_ps(-1, 0, -1, 0, -1, 0, -1, 0);\n"
+                              "  conj_mask_tmp = _mm256_xor_ps(conj_mask_tmp, tmp);\n"
+                              "}")
+
+  def include_nconj_vars(self):
+    if self.data_type.base_type.name == "double":
+      self.code_block.include("__m256d nconj_mask_tmp;\n"
+                              "{\n"
+                              "  __m256d tmp;\n"
+                              "  tmp = _mm256_set_pd(0, 1, 0, 1);\n"
+                              "  nconj_mask_tmp = _mm256_set_pd(0, -1, 0, -1);\n"
+                              "  nconj_mask_tmp = _mm256_xor_pd(nconj_mask_tmp, tmp);\n"
+                              "}")
+    else:
+      self.code_block.include("__m256 nconj_mask_tmp;\n"
+                              "{\n"
+                              "  __m256 tmp;\n"
+                              "  tmp = _mm256_set_ps(0, 1, 0, 1, 0, 1, 0, 1);\n"
+                              "  nconj_mask_tmp = _mm256_set_ps(0, -1, 0, -1, 0, -1, 0, -1);\n"
+                              "  nconj_mask_tmp = _mm256_xor_ps(nconj_mask_tmp, tmp);\n"
+                              "}")
 
   def consolidate_into(self, dst_ptr, offset, inc, src_vars, common_summand_ptr, common_summand_offset, common_summand_inc):
     self.include_consolidation_vars()
@@ -530,12 +672,12 @@ class AVX(SIMD):
       self.propagate_into(["cons_tmp"], common_summand_ptr, common_summand_offset, common_summand_inc)
       for src_var in src_vars[1:]:
         self.code_block.write("{0} = _mm256_add_p{1}({0}, _mm256_sub_p{1}({2}, cons_tmp));".format(src_vars[0], self.data_type.base_type.name_char, src_var))
-    self.code_block.write("_mm256_store_p{0}(cons_buffer, {1});".format(self.data_type.base_type.name_char, src_vars[0]))
+    self.code_block.write("_mm256_store_p{0}(cons_buffer_tmp, {1});".format(self.data_type.base_type.name_char, src_vars[0]))
     if self.data_type.is_complex:
-      self.code_block.write("{0}[{1}] = {2};".format(dst_ptr, self.data_type.index(offset, inc, 0), " + ".join(["cons_buffer[{0}]".format(2 * i) for i in range(self.type_size)])))
-      self.code_block.write("{0}[{1}] = {2};".format(dst_ptr, self.data_type.index(offset, inc, 1), " + ".join(["cons_buffer[{0}]".format(2 * i + 1) for i in range(self.type_size)])))
+      self.code_block.write("{0}[{1}] = {2};".format(dst_ptr, self.data_type.index(offset, inc, 0), " + ".join(["cons_buffer_tmp[{0}]".format(2 * i) for i in range(self.type_size)])))
+      self.code_block.write("{0}[{1}] = {2};".format(dst_ptr, self.data_type.index(offset, inc, 1), " + ".join(["cons_buffer_tmp[{0}]".format(2 * i + 1) for i in range(self.type_size)])))
     else:
-      self.code_block.write("{0}[{1}] = {2};".format(dst_ptr, self.data_type.index(offset, inc, 0), " + ".join(["cons_buffer[{0}]".format(i) for i in range(self.base_size)])))
+      self.code_block.write("{0}[{1}] = {2};".format(dst_ptr, self.data_type.index(offset, inc, 0), " + ".join(["cons_buffer_tmp[{0}]".format(i) for i in range(self.base_size)])))
 
   def max_into(self, dst_ptr, offset, inc, src_vars): 
     self.include_max_vars()
@@ -545,11 +687,11 @@ class AVX(SIMD):
 
     for src_var in src_vars[1:]:
       self.set_equal(self.max(src_var[0], src_var));
-    self.code_block.write("_mm256_store_p{0}(max_buffer, {1});".format(self.data_type.base_type.name_char, src_vars[0]))
+    self.code_block.write("_mm256_store_p{0}(max_buffer_tmp, {1});".format(self.data_type.base_type.name_char, src_vars[0]))
     for i in range(self.data_type.base_size, self.base_size):
-      self.code_block.write("max_buffer[{0}] = (max_buffer[{0}] > max_buffer[{1}] ? max_buffer[{0}]: max_buffer[{1}]);".format(i % self.data_type.base_size, i))
+      self.code_block.write("max_buffer_tmp[{0}] = (max_buffer_tmp[{0}] > max_buffer_tmp[{1}] ? max_buffer_tmp[{0}]: max_buffer_tmp[{1}]);".format(i % self.data_type.base_size, i))
     for i in range(self.data_type.base_size):
-      self.code_block.write("{0}[{1}] = max_buffer[{2}];".format(dst_ptr, self.data_type.index(offset, inc, i, True), i))
+      self.code_block.write("{0}[{1}] = max_buffer_tmp[{2}];".format(dst_ptr, self.data_type.index(offset, inc, i, True), i))
 
   def propagate_into(self, dst_vars, src_ptr, offset, inc):
     if self.data_type.is_complex:
@@ -561,13 +703,13 @@ class AVX(SIMD):
       broadcast = "_mm256_broadcast_s{0}({{0}});".format(self.data_type.name_char)
     self.code_block.write(" = ".join(dst_vars) + " = " + broadcast.format(mix("+", src_ptr, self.data_type.index(offset, inc, 0), paren=False)))
 
-  def add_BLP_into(self, dst, src, blp, width):
+  def add_blp_into(self, dst, src, blp, width):
     assert len(dst) >= width
     assert len(src) >= width
     assert len(blp) >= width
-    self.include_BLP_vars()
+    self.include_blp_vars()
     for i in range(width):
-      self.code_block.write("{0} = _mm256_add_p{1}({2}, _mm256_or_p{1}({3}, blp_mask));".format(dst[i], self.data_type.base_type.name_char, src[i], blp[i]))
+      self.code_block.write("{0} = _mm256_add_p{1}({2}, _mm256_or_p{1}({3}, blp_mask_tmp));".format(dst[i], self.data_type.base_type.name_char, src[i], blp[i]))
 
   def load(self, src_ptr, offset, inc, n, align=False):
     assert n > 0, "n must be nonzero"
@@ -613,8 +755,8 @@ class AVX(SIMD):
     return ["_mm256_add_p{0}({1}, {2})".format(self.data_type.base_type.name_char, src_var, amt_var) for (src_var, amt_var) in zip(src_vars, amt_vars)]
 
   def abs(self, src_vars):
-    self.include_ABS_vars()
-    return ["_mm256_and_p{0}({1}, abs_mask)".format(self.data_type.base_type.name_char, src_var) for src_var in src_vars]
+    self.include_abs_vars()
+    return ["_mm256_and_p{0}({1}, abs_mask_tmp)".format(self.data_type.base_type.name_char, src_var) for src_var in src_vars]
 
   def mul(self, src_vars, amt_vars):
     return ["_mm256_mul_p{0}({1}, {2})".format(self.data_type.base_type.name_char, src_var, amt_var) for (src_var, amt_var) in zip(src_vars, amt_vars)]
@@ -627,15 +769,15 @@ class AVX(SIMD):
 
   def conj(self, src_vars):
     if self.data_type.is_complex:
-      self.include_CONJ_vars()
-      return ["_mm256_xor_p{0}({1}, conj_mask)".format(self.data_type.base_type.name_char, src_var) for src_var in src_vars]
+      self.include_conj_vars()
+      return ["_mm256_xor_p{0}({1}, conj_mask_tmp)".format(self.data_type.base_type.name_char, src_var) for src_var in src_vars]
     else:
       return src_vars
 
   def nconj(self, src_vars):
     if self.data_type.is_complex:
-      self.include_NCONJ_vars()
-      return ["_mm256_xor_p{0}({1}, nconj_mask)".format(self.data_type.base_type.name_char, src_var) for src_var in src_vars]
+      self.include_nconj_vars()
+      return ["_mm256_xor_p{0}({1}, nconj_mask_tmp)".format(self.data_type.base_type.name_char, src_var) for src_var in src_vars]
     else:
       return src_vars
 

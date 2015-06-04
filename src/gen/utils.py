@@ -59,7 +59,7 @@ class CodeBlock(object):
       self.write("{0} = {1};".format(a_var, b_var))
 
   def new_line(self):
-    self.blocks += [""]
+    self.blocks.append("")
 
   def sub_block(self):
     block = CodeBlock(base_indent_level = self.indent_level)
@@ -67,4 +67,6 @@ class CodeBlock(object):
     return block
 
   def __str__(self):
+    if self.includes:
+      self.includes.append("")
     return "\n".join([str(block) for block in (self.includes + self.blocks)])
