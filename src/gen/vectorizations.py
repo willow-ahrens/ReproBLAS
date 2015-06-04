@@ -118,6 +118,12 @@ class Vectorization(object):
         unroll //= 2
       i += 1;
 
+  def set_SIMD_daz_ftz(self):
+    raise(NotImplementedError())
+
+  def reset_SIMD_daz_ftz(self):
+    raise(NotImplementedError())
+
 """
   ##TODO This is currently broken on wierd unroll sizes. fix that.
   def iterate_unrolled_aligned(self, i_var, n_var, src_ptrs, src_incs, max_unroll, min_unroll, body):
@@ -160,7 +166,6 @@ class Vectorization(object):
       self.code_block.dedent()
       self.code_block.write("}")
 """
-
 
 class SISD(Vectorization):
   name = "SISD"
@@ -305,6 +310,13 @@ class SISD(Vectorization):
     else:
       return src_vars
 
+  def set_SIMD_daz_ftz(self):
+    pass
+
+  def reset_SIMD_daz_ftz(self):
+    pass
+
+
 class SIMD(Vectorization):
 
   def __init__(self, code_block, data_type_class):
@@ -408,6 +420,10 @@ class SSE(SIMD):
                               "  nconj_mask_tmp = _mm_set_ps(0, -1, 0, -1);\n"
                               "  nconj_mask_tmp = _mm_xor_ps(nconj_mask_tmp, tmp);\n"
                               "}")
+
+  def include_SIMD_daz_ftz_vars(self):
+    self.code_block.include("unsigned int SIMD_daz_ftz_old_tmp;")
+    self.code_block.include("unsigned int SIMD_daz_ftz_new_tmp;")
 
   def consolidate_into(self, dst_ptr, offset, inc, src_vars, common_summand_ptr, common_summand_offset, common_summand_inc):
     self.include_consolidation_vars()
@@ -563,6 +579,21 @@ class SSE(SIMD):
     elif self.data_type.base_type.name == "float":
       return ["_mm_shuffle_ps({0}, {0}, 0b10110001)".format(src_var) for src_var in src_vars]
 
+  def set_SIMD_daz_ftz(self):
+    self.include_SIMD_daz_ftz_vars();
+    self.code_block.write("SIMD_daz_ftz_old_tmp = _mm_getcsr();\n"
+                          "SIMD_daz_ftz_new_tmp = SIMD_daz_ftz_old_tmp | 0x8040;\n"
+                          "if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){\n"
+                          "  _mm_setcsr(SIMD_daz_ftz_new_tmp);\n"
+                          "}")
+
+  def reset_SIMD_daz_ftz(self):
+    self.include_SIMD_daz_ftz_vars();
+    self.code_block.write("if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){\n"
+                          "  _mm_setcsr(SIMD_daz_ftz_old_tmp);\n"
+                          "}")
+
+
 class AVX(SIMD):
   name = "AVX"
   defined_macro = "__AVX__"
@@ -652,6 +683,10 @@ class AVX(SIMD):
                               "  nconj_mask_tmp = _mm256_set_ps(0, -1, 0, -1, 0, -1, 0, -1);\n"
                               "  nconj_mask_tmp = _mm256_xor_ps(nconj_mask_tmp, tmp);\n"
                               "}")
+
+  def include_SIMD_daz_ftz_vars(self):
+    self.code_block.include("unsigned int SIMD_daz_ftz_old_tmp;")
+    self.code_block.include("unsigned int SIMD_daz_ftz_new_tmp;")
 
   def consolidate_into(self, dst_ptr, offset, inc, src_vars, common_summand_ptr, common_summand_offset, common_summand_inc):
     self.include_consolidation_vars()
@@ -808,6 +843,20 @@ class AVX(SIMD):
       return ["_mm256_permute_pd({0}, 0b0101)".format(src_var) for src_var in src_vars]
     elif self.data_type.base_type.name == "float":
       return ["_mm256_permute_ps({0}, 0b10110001)".format(src_var) for src_var in src_vars]
+
+  def set_SIMD_daz_ftz(self):
+    self.include_SIMD_daz_ftz_vars();
+    self.code_block.write("SIMD_daz_ftz_old_tmp = _mm_getcsr();\n"
+                          "SIMD_daz_ftz_new_tmp = SIMD_daz_ftz_old_tmp | 0x8040;\n"
+                          "if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){\n"
+                          "  _mm_setcsr(SIMD_daz_ftz_new_tmp);\n"
+                          "}")
+
+  def reset_SIMD_daz_ftz(self):
+    self.include_SIMD_daz_ftz_vars();
+    self.code_block.write("if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){\n"
+                          "  _mm_setcsr(SIMD_daz_ftz_old_tmp);\n"
+                          "}")
 
 vectorization_lookup = {"SISD":SISD, "SSE":SSE, "AVX":AVX}
 

@@ -66,7 +66,8 @@ class Deposit(Target):
   def write_vec(self, vec_class, code_block):
     self.data_type = self.data_type_class(code_block)
     self.vec = vec_class(code_block, self.data_type_class)
-    code_block.write("SET_DAZ_FLAG;")
+    self.vec.set_SIMD_daz_ftz()
+    code_block.new_line()
     expanded_folds = []
     for i in range(1, self.max_expand_fold + 1):
       if self.arguments["{}_expand_{}_fold_{}".format(self.name, self.vec.name, i)]:
@@ -79,15 +80,19 @@ class Deposit(Target):
       code_block.indent()
       for fold in expanded_folds:
         if fold == 0:
-          code_block.write("default:{")
+          code_block.write("default:")
         else:
-          code_block.write("case " + str(fold) + ":{")
+          code_block.write("case " + str(fold) + ":")
+        code_block.indent()
+        code_block.write("{")
         code_block.indent()
         self.write_fold(code_block, fold, self.arguments["{}_max_pipe_width_{}_fold_{}".format(self.name, self.vec.name, fold)], self.arguments["{}_max_unroll_width_{}_fold_{}".format(self.name, self.vec.name, fold)])
-        code_block.write("RESET_DAZ_FLAG")
-        code_block.write("break;")
+        code_block.new_line()
+        self.vec.reset_SIMD_daz_ftz()
         code_block.dedent()
         code_block.write("}")
+        code_block.write("break;")
+        code_block.dedent()
       code_block.dedent()
       code_block.write("}")
 
@@ -97,7 +102,6 @@ class Deposit(Target):
       code_block.write("int i, j;")
     else:
       code_block.write("int i;")
-    code_block.new_line()
     self.define_load_ptrs(code_block, max_reg_width * max_unroll_width)
     self.define_load_vars(code_block, max_reg_width * max_unroll_width)
     self.compression_vars = ["compression_" + str(i) for i in range(self.vec.suf_width)]
@@ -137,7 +141,11 @@ class Deposit(Target):
       for j in range(fold):
         self.vec.propagate_into(self.s_vars[j], self.manY, j, self.incmanY)
 
+    code_block.new_line()
+
     self.write_increments(code_block, fold, max_pipe_width, max_unroll_width)
+
+    code_block.new_line()
 
     #consolidate
     if fold == 0:
@@ -163,26 +171,29 @@ class Deposit(Target):
 
   def write_core(self, code_block, fold, max_pipe_width, max_unroll_width, incs):
     max_reg_width = self.compute_reg_width(max_pipe_width);
-    code_block.new_line()
 
     def body(n, align = False):
       if type(n) == str:
         reg_width = self.compute_reg_width(self.vec.type_size)
         self.preprocess(code_block, self.vec.type_size, incs, partial=n, align=align)
+        code_block.new_line()
         self.process(code_block, fold, reg_width, 1)
       else:
         reg_width = self.compute_reg_width(min(n, max_pipe_width))
         self.preprocess(code_block, n, incs, align=align)
+        code_block.new_line()
         self.process(code_block, fold, reg_width, n // max_pipe_width)
 
     def body0(n, align = False):
       if type(n) == str:
         reg_width = self.compute_reg_width(self.vec.type_size)
         self.preprocess(code_block, self.vec.type_size, incs, partial=n, align=align)
+        code_block.new_line()
         self.process0(code_block, fold, reg_width, 1)
       else:
         reg_width = self.compute_reg_width(min(n, max_pipe_width))
         self.preprocess(code_block, n, incs, align=align)
+        code_block.new_line()
         self.process0(code_block, fold, reg_width, n // max_pipe_width)
 
     if self.data_type.is_complex:
