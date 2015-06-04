@@ -104,7 +104,7 @@ float sibound(const int fold, const int N, const float X) {
  * @date   1 Jun 2015
  */
 float sscale(const float X){
-  return ldexpf(0.5, MAX((FLT_MAX_EXP - FLT_BIN_DIG + 1 - sindex(X) * FLT_BIN_DIG), FLT_MIN_EXP));
+  return ldexpf(0.5, (FLT_MAX_EXP - FLT_BIN_DIG + 1 - MIN(sindex(X), (FLT_MAX_EXP - FLT_MIN_EXP - FLT_BIN_DIG)/FLT_BIN_DIG) * FLT_BIN_DIG), FLT_MIN_EXP);
 }
 
 /**

@@ -104,7 +104,7 @@ double dibound(const int fold, const int N, const double X) {
  * @date   1 Jun 2015
  */
 double dscale(const double X){
-  return ldexp(0.5, MAX((DBL_MAX_EXP - DBL_BIN_DIG + 1 - dindex(X) * DBL_BIN_DIG), DBL_MIN_EXP));
+  return ldexp(0.5, (DBL_MAX_EXP - DBL_BIN_DIG + 1 - MIN(dindex(X), (DBL_MAX_EXP - DBL_MIN_EXP - DBL_BIN_DIG)/DBL_BIN_DIG) * DBL_BIN_DIG));
 }
 
 /**
