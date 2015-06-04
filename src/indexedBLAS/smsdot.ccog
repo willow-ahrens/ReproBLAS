@@ -31,7 +31,7 @@ cog.out(str(code_block))
 void smsdot(const int fold, const int N, const float *X, const int incX, const float *Y, const int incY, float *manZ, const int incmanZ, float *carZ, const int inccarZ){
   float amaxm;
   int i, j;
-  int N_block = MIN(N_block_MAX, sicapacity());
+  int N_block = MIN(N_block_MAX, siendurance());
   int deposits = 0;
 
   for (i = 0; i < N; i += N_block) {
@@ -52,7 +52,7 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
       continue;
     }
 
-    if (deposits + N_block > sicapacity()) {
+    if (deposits + N_block > siendurance()) {
       smrenorm(fold, manZ, incmanZ, carZ, inccarZ);
       deposits = 0;
     }

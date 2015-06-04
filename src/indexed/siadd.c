@@ -135,7 +135,7 @@ void ciciadd(const int fold, const float_complex_indexed *X, float_complex_index
  *
  * Performs the operation Y += X on an indexed type Y where the index of Y is larger than the index of X
  *
- * @note This routine was provided as a means of allowing the you to optimize your code. After you have called smsupdate() on Y with the maximum absolute value of any elements you wish to deposit in Y, you can call this method to deposit a maximum of sicapacity() elements into Y. After calling smsdeposit() on an indexed type, you must renormalize the indexed type with smrenorm().
+ * @note This routine was provided as a means of allowing the you to optimize your code. After you have called smsupdate() on Y with the maximum absolute value of any elements you wish to deposit in Y, you can call this method to deposit a maximum of siendurance() elements into Y. After calling smsdeposit() on an indexed type, you must renormalize the indexed type with smrenorm().
  *
  * @param fold the fold of the indexed types
  * @param X scalar X
@@ -200,7 +200,7 @@ void smsdeposit(const int fold, const float X, float *manY, const int incmanY){
  *
  * Performs the operation Y += X on an indexed type Y where the index of Y is larger than the index of X
  *
- * @note This routine was provided as a means of allowing the you to optimize your code. After you have called sisupdate() on Y with the maximum absolute value of any elements you wish to deposit in Y, you can call this method to deposit a maximum of sicapacity() elements into Y. After calling sisdeposit() on an indexed type, you must renormalize the indexed type with sirenorm().
+ * @note This routine was provided as a means of allowing the you to optimize your code. After you have called sisupdate() on Y with the maximum absolute value of any elements you wish to deposit in Y, you can call this method to deposit a maximum of siendurance() elements into Y. After calling sisdeposit() on an indexed type, you must renormalize the indexed type with sirenorm().
  *
  * @param fold the fold of the indexed types
  * @param X scalar X
@@ -220,7 +220,7 @@ void sisdeposit(const int fold, const float X, float_indexed *Y){
  *
  * Performs the operation Y += X on an indexed type Y where the index of Y is larger than the index of X
  *
- * @note This routine was provided as a means of allowing the you to optimize your code. After you have called cmcupdate() on Y with the maximum absolute value of any elements you wish to deposit in Y, you can call this method to deposit a maximum of sicapacity() elements into Y. After calling cmcdeposit() on an indexed type, you must renormalize the indexed type with cmrenorm().
+ * @note This routine was provided as a means of allowing the you to optimize your code. After you have called cmcupdate() on Y with the maximum absolute value of any elements you wish to deposit in Y, you can call this method to deposit a maximum of siendurance() elements into Y. After calling cmcdeposit() on an indexed type, you must renormalize the indexed type with cmrenorm().
  *
  * @param fold the fold of the indexed types
  * @param X scalar X
@@ -284,7 +284,7 @@ void cmcdeposit(const int fold, const void *X, float *manY, const int incmanY){
  *
  * Performs the operation Y += X on an indexed type Y where the index of Y is larger than the index of X
  *
- * @note This routine was provided as a means of allowing the you to optimize your code. After you have called cicupdate() on Y with the maximum absolute value of any elements you wish to deposit in Y, you can call this method to deposit a maximum of sicapacity() elements into Y. After calling cicdeposit() on an indexed type, you must renormalize the indexed type with cirenorm().
+ * @note This routine was provided as a means of allowing the you to optimize your code. After you have called cicupdate() on Y with the maximum absolute value of any elements you wish to deposit in Y, you can call this method to deposit a maximum of siendurance() elements into Y. After calling cicdeposit() on an indexed type, you must renormalize the indexed type with cirenorm().
  *
  * @param fold the fold of the indexed types
  * @param X scalar X

@@ -31,7 +31,7 @@ cog.out(str(code_block))
 void cmcdotu(const int fold, const int N, const void *X, const int incX, const void *Y, const int incY, float *manZ, const int incmanZ, float *carZ, const int inccarZ){
   float amaxm[2];
   int i, j;
-  int N_block = MIN(N_block_MAX, sicapacity()/2);
+  int N_block = MIN(N_block_MAX, siendurance()/2);
   int deposits = 0;
 
   const float *x = (const float*)X;
@@ -66,7 +66,7 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
       amaxm[1] = manZ[1];
     }
 
-    if (deposits + N_block > sicapacity()/2) {
+    if (deposits + N_block > siendurance()/2) {
       cmrenorm(fold, manZ, incmanZ, carZ, inccarZ);
       deposits = 0;
     }

@@ -27,17 +27,17 @@ int diwidth() {
 }
 
 /**
- * @brief Get indexed double precision deposit capacity
+ * @brief Get indexed double precision deposit endurance
  *
  * The number of deposits that can be performed before a renorm is necessary. This function applies also to indexed complex double precision.
  *
- * @return deposit capacity
+ * @return deposit endurance
  *
  * @author Hong Diep Nguyen
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-int dicapacity() {
+int diendurance() {
   return 1 << (DBL_MANT_DIG - DBL_BIN_DIG - 2);
 }
 
@@ -45,7 +45,7 @@ int dicapacity() {
  * @internal
  * @brief Get indexed double precision compression factor
  *
- * This factor is used to scale down inputs before deposition
+ * This factor is used to scale down inputs before deposition into the bin of highest index
  *
  * @return compression factor
  *
@@ -60,7 +60,7 @@ double dmcompression() {
  * @internal
  * @brief Get indexed double precision expansion factor
  *
- * This factor is used to scale up inputs after deposition
+ * This factor is used to scale up inputs after deposition into the bin of highest index
  *
  * @return expansion factor
  *

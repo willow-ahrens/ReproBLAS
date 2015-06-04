@@ -31,7 +31,7 @@ cog.out(str(code_block))
 void dmdsum(const int fold, const int N, const double *X, const int incX, double *manY, const int incmanY, double *carY, const int inccarY){
   double amax;
   int i, j;
-  int N_block = MIN(N_block_MAX, dicapacity());
+  int N_block = MIN(N_block_MAX, diendurance());
   int deposits = 0;
 
   for (i = 0; i < N; i += N_block) {
@@ -51,7 +51,7 @@ void dmdsum(const int fold, const int N, const double *X, const int incX, double
       continue;
     }
 
-    if (deposits + N_block > dicapacity()) {
+    if (deposits + N_block > diendurance()) {
       dmrenorm(fold, manY, incmanY, carY, inccarY);
       deposits = 0;
     }

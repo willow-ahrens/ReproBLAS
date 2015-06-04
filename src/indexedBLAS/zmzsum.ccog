@@ -31,7 +31,7 @@ cog.out(str(code_block))
 void zmzsum(const int fold, const int N, const void *X, const int incX, double *manY, const int incmanY, double *carY, const int inccarY){
   double amax[2];
   int i, j;
-  int N_block = MIN(N_block_MAX, dicapacity());
+  int N_block = MIN(N_block_MAX, diendurance());
   int deposits = 0;
 
   const double *x = (const double*)X;
@@ -64,7 +64,7 @@ void zmzsum(const int fold, const int N, const void *X, const int incX, double *
       amax[1] = manY[1];
     }
 
-    if (deposits + N_block > dicapacity()) {
+    if (deposits + N_block > diendurance()) {
       zmrenorm(fold, manY, incmanY, carY, inccarY);
       deposits = 0;
     }

@@ -118,8 +118,8 @@ int cinum(const int fold);
 int diwidth();
 int siwidth();
 
-int dicapacity();
-int sicapacity();
+int diendurance();
+int siendurance();
 
 double dmexpansion();
 double dmcompression();

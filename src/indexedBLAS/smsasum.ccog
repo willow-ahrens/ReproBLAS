@@ -31,7 +31,7 @@ cog.out(str(code_block))
 void smsasum(const int fold, const int N, const float *X, const int incX, float *manY, const int incmanY, float *carY, const int inccarY){
   float amax;
   int i, j;
-  int N_block = MIN(N_block_MAX, sicapacity());
+  int N_block = MIN(N_block_MAX, siendurance());
   int deposits = 0;
 
   for (i = 0; i < N; i += N_block) {
@@ -51,7 +51,7 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
       continue;
     }
 
-    if (deposits + N_block > sicapacity()) {
+    if (deposits + N_block > siendurance()) {
       smrenorm(fold, manY, incmanY, carY, inccarY);
       deposits = 0;
     }

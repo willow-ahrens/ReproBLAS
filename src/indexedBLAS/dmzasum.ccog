@@ -32,7 +32,7 @@ void dmzasum(const int fold, const int N, const void *X, const int incX, double 
   double amax_tmp[2];
   double amax;
   int i, j;
-  int N_block = MIN(N_block_MAX, dicapacity());
+  int N_block = MIN(N_block_MAX, diendurance());
   int deposits = 0;
   double_complex_indexed *asum = zialloc(fold);
   zisetzero(fold, asum);
@@ -60,7 +60,7 @@ void dmzasum(const int fold, const int N, const void *X, const int incX, double 
       continue;
     }
 
-    if (deposits + N_block > dicapacity()) {
+    if (deposits + N_block > diendurance()) {
       zirenorm(fold, asum);
       deposits = 0;
     }

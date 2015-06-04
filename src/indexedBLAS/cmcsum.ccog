@@ -31,7 +31,7 @@ cog.out(str(code_block))
 void cmcsum(const int fold, const int N, const void *X, const int incX, float *manY, const int incmanY, float *carY, const int inccarY){
   float amax[2];
   int i, j;
-  int N_block = MIN(N_block_MAX, sicapacity());
+  int N_block = MIN(N_block_MAX, siendurance());
   int deposits = 0;
 
   const float *x = (const float*)X;
@@ -64,7 +64,7 @@ void cmcsum(const int fold, const int N, const void *X, const int incX, float *m
       amax[1] = manY[1];
     }
 
-    if (deposits + N_block > sicapacity()) {
+    if (deposits + N_block > siendurance()) {
       cmrenorm(fold, manY, incmanY, carY, inccarY);
       deposits = 0;
     }

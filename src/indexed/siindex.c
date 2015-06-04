@@ -27,17 +27,17 @@ int siwidth() {
 }
 
 /**
- * @brief Get indexed single precision deposit capacity
+ * @brief Get indexed single precision deposit endurance
  *
  * The number of deposits that can be performed before a renorm is necessary. This function applies also to indexed complex single precision.
  *
- * @return deposit capacity
+ * @return deposit endurance
  *
  * @author Hong Diep Nguyen
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-int sicapacity() {
+int siendurance() {
   return 1 << (FLT_MANT_DIG - FLT_BIN_DIG - 2);
 }
 
@@ -45,7 +45,7 @@ int sicapacity() {
  * @internal
  * @brief Get indexed single precision compression factor
  *
- * This factor is used to scale down inputs before deposition
+ * This factor is used to scale down inputs before deposition into the bin of highest index
  *
  * @return compression factor
  *
@@ -60,7 +60,7 @@ float smcompression() {
  * @internal
  * @brief Get indexed single precision expansion factor
  *
- * This factor is used to scale up inputs after deposition
+ * This factor is used to scale up inputs after deposition into the bin of highest index
  *
  * @return expansion factor
  *
