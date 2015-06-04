@@ -29,7 +29,6 @@ cog.out(str(code_block))
 //TODO make sure to note in comments that we assume the indexed type has been renormalized before the call (probably already covered in the deposit documentation
 
 void dmddot(const int fold, const int N, const double *X, const int incX, const double *Y, const int incY, double *manZ, const int incmanZ, double *carZ, const int inccarZ){
-  SET_DAZ_FLAG;
   double amaxm;
   int i, j;
   int N_block = MIN(N_block_MAX, dicapacity());
@@ -69,5 +68,4 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
   }
 
   dmrenorm(fold, manZ, incmanZ, carZ, inccarZ);
-  RESET_DAZ_FLAG;
 }
