@@ -1,7 +1,7 @@
 #include <indexed.h>
 
 /**
- * @brief Renormalize indexed double precision
+ * @brief Renormalize indexed complex double precision
  *
  * Renormalization keeps the mantissa vector within the necessary bins by shifting over to the carry vector
  *
@@ -12,6 +12,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void direnorm(const int fold, double_indexed *X) {
-  dmrenorm(fold, X, 1, X + fold, 1);
+void zirenorm(const int fold, double_complex_indexed *X) {
+  zmrenorm(fold, X, 1, X + 2 * fold, 1);
 }

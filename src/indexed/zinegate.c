@@ -1,7 +1,7 @@
 #include <indexed.h>
 
 /**
- * @brief Negate indexed double precision (X = -X)
+ * @brief Negate indexed complex double precision (X = -X)
  *
  * Performs the operation X = -X
  *
@@ -12,6 +12,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void dinegate(const int fold, double_indexed* X){
-  dmnegate(fold, X, 1, X + fold, 1);
+void zinegate(const int fold, double_complex_indexed* X){
+  zmnegate(fold, X, 1, X + 2 * fold, 1);
 }
