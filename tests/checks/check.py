@@ -52,6 +52,7 @@ check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
                          "+-big",\
                          "sine"]])
 
+"""
 check_suite.add_checks([checks.ValidateInternalRZSUMTest(),\
                         checks.ValidateInternalZIZIADDTest(),\
                         checks.ValidateInternalZIZADDTest(),\
@@ -300,6 +301,7 @@ check_suite.add_checks([checks.VerifyRDDOTTest(),\
                          "sine",\
                          "small+grow*big"]])
 
+"""
 DBL_BIN_WIDTH=40
 DBL_MAX_EXP=1024
 DBL_BIG_EXP=27

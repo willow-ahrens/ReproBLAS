@@ -20,7 +20,8 @@
 float ssmconv(const int fold, const float* manX, const int incmanX, const float* carX, const int inccarX) {
   int i = 0;
   double Y = 0.0;
-  double M;
+  int X_index;
+  const float *bins;
 
   if (isinf(manX[0]) || isnan(manX[0]))
     return manX[0];
@@ -29,16 +30,27 @@ float ssmconv(const int fold, const float* manX, const int incmanX, const float*
     return 0.0;
   }
 
-  if(smindex0(manX)){
-    M = ufpf(manX[i * incmanX]);
-    Y += (carX[i * inccarX] * 0.25 * M + (manX[i * incmanX] - 1.5 * M)) * SMEXPANSION;
+  //Note that the following order of summation is in order of decreasing
+  //exponent. The following code is specific to SIWIDTH=13, FLT_MANT_DIG=24, and
+  //the number of carries equal to 1.
+  X_index = smindex(manX);
+  bins = smbins(X_index);
+  if(X_index == 0){
+    Y += (double)carX[0] * (double)(bins[0]/6.0) * (double)SMEXPANSION;
+    if(fold > 1){
+      Y += (double)carX[inccarX] * (double)(bins[1]/6.0);
+    }
+    Y += (double)(manX[0] - bins[0]) * (double)SMEXPANSION;
+    i = 2;
+  }else{
+    Y += (double)carX[0] * (double)(bins[0]/6.0);
     i = 1;
   }
-
-  for (; i < fold; i++) {
-    M = ufpf(manX[i * incmanX]);
-    Y += carX[i * inccarX] * 0.25 * M + (manX[i * incmanX] - 1.5 * M);
+  for(; i < fold; i++){
+    Y += (double)carX[i * inccarX] * (double)(bins[i]/6.0);
+    Y += (double)(manX[(i - 1) * incmanX] - bins[i - 1]);
   }
+  Y += (double)(manX[(fold - 1) * incmanX] - bins[fold - 1]);
 
-  return Y;
+  return (float)Y;
 }

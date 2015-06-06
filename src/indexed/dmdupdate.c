@@ -37,7 +37,7 @@ void dmdupdate(const int fold, const double X, double* manY, const int incmanY, 
       carY[i * inccarY] = carY[(i - shift) * inccarY];
     }
     bins = dmbins(X_index);
-    for(j = 0; j < i; j++){
+    for(j = 0; j < i + 1; j++){
       manY[j * incmanY] = bins[j];
       carY[j * inccarY] = 0.0;
     }

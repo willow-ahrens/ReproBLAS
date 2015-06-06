@@ -37,7 +37,7 @@ void smsupdate(const int fold, const float X, float* manY, const int incmanY, fl
       carY[i * inccarY] = carY[(i - shift) * inccarY];
     }
     bins = smbins(X_index);
-    for(j = 0; j < i; j++){
+    for(j = 0; j < i + 1; j++){
       manY[j * incmanY] = bins[j];
       carY[j * inccarY] = 0.0;
     }

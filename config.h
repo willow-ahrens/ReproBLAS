@@ -23,3 +23,14 @@
  */
 #define MAX_FOLD 4
 
+/**
+ * @brief The maximum number of carry overflow supported by the library.
+ *
+ * Increases to #MAX_FLOW will allow users to use more carries per fold.
+ * Future support for larger values of MAX_FLOW is being considered, but
+ * currently the only supported value is 1.
+ *
+ * @author Peter Ahrens
+ * @date   5 Jun 2015
+ */
+#define MAX_FLOW 1
