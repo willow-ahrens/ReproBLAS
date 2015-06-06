@@ -1,13 +1,7 @@
-/*
- *  Created   13/10/25   H.D. Nguyen
- */
+#include <reproBLAS.h>
+#include <indexedBLAS.h>
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
-#include <float.h>
-#include "reproBLAS.h"
-#include "indexedBLAS.h"
+#include "../../config.h"
 
 void rzsum_sub(const int N, const void* X, const int incX, void *sum) {
   double_complex_indexed *sumi = zialloc(DEFAULT_FOLD);

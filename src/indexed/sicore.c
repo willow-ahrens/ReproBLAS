@@ -1,72 +1,12 @@
 #include <math.h>
-#include <float.h>
 
 #include <indexed.h>
 
 #include "../../config.h"
 #include "../common/common.h"
 
-#define FLT_BIN_DIG        13
-static float bins[(FLT_MAX_EXP - FLT_MIN_EXP)/FLT_BIN_DIG + MAX_FOLD]; //initialized in bins_initialize
+static float bins[(FLT_MAX_EXP - FLT_MIN_EXP)/SIWIDTH + MAX_FOLD]; //initialized in bins_initialize
 static int   bins_initialized  = 0;                                    //initialized in bins_initialize
-
-/**
- * @brief Get indexed single precision bin width
- *
- * @return bin width (in bits)
- *
- * @author Hong Diep Nguyen
- * @author Peter Ahrens
- * @date   27 Apr 2015
- */
-int siwidth() {
-  return FLT_BIN_DIG;
-}
-
-/**
- * @brief Get indexed single precision deposit endurance
- *
- * The number of deposits that can be performed before a renorm is necessary. This function applies also to indexed complex single precision.
- *
- * @return deposit endurance
- *
- * @author Hong Diep Nguyen
- * @author Peter Ahrens
- * @date   27 Apr 2015
- */
-int siendurance() {
-  return 1 << (FLT_MANT_DIG - FLT_BIN_DIG - 2);
-}
-
-/**
- * @internal
- * @brief Get indexed single precision compression factor
- *
- * This factor is used to scale down inputs before deposition into the bin of highest index
- *
- * @return compression factor
- *
- * @author Peter Ahrens
- * @date   19 May 2015
- */
-float smcompression() {
-  return 1.0/(1 << (FLT_MANT_DIG - FLT_BIN_DIG + 1));
-}
-
-/**
- * @internal
- * @brief Get indexed single precision expansion factor
- *
- * This factor is used to scale up inputs after deposition into the bin of highest index
- *
- * @return expansion factor
- *
- * @author Peter Ahrens
- * @date   19 May 2015
- */
-float smexpansion() {
-  return 1.0*(1 << (FLT_MANT_DIG - FLT_BIN_DIG + 1));
-}
 
 /**
  * @brief Get indexed single precision summation error bound
@@ -83,7 +23,7 @@ float smexpansion() {
  * @date   21 May 2015
  */
 float sibound(const int fold, const int N, const float X) {
-  return X * ldexpf(0.5, (1 - fold)*(FLT_BIN_DIG - 1) + 1) * N;
+  return X * ldexpf(0.5, (1 - fold)*(SIWIDTH - 1) + 1) * N;
 }
 
 /**
@@ -92,7 +32,7 @@ float sibound(const int fold, const int N, const float X) {
  *
  * The scaling factor Y returned for given X is the smallest value that will fit in X's bin (The smallest representable value with the same index as X)
  *
- * Perhaps the most useful property of this number is that 1.0 <= X * (1.0/Y) < 2^#siwidth()
+ * Perhaps the most useful property of this number is that 1.0 <= X * (1.0/Y) < 2^#SIWIDTH
  *
  * @param X single precision number to be scaled
  * @return reproducible scaling factor (if X == 0.0, returns smallest valid scale)
@@ -101,7 +41,7 @@ float sibound(const int fold, const int N, const float X) {
  * @date   1 Jun 2015
  */
 float sscale(const float X){
-  return ldexpf(0.5, (FLT_MAX_EXP - FLT_BIN_DIG + 1 - MIN(sindex(X), (FLT_MAX_EXP - FLT_MIN_EXP - FLT_BIN_DIG)/FLT_BIN_DIG) * FLT_BIN_DIG));
+  return ldexpf(0.5, (FLT_MAX_EXP - SIWIDTH + 1 - MIN(sindex(X), (FLT_MAX_EXP - FLT_MIN_EXP - SIWIDTH)/SIWIDTH) * SIWIDTH));
 }
 
 /**
@@ -121,13 +61,13 @@ int smindex(const float *manX){
   int exp;
 
   if(manX[0] == 0.0){
-    return (FLT_MAX_EXP - FLT_MIN_EXP)/FLT_BIN_DIG + MAX_FOLD;
+    return (FLT_MAX_EXP - FLT_MIN_EXP)/SIWIDTH + MAX_FOLD;
   }else{
     frexpf(manX[0], &exp);
     if(exp == FLT_MAX_EXP){
       return 0;
     }
-    return (FLT_MAX_EXP + FLT_MANT_DIG - FLT_BIN_DIG + 1 - exp)/FLT_BIN_DIG;
+    return (FLT_MAX_EXP + FLT_MANT_DIG - SIWIDTH + 1 - exp)/SIWIDTH;
   }
 }
 
@@ -169,10 +109,10 @@ int sindex(const float X){
   int exp;
 
   if(X == 0.0){
-    return (FLT_MAX_EXP - FLT_MIN_EXP)/FLT_BIN_DIG;
+    return (FLT_MAX_EXP - FLT_MIN_EXP)/SIWIDTH;
   }else{
     frexpf(X, &exp);
-    return (FLT_MAX_EXP - exp)/FLT_BIN_DIG;
+    return (FLT_MAX_EXP - exp)/SIWIDTH;
   }
 }
 
@@ -184,10 +124,10 @@ static void bins_initialize() {
   }
 
   bins[0] = ldexpf(0.75, FLT_MAX_EXP);
-  for(index = 1; index <= (FLT_MAX_EXP - FLT_MIN_EXP)/FLT_BIN_DIG; index++){
-    bins[index] = ldexpf(0.75, (FLT_MAX_EXP + FLT_MANT_DIG - FLT_BIN_DIG + 1 - index * FLT_BIN_DIG));
+  for(index = 1; index <= (FLT_MAX_EXP - FLT_MIN_EXP)/SIWIDTH; index++){
+    bins[index] = ldexpf(0.75, (FLT_MAX_EXP + FLT_MANT_DIG - SIWIDTH + 1 - index * SIWIDTH));
   }
-  for(; index < (FLT_MAX_EXP - FLT_MIN_EXP)/FLT_BIN_DIG + MAX_FOLD; index++){
+  for(; index < (FLT_MAX_EXP - FLT_MIN_EXP)/SIWIDTH + MAX_FOLD; index++){
     bins[index] = bins[index - 1];
   }
 

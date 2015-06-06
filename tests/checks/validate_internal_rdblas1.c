@@ -2,6 +2,7 @@
 #include <indexed.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 #include "../common/test_vecvec_header.h"
 

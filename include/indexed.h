@@ -33,9 +33,9 @@
 
 #ifndef INDEXED_H
 #define INDEXED_H
-#include <complex.h>
-#include <math.h>
 #include <stddef.h>
+#include <stdlib.h>
+#include <float.h>
 
 /**
  * @brief The indexed double datatype
@@ -73,31 +73,141 @@ typedef float float_indexed;
  */
 typedef float float_complex_indexed;
 
-#define DEFAULT_FOLD 3
+/**
+ * @brief Indexed double precision bin width
+ *
+ * bin width (in bits)
+ *
+ * @author Hong Diep Nguyen
+ * @author Peter Ahrens
+ * @date   27 Apr 2015
+ */
+#define DIWIDTH 40
 
+/**
+ * @brief Indexed single precision bin width
+ *
+ * bin width (in bits)
+ *
+ * @author Hong Diep Nguyen
+ * @author Peter Ahrens
+ * @date   27 Apr 2015
+ */
+#define SIWIDTH 13
+
+/**
+ * @brief Indexed double precision deposit endurance
+ *
+ * The number of deposits that can be performed before a renorm is necessary. Applies also to indexed complex double precision.
+ *
+ * @author Hong Diep Nguyen
+ * @author Peter Ahrens
+ * @date   27 Apr 2015
+ */
+#define DIENDURANCE (1 << (DBL_MANT_DIG - DIWIDTH - 2))
+
+/**
+ * @brief Indexed single precision deposit endurance
+ *
+ * The number of deposits that can be performed before a renorm is necessary. Applies also to indexed complex single precision.
+ *
+ * @author Hong Diep Nguyen
+ * @author Peter Ahrens
+ * @date   27 Apr 2015
+ */
+#define SIENDURANCE (1 << (FLT_MANT_DIG - SIWIDTH - 2))
+
+/**
+ * @internal
+ * @brief Indexed double precision compression factor
+ *
+ * This factor is used to scale down inputs before deposition into the bin of highest index
+ *
+ * @author Peter Ahrens
+ * @date   19 May 2015
+ */
+#define DMCOMPRESSION (1.0/(1 << (DBL_MANT_DIG - DIWIDTH + 1)))
+
+/**
+ * @internal
+ * @brief Indexed single precision compression factor
+ *
+ * This factor is used to scale down inputs before deposition into the bin of highest index
+ *
+ * @author Peter Ahrens
+ * @date   19 May 2015
+ */
+#define SMCOMPRESSION (1.0/(1 << (FLT_MANT_DIG - SIWIDTH + 1)))
+
+/**
+ * @internal
+ * @brief Indexed double precision expansion factor
+ *
+ * This factor is used to scale up inputs after deposition into the bin of highest index
+ *
+ * @author Peter Ahrens
+ * @date   19 May 2015
+ */
+#define DMEXPANSION (1.0*(1 << (DBL_MANT_DIG - DIWIDTH + 1)))
+
+/**
+ * @internal
+ * @brief Indexed single precision expansion factor
+ *
+ * This factor is used to scale up inputs after deposition into the bin of highest index
+ *
+ * @author Peter Ahrens
+ * @date   19 May 2015
+ */
+#define SMEXPANSION (1.0*(1 << (FLT_MANT_DIG - SIWIDTH + 1)))
+
+/**
+ * @internal
+ */
 typedef struct Idouble_ {
-	double m[DEFAULT_FOLD];
-	double c[DEFAULT_FOLD];
+	double m[3];
+	double c[3];
 } I_double;
 
+/**
+ * @internal
+ */
 #define Idouble I_double
+/**
+ * @internal
+ */
 #define Ifloat  I_float
+/**
+ * @internal
+ */
 #define dIcomplex I_double_Complex
+/**
+ * @internal
+ */
 #define sIcomplex I_float_Complex
 
+/**
+ * @internal
+ */
 typedef struct dIComplex_ {
-	double m[2*DEFAULT_FOLD];
-	double c[2*DEFAULT_FOLD];
+	double m[2*3];
+	double c[2*3];
 } I_double_Complex;
 
+/**
+ * @internal
+ */
 typedef struct Ifloat_ {
-	float  m[DEFAULT_FOLD];
-	float c[DEFAULT_FOLD];
+	float  m[3];
+	float c[3];
 } I_float;
 
+/**
+ * @internal
+ */
 typedef struct sIComplex_{
-	float m[2*DEFAULT_FOLD];
-	float c[2*DEFAULT_FOLD];
+	float m[2*3];
+	float c[2*3];
 } I_float_Complex;
 
 size_t disize(const int fold);
@@ -115,24 +225,15 @@ int zinum(const int fold);
 int sinum(const int fold);
 int cinum(const int fold);
 
-int diwidth();
-int siwidth();
-
-int diendurance();
-int siendurance();
-
-double dmexpansion();
-double dmcompression();
 double dibound(const int fold, const int N, const double X);
+float sibound(const int fold, const int N, const float X);
+
 double dbin(const int X);
 void dmbin(const int fold, const int X, double *manY, const int incmanY, double *carY, const int inccarY);
 int dindex(const double X);
 int dmindex(const double *manX);
 int dmindex0(const double *manX);
 
-float smexpansion();
-float smcompression();
-float sibound(const int fold, const int N, const float X);
 float sbin(const int X);
 void smbin(const int fold, const int X, float *manY, const int incmanY, float *carY, const int inccarY);
 int sindex(const float X);

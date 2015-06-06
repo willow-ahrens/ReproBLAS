@@ -4,7 +4,7 @@
 #include <reproBLAS.h>
 #include <indexedBLAS.h>
 #include <indexed.h>
-#include <float.h>
+#include "../../config.h"
 
 #include "../common/test_util.h"
 
@@ -178,7 +178,7 @@ double wrap_rdiddeposit(int fold, int N, double *x, int incx, double *y, int inc
   int i;
   int j = 0;
   for(i = 0; i < N; i++){
-    if(j >= dicapacity()){
+    if(j >= DIENDURANCE){
       direnorm(fold, ires);
       j = 0;
     }
@@ -199,7 +199,7 @@ void wrap_diddeposit(int fold, int N, double *x, int incx, double *y, int incy, 
   int i;
   int j = 0;
   for(i = 0; i < N; i++){
-    if(j >= dicapacity()){
+    if(j >= DIENDURANCE){
       direnorm(fold, z);
       j = 0;
     }

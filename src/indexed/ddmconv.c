@@ -31,7 +31,7 @@ double ddmconv(const int fold, const double* manX, const int incmanX, const doub
 
   if(dmindex0(manX)){
     M = ufp(manX[i * incmanX]);
-    Y += (carX[i * inccarX] * 0.25 * M + (manX[i * incmanX] - 1.5 * M)) * dmexpansion();
+    Y += (carX[i * inccarX] * 0.25 * M + (manX[i * incmanX] - 1.5 * M)) * DMEXPANSION;
     i = 1;
   }
 

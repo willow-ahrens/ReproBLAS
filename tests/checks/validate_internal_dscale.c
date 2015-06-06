@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <float.h>
+#include <math.h>
 
 #include "../common/test_vecvec_header.h"
 #include "../common/test_util.h"
@@ -38,7 +39,7 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   }
   for (i = 0; i < N * (DBL_MAX_EXP - DBL_MIN_EXP); i++) {
     scale = dscale(X[i * incX]);
-    bound = ldexp(0.5, diwidth() + 1);
+    bound = ldexp(0.5, DIWIDTH + 1);
     ratio = X[i * incX] * (1.0/scale);
     if(ratio < 1.0){
       printf("%g * (1.0/dscale(%g) !>= 1.0\n", X[i * incX], X[i * incX]);
@@ -48,7 +49,7 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
       return 1;
     }
     if(ratio >= bound){
-      printf("%g * (1.0/dscale(%g)) !< 2^diwidth()\n", X[i * incX], X[i * incX]);
+      printf("%g * (1.0/dscale(%g)) !< 2^DIWIDTH\n", X[i * incX], X[i * incX]);
       printf("%g * (1.0/%g) !< %g\n", X[i * incX], scale, bound);
       printf("%g * (%g) !< %g\n", X[i * incX], 1.0/scale, bound);
       printf("%g !< %g\n", ratio, bound);

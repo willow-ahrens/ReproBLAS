@@ -8,6 +8,10 @@
 #include <float.h>
 #include "reproBLAS.h"
 #include "indexedBLAS.h"
+#include <reproBLAS.h>
+#include <indexedBLAS.h>
+
+#include "../../config.h"
 
 void rdgemv(const rblas_order_t order,
             const rblas_transpose_t TransA, const int M, const int N,

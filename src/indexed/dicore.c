@@ -1,72 +1,13 @@
 #include <math.h>
-#include <float.h>
 
 #include <indexed.h>
 
 #include "../../config.h"
 #include "../common/common.h"
 
-#define DBL_BIN_DIG        40
-static double bins[(DBL_MAX_EXP - DBL_MIN_EXP)/DBL_BIN_DIG + MAX_FOLD]; //initialized in bins_initialize
+#define DIWIDTH        40
+static double bins[(DBL_MAX_EXP - DBL_MIN_EXP)/DIWIDTH + MAX_FOLD]; //initialized in bins_initialize
 static int    bins_initialized  = 0;                                    //initialized in bins_initialize
-
-/**
- * @brief Get indexed double precision bin width
- *
- * @return bin width (in bits)
- *
- * @author Hong Diep Nguyen
- * @author Peter Ahrens
- * @date   27 Apr 2015
- */
-int diwidth() {
-  return DBL_BIN_DIG;
-}
-
-/**
- * @brief Get indexed double precision deposit endurance
- *
- * The number of deposits that can be performed before a renorm is necessary. This function applies also to indexed complex double precision.
- *
- * @return deposit endurance
- *
- * @author Hong Diep Nguyen
- * @author Peter Ahrens
- * @date   27 Apr 2015
- */
-int diendurance() {
-  return 1 << (DBL_MANT_DIG - DBL_BIN_DIG - 2);
-}
-
-/**
- * @internal
- * @brief Get indexed double precision compression factor
- *
- * This factor is used to scale down inputs before deposition into the bin of highest index
- *
- * @return compression factor
- *
- * @author Peter Ahrens
- * @date   19 May 2015
- */
-double dmcompression() {
-  return 1.0/(1 << (DBL_MANT_DIG - DBL_BIN_DIG + 1));
-}
-
-/**
- * @internal
- * @brief Get indexed double precision expansion factor
- *
- * This factor is used to scale up inputs after deposition into the bin of highest index
- *
- * @return expansion factor
- *
- * @author Peter Ahrens
- * @date   19 May 2015
- */
-double dmexpansion() {
-  return 1.0*(1 << (DBL_MANT_DIG - DBL_BIN_DIG + 1));
-}
 
 /**
  * @brief Get indexed double precision summation error bound
@@ -83,7 +24,7 @@ double dmexpansion() {
  * @date   21 May 2015
  */
 double dibound(const int fold, const int N, const double X) {
-  return X * ldexp(0.5, (1 - fold)*(DBL_BIN_DIG - 1) + 1) * N;
+  return X * ldexp(0.5, (1 - fold)*(DIWIDTH - 1) + 1) * N;
 }
 
 /**
@@ -92,7 +33,7 @@ double dibound(const int fold, const int N, const double X) {
  *
  * The scaling factor Y returned for given X is the smallest value that will fit in X's bin (The smallest representable value with the same index as X)
  *
- * Perhaps the most useful property of this number is that 1.0 <= X * (1.0/Y) < 2^#diwidth()
+ * Perhaps the most useful property of this number is that 1.0 <= X * (1.0/Y) < 2^#DIWIDTH
  *
  * @param X double precision number to be scaled
  * @return reproducible scaling factor (if X == 0.0, returns smallest valid scale)
@@ -101,7 +42,7 @@ double dibound(const int fold, const int N, const double X) {
  * @date   1 Jun 2015
  */
 double dscale(const double X){
-  return ldexp(0.5, (DBL_MAX_EXP - DBL_BIN_DIG + 1 - MIN(dindex(X), (DBL_MAX_EXP - DBL_MIN_EXP - DBL_BIN_DIG)/DBL_BIN_DIG) * DBL_BIN_DIG));
+  return ldexp(0.5, (DBL_MAX_EXP - DIWIDTH + 1 - MIN(dindex(X), (DBL_MAX_EXP - DBL_MIN_EXP - DIWIDTH)/DIWIDTH) * DIWIDTH));
 }
 
 /**
@@ -121,13 +62,13 @@ int dmindex(const double *manX){
   int exp;
 
   if(manX[0] == 0.0){
-    return (DBL_MAX_EXP - DBL_MIN_EXP)/DBL_BIN_DIG + MAX_FOLD;
+    return (DBL_MAX_EXP - DBL_MIN_EXP)/DIWIDTH + MAX_FOLD;
   }else{
     frexp(manX[0], &exp);
     if(exp == DBL_MAX_EXP){
       return 0;
     }
-    return (DBL_MAX_EXP + DBL_MANT_DIG - DBL_BIN_DIG + 1 - exp)/DBL_BIN_DIG;
+    return (DBL_MAX_EXP + DBL_MANT_DIG - DIWIDTH + 1 - exp)/DIWIDTH;
   }
 }
 
@@ -169,10 +110,10 @@ int dindex(const double X){
   int exp;
 
   if(X == 0.0){
-    return (DBL_MAX_EXP - DBL_MIN_EXP)/DBL_BIN_DIG;
+    return (DBL_MAX_EXP - DBL_MIN_EXP)/DIWIDTH;
   }else{
     frexp(X, &exp);
-    return (DBL_MAX_EXP - exp)/DBL_BIN_DIG;
+    return (DBL_MAX_EXP - exp)/DIWIDTH;
   }
 }
 
@@ -184,10 +125,10 @@ static void bins_initialize() {
   }
 
   bins[0] = ldexp(0.75, DBL_MAX_EXP);
-  for(index = 1; index <= (DBL_MAX_EXP - DBL_MIN_EXP)/DBL_BIN_DIG; index++){
-    bins[index] = ldexp(0.75, (DBL_MAX_EXP + DBL_MANT_DIG - DBL_BIN_DIG + 1 - index * DBL_BIN_DIG));
+  for(index = 1; index <= (DBL_MAX_EXP - DBL_MIN_EXP)/DIWIDTH; index++){
+    bins[index] = ldexp(0.75, (DBL_MAX_EXP + DBL_MANT_DIG - DIWIDTH + 1 - index * DIWIDTH));
   }
-  for(; index < (DBL_MAX_EXP - DBL_MIN_EXP)/DBL_BIN_DIG + MAX_FOLD; index++){
+  for(; index < (DBL_MAX_EXP - DBL_MIN_EXP)/DIWIDTH + MAX_FOLD; index++){
     bins[index] = bins[index - 1];
   }
 

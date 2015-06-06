@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "../common/test_opt.h"
+#include "../../config.h"
 #include "rcblas1_wrapper.h"
 
 #include "../common/test_vecvec_fill_header.h"

@@ -5,6 +5,7 @@
 #include "indexed.h"
 #include "MPI_sIndexed.h"
 #include <stdio.h>
+#include "../../config.h"
 
 void sIAdd_MPI(
 	void *invec, void* inoutvec,

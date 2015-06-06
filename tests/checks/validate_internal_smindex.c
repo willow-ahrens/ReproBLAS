@@ -2,6 +2,7 @@
 #include <indexed.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 #include "../common/test_vecvec_header.h"
 #include "../common/test_util.h"
@@ -27,13 +28,13 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   util_random_seed();
 
   //allocate vector
-  float *X = util_svec_alloc(N * ((FLT_MAX_EXP - FLT_MIN_EXP)/siwidth()) + 1, incX);
+  float *X = util_svec_alloc(N * ((FLT_MAX_EXP - FLT_MIN_EXP)/SIWIDTH) + 1, incX);
 
   //check
-  for (i = 0; i < N * ((FLT_MAX_EXP - FLT_MIN_EXP)/siwidth()) + 1; i++) {
+  for (i = 0; i < N * ((FLT_MAX_EXP - FLT_MIN_EXP)/SIWIDTH) + 1; i++) {
     X[i * incX] = sbin(i/N) * (1.25/1.5 + 0.5/1.5 * util_drand48());
   }
-  for (i = 0; i < N * ((FLT_MAX_EXP - FLT_MIN_EXP)/siwidth()) + 1; i++) {
+  for (i = 0; i < N * ((FLT_MAX_EXP - FLT_MIN_EXP)/SIWIDTH) + 1; i++) {
     index = smindex(X + i * incX);
     if (sbin(index)*(1.25/1.5) > X[i * incX]){
       printf("X < 1.25 * 2^(i * W - 1)\n");

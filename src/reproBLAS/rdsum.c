@@ -1,13 +1,7 @@
-/*
- *  Created   13/10/25   H.D. Nguyen
- */
+#include <reproBLAS.h>
+#include <indexedBLAS.h>
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
-#include <float.h>
-#include "reproBLAS.h"
-#include "indexedBLAS.h"
+#include "../../config.h"
 
 double rdsum(const int N, const double* X, const int incX) {
   double_indexed *sumi = dialloc(DEFAULT_FOLD);

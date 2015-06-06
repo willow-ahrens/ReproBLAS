@@ -10,7 +10,7 @@
  *
  * Performs the operation Y += X on an indexed type Y where the index of Y is larger than the index of X
  *
- * @note This routine was provided as a means of allowing the you to optimize your code. After you have called cmcupdate() on Y with the maximum absolute value of any elements you wish to deposit in Y, you can call this method to deposit a maximum of siendurance() elements into Y. After calling cmcdeposit() on an indexed type, you must renormalize the indexed type with cmrenorm().
+ * @note This routine was provided as a means of allowing the you to optimize your code. After you have called cmcupdate() on Y with the maximum absolute value of any elements you wish to deposit in Y, you can call this method to deposit a maximum of SIENDURANCE elements into Y. After calling cmcdeposit() on an indexed type, you must renormalize the indexed type with cmrenorm().
  *
  * @param fold the fold of the indexed types
  * @param X scalar X

@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <float.h>
+#include <math.h>
 
 #include "../common/test_vecvec_header.h"
 #include "../common/test_util.h"
@@ -38,16 +39,16 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   for (i = 0; i < N * (DBL_MAX_EXP - DBL_MIN_EXP) + 1; i++) {
     index = dindex(X[i * incX]);
     if (index == 0){
-      X[i * incX] *= dmcompression();
+      X[i * incX] *= DMCOMPRESSION;
     }
     if (X[i * incX] != 0.0 && dbin(index) / ldexp(0.75, DBL_MANT_DIG) > 2 * fabs(X[i * incX])){
       printf("2 * |X| !>= 2^(i * W)\n");
-      printf("2 * %g !>= %g\n", fabs(X[i * incX]), dbin(index + 1)/ldexp(0.75, DBL_MANT_DIG - diwidth()));
+      printf("2 * %g !>= %g\n", fabs(X[i * incX]), dbin(index + 1)/ldexp(0.75, DBL_MANT_DIG - DIWIDTH));
       return 1;
     }
-    if (dbin(index) / ldexp(0.75, DBL_MANT_DIG - diwidth()) <= 2 * fabs(X[i * incX])){
+    if (dbin(index) / ldexp(0.75, DBL_MANT_DIG - DIWIDTH) <= 2 * fabs(X[i * incX])){
       printf("2 * |X| !< 2^((i + 1) * W)\n");
-      printf("2 * %g !< %g\n", fabs(X[i * incX]), dbin(index)/ldexp(0.75, DBL_MANT_DIG - diwidth()));
+      printf("2 * %g !< %g\n", fabs(X[i * incX]), dbin(index)/ldexp(0.75, DBL_MANT_DIG - DIWIDTH));
       return 1;
     }
   }

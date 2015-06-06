@@ -4,6 +4,7 @@
 #include <reproBLAS.h>
 #include <indexedBLAS.h>
 #include <indexed.h>
+#include "../../config.h"
 
 #define wrap_RSSUM  0
 #define wrap_RSASUM 1

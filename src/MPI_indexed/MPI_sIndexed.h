@@ -3,6 +3,7 @@
 
 #include <mpi.h>
 
+#include "../../config.h"
 void sIAdd_MPI(
 	void *invec, void* inoutvec,
 	int* len, MPI_Datatype *datatype

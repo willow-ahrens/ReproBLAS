@@ -31,7 +31,7 @@ float ssmconv(const int fold, const float* manX, const int incmanX, const float*
 
   if(smindex0(manX)){
     M = ufpf(manX[i * incmanX]);
-    Y += (carX[i * inccarX] * 0.25 * M + (manX[i * incmanX] - 1.5 * M)) * smexpansion();
+    Y += (carX[i * inccarX] * 0.25 * M + (manX[i * incmanX] - 1.5 * M)) * SMEXPANSION;
     i = 1;
   }
 

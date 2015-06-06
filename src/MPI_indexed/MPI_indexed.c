@@ -6,7 +6,9 @@
 #include "MPI_dIndexed.h"
 #include "MPI_sIndexed.h"
 #include "indexed.h"
+#include "../../config.h"
 #include <stdio.h>
+#include <complex.h>
 
 MPI_Datatype MPI_IDOUBLE;
 MPI_Datatype MPI_IFLOAT;

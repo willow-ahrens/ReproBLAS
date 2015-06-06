@@ -4,6 +4,7 @@
 #include <reproBLAS.h>
 #include <indexedBLAS.h>
 #include <indexed.h>
+#include "../../config.h"
 
 #include "../common/test_util.h"
 
@@ -209,7 +210,7 @@ double complex wrap_rzizdeposit(int fold, int N, double complex *x, int incx, do
   int i;
   int j = 0;
   for(i = 0; i < N; i++){
-    if(j >= dicapacity()){
+    if(j >= DIENDURANCE){
       zirenorm(fold, ires);
       j = 0;
     }
@@ -232,7 +233,7 @@ void wrap_zizdeposit(int fold, int N, double complex *x, int incx, double comple
   int i;
   int j = 0;
   for(i = 0; i < N; i++){
-    if(j >= dicapacity()){
+    if(j >= DIENDURANCE){
       zirenorm(fold, z);
       j = 0;
     }

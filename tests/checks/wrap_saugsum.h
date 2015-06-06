@@ -4,6 +4,7 @@
 #include <reproBLAS.h>
 #include <indexedBLAS.h>
 #include <indexed.h>
+#include "../../config.h"
 
 #include "../common/test_util.h"
 
@@ -177,7 +178,7 @@ float wrap_rsisdeposit(int fold, int N, float *x, int incx, float *y, int incy) 
   int i;
   int j = 0;
   for(i = 0; i < N; i++){
-    if(j >= sicapacity()){
+    if(j >= SIENDURANCE){
       sirenorm(fold, ires);
       j = 0;
     }
@@ -198,7 +199,7 @@ void wrap_sisdeposit(int fold, int N, float *x, int incx, float *y, int incy, fl
   int i;
   int j = 0;
   for(i = 0; i < N; i++){
-    if(j >= sicapacity()){
+    if(j >= SIENDURANCE){
       sirenorm(fold, z);
       j = 0;
     }

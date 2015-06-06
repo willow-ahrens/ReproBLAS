@@ -32,7 +32,7 @@ void smcasum(const int fold, const int N, const void *X, const int incX, float *
   float amax_tmp[2];
   float amax;
   int i, j;
-  int N_block = MIN(N_block_MAX, siendurance());
+  int N_block = MIN(N_block_MAX, SIENDURANCE);
   int deposits = 0;
   float_complex_indexed *asum = cialloc(fold);
   cisetzero(fold, asum);
@@ -60,7 +60,7 @@ void smcasum(const int fold, const int N, const void *X, const int incX, float *
       continue;
     }
 
-    if (deposits + N_block > siendurance()) {
+    if (deposits + N_block > SIENDURANCE) {
       cirenorm(fold, asum);
       deposits = 0;
     }

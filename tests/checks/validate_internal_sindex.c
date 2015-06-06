@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <float.h>
+#include <math.h>
 
 #include "../common/test_vecvec_header.h"
 #include "../common/test_util.h"
@@ -38,16 +39,16 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   for (i = 0; i < N * (FLT_MAX_EXP - FLT_MIN_EXP) + 1; i++) {
     index = sindex(X[i * incX]);
     if (index == 0){
-      X[i * incX] *= smcompression();
+      X[i * incX] *= SMCOMPRESSION;
     }
     if (X[i * incX] != 0.0 && sbin(index) / ldexpf(0.75, FLT_MANT_DIG) > 2 * fabsf(X[i * incX])){
       printf("2 * |X| !>= 2^(i * W)\n");
-      printf("2 * %g !>= %g\n", fabsf(X[i * incX]), sbin(index + 1)/ldexpf(0.75, FLT_MANT_DIG - siwidth()));
+      printf("2 * %g !>= %g\n", fabsf(X[i * incX]), sbin(index + 1)/ldexpf(0.75, FLT_MANT_DIG - SIWIDTH));
       return 1;
     }
-    if (sbin(index) / ldexpf(0.75, FLT_MANT_DIG - siwidth()) <= 2 * fabsf(X[i * incX])){
+    if (sbin(index) / ldexpf(0.75, FLT_MANT_DIG - SIWIDTH) <= 2 * fabsf(X[i * incX])){
       printf("2 * |X| !< 2^((i + 1) * W)\n");
-      printf("2 * %g !< %g\n", fabsf(X[i * incX]) * smcompression(), sbin(index)/ldexpf(0.75, FLT_MANT_DIG - siwidth()));
+      printf("2 * %g !< %g\n", fabsf(X[i * incX]) * SMCOMPRESSION, sbin(index)/ldexpf(0.75, FLT_MANT_DIG - SIWIDTH));
       return 1;
     }
   }

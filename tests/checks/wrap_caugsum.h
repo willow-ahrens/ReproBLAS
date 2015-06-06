@@ -4,6 +4,7 @@
 #include <reproBLAS.h>
 #include <indexedBLAS.h>
 #include <indexed.h>
+#include "../../config.h"
 
 #include "../common/test_util.h"
 
@@ -209,7 +210,7 @@ float complex wrap_rcicdeposit(int fold, int N, float complex *x, int incx, floa
   int i;
   int j = 0;
   for(i = 0; i < N; i++){
-    if(j >= sicapacity()){
+    if(j >= SIENDURANCE){
       cirenorm(fold, ires);
       j = 0;
     }
@@ -232,7 +233,7 @@ void wrap_cicdeposit(int fold, int N, float complex *x, int incx, float complex 
   int i;
   int j = 0;
   for(i = 0; i < N; i++){
-    if(j >= sicapacity()){
+    if(j >= SIENDURANCE){
       cirenorm(fold, c);
       j = 0;
     }

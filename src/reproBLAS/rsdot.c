@@ -1,13 +1,7 @@
-/*
- *  Created   13/10/25   H.D. Nguyen
- */
+#include <reproBLAS.h>
+#include <indexedBLAS.h>
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
-#include <float.h>
-#include "reproBLAS.h"
-#include "indexedBLAS.h"
+#include "../../config.h"
 
 float rsdot(const int N, const float* X, const int incX, const float *Y, const int incY) {
   float_indexed *doti = sialloc(DEFAULT_FOLD);

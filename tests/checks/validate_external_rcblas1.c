@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../../config.h"
 #include "../common/test_util.h"
 #include "../common/test_opt.h"
 #include "../common/test_file.h"

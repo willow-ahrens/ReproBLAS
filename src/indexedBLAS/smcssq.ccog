@@ -34,7 +34,7 @@ float smcssq(const int fold, const int N, const void *X, const int incX, const f
   float scl = 0.0;
   float new_scl;
   int i, j;
-  int N_block = MIN(N_block_MAX, siendurance());
+  int N_block = MIN(N_block_MAX, SIENDURANCE);
   int deposits = 0;
   float_complex_indexed *ssq = cialloc(fold);
   cisetzero(fold, ssq);
@@ -63,7 +63,7 @@ float smcssq(const int fold, const int N, const void *X, const int incX, const f
       continue;
     }
 
-    if (deposits + N_block > siendurance()) {
+    if (deposits + N_block > SIENDURANCE) {
       cirenorm(fold, ssq);
       deposits = 0;
     }

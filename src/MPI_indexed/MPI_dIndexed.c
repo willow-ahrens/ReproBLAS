@@ -4,6 +4,7 @@
 
 #include "indexed.h"
 #include "MPI_dIndexed.h"
+#include "../../config.h"
 
 // DEFAULT FOLD (3)
 void dIAdd_MPI(
