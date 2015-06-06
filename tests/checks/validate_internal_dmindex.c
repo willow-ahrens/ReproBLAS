@@ -32,18 +32,18 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
 
   //check
   for (i = 0; i < N * ((DBL_MAX_EXP - DBL_MIN_EXP)/DIWIDTH) + 1; i++) {
-    X[i * incX] = dbin(i/N) * (1.25/1.5 + 0.5/1.5 * util_drand48());
+    X[i * incX] = *dmbins(i/N) * (1.25/1.5 + 0.5/1.5 * util_drand48());
   }
   for (i = 0; i < N * ((DBL_MAX_EXP - DBL_MIN_EXP)/DIWIDTH) + 1; i++) {
     index = dmindex(X + i * incX);
-    if (dbin(index)*(1.25/1.5) > X[i * incX]){
+    if (*dmbins(index)*(1.25/1.5) > X[i * incX]){
       printf("X < 1.25 * 2^(i * W - 1)\n");
-      printf("%g < 1.25 * %g\n", X[i * incX], dbin(index));
+      printf("%g < 1.25 * %g\n", X[i * incX], *dmbins(index));
       return 1;
     }
-    if (dbin(index)*(1.75/1.5) < X[i * incX]){
+    if (*dmbins(index)*(1.75/1.5) < X[i * incX]){
       printf("X > 1.75 * 2^(i * W - 1)\n");
-      printf("%g > 1.75 * %g\n", X[i * incX], dbin(index));
+      printf("%g > 1.75 * %g\n", X[i * incX], *dmbins(index));
       return 1;
     }
   }

@@ -23,6 +23,8 @@
  */
 void smsupdate(const int fold, const float X, float* manY, const int incmanY, float* carY, const int inccarY) {
   int i;
+  int j;
+  const float *bins;
 
   if (isnan(manY[0]) || isinf(manY[0]))
     return;
@@ -34,6 +36,10 @@ void smsupdate(const int fold, const float X, float* manY, const int incmanY, fl
       manY[i * incmanY] = manY[(i - shift) * incmanY];
       carY[i * inccarY] = carY[(i - shift) * inccarY];
     }
-    smbin(MIN(shift, fold), X_index, manY, incmanY, carY, inccarY);
+    bins = smbins(X_index);
+    for(j = 0; j < i; j++){
+      manY[j * incmanY] = bins[j];
+      carY[j * inccarY] = 0.0;
+    }
   }
 }
