@@ -73,10 +73,22 @@ def flags(params, args):
 
 def get_vectorization(verbose="false"):
   if get_vectorization.vectorization == "":
-    make("scripts/get_vectorization.c", remake = True, verbose=verbose)
-    get_vectorization.vectorization = call(make("scripts/get_vectorization", remake = True, verbose=verbose), verbose=verbose).split()[0]
+    make("scripts/get_vectorization.c", remake = False, verbose=verbose)
+    get_vectorization.vectorization = call(make("scripts/get_vectorization", remake = False, verbose=verbose), verbose=verbose).split()[0]
   return get_vectorization.vectorization
 get_vectorization.vectorization = ""
+
+def get_max_fold(verbose="false"):
+  if get_max_fold.max_fold == 0:
+    get_max_fold.max_fold = int(call(make("scripts/get_max_fold", remake = False, verbose=verbose), verbose=verbose).split()[0])
+  return get_max_fold.max_fold
+get_max_fold.max_fold = 0
+
+def get_default_fold(verbose="false"):
+  if get_default_fold.default_fold == 0:
+    get_default_fold.default_fold = int(call(make("scripts/get_default_fold", remake = False, verbose=verbose), verbose=verbose).split()[0])
+  return get_default_fold.default_fold
+get_default_fold.default_fold = 0
 
 def get_cpu_freq(verbose="false"):
   info = cpuinfo.get_cpu_info()
@@ -104,3 +116,4 @@ def get_peak_time(output, verbose="false"):
     if key in output:
       data[key] = output[key]
   return config.peak_time(data)
+

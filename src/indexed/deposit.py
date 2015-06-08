@@ -4,6 +4,7 @@ from utils import *
 from dataTypes import *
 from vectorizations import *
 from generate import *
+from scripts import terminal
 import itertools
 
   #SUM_WIDTH = number of indexed sums used at once
@@ -13,8 +14,8 @@ import itertools
 class Deposit(Target):
   def __init__(self, data_type_class, N, X, incX, manY, incmanY):
     super(Deposit, self).__init__()
-    self.default_fold = 3 #TODO Read this from config.h
-    self.max_fold = 4 #TODO Read this from config.h
+    self.default_fold = terminal.get_default_fold()
+    self.max_fold = terminal.get_max_fold()
     self.max_expand_fold = min(self.max_fold, 6)
     self.data_type_class = data_type_class
     self.N = N
