@@ -462,6 +462,9 @@ float wrap_saugsum_result(int N, wrap_saugsum_func_t func, util_vec_fill_t FillX
           fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g, %s * %g)\n", wrap_saugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, util_vec_fill_descs[FillY], RealScaleY);
           exit(125);
       }
+    default:
+      fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g, %s * %g)\n", wrap_saugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, util_vec_fill_descs[FillY], RealScaleY);
+      exit(125);
   }
 }
 
@@ -481,6 +484,8 @@ float wrap_saugsum_bound(int fold, int N, wrap_saugsum_func_t func, float *X, in
     case wrap_saugsum_RSDOT:
       return sibound(fold, N, samaxm(N, X, incX, Y, incY));
   }
+  fprintf(stderr, "ReproBLAS error: unknown bound for %s\n", wrap_saugsum_func_descs[func]);
+  exit(125);
 }
 
 

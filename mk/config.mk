@@ -81,6 +81,7 @@ ifeq ($(MPILDFLAGS),)
   endif
 endif
 
+# TODO check version > 2.7.3
 # Detect python in the following order if PYTHON hasn't been set
 ifeq ($(PYTHON),)
   ifeq ("$(shell which python3 >/dev/null; echo $$?)", "0")

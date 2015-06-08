@@ -555,7 +555,6 @@ class SSE(SIMD):
 
   def set_real_imag(self, real_src_var, imag_src_var):
     assert self.data_type.is_complex, "cannot set real and imaginary portions of noncomplex"
-    return [real_src_var, imag_src_var]
     if self.data_type.name == "double complex":
       return ["_mm_set_pd({1}, {0})".format(real_src_var, imag_src_var)]
     elif self.data_type.name == "float complex":

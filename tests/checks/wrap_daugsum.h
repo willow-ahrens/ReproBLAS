@@ -462,6 +462,9 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
           fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g, %s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, util_vec_fill_descs[FillY], RealScaleY);
           exit(125);
       }
+    default:
+      fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g, %s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, util_vec_fill_descs[FillY], RealScaleY);
+      exit(125);
   }
 }
 
@@ -481,6 +484,8 @@ double wrap_daugsum_bound(int fold, int N, wrap_daugsum_func_t func, double *X, 
     case wrap_daugsum_RDDOT:
       return dibound(fold, N, damaxm(N, X, incX, Y, incY));
   }
+  fprintf(stderr, "ReproBLAS error: unknown bound for %s\n", wrap_daugsum_func_descs[func]);
+  exit(125);
 }
 
 #endif

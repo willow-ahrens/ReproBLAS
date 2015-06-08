@@ -673,6 +673,9 @@ float complex wrap_caugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill
           fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_caugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
           exit(125);
       }
+    default:
+      fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_caugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
+      exit(125);
   }
 }
 
@@ -718,6 +721,8 @@ float complex wrap_caugsum_bound(int fold, int N, wrap_caugsum_func_t func, floa
         return bound;
       }
   }
+  fprintf(stderr, "ReproBLAS error: unknown bound for %s\n", wrap_caugsum_func_descs[func]);
+  exit(125);
 }
 
 #endif
