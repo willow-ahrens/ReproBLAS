@@ -7,7 +7,7 @@
 #CC = clang
 
 # add CFLAGS
-CFLAGS += -Wall -Werror
+CFLAGS += -Wall
 
 # add CPPFLAGS
 CPPFLAGS +=
