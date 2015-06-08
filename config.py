@@ -49,10 +49,10 @@ def run(command_list, verbose="false"):
   result_list = []
   if verbose != "true":
     status(0, len(command_list));
-  for (i, result) in enumerate(itertools.imap(execute, itertools.izip(command_list, itertools.repeat(verbose)))):
+  for (i, command) in enumerate(command_list):
+    result_list.append(execute((command, verbose)))
     if verbose != "true":
       status(i, len(command_list));
-    result_list.append(result)
   if verbose != "true":
     print("")
   return result_list
@@ -74,7 +74,7 @@ def run_parallel(command_list, verbose="false"):
   result_list = []
   if verbose != "true":
     status(0, len(command_list));
-  for (i, result) in enumerate(p.imap(execute, [(command, verbose) for command in command_list], chunksize=multiprocessing.cpu_count() * 16)):
+  for (i, result) in enumerate(map(execute, [(command, verbose) for command in command_list], chunksize=multiprocessing.cpu_count() * 16)):
     if verbose != "true":
       status(i, len(command_list));
     result_list.append(result)

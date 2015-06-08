@@ -2,7 +2,34 @@
 
 #include <indexed.h>
 
-#include <../../config.h>
+#include "../../config.h"
+
+#include "../common/common.h"
+
+void ddpd(double* a, double b) {
+  (void)ddpd;
+  double bv;
+  double s1, s2, t1, t2;
+
+  /* Add two hi words. */
+  s1 = a[0] + b;
+  bv = s1 - a[0];
+  s2 = ((b - bv) + (a[0] - (s1 - bv)));
+
+  t1 = a[1] + s2;
+  bv = t1 - a[1];
+  t2 = ((s2 - bv) + (a[1] - (t1 - bv)));
+
+  s2 = t1;
+
+  /* Renormalize (s1, s2)  to  (t1, s2) */
+  t1 = s1 + s2;
+  t2 += s2 - (t1 - s1);
+
+  /* Renormalize (t1, t2)  */
+  a[0] = t1 + t2;
+  a[1] = t2 - (a[0] - t1);
+}
 
 /**
  * @internal
@@ -22,7 +49,6 @@
 double ddmconv(const int fold, const double* manX, const int incmanX, const double* carX, const int inccarX) {
   int i = 0;
   int X_index;
-  long double Y = 0.0;
   const double *bins;
 
   if (isinf(manX[0]) || isnan(manX[0]))
@@ -47,15 +73,15 @@ double ddmconv(const int fold, const double* manX, const int incmanX, const doub
   }
   */
 
-  //TODO Double check that max carry value is 2^53
+  X_index = dmindex(manX);
+  bins = dmbins(X_index);
 
   //Note that the following order of summation is in order of decreasing
   //exponent. The following code is specific to DIWIDTH=13, DBL_MANT_DIG=24, and
   //the number of carries equal to 1.
-  #if (LDBL_MANT_DIG - DBL_MANT_DIG) > 15 || 1 << (LDBL_MANT_DIG - DBL_MANT_DIG) > (MAX_FLOW + 1) * MAX_FOLD
-    #if LDBL_MAX_EXP > DBL_MAX_EXP + (DBL_MANT_DIG * MAX_FLOW) + (DBL_MANT_DIG - DIWIDTH - 2)
-      X_index = dmindex(manX);
-      bins = dmbins(X_index);
+  #if (LDBL_MANT_DIG - DBL_MANT_DIG) > 15 || 1 << (LDBL_MANT_DIG - DBL_MANT_DIG) >= 2 * MAX_FOLD
+    #if LDBL_MAX_EXP > DBL_MAX_EXP + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2)
+      long double Y = 0.0;
       if(X_index == 0){
         Y += (long double)carX[0] * (long double)(bins[0]/6.0) * (long double)DMEXPANSION;
         if(fold > 1){
@@ -72,12 +98,96 @@ double ddmconv(const int fold, const double* manX, const int incmanX, const doub
         Y += (long double)(manX[(i - 1) * incmanX] - bins[i - 1]);
       }
       Y += (long double)(manX[(fold - 1) * incmanX] - bins[fold - 1]);
+      return (double)Y;
+
     #else
-      not actually code
+      long double Y = 0.0;
+      double scale_down = ldexp(0.5, -1 * (DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2 + 1)) + 1);
+      double scale_up = ldexp(0.5, DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2 + 1) + 1);
+      X_index = dmindex(manX);
+      bins = dmbins(X_index);
+      int scaled = MIN(X_index + fold, (DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2))/DIWIDTH);
+      if(X_index <= (DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2))/DIWIDTH){
+        if(X_index == 0){
+          Y += carX[0] * ((bins[0]/6.0) * scale_down * DMEXPANSION);
+          if(fold > 1){
+            Y += carX[inccarX] * ((bins[1]/6.0) * scale_down);
+          }
+          Y += (manX[0] - bins[0]) * scale_down * DMEXPANSION;
+          i = 2;
+        }else{
+          Y += carX[0] * ((bins[0]/6.0) * scale_down);
+          i = 1;
+        }
+        for(; i < scaled && i < fold; i++){
+          Y += carX[i * inccarX] * ((bins[i]/6.0) * scale_down);
+          Y += (manX[(i - 1) * incmanX] - bins[i - 1]) * scale_down;
+        }
+        if(i == fold){
+          Y += (manX[(fold - 1) * incmanX] - bins[fold - 1]) * scale_down;
+          return Y * scale_up;
+        }
+        Y *= scale_up;
+        for(; i < fold; i++){
+          Y += carX[i * inccarX] * (bins[i]/6.0);
+          Y += manX[(i - 1) * incmanX] - bins[i - 1];
+        }
+        Y += manX[(fold - 1) * incmanX] - bins[fold - 1];
+        return (double)Y;
+      }else{
+        Y += carX[0] * (bins[0]/6.0);
+        for(i = 1; i < fold; i++){
+          Y += carX[i * inccarX] * (bins[i]/6.0);
+          Y += (manX[(i - 1) * incmanX] - bins[i - 1]);
+        }
+        Y += (manX[(fold - 1) * incmanX] - bins[fold - 1]);
+        return (double)Y;
+      }
+
     #endif
   #else
-    not actually code
+    double Y[2] = {0.0, 0.0};
+    double scale_down = ldexp(0.5, -1 * (DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2 + 1)) + 1);
+    double scale_up = ldexp(0.5, DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2 + 1) + 1);
+    X_index = dmindex(manX);
+    bins = dmbins(X_index);
+    int scaled = MIN(X_index + fold, (DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2))/DIWIDTH);
+    if(X_index <= (DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2))/DIWIDTH){
+      if(X_index == 0){
+        ddpd(Y, carX[0] * ((bins[0]/6.0) * scale_down * DMEXPANSION));
+        if(fold > 1){
+          ddpd(Y, carX[inccarX] * ((bins[1]/6.0) * scale_down));
+        }
+        ddpd(Y, (manX[0] - bins[0]) * scale_down * DMEXPANSION);
+        i = 2;
+      }else{
+        ddpd(Y, carX[0] * ((bins[0]/6.0) * scale_down));
+        i = 1;
+      }
+      for(; i < scaled && i < fold; i++){
+        ddpd(Y, carX[i * inccarX] * ((bins[i]/6.0) * scale_down));
+        ddpd(Y, (manX[(i - 1) * incmanX] - bins[i - 1]) * scale_down);
+      }
+      if(i == fold){
+        ddpd(Y, (manX[(fold - 1) * incmanX] - bins[fold - 1]) * scale_down);
+        return (Y[0] + Y[1]) * scale_up;
+      }
+      Y[0] *= scale_up;
+      Y[1] *= scale_up;
+      for(; i < fold; i++){
+        ddpd(Y, carX[i * inccarX] * (bins[i]/6.0));
+        ddpd(Y, manX[(i - 1) * incmanX] - bins[i - 1]);
+      }
+      ddpd(Y, manX[(fold - 1) * incmanX] - bins[fold - 1]);
+      return Y[0] + Y[1];
+    }else{
+      ddpd(Y, carX[0] * (bins[0]/6.0));
+      for(i = 1; i < fold; i++){
+        ddpd(Y, carX[i * inccarX] * (bins[i]/6.0));
+        ddpd(Y, (manX[(i - 1) * incmanX] - bins[i - 1]));
+      }
+      ddpd(Y, (manX[(fold - 1) * incmanX] - bins[fold - 1]));
+      return Y[0] + Y[1];
+    }
   #endif
-
-  return (double)Y;
 }
