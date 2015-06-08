@@ -13,6 +13,7 @@ import time
 
 def status(i, n):
   i += 1
+  n = max(n, 1)
   width = 80
   done = (i * (width - 2))//n
   remaining = width - 2 - done
@@ -121,10 +122,10 @@ def peak_time(data):
 #  data["s_add"] += data["s_fma"]
 #  data["s_mul"] += data["s_fma"]
 #  data["s_fma"] = 0
-  d_ops = data["d_add"] + data["d_mul"] + data["d_fma"] + data["d_orb"]
-  s_ops = data["s_add"] + data["s_mul"] + data["s_fma"] + data["s_orb"]
-#  d_ops = max(data["d_add"] + data["d_mul"] + data["d_fma"], data["d_orb"])
-#  s_ops = max(data["s_add"] + data["s_mul"] + data["s_fma"], data["s_orb"])
+#  d_ops = data["d_add"] + data["d_mul"] + data["d_fma"] + data["d_orb"]
+#  s_ops = data["s_add"] + data["s_mul"] + data["s_fma"] + data["s_orb"]
+  d_ops = max(data["d_add"] + data["d_mul"] + data["d_fma"], data["d_orb"])
+  s_ops = max(data["s_add"] + data["s_mul"] + data["s_fma"], data["s_orb"])
   return float(d_ops/vec_d_ops + s_ops/vec_s_ops)/data["freq"];
 
 ##

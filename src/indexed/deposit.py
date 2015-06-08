@@ -47,10 +47,10 @@ class Deposit(Target):
       for vectorization in vectorization_lookup.values():
         vec = vectorization(CodeBlock(), self.data_type_class)
         parameters.append(BooleanParameter("{}_expand_{}_fold_{}".format(self.name, vec.name, i), i == self.default_fold))
-        parameters.append(IntegerParameter("{}_max_unroll_width_{}_fold_{}".format(self.name, vec.name, i), 1, 8, 1, 1))
+        parameters.append(IntegerParameter("{}_max_unroll_width_{}_fold_{}".format(self.name, vec.name, i), 1, 16, 1, 1))
         name = "{}_max_pipe_width_{}_fold_{}".format(self.name, vec.name, i)
         minimum = max(1, vec.type_size)
-        maximum = minimum * 8
+        maximum = minimum * 16
         default = minimum
         parameters.append(PowerOfTwoParameter(name, minimum, maximum, default))
     return parameters
