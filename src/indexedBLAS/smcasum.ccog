@@ -17,22 +17,24 @@ import generate
 import dataTypes
 import depositASum
 import vectorizations
+from src.common import blockSize
+from scripts import terminal
 
 code_block = generate.CodeBlock()
 vectorizations.conditionally_include_vectorizations(code_block)
 cog.out(str(code_block))
+
+cog.outl()
+
+cog.out(generate.generate(blockSize.BlockSize("smcasum", "N_block_MAX", 32, terminal.get_siendurance()/2, terminal.get_siendurance()/2, ["bench_rscasum_fold_{}".format(terminal.get_default_fold())]), cog.inFile, args, params, mode))
 ]]]*/
 //[[[end]]]
-
-#define N_block_MAX 1024
-//TODO make N_block_max a parameter
-//TODO make sure to note in comments that we assume the indexed type has been renormalized before the call (probably already covered in the deposit documentation
 
 void smcasum(const int fold, const int N, const void *X, const int incX, float *manY, const int incmanY, float *carY, const int inccarY){
   float amax_tmp[2];
   float amax;
   int i, j;
-  int N_block = MIN(N_block_MAX, SIENDURANCE);
+  int N_block = MIN(N_block_MAX, SIENDURANCE/2);
   int deposits = 0;
   float_complex_indexed *asum = cialloc(fold);
   cisetzero(fold, asum);

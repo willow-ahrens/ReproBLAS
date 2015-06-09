@@ -17,16 +17,18 @@ import generate
 import dataTypes
 import depositSSq
 import vectorizations
+from src.common import blockSize
+from scripts import terminal
 
 code_block = generate.CodeBlock()
 vectorizations.conditionally_include_vectorizations(code_block)
 cog.out(str(code_block))
+
+cog.outl()
+
+cog.out(generate.generate(blockSize.BlockSize("smcssq", "N_block_MAX", 32, terminal.get_siendurance()/2, terminal.get_siendurance()/2, ["bench_rscnrm2_fold_{}".format(terminal.get_default_fold())]), cog.inFile, args, params, mode))
 ]]]*/
 //[[[end]]]
-
-#define N_block_MAX 1024
-//TODO make N_block_max a parameter
-//TODO make sure to note in comments that we assume the indexed type has been renormalized before the call (probably already covered in the deposit documentation
 
 float smcssq(const int fold, const int N, const void *X, const int incX, const float scaleY, float *manY, const int incmanY, float *carY, const int inccarY){
   float amax_tmp[2];
@@ -34,7 +36,7 @@ float smcssq(const int fold, const int N, const void *X, const int incX, const f
   float scl = 0.0;
   float new_scl;
   int i, j;
-  int N_block = MIN(N_block_MAX, SIENDURANCE);
+  int N_block = MIN(N_block_MAX, SIENDURANCE/2);
   int deposits = 0;
   float_complex_indexed *ssq = cialloc(fold);
   cisetzero(fold, ssq);

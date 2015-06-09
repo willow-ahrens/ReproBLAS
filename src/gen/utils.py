@@ -69,4 +69,4 @@ class CodeBlock(object):
   def __str__(self):
     if self.includes:
       self.includes.append("")
-    return "\n".join([str(block) for block in (self.includes + self.blocks)])
+    return "\n".join([str(block) for block in (self.includes + self.blocks)]) + "\n"

@@ -20,6 +20,7 @@ argparser = argparse.ArgumentParser(parents=opentuner.argparsers())
 argparser.add_argument('--params', help='parameter space file')
 argparser.add_argument('--args', help='output arguments file')
 argparser.add_argument("--trials", type=int,default=100, help="number of trials to run for each benchmark")
+argparser.add_argument('-v', '--verbose', default="false", type=str, nargs="?", help='verbose if "true"')
 
 log = logging.getLogger(__name__)
 
@@ -101,11 +102,11 @@ def run(apis):
     command_list = []
     for api in apis_to_run:
       bench_tests.append(benchs.all_benchs[api.measurement_interface.benchmark]())
-      bench_tests[-1].setup(flags = "-N 4096 -a 100000", args=arguments_file_name, remake=True)
+      bench_tests[-1].setup(flags = "-N 4096 -a 100000", args=arguments_file_name, remake=True, verbose=args.verbose)
       command_list += bench_tests[-1].get_command_list()
 
     #run with these arguments
-    output_list = config.run(command_list)
+    output_list = config.run(command_list, verbose=args.verbose)
 
     #return the results to the apis
     for api, desired_result, bench_test in zip(apis_to_run, desired_results, bench_tests):

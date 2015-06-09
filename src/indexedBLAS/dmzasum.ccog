@@ -17,22 +17,24 @@ import generate
 import dataTypes
 import depositASum
 import vectorizations
+from src.common import blockSize
+from scripts import terminal
 
 code_block = generate.CodeBlock()
 vectorizations.conditionally_include_vectorizations(code_block)
 cog.out(str(code_block))
+
+cog.outl()
+
+cog.out(generate.generate(blockSize.BlockSize("dmzasum", "N_block_MAX", 32, terminal.get_diendurance()/2, terminal.get_diendurance()/2, ["bench_rdzasum_fold_{}".format(terminal.get_default_fold())]), cog.inFile, args, params, mode))
 ]]]*/
 //[[[end]]]
-
-#define N_block_MAX 1024
-//TODO make N_block_max a parameter
-//TODO make sure to note in comments that we assume the indexed type has been renormalized before the call (probably already covered in the deposit documentation
 
 void dmzasum(const int fold, const int N, const void *X, const int incX, double *manY, const int incmanY, double *carY, const int inccarY){
   double amax_tmp[2];
   double amax;
   int i, j;
-  int N_block = MIN(N_block_MAX, DIENDURANCE);
+  int N_block = MIN(N_block_MAX, DIENDURANCE/2);
   int deposits = 0;
   double_complex_indexed *asum = zialloc(fold);
   zisetzero(fold, asum);

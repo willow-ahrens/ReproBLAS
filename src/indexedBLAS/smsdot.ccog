@@ -17,16 +17,18 @@ import generate
 import dataTypes
 import depositDot
 import vectorizations
+from src.common import blockSize
+from scripts import terminal
 
 code_block = generate.CodeBlock()
 vectorizations.conditionally_include_vectorizations(code_block)
 cog.out(str(code_block))
+
+cog.outl()
+
+cog.out(generate.generate(blockSize.BlockSize("smsdot", "N_block_MAX", 32, terminal.get_siendurance(), terminal.get_siendurance(), ["bench_rsdot_fold_{}".format(terminal.get_default_fold())]), cog.inFile, args, params, mode))
 ]]]*/
 //[[[end]]]
-
-#define N_block_MAX 1024
-//TODO make N_block_max a parameter
-//TODO make sure to note in comments that we assume the indexed type has been renormalized before the call (probably already covered in the deposit documentation
 
 void smsdot(const int fold, const int N, const float *X, const int incX, const float *Y, const int incY, float *manZ, const int incmanZ, float *carZ, const int inccarZ){
   float amaxm;

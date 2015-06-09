@@ -13,7 +13,9 @@ def callsafe(command, verbose="false"):
     print(command)
   rc = 0
   try:
-    out = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True).decode(sys.stdout.encoding)
+    env = os.environ.copy()
+    env["PYTHONIOENCODING"] = sys.stdout.encoding
+    out = subprocess.check_output(command, env=env, stderr=subprocess.STDOUT, shell=True).decode(sys.stdout.encoding)
   except subprocess.CalledProcessError as e:
     rc = e.returncode
     out = e.output.decode(sys.stdout.encoding)
@@ -24,7 +26,9 @@ def callsafe(command, verbose="false"):
 def call(command, verbose="false"):
   if(verbose == "true"):
     print(command)
-  out = subprocess.check_output(command, shell=True).decode(sys.stdout.encoding)
+  env = os.environ.copy()
+  env["PYTHONIOENCODING"] = sys.stdout.encoding
+  out = subprocess.check_output(command, env=env, shell=True).decode(sys.stdout.encoding)
   if(verbose == "true"):
     print(out)
   return out
@@ -52,7 +56,8 @@ def make(executable, args = None, id = None, remake = False, verbose="false"):
   build = os.path.join(build_dir, build_name)
   if not os.path.isfile(build) or remake:
     result = os.path.join(build_dir, executable_name)
-    callsafe("rm -f {}".format(result), verbose=verbose)
+    if remake:
+      callsafe("rm -f {}".format(result), verbose=verbose)
     env = ""
     if args:
       env = "ARGS={}".format(args)
@@ -89,6 +94,18 @@ def get_default_fold(verbose="false"):
     get_default_fold.default_fold = int(call(make("scripts/get_default_fold", remake = False, verbose=verbose), verbose=verbose).split()[0])
   return get_default_fold.default_fold
 get_default_fold.default_fold = 0
+
+def get_diendurance(verbose="false"):
+  if get_diendurance.diendurance == 0:
+    get_diendurance.diendurance = int(call(make("scripts/get_diendurance", remake = False, verbose=verbose), verbose=verbose).split()[0])
+  return get_diendurance.diendurance
+get_diendurance.diendurance = 0
+
+def get_siendurance(verbose="false"):
+  if get_siendurance.siendurance == 0:
+    get_siendurance.siendurance = int(call(make("scripts/get_siendurance", remake = False, verbose=verbose), verbose=verbose).split()[0])
+  return get_siendurance.siendurance
+get_siendurance.siendurance = 0
 
 def get_cpu_freq(verbose="false"):
   info = cpuinfo.get_cpu_info()
