@@ -33,7 +33,6 @@ install-doc: $(call get_subtree,INSTALL_DOC,$(TOP))
 
 # tunes
 tune: update
-	cp $(TOP)/src/default_args.json $(TOP)/src/tuned_args.json
 	$(CALL_PYTHON) $(TOP)/tune/ReproBLASOpenTuner.py --params $(TOP)/src/params.json --args $(TOP)/src/tuned_args.json --database $(TOP)/tune/ReproBLASOpenTuner.db --trials 50 --no-dups --verbose $(VERBOSE)
 
 # Removes generated code from code generators

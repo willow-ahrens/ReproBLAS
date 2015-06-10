@@ -101,7 +101,7 @@ def run(apis):
     command_list = []
     for api in apis_to_run:
       bench_tests.append(benchs.all_benchs[api.measurement_interface.benchmark]())
-      bench_tests[-1].setup(flags = "-N 4096 -a 1000000", args=arguments_file_name, remake=True, verbose=args.verbose)
+      bench_tests[-1].setup(flags = "-N 4096 -a 100000", args=arguments_file_name, remake=True, verbose=args.verbose)
       command_list += bench_tests[-1].get_command_list()
 
     #run with these arguments
