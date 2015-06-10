@@ -18,6 +18,16 @@ code_block = generate.CodeBlock()
 vectorizations.conditionally_include_vectorizations(code_block)
 cog.out(str(code_block))
 ]]]*/
+#ifdef __AVX__
+  #include <immintrin.h>
+
+#elif defined(__SSE2__)
+  #include <emmintrin.h>
+
+#else
+
+
+#endif
 //[[[end]]]
 
 void zamaxm_sub(const int N, const void *X, const int incX, const void *Y, const int incY, void *amaxm){
@@ -26,5 +36,159 @@ void zamaxm_sub(const int N, const void *X, const int incX, const void *Y, const
   /*[[[cog
   cog.out(generate.generate(amaxm.AMaxM(dataTypes.DoubleComplex, "N", "x", "incX", "y", "incY", "amaxm"), cog.inFile, args, params, mode))
   ]]]*/
+  #ifdef __AVX__
+    __m256d abs_mask_tmp;
+    {
+      __m256d tmp;
+      tmp = _mm256_set1_pd(1);
+      abs_mask_tmp = _mm256_set1_pd(-1);
+      abs_mask_tmp = _mm256_xor_pd(abs_mask_tmp, tmp);
+      tmp = _mm256_cmp_pd(tmp, tmp, 0);
+      abs_mask_tmp = _mm256_xor_pd(abs_mask_tmp, tmp);
+    }
+    double max_buffer_tmp[4] __attribute__((aligned(32))); (void)max_buffer_tmp;
+
+    int i;
+
+    __m256d x_0, x_1;
+    __m256d y_0;
+    __m256d m_0;
+    m_0 = _mm256_setzero_pd();
+
+    if(incX == 1 && incY == 1){
+
+      for(i = 0; i + 2 <= N; i += 2, x += 4, y += 4){
+        x_0 = _mm256_loadu_pd(((double*)x));
+        y_0 = _mm256_loadu_pd(((double*)y));
+        x_1 = _mm256_and_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), abs_mask_tmp);
+        x_0 = _mm256_and_pd(_mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000)), abs_mask_tmp);
+        m_0 = _mm256_max_pd(m_0, x_0);
+        m_0 = _mm256_max_pd(m_0, x_1);
+      }
+      if(i < N){
+        x_0 = _mm256_set_pd(0, 0, ((double*)x)[1], ((double*)x)[0]);
+        y_0 = _mm256_set_pd(0, 0, ((double*)y)[1], ((double*)y)[0]);
+        x_1 = _mm256_and_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), abs_mask_tmp);
+        x_0 = _mm256_and_pd(_mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000)), abs_mask_tmp);
+        m_0 = _mm256_max_pd(m_0, x_0);
+        m_0 = _mm256_max_pd(m_0, x_1);
+        x += ((N - i) * 2), y += ((N - i) * 2);
+      }
+    }else{
+
+      for(i = 0; i + 2 <= N; i += 2, x += (incX * 4), y += (incY * 4)){
+        x_0 = _mm256_set_pd(((double*)x)[((incX * 2) + 1)], ((double*)x)[(incX * 2)], ((double*)x)[1], ((double*)x)[0]);
+        y_0 = _mm256_set_pd(((double*)y)[((incY * 2) + 1)], ((double*)y)[(incY * 2)], ((double*)y)[1], ((double*)y)[0]);
+        x_1 = _mm256_and_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), abs_mask_tmp);
+        x_0 = _mm256_and_pd(_mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000)), abs_mask_tmp);
+        m_0 = _mm256_max_pd(m_0, x_0);
+        m_0 = _mm256_max_pd(m_0, x_1);
+      }
+      if(i < N){
+        x_0 = _mm256_set_pd(0, 0, ((double*)x)[1], ((double*)x)[0]);
+        y_0 = _mm256_set_pd(0, 0, ((double*)y)[1], ((double*)y)[0]);
+        x_1 = _mm256_and_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), abs_mask_tmp);
+        x_0 = _mm256_and_pd(_mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000)), abs_mask_tmp);
+        m_0 = _mm256_max_pd(m_0, x_0);
+        m_0 = _mm256_max_pd(m_0, x_1);
+        x += (incX * (N - i) * 2), y += (incY * (N - i) * 2);
+      }
+    }
+    _mm256_store_pd(max_buffer_tmp, m_0);
+    max_buffer_tmp[0] = (max_buffer_tmp[0] > max_buffer_tmp[2] ? max_buffer_tmp[0]: max_buffer_tmp[2]);
+    max_buffer_tmp[1] = (max_buffer_tmp[1] > max_buffer_tmp[3] ? max_buffer_tmp[1]: max_buffer_tmp[3]);
+    ((double*)amaxm)[0] = max_buffer_tmp[0];
+    ((double*)amaxm)[1] = max_buffer_tmp[1];
+
+  #elif defined(__SSE2__)
+    __m128d abs_mask_tmp;
+    {
+      __m128d tmp;
+      tmp = _mm_set1_pd(1);
+      abs_mask_tmp = _mm_set1_pd(-1);
+      abs_mask_tmp = _mm_xor_pd(abs_mask_tmp, tmp);
+      tmp = _mm_cmpeq_pd(tmp, tmp);
+      abs_mask_tmp = _mm_xor_pd(abs_mask_tmp, tmp);
+    }
+    double max_buffer_tmp[2] __attribute__((aligned(16))); (void)max_buffer_tmp;
+
+    int i;
+
+    __m128d x_0, x_1;
+    __m128d y_0;
+    __m128d m_0;
+    m_0 = _mm_setzero_pd();
+
+    if(incX == 1 && incY == 1){
+
+      for(i = 0; i + 1 <= N; i += 1, x += 2, y += 2){
+        x_0 = _mm_loadu_pd(((double*)x));
+        y_0 = _mm_loadu_pd(((double*)y));
+        x_1 = _mm_and_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0b01), _mm_shuffle_pd(y_0, y_0, 0b11)), abs_mask_tmp);
+        x_0 = _mm_and_pd(_mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0b00)), abs_mask_tmp);
+        m_0 = _mm_max_pd(m_0, x_0);
+        m_0 = _mm_max_pd(m_0, x_1);
+      }
+    }else{
+
+      for(i = 0; i + 1 <= N; i += 1, x += (incX * 2), y += (incY * 2)){
+        x_0 = _mm_loadu_pd(((double*)x));
+        y_0 = _mm_loadu_pd(((double*)y));
+        x_1 = _mm_and_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0b01), _mm_shuffle_pd(y_0, y_0, 0b11)), abs_mask_tmp);
+        x_0 = _mm_and_pd(_mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0b00)), abs_mask_tmp);
+        m_0 = _mm_max_pd(m_0, x_0);
+        m_0 = _mm_max_pd(m_0, x_1);
+      }
+    }
+    _mm_store_pd(max_buffer_tmp, m_0);
+    ((double*)amaxm)[0] = max_buffer_tmp[0];
+    ((double*)amaxm)[1] = max_buffer_tmp[1];
+
+  #else
+    int i;
+
+    double x_0, x_1, x_2, x_3;
+    double y_0, y_1;
+    double m_0, m_1;
+    m_0 = 0;
+    m_1 = 0;
+
+    if(incX == 1 && incY == 1){
+
+      for(i = 0; i + 1 <= N; i += 1, x += 2, y += 2){
+        x_0 = ((double*)x)[0];
+        x_1 = ((double*)x)[1];
+        y_0 = ((double*)y)[0];
+        y_1 = ((double*)y)[1];
+        x_2 = fabs(x_1 * y_1);
+        x_3 = fabs(x_0 * y_1);
+        x_0 = fabs(x_0 * y_0);
+        x_1 = fabs(x_1 * y_0);
+        m_0 = (m_0 > x_0? m_0: x_0);
+        m_1 = (m_1 > x_1? m_1: x_1);
+        m_0 = (m_0 > x_2? m_0: x_2);
+        m_1 = (m_1 > x_3? m_1: x_3);
+      }
+    }else{
+
+      for(i = 0; i + 1 <= N; i += 1, x += (incX * 2), y += (incY * 2)){
+        x_0 = ((double*)x)[0];
+        x_1 = ((double*)x)[1];
+        y_0 = ((double*)y)[0];
+        y_1 = ((double*)y)[1];
+        x_2 = fabs(x_1 * y_1);
+        x_3 = fabs(x_0 * y_1);
+        x_0 = fabs(x_0 * y_0);
+        x_1 = fabs(x_1 * y_0);
+        m_0 = (m_0 > x_0? m_0: x_0);
+        m_1 = (m_1 > x_1? m_1: x_1);
+        m_0 = (m_0 > x_2? m_0: x_2);
+        m_1 = (m_1 > x_3? m_1: x_3);
+      }
+    }
+    ((double*)amaxm)[0] = m_0;
+    ((double*)amaxm)[1] = m_1;
+
+  #endif
   //[[[end]]]
 }

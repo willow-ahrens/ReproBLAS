@@ -35,14 +35,15 @@ def deserialize_parameter_space(parameter_space_file_name):
   return parameter_space
 
 class Parameter(object):
-  def __init__(self, name):
+  def __init__(self, name, tags):
     self.name = name
+    self.tags = tags
 
   def parse_value(self, value):
     raise NotImplementedError
 
   def encode(self):
-    return {"name":self.name, "flavor":self.flavor}
+    return {"name":self.name, "flavor":self.flavor, "tags":list(self.tags.items())}
 
   @staticmethod
   def decode(data):
@@ -51,20 +52,20 @@ class Parameter(object):
     assert "flavor" in data, "ReproBLAS error: invalid parameter file format"
     assert "default" in data, "ReproBLAS error: invalid parameter file format"
     if data["flavor"] == "boolean":
-      return BooleanParameter(data["name"], data["default"])
+      return BooleanParameter(data["name"], dict(data["tags"]), data["default"])
     if data["flavor"] == "integer":
       assert "minimum" in data, "ReproBLAS error: invalid parameter file format"
       assert "maximum" in data, "ReproBLAS error: invalid parameter file format"
       assert "step" in data, "ReproBLAS error: invalid parameter file format"
-      return IntegerParameter(data["name"], data["minimum"], data["maximum"], data["step"], data["default"])
+      return IntegerParameter(data["name"], dict(data["tags"]), data["minimum"], data["maximum"], data["step"], data["default"])
     if data["flavor"] == "poweroftwo":
       assert "minimum" in data, "ReproBLAS error: invalid parameter file format"
       assert "maximum" in data, "ReproBLAS error: invalid parameter file format"
-      return PowerOfTwoParameter(data["name"], data["minimum"], data["maximum"], data["default"])
+      return PowerOfTwoParameter(data["name"], dict(data["tags"]), data["minimum"], data["maximum"], data["default"])
 
 class BooleanParameter(Parameter):
-  def __init__(self, name, default):
-    super(BooleanParameter, self).__init__(name)
+  def __init__(self, name, tags, default):
+    super(BooleanParameter, self).__init__(name, tags)
     self.flavor = "boolean"
     self.default = self.parse_value(default)
 
@@ -77,8 +78,8 @@ class BooleanParameter(Parameter):
     return data
 
 class IntegerParameter(Parameter):
-  def __init__(self, name, minimum, maximum, step, default):
-    super(IntegerParameter, self).__init__(name)
+  def __init__(self, name, tags, minimum, maximum, step, default):
+    super(IntegerParameter, self).__init__(name, tags)
     self.flavor = "integer"
     self.minimum = minimum
     self.maximum = maximum
@@ -103,8 +104,8 @@ class IntegerParameter(Parameter):
     return data
 
 class PowerOfTwoParameter(Parameter):
-  def __init__(self, name, minimum, maximum, default):
-    super(PowerOfTwoParameter, self).__init__(name)
+  def __init__(self, name, tags, minimum, maximum, default):
+    super(PowerOfTwoParameter, self).__init__(name, tags)
     self.flavor = "poweroftwo"
     self.minimum = minimum
     self.maximum = maximum

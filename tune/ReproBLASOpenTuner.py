@@ -44,8 +44,7 @@ class ReproBLASTuner(measurement.MeasurementInterface):
     m = manipulator.ConfigurationManipulator()
     for parameter in self.parameter_space.forward_metrics[self.benchmark]:
       parameter = self.parameter_space.parameters[parameter]
-      #TODO This line is especially hacky. We should find a way to tag parameters with certain values.
-      if parameter.name.find(terminal.get_vectorization()) != -1:
+      if "vectorization" not in parameter.tags or parameter.tags["vectorization"] == terminal.get_vectorization():
         if type(parameter) == generate.IntegerParameter:
           m.add_parameter(manipulator.IntegerParameter(parameter.name, parameter.minimum/parameter.step, parameter.maximum/parameter.step))
         if type(parameter) == generate.BooleanParameter:
@@ -102,7 +101,7 @@ def run(apis):
     command_list = []
     for api in apis_to_run:
       bench_tests.append(benchs.all_benchs[api.measurement_interface.benchmark]())
-      bench_tests[-1].setup(flags = "-N 4096 -a 100000", args=arguments_file_name, remake=True, verbose=args.verbose)
+      bench_tests[-1].setup(flags = "-N 4096 -a 1000000", args=arguments_file_name, remake=True, verbose=args.verbose)
       command_list += bench_tests[-1].get_command_list()
 
     #run with these arguments

@@ -30,7 +30,7 @@ class AMax(Target):
       minimum = step
       maximum = step * 8
       default = step
-      parameters.append(IntegerParameter(name, minimum, maximum, step, default))
+      parameters.append(IntegerParameter(name, {"vectorization":vec.name}, minimum, maximum, step, default))
     return parameters
 
   def get_metrics(self):

@@ -15,9 +15,12 @@ def callsafe(command, verbose="false"):
     print(command)
   rc = 0
   try:
-    env = os.environ.copy()
-    env["PYTHONIOENCODING"] = sys.stdout.encoding
-    out = subprocess.check_output(command, env=env, stderr=subprocess.STDOUT, shell=True).decode(sys.stdout.encoding)
+    if(sys.stdout.encoding):
+      env = os.environ.copy()
+      env["PYTHONIOENCODING"] = sys.stdout.encoding
+      out = subprocess.check_output(command, env=env, stderr=subprocess.STDOUT, shell=True).decode(sys.stdout.encoding)
+    else:
+      out = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
   except subprocess.CalledProcessError as e:
     rc = e.returncode
     out = e.output.decode(sys.stdout.encoding)
@@ -28,9 +31,12 @@ def callsafe(command, verbose="false"):
 def call(command, verbose="false"):
   if(verbose == "true"):
     print(command)
-  env = os.environ.copy()
-  env["PYTHONIOENCODING"] = sys.stdout.encoding
-  out = subprocess.check_output(command, env=env, shell=True).decode(sys.stdout.encoding)
+  if sys.stdout.encoding:
+    env = os.environ.copy()
+    env["PYTHONIOENCODING"] = sys.stdout.encoding
+    out = subprocess.check_output(command, env=env, shell=True).decode(sys.stdout.encoding)
+  else:
+    out = subprocess.check_output(command, shell=True)
   if(verbose == "true"):
     print(out)
   return out

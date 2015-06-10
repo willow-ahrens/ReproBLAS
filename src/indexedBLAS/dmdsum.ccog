@@ -28,6 +28,18 @@ cog.outl()
 
 cog.out(generate.generate(blockSize.BlockSize("dmdsum", "N_block_MAX", 32, terminal.get_diendurance(), terminal.get_diendurance(), ["bench_rdsum_fold_{}".format(terminal.get_default_fold())]), cog.inFile, args, params, mode))
 ]]]*/
+#ifdef __AVX__
+  #include <immintrin.h>
+
+#elif defined(__SSE2__)
+  #include <emmintrin.h>
+
+#else
+
+
+#endif
+
+#define N_block_MAX 2048
 //[[[end]]]
 
 void dmdsum(const int fold, const int N, const double *X, const int incX, double *manY, const int incmanY, double *carY, const int inccarY){
@@ -63,6 +75,927 @@ void dmdsum(const int fold, const int N, const double *X, const int incX, double
     /*[[[cog
     cog.out(generate.generate(depositSum.DepositSum(dataTypes.Double, "N_block", "X", "incX", "manY", "incmanY"), cog.inFile, args, params, mode))
     ]]]*/
+    {
+      #ifdef __AVX__
+        unsigned int SIMD_daz_ftz_old_tmp;
+        unsigned int SIMD_daz_ftz_new_tmp;
+        __m256d blp_mask_tmp;
+        {
+          __m256d tmp;
+          blp_mask_tmp = _mm256_set1_pd(1.0);
+          tmp = _mm256_set1_pd(1.0 + (DBL_EPSILON * 1.0001));
+          blp_mask_tmp = _mm256_xor_pd(blp_mask_tmp, tmp);
+        }
+        __m256d cons_tmp; (void)cons_tmp;
+        double cons_buffer_tmp[4] __attribute__((aligned(32))); (void)cons_buffer_tmp;
+
+        SIMD_daz_ftz_old_tmp = _mm_getcsr();
+        SIMD_daz_ftz_new_tmp = SIMD_daz_ftz_old_tmp | 0x8040;
+        if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
+          _mm_setcsr(SIMD_daz_ftz_new_tmp);
+        }
+
+        switch(fold){
+          case 3:
+            {
+              int i;
+              __m256d X_0;
+              __m256d compression_0;
+              __m256d expansion_0;
+              __m256d q_0;
+              __m256d s_0_0;
+              __m256d s_1_0;
+              __m256d s_2_0;
+
+              s_0_0 = _mm256_broadcast_sd(manY);
+              s_1_0 = _mm256_broadcast_sd(manY + incmanY);
+              s_2_0 = _mm256_broadcast_sd(manY + (incmanY * 2));
+
+              if(incX == 1){
+                if(dmindex0(manY)){
+                  compression_0 = _mm256_set1_pd(DMCOMPRESSION);
+                  expansion_0 = _mm256_set1_pd(DMEXPANSION);
+                  for(i = 0; i + 4 <= N_block; i += 4, X += 4){
+                    X_0 = _mm256_loadu_pd(X);
+
+                    q_0 = s_0_0;
+                    s_0_0 = _mm256_add_pd(s_0_0, _mm256_or_pd(_mm256_mul_pd(X_0, compression_0), blp_mask_tmp));
+                    q_0 = _mm256_sub_pd(q_0, s_0_0);
+                    X_0 = _mm256_add_pd(X_0, _mm256_mul_pd(q_0, expansion_0));
+                    q_0 = s_1_0;
+                    s_1_0 = _mm256_add_pd(s_1_0, _mm256_or_pd(X_0, blp_mask_tmp));
+                    q_0 = _mm256_sub_pd(q_0, s_1_0);
+                    X_0 = _mm256_add_pd(X_0, q_0);
+                    s_2_0 = _mm256_add_pd(s_2_0, _mm256_or_pd(X_0, blp_mask_tmp));
+                  }
+                  if(i < N_block){
+                    X_0 = _mm256_set_pd(0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]);
+
+                    q_0 = s_0_0;
+                    s_0_0 = _mm256_add_pd(s_0_0, _mm256_or_pd(_mm256_mul_pd(X_0, compression_0), blp_mask_tmp));
+                    q_0 = _mm256_sub_pd(q_0, s_0_0);
+                    X_0 = _mm256_add_pd(X_0, _mm256_mul_pd(q_0, expansion_0));
+                    q_0 = s_1_0;
+                    s_1_0 = _mm256_add_pd(s_1_0, _mm256_or_pd(X_0, blp_mask_tmp));
+                    q_0 = _mm256_sub_pd(q_0, s_1_0);
+                    X_0 = _mm256_add_pd(X_0, q_0);
+                    s_2_0 = _mm256_add_pd(s_2_0, _mm256_or_pd(X_0, blp_mask_tmp));
+                    X += (N_block - i);
+                  }
+                }else{
+                  for(i = 0; i + 4 <= N_block; i += 4, X += 4){
+                    X_0 = _mm256_loadu_pd(X);
+
+                    q_0 = s_0_0;
+                    s_0_0 = _mm256_add_pd(s_0_0, _mm256_or_pd(X_0, blp_mask_tmp));
+                    q_0 = _mm256_sub_pd(q_0, s_0_0);
+                    X_0 = _mm256_add_pd(X_0, q_0);
+                    q_0 = s_1_0;
+                    s_1_0 = _mm256_add_pd(s_1_0, _mm256_or_pd(X_0, blp_mask_tmp));
+                    q_0 = _mm256_sub_pd(q_0, s_1_0);
+                    X_0 = _mm256_add_pd(X_0, q_0);
+                    s_2_0 = _mm256_add_pd(s_2_0, _mm256_or_pd(X_0, blp_mask_tmp));
+                  }
+                  if(i < N_block){
+                    X_0 = _mm256_set_pd(0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]);
+
+                    q_0 = s_0_0;
+                    s_0_0 = _mm256_add_pd(s_0_0, _mm256_or_pd(X_0, blp_mask_tmp));
+                    q_0 = _mm256_sub_pd(q_0, s_0_0);
+                    X_0 = _mm256_add_pd(X_0, q_0);
+                    q_0 = s_1_0;
+                    s_1_0 = _mm256_add_pd(s_1_0, _mm256_or_pd(X_0, blp_mask_tmp));
+                    q_0 = _mm256_sub_pd(q_0, s_1_0);
+                    X_0 = _mm256_add_pd(X_0, q_0);
+                    s_2_0 = _mm256_add_pd(s_2_0, _mm256_or_pd(X_0, blp_mask_tmp));
+                    X += (N_block - i);
+                  }
+                }
+              }else{
+                if(dmindex0(manY)){
+                  compression_0 = _mm256_set1_pd(DMCOMPRESSION);
+                  expansion_0 = _mm256_set1_pd(DMEXPANSION);
+                  for(i = 0; i + 4 <= N_block; i += 4, X += (incX * 4)){
+                    X_0 = _mm256_set_pd(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]);
+
+                    q_0 = s_0_0;
+                    s_0_0 = _mm256_add_pd(s_0_0, _mm256_or_pd(_mm256_mul_pd(X_0, compression_0), blp_mask_tmp));
+                    q_0 = _mm256_sub_pd(q_0, s_0_0);
+                    X_0 = _mm256_add_pd(X_0, _mm256_mul_pd(q_0, expansion_0));
+                    q_0 = s_1_0;
+                    s_1_0 = _mm256_add_pd(s_1_0, _mm256_or_pd(X_0, blp_mask_tmp));
+                    q_0 = _mm256_sub_pd(q_0, s_1_0);
+                    X_0 = _mm256_add_pd(X_0, q_0);
+                    s_2_0 = _mm256_add_pd(s_2_0, _mm256_or_pd(X_0, blp_mask_tmp));
+                  }
+                  if(i < N_block){
+                    X_0 = _mm256_set_pd(0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]);
+
+                    q_0 = s_0_0;
+                    s_0_0 = _mm256_add_pd(s_0_0, _mm256_or_pd(_mm256_mul_pd(X_0, compression_0), blp_mask_tmp));
+                    q_0 = _mm256_sub_pd(q_0, s_0_0);
+                    X_0 = _mm256_add_pd(X_0, _mm256_mul_pd(q_0, expansion_0));
+                    q_0 = s_1_0;
+                    s_1_0 = _mm256_add_pd(s_1_0, _mm256_or_pd(X_0, blp_mask_tmp));
+                    q_0 = _mm256_sub_pd(q_0, s_1_0);
+                    X_0 = _mm256_add_pd(X_0, q_0);
+                    s_2_0 = _mm256_add_pd(s_2_0, _mm256_or_pd(X_0, blp_mask_tmp));
+                    X += (incX * (N_block - i));
+                  }
+                }else{
+                  for(i = 0; i + 4 <= N_block; i += 4, X += (incX * 4)){
+                    X_0 = _mm256_set_pd(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]);
+
+                    q_0 = s_0_0;
+                    s_0_0 = _mm256_add_pd(s_0_0, _mm256_or_pd(X_0, blp_mask_tmp));
+                    q_0 = _mm256_sub_pd(q_0, s_0_0);
+                    X_0 = _mm256_add_pd(X_0, q_0);
+                    q_0 = s_1_0;
+                    s_1_0 = _mm256_add_pd(s_1_0, _mm256_or_pd(X_0, blp_mask_tmp));
+                    q_0 = _mm256_sub_pd(q_0, s_1_0);
+                    X_0 = _mm256_add_pd(X_0, q_0);
+                    s_2_0 = _mm256_add_pd(s_2_0, _mm256_or_pd(X_0, blp_mask_tmp));
+                  }
+                  if(i < N_block){
+                    X_0 = _mm256_set_pd(0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]);
+
+                    q_0 = s_0_0;
+                    s_0_0 = _mm256_add_pd(s_0_0, _mm256_or_pd(X_0, blp_mask_tmp));
+                    q_0 = _mm256_sub_pd(q_0, s_0_0);
+                    X_0 = _mm256_add_pd(X_0, q_0);
+                    q_0 = s_1_0;
+                    s_1_0 = _mm256_add_pd(s_1_0, _mm256_or_pd(X_0, blp_mask_tmp));
+                    q_0 = _mm256_sub_pd(q_0, s_1_0);
+                    X_0 = _mm256_add_pd(X_0, q_0);
+                    s_2_0 = _mm256_add_pd(s_2_0, _mm256_or_pd(X_0, blp_mask_tmp));
+                    X += (incX * (N_block - i));
+                  }
+                }
+              }
+
+              s_0_0 = _mm256_sub_pd(s_0_0, _mm256_set_pd(manY[0], manY[0], manY[0], 0));
+              _mm256_store_pd(cons_buffer_tmp, s_0_0);
+              manY[0] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3];
+              s_1_0 = _mm256_sub_pd(s_1_0, _mm256_set_pd(manY[incmanY], manY[incmanY], manY[incmanY], 0));
+              _mm256_store_pd(cons_buffer_tmp, s_1_0);
+              manY[incmanY] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3];
+              s_2_0 = _mm256_sub_pd(s_2_0, _mm256_set_pd(manY[(incmanY * 2)], manY[(incmanY * 2)], manY[(incmanY * 2)], 0));
+              _mm256_store_pd(cons_buffer_tmp, s_2_0);
+              manY[(incmanY * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3];
+
+              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
+                _mm_setcsr(SIMD_daz_ftz_old_tmp);
+              }
+            }
+            break;
+          default:
+            {
+              int i, j;
+              __m256d X_0;
+              __m256d compression_0;
+              __m256d expansion_0;
+              __m256d q_0;
+              __m256d s_0;
+              __m256d s_buffer[MAX_FOLD];
+
+              for(j = 0; j < fold; j += 1){
+                s_buffer[j] = _mm256_broadcast_sd(manY + (incmanY * j));
+              }
+
+              if(incX == 1){
+                if(dmindex0(manY)){
+                  compression_0 = _mm256_set1_pd(DMCOMPRESSION);
+                  expansion_0 = _mm256_set1_pd(DMEXPANSION);
+                  for(i = 0; i + 4 <= N_block; i += 4, X += 4){
+                    X_0 = _mm256_loadu_pd(X);
+
+                    s_0 = s_buffer[0];
+                    q_0 = _mm256_add_pd(s_0, _mm256_or_pd(_mm256_mul_pd(X_0, compression_0), blp_mask_tmp));
+                    s_buffer[0] = q_0;
+                    if(fold > 1){
+                      q_0 = _mm256_sub_pd(s_0, q_0);
+                      X_0 = _mm256_add_pd(X_0, _mm256_mul_pd(q_0, expansion_0));
+                      for(j = 1; j < fold - 1; j++){
+                        s_0 = s_buffer[j];
+                        q_0 = _mm256_add_pd(s_0, _mm256_or_pd(X_0, blp_mask_tmp));
+                        s_buffer[j] = q_0;
+                        q_0 = _mm256_sub_pd(s_0, q_0);
+                        X_0 = _mm256_add_pd(X_0, q_0);
+                      }
+                      s_buffer[j] = _mm256_add_pd(s_buffer[j], _mm256_or_pd(X_0, blp_mask_tmp));
+                    }
+                  }
+                  if(i < N_block){
+                    X_0 = _mm256_set_pd(0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]);
+
+                    s_0 = s_buffer[0];
+                    q_0 = _mm256_add_pd(s_0, _mm256_or_pd(_mm256_mul_pd(X_0, compression_0), blp_mask_tmp));
+                    s_buffer[0] = q_0;
+                    if(fold > 1){
+                      q_0 = _mm256_sub_pd(s_0, q_0);
+                      X_0 = _mm256_add_pd(X_0, _mm256_mul_pd(q_0, expansion_0));
+                      for(j = 1; j < fold - 1; j++){
+                        s_0 = s_buffer[j];
+                        q_0 = _mm256_add_pd(s_0, _mm256_or_pd(X_0, blp_mask_tmp));
+                        s_buffer[j] = q_0;
+                        q_0 = _mm256_sub_pd(s_0, q_0);
+                        X_0 = _mm256_add_pd(X_0, q_0);
+                      }
+                      s_buffer[j] = _mm256_add_pd(s_buffer[j], _mm256_or_pd(X_0, blp_mask_tmp));
+                    }
+                    X += (N_block - i);
+                  }
+                }else{
+                  for(i = 0; i + 4 <= N_block; i += 4, X += 4){
+                    X_0 = _mm256_loadu_pd(X);
+
+                    for(j = 0; j < fold - 1; j++){
+                      s_0 = s_buffer[j];
+                      q_0 = _mm256_add_pd(s_0, _mm256_or_pd(X_0, blp_mask_tmp));
+                      s_buffer[j] = q_0;
+                      q_0 = _mm256_sub_pd(s_0, q_0);
+                      X_0 = _mm256_add_pd(X_0, q_0);
+                    }
+                    s_buffer[j] = _mm256_add_pd(s_buffer[j], _mm256_or_pd(X_0, blp_mask_tmp));
+                  }
+                  if(i < N_block){
+                    X_0 = _mm256_set_pd(0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]);
+
+                    for(j = 0; j < fold - 1; j++){
+                      s_0 = s_buffer[j];
+                      q_0 = _mm256_add_pd(s_0, _mm256_or_pd(X_0, blp_mask_tmp));
+                      s_buffer[j] = q_0;
+                      q_0 = _mm256_sub_pd(s_0, q_0);
+                      X_0 = _mm256_add_pd(X_0, q_0);
+                    }
+                    s_buffer[j] = _mm256_add_pd(s_buffer[j], _mm256_or_pd(X_0, blp_mask_tmp));
+                    X += (N_block - i);
+                  }
+                }
+              }else{
+                if(dmindex0(manY)){
+                  compression_0 = _mm256_set1_pd(DMCOMPRESSION);
+                  expansion_0 = _mm256_set1_pd(DMEXPANSION);
+                  for(i = 0; i + 4 <= N_block; i += 4, X += (incX * 4)){
+                    X_0 = _mm256_set_pd(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]);
+
+                    s_0 = s_buffer[0];
+                    q_0 = _mm256_add_pd(s_0, _mm256_or_pd(_mm256_mul_pd(X_0, compression_0), blp_mask_tmp));
+                    s_buffer[0] = q_0;
+                    if(fold > 1){
+                      q_0 = _mm256_sub_pd(s_0, q_0);
+                      X_0 = _mm256_add_pd(X_0, _mm256_mul_pd(q_0, expansion_0));
+                      for(j = 1; j < fold - 1; j++){
+                        s_0 = s_buffer[j];
+                        q_0 = _mm256_add_pd(s_0, _mm256_or_pd(X_0, blp_mask_tmp));
+                        s_buffer[j] = q_0;
+                        q_0 = _mm256_sub_pd(s_0, q_0);
+                        X_0 = _mm256_add_pd(X_0, q_0);
+                      }
+                      s_buffer[j] = _mm256_add_pd(s_buffer[j], _mm256_or_pd(X_0, blp_mask_tmp));
+                    }
+                  }
+                  if(i < N_block){
+                    X_0 = _mm256_set_pd(0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]);
+
+                    s_0 = s_buffer[0];
+                    q_0 = _mm256_add_pd(s_0, _mm256_or_pd(_mm256_mul_pd(X_0, compression_0), blp_mask_tmp));
+                    s_buffer[0] = q_0;
+                    if(fold > 1){
+                      q_0 = _mm256_sub_pd(s_0, q_0);
+                      X_0 = _mm256_add_pd(X_0, _mm256_mul_pd(q_0, expansion_0));
+                      for(j = 1; j < fold - 1; j++){
+                        s_0 = s_buffer[j];
+                        q_0 = _mm256_add_pd(s_0, _mm256_or_pd(X_0, blp_mask_tmp));
+                        s_buffer[j] = q_0;
+                        q_0 = _mm256_sub_pd(s_0, q_0);
+                        X_0 = _mm256_add_pd(X_0, q_0);
+                      }
+                      s_buffer[j] = _mm256_add_pd(s_buffer[j], _mm256_or_pd(X_0, blp_mask_tmp));
+                    }
+                    X += (incX * (N_block - i));
+                  }
+                }else{
+                  for(i = 0; i + 4 <= N_block; i += 4, X += (incX * 4)){
+                    X_0 = _mm256_set_pd(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]);
+
+                    for(j = 0; j < fold - 1; j++){
+                      s_0 = s_buffer[j];
+                      q_0 = _mm256_add_pd(s_0, _mm256_or_pd(X_0, blp_mask_tmp));
+                      s_buffer[j] = q_0;
+                      q_0 = _mm256_sub_pd(s_0, q_0);
+                      X_0 = _mm256_add_pd(X_0, q_0);
+                    }
+                    s_buffer[j] = _mm256_add_pd(s_buffer[j], _mm256_or_pd(X_0, blp_mask_tmp));
+                  }
+                  if(i < N_block){
+                    X_0 = _mm256_set_pd(0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]);
+
+                    for(j = 0; j < fold - 1; j++){
+                      s_0 = s_buffer[j];
+                      q_0 = _mm256_add_pd(s_0, _mm256_or_pd(X_0, blp_mask_tmp));
+                      s_buffer[j] = q_0;
+                      q_0 = _mm256_sub_pd(s_0, q_0);
+                      X_0 = _mm256_add_pd(X_0, q_0);
+                    }
+                    s_buffer[j] = _mm256_add_pd(s_buffer[j], _mm256_or_pd(X_0, blp_mask_tmp));
+                    X += (incX * (N_block - i));
+                  }
+                }
+              }
+
+              for(j = 0; j < fold; j += 1){
+                s_buffer[j] = _mm256_sub_pd(s_buffer[j], _mm256_set_pd(manY[(incmanY * j)], manY[(incmanY * j)], manY[(incmanY * j)], 0));
+                _mm256_store_pd(cons_buffer_tmp, s_buffer[j]);
+                manY[(incmanY * j)] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3];
+              }
+
+              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
+                _mm_setcsr(SIMD_daz_ftz_old_tmp);
+              }
+            }
+            break;
+        }
+
+      #elif defined(__SSE2__)
+        unsigned int SIMD_daz_ftz_old_tmp;
+        unsigned int SIMD_daz_ftz_new_tmp;
+        __m128d blp_mask_tmp;
+        {
+          __m128d tmp;
+          blp_mask_tmp = _mm_set1_pd(1.0);
+          tmp = _mm_set1_pd(1.0 + (DBL_EPSILON * 1.0001));
+          blp_mask_tmp = _mm_xor_pd(blp_mask_tmp, tmp);
+        }
+        __m128d cons_tmp; (void)cons_tmp;
+        double cons_buffer_tmp[2] __attribute__((aligned(16))); (void)cons_buffer_tmp;
+
+        SIMD_daz_ftz_old_tmp = _mm_getcsr();
+        SIMD_daz_ftz_new_tmp = SIMD_daz_ftz_old_tmp | 0x8040;
+        if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
+          _mm_setcsr(SIMD_daz_ftz_new_tmp);
+        }
+
+        switch(fold){
+          case 3:
+            {
+              int i;
+              __m128d X_0;
+              __m128d compression_0;
+              __m128d expansion_0;
+              __m128d q_0;
+              __m128d s_0_0;
+              __m128d s_1_0;
+              __m128d s_2_0;
+
+              s_0_0 = _mm_load1_pd(manY);
+              s_1_0 = _mm_load1_pd(manY + incmanY);
+              s_2_0 = _mm_load1_pd(manY + (incmanY * 2));
+
+              if(incX == 1){
+                if(dmindex0(manY)){
+                  compression_0 = _mm_set1_pd(DMCOMPRESSION);
+                  expansion_0 = _mm_set1_pd(DMEXPANSION);
+                  for(i = 0; i + 2 <= N_block; i += 2, X += 2){
+                    X_0 = _mm_loadu_pd(X);
+
+                    q_0 = s_0_0;
+                    s_0_0 = _mm_add_pd(s_0_0, _mm_or_pd(_mm_mul_pd(X_0, compression_0), blp_mask_tmp));
+                    q_0 = _mm_sub_pd(q_0, s_0_0);
+                    X_0 = _mm_add_pd(X_0, _mm_mul_pd(q_0, expansion_0));
+                    q_0 = s_1_0;
+                    s_1_0 = _mm_add_pd(s_1_0, _mm_or_pd(X_0, blp_mask_tmp));
+                    q_0 = _mm_sub_pd(q_0, s_1_0);
+                    X_0 = _mm_add_pd(X_0, q_0);
+                    s_2_0 = _mm_add_pd(s_2_0, _mm_or_pd(X_0, blp_mask_tmp));
+                  }
+                  if(i < N_block){
+                    X_0 = _mm_set_pd(0, X[0]);
+
+                    q_0 = s_0_0;
+                    s_0_0 = _mm_add_pd(s_0_0, _mm_or_pd(_mm_mul_pd(X_0, compression_0), blp_mask_tmp));
+                    q_0 = _mm_sub_pd(q_0, s_0_0);
+                    X_0 = _mm_add_pd(X_0, _mm_mul_pd(q_0, expansion_0));
+                    q_0 = s_1_0;
+                    s_1_0 = _mm_add_pd(s_1_0, _mm_or_pd(X_0, blp_mask_tmp));
+                    q_0 = _mm_sub_pd(q_0, s_1_0);
+                    X_0 = _mm_add_pd(X_0, q_0);
+                    s_2_0 = _mm_add_pd(s_2_0, _mm_or_pd(X_0, blp_mask_tmp));
+                    X += (N_block - i);
+                  }
+                }else{
+                  for(i = 0; i + 2 <= N_block; i += 2, X += 2){
+                    X_0 = _mm_loadu_pd(X);
+
+                    q_0 = s_0_0;
+                    s_0_0 = _mm_add_pd(s_0_0, _mm_or_pd(X_0, blp_mask_tmp));
+                    q_0 = _mm_sub_pd(q_0, s_0_0);
+                    X_0 = _mm_add_pd(X_0, q_0);
+                    q_0 = s_1_0;
+                    s_1_0 = _mm_add_pd(s_1_0, _mm_or_pd(X_0, blp_mask_tmp));
+                    q_0 = _mm_sub_pd(q_0, s_1_0);
+                    X_0 = _mm_add_pd(X_0, q_0);
+                    s_2_0 = _mm_add_pd(s_2_0, _mm_or_pd(X_0, blp_mask_tmp));
+                  }
+                  if(i < N_block){
+                    X_0 = _mm_set_pd(0, X[0]);
+
+                    q_0 = s_0_0;
+                    s_0_0 = _mm_add_pd(s_0_0, _mm_or_pd(X_0, blp_mask_tmp));
+                    q_0 = _mm_sub_pd(q_0, s_0_0);
+                    X_0 = _mm_add_pd(X_0, q_0);
+                    q_0 = s_1_0;
+                    s_1_0 = _mm_add_pd(s_1_0, _mm_or_pd(X_0, blp_mask_tmp));
+                    q_0 = _mm_sub_pd(q_0, s_1_0);
+                    X_0 = _mm_add_pd(X_0, q_0);
+                    s_2_0 = _mm_add_pd(s_2_0, _mm_or_pd(X_0, blp_mask_tmp));
+                    X += (N_block - i);
+                  }
+                }
+              }else{
+                if(dmindex0(manY)){
+                  compression_0 = _mm_set1_pd(DMCOMPRESSION);
+                  expansion_0 = _mm_set1_pd(DMEXPANSION);
+                  for(i = 0; i + 2 <= N_block; i += 2, X += (incX * 2)){
+                    X_0 = _mm_set_pd(X[incX], X[0]);
+
+                    q_0 = s_0_0;
+                    s_0_0 = _mm_add_pd(s_0_0, _mm_or_pd(_mm_mul_pd(X_0, compression_0), blp_mask_tmp));
+                    q_0 = _mm_sub_pd(q_0, s_0_0);
+                    X_0 = _mm_add_pd(X_0, _mm_mul_pd(q_0, expansion_0));
+                    q_0 = s_1_0;
+                    s_1_0 = _mm_add_pd(s_1_0, _mm_or_pd(X_0, blp_mask_tmp));
+                    q_0 = _mm_sub_pd(q_0, s_1_0);
+                    X_0 = _mm_add_pd(X_0, q_0);
+                    s_2_0 = _mm_add_pd(s_2_0, _mm_or_pd(X_0, blp_mask_tmp));
+                  }
+                  if(i < N_block){
+                    X_0 = _mm_set_pd(0, X[0]);
+
+                    q_0 = s_0_0;
+                    s_0_0 = _mm_add_pd(s_0_0, _mm_or_pd(_mm_mul_pd(X_0, compression_0), blp_mask_tmp));
+                    q_0 = _mm_sub_pd(q_0, s_0_0);
+                    X_0 = _mm_add_pd(X_0, _mm_mul_pd(q_0, expansion_0));
+                    q_0 = s_1_0;
+                    s_1_0 = _mm_add_pd(s_1_0, _mm_or_pd(X_0, blp_mask_tmp));
+                    q_0 = _mm_sub_pd(q_0, s_1_0);
+                    X_0 = _mm_add_pd(X_0, q_0);
+                    s_2_0 = _mm_add_pd(s_2_0, _mm_or_pd(X_0, blp_mask_tmp));
+                    X += (incX * (N_block - i));
+                  }
+                }else{
+                  for(i = 0; i + 2 <= N_block; i += 2, X += (incX * 2)){
+                    X_0 = _mm_set_pd(X[incX], X[0]);
+
+                    q_0 = s_0_0;
+                    s_0_0 = _mm_add_pd(s_0_0, _mm_or_pd(X_0, blp_mask_tmp));
+                    q_0 = _mm_sub_pd(q_0, s_0_0);
+                    X_0 = _mm_add_pd(X_0, q_0);
+                    q_0 = s_1_0;
+                    s_1_0 = _mm_add_pd(s_1_0, _mm_or_pd(X_0, blp_mask_tmp));
+                    q_0 = _mm_sub_pd(q_0, s_1_0);
+                    X_0 = _mm_add_pd(X_0, q_0);
+                    s_2_0 = _mm_add_pd(s_2_0, _mm_or_pd(X_0, blp_mask_tmp));
+                  }
+                  if(i < N_block){
+                    X_0 = _mm_set_pd(0, X[0]);
+
+                    q_0 = s_0_0;
+                    s_0_0 = _mm_add_pd(s_0_0, _mm_or_pd(X_0, blp_mask_tmp));
+                    q_0 = _mm_sub_pd(q_0, s_0_0);
+                    X_0 = _mm_add_pd(X_0, q_0);
+                    q_0 = s_1_0;
+                    s_1_0 = _mm_add_pd(s_1_0, _mm_or_pd(X_0, blp_mask_tmp));
+                    q_0 = _mm_sub_pd(q_0, s_1_0);
+                    X_0 = _mm_add_pd(X_0, q_0);
+                    s_2_0 = _mm_add_pd(s_2_0, _mm_or_pd(X_0, blp_mask_tmp));
+                    X += (incX * (N_block - i));
+                  }
+                }
+              }
+
+              s_0_0 = _mm_sub_pd(s_0_0, _mm_set_pd(manY[0], 0));
+              _mm_store_pd(cons_buffer_tmp, s_0_0);
+              manY[0] = cons_buffer_tmp[0] + cons_buffer_tmp[1];
+              s_1_0 = _mm_sub_pd(s_1_0, _mm_set_pd(manY[incmanY], 0));
+              _mm_store_pd(cons_buffer_tmp, s_1_0);
+              manY[incmanY] = cons_buffer_tmp[0] + cons_buffer_tmp[1];
+              s_2_0 = _mm_sub_pd(s_2_0, _mm_set_pd(manY[(incmanY * 2)], 0));
+              _mm_store_pd(cons_buffer_tmp, s_2_0);
+              manY[(incmanY * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[1];
+
+              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
+                _mm_setcsr(SIMD_daz_ftz_old_tmp);
+              }
+            }
+            break;
+          default:
+            {
+              int i, j;
+              __m128d X_0;
+              __m128d compression_0;
+              __m128d expansion_0;
+              __m128d q_0;
+              __m128d s_0;
+              __m128d s_buffer[MAX_FOLD];
+
+              for(j = 0; j < fold; j += 1){
+                s_buffer[j] = _mm_load1_pd(manY + (incmanY * j));
+              }
+
+              if(incX == 1){
+                if(dmindex0(manY)){
+                  compression_0 = _mm_set1_pd(DMCOMPRESSION);
+                  expansion_0 = _mm_set1_pd(DMEXPANSION);
+                  for(i = 0; i + 2 <= N_block; i += 2, X += 2){
+                    X_0 = _mm_loadu_pd(X);
+
+                    s_0 = s_buffer[0];
+                    q_0 = _mm_add_pd(s_0, _mm_or_pd(_mm_mul_pd(X_0, compression_0), blp_mask_tmp));
+                    s_buffer[0] = q_0;
+                    if(fold > 1){
+                      q_0 = _mm_sub_pd(s_0, q_0);
+                      X_0 = _mm_add_pd(X_0, _mm_mul_pd(q_0, expansion_0));
+                      for(j = 1; j < fold - 1; j++){
+                        s_0 = s_buffer[j];
+                        q_0 = _mm_add_pd(s_0, _mm_or_pd(X_0, blp_mask_tmp));
+                        s_buffer[j] = q_0;
+                        q_0 = _mm_sub_pd(s_0, q_0);
+                        X_0 = _mm_add_pd(X_0, q_0);
+                      }
+                      s_buffer[j] = _mm_add_pd(s_buffer[j], _mm_or_pd(X_0, blp_mask_tmp));
+                    }
+                  }
+                  if(i < N_block){
+                    X_0 = _mm_set_pd(0, X[0]);
+
+                    s_0 = s_buffer[0];
+                    q_0 = _mm_add_pd(s_0, _mm_or_pd(_mm_mul_pd(X_0, compression_0), blp_mask_tmp));
+                    s_buffer[0] = q_0;
+                    if(fold > 1){
+                      q_0 = _mm_sub_pd(s_0, q_0);
+                      X_0 = _mm_add_pd(X_0, _mm_mul_pd(q_0, expansion_0));
+                      for(j = 1; j < fold - 1; j++){
+                        s_0 = s_buffer[j];
+                        q_0 = _mm_add_pd(s_0, _mm_or_pd(X_0, blp_mask_tmp));
+                        s_buffer[j] = q_0;
+                        q_0 = _mm_sub_pd(s_0, q_0);
+                        X_0 = _mm_add_pd(X_0, q_0);
+                      }
+                      s_buffer[j] = _mm_add_pd(s_buffer[j], _mm_or_pd(X_0, blp_mask_tmp));
+                    }
+                    X += (N_block - i);
+                  }
+                }else{
+                  for(i = 0; i + 2 <= N_block; i += 2, X += 2){
+                    X_0 = _mm_loadu_pd(X);
+
+                    for(j = 0; j < fold - 1; j++){
+                      s_0 = s_buffer[j];
+                      q_0 = _mm_add_pd(s_0, _mm_or_pd(X_0, blp_mask_tmp));
+                      s_buffer[j] = q_0;
+                      q_0 = _mm_sub_pd(s_0, q_0);
+                      X_0 = _mm_add_pd(X_0, q_0);
+                    }
+                    s_buffer[j] = _mm_add_pd(s_buffer[j], _mm_or_pd(X_0, blp_mask_tmp));
+                  }
+                  if(i < N_block){
+                    X_0 = _mm_set_pd(0, X[0]);
+
+                    for(j = 0; j < fold - 1; j++){
+                      s_0 = s_buffer[j];
+                      q_0 = _mm_add_pd(s_0, _mm_or_pd(X_0, blp_mask_tmp));
+                      s_buffer[j] = q_0;
+                      q_0 = _mm_sub_pd(s_0, q_0);
+                      X_0 = _mm_add_pd(X_0, q_0);
+                    }
+                    s_buffer[j] = _mm_add_pd(s_buffer[j], _mm_or_pd(X_0, blp_mask_tmp));
+                    X += (N_block - i);
+                  }
+                }
+              }else{
+                if(dmindex0(manY)){
+                  compression_0 = _mm_set1_pd(DMCOMPRESSION);
+                  expansion_0 = _mm_set1_pd(DMEXPANSION);
+                  for(i = 0; i + 2 <= N_block; i += 2, X += (incX * 2)){
+                    X_0 = _mm_set_pd(X[incX], X[0]);
+
+                    s_0 = s_buffer[0];
+                    q_0 = _mm_add_pd(s_0, _mm_or_pd(_mm_mul_pd(X_0, compression_0), blp_mask_tmp));
+                    s_buffer[0] = q_0;
+                    if(fold > 1){
+                      q_0 = _mm_sub_pd(s_0, q_0);
+                      X_0 = _mm_add_pd(X_0, _mm_mul_pd(q_0, expansion_0));
+                      for(j = 1; j < fold - 1; j++){
+                        s_0 = s_buffer[j];
+                        q_0 = _mm_add_pd(s_0, _mm_or_pd(X_0, blp_mask_tmp));
+                        s_buffer[j] = q_0;
+                        q_0 = _mm_sub_pd(s_0, q_0);
+                        X_0 = _mm_add_pd(X_0, q_0);
+                      }
+                      s_buffer[j] = _mm_add_pd(s_buffer[j], _mm_or_pd(X_0, blp_mask_tmp));
+                    }
+                  }
+                  if(i < N_block){
+                    X_0 = _mm_set_pd(0, X[0]);
+
+                    s_0 = s_buffer[0];
+                    q_0 = _mm_add_pd(s_0, _mm_or_pd(_mm_mul_pd(X_0, compression_0), blp_mask_tmp));
+                    s_buffer[0] = q_0;
+                    if(fold > 1){
+                      q_0 = _mm_sub_pd(s_0, q_0);
+                      X_0 = _mm_add_pd(X_0, _mm_mul_pd(q_0, expansion_0));
+                      for(j = 1; j < fold - 1; j++){
+                        s_0 = s_buffer[j];
+                        q_0 = _mm_add_pd(s_0, _mm_or_pd(X_0, blp_mask_tmp));
+                        s_buffer[j] = q_0;
+                        q_0 = _mm_sub_pd(s_0, q_0);
+                        X_0 = _mm_add_pd(X_0, q_0);
+                      }
+                      s_buffer[j] = _mm_add_pd(s_buffer[j], _mm_or_pd(X_0, blp_mask_tmp));
+                    }
+                    X += (incX * (N_block - i));
+                  }
+                }else{
+                  for(i = 0; i + 2 <= N_block; i += 2, X += (incX * 2)){
+                    X_0 = _mm_set_pd(X[incX], X[0]);
+
+                    for(j = 0; j < fold - 1; j++){
+                      s_0 = s_buffer[j];
+                      q_0 = _mm_add_pd(s_0, _mm_or_pd(X_0, blp_mask_tmp));
+                      s_buffer[j] = q_0;
+                      q_0 = _mm_sub_pd(s_0, q_0);
+                      X_0 = _mm_add_pd(X_0, q_0);
+                    }
+                    s_buffer[j] = _mm_add_pd(s_buffer[j], _mm_or_pd(X_0, blp_mask_tmp));
+                  }
+                  if(i < N_block){
+                    X_0 = _mm_set_pd(0, X[0]);
+
+                    for(j = 0; j < fold - 1; j++){
+                      s_0 = s_buffer[j];
+                      q_0 = _mm_add_pd(s_0, _mm_or_pd(X_0, blp_mask_tmp));
+                      s_buffer[j] = q_0;
+                      q_0 = _mm_sub_pd(s_0, q_0);
+                      X_0 = _mm_add_pd(X_0, q_0);
+                    }
+                    s_buffer[j] = _mm_add_pd(s_buffer[j], _mm_or_pd(X_0, blp_mask_tmp));
+                    X += (incX * (N_block - i));
+                  }
+                }
+              }
+
+              for(j = 0; j < fold; j += 1){
+                s_buffer[j] = _mm_sub_pd(s_buffer[j], _mm_set_pd(manY[(incmanY * j)], 0));
+                _mm_store_pd(cons_buffer_tmp, s_buffer[j]);
+                manY[(incmanY * j)] = cons_buffer_tmp[0] + cons_buffer_tmp[1];
+              }
+
+              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
+                _mm_setcsr(SIMD_daz_ftz_old_tmp);
+              }
+            }
+            break;
+        }
+
+      #else
+        long_double blp_tmp; (void)blp_tmp;
+        double cons_tmp; (void)cons_tmp;
+
+
+        switch(fold){
+          case 3:
+            {
+              int i;
+              double X_0;
+              double compression_0;
+              double expansion_0;
+              double q_0;
+              double s_0_0;
+              double s_1_0;
+              double s_2_0;
+
+              s_0_0 = manY[0];
+              s_1_0 = manY[incmanY];
+              s_2_0 = manY[(incmanY * 2)];
+
+              if(incX == 1){
+                if(dmindex0(manY)){
+                  compression_0 = DMCOMPRESSION;
+                  expansion_0 = DMEXPANSION;
+                  for(i = 0; i + 1 <= N_block; i += 1, X += 1){
+                    X_0 = X[0];
+
+                    q_0 = s_0_0;
+                    blp_tmp.d = X_0 * compression_0;
+                    blp_tmp.l |= 1;
+                    s_0_0 = s_0_0 + blp_tmp.d;
+                    q_0 = q_0 - s_0_0;
+                    X_0 = X_0 + q_0 * expansion_0;
+                    q_0 = s_1_0;
+                    blp_tmp.d = X_0;
+                    blp_tmp.l |= 1;
+                    s_1_0 = s_1_0 + blp_tmp.d;
+                    q_0 = q_0 - s_1_0;
+                    X_0 = X_0 + q_0;
+                    blp_tmp.d = X_0;
+                    blp_tmp.l |= 1;
+                    s_2_0 = s_2_0 + blp_tmp.d;
+                  }
+                }else{
+                  for(i = 0; i + 1 <= N_block; i += 1, X += 1){
+                    X_0 = X[0];
+
+                    q_0 = s_0_0;
+                    blp_tmp.d = X_0;
+                    blp_tmp.l |= 1;
+                    s_0_0 = s_0_0 + blp_tmp.d;
+                    q_0 = q_0 - s_0_0;
+                    X_0 = X_0 + q_0;
+                    q_0 = s_1_0;
+                    blp_tmp.d = X_0;
+                    blp_tmp.l |= 1;
+                    s_1_0 = s_1_0 + blp_tmp.d;
+                    q_0 = q_0 - s_1_0;
+                    X_0 = X_0 + q_0;
+                    blp_tmp.d = X_0;
+                    blp_tmp.l |= 1;
+                    s_2_0 = s_2_0 + blp_tmp.d;
+                  }
+                }
+              }else{
+                if(dmindex0(manY)){
+                  compression_0 = DMCOMPRESSION;
+                  expansion_0 = DMEXPANSION;
+                  for(i = 0; i + 1 <= N_block; i += 1, X += incX){
+                    X_0 = X[0];
+
+                    q_0 = s_0_0;
+                    blp_tmp.d = X_0 * compression_0;
+                    blp_tmp.l |= 1;
+                    s_0_0 = s_0_0 + blp_tmp.d;
+                    q_0 = q_0 - s_0_0;
+                    X_0 = X_0 + q_0 * expansion_0;
+                    q_0 = s_1_0;
+                    blp_tmp.d = X_0;
+                    blp_tmp.l |= 1;
+                    s_1_0 = s_1_0 + blp_tmp.d;
+                    q_0 = q_0 - s_1_0;
+                    X_0 = X_0 + q_0;
+                    blp_tmp.d = X_0;
+                    blp_tmp.l |= 1;
+                    s_2_0 = s_2_0 + blp_tmp.d;
+                  }
+                }else{
+                  for(i = 0; i + 1 <= N_block; i += 1, X += incX){
+                    X_0 = X[0];
+
+                    q_0 = s_0_0;
+                    blp_tmp.d = X_0;
+                    blp_tmp.l |= 1;
+                    s_0_0 = s_0_0 + blp_tmp.d;
+                    q_0 = q_0 - s_0_0;
+                    X_0 = X_0 + q_0;
+                    q_0 = s_1_0;
+                    blp_tmp.d = X_0;
+                    blp_tmp.l |= 1;
+                    s_1_0 = s_1_0 + blp_tmp.d;
+                    q_0 = q_0 - s_1_0;
+                    X_0 = X_0 + q_0;
+                    blp_tmp.d = X_0;
+                    blp_tmp.l |= 1;
+                    s_2_0 = s_2_0 + blp_tmp.d;
+                  }
+                }
+              }
+
+              manY[0] = s_0_0;
+              manY[incmanY] = s_1_0;
+              manY[(incmanY * 2)] = s_2_0;
+
+            }
+            break;
+          default:
+            {
+              int i, j;
+              double X_0;
+              double compression_0;
+              double expansion_0;
+              double q_0;
+              double s_0;
+              double s_buffer[MAX_FOLD];
+
+              for(j = 0; j < fold; j += 1){
+                s_buffer[j] = manY[(incmanY * j)];
+              }
+
+              if(incX == 1){
+                if(dmindex0(manY)){
+                  compression_0 = DMCOMPRESSION;
+                  expansion_0 = DMEXPANSION;
+                  for(i = 0; i + 1 <= N_block; i += 1, X += 1){
+                    X_0 = X[0];
+
+                    s_0 = s_buffer[0];
+                    blp_tmp.d = X_0 * compression_0;
+                    blp_tmp.l |= 1;
+                    q_0 = s_0 + blp_tmp.d;
+                    s_buffer[0] = q_0;
+                    if(fold > 1){
+                      q_0 = s_0 - q_0;
+                      X_0 = X_0 + q_0 * expansion_0;
+                      for(j = 1; j < fold - 1; j++){
+                        s_0 = s_buffer[j];
+                        blp_tmp.d = X_0;
+                        blp_tmp.l |= 1;
+                        q_0 = s_0 + blp_tmp.d;
+                        s_buffer[j] = q_0;
+                        q_0 = s_0 - q_0;
+                        X_0 = X_0 + q_0;
+                      }
+                      blp_tmp.d = X_0;
+                      blp_tmp.l |= 1;
+                      s_buffer[j] = s_buffer[j] + blp_tmp.d;
+                    }
+                  }
+                }else{
+                  for(i = 0; i + 1 <= N_block; i += 1, X += 1){
+                    X_0 = X[0];
+
+                    for(j = 0; j < fold - 1; j++){
+                      s_0 = s_buffer[j];
+                      blp_tmp.d = X_0;
+                      blp_tmp.l |= 1;
+                      q_0 = s_0 + blp_tmp.d;
+                      s_buffer[j] = q_0;
+                      q_0 = s_0 - q_0;
+                      X_0 = X_0 + q_0;
+                    }
+                    blp_tmp.d = X_0;
+                    blp_tmp.l |= 1;
+                    s_buffer[j] = s_buffer[j] + blp_tmp.d;
+                  }
+                }
+              }else{
+                if(dmindex0(manY)){
+                  compression_0 = DMCOMPRESSION;
+                  expansion_0 = DMEXPANSION;
+                  for(i = 0; i + 1 <= N_block; i += 1, X += incX){
+                    X_0 = X[0];
+
+                    s_0 = s_buffer[0];
+                    blp_tmp.d = X_0 * compression_0;
+                    blp_tmp.l |= 1;
+                    q_0 = s_0 + blp_tmp.d;
+                    s_buffer[0] = q_0;
+                    if(fold > 1){
+                      q_0 = s_0 - q_0;
+                      X_0 = X_0 + q_0 * expansion_0;
+                      for(j = 1; j < fold - 1; j++){
+                        s_0 = s_buffer[j];
+                        blp_tmp.d = X_0;
+                        blp_tmp.l |= 1;
+                        q_0 = s_0 + blp_tmp.d;
+                        s_buffer[j] = q_0;
+                        q_0 = s_0 - q_0;
+                        X_0 = X_0 + q_0;
+                      }
+                      blp_tmp.d = X_0;
+                      blp_tmp.l |= 1;
+                      s_buffer[j] = s_buffer[j] + blp_tmp.d;
+                    }
+                  }
+                }else{
+                  for(i = 0; i + 1 <= N_block; i += 1, X += incX){
+                    X_0 = X[0];
+
+                    for(j = 0; j < fold - 1; j++){
+                      s_0 = s_buffer[j];
+                      blp_tmp.d = X_0;
+                      blp_tmp.l |= 1;
+                      q_0 = s_0 + blp_tmp.d;
+                      s_buffer[j] = q_0;
+                      q_0 = s_0 - q_0;
+                      X_0 = X_0 + q_0;
+                    }
+                    blp_tmp.d = X_0;
+                    blp_tmp.l |= 1;
+                    s_buffer[j] = s_buffer[j] + blp_tmp.d;
+                  }
+                }
+              }
+
+              for(j = 0; j < fold; j += 1){
+                manY[(incmanY * j)] = s_buffer[j];
+              }
+
+            }
+            break;
+        }
+
+      #endif
+
+        }
     //[[[end]]]
 
     deposits += N_block;

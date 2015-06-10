@@ -7,6 +7,7 @@
 
 import itertools
 import multiprocessing
+import os
 import subprocess
 import sys
 import time
@@ -26,7 +27,12 @@ def execute(command_verbose):
     print(command)
   rc = 0
   try:
-    out = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True).decode(sys.stdout.encoding)
+    if(sys.stdout.encoding):
+      env = os.environ.copy()
+      env["PYTHONIOENCODING"] = sys.stdout.encoding
+      out = subprocess.check_output(command, env=env, stderr=subprocess.STDOUT, shell=True).decode(sys.stdout.encoding)
+    else:
+      out = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
   except subprocess.CalledProcessError as e:
     rc = e.returncode
     out = e.output.decode(sys.stdout.encoding)
