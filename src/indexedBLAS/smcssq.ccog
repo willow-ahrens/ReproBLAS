@@ -26,7 +26,7 @@ cog.out(str(code_block))
 
 cog.outl()
 
-cog.out(generate.generate(blockSize.BlockSize("smcssq", "N_block_MAX", 32, terminal.get_siendurance()/2, terminal.get_siendurance()/2, ["bench_rscnrm2_fold_{}".format(terminal.get_default_fold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("smcssq", "N_block_MAX", 32, terminal.get_siendurance()//2, terminal.get_siendurance()//2, ["bench_rscnrm2_fold_{}".format(terminal.get_default_fold())]), cog.inFile, args, params, mode))
 ]]]*/
 //[[[end]]]
 

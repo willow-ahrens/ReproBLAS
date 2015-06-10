@@ -21,6 +21,13 @@ endif
 # in some directory (just set INHERIT_DIR_VARS_$(d) there).
 INHERIT_DIR_VARS := INCLUDES CPPFLAGS CFLAGS LDFLAGS MPICFLAGS MPILDFLAGS
 
+# Detect /dev/null
+ifeq ($(shell if test -w /dev/null; then echo "1"; else echo "0"; fi), 1)
+  DEVNULL := /dev/null
+else ifeq ($(shell if test -w nul; then echo "1"; else echo "0"; fi), 1)
+  DEVNULL := nul
+endif
+
 # Here's a good place to translate some of these settings into
 # compilation flags/variables.  As an example a preprocessor macro for
 # target endianess
@@ -32,15 +39,15 @@ endif
 
 # Detect C compiler in the following order if CC hasn't been set
 ifeq ($(CC),)
-  ifeq ("$(shell which gcc >/dev/null; echo $$?)", "0")
+  ifeq ($(shell if test -x $(shell command -v gcc); then echo "1"; else echo "0"; fi), 1)
     CC := gcc
-  else ifeq ("$(shell which icc >/dev/null; echo $$?)", "0")
+  else ifeq ($(shell if test -x $(shell command -v icc); then echo "1"; else echo "0"; fi), 1)
     CC := icc
-  else ifeq ("$(shell which pgcc >/dev/null; echo $$?)", "0")
+  else ifeq ($(shell if test -x $(shell command -v pgcc); then echo "1"; else echo "0"; fi), 1)
     CC := pgcc
-  else ifeq ("$(shell which craycc >/dev/null; echo $$?)", "0")
+  else ifeq ($(shell if test -x $(shell command -v craycc); then echo "1"; else echo "0"; fi), 1)
     CC := craycc
-  else ifeq ("$(shell which clang >/dev/null; echo $$?)", "0")
+  else ifeq ($(shell if test -x $(shell command -v clang); then echo "1"; else echo "0"; fi), 1)
     CC := clang
   endif
 endif
@@ -52,7 +59,7 @@ endif
 
 # Detect MPI C compiler in the following order
 ifeq ($(MPICC),)
-  ifeq ("$(shell which mpicc >/dev/null; echo $$?)", "0")
+  ifeq ($(shell if test -x $(shell command -v mpicc); then echo "1"; else echo "0"; fi), 1)
     MPICC := mpicc
   else
     MPICC :=
@@ -62,9 +69,9 @@ endif
 # Detect MPI C compiler flags in the following order if MPICFLAGS hasn't been set
 ifeq ($(MPICFLAGS),)
   ifeq ($(MPICC), mpicc)
-    ifeq ("$(shell mpicc --showme:compile >/dev/null; echo $$?)", "0")
+    ifeq ("$(shell mpicc --showme:compile &>$(DEVNULL); echo $$?)", 0)
       MPICFLAGS := $(shell $(MPICC) --showme:compile)
-    else ifeq ("$(shell mpicc -compile_info >/dev/null; echo $$?)", "0")
+    else ifeq ("$(shell mpicc -compile_info &>$(DEVNULL); echo $$?)", 0)
       MPICFLAGS := $(shell $(MPICC) -compile_info)
     endif
   endif
@@ -73,21 +80,22 @@ endif
 # Detect MPI C linker flags in the following order if MPILDFLAGS hasn't been set
 ifeq ($(MPILDFLAGS),)
   ifeq ($(MPICC), mpicc)
-    ifeq ("$(shell mpicc --showme:link >/dev/null; echo $$?)", "0")
+    ifeq ("$(shell mpicc --showme:link &>$(DEVNULL); echo $$?)", "0")
       MPILDFLAGS := $(shell $(MPICC) --showme:link)
-    else ifeq ("$(shell mpicc -link_info >/dev/null; echo $$?)", "0")
+    else ifeq ("$(shell mpicc -link_info &>$(DEVNULL); echo $$?)", "0")
       MPILDFLAGS := $(shell $(MPICC) -link_info)
     endif
   endif
 endif
 
-# TODO check version > 2.7.3
 # Detect python in the following order if PYTHON hasn't been set
 ifeq ($(PYTHON),)
-  ifeq ("$(shell which python3 >/dev/null; echo $$?)", "0")
+  ifeq ($(shell if test -x $(shell command -v python3); then echo "1"; else echo "0"; fi), 1)
     PYTHON := python3
-  else ifeq ("$(shell which python >/dev/null; echo $$?)", "0")
-    PYTHON := python
+  else ifeq ($(shell if test -x $(shell command -v python); then echo "1"; else echo "0"; fi), 1)
+    ifeq ($(shell if test "$(shell python -V 2>&1)" \> "Python 2.7.0"; then echo "1"; else echo "0"; fi), 1)
+      PYTHON := python
+    endif
   endif
 endif
 

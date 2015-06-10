@@ -57,6 +57,7 @@ DIR_COGFLAGS = $(COGFLAGS_$(@RD))
 #                       Global flags/settings                          #
 ########################################################################
 
+CC =
 CFLAGS = $(DIR_CFLAGS)
 CXXFLAGS = $(DIR_CXXFLAGS)
 

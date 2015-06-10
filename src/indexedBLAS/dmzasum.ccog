@@ -26,7 +26,7 @@ cog.out(str(code_block))
 
 cog.outl()
 
-cog.out(generate.generate(blockSize.BlockSize("dmzasum", "N_block_MAX", 32, terminal.get_diendurance()/2, terminal.get_diendurance()/2, ["bench_rdzasum_fold_{}".format(terminal.get_default_fold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("dmzasum", "N_block_MAX", 32, terminal.get_diendurance()//2, terminal.get_diendurance()//2, ["bench_rdzasum_fold_{}".format(terminal.get_default_fold())]), cog.inFile, args, params, mode))
 ]]]*/
 //[[[end]]]
 
