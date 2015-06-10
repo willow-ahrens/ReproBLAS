@@ -37,3 +37,31 @@ libindexedblas.a_DEPS = $$(LIBINDEXED)                                 \
                         cicsum.o sicasum.o sicssq.o cicdotu.o cicdotc.o\
                         zizsum.o dizasum.o dizssq.o zizdotu.o zizdotc.o
                         #TODO dIAccum.o zIAccum.o sIAccum.o cIAccum.o        \
+
+
+damax.c_DEPS = damax.ccog
+damaxm.c_DEPS = damaxm.ccog
+zamax_sub.c_DEPS = zamax_sub.ccog
+zamaxm_sub.c_DEPS = zamaxm_sub.ccog
+samax.c_DEPS = samax.ccog
+samaxm.c_DEPS = samaxm.ccog
+camax_sub.c_DEPS = camax_sub.ccog
+camaxm_sub.c_DEPS = camaxm_sub.ccog
+smssum.c_DEPS = $$(GETTER) smssum.ccog
+smsasum.c_DEPS = $$(GETTER) smsasum.ccog
+smsssq.c_DEPS = $$(GETTER) smsssq.ccog
+smsdot.c_DEPS = $$(GETTER) smsdot.ccog
+dmdsum.c_DEPS = $$(GETTER) dmdsum.ccog
+dmdasum.c_DEPS = $$(GETTER) dmdasum.ccog
+dmdssq.c_DEPS = $$(GETTER) dmdssq.ccog
+dmddot.c_DEPS = $$(GETTER) dmddot.ccog
+cmcsum.c_DEPS = $$(GETTER) cmcsum.ccog
+smcasum.c_DEPS = $$(GETTER) smcasum.ccog
+smcssq.c_DEPS = $$(GETTER) smcssq.ccog
+cmcdotu.c_DEPS = $$(GETTER) cmcdotu.ccog
+cmcdotc.c_DEPS = $$(GETTER) cmcdotc.ccog
+zmzsum.c_DEPS = $$(GETTER) zmzsum.ccog
+dmzasum.c_DEPS = $$(GETTER) dmzasum.ccog
+dmzssq.c_DEPS = $$(GETTER) dmzssq.ccog
+zmzdotu.c_DEPS = $$(GETTER) zmzdotu.ccog
+zmzdotc.c_DEPS = $$(GETTER) zmzdotc.ccog

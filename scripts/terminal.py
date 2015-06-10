@@ -1,12 +1,14 @@
 import argparse
+import json
 import multiprocessing
 import os
+import re
 import subprocess
 import sys
-import config
-import re
 
 from scripts.cpuinfo import cpuinfo
+
+import config
 
 def callsafe(command, verbose="false"):
   if(verbose == "true"):
@@ -77,35 +79,49 @@ def flags(params, args):
   return " ".join(['-{0} "{1}"'.format(param, arg) if len(param) == 1 else '--{0} "{1}"'.format(param, arg) for (param, arg) in zip(params, args)])
 
 def get_vectorization(verbose="false"):
-  if get_vectorization.vectorization == "":
-    make("scripts/get_vectorization.c", remake = False, verbose=verbose)
-    get_vectorization.vectorization = call(make("scripts/get_vectorization", remake = False, verbose=verbose), verbose=verbose).split()[0]
+  if not get_vectorization.vectorization:
+    getter_file = open(os.path.join(top, "scripts/getter.json"), "r")
+    getter = json.load(getter_file)
+    getter_file.close()
+    get_vectorization.vectorization = getter["vectorization"]
   return get_vectorization.vectorization
-get_vectorization.vectorization = ""
+get_vectorization.vectorization = None
 
 def get_max_fold(verbose="false"):
-  if get_max_fold.max_fold == 0:
-    get_max_fold.max_fold = int(call(make("scripts/get_max_fold", remake = False, verbose=verbose), verbose=verbose).split()[0])
+  if not get_max_fold.max_fold:
+    getter_file = open(os.path.join(top, "scripts/getter.json"), "r")
+    getter = json.load(getter_file)
+    getter_file.close()
+    get_max_fold.max_fold = getter["max_fold"]
   return get_max_fold.max_fold
-get_max_fold.max_fold = 0
+get_max_fold.max_fold = None
 
 def get_default_fold(verbose="false"):
-  if get_default_fold.default_fold == 0:
-    get_default_fold.default_fold = int(call(make("scripts/get_default_fold", remake = False, verbose=verbose), verbose=verbose).split()[0])
+  if not get_default_fold.default_fold:
+    getter_file = open(os.path.join(top, "scripts/getter.json"), "r")
+    getter = json.load(getter_file)
+    getter_file.close()
+    get_default_fold.default_fold = getter["default_fold"]
   return get_default_fold.default_fold
-get_default_fold.default_fold = 0
+get_default_fold.default_fold = None
 
 def get_diendurance(verbose="false"):
-  if get_diendurance.diendurance == 0:
-    get_diendurance.diendurance = int(call(make("scripts/get_diendurance", remake = False, verbose=verbose), verbose=verbose).split()[0])
+  if not get_diendurance.diendurance:
+    getter_file = open(os.path.join(top, "scripts/getter.json"), "r")
+    getter = json.load(getter_file)
+    getter_file.close()
+    get_diendurance.diendurance = getter["diendurance"]
   return get_diendurance.diendurance
-get_diendurance.diendurance = 0
+get_diendurance.diendurance = None
 
 def get_siendurance(verbose="false"):
-  if get_siendurance.siendurance == 0:
-    get_siendurance.siendurance = int(call(make("scripts/get_siendurance", remake = False, verbose=verbose), verbose=verbose).split()[0])
+  if not get_siendurance.siendurance:
+    getter_file = open(os.path.join(top, "scripts/getter.json"), "r")
+    getter = json.load(getter_file)
+    getter_file.close()
+    get_siendurance.siendurance = getter["siendurance"]
   return get_siendurance.siendurance
-get_siendurance.siendurance = 0
+get_siendurance.siendurance = None
 
 def get_cpu_freq(verbose="false"):
   info = cpuinfo.get_cpu_info()

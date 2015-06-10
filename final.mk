@@ -64,3 +64,7 @@ bench:
 
 doc:
 	cd $(TOP); rm -rf doc/*; doxygen config.dox; cd doc/latex;make
+
+update: $(GETTER)
+	$(GETTER) > $(TOP)/scripts/getter.json
+
