@@ -60,16 +60,16 @@ void zamaxm_sub(const int N, const void *X, const int incX, const void *Y, const
       for(i = 0; i + 2 <= N; i += 2, x += 4, y += 4){
         x_0 = _mm256_loadu_pd(((double*)x));
         y_0 = _mm256_loadu_pd(((double*)y));
-        x_1 = _mm256_and_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), abs_mask_tmp);
-        x_0 = _mm256_and_pd(_mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000)), abs_mask_tmp);
+        x_1 = _mm256_and_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), abs_mask_tmp);
+        x_0 = _mm256_and_pd(_mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0)), abs_mask_tmp);
         m_0 = _mm256_max_pd(m_0, x_0);
         m_0 = _mm256_max_pd(m_0, x_1);
       }
       if(i < N){
         x_0 = _mm256_set_pd(0, 0, ((double*)x)[1], ((double*)x)[0]);
         y_0 = _mm256_set_pd(0, 0, ((double*)y)[1], ((double*)y)[0]);
-        x_1 = _mm256_and_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), abs_mask_tmp);
-        x_0 = _mm256_and_pd(_mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000)), abs_mask_tmp);
+        x_1 = _mm256_and_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), abs_mask_tmp);
+        x_0 = _mm256_and_pd(_mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0)), abs_mask_tmp);
         m_0 = _mm256_max_pd(m_0, x_0);
         m_0 = _mm256_max_pd(m_0, x_1);
         x += ((N - i) * 2), y += ((N - i) * 2);
@@ -79,16 +79,16 @@ void zamaxm_sub(const int N, const void *X, const int incX, const void *Y, const
       for(i = 0; i + 2 <= N; i += 2, x += (incX * 4), y += (incY * 4)){
         x_0 = _mm256_set_pd(((double*)x)[((incX * 2) + 1)], ((double*)x)[(incX * 2)], ((double*)x)[1], ((double*)x)[0]);
         y_0 = _mm256_set_pd(((double*)y)[((incY * 2) + 1)], ((double*)y)[(incY * 2)], ((double*)y)[1], ((double*)y)[0]);
-        x_1 = _mm256_and_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), abs_mask_tmp);
-        x_0 = _mm256_and_pd(_mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000)), abs_mask_tmp);
+        x_1 = _mm256_and_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), abs_mask_tmp);
+        x_0 = _mm256_and_pd(_mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0)), abs_mask_tmp);
         m_0 = _mm256_max_pd(m_0, x_0);
         m_0 = _mm256_max_pd(m_0, x_1);
       }
       if(i < N){
         x_0 = _mm256_set_pd(0, 0, ((double*)x)[1], ((double*)x)[0]);
         y_0 = _mm256_set_pd(0, 0, ((double*)y)[1], ((double*)y)[0]);
-        x_1 = _mm256_and_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), abs_mask_tmp);
-        x_0 = _mm256_and_pd(_mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000)), abs_mask_tmp);
+        x_1 = _mm256_and_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), abs_mask_tmp);
+        x_0 = _mm256_and_pd(_mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0)), abs_mask_tmp);
         m_0 = _mm256_max_pd(m_0, x_0);
         m_0 = _mm256_max_pd(m_0, x_1);
         x += (incX * (N - i) * 2), y += (incY * (N - i) * 2);
@@ -124,8 +124,8 @@ void zamaxm_sub(const int N, const void *X, const int incX, const void *Y, const
       for(i = 0; i + 1 <= N; i += 1, x += 2, y += 2){
         x_0 = _mm_loadu_pd(((double*)x));
         y_0 = _mm_loadu_pd(((double*)y));
-        x_1 = _mm_and_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0b01), _mm_shuffle_pd(y_0, y_0, 0b11)), abs_mask_tmp);
-        x_0 = _mm_and_pd(_mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0b00)), abs_mask_tmp);
+        x_1 = _mm_and_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0x1), _mm_shuffle_pd(y_0, y_0, 0x3)), abs_mask_tmp);
+        x_0 = _mm_and_pd(_mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0x0)), abs_mask_tmp);
         m_0 = _mm_max_pd(m_0, x_0);
         m_0 = _mm_max_pd(m_0, x_1);
       }
@@ -134,8 +134,8 @@ void zamaxm_sub(const int N, const void *X, const int incX, const void *Y, const
       for(i = 0; i + 1 <= N; i += 1, x += (incX * 2), y += (incY * 2)){
         x_0 = _mm_loadu_pd(((double*)x));
         y_0 = _mm_loadu_pd(((double*)y));
-        x_1 = _mm_and_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0b01), _mm_shuffle_pd(y_0, y_0, 0b11)), abs_mask_tmp);
-        x_0 = _mm_and_pd(_mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0b00)), abs_mask_tmp);
+        x_1 = _mm_and_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0x1), _mm_shuffle_pd(y_0, y_0, 0x3)), abs_mask_tmp);
+        x_0 = _mm_and_pd(_mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0x0)), abs_mask_tmp);
         m_0 = _mm_max_pd(m_0, x_0);
         m_0 = _mm_max_pd(m_0, x_1);
       }

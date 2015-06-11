@@ -152,8 +152,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += 4, y += 4){
                       x_0 = _mm256_loadu_pd(((double*)x));
                       y_0 = _mm256_loadu_pd(((double*)y));
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -177,8 +177,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm256_set_pd(0, 0, ((double*)x)[1], ((double*)x)[0]);
                       y_0 = _mm256_set_pd(0, 0, ((double*)y)[1], ((double*)y)[0]);
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -204,8 +204,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += 4, y += 4){
                       x_0 = _mm256_loadu_pd(((double*)x));
                       y_0 = _mm256_loadu_pd(((double*)y));
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -229,8 +229,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm256_set_pd(0, 0, ((double*)x)[1], ((double*)x)[0]);
                       y_0 = _mm256_set_pd(0, 0, ((double*)y)[1], ((double*)y)[0]);
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -270,8 +270,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += 4, y += (incY * 4)){
                       x_0 = _mm256_loadu_pd(((double*)x));
                       y_0 = _mm256_set_pd(((double*)y)[((incY * 2) + 1)], ((double*)y)[(incY * 2)], ((double*)y)[1], ((double*)y)[0]);
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -295,8 +295,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm256_set_pd(0, 0, ((double*)x)[1], ((double*)x)[0]);
                       y_0 = _mm256_set_pd(0, 0, ((double*)y)[1], ((double*)y)[0]);
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -322,8 +322,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += 4, y += (incY * 4)){
                       x_0 = _mm256_loadu_pd(((double*)x));
                       y_0 = _mm256_set_pd(((double*)y)[((incY * 2) + 1)], ((double*)y)[(incY * 2)], ((double*)y)[1], ((double*)y)[0]);
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -347,8 +347,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm256_set_pd(0, 0, ((double*)x)[1], ((double*)x)[0]);
                       y_0 = _mm256_set_pd(0, 0, ((double*)y)[1], ((double*)y)[0]);
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -390,8 +390,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += (incX * 4), y += 4){
                       x_0 = _mm256_set_pd(((double*)x)[((incX * 2) + 1)], ((double*)x)[(incX * 2)], ((double*)x)[1], ((double*)x)[0]);
                       y_0 = _mm256_loadu_pd(((double*)y));
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -415,8 +415,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm256_set_pd(0, 0, ((double*)x)[1], ((double*)x)[0]);
                       y_0 = _mm256_set_pd(0, 0, ((double*)y)[1], ((double*)y)[0]);
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -442,8 +442,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += (incX * 4), y += 4){
                       x_0 = _mm256_set_pd(((double*)x)[((incX * 2) + 1)], ((double*)x)[(incX * 2)], ((double*)x)[1], ((double*)x)[0]);
                       y_0 = _mm256_loadu_pd(((double*)y));
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -467,8 +467,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm256_set_pd(0, 0, ((double*)x)[1], ((double*)x)[0]);
                       y_0 = _mm256_set_pd(0, 0, ((double*)y)[1], ((double*)y)[0]);
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -508,8 +508,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += (incX * 4), y += (incY * 4)){
                       x_0 = _mm256_set_pd(((double*)x)[((incX * 2) + 1)], ((double*)x)[(incX * 2)], ((double*)x)[1], ((double*)x)[0]);
                       y_0 = _mm256_set_pd(((double*)y)[((incY * 2) + 1)], ((double*)y)[(incY * 2)], ((double*)y)[1], ((double*)y)[0]);
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -533,8 +533,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm256_set_pd(0, 0, ((double*)x)[1], ((double*)x)[0]);
                       y_0 = _mm256_set_pd(0, 0, ((double*)y)[1], ((double*)y)[0]);
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -560,8 +560,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += (incX * 4), y += (incY * 4)){
                       x_0 = _mm256_set_pd(((double*)x)[((incX * 2) + 1)], ((double*)x)[(incX * 2)], ((double*)x)[1], ((double*)x)[0]);
                       y_0 = _mm256_set_pd(((double*)y)[((incY * 2) + 1)], ((double*)y)[(incY * 2)], ((double*)y)[1], ((double*)y)[0]);
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -585,8 +585,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm256_set_pd(0, 0, ((double*)x)[1], ((double*)x)[0]);
                       y_0 = _mm256_set_pd(0, 0, ((double*)y)[1], ((double*)y)[0]);
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -669,8 +669,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += 4, y += 4){
                       x_0 = _mm256_loadu_pd(((double*)x));
                       y_0 = _mm256_loadu_pd(((double*)y));
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
@@ -702,8 +702,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm256_set_pd(0, 0, ((double*)x)[1], ((double*)x)[0]);
                       y_0 = _mm256_set_pd(0, 0, ((double*)y)[1], ((double*)y)[0]);
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
@@ -737,8 +737,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += 4, y += 4){
                       x_0 = _mm256_loadu_pd(((double*)x));
                       y_0 = _mm256_loadu_pd(((double*)y));
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
@@ -758,8 +758,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm256_set_pd(0, 0, ((double*)x)[1], ((double*)x)[0]);
                       y_0 = _mm256_set_pd(0, 0, ((double*)y)[1], ((double*)y)[0]);
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
@@ -795,8 +795,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += 4, y += (incY * 4)){
                       x_0 = _mm256_loadu_pd(((double*)x));
                       y_0 = _mm256_set_pd(((double*)y)[((incY * 2) + 1)], ((double*)y)[(incY * 2)], ((double*)y)[1], ((double*)y)[0]);
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
@@ -828,8 +828,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm256_set_pd(0, 0, ((double*)x)[1], ((double*)x)[0]);
                       y_0 = _mm256_set_pd(0, 0, ((double*)y)[1], ((double*)y)[0]);
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
@@ -863,8 +863,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += 4, y += (incY * 4)){
                       x_0 = _mm256_loadu_pd(((double*)x));
                       y_0 = _mm256_set_pd(((double*)y)[((incY * 2) + 1)], ((double*)y)[(incY * 2)], ((double*)y)[1], ((double*)y)[0]);
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
@@ -884,8 +884,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm256_set_pd(0, 0, ((double*)x)[1], ((double*)x)[0]);
                       y_0 = _mm256_set_pd(0, 0, ((double*)y)[1], ((double*)y)[0]);
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
@@ -923,8 +923,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += (incX * 4), y += 4){
                       x_0 = _mm256_set_pd(((double*)x)[((incX * 2) + 1)], ((double*)x)[(incX * 2)], ((double*)x)[1], ((double*)x)[0]);
                       y_0 = _mm256_loadu_pd(((double*)y));
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
@@ -956,8 +956,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm256_set_pd(0, 0, ((double*)x)[1], ((double*)x)[0]);
                       y_0 = _mm256_set_pd(0, 0, ((double*)y)[1], ((double*)y)[0]);
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
@@ -991,8 +991,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += (incX * 4), y += 4){
                       x_0 = _mm256_set_pd(((double*)x)[((incX * 2) + 1)], ((double*)x)[(incX * 2)], ((double*)x)[1], ((double*)x)[0]);
                       y_0 = _mm256_loadu_pd(((double*)y));
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
@@ -1012,8 +1012,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm256_set_pd(0, 0, ((double*)x)[1], ((double*)x)[0]);
                       y_0 = _mm256_set_pd(0, 0, ((double*)y)[1], ((double*)y)[0]);
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
@@ -1049,8 +1049,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += (incX * 4), y += (incY * 4)){
                       x_0 = _mm256_set_pd(((double*)x)[((incX * 2) + 1)], ((double*)x)[(incX * 2)], ((double*)x)[1], ((double*)x)[0]);
                       y_0 = _mm256_set_pd(((double*)y)[((incY * 2) + 1)], ((double*)y)[(incY * 2)], ((double*)y)[1], ((double*)y)[0]);
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
@@ -1082,8 +1082,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm256_set_pd(0, 0, ((double*)x)[1], ((double*)x)[0]);
                       y_0 = _mm256_set_pd(0, 0, ((double*)y)[1], ((double*)y)[0]);
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
@@ -1117,8 +1117,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += (incX * 4), y += (incY * 4)){
                       x_0 = _mm256_set_pd(((double*)x)[((incX * 2) + 1)], ((double*)x)[(incX * 2)], ((double*)x)[1], ((double*)x)[0]);
                       y_0 = _mm256_set_pd(((double*)y)[((incY * 2) + 1)], ((double*)y)[(incY * 2)], ((double*)y)[1], ((double*)y)[0]);
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
@@ -1138,8 +1138,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm256_set_pd(0, 0, ((double*)x)[1], ((double*)x)[0]);
                       y_0 = _mm256_set_pd(0, 0, ((double*)y)[1], ((double*)y)[0]);
-                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0b0101), _mm256_permute_pd(y_0, 0b1111)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0b0000));
+                      x_1 = _mm256_xor_pd(_mm256_mul_pd(_mm256_permute_pd(x_0, 0x5), _mm256_permute_pd(y_0, 0xF)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_pd(x_0, _mm256_permute_pd(y_0, 0x0));
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
@@ -1238,8 +1238,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 1 <= N_block; i += 1, x += 2, y += 2){
                       x_0 = _mm_loadu_pd(((double*)x));
                       y_0 = _mm_loadu_pd(((double*)y));
-                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0b01), _mm_shuffle_pd(y_0, y_0, 0b11)), nconj_mask_tmp);
-                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0b00));
+                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0x1), _mm_shuffle_pd(y_0, y_0, 0x3)), nconj_mask_tmp);
+                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0x0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -1264,8 +1264,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 1 <= N_block; i += 1, x += 2, y += 2){
                       x_0 = _mm_loadu_pd(((double*)x));
                       y_0 = _mm_loadu_pd(((double*)y));
-                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0b01), _mm_shuffle_pd(y_0, y_0, 0b11)), nconj_mask_tmp);
-                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0b00));
+                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0x1), _mm_shuffle_pd(y_0, y_0, 0x3)), nconj_mask_tmp);
+                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0x0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -1304,8 +1304,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 1 <= N_block; i += 1, x += 2, y += (incY * 2)){
                       x_0 = _mm_loadu_pd(((double*)x));
                       y_0 = _mm_loadu_pd(((double*)y));
-                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0b01), _mm_shuffle_pd(y_0, y_0, 0b11)), nconj_mask_tmp);
-                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0b00));
+                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0x1), _mm_shuffle_pd(y_0, y_0, 0x3)), nconj_mask_tmp);
+                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0x0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -1330,8 +1330,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 1 <= N_block; i += 1, x += 2, y += (incY * 2)){
                       x_0 = _mm_loadu_pd(((double*)x));
                       y_0 = _mm_loadu_pd(((double*)y));
-                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0b01), _mm_shuffle_pd(y_0, y_0, 0b11)), nconj_mask_tmp);
-                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0b00));
+                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0x1), _mm_shuffle_pd(y_0, y_0, 0x3)), nconj_mask_tmp);
+                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0x0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -1372,8 +1372,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 1 <= N_block; i += 1, x += (incX * 2), y += 2){
                       x_0 = _mm_loadu_pd(((double*)x));
                       y_0 = _mm_loadu_pd(((double*)y));
-                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0b01), _mm_shuffle_pd(y_0, y_0, 0b11)), nconj_mask_tmp);
-                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0b00));
+                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0x1), _mm_shuffle_pd(y_0, y_0, 0x3)), nconj_mask_tmp);
+                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0x0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -1398,8 +1398,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 1 <= N_block; i += 1, x += (incX * 2), y += 2){
                       x_0 = _mm_loadu_pd(((double*)x));
                       y_0 = _mm_loadu_pd(((double*)y));
-                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0b01), _mm_shuffle_pd(y_0, y_0, 0b11)), nconj_mask_tmp);
-                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0b00));
+                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0x1), _mm_shuffle_pd(y_0, y_0, 0x3)), nconj_mask_tmp);
+                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0x0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -1438,8 +1438,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 1 <= N_block; i += 1, x += (incX * 2), y += (incY * 2)){
                       x_0 = _mm_loadu_pd(((double*)x));
                       y_0 = _mm_loadu_pd(((double*)y));
-                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0b01), _mm_shuffle_pd(y_0, y_0, 0b11)), nconj_mask_tmp);
-                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0b00));
+                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0x1), _mm_shuffle_pd(y_0, y_0, 0x3)), nconj_mask_tmp);
+                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0x0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -1464,8 +1464,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 1 <= N_block; i += 1, x += (incX * 2), y += (incY * 2)){
                       x_0 = _mm_loadu_pd(((double*)x));
                       y_0 = _mm_loadu_pd(((double*)y));
-                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0b01), _mm_shuffle_pd(y_0, y_0, 0b11)), nconj_mask_tmp);
-                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0b00));
+                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0x1), _mm_shuffle_pd(y_0, y_0, 0x3)), nconj_mask_tmp);
+                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0x0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -1544,8 +1544,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 1 <= N_block; i += 1, x += 2, y += 2){
                       x_0 = _mm_loadu_pd(((double*)x));
                       y_0 = _mm_loadu_pd(((double*)y));
-                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0b01), _mm_shuffle_pd(y_0, y_0, 0b11)), nconj_mask_tmp);
-                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0b00));
+                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0x1), _mm_shuffle_pd(y_0, y_0, 0x3)), nconj_mask_tmp);
+                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0x0));
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
@@ -1578,8 +1578,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 1 <= N_block; i += 1, x += 2, y += 2){
                       x_0 = _mm_loadu_pd(((double*)x));
                       y_0 = _mm_loadu_pd(((double*)y));
-                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0b01), _mm_shuffle_pd(y_0, y_0, 0b11)), nconj_mask_tmp);
-                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0b00));
+                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0x1), _mm_shuffle_pd(y_0, y_0, 0x3)), nconj_mask_tmp);
+                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0x0));
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
@@ -1614,8 +1614,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 1 <= N_block; i += 1, x += 2, y += (incY * 2)){
                       x_0 = _mm_loadu_pd(((double*)x));
                       y_0 = _mm_loadu_pd(((double*)y));
-                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0b01), _mm_shuffle_pd(y_0, y_0, 0b11)), nconj_mask_tmp);
-                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0b00));
+                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0x1), _mm_shuffle_pd(y_0, y_0, 0x3)), nconj_mask_tmp);
+                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0x0));
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
@@ -1648,8 +1648,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 1 <= N_block; i += 1, x += 2, y += (incY * 2)){
                       x_0 = _mm_loadu_pd(((double*)x));
                       y_0 = _mm_loadu_pd(((double*)y));
-                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0b01), _mm_shuffle_pd(y_0, y_0, 0b11)), nconj_mask_tmp);
-                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0b00));
+                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0x1), _mm_shuffle_pd(y_0, y_0, 0x3)), nconj_mask_tmp);
+                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0x0));
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
@@ -1686,8 +1686,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 1 <= N_block; i += 1, x += (incX * 2), y += 2){
                       x_0 = _mm_loadu_pd(((double*)x));
                       y_0 = _mm_loadu_pd(((double*)y));
-                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0b01), _mm_shuffle_pd(y_0, y_0, 0b11)), nconj_mask_tmp);
-                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0b00));
+                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0x1), _mm_shuffle_pd(y_0, y_0, 0x3)), nconj_mask_tmp);
+                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0x0));
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
@@ -1720,8 +1720,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 1 <= N_block; i += 1, x += (incX * 2), y += 2){
                       x_0 = _mm_loadu_pd(((double*)x));
                       y_0 = _mm_loadu_pd(((double*)y));
-                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0b01), _mm_shuffle_pd(y_0, y_0, 0b11)), nconj_mask_tmp);
-                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0b00));
+                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0x1), _mm_shuffle_pd(y_0, y_0, 0x3)), nconj_mask_tmp);
+                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0x0));
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
@@ -1756,8 +1756,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 1 <= N_block; i += 1, x += (incX * 2), y += (incY * 2)){
                       x_0 = _mm_loadu_pd(((double*)x));
                       y_0 = _mm_loadu_pd(((double*)y));
-                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0b01), _mm_shuffle_pd(y_0, y_0, 0b11)), nconj_mask_tmp);
-                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0b00));
+                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0x1), _mm_shuffle_pd(y_0, y_0, 0x3)), nconj_mask_tmp);
+                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0x0));
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
@@ -1790,8 +1790,8 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 1 <= N_block; i += 1, x += (incX * 2), y += (incY * 2)){
                       x_0 = _mm_loadu_pd(((double*)x));
                       y_0 = _mm_loadu_pd(((double*)y));
-                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0b01), _mm_shuffle_pd(y_0, y_0, 0b11)), nconj_mask_tmp);
-                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0b00));
+                      x_1 = _mm_xor_pd(_mm_mul_pd(_mm_shuffle_pd(x_0, x_0, 0x1), _mm_shuffle_pd(y_0, y_0, 0x3)), nconj_mask_tmp);
+                      x_0 = _mm_mul_pd(x_0, _mm_shuffle_pd(y_0, y_0, 0x0));
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];

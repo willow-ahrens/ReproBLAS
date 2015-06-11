@@ -152,8 +152,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 4 <= N_block; i += 4, x += 8, y += 8){
                       x_0 = _mm256_loadu_ps(((float*)x));
                       y_0 = _mm256_loadu_ps(((float*)y));
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -177,8 +177,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)x))[2]:0, (N_block - i)>1?((double*)((float*)x))[1]:0, ((double*)((float*)x))[0]);
                       y_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)y))[2]:0, (N_block - i)>1?((double*)((float*)y))[1]:0, ((double*)((float*)y))[0]);
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -204,8 +204,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 4 <= N_block; i += 4, x += 8, y += 8){
                       x_0 = _mm256_loadu_ps(((float*)x));
                       y_0 = _mm256_loadu_ps(((float*)y));
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -229,8 +229,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)x))[2]:0, (N_block - i)>1?((double*)((float*)x))[1]:0, ((double*)((float*)x))[0]);
                       y_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)y))[2]:0, (N_block - i)>1?((double*)((float*)y))[1]:0, ((double*)((float*)y))[0]);
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -270,8 +270,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 4 <= N_block; i += 4, x += 8, y += (incY * 8)){
                       x_0 = _mm256_loadu_ps(((float*)x));
                       y_0 = _mm256_set_ps(((float*)y)[((incY * 6) + 1)], ((float*)y)[(incY * 6)], ((float*)y)[((incY * 4) + 1)], ((float*)y)[(incY * 4)], ((float*)y)[((incY * 2) + 1)], ((float*)y)[(incY * 2)], ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -295,8 +295,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)x))[2]:0, (N_block - i)>1?((double*)((float*)x))[1]:0, ((double*)((float*)x))[0]);
                       y_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)y))[(incY * 2)]:0, (N_block - i)>1?((double*)((float*)y))[incY]:0, ((double*)((float*)y))[0]);
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -322,8 +322,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 4 <= N_block; i += 4, x += 8, y += (incY * 8)){
                       x_0 = _mm256_loadu_ps(((float*)x));
                       y_0 = _mm256_set_ps(((float*)y)[((incY * 6) + 1)], ((float*)y)[(incY * 6)], ((float*)y)[((incY * 4) + 1)], ((float*)y)[(incY * 4)], ((float*)y)[((incY * 2) + 1)], ((float*)y)[(incY * 2)], ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -347,8 +347,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)x))[2]:0, (N_block - i)>1?((double*)((float*)x))[1]:0, ((double*)((float*)x))[0]);
                       y_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)y))[(incY * 2)]:0, (N_block - i)>1?((double*)((float*)y))[incY]:0, ((double*)((float*)y))[0]);
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -390,8 +390,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 4 <= N_block; i += 4, x += (incX * 8), y += 8){
                       x_0 = _mm256_set_ps(((float*)x)[((incX * 6) + 1)], ((float*)x)[(incX * 6)], ((float*)x)[((incX * 4) + 1)], ((float*)x)[(incX * 4)], ((float*)x)[((incX * 2) + 1)], ((float*)x)[(incX * 2)], ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm256_loadu_ps(((float*)y));
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -415,8 +415,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)x))[(incX * 2)]:0, (N_block - i)>1?((double*)((float*)x))[incX]:0, ((double*)((float*)x))[0]);
                       y_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)y))[2]:0, (N_block - i)>1?((double*)((float*)y))[1]:0, ((double*)((float*)y))[0]);
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -442,8 +442,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 4 <= N_block; i += 4, x += (incX * 8), y += 8){
                       x_0 = _mm256_set_ps(((float*)x)[((incX * 6) + 1)], ((float*)x)[(incX * 6)], ((float*)x)[((incX * 4) + 1)], ((float*)x)[(incX * 4)], ((float*)x)[((incX * 2) + 1)], ((float*)x)[(incX * 2)], ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm256_loadu_ps(((float*)y));
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -467,8 +467,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)x))[(incX * 2)]:0, (N_block - i)>1?((double*)((float*)x))[incX]:0, ((double*)((float*)x))[0]);
                       y_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)y))[2]:0, (N_block - i)>1?((double*)((float*)y))[1]:0, ((double*)((float*)y))[0]);
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -508,8 +508,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 4 <= N_block; i += 4, x += (incX * 8), y += (incY * 8)){
                       x_0 = _mm256_set_ps(((float*)x)[((incX * 6) + 1)], ((float*)x)[(incX * 6)], ((float*)x)[((incX * 4) + 1)], ((float*)x)[(incX * 4)], ((float*)x)[((incX * 2) + 1)], ((float*)x)[(incX * 2)], ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm256_set_ps(((float*)y)[((incY * 6) + 1)], ((float*)y)[(incY * 6)], ((float*)y)[((incY * 4) + 1)], ((float*)y)[(incY * 4)], ((float*)y)[((incY * 2) + 1)], ((float*)y)[(incY * 2)], ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -533,8 +533,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)x))[(incX * 2)]:0, (N_block - i)>1?((double*)((float*)x))[incX]:0, ((double*)((float*)x))[0]);
                       y_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)y))[(incY * 2)]:0, (N_block - i)>1?((double*)((float*)y))[incY]:0, ((double*)((float*)y))[0]);
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -560,8 +560,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 4 <= N_block; i += 4, x += (incX * 8), y += (incY * 8)){
                       x_0 = _mm256_set_ps(((float*)x)[((incX * 6) + 1)], ((float*)x)[(incX * 6)], ((float*)x)[((incX * 4) + 1)], ((float*)x)[(incX * 4)], ((float*)x)[((incX * 2) + 1)], ((float*)x)[(incX * 2)], ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm256_set_ps(((float*)y)[((incY * 6) + 1)], ((float*)y)[(incY * 6)], ((float*)y)[((incY * 4) + 1)], ((float*)y)[(incY * 4)], ((float*)y)[((incY * 2) + 1)], ((float*)y)[(incY * 2)], ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -585,8 +585,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)x))[(incX * 2)]:0, (N_block - i)>1?((double*)((float*)x))[incX]:0, ((double*)((float*)x))[0]);
                       y_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)y))[(incY * 2)]:0, (N_block - i)>1?((double*)((float*)y))[incY]:0, ((double*)((float*)y))[0]);
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -669,8 +669,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 4 <= N_block; i += 4, x += 8, y += 8){
                       x_0 = _mm256_loadu_ps(((float*)x));
                       y_0 = _mm256_loadu_ps(((float*)y));
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
@@ -702,8 +702,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)x))[2]:0, (N_block - i)>1?((double*)((float*)x))[1]:0, ((double*)((float*)x))[0]);
                       y_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)y))[2]:0, (N_block - i)>1?((double*)((float*)y))[1]:0, ((double*)((float*)y))[0]);
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
@@ -737,8 +737,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 4 <= N_block; i += 4, x += 8, y += 8){
                       x_0 = _mm256_loadu_ps(((float*)x));
                       y_0 = _mm256_loadu_ps(((float*)y));
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
@@ -758,8 +758,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)x))[2]:0, (N_block - i)>1?((double*)((float*)x))[1]:0, ((double*)((float*)x))[0]);
                       y_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)y))[2]:0, (N_block - i)>1?((double*)((float*)y))[1]:0, ((double*)((float*)y))[0]);
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
@@ -795,8 +795,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 4 <= N_block; i += 4, x += 8, y += (incY * 8)){
                       x_0 = _mm256_loadu_ps(((float*)x));
                       y_0 = _mm256_set_ps(((float*)y)[((incY * 6) + 1)], ((float*)y)[(incY * 6)], ((float*)y)[((incY * 4) + 1)], ((float*)y)[(incY * 4)], ((float*)y)[((incY * 2) + 1)], ((float*)y)[(incY * 2)], ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
@@ -828,8 +828,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)x))[2]:0, (N_block - i)>1?((double*)((float*)x))[1]:0, ((double*)((float*)x))[0]);
                       y_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)y))[(incY * 2)]:0, (N_block - i)>1?((double*)((float*)y))[incY]:0, ((double*)((float*)y))[0]);
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
@@ -863,8 +863,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 4 <= N_block; i += 4, x += 8, y += (incY * 8)){
                       x_0 = _mm256_loadu_ps(((float*)x));
                       y_0 = _mm256_set_ps(((float*)y)[((incY * 6) + 1)], ((float*)y)[(incY * 6)], ((float*)y)[((incY * 4) + 1)], ((float*)y)[(incY * 4)], ((float*)y)[((incY * 2) + 1)], ((float*)y)[(incY * 2)], ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
@@ -884,8 +884,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)x))[2]:0, (N_block - i)>1?((double*)((float*)x))[1]:0, ((double*)((float*)x))[0]);
                       y_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)y))[(incY * 2)]:0, (N_block - i)>1?((double*)((float*)y))[incY]:0, ((double*)((float*)y))[0]);
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
@@ -923,8 +923,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 4 <= N_block; i += 4, x += (incX * 8), y += 8){
                       x_0 = _mm256_set_ps(((float*)x)[((incX * 6) + 1)], ((float*)x)[(incX * 6)], ((float*)x)[((incX * 4) + 1)], ((float*)x)[(incX * 4)], ((float*)x)[((incX * 2) + 1)], ((float*)x)[(incX * 2)], ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm256_loadu_ps(((float*)y));
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
@@ -956,8 +956,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)x))[(incX * 2)]:0, (N_block - i)>1?((double*)((float*)x))[incX]:0, ((double*)((float*)x))[0]);
                       y_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)y))[2]:0, (N_block - i)>1?((double*)((float*)y))[1]:0, ((double*)((float*)y))[0]);
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
@@ -991,8 +991,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 4 <= N_block; i += 4, x += (incX * 8), y += 8){
                       x_0 = _mm256_set_ps(((float*)x)[((incX * 6) + 1)], ((float*)x)[(incX * 6)], ((float*)x)[((incX * 4) + 1)], ((float*)x)[(incX * 4)], ((float*)x)[((incX * 2) + 1)], ((float*)x)[(incX * 2)], ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm256_loadu_ps(((float*)y));
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
@@ -1012,8 +1012,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)x))[(incX * 2)]:0, (N_block - i)>1?((double*)((float*)x))[incX]:0, ((double*)((float*)x))[0]);
                       y_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)y))[2]:0, (N_block - i)>1?((double*)((float*)y))[1]:0, ((double*)((float*)y))[0]);
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
@@ -1049,8 +1049,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 4 <= N_block; i += 4, x += (incX * 8), y += (incY * 8)){
                       x_0 = _mm256_set_ps(((float*)x)[((incX * 6) + 1)], ((float*)x)[(incX * 6)], ((float*)x)[((incX * 4) + 1)], ((float*)x)[(incX * 4)], ((float*)x)[((incX * 2) + 1)], ((float*)x)[(incX * 2)], ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm256_set_ps(((float*)y)[((incY * 6) + 1)], ((float*)y)[(incY * 6)], ((float*)y)[((incY * 4) + 1)], ((float*)y)[(incY * 4)], ((float*)y)[((incY * 2) + 1)], ((float*)y)[(incY * 2)], ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
@@ -1082,8 +1082,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)x))[(incX * 2)]:0, (N_block - i)>1?((double*)((float*)x))[incX]:0, ((double*)((float*)x))[0]);
                       y_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)y))[(incY * 2)]:0, (N_block - i)>1?((double*)((float*)y))[incY]:0, ((double*)((float*)y))[0]);
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
@@ -1117,8 +1117,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 4 <= N_block; i += 4, x += (incX * 8), y += (incY * 8)){
                       x_0 = _mm256_set_ps(((float*)x)[((incX * 6) + 1)], ((float*)x)[(incX * 6)], ((float*)x)[((incX * 4) + 1)], ((float*)x)[(incX * 4)], ((float*)x)[((incX * 2) + 1)], ((float*)x)[(incX * 2)], ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm256_set_ps(((float*)y)[((incY * 6) + 1)], ((float*)y)[(incY * 6)], ((float*)y)[((incY * 4) + 1)], ((float*)y)[(incY * 4)], ((float*)y)[((incY * 2) + 1)], ((float*)y)[(incY * 2)], ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
@@ -1138,8 +1138,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)x))[(incX * 2)]:0, (N_block - i)>1?((double*)((float*)x))[incX]:0, ((double*)((float*)x))[0]);
                       y_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)y))[(incY * 2)]:0, (N_block - i)>1?((double*)((float*)y))[incY]:0, ((double*)((float*)y))[0]);
-                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0b10110001), _mm256_permute_ps(y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0b10100000));
+                      x_1 = _mm256_xor_ps(_mm256_mul_ps(_mm256_permute_ps(x_0, 0xB1), _mm256_permute_ps(y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm256_mul_ps(x_0, _mm256_permute_ps(y_0, 0xA0));
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
@@ -1238,8 +1238,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += 4, y += 4){
                       x_0 = _mm_loadu_ps(((float*)x));
                       y_0 = _mm_loadu_ps(((float*)y));
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -1263,8 +1263,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm_set_ps(0, 0, ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm_set_ps(0, 0, ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -1290,8 +1290,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += 4, y += 4){
                       x_0 = _mm_loadu_ps(((float*)x));
                       y_0 = _mm_loadu_ps(((float*)y));
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -1315,8 +1315,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm_set_ps(0, 0, ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm_set_ps(0, 0, ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -1356,8 +1356,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += 4, y += (incY * 4)){
                       x_0 = _mm_loadu_ps(((float*)x));
                       y_0 = _mm_set_ps(((float*)y)[((incY * 2) + 1)], ((float*)y)[(incY * 2)], ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -1381,8 +1381,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm_set_ps(0, 0, ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm_set_ps(0, 0, ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -1408,8 +1408,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += 4, y += (incY * 4)){
                       x_0 = _mm_loadu_ps(((float*)x));
                       y_0 = _mm_set_ps(((float*)y)[((incY * 2) + 1)], ((float*)y)[(incY * 2)], ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -1433,8 +1433,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm_set_ps(0, 0, ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm_set_ps(0, 0, ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -1476,8 +1476,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += (incX * 4), y += 4){
                       x_0 = _mm_set_ps(((float*)x)[((incX * 2) + 1)], ((float*)x)[(incX * 2)], ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm_loadu_ps(((float*)y));
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -1501,8 +1501,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm_set_ps(0, 0, ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm_set_ps(0, 0, ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -1528,8 +1528,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += (incX * 4), y += 4){
                       x_0 = _mm_set_ps(((float*)x)[((incX * 2) + 1)], ((float*)x)[(incX * 2)], ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm_loadu_ps(((float*)y));
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -1553,8 +1553,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm_set_ps(0, 0, ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm_set_ps(0, 0, ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -1594,8 +1594,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += (incX * 4), y += (incY * 4)){
                       x_0 = _mm_set_ps(((float*)x)[((incX * 2) + 1)], ((float*)x)[(incX * 2)], ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm_set_ps(((float*)y)[((incY * 2) + 1)], ((float*)y)[(incY * 2)], ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -1619,8 +1619,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm_set_ps(0, 0, ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm_set_ps(0, 0, ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -1646,8 +1646,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += (incX * 4), y += (incY * 4)){
                       x_0 = _mm_set_ps(((float*)x)[((incX * 2) + 1)], ((float*)x)[(incX * 2)], ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm_set_ps(((float*)y)[((incY * 2) + 1)], ((float*)y)[(incY * 2)], ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -1671,8 +1671,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm_set_ps(0, 0, ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm_set_ps(0, 0, ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -1755,8 +1755,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += 4, y += 4){
                       x_0 = _mm_loadu_ps(((float*)x));
                       y_0 = _mm_loadu_ps(((float*)y));
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
@@ -1788,8 +1788,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm_set_ps(0, 0, ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm_set_ps(0, 0, ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
@@ -1823,8 +1823,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += 4, y += 4){
                       x_0 = _mm_loadu_ps(((float*)x));
                       y_0 = _mm_loadu_ps(((float*)y));
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
@@ -1844,8 +1844,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm_set_ps(0, 0, ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm_set_ps(0, 0, ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
@@ -1881,8 +1881,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += 4, y += (incY * 4)){
                       x_0 = _mm_loadu_ps(((float*)x));
                       y_0 = _mm_set_ps(((float*)y)[((incY * 2) + 1)], ((float*)y)[(incY * 2)], ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
@@ -1914,8 +1914,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm_set_ps(0, 0, ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm_set_ps(0, 0, ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
@@ -1949,8 +1949,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += 4, y += (incY * 4)){
                       x_0 = _mm_loadu_ps(((float*)x));
                       y_0 = _mm_set_ps(((float*)y)[((incY * 2) + 1)], ((float*)y)[(incY * 2)], ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
@@ -1970,8 +1970,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm_set_ps(0, 0, ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm_set_ps(0, 0, ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
@@ -2009,8 +2009,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += (incX * 4), y += 4){
                       x_0 = _mm_set_ps(((float*)x)[((incX * 2) + 1)], ((float*)x)[(incX * 2)], ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm_loadu_ps(((float*)y));
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
@@ -2042,8 +2042,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm_set_ps(0, 0, ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm_set_ps(0, 0, ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
@@ -2077,8 +2077,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += (incX * 4), y += 4){
                       x_0 = _mm_set_ps(((float*)x)[((incX * 2) + 1)], ((float*)x)[(incX * 2)], ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm_loadu_ps(((float*)y));
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
@@ -2098,8 +2098,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm_set_ps(0, 0, ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm_set_ps(0, 0, ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
@@ -2135,8 +2135,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += (incX * 4), y += (incY * 4)){
                       x_0 = _mm_set_ps(((float*)x)[((incX * 2) + 1)], ((float*)x)[(incX * 2)], ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm_set_ps(((float*)y)[((incY * 2) + 1)], ((float*)y)[(incY * 2)], ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
@@ -2168,8 +2168,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm_set_ps(0, 0, ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm_set_ps(0, 0, ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
@@ -2203,8 +2203,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     for(i = 0; i + 2 <= N_block; i += 2, x += (incX * 4), y += (incY * 4)){
                       x_0 = _mm_set_ps(((float*)x)[((incX * 2) + 1)], ((float*)x)[(incX * 2)], ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm_set_ps(((float*)y)[((incY * 2) + 1)], ((float*)y)[(incY * 2)], ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
@@ -2224,8 +2224,8 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
                     if(i < N_block){
                       x_0 = _mm_set_ps(0, 0, ((float*)x)[1], ((float*)x)[0]);
                       y_0 = _mm_set_ps(0, 0, ((float*)y)[1], ((float*)y)[0]);
-                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0b10110001), _mm_shuffle_ps(y_0, y_0, 0b11110101)), nconj_mask_tmp);
-                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0b10100000));
+                      x_1 = _mm_xor_ps(_mm_mul_ps(_mm_shuffle_ps(x_0, x_0, 0xB1), _mm_shuffle_ps(y_0, y_0, 0xF5)), nconj_mask_tmp);
+                      x_0 = _mm_mul_ps(x_0, _mm_shuffle_ps(y_0, y_0, 0xA0));
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];

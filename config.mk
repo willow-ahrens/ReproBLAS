@@ -1,5 +1,5 @@
 # select compiler (comment all for auto)
-#CC = cc
+CC = cc
 #CC = gcc
 #CC = icc
 #CC = pgcc
@@ -10,7 +10,7 @@
 CFLAGS += -Wall
 
 # add CPPFLAGS
-CPPFLAGS +=
+CPPFLAGS += 
 
 # add LDFLAGS
 LDFLAGS +=
@@ -26,7 +26,7 @@ LDFLAGS +=
 #MPICFLAGS =
 
 # select python (comment all for auto)
-PYTHON = python
+#PYTHON = python
 #PYTHON = python3
 
 # select vectorization (comment all for auto)

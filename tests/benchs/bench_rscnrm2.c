@@ -35,8 +35,6 @@ int bench_vecvec_fill_show_help(void){
 }
 
 const char* bench_vecvec_fill_name(int argc, char** argv){
-  (void)argc;
-  (void)argv;
   static char name_buffer[MAX_LINE];
 
   bench_rscnrm2_options_initialize();
@@ -47,8 +45,6 @@ const char* bench_vecvec_fill_name(int argc, char** argv){
 }
 
 int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX, double ImagScaleX, int incX, int FillY, double RealScaleY, double ImagScaleY, int incY, int trials){
-  (void)argc;
-  (void)argv;
   (void)FillY;
   (void)RealScaleY;
   (void)ImagScaleY;
@@ -58,7 +54,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   int j;
   float res = 0.0;
   float_indexed *ires;
-  float scale;
+  float scale = 0.0;
 
   bench_rscnrm2_options_initialize();
   opt_eval_option(argc, argv, &fold);

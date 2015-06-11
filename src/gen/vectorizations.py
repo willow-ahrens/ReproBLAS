@@ -562,21 +562,21 @@ class SSE(SIMD):
 
   def rep_evens(self, src_vars):
     if self.data_type.base_type.name == "double":
-      return ["_mm_shuffle_pd({0}, {0}, 0b00)".format(src_var) for src_var in src_vars]
+      return ["_mm_shuffle_pd({0}, {0}, 0x0)".format(src_var) for src_var in src_vars]
     elif self.data_type.base_type.name == "float":
-      return ["_mm_shuffle_ps({0}, {0}, 0b10100000)".format(src_var) for src_var in src_vars]
+      return ["_mm_shuffle_ps({0}, {0}, 0xA0)".format(src_var) for src_var in src_vars]
 
   def rep_odds(self, src_vars):
     if self.data_type.base_type.name == "double":
-      return ["_mm_shuffle_pd({0}, {0}, 0b11)".format(src_var) for src_var in src_vars]
+      return ["_mm_shuffle_pd({0}, {0}, 0x3)".format(src_var) for src_var in src_vars]
     elif self.data_type.base_type.name == "float":
-      return ["_mm_shuffle_ps({0}, {0}, 0b11110101)".format(src_var) for src_var in src_vars]
+      return ["_mm_shuffle_ps({0}, {0}, 0xF5)".format(src_var) for src_var in src_vars]
 
   def swap_pairwise(self, src_vars):
     if self.data_type.base_type.name == "double":
-      return ["_mm_shuffle_pd({0}, {0}, 0b01)".format(src_var) for src_var in src_vars]
+      return ["_mm_shuffle_pd({0}, {0}, 0x1)".format(src_var) for src_var in src_vars]
     elif self.data_type.base_type.name == "float":
-      return ["_mm_shuffle_ps({0}, {0}, 0b10110001)".format(src_var) for src_var in src_vars]
+      return ["_mm_shuffle_ps({0}, {0}, 0xB1)".format(src_var) for src_var in src_vars]
 
   def set_SIMD_daz_ftz(self):
     self.include_SIMD_daz_ftz_vars();
@@ -827,21 +827,21 @@ class AVX(SIMD):
 
   def rep_evens(self, src_vars):
     if self.data_type.base_type.name == "double":
-      return ["_mm256_permute_pd({0}, 0b0000)".format(src_var) for src_var in src_vars]
+      return ["_mm256_permute_pd({0}, 0x0)".format(src_var) for src_var in src_vars]
     elif self.data_type.base_type.name == "float":
-      return ["_mm256_permute_ps({0}, 0b10100000)".format(src_var) for src_var in src_vars]
+      return ["_mm256_permute_ps({0}, 0xA0)".format(src_var) for src_var in src_vars]
 
   def rep_odds(self, src_vars):
     if self.data_type.base_type.name == "double":
-      return ["_mm256_permute_pd({0}, 0b1111)".format(src_var) for src_var in src_vars]
+      return ["_mm256_permute_pd({0}, 0xF)".format(src_var) for src_var in src_vars]
     elif self.data_type.base_type.name == "float":
-      return ["_mm256_permute_ps({0}, 0b11110101)".format(src_var) for src_var in src_vars]
+      return ["_mm256_permute_ps({0}, 0xF5)".format(src_var) for src_var in src_vars]
 
   def swap_pairwise(self, src_vars):
     if self.data_type.base_type.name == "double":
-      return ["_mm256_permute_pd({0}, 0b0101)".format(src_var) for src_var in src_vars]
+      return ["_mm256_permute_pd({0}, 0x5)".format(src_var) for src_var in src_vars]
     elif self.data_type.base_type.name == "float":
-      return ["_mm256_permute_ps({0}, 0b10110001)".format(src_var) for src_var in src_vars]
+      return ["_mm256_permute_ps({0}, 0xB1)".format(src_var) for src_var in src_vars]
 
   def set_SIMD_daz_ftz(self):
     self.include_SIMD_daz_ftz_vars();

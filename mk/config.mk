@@ -39,16 +39,18 @@ endif
 
 # Detect C compiler in the following order if CC hasn't been set
 ifeq ($(CC),)
-  ifeq ($(shell if test -x $(shell command -v gcc); then echo "1"; else echo "0"; fi), 1)
+  ifeq ($(shell test -x "$(shell which gcc 2>$(DEVNULL))"; echo $$?), 0)
     CC := gcc
-  else ifeq ($(shell if test -x $(shell command -v icc); then echo "1"; else echo "0"; fi), 1)
+  else ifeq ($(shell test -x "$(shell which icc 2>$(DEVNULL))"; echo $$?), 0)
     CC := icc
-  else ifeq ($(shell if test -x $(shell command -v pgcc); then echo "1"; else echo "0"; fi), 1)
+  else ifeq ($(shell test -x "$(shell which pgcc 2>$(DEVNULL))"; echo $$?), 0)
     CC := pgcc
-  else ifeq ($(shell if test -x $(shell command -v craycc); then echo "1"; else echo "0"; fi), 1)
+  else ifeq ($(shell test -x "$(shell which craycc 2>$(DEVNULL))";  echo $$?), 0)
     CC := craycc
-  else ifeq ($(shell if test -x $(shell command -v clang); then echo "1"; else echo "0"; fi), 1)
+  else ifeq ($(shell test -x "$(shell which clang 2>$(DEVNULL))";  echo $$?), 0)
     CC := clang
+  else
+    CC := cc
   endif
 endif
 
@@ -59,7 +61,7 @@ endif
 
 # Detect MPI C compiler in the following order
 ifeq ($(MPICC),)
-  ifeq ($(shell if test -x $(shell command -v mpicc); then echo "1"; else echo "0"; fi), 1)
+  ifeq ($(shell test -x "$(shell which mpicc 2>$(DEVNULL))"; echo $$?), 0)
     MPICC := mpicc
   else
     MPICC :=
@@ -80,9 +82,9 @@ endif
 # Detect MPI C linker flags in the following order if MPILDFLAGS hasn't been set
 ifeq ($(MPILDFLAGS),)
   ifeq ($(MPICC), mpicc)
-    ifeq ("$(shell mpicc --showme:link &>$(DEVNULL); echo $$?)", "0")
+    ifeq ("$(shell mpicc --showme:link &>$(DEVNULL); echo $$?)", 0)
       MPILDFLAGS := $(shell $(MPICC) --showme:link)
-    else ifeq ("$(shell mpicc -link_info &>$(DEVNULL); echo $$?)", "0")
+    else ifeq ("$(shell mpicc -link_info &>$(DEVNULL); echo $$?)", 0)
       MPILDFLAGS := $(shell $(MPICC) -link_info)
     endif
   endif
@@ -90,10 +92,10 @@ endif
 
 # Detect python in the following order if PYTHON hasn't been set
 ifeq ($(PYTHON),)
-  ifeq ($(shell if test -x $(shell command -v python3); then echo "1"; else echo "0"; fi), 1)
+  ifeq ($(shell test -x "$(shell which python3 2>$(DEVNULL))"; echo $$?), 0)
     PYTHON := python3
-  else ifeq ($(shell if test -x $(shell command -v python); then echo "1"; else echo "0"; fi), 1)
-    ifeq ($(shell if test "$(shell python -V 2>&1)" \> "Python 2.7.0"; then echo "1"; else echo "0"; fi), 1)
+  else ifeq ($(shell test -x "$(shell which python 2>$(DEVNULL))"; echo $$?), 0)
+    ifeq ($(shell test "$(shell python -V 2>&1)" \> "Python 2.7.0"; echo $$?), 0)
       PYTHON := python
     endif
   endif
@@ -177,4 +179,4 @@ CALL_PYTHON = PYTHONPATH=$(TOP) $(PYTHON)
 COG = $(CALL_PYTHON) -m scripts.cogapp $(COGFLAGS)
 
 # Create cog compiler
-PSEUDOCOG = $(TOP)/cog/pseudocog.sh
+PSEUDOCOG = $(TOP)/scripts/pseudocog.sh
