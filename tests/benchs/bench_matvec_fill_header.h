@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "../common/test_opt.h"
-#include "../common/test_perf.h"
 
 #include "../common/test_matvec_fill_header.h"
 
