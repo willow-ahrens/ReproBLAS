@@ -24,7 +24,6 @@ argparser.add_argument('-v', '--verbose', default="false", type=str, nargs="?", 
 
 log = logging.getLogger(__name__)
 
-
 class ReproBLASTuner(measurement.MeasurementInterface):
   def __init__(self, args, *pargs, **kwargs):
     super(ReproBLASTuner, self).__init__(project_name="ReproBLAS", program_name=args.benchmark, program_version=config.version, *pargs, **kwargs)
@@ -100,8 +99,10 @@ def run(apis):
     bench_tests = []
     command_list = []
     for api in apis_to_run:
-      bench_tests.append(benchs.all_benchs[api.measurement_interface.benchmark]())
-      bench_tests[-1].setup(flags = "-N 4096 -a 100000", args=arguments_file_name, remake=True, verbose=args.verbose)
+      bench_test = benchs.all_benchs[api.measurement_interface.benchmark]
+      bench_tests.append(bench_test[0]())
+#      bench_tests[-1].setup(flags = "-N 4096 -a 100000 " + bench_test[1], args=arguments_file_name, remake=True, verbose=args.verbose)
+      bench_tests[-1].setup(flags = "-N 4096 -a 10 " + bench_test[1], args=arguments_file_name, remake=True, verbose=args.verbose)
       command_list += bench_tests[-1].get_command_list()
 
     #run with these arguments
@@ -139,25 +140,26 @@ def main():
                                                             "bench_camax",
                                                             "bench_camaxm"]]
   run(apis)
-  apis = [create_benchmark_api(benchmark) for benchmark in ["bench_rdsum_fold_3",
-                                                            "bench_rdasum_fold_3",
-                                                            "bench_rdnrm2_fold_3",
-                                                            "bench_rddot_fold_3",
-                                                            "bench_rzsum_fold_3",
-                                                            "bench_rdzasum_fold_3",
-                                                            "bench_rdznrm2_fold_3",
-                                                            "bench_rzdotu_fold_3",
-                                                            "bench_rzdotc_fold_3",
-                                                            "bench_rssum_fold_3",
-                                                            "bench_rsasum_fold_3",
-                                                            "bench_rsnrm2_fold_3",
-                                                            "bench_rsdot_fold_3",
-                                                            "bench_rcsum_fold_3",
-                                                            "bench_rscasum_fold_3",
-                                                            "bench_rscnrm2_fold_3",
-                                                            "bench_rcdotu_fold_3",
-                                                            "bench_rcdotc_fold_3"]]
-  run(apis)
+  for fold in range(0, terminal.get_max_fold() + 1):
+    apis = [create_benchmark_api(benchmark) for benchmark in ["bench_rdsum_fold_{}".format(fold),
+                                                              "bench_rdasum_fold_{}".format(fold),
+                                                              "bench_rdnrm2_fold_{}".format(fold),
+                                                              "bench_rddot_fold_{}".format(fold),
+                                                              "bench_rzsum_fold_{}".format(fold),
+                                                              "bench_rdzasum_fold_{}".format(fold),
+                                                              "bench_rdznrm2_fold_{}".format(fold),
+                                                              "bench_rzdotu_fold_{}".format(fold),
+                                                              "bench_rzdotc_fold_{}".format(fold),
+                                                              "bench_rssum_fold_{}".format(fold),
+                                                              "bench_rsasum_fold_{}".format(fold),
+                                                              "bench_rsnrm2_fold_{}".format(fold),
+                                                              "bench_rsdot_fold_{}".format(fold),
+                                                              "bench_rcsum_fold_{}".format(fold),
+                                                              "bench_rscasum_fold_{}".format(fold),
+                                                              "bench_rscnrm2_fold_{}".format(fold),
+                                                              "bench_rcdotu_fold_{}".format(fold),
+                                                              "bench_rcdotc_fold_{}".format(fold)]]
+    run(apis)
 
 if __name__ == '__main__':
   opentuner.init_logging()

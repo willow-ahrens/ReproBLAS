@@ -214,63 +214,51 @@ class BenchPDGEMVTest(BenchTest):
   name = "PDGEMV"
   executable = "tests/benchs/bench_pdgemv"
 
-all_benchs = {"bench_camax": BenchCAMAXTest,\
-              "bench_camaxm": BenchCAMAXMTest,\
-              "bench_cdotc": BenchCDOTCTest,\
-              "bench_cdotu": BenchCDOTUTest,\
-              "bench_damax": BenchDAMAXTest,\
-              "bench_damaxm": BenchDAMAXMTest,\
-              "bench_dasum": BenchDASUMTest,\
-              "bench_ddot": BenchDDOTTest,\
-              "bench_dnrm2": BenchDNRM2Test,\
-              "bench_dzasum": BenchDZASUMTest,\
-              "bench_dznrm2": BenchDZNRM2Test,\
-              "bench_icamax": BenchICAMAXTest,\
-              "bench_idamax": BenchIDAMAXTest,\
-              "bench_isamax": BenchISAMAXTest,\
-              "bench_izamax": BenchIZAMAXTest,\
-              "bench_rcdotc": BenchRCDOTCTest,\
-              "bench_rcdotu": BenchRCDOTUTest,\
-              "bench_rcsum": BenchRCSUMTest,\
-              "bench_rdasum": BenchRDASUMTest,\
-              "bench_rddot": BenchRDDOTTest,\
-              "bench_rdnrm2": BenchRDNRM2Test,\
-              "bench_rdsum": BenchRDSUMTest,\
-              "bench_rdzasum": BenchRDZASUMTest,\
-              "bench_rdznrm2": BenchRDZNRM2Test,\
-              "bench_rsasum": BenchRSASUMTest,\
-              "bench_rscasum": BenchRSCASUMTest,\
-              "bench_rscnrm2": BenchRSCNRM2Test,\
-              "bench_rsdot": BenchRSDOTTest,\
-              "bench_rsnrm2": BenchRSNRM2Test,\
-              "bench_rssum": BenchRSSUMTest,\
-              "bench_rzdotc": BenchRZDOTCTest,\
-              "bench_rzdotu": BenchRZDOTUTest,\
-              "bench_rzsum": BenchRZSUMTest,\
-              "bench_samax": BenchSAMAXTest,\
-              "bench_samaxm": BenchSAMAXMTest,\
-              "bench_sasum": BenchSASUMTest,\
-              "bench_scasum": BenchSCASUMTest,\
-              "bench_scnrm2": BenchSCNRM2Test,\
-              "bench_sdot": BenchSDOTTest,\
-              "bench_snrm2": BenchSNRM2Test,\
-              "bench_zamax": BenchZAMAXTest,\
-              "bench_zamaxm": BenchZAMAXMTest,\
-              "bench_zdotc": BenchZDOTCTest,\
-              "bench_zdotu": BenchZDOTUTest,\
-              "bench_dgemv": BenchDGEMVTest,\
-              "bench_rdgemv": BenchRDGEMVTest}
+all_benchs = {"bench_camax": (BenchCAMAXTest, ""),\
+              "bench_camaxm": (BenchCAMAXMTest, ""),\
+              "bench_cdotc": (BenchCDOTCTest, ""),\
+              "bench_cdotu": (BenchCDOTUTest, ""),\
+              "bench_damax": (BenchDAMAXTest, ""),\
+              "bench_damaxm": (BenchDAMAXMTest, ""),\
+              "bench_dasum": (BenchDASUMTest, ""),\
+              "bench_ddot": (BenchDDOTTest, ""),\
+              "bench_dnrm2": (BenchDNRM2Test, ""),\
+              "bench_dzasum": (BenchDZASUMTest, ""),\
+              "bench_dznrm2": (BenchDZNRM2Test, ""),\
+              "bench_icamax": (BenchICAMAXTest, ""),\
+              "bench_idamax": (BenchIDAMAXTest, ""),\
+              "bench_isamax": (BenchISAMAXTest, ""),\
+              "bench_izamax": (BenchIZAMAXTest, ""),\
+              "bench_samax": (BenchSAMAXTest, ""),\
+              "bench_samaxm": (BenchSAMAXMTest, ""),\
+              "bench_sasum": (BenchSASUMTest, ""),\
+              "bench_scasum": (BenchSCASUMTest, ""),\
+              "bench_scnrm2": (BenchSCNRM2Test, ""),\
+              "bench_sdot": (BenchSDOTTest, ""),\
+              "bench_snrm2": (BenchSNRM2Test, ""),\
+              "bench_zamax": (BenchZAMAXTest, ""),\
+              "bench_zamaxm": (BenchZAMAXMTest, ""),\
+              "bench_zdotc": (BenchZDOTCTest, ""),\
+              "bench_zdotu": (BenchZDOTUTest, ""),\
+              "bench_dgemv": (BenchDGEMVTest, ""),\
+              "bench_rdgemv": (BenchRDGEMVTest, "")}
 
-
-
-#TODO THIS IS A HACK!!! we need to support many-fold testing.
-new_benchs = {}
-
-maxs = set(["bench_damax", "bench_damaxm", "bench_zamax", "bench_zamaxm", "bench_samax", "bench_samaxm", "bench_camax", "bench_camaxm"])
-for key, val in all_benchs.items():
-  if key in maxs:
-    new_benchs[key] = val
-  else:
-    new_benchs[key + "_fold_3"] = val
-
-all_benchs = new_benchs
+for i in range(terminal.get_max_fold() + 1):
+  all_benchs.update({"bench_rcdotc_fold_{}".format(i): (BenchRCDOTCTest, "--fold {}".format(i)),\
+                     "bench_rcdotu_fold_{}".format(i): (BenchRCDOTUTest, "--fold {}".format(i)),\
+                     "bench_rcsum_fold_{}".format(i): (BenchRCSUMTest, "--fold {}".format(i)),\
+                     "bench_rdasum_fold_{}".format(i): (BenchRDASUMTest, "--fold {}".format(i)),\
+                     "bench_rddot_fold_{}".format(i): (BenchRDDOTTest, "--fold {}".format(i)),\
+                     "bench_rdnrm2_fold_{}".format(i): (BenchRDNRM2Test, "--fold {}".format(i)),\
+                     "bench_rdsum_fold_{}".format(i): (BenchRDSUMTest, "--fold {}".format(i)),\
+                     "bench_rdzasum_fold_{}".format(i): (BenchRDZASUMTest, "--fold {}".format(i)),\
+                     "bench_rdznrm2_fold_{}".format(i): (BenchRDZNRM2Test, "--fold {}".format(i)),\
+                     "bench_rsasum_fold_{}".format(i): (BenchRSASUMTest, "--fold {}".format(i)),\
+                     "bench_rscasum_fold_{}".format(i): (BenchRSCASUMTest, "--fold {}".format(i)),\
+                     "bench_rscnrm2_fold_{}".format(i): (BenchRSCNRM2Test, "--fold {}".format(i)),\
+                     "bench_rsdot_fold_{}".format(i): (BenchRSDOTTest, "--fold {}".format(i)),\
+                     "bench_rsnrm2_fold_{}".format(i): (BenchRSNRM2Test, "--fold {}".format(i)),\
+                     "bench_rssum_fold_{}".format(i): (BenchRSSUMTest, "--fold {}".format(i)),\
+                     "bench_rzdotc_fold_{}".format(i): (BenchRZDOTCTest, "--fold {}".format(i)),\
+                     "bench_rzdotu_fold_{}".format(i): (BenchRZDOTUTest, "--fold {}".format(i)),\
+                     "bench_rzsum_fold_{}".format(i): (BenchRZSUMTest, "--fold {}".format(i))})

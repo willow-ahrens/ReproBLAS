@@ -2,13 +2,16 @@
 #include <stdlib.h>
 #include <math.h>
 #include <mpi.h>
+
 #include "../common/test_opt.h"
 #include "../common/test_time.h"
 #include "../common/test_metric.h"
 #include "../common/test_BLAS.h"
 
+#include "../../config.h"
+
 #include "bench_vecvec_fill_header.h"
-    
+
 int bench_vecvec_fill_show_help(void){
   return 0;
 }

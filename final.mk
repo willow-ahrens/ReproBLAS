@@ -32,8 +32,8 @@ install-doc: $(call get_subtree,INSTALL_DOC,$(TOP))
 .PHONY: check bench reference tune doc excise update
 
 # tunes
-tune: update
-	$(CALL_PYTHON) $(TOP)/tune/ReproBLASOpenTuner.py --params $(TOP)/src/params.json --args $(TOP)/src/tuned_args.json --database $(TOP)/tune/ReproBLASOpenTuner.db --trials 50 --no-dups --verbose $(VERBOSE)
+tune:# update
+	$(CALL_PYTHON) $(TOP)/tune/ReproBLASOpenTuner.py --params $(TOP)/src/params.json --args $(TOP)/src/tuned_args.json --database $(TOP)/tune/ReproBLASOpenTuner.db --trials 100 --no-dups --verbose $(VERBOSE)
 
 # Removes generated code from code generators
 excise:

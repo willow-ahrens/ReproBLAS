@@ -3,11 +3,14 @@
 #include <math.h>
 #include <string.h>
 
+#include <indexedBLAS.h>
 #include <reproBLAS.h>
 
 #include "../common/test_opt.h"
 #include "../common/test_time.h"
 #include "../common/test_metric.h"
+
+#include "../../config.h"
 
 #include "bench_matvec_fill_header.h"
 
