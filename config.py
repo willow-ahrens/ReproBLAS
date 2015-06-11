@@ -81,7 +81,7 @@ def run_parallel(command_list, verbose="false"):
   result_list = []
   if verbose != "true":
     status(0, len(command_list));
-  for (i, result) in enumerate(map(execute, [(command, verbose) for command in command_list], chunksize=multiprocessing.cpu_count() * 16)):
+  for (i, result) in enumerate(p.imap(execute, [(command, verbose) for command in command_list], chunksize=multiprocessing.cpu_count() * 16)):
     if verbose != "true":
       status(i, len(command_list));
     result_list.append(result)
