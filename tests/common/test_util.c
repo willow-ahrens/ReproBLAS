@@ -120,13 +120,14 @@ void util_random_seed(void) {
   srand((long)(st.tv_usec + 1e6*st.tv_sec));
 }
 
-//TODO if a vector/matrix data generation redesign/cleanup ever happens, better random numbers are desired (I'm thinking /dev/random if possible, and also a random in range function)
+
 double util_drand48(){
   unsigned long l = 0;
   int i;
   int r;
   for(i = 0; i < 4; i++){
     do{
+      //TODO more randomness
       r = rand();
     }while(r >= (RAND_MAX/256)*256);
     l <<= 8;
@@ -918,8 +919,8 @@ void util_cmat_row_permute(char Order, char TransA, int M, int N, float complex 
 double* util_dvec_alloc(int N, int incV) {
   double *V = (double*)malloc(N * incV * sizeof(double));
   if(incV != 1){
-    //fill empty space with random data to check increments
-    util_dvec_fill(N * incV, V, 1, util_Vec_Rand, 1.0, 0.0);
+    //fill empty space with NaN to check increments
+    util_dvec_fill(N * incV, V, 1, util_Vec_Rand, NAN, 0.0);
     util_dvec_fill(N, V, incV, util_Vec_Constant, 0.0, 0.0);
   }
   return V;
@@ -928,8 +929,8 @@ double* util_dvec_alloc(int N, int incV) {
 float* util_svec_alloc(int N, int incV) {
   float *V = (float*)malloc(N * incV * sizeof(float));
   if(incV != 1){
-    //fill empty space with random data to check increments
-    util_svec_fill(N * incV, V, 1, util_Vec_Rand, 1.0, 0.0);
+    //fill empty space with NaN to check increments
+    util_svec_fill(N * incV, V, 1, util_Vec_Rand, NAN, 0.0);
     util_svec_fill(N, V, incV, util_Vec_Constant, 0.0, 0.0);
   }
   return V;
@@ -938,8 +939,8 @@ float* util_svec_alloc(int N, int incV) {
 double complex* util_zvec_alloc(int N, int incV) {
   double complex *V = (double complex*)malloc(N * incV * sizeof(double complex));
   if(incV != 1){
-    //fill empty space with random data to check increments
-    util_zvec_fill(N * incV, V, 1, util_Vec_Rand, 1.0, 0.0);
+    //fill empty space with NaN to check increments
+    util_zvec_fill(N * incV, V, 1, util_Vec_Rand, NAN, 0.0);
     util_zvec_fill(N, V, incV, util_Vec_Constant, 0.0, 0.0);
   }
   return V;
@@ -948,8 +949,8 @@ double complex* util_zvec_alloc(int N, int incV) {
 float complex* util_cvec_alloc(int N, int incV) {
   float complex *V = (float complex*)malloc(N * incV * sizeof(float complex));
   if(incV != 1){
-    //fill empty space with random data to check increments
-    util_cvec_fill(N * incV, V, 1, util_Vec_Rand, 1.0, 0.0);
+    //fill empty space with NaN to check increments
+    util_cvec_fill(N * incV, V, 1, util_Vec_Rand, NAN, 0.0);
     util_cvec_fill(N, V, incV, util_Vec_Constant, 0.0, 0.0);
   }
   return V;
@@ -961,14 +962,14 @@ double* util_dmat_alloc(char Order, int M, int N, int lda) {
     case 'r':
     case 'R':
       A = (double*)malloc(lda * M * sizeof(double));
-      //fill empty space with random data to check lda
-      util_dmat_fill(Order, 'n', M, lda, A, lda, util_Mat_Row_Rand, 1.0, 0.0);
+      //fill empty space with NaN to check lda
+      util_dmat_fill(Order, 'n', M, lda, A, lda, util_Mat_Row_Rand, NAN, 0.0);
       util_dmat_fill(Order, 'n', M, N, A, lda, util_Mat_Row_Constant, 0.0, 0.0);
       break;
     default:
       A = (double*)malloc(lda * N * sizeof(double));
-      //fill empty space with random data to check lda
-      util_dmat_fill(Order, 'n', lda, N, A, lda, util_Mat_Row_Rand, 1.0, 0.0);
+      //fill empty space with NaN to check lda
+      util_dmat_fill(Order, 'n', lda, N, A, lda, util_Mat_Row_Rand, NAN, 0.0);
       util_dmat_fill(Order, 'n', M, N, A, lda, util_Mat_Row_Constant, 0.0, 0.0);
       break;
   }
@@ -981,14 +982,14 @@ float* util_smat_alloc(char Order, int M, int N, int lda) {
     case 'r':
     case 'R':
       A = (float*)malloc(lda * M * sizeof(float));
-      //fill empty space with random data to check lda
-      util_smat_fill(Order, 'n', M, lda, A, lda, util_Mat_Row_Rand, 1.0, 0.0);
+      //fill empty space with NaN to check lda
+      util_smat_fill(Order, 'n', M, lda, A, lda, util_Mat_Row_Rand, NAN, 0.0);
       util_smat_fill(Order, 'n', M, N, A, lda, util_Mat_Row_Constant, 0.0, 0.0);
       break;
     default:
       A = (float*)malloc(lda * N * sizeof(float));
-      //fill empty space with random data to check lda
-      util_smat_fill(Order, 'n', lda, N, A, lda, util_Mat_Row_Rand, 1.0, 0.0);
+      //fill empty space with NaN to check lda
+      util_smat_fill(Order, 'n', lda, N, A, lda, util_Mat_Row_Rand, NAN, 0.0);
       util_smat_fill(Order, 'n', M, N, A, lda, util_Mat_Row_Constant, 0.0, 0.0);
       break;
   }
@@ -1001,14 +1002,14 @@ double complex* util_zmat_alloc(char Order, int M, int N, int lda) {
     case 'r':
     case 'R':
       A = (double complex*)malloc(lda * M * sizeof(double complex));
-      //fill empty space with random data to check lda
-      util_zmat_fill(Order, 'n', M, lda, A, lda, util_Mat_Row_Rand, 1.0, 0.0);
+      //fill empty space with NaN to check lda
+      util_zmat_fill(Order, 'n', M, lda, A, lda, util_Mat_Row_Rand, NAN, 0.0);
       util_zmat_fill(Order, 'n', M, N, A, lda, util_Mat_Row_Constant, 0.0, 0.0);
       break;
     default:
       A = (double complex*)malloc(lda * N * sizeof(double complex));
-      //fill empty space with random data to check lda
-      util_zmat_fill(Order, 'n', lda, N, A, lda, util_Mat_Row_Rand, 1.0, 0.0);
+      //fill empty space with NaN to check lda
+      util_zmat_fill(Order, 'n', lda, N, A, lda, util_Mat_Row_Rand, NAN, 0.0);
       util_zmat_fill(Order, 'n', M, N, A, lda, util_Mat_Row_Constant, 0.0, 0.0);
       break;
   }
@@ -1021,15 +1022,14 @@ float complex* util_cmat_alloc(char Order, int M, int N, int lda) {
     case 'r':
     case 'R':
       A = (float complex*)malloc(lda * M * sizeof(float complex));
-      //fill empty space with random data to check lda
-      util_cmat_fill(Order, 'n', M, lda, A, lda, util_Mat_Row_Rand, 1.0, 0.0);
+      //fill empty space with NaN to check lda
+      util_cmat_fill(Order, 'n', M, lda, A, lda, util_Mat_Row_Rand, NAN, 0.0);
       util_cmat_fill(Order, 'n', M, N, A, lda, util_Mat_Row_Constant, 0.0, 0.0);
       break;
     default:
       A = (float complex*)malloc(lda * N * sizeof(float complex));
-      //TODO fill empty space with NaN
-      //fill empty space with random data to check lda
-      util_cmat_fill(Order, 'n', lda, N, A, lda, util_Mat_Row_Rand, 1.0, 0.0);
+      //fill empty space with NaN data to check lda
+      util_cmat_fill(Order, 'n', lda, N, A, lda, util_Mat_Row_Rand, NAN, 0.0);
       util_cmat_fill(Order, 'n', M, N, A, lda, util_Mat_Row_Constant, 0.0, 0.0);
       break;
   }
@@ -1040,6 +1040,7 @@ void util_dvec_fill(int N, double* V, int incV, util_vec_fill_t Fill, double Rea
   int i;
   double small = 1.0 / (1024.0 * 1024.0 * 128.0); // 2^-27
   double big   = 1024.0 * 1024.0 * 128.0;         // 2^27
+  (void)ImagScale;
   switch(Fill){
     case util_Vec_Constant_Drop:
     case util_Vec_Constant:
@@ -1051,50 +1052,50 @@ void util_dvec_fill(int N, double* V, int incV, util_vec_fill_t Fill, double Rea
       for (i = 0; i < N; i++) {
         V[i*incV] = 1.0;
       }
-      V[0] = 1.0/0.0;
+      V[0] = INFINITY;
       break;
     case util_Vec_Pos_Pos_Inf:
       for (i = 0; i < N; i++) {
         V[i*incV] = 1.0;
       }
-      V[0] = 1.0/0.0;
-      V[(N - 1) * incV] = 1.0/0.0;
+      V[0] = INFINITY;
+      V[(N - 1) * incV] = INFINITY;
       break;
     case util_Vec_Pos_Neg_Inf:
       for (i = 0; i < N; i++) {
         V[i*incV] = 1.0;
       }
-      V[0] = 1.0/0.0;
-      V[(N - 1) * incV] = -1.0/0.0;
+      V[0] = INFINITY;
+      V[(N - 1) * incV] = -1 * INFINITY;
       break;
     case util_Vec_NaN:
       for (i = 0; i < N; i++) {
         V[i*incV] = 1.0;
       }
-      V[0] = 0.0/0.0;
+      V[0] = NAN;
       break;
     case util_Vec_Pos_Inf_NaN:
       for (i = 0; i < N; i++) {
         V[i*incV] = 1.0;
       }
-      V[0] = 1.0/0.0;
-      V[(N - 1) * incV] = 0.0/0.0;
+      V[0] = INFINITY;
+      V[(N - 1) * incV] = NAN;
       break;
     case util_Vec_Pos_Pos_Inf_NaN:
       for (i = 0; i < N; i++) {
         V[i*incV] = 1.0;
       }
-      V[0] = 1.0/0.0;
-      V[(N - 1) * incV] = 1.0/0.0;
-      V[(N/2) * incV] = 0.0/0.0;
+      V[0] = INFINITY;
+      V[(N - 1) * incV] = INFINITY;
+      V[(N/2) * incV] = NAN;
       break;
     case util_Vec_Pos_Neg_Inf_NaN:
       for (i = 0; i < N; i++) {
         V[i*incV] = 1.0;
       }
-      V[0] = 1.0/0.0;
-      V[(N - 1) * incV] = -1.0/0.0;
-      V[(N/2) * incV] = 0.0/0.0;
+      V[0] = INFINITY;
+      V[(N - 1) * incV] = -1.0 * INFINITY;
+      V[(N/2) * incV] = NAN;
       break;
     case util_Vec_Pos_Big:
       for (i = 0; i < N; i++) {
@@ -1223,6 +1224,7 @@ void util_svec_fill(int N, float* V, int incV, util_vec_fill_t Fill, float RealS
   int i;
   double small = 1.0 / (1024.0 * 4.0); // 2^-12
   double big   = 1024.0 * 8.0;         // 2^13
+  (void)ImagScale;
   switch(Fill){
     case util_Vec_Constant_Drop:
     case util_Vec_Constant:
@@ -1234,50 +1236,50 @@ void util_svec_fill(int N, float* V, int incV, util_vec_fill_t Fill, float RealS
       for (i = 0; i < N; i++) {
         V[i*incV] = 1.0;
       }
-      V[0] = 1.0/0.0;
+      V[0] = INFINITY;
       break;
     case util_Vec_Pos_Pos_Inf:
       for (i = 0; i < N; i++) {
         V[i*incV] = 1.0;
       }
-      V[0] = 1.0/0.0;
-      V[(N - 1) * incV] = 1.0/0.0;
+      V[0] = INFINITY;
+      V[(N - 1) * incV] = INFINITY;
       break;
     case util_Vec_Pos_Neg_Inf:
       for (i = 0; i < N; i++) {
         V[i*incV] = 1.0;
       }
-      V[0] = 1.0/0.0;
-      V[(N - 1) * incV] = -1.0/0.0;
+      V[0] = INFINITY;
+      V[(N - 1) * incV] = -1.0 * INFINITY;
       break;
     case util_Vec_NaN:
       for (i = 0; i < N; i++) {
         V[i*incV] = 1.0;
       }
-      V[0] = 0.0/0.0;
+      V[0] = NAN;
       break;
     case util_Vec_Pos_Inf_NaN:
       for (i = 0; i < N; i++) {
         V[i*incV] = 1.0;
       }
-      V[0] = 1.0/0.0;
-      V[(N - 1) * incV] = 0.0/0.0;
+      V[0] = INFINITY;
+      V[(N - 1) * incV] = NAN;
       break;
     case util_Vec_Pos_Pos_Inf_NaN:
       for (i = 0; i < N; i++) {
         V[i*incV] = 1.0;
       }
-      V[0] = 1.0/0.0;
-      V[(N - 1) * incV] = 1.0/0.0;
-      V[(N/2) * incV] = 0.0/0.0;
+      V[0] = INFINITY;
+      V[(N - 1) * incV] = INFINITY;
+      V[(N/2) * incV] = NAN;
       break;
     case util_Vec_Pos_Neg_Inf_NaN:
       for (i = 0; i < N; i++) {
         V[i*incV] = 1.0;
       }
-      V[0] = 1.0/0.0;
-      V[(N - 1) * incV] = -1.0/0.0;
-      V[(N/2) * incV] = 0.0/0.0;
+      V[0] = INFINITY;
+      V[(N - 1) * incV] = -1.0 * INFINITY;
+      V[(N/2) * incV] = NAN;
       break;
     case util_Vec_Pos_Big:
       for (i = 0; i < N; i++) {

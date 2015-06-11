@@ -262,13 +262,13 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
           return N * RealScaleX;
         case util_Vec_Pos_Inf:
         case util_Vec_Pos_Pos_Inf:
-          return RealScaleX/0.0;
+          return RealScaleX * INFINITY;
         case util_Vec_Pos_Neg_Inf:
         case util_Vec_NaN:
         case util_Vec_Pos_Inf_NaN:
         case util_Vec_Pos_Pos_Inf_NaN:
         case util_Vec_Pos_Neg_Inf_NaN:
-          return 0.0/0.0;
+          return NAN;
         case util_Vec_Pos_Big:
           return (N - 1) * RealScaleX * small + RealScaleX * big;
         case util_Vec_Pos_Pos_Big:
@@ -289,12 +289,12 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
         case util_Vec_Pos_Inf:
         case util_Vec_Pos_Pos_Inf:
         case util_Vec_Pos_Neg_Inf:
-          return fabs(RealScaleX)/0.0;
+          return fabs(RealScaleX) * INFINITY;
         case util_Vec_NaN:
         case util_Vec_Pos_Inf_NaN:
         case util_Vec_Pos_Pos_Inf_NaN:
         case util_Vec_Pos_Neg_Inf_NaN:
-          return 0.0/0.0;
+          return NAN;
         case util_Vec_Pos_Big:
           return (N - 1) * fabs(RealScaleX) * small + fabs(RealScaleX) * big;
         case util_Vec_Pos_Pos_Big:
@@ -316,12 +316,12 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
           case util_Vec_Pos_Inf:
           case util_Vec_Pos_Pos_Inf:
           case util_Vec_Pos_Neg_Inf:
-            return fabs(RealScaleX)/0.0;
+            return fabs(RealScaleX) * INFINITY;
           case util_Vec_NaN:
           case util_Vec_Pos_Inf_NaN:
           case util_Vec_Pos_Pos_Inf_NaN:
           case util_Vec_Pos_Neg_Inf_NaN:
-            return 0.0/0.0;
+            return NAN;
           case util_Vec_Pos_Big:
             new_scale = dscale(RealScaleX * big);
             small *= RealScaleX;
@@ -351,13 +351,13 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
               return N * RealScaleX * RealScaleY;
             case util_Vec_Pos_Inf:
             case util_Vec_Pos_Pos_Inf:
-              return (RealScaleX * RealScaleY)/0.0;
+              return (RealScaleX * RealScaleY) * INFINITY;
             case util_Vec_Pos_Neg_Inf:
             case util_Vec_NaN:
             case util_Vec_Pos_Inf_NaN:
             case util_Vec_Pos_Pos_Inf_NaN:
             case util_Vec_Pos_Neg_Inf_NaN:
-              return 0.0/0.0;
+              return NAN;
             case util_Vec_Pos_Big:
               return (N - 1) * RealScaleX * RealScaleY * small + RealScaleX * RealScaleY * big;
             case util_Vec_Pos_Pos_Big:
@@ -376,13 +376,13 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
             case util_Vec_Constant:
             case util_Vec_Pos_Inf:
             case util_Vec_Pos_Pos_Inf:
-              return (RealScaleX * RealScaleY)/0.0;
+              return (RealScaleX * RealScaleY) * INFINITY;
             case util_Vec_Pos_Neg_Inf:
             case util_Vec_NaN:
             case util_Vec_Pos_Inf_NaN:
             case util_Vec_Pos_Pos_Inf_NaN:
             case util_Vec_Pos_Neg_Inf_NaN:
-              return 0.0/0.0;
+              return NAN;
             default:
               fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g, %s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, util_vec_fill_descs[FillY], RealScaleY);
               exit(125);
@@ -396,9 +396,9 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
             case util_Vec_Pos_Inf_NaN:
             case util_Vec_Pos_Pos_Inf_NaN:
             case util_Vec_Pos_Neg_Inf_NaN:
-              return 0.0/0.0;
+              return NAN;
             case util_Vec_Pos_Neg_Inf:
-              return (RealScaleX * RealScaleY)/0.0;
+              return (RealScaleX * RealScaleY) * INFINITY;
             default:
               fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g, %s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, util_vec_fill_descs[FillY], RealScaleY);
               exit(125);
@@ -407,7 +407,7 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
         case util_Vec_Pos_Inf_NaN:
         case util_Vec_Pos_Pos_Inf_NaN:
         case util_Vec_Pos_Neg_Inf_NaN:
-          return 0.0/0.0;
+          return NAN;
         case util_Vec_Pos_Big:
           switch(FillY){
             case util_Vec_Constant:

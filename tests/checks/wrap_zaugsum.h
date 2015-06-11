@@ -318,16 +318,16 @@ double complex wrap_zaugsum_result(int N, wrap_zaugsum_func_t func, util_vec_fil
           switch(FillX){
             case util_Vec_Pos_Inf:
             case util_Vec_Pos_Pos_Inf:
-              tmpX0_base[0] = 1.0/0.0 * RealScaleX;
-              tmpX0_base[1] = 1.0/0.0 * ImagScaleX;
+              tmpX0_base[0] = INFINITY * RealScaleX;
+              tmpX0_base[1] = INFINITY * ImagScaleX;
               break;
             case util_Vec_Pos_Neg_Inf:
             case util_Vec_NaN:
             case util_Vec_Pos_Inf_NaN:
             case util_Vec_Pos_Pos_Inf_NaN:
             case util_Vec_Pos_Neg_Inf_NaN:
-              tmpX0_base[0] = 0.0/0.0;
-              tmpX0_base[1] = 0.0/0.0;
+              tmpX0_base[0] = NAN;
+              tmpX0_base[1] = NAN;
               break;
             default:
               fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_zaugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
@@ -368,15 +368,15 @@ double complex wrap_zaugsum_result(int N, wrap_zaugsum_func_t func, util_vec_fil
             case util_Vec_Pos_Inf:
             case util_Vec_Pos_Pos_Inf:
             case util_Vec_Pos_Neg_Inf:
-              tmpX0_base[0] = 1.0/0.0;
-              tmpX0_base[1] = 1.0/0.0;
+              tmpX0_base[0] = INFINITY;
+              tmpX0_base[1] = INFINITY;
               break;
             case util_Vec_NaN:
             case util_Vec_Pos_Inf_NaN:
             case util_Vec_Pos_Pos_Inf_NaN:
             case util_Vec_Pos_Neg_Inf_NaN:
-              tmpX0_base[0] = 0.0/0.0;
-              tmpX0_base[1] = 0.0/0.0;
+              tmpX0_base[0] = NAN;
+              tmpX0_base[1] = NAN;
               break;
             default:
               fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_zaugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
@@ -423,15 +423,15 @@ double complex wrap_zaugsum_result(int N, wrap_zaugsum_func_t func, util_vec_fil
               case util_Vec_Pos_Inf:
               case util_Vec_Pos_Pos_Inf:
               case util_Vec_Pos_Neg_Inf:
-                tmpX0_base[0] = 1.0/0.0;
-                tmpX0_base[1] = 1.0/0.0;
+                tmpX0_base[0] = INFINITY;
+                tmpX0_base[1] = INFINITY;
                 break;
               case util_Vec_NaN:
               case util_Vec_Pos_Inf_NaN:
               case util_Vec_Pos_Pos_Inf_NaN:
               case util_Vec_Pos_Neg_Inf_NaN:
-                tmpX0_base[0] = 0.0/0.0;
-                tmpX0_base[1] = 0.0/0.0;
+                tmpX0_base[0] = NAN;
+                tmpX0_base[1] = NAN;
                 break;
               default:
                 fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_zaugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
@@ -485,16 +485,16 @@ double complex wrap_zaugsum_result(int N, wrap_zaugsum_func_t func, util_vec_fil
               switch(FillY){
                 case util_Vec_Pos_Inf:
                 case util_Vec_Pos_Pos_Inf:
-                  tmpY0_base[0] = 1.0/0.0 * RealScaleY;
-                  tmpY0_base[1] = 1.0/0.0 * ImagScaleY;
+                  tmpY0_base[0] = INFINITY * RealScaleY;
+                  tmpY0_base[1] = INFINITY * ImagScaleY;
                   break;
                 case util_Vec_Pos_Neg_Inf:
                 case util_Vec_NaN:
                 case util_Vec_Pos_Inf_NaN:
                 case util_Vec_Pos_Pos_Inf_NaN:
                 case util_Vec_Pos_Neg_Inf_NaN:
-                  tmpY0_base[0] = 0.0/0.0;
-                  tmpY0_base[1] = 0.0/0.0;
+                  tmpY0_base[0] = NAN;
+                  tmpY0_base[1] = NAN;
                   break;
                 default:
                   fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_zaugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
@@ -528,28 +528,28 @@ double complex wrap_zaugsum_result(int N, wrap_zaugsum_func_t func, util_vec_fil
         case util_Vec_Pos_Neg_Inf_NaN:
           switch(FillX){
             case util_Vec_Pos_Inf:
-              tmpX0_base[0] = 1.0/0.0 * RealScaleX;
-              tmpX0_base[1] = 1.0/0.0 * ImagScaleX;
+              tmpX0_base[0] = INFINITY * RealScaleX;
+              tmpX0_base[1] = INFINITY * ImagScaleX;
               tmpX1_base[0] = 0.0;
               tmpX1_base[1] = 0.0;
             case util_Vec_Pos_Pos_Inf:
-              tmpX0_base[0] = 1.0/0.0 * RealScaleX;
-              tmpX0_base[1] = 1.0/0.0 * ImagScaleX;
-              tmpX1_base[0] = 1.0/0.0 * RealScaleX;
-              tmpX1_base[1] = 1.0/0.0 * ImagScaleX;
+              tmpX0_base[0] = INFINITY * RealScaleX;
+              tmpX0_base[1] = INFINITY * ImagScaleX;
+              tmpX1_base[0] = INFINITY * RealScaleX;
+              tmpX1_base[1] = INFINITY * ImagScaleX;
               break;
             case util_Vec_Pos_Neg_Inf:
-              tmpX0_base[0] = 1.0/0.0 * RealScaleX;
-              tmpX0_base[1] = 1.0/0.0 * ImagScaleX;
-              tmpX1_base[0] = -1.0/0.0 * RealScaleX;
-              tmpX1_base[1] = -1.0/0.0 * ImagScaleX;
+              tmpX0_base[0] = INFINITY * RealScaleX;
+              tmpX0_base[1] = INFINITY * ImagScaleX;
+              tmpX1_base[0] = -1.0 * INFINITY * RealScaleX;
+              tmpX1_base[1] = -1.0 * INFINITY * ImagScaleX;
               break;
             case util_Vec_NaN:
             case util_Vec_Pos_Inf_NaN:
             case util_Vec_Pos_Pos_Inf_NaN:
             case util_Vec_Pos_Neg_Inf_NaN:
-              tmpX0_base[0] = 0.0/0.0;
-              tmpX0_base[1] = 0.0/0.0;
+              tmpX0_base[0] = NAN;
+              tmpX0_base[1] = NAN;
               tmpX1_base[0] = 0.0;
               tmpX1_base[1] = 0.0;
               break;
@@ -577,28 +577,28 @@ double complex wrap_zaugsum_result(int N, wrap_zaugsum_func_t func, util_vec_fil
             case util_Vec_Pos_Neg_Inf_NaN:
               switch(FillY){
                 case util_Vec_Pos_Inf:
-                  tmpY0_base[0] = 1.0/0.0 * RealScaleY;
-                  tmpY0_base[1] = 1.0/0.0 * ImagScaleY;
+                  tmpY0_base[0] = INFINITY * RealScaleY;
+                  tmpY0_base[1] = INFINITY * ImagScaleY;
                   tmpY1_base[0] = 0.0;
                   tmpY1_base[1] = 0.0;
                 case util_Vec_Pos_Pos_Inf:
-                  tmpY0_base[0] = 1.0/0.0 * RealScaleY;
-                  tmpY0_base[1] = 1.0/0.0 * ImagScaleY;
-                  tmpY1_base[0] = 1.0/0.0 * RealScaleY;
-                  tmpY1_base[1] = 1.0/0.0 * ImagScaleY;
+                  tmpY0_base[0] = INFINITY * RealScaleY;
+                  tmpY0_base[1] = INFINITY * ImagScaleY;
+                  tmpY1_base[0] = INFINITY * RealScaleY;
+                  tmpY1_base[1] = INFINITY * ImagScaleY;
                   break;
                 case util_Vec_Pos_Neg_Inf:
-                  tmpY0_base[0] = 1.0/0.0 * RealScaleY;
-                  tmpY0_base[1] = 1.0/0.0 * ImagScaleY;
-                  tmpY1_base[0] = -1.0/0.0 * RealScaleY;
-                  tmpY1_base[1] = -1.0/0.0 * ImagScaleY;
+                  tmpY0_base[0] = INFINITY * RealScaleY;
+                  tmpY0_base[1] = INFINITY * ImagScaleY;
+                  tmpY1_base[0] = -1.0 * INFINITY * RealScaleY;
+                  tmpY1_base[1] = -1.0 * INFINITY * ImagScaleY;
                   break;
                 case util_Vec_NaN:
                 case util_Vec_Pos_Inf_NaN:
                 case util_Vec_Pos_Pos_Inf_NaN:
                 case util_Vec_Pos_Neg_Inf_NaN:
-                  tmpY0_base[0] = 0.0/0.0;
-                  tmpY0_base[1] = 0.0/0.0;
+                  tmpY0_base[0] = NAN;
+                  tmpY0_base[1] = NAN;
                   tmpY1_base[0] = 0.0;
                   tmpY1_base[1] = 0.0;
                   break;
