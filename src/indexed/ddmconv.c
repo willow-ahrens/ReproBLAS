@@ -8,17 +8,17 @@
 
 void ddpd(double* a, double b) {
   (void)ddpd;
-  double bv;
+  double q;
   double s1, s2, t1, t2;
 
   /* Add two hi words. */
   s1 = a[0] + b;
-  bv = s1 - a[0];
-  s2 = ((b - bv) + (a[0] - (s1 - bv)));
+  q = s1 - a[0];
+  s2 = ((b - q) + (a[0] - (s1 - q)));
 
   t1 = a[1] + s2;
-  bv = t1 - a[1];
-  t2 = ((s2 - bv) + (a[1] - (t1 - bv)));
+  q = t1 - a[1];
+  t2 = ((s2 - q) + (a[1] - (t1 - q)));
 
   s2 = t1;
 
@@ -30,6 +30,32 @@ void ddpd(double* a, double b) {
   a[0] = t1 + t2;
   a[1] = t2 - (a[0] - t1);
 }
+
+/* Purpose
+ * =======
+ *
+ * This subroutine computes ddc = dda + ddb.
+ *
+ * Taken from D. H. Bailey's ddfun90.f.
+ *
+ */
+/*
+void ddadd(double dda_l, double dda_t, double ddb_l, double ddb_t,
+           double *ddc_l, double *ddc_t)
+{
+  double e, t1, t2;
+
+  // Compute dda + ddb using Knuth's trick.
+  t1 = dda_l + ddb_l;
+  e = t1 - dda_l;
+  t2 = ((ddb_l - e) + (dda_l - (t1 - e))) + dda_t + ddb_t;
+
+  // The result is t1 + t2, after normalization.
+  *ddc_l = t1 + t2;
+  *ddc_t = t2 - (*ddc_l - t1);
+
+}
+*/
 
 /**
  * @internal

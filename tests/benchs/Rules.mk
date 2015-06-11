@@ -5,7 +5,11 @@ TARGETS := bench_damax$(EXE) bench_damaxm$(EXE) \
            bench_rcdotc$(EXE) bench_rcdotu$(EXE) bench_rcsum$(EXE) bench_rscasum$(EXE) bench_rscnrm2$(EXE) \
            bench_rdasum$(EXE) bench_rddot$(EXE) bench_rdnrm2$(EXE) bench_rdsum$(EXE) \
            bench_rsasum$(EXE) bench_rsdot$(EXE) bench_rsnrm2$(EXE) bench_rssum$(EXE) \
-           bench_rzdotc$(EXE) bench_rzdotu$(EXE) bench_rzsum$(EXE) bench_rdzasum$(EXE) bench_rdznrm2$(EXE)
+           bench_rzdotc$(EXE) bench_rzdotu$(EXE) bench_rzsum$(EXE) bench_rdzasum$(EXE) bench_rdznrm2$(EXE) \
+           bench_ddiconv$(EXE) \
+           bench_zziconv$(EXE) \
+           bench_ssiconv$(EXE) \
+           bench_cciconv$(EXE)
 
 ifneq ($(BLAS),)
 TARGETS += bench_dasum$(EXE) bench_ddot$(EXE) bench_dnrm2$(EXE) \
@@ -19,11 +23,13 @@ SUBDIRS :=
 
 bench_camax$(EXE)_DEPS = $$(LIBTEST) $$(LIBINDEXEDBLAS) bench_camax.o
 bench_camaxm$(EXE)_DEPS = $$(LIBTEST) $$(LIBINDEXEDBLAS) bench_camaxm.o
+bench_cciconv$(EXE)_DEPS = $$(LIBTEST) $$(LIBINDEXEDBLAS) bench_cciconv.o
 bench_cdotc$(EXE)_DEPS = $$(LIBTEST) bench_cdotc.o
 bench_cdotu$(EXE)_DEPS = $$(LIBTEST) bench_cdotu.o
 bench_damax$(EXE)_DEPS = $$(LIBTEST) $$(LIBINDEXEDBLAS) bench_damax.o
 bench_damaxm$(EXE)_DEPS = $$(LIBTEST) $$(LIBINDEXEDBLAS) bench_damaxm.o
 bench_dasum$(EXE)_DEPS = $$(LIBTEST) bench_dasum.o
+bench_ddiconv$(EXE)_DEPS = $$(LIBTEST) $$(LIBINDEXEDBLAS) bench_ddiconv.o
 bench_ddot$(EXE)_DEPS = $$(LIBTEST) bench_ddot.o
 bench_dnrm2$(EXE)_DEPS = $$(LIBTEST) bench_dnrm2.o
 bench_dzasum$(EXE)_DEPS = $$(LIBTEST) bench_dzasum.o
@@ -57,10 +63,12 @@ bench_scasum$(EXE)_DEPS = $$(LIBTEST) bench_scasum.o
 bench_scnrm2$(EXE)_DEPS = $$(LIBTEST) bench_scnrm2.o
 bench_sdot$(EXE)_DEPS = $$(LIBTEST) bench_sdot.o
 bench_snrm2$(EXE)_DEPS = $$(LIBTEST) bench_snrm2.o
+bench_ssiconv$(EXE)_DEPS = $$(LIBTEST) $$(LIBINDEXEDBLAS) bench_ssiconv.o
 bench_zamax$(EXE)_DEPS = $$(LIBTEST) $$(LIBINDEXEDBLAS) bench_zamax.o
 bench_zamaxm$(EXE)_DEPS = $$(LIBTEST) $$(LIBINDEXEDBLAS) bench_zamaxm.o
 bench_zdotc$(EXE)_DEPS = $$(LIBTEST) bench_zdotc.o
 bench_zdotu$(EXE)_DEPS = $$(LIBTEST) bench_zdotu.o
+bench_zziconv$(EXE)_DEPS = $$(LIBTEST) $$(LIBINDEXEDBLAS) bench_zziconv.o
 
 #bench_rdgemv$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) bench_rdgemv.o
 #bench_prdgemv$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) $$(LIBMPIREPROBLAS) bench_prdgemv.o

@@ -194,6 +194,22 @@ class BenchZDOTUTest(BenchTest):
   name = "ZDOTU"
   executable = "tests/benchs/bench_zdotu"
 
+class BenchDDICONVTest(BenchTest):
+  name = "DDICONV"
+  executable = "tests/benchs/bench_ddiconv"
+
+class BenchZZICONVTest(BenchTest):
+  name = "ZZICONV"
+  executable = "tests/benchs/bench_zziconv"
+
+class BenchSSICONVTest(BenchTest):
+  name = "SSICONV"
+  executable = "tests/benchs/bench_ssiconv"
+
+class BenchCCICONVTest(BenchTest):
+  name = "CCICONV"
+  executable = "tests/benchs/bench_cciconv"
+
 class BenchRDGEMVTest(BenchTest):
   name = "RDGEMV"
   executable = "tests/benchs/bench_rdgemv"
@@ -216,11 +232,13 @@ class BenchPDGEMVTest(BenchTest):
 
 all_benchs = {"bench_camax": (BenchCAMAXTest, ""),\
               "bench_camaxm": (BenchCAMAXMTest, ""),\
+              "bench_cciconv": (BenchCCICONVTest, ""),\
               "bench_cdotc": (BenchCDOTCTest, ""),\
               "bench_cdotu": (BenchCDOTUTest, ""),\
               "bench_damax": (BenchDAMAXTest, ""),\
               "bench_damaxm": (BenchDAMAXMTest, ""),\
               "bench_dasum": (BenchDASUMTest, ""),\
+              "bench_ddiconv": (BenchDDICONVTest, ""),\
               "bench_ddot": (BenchDDOTTest, ""),\
               "bench_dnrm2": (BenchDNRM2Test, ""),\
               "bench_dzasum": (BenchDZASUMTest, ""),\
@@ -236,10 +254,12 @@ all_benchs = {"bench_camax": (BenchCAMAXTest, ""),\
               "bench_scnrm2": (BenchSCNRM2Test, ""),\
               "bench_sdot": (BenchSDOTTest, ""),\
               "bench_snrm2": (BenchSNRM2Test, ""),\
+              "bench_ssiconv": (BenchSSICONVTest, ""),\
               "bench_zamax": (BenchZAMAXTest, ""),\
               "bench_zamaxm": (BenchZAMAXMTest, ""),\
               "bench_zdotc": (BenchZDOTCTest, ""),\
               "bench_zdotu": (BenchZDOTUTest, ""),\
+              "bench_zziconv": (BenchZZICONVTest, ""),\
               "bench_dgemv": (BenchDGEMVTest, ""),\
               "bench_rdgemv": (BenchRDGEMVTest, "")}
 

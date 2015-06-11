@@ -112,7 +112,9 @@ const char *util_mat_fill_descs[] = {"Constant",
                                      "Sine(2pi*(i/n))[drop]",
                                      "Identity"};
 
-#define PI 3.14159265358979323846
+#ifndef M_PI
+  #define M_PI 3.14159265358979323846
+#endif
 
 void util_random_seed(void) {
   struct timeval st;
@@ -1140,13 +1142,13 @@ void util_dvec_fill(int N, double* V, int incV, util_vec_fill_t Fill, double Rea
       for (i = 0; i < N; i++) {
         double t1 = util_drand48();
         double t2 = util_drand48();
-        V[i * incV] = sqrt(-2.0 * log(t1)) * cos(2.0 * PI * t2);
+        V[i * incV] = sqrt(-2.0 * log(t1)) * cos(2.0 * M_PI * t2);
       }
       break;
     case util_Vec_Sine_Drop:
     case util_Vec_Sine:
       for (i = 0; i < (N + 1)/2; i++) {
-        V[i*incV] = sin(2.0 * PI * ((double)i / (double)N));
+        V[i*incV] = sin(2.0 * M_PI * ((double)i / (double)N));
       }
       V[0] = 0.0;
       for (; i < N; i++) {
@@ -1324,13 +1326,13 @@ void util_svec_fill(int N, float* V, int incV, util_vec_fill_t Fill, float RealS
       for (i = 0; i < N; i++) {
         double t1 = util_drand48();
         double t2 = util_drand48();
-        V[i * incV] = (float)(sqrt(-2.0 * log(t1)) * cos(2.0 * PI * t2));
+        V[i * incV] = (float)(sqrt(-2.0 * log(t1)) * cos(2.0 * M_PI * t2));
       }
       break;
     case util_Vec_Sine_Drop:
     case util_Vec_Sine:
       for (i = 0; i < (N + 1)/2; i++) {
-        V[i*incV] = (float)sin(2.0 * PI * ((double)i / (double)N));
+        V[i*incV] = (float)sin(2.0 * M_PI * ((double)i / (double)N));
       }
       V[0] = 0.0;
       for (; i < N; i++) {
