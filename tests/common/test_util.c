@@ -25,7 +25,7 @@ const char *util_vec_fill_names[] = {"constant",
                                      "sine",
                                      "small+grow*big",
                                      "small+rand*big",
-                                     "rand_cond3",
+                                     "rand_cond",
                                      "constant[drop]",
                                      "rand[drop]",
                                      "2*rand-1[drop]",
@@ -50,7 +50,7 @@ const char *util_vec_fill_descs[] = {"Constant",
                                      "Sine(2pi*(i/n))",
                                      "Small+(i/n)*Big",
                                      "Small+Rand*Big",
-                                     "RandomConditioned(10**3)",
+                                     "RandomConditioned",
                                      "Constant[drop]",
                                      "Random[drop]",
                                      "2*Random-1[drop]",
@@ -103,7 +103,7 @@ const char *util_mat_fill_descs[] = {"Constant",
                                      "Sine(2pi*(i/n))",
                                      "Small+(i/n)*Big",
                                      "Small+Rand*Big",
-                                     "RandomConditioned(10**3)",
+                                     "RandomConditioned",
                                      "Constant[drop]",
                                      "Random[drop]",
                                      "2*Random-1[drop]",
@@ -124,19 +124,16 @@ void util_random_seed(void) {
 
 
 double util_drand48(){
-  unsigned long l = 0;
   int i;
   int r;
-  for(i = 0; i < 4; i++){
+  double r48 = 0.0;
+  for(i = 0; i < 6; i++){
     do{
-      //TODO more randomness
       r = rand();
     }while(r >= (RAND_MAX/256)*256);
-    l <<= 8;
-    l += r % 256;
+    r48 += ((double)(r % 256)) * ldexp(0.5, i * -8 - 7);
   }
-  double ret =  ((double)l)/ldexp(0.5, 33);
-  return ret;
+  return r48;
 }
 
 void util_ddpd(double* a, double b) {
@@ -239,8 +236,8 @@ int util_scompare(void *a, void *b, util_comp_t comp){
     case util_Decreasing:
       return -1 * util_scompare(a, b, util_Increasing);
     case util_Increasing_Magnitude:
-      a_prime = fabs(*((float*)a));
-      b_prime = fabs(*((float*)b));
+      a_prime = fabsf(*((float*)a));
+      b_prime = fabsf(*((float*)b));
       return util_scompare(&a_prime, &b_prime, util_Increasing);
     case util_Decreasing_Magnitude:
       return -1 * util_scompare(a, b, util_Increasing_Magnitude);
@@ -261,8 +258,8 @@ int util_zcompare(void *a, void *b, util_comp_t comp){
     case util_Decreasing:
       return -1 * util_zcompare(a, b, util_Increasing);
     case util_Increasing_Magnitude:
-      a_prime = cabs(*((double complex*)a));
-      b_prime = cabs(*((double complex*)b));
+      a_prime = fabs(((double*)a)[0]) + fabs(((double*)a)[1]);
+      b_prime = fabs(((double*)b)[0]) + fabs(((double*)b)[1]);
       return util_dcompare(&a_prime, &b_prime, util_Increasing);
     case util_Decreasing_Magnitude:
       return -1 * util_zcompare(a, b, util_Increasing_Magnitude);
@@ -283,8 +280,8 @@ int util_ccompare(void *a, void *b, util_comp_t comp){
     case util_Decreasing:
       return -1 * util_ccompare(a, b, util_Increasing);
     case util_Increasing_Magnitude:
-      a_prime = cabsf(*((float complex*)a));
-      b_prime = cabsf(*((float complex*)b));
+      a_prime = fabsf(((float*)a)[0]) + fabsf(((float*)a)[1]);
+      b_prime = fabsf(((float*)b)[0]) + fabsf(((float*)b)[1]);
       return util_scompare(&a_prime, &b_prime, util_Increasing);
     case util_Decreasing_Magnitude:
       return -1 * util_ccompare(a, b, util_Increasing_Magnitude);
@@ -294,34 +291,45 @@ int util_ccompare(void *a, void *b, util_comp_t comp){
   }
 }
 
-static void sort(int start, int N, compare_func compare, void *compare_data, swap_func swap, void *swap_data) {
+/**
+ * @brief a quicksort using the extra permutation infastructure that I implemented.
+ *
+ * @author Peter Ahrens
+ * @author Logic lovingly stolen from Jonathan Shewchuk's CS61B notes from 2013
+ */
+static void quicksort(int low, int high, compare_func compare, void *compare_data, swap_func swap, void *swap_data) {
   int i, j;
 
-  if (N <= 1) {
+  if (low >= high) {
     return;
   }
 
-  i = (rand() % N);
+  i = low + (rand() % (high - low));
 
-  swap(i, N - 1, swap_data); //pivot rests at position N - 1
+  swap(i, high, swap_data);
 
-  i = start - 1;
-  j = N - 1;
-  while (i < j) {
+  i = low - 1;
+  j = high;
+  do{
     do {
       i++;
-    } while (compare(i, N - 1, compare_data) > 0);
+    } while (compare(i, high, compare_data) < 0);
     do {
       j--;
-    } while (compare(j, N - 1, compare_data) < 0 && i < j);
+    } while (compare(j, high, compare_data) > 0 && j > low);
 
     if (i < j) {
       swap(i, j, swap_data);
     }
-  }
-  sort(0, i, compare, compare_data, swap, swap_data);
-  swap(i, N - 1, swap_data);
-  sort(i + 1, N - i - 1, compare, compare_data, swap, swap_data);
+  }while (i < j);
+
+  swap(i, high, swap_data);
+  quicksort(low, i - 1, compare, compare_data, swap, swap_data);
+  quicksort(i + 1, high, compare, compare_data, swap, swap_data);
+}
+
+static void sort(int N, compare_func compare, void *compare_data, swap_func swap, void *swap_data) {
+  quicksort(0, N - 1, compare, compare_data, swap, swap_data);
 }
 
 static void elem_swap(void *a, void *b, size_t elem_size){
@@ -481,7 +489,7 @@ void util_dvec_sort(int N, double *V, int incV, int *P, int incP, util_comp_t co
                                      .elem_size    = sizeof(double),
                                      .elem_compare = util_dcompare,
                                      .comp         = comp};
-  sort(0, N, &vec_compare, &compare_data, &vec_swap, &swap_data);
+  sort(N, &vec_compare, &compare_data, &vec_swap, &swap_data);
 }
 
 void util_svec_sort(int N, float *V, int incV, int *P, int incP, util_comp_t comp){
@@ -495,7 +503,7 @@ void util_svec_sort(int N, float *V, int incV, int *P, int incP, util_comp_t com
                                      .elem_size    = sizeof(float),
                                      .elem_compare = util_scompare,
                                      .comp         = comp};
-  sort(0, N, &vec_compare, &compare_data, &vec_swap, &swap_data);
+  sort(N, &vec_compare, &compare_data, &vec_swap, &swap_data);
 }
 
 void util_zvec_sort(int N, double complex *V, int incV, int *P, int incP, util_comp_t comp){
@@ -509,7 +517,7 @@ void util_zvec_sort(int N, double complex *V, int incV, int *P, int incP, util_c
                                      .elem_size    = sizeof(double complex),
                                      .elem_compare = util_zcompare,
                                      .comp         = comp};
-  sort(0, N, &vec_compare, &compare_data, &vec_swap, &swap_data);
+  sort(N, &vec_compare, &compare_data, &vec_swap, &swap_data);
 }
 
 void util_cvec_sort(int N, float complex *V, int incV, int *P, int incP, util_comp_t comp){
@@ -523,7 +531,7 @@ void util_cvec_sort(int N, float complex *V, int incV, int *P, int incP, util_co
                                      .elem_size    = sizeof(float complex),
                                      .elem_compare = util_ccompare,
                                      .comp         = comp};
-  sort(0, N, &vec_compare, &compare_data, &vec_swap, &swap_data);
+  sort(N, &vec_compare, &compare_data, &vec_swap, &swap_data);
 }
 
 void util_dmat_row_sort(char Order, char TransA, int M, int N, double *A, int lda, int *P, int incP, util_comp_t comp, int col){
@@ -546,7 +554,7 @@ void util_dmat_row_sort(char Order, char TransA, int M, int N, double *A, int ld
                                          .elem_compare = util_dcompare,
                                          .comp         = comp,
                                          .col          = col};
-  sort(0, mat_row_permute_size(Order, TransA, M, N), &mat_row_compare, &compare_data, &mat_row_swap, &swap_data);
+  sort(mat_row_permute_size(Order, TransA, M, N), &mat_row_compare, &compare_data, &mat_row_swap, &swap_data);
 }
 
 void util_smat_row_sort(char Order, char TransA, int M, int N, float *A, int lda, int *P, int incP, util_comp_t comp, int col){
@@ -569,7 +577,7 @@ void util_smat_row_sort(char Order, char TransA, int M, int N, float *A, int lda
                                          .elem_compare = util_scompare,
                                          .comp         = comp,
                                          .col          = col};
-  sort(0, mat_row_permute_size(Order, TransA, M, N), &mat_row_compare, &compare_data, &mat_row_swap, &swap_data);
+  sort(mat_row_permute_size(Order, TransA, M, N), &mat_row_compare, &compare_data, &mat_row_swap, &swap_data);
 }
 
 void util_zmat_row_sort(char Order, char TransA, int M, int N, double complex *A, int lda, int *P, int incP, util_comp_t comp, int col){
@@ -592,7 +600,7 @@ void util_zmat_row_sort(char Order, char TransA, int M, int N, double complex *A
                                          .elem_compare = util_zcompare,
                                          .comp         = comp,
                                          .col          = col};
-  sort(0, mat_row_permute_size(Order, TransA, M, N), &mat_row_compare, &compare_data, &mat_row_swap, &swap_data);
+  sort(mat_row_permute_size(Order, TransA, M, N), &mat_row_compare, &compare_data, &mat_row_swap, &swap_data);
 }
 
 void util_cmat_row_sort(char Order, char TransA, int M, int N, float complex *A, int lda, int *P, int incP, util_comp_t comp, int col){
@@ -615,7 +623,7 @@ void util_cmat_row_sort(char Order, char TransA, int M, int N, float complex *A,
                                          .elem_compare = util_ccompare,
                                          .comp         = comp,
                                          .col          = col};
-  sort(0, mat_row_permute_size(Order, TransA, M, N), &mat_row_compare, &compare_data, &mat_row_swap, &swap_data);
+  sort(mat_row_permute_size(Order, TransA, M, N), &mat_row_compare, &compare_data, &mat_row_swap, &swap_data);
 }
 
 static void reverse(int N, swap_func swap, void *swap_data) {
@@ -1176,16 +1184,16 @@ void util_dvec_fill(int N, double* V, int incV, util_vec_fill_t Fill, double Rea
         V[i*incV] = -1 * V[(i - N/2)*incV];
       }
       break;
-    case util_Vec_Rand_Cond3:
+    case util_Vec_Rand_Cond:
       {
-        double cond = 1e3;
+        double cond = RealScale;
         int quart = (N / 8) & ~1;
         int mid = N - quart * 2;
         double c1, c2, c, f;
         int i;
 
         util_dvec_fill(quart / 2, V, incV, util_Vec_Rand, 1.0e-10, 0.0);
-        util_dvec_fill(quart / 2, V + incV*(quart / 2), incV, util_Vec_Rand, 1, 0.0);
+        util_dvec_fill(quart / 2, V + (quart / 2)*incV, incV, util_Vec_Rand, 1, 0.0);
         util_dvec_fill(quart / 8, V, incV, util_Vec_Rand, 1e-20, 0.0);
         c1 = 0.0;
         for (i = 0; i < quart; i++) {
@@ -1209,7 +1217,7 @@ void util_dvec_fill(int N, double* V, int incV, util_vec_fill_t Fill, double Rea
 
         util_dvec_shuffle(N, V, incV, NULL, 1);
       }
-      break;
+      return; //don't scale the conditioned numbers
     case util_Vec_Small_Plus_Increasing_Big:
       for (i = 0; i < N; i++) {
         V[i*incV] = small + (big - small) * i / N;
@@ -1360,9 +1368,9 @@ void util_svec_fill(int N, float* V, int incV, util_vec_fill_t Fill, float RealS
         V[i*incV] = -1 * V[(i - N/2)*incV];
       }
       break;
-    case util_Vec_Rand_Cond3:
+    case util_Vec_Rand_Cond:
       {
-        double cond = 1e3;
+        double cond = RealScale;
         int quart = (N / 8) & ~1;
         int mid = N - quart * 2;
         double c1, c2, c, f;
@@ -1374,7 +1382,7 @@ void util_svec_fill(int N, float* V, int incV, util_vec_fill_t Fill, float RealS
         c1 = 0.0;
         for (i = 0; i < quart; i++) {
           c1 += V[i*incV];
-          V[i + quart] = -V[i*incV];
+          V[(i + quart)*incV] = -V[i*incV];
         }
         util_svec_fill(quart, V + 2 * quart * incV, incV, util_Vec_Rand, 1.0, 0.0);
         util_svec_fill(mid - quart, V + 3 * quart * incV, incV, util_Vec_Rand, 1e-8, 0.0);
@@ -1393,7 +1401,7 @@ void util_svec_fill(int N, float* V, int incV, util_vec_fill_t Fill, float RealS
 
         util_svec_shuffle(N, V, incV, NULL, 1);
       }
-      break;
+      return; //don't scale the conditioned numbers
     case util_Vec_Small_Plus_Increasing_Big:
       for (i = 0; i < N; i++) {
         V[i*incV] = small + (big - small) * i / N;
@@ -1428,6 +1436,11 @@ void util_svec_fill(int N, float* V, int incV, util_vec_fill_t Fill, float RealS
 
 void util_zvec_fill(int N, double complex* V, int incV, util_vec_fill_t Fill, double RealScale, double ImagScale) {
   int i;
+  if(Fill == util_Vec_Rand_Cond){
+    util_dvec_fill(N, (double*)V, incV * 2, Fill, RealScale, 1.0);
+    util_dvec_fill(N, (double*)V + 1, incV * 2, Fill, ImagScale, 1.0);
+    return;
+  }
   util_dvec_fill(N, (double*)V, incV * 2, Fill, 1.0, 0.0);
   switch(Fill){
     case util_Vec_Rand_Drop:
@@ -1455,7 +1468,7 @@ void util_zvec_fill(int N, double complex* V, int incV, util_vec_fill_t Fill, do
     case util_Vec_Normal:
     case util_Vec_Sine_Drop:
     case util_Vec_Sine:
-    case util_Vec_Rand_Cond3:
+    case util_Vec_Rand_Cond:
     case util_Vec_Small_Plus_Increasing_Big:
       util_dvec_fill(N, (double*)V + 1, incV * 2, util_Vec_Constant, 0.0, 1.0);
       break;
@@ -1488,6 +1501,11 @@ void util_zvec_fill(int N, double complex* V, int incV, util_vec_fill_t Fill, do
 
 void util_cvec_fill(int N, float complex* V, int incV, util_vec_fill_t Fill, float RealScale, float ImagScale) {
   int i;
+  if(Fill == util_Vec_Rand_Cond){
+    util_svec_fill(N, (float*)V, incV * 2, Fill, RealScale, 1.0);
+    util_svec_fill(N, (float*)V + 1, incV * 2, Fill, ImagScale, 1.0);
+    return;
+  }
   util_svec_fill(N, (float*)V, incV * 2, Fill, 1.0, 1.0);
   switch(Fill){
     case util_Vec_Rand_Drop:
@@ -1515,7 +1533,7 @@ void util_cvec_fill(int N, float complex* V, int incV, util_vec_fill_t Fill, flo
     case util_Vec_Normal:
     case util_Vec_Sine_Drop:
     case util_Vec_Sine:
-    case util_Vec_Rand_Cond3:
+    case util_Vec_Rand_Cond:
     case util_Vec_Small_Plus_Increasing_Big:
       util_svec_fill(N, (float*)V + 1, incV * 2, util_Vec_Constant, 0.0, 0.0);
       break;
@@ -1622,8 +1640,8 @@ void util_dmat_fill(char Order, char TransA, int M, int N, double* A, int lda, u
     case util_Mat_Row_Sine:
       row_fill = util_Vec_Sine;
       break;
-    case util_Mat_Row_Rand_Cond3:
-      row_fill = util_Vec_Rand_Cond3;
+    case util_Mat_Row_Rand_Cond:
+      row_fill = util_Vec_Rand_Cond;
       break;
     case util_Mat_Row_Small_Plus_Increasing_Big:
       row_fill = util_Vec_Small_Plus_Increasing_Big;
@@ -1745,8 +1763,8 @@ void util_smat_fill(char Order, char TransA, int M, int N, float* A, int lda, ut
     case util_Mat_Row_Sine:
       row_fill = util_Vec_Sine;
       break;
-    case util_Mat_Row_Rand_Cond3:
-      row_fill = util_Vec_Rand_Cond3;
+    case util_Mat_Row_Rand_Cond:
+      row_fill = util_Vec_Rand_Cond;
       break;
     case util_Mat_Row_Small_Plus_Increasing_Big:
       row_fill = util_Vec_Small_Plus_Increasing_Big;
@@ -1868,8 +1886,8 @@ void util_zmat_fill(char Order, char TransA, int M, int N, double complex* A, in
     case util_Mat_Row_Sine:
       row_fill = util_Vec_Sine;
       break;
-    case util_Mat_Row_Rand_Cond3:
-      row_fill = util_Vec_Rand_Cond3;
+    case util_Mat_Row_Rand_Cond:
+      row_fill = util_Vec_Rand_Cond;
       break;
     case util_Mat_Row_Small_Plus_Increasing_Big:
       row_fill = util_Vec_Small_Plus_Increasing_Big;
@@ -1991,8 +2009,8 @@ void util_cmat_fill(char Order, char TransA, int M, int N, float complex* A, int
     case util_Mat_Row_Sine:
       row_fill = util_Vec_Sine;
       break;
-    case util_Mat_Row_Rand_Cond3:
-      row_fill = util_Vec_Rand_Cond3;
+    case util_Mat_Row_Rand_Cond:
+      row_fill = util_Vec_Rand_Cond;
       break;
     case util_Mat_Row_Small_Plus_Increasing_Big:
       row_fill = util_Vec_Small_Plus_Increasing_Big;

@@ -50,7 +50,7 @@ bench:
 	$(CALL_PYTHON) $(TOP)/tests/benchs/bench.py --verbose $(VERBOSE)
 
 acc:
-	$(CALL_PYTHON) $(TOP)/tests/accs/acc.py --verbose $(VERBOSE)
+	$(CALL_PYTHON) $(TOP)/tests/accs/acc.py --runmode parallel --verbose $(VERBOSE)
 
 doc:
 	cd $(TOP); rm -rf doc/*; doxygen config.dox; cd doc/latex;make

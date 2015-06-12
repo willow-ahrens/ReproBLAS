@@ -11,6 +11,8 @@ class AccTest(harness.MetricTest):
   def parse_output(self):
     if self.attribute == "ratio":
       self.result = self.output["ratio"]/self.output["trials"]
+    elif self.attribute == "ratio(e)":
+      self.result = self.output["ratio"]/(self.output["trials"] * self.output["e"])
 
 class AccCDOTCTest(AccTest):
   name = "CDOTC"

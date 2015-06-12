@@ -60,6 +60,7 @@ int acc_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealSca
   double_indexed *ires;
   double ref;
   double ratio = 0.0;
+  double s[2];
 
   acc_rdsum_options_initialize();
   opt_eval_option(argc, argv, &fold);
@@ -76,8 +77,9 @@ int acc_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealSca
     res = ddiconv(fold._int.value, ires);
     free(ires);
 
-    util_dvec_sort(N, (double*)X, incX, NULL, 1, util_Decreasing_Magnitude);
-    double s[2] = {0.0, 0.0};
+    util_dvec_sort(N, (double*)X, incX, NULL, 0, util_Decreasing_Magnitude);
+    s[0] = 0.0;
+    s[1] = 0.0;
     for(j = 0; j < N; j++){
       util_ddpd(s, X[j * incX]);
     }
