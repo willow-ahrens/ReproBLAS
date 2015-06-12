@@ -60,7 +60,6 @@ int acc_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealSca
   float_complex_indexed *ires;
   double s;
   float ref;
-  float ratio = 0.0;
 
   acc_rcsum_options_initialize();
   opt_eval_option(argc, argv, &fold);
@@ -68,6 +67,7 @@ int acc_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealSca
   util_random_seed();
 
   float complex *X = util_cvec_alloc(N, incX);
+  float *ratios = util_svec_alloc(2 * N, 1);
 
   for(i = 0; i < trials; i++){
     util_cvec_fill(N, X, incX, FillX, RealScaleX, ImagScaleX);
@@ -83,7 +83,7 @@ int acc_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealSca
       s += crealf(X[j * incX]);
     }
     ref = s;
-    ratio += fabsf(crealf(res) - ref)/MAX(fabsf(ref), FLT_MIN);
+    ratios[2 * i] = fabsf(crealf(res) - ref)/MAX(fabsf(ref), FLT_MIN);
 
     util_svec_sort(N, ((float*)X) + 1, incX * 2, NULL, 0, util_Decreasing_Magnitude);
     s = 0.0;
@@ -91,14 +91,18 @@ int acc_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealSca
       s += cimagf(X[j * incX]);
     }
     ref = s;
-    ratio += fabsf(cimagf(res) - ref)/MAX(fabsf(ref), FLT_MIN);
+    ratios[2 * i + 1] = fabsf(cimagf(res) - ref)/MAX(fabsf(ref), FLT_MIN);
   }
 
-  metric_load_float("ratio", ratio);
+  util_svec_sort(2 * N, ratios, 1, NULL, 0, util_Increasing);
+  metric_load_float("min_ratio", ratios[0]);
+  metric_load_float("med_ratio", ratios[N]);
+  metric_load_float("max_ratio", ratios[2 * N - 1]);
   metric_load_float("e", FLT_EPSILON);
   metric_load_double("trials", (double)trials);
   metric_dump();
 
   free(X);
+  free(ratios);
   return rc;
 }

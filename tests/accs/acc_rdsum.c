@@ -59,7 +59,6 @@ int acc_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealSca
   double res = 0.0;
   double_indexed *ires;
   double ref;
-  double ratio = 0.0;
   double s[2];
 
   acc_rdsum_options_initialize();
@@ -68,6 +67,7 @@ int acc_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealSca
   util_random_seed();
 
   double *X = util_dvec_alloc(N, incX);
+  double *ratios = util_dvec_alloc(N, 1);
 
   for(i = 0; i < trials; i++){
     util_dvec_fill(N, X, incX, FillX, RealScaleX, ImagScaleX);
@@ -84,10 +84,13 @@ int acc_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealSca
       util_ddpd(s, X[j * incX]);
     }
     ref = s[0] + s[1];
-    ratio += fabs(res - ref)/MAX(fabs(ref), DBL_MIN);
+    ratios[i] = fabs(res - ref)/MAX(fabs(ref), DBL_MIN);
   }
 
-  metric_load_double("ratio", ratio);
+  util_dvec_sort(N, ratios, 1, NULL, 0, util_Increasing);
+  metric_load_double("min_ratio", ratios[0]);
+  metric_load_double("med_ratio", ratios[N/2]);
+  metric_load_double("max_ratio", ratios[N - 1]);
   metric_load_double("e", DBL_EPSILON);
   metric_load_double("trials", (double)trials);
   metric_dump();
