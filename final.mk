@@ -29,7 +29,7 @@ install-doc: $(call get_subtree,INSTALL_DOC,$(TOP))
 	$(INSTALL) -d $(DOC_DIR)
 	$(INSTALL_DATA) -t $(DOC_DIR) $^
 
-.PHONY: check bench reference tune doc excise update
+.PHONY: check bench acc reference tune doc excise update
 
 # tunes
 tune:# update
@@ -48,6 +48,9 @@ reference:
 
 bench:
 	$(CALL_PYTHON) $(TOP)/tests/benchs/bench.py --verbose $(VERBOSE)
+
+acc:
+	$(CALL_PYTHON) $(TOP)/tests/accs/acc.py --verbose $(VERBOSE)
 
 doc:
 	cd $(TOP); rm -rf doc/*; doxygen config.dox; cd doc/latex;make

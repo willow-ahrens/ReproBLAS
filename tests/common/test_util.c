@@ -139,6 +139,27 @@ double util_drand48(){
   return ret;
 }
 
+void util_ddpd(double* a, double b) {
+  double q;
+  double s1, s2, t1, t2;
+
+  s1 = a[0] + b;
+  q = s1 - a[0];
+  s2 = ((b - q) + (a[0] - (s1 - q)));
+
+  t1 = a[1] + s2;
+  q = t1 - a[1];
+  t2 = ((s2 - q) + (a[1] - (t1 - q)));
+
+  s2 = t1;
+
+  t1 = s1 + s2;
+  t2 += s2 - (t1 - s1);
+
+  a[0] = t1 + t2;
+  a[1] = t2 - (a[0] - t1);
+}
+
 int util_dsoftequals(double a, double b, double bound){
   if(isnan(a) && isnan(b)){
     return 1;

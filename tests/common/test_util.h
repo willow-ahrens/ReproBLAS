@@ -68,6 +68,8 @@ extern const char *util_mat_fill_descs[];
 
 double util_drand48();
 
+void util_ddpd(double* a, double b);
+
 #ifndef MIN
   #define MIN(A, B) (((A) < (B))? (A): (B))
 #endif
@@ -75,6 +77,14 @@ double util_drand48();
 #ifndef MAX
   #define MAX(A, B) (((A) > (B))? (A): (B))
 #endif
+
+#define DDPD(T0, T1, T2, T3, Yl, Yt, X) \
+  T0 = (X); \
+  T1 = Yl + T0; \
+  T2 = T1 - Yl; \
+  T3 = (Yl - (T1 - T2)) + (T0 - T2); \
+  Yl = T1 + T3; \
+  Yt = T3 - (Yl - T1);
 
 int util_dsoftequals(double a, double b, double bound);
 int util_zsoftequals(double complex a, double complex b, double complex bound);
