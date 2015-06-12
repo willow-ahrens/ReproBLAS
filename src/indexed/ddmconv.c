@@ -6,74 +6,19 @@
 
 #include "../common/common.h"
 
-static inline void ddpd(double* a, double b) {
-  (void)ddpd;
-  double q;
-  double s1, s2, t1, t2;
-
-  /* Add two hi words. */
-  s1 = a[0] + b;
-  q = s1 - a[0];
-  s2 = ((b - q) + (a[0] - (s1 - q)));
-
-  t1 = a[1] + s2;
-  q = t1 - a[1];
-  t2 = ((s2 - q) + (a[1] - (t1 - q)));
-
-  s2 = t1;
-
-  /* Renormalize (s1, s2)  to  (t1, s2) */
-  t1 = s1 + s2;
-  t2 += s2 - (t1 - s1);
-
-  /* Renormalize (t1, t2)  */
-  a[0] = t1 + t2;
-  a[1] = t2 - (a[0] - t1);
-}
-
-/* Purpose
- * =======
- *
- * This subroutine computes ddc = dda + ddb.
- *
- * Taken from D. H. Bailey's ddfun90.f.
- *
- */
-/*
-void ddadd(double dda_l, double dda_t, double ddb_l, double ddb_t,
-           double *ddc_l, double *ddc_t)
-{
-  double e, t1, t2;
-
-  // Compute dda + ddb using Knuth's trick.
-  t1 = dda_l + ddb_l;
-  e = t1 - dda_l;
-  t2 = ((ddb_l - e) + (dda_l - (t1 - e))) + dda_t + ddb_t;
-
-  // The result is t1 + t2, after normalization.
-  *ddc_l = t1 + t2;
-  *ddc_t = t2 - (*ddc_l - t1);
-
-}
-*/
-
-/*
-#define DDPD(T0, T1, T2, S, D, x) \
-  T0 = (x); \
-  T1 = S + T0; \
-  T2 = T1 - S; \
-  D += (S - (T1 - T2)) + (T0 - T2); \
-  S = T1;\
-*/
-
-#define DDPD(T0, T1, T2, T3, Yl, Yt, X) \
+#define DDPD(T0, T1, T2, T3, T4, T5, Yl, Yt, X) \
   T0 = (X); \
   T1 = Yl + T0; \
   T2 = T1 - Yl; \
-  T3 = (Yl - (T1 - T2)) + (T0 - T2); \
-  Yl = T1 + T3; \
-  Yt = T3 - (Yl - T1);
-
+  T3 = ((T0 - T2) + (Yl - (T1 - T2))); \
+  T4 = Yt + T3; \
+  T2 = T4 - Yt; \
+  T5 = ((T3 - T2) + (Yt - (T4 - T2))); \
+  T3 = T4; \
+  T4 = T1 + T3; \
+  T5 += T3 - (T4 - T1); \
+  Yl = T4 + T5; \
+  Yt = T5 - (Yl - T4);
 
 /**
  * @internal
@@ -103,7 +48,7 @@ double ddmconv(const int fold, const double* manX, const int incmanX, const doub
   }
 
   //Naive
-  /*
+
   double Y = 0.0;
   double M;
   X_index = dmindex(manX);
@@ -117,7 +62,8 @@ double ddmconv(const int fold, const double* manX, const int incmanX, const doub
     Y += carX[i * inccarX] * (bins[0]/6.0) + (manX[i * incmanX] - bins[0]);
   }
   return Y;
-  */
+
+/*
 
 
   //Note that the following order of summation is in order of decreasing
@@ -125,8 +71,8 @@ double ddmconv(const int fold, const double* manX, const int incmanX, const doub
   //the number of carries equal to 1.
   X_index = dmindex(manX);
   bins = dmbins(X_index);
-  #if ((LDBL_MANT_DIG - DBL_MANT_DIG) > 15 || 1 << (LDBL_MANT_DIG - DBL_MANT_DIG) >= 2 * MAX_FOLD)
-    #if LDBL_MAX_EXP > DBL_MAX_EXP + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2)
+  #if 0 && ((LDBL_MANT_DIG - DBL_MANT_DIG) > 15 || 1 << (LDBL_MANT_DIG - DBL_MANT_DIG) >= 2 * MAX_FOLD)
+    #if 0 && LDBL_MAX_EXP > DBL_MAX_EXP + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2)
       long double Y = 0.0;
       if(X_index == 0){
         Y += (long double)carX[0] * (long double)(bins[0]/6.0) * (long double)DMEXPANSION;
@@ -195,106 +141,59 @@ double ddmconv(const int fold, const double* manX, const int incmanX, const doub
 
     #endif
   #else
-    #if 0
-      double Yl = 0.0;
-      double Yt = 0.0;
-      double t0 = 0.0;
-      double t1 = 0.0;
-      double t2 = 0.0;
-      double t3 = 0.0;
-      double scale_down;
-      double scale_up;
-      int scaled;
-      X_index = dmindex(manX);
-      bins = dmbins(X_index);
-      if(X_index <= (DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2))/DIWIDTH){
-        scale_down = ldexp(0.5, -1 * (DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2 + 1)) + 1);
-        scale_up = ldexp(0.5, DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2 + 1) + 1);
-        scaled = MIN(X_index + fold, (DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2))/DIWIDTH);
-        if(X_index == 0){
-          DDPD(t0, t1, t2, t3, Yl, Yt, carX[0] * ((bins[0]/6.0) * scale_down * DMEXPANSION));
-          if(fold > 1){
-            DDPD(t0, t1, t2, t3, Yl, Yt, carX[inccarX] * ((bins[1]/6.0) * scale_down));
-          }
-          DDPD(t0, t1, t2, t3, Yl, Yt, (manX[0] - bins[0]) * scale_down * DMEXPANSION);
-          i = 2;
-        }else{
-          DDPD(t0, t1, t2, t3, Yl, Yt, carX[0] * ((bins[0]/6.0) * scale_down));
-          i = 1;
+    double Yl = 0.0;
+    double Yt = 0.0;
+    double t0;
+    double t1;
+    double t2;
+    double t3;
+    double t4;
+    double t5;
+    double scale_down;
+    double scale_up;
+    int scaled;
+    X_index = dmindex(manX);
+    bins = dmbins(X_index);
+    if(X_index <= (DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2))/DIWIDTH){
+      scale_down = ldexp(0.5, -1 * (DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2 + 1)) + 1);
+      scale_up = ldexp(0.5, DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2 + 1) + 1);
+      scaled = MIN(X_index + fold, (DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2))/DIWIDTH);
+      if(X_index == 0){
+        DDPD(t0, t1, t2, t3, t4, t5, Yl, Yt, carX[0] * ((bins[0]/6.0) * scale_down * DMEXPANSION));
+        if(fold > 1){
+          DDPD(t0, t1, t2, t3, t4, t5, Yl, Yt, carX[inccarX] * ((bins[1]/6.0) * scale_down));
         }
-        for(; i < scaled && i < fold; i++){
-          DDPD(t0, t1, t2, t3, Yl, Yt, carX[i * inccarX] * ((bins[i]/6.0) * scale_down));
-          DDPD(t0, t1, t2, t3, Yl, Yt, (manX[(i - 1) * incmanX] - bins[i - 1]) * scale_down);
-        }
-        if(i == fold){
-          DDPD(t0, t1, t2, t3, Yl, Yt, (manX[(fold - 1) * incmanX] - bins[fold - 1]) * scale_down);
-          return (Yl + Yt) * scale_up;
-        }
-        Yl *= scale_up;
-        Yt *= scale_up;
-        for(; i < fold; i++){
-          DDPD(t0, t1, t2, t3, Yl, Yt, carX[i * inccarX] * (bins[i]/6.0));
-          DDPD(t0, t1, t2, t3, Yl, Yt, manX[(i - 1) * incmanX] - bins[i - 1]);
-        }
-        DDPD(t0, t1, t2, t3, Yl, Yt, manX[(fold - 1) * incmanX] - bins[fold - 1]);
-        return Yl + Yt;
+        DDPD(t0, t1, t2, t3, t4, t5, Yl, Yt, (manX[0] - bins[0]) * scale_down * DMEXPANSION);
+        i = 2;
       }else{
-        DDPD(t0, t1, t2, t3, Yl, Yt, carX[0] * (bins[0]/6.0));
-        for(i = 1; i < fold; i++){
-          DDPD(t0, t1, t2, t3, Yl, Yt, carX[i * inccarX] * (bins[i]/6.0));
-          DDPD(t0, t1, t2, t3, Yl, Yt, (manX[(i - 1) * incmanX] - bins[i - 1]));
-        }
-        DDPD(t0, t1, t2, t3, Yl, Yt, (manX[(fold - 1) * incmanX] - bins[fold - 1]));
-        return Yl + Yt;
+        DDPD(t0, t1, t2, t3, t4, t5, Yl, Yt, carX[0] * ((bins[0]/6.0) * scale_down));
+        i = 1;
       }
-    #else
-
-      double Y[2] = {0.0, 0.0};
-      double scale_down;
-      double scale_up;
-      int scaled;
-      X_index = dmindex(manX);
-      bins = dmbins(X_index);
-      if(X_index <= (DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2))/DIWIDTH){
-        scale_down = ldexp(0.5, -1 * (DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2 + 1)) + 1);
-        scale_up = ldexp(0.5, DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2 + 1) + 1);
-        scaled = MIN(X_index + fold, (DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2))/DIWIDTH);
-        if(X_index == 0){
-          ddpd(Y, carX[0] * ((bins[0]/6.0) * scale_down * DMEXPANSION));
-          if(fold > 1){
-            ddpd(Y, carX[inccarX] * ((bins[1]/6.0) * scale_down));
-          }
-          ddpd(Y, (manX[0] - bins[0]) * scale_down * DMEXPANSION);
-          i = 2;
-        }else{
-          ddpd(Y, carX[0] * ((bins[0]/6.0) * scale_down));
-          i = 1;
-        }
-        for(; i < scaled && i < fold; i++){
-          ddpd(Y, carX[i * inccarX] * ((bins[i]/6.0) * scale_down));
-          ddpd(Y, (manX[(i - 1) * incmanX] - bins[i - 1]) * scale_down);
-        }
-        if(i == fold){
-          ddpd(Y, (manX[(fold - 1) * incmanX] - bins[fold - 1]) * scale_down);
-          return (Y[0] + Y[1]) * scale_up;
-        }
-        Y[0] *= scale_up;
-        Y[1] *= scale_up;
-        for(; i < fold; i++){
-          ddpd(Y, carX[i * inccarX] * (bins[i]/6.0));
-          ddpd(Y, manX[(i - 1) * incmanX] - bins[i - 1]);
-        }
-        ddpd(Y, manX[(fold - 1) * incmanX] - bins[fold - 1]);
-        return Y[0] + Y[1];
-      }else{
-        ddpd(Y, carX[0] * (bins[0]/6.0));
-        for(i = 1; i < fold; i++){
-          ddpd(Y, carX[i * inccarX] * (bins[i]/6.0));
-          ddpd(Y, (manX[(i - 1) * incmanX] - bins[i - 1]));
-        }
-        ddpd(Y, (manX[(fold - 1) * incmanX] - bins[fold - 1]));
-        return Y[0] + Y[1];
+      for(; i < scaled && i < fold; i++){
+        DDPD(t0, t1, t2, t3, t4, t5, Yl, Yt, carX[i * inccarX] * ((bins[i]/6.0) * scale_down));
+        DDPD(t0, t1, t2, t3, t4, t5, Yl, Yt, (manX[(i - 1) * incmanX] - bins[i - 1]) * scale_down);
       }
-    #endif
+      if(i == fold){
+        DDPD(t0, t1, t2, t3, t4, t5, Yl, Yt, (manX[(fold - 1) * incmanX] - bins[fold - 1]) * scale_down);
+        return (Yl + Yt) * scale_up;
+      }
+      Yl *= scale_up;
+      Yt *= scale_up;
+      for(; i < fold; i++){
+        DDPD(t0, t1, t2, t3, t4, t5, Yl, Yt, carX[i * inccarX] * (bins[i]/6.0));
+        DDPD(t0, t1, t2, t3, t4, t5, Yl, Yt, manX[(i - 1) * incmanX] - bins[i - 1]);
+      }
+      DDPD(t0, t1, t2, t3, t4, t5, Yl, Yt, manX[(fold - 1) * incmanX] - bins[fold - 1]);
+      return Yl + Yt;
+    }else{
+      DDPD(t0, t1, t2, t3, t4, t5, Yl, Yt, carX[0] * (bins[0]/6.0));
+      for(i = 1; i < fold; i++){
+        DDPD(t0, t1, t2, t3, t4, t5, Yl, Yt, carX[i * inccarX] * (bins[i]/6.0));
+        DDPD(t0, t1, t2, t3, t4, t5, Yl, Yt, (manX[(i - 1) * incmanX] - bins[i - 1]));
+      }
+      DDPD(t0, t1, t2, t3, t4, t5, Yl, Yt, (manX[(fold - 1) * incmanX] - bins[fold - 1]));
+      return Yl + Yt;
+    }
   #endif
+  */
 }
