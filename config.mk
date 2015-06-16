@@ -89,6 +89,3 @@ PARAMS = $(TOP)/src/params.json
 # you'll see just indication of what is being compiled or run (without details
 # about options))
 #VERBOSE := true
-
-# select coloring (uncomment if you don't like coloring of the output)
-#COLOR_TTY := false

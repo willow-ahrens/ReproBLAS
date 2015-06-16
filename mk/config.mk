@@ -180,3 +180,6 @@ COG = $(CALL_PYTHON) -m scripts.cogapp $(COGFLAGS)
 
 # Create cog compiler
 PSEUDOCOG = $(TOP)/scripts/pseudocog.sh
+
+# select coloring (uncomment if you don't like coloring of the output)
+COLOR_TTY := false
