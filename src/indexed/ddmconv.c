@@ -69,8 +69,8 @@ double ddmconv(const int fold, const double* manX, const int incmanX, const doub
     //the number of carries equal to 1.
     X_index = dmindex(manX);
     bins = dmbins(X_index);
-    #if ((LDBL_MANT_DIG - DBL_MANT_DIG) > 15 || 1 << (LDBL_MANT_DIG - DBL_MANT_DIG) >= 2 * MAX_FOLD)
-      #if LDBL_MAX_EXP > DBL_MAX_EXP + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2)
+    #if 0 && ((LDBL_MANT_DIG - DBL_MANT_DIG) > 15 || 1 << (LDBL_MANT_DIG - DBL_MANT_DIG) >= 2 * MAX_FOLD)
+      #if 0 && LDBL_MAX_EXP > DBL_MAX_EXP + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2)
         long double Y = 0.0;
         if(X_index == 0){
           Y += (long double)carX[0] * (long double)(bins[0]/6.0) * (long double)DMEXPANSION;
@@ -91,7 +91,8 @@ double ddmconv(const int fold, const double* manX, const int incmanX, const doub
         return (double)Y;
 
       #else
-        long double Y = 0.0;
+        double Y = 0.0;
+        //long double Y = 0.0;
         double scale_down;
         double scale_up;
         int scaled;
@@ -121,6 +122,9 @@ double ddmconv(const int fold, const double* manX, const int incmanX, const doub
             return Y * scale_up;
           }
           Y *= scale_up;
+          if(isinf(Y)){
+            return Y;
+          }
           for(; i < fold; i++){
             Y += carX[i * inccarX] * (bins[i]/6.0);
             Y += manX[(i - 1) * incmanX] - bins[i - 1];
@@ -173,6 +177,9 @@ double ddmconv(const int fold, const double* manX, const int incmanX, const doub
         }
         if(i == fold){
           DDPD(t0, t1, t2, t3, t4, t5, Yl, Yt, (manX[(fold - 1) * incmanX] - bins[fold - 1]) * scale_down);
+          return (Yl + Yt) * scale_up;
+        }
+        if(isinf((Yl + Yt) * scale_up)){
           return (Yl + Yt) * scale_up;
         }
         Yl *= scale_up;

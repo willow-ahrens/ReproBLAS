@@ -26,6 +26,8 @@ const char *util_vec_fill_names[] = {"constant",
                                      "small+grow*big",
                                      "small+rand*big",
                                      "rand_cond",
+                                     "N_cond",
+                                     "N_cond+rand",
                                      "constant[drop]",
                                      "rand[drop]",
                                      "2*rand-1[drop]",
@@ -51,6 +53,8 @@ const char *util_vec_fill_descs[] = {"Constant",
                                      "Small+(i/n)*Big",
                                      "Small+Rand*Big",
                                      "RandomConditioned",
+                                     "NConditioned",
+                                     "NConditioned+Rand",
                                      "Constant[drop]",
                                      "Random[drop]",
                                      "2*Random-1[drop]",
@@ -78,6 +82,8 @@ const char *util_mat_fill_names[] = {"constant",
                                      "small+grow*big",
                                      "small+rand*big",
                                      "rand_cond",
+                                     "N_cond",
+                                     "N_cond+rand",
                                      "constant[drop]",
                                      "rand[drop]",
                                      "2*rand-1[drop]",
@@ -104,6 +110,8 @@ const char *util_mat_fill_descs[] = {"Constant",
                                      "Small+(i/n)*Big",
                                      "Small+Rand*Big",
                                      "RandomConditioned",
+                                     "NConditioned",
+                                     "NConditioned+Rand",
                                      "Constant[drop]",
                                      "Random[drop]",
                                      "2*Random-1[drop]",
@@ -121,7 +129,6 @@ void util_random_seed(void) {
   gettimeofday( &st, NULL );
   srand((long)(st.tv_usec + 1e6*st.tv_sec));
 }
-
 
 double util_drand48(){
   int i;
@@ -1218,6 +1225,23 @@ void util_dvec_fill(int N, double* V, int incV, util_vec_fill_t Fill, double Rea
         util_dvec_shuffle(N, V, incV, NULL, 1);
       }
       return; //don't scale the conditioned numbers
+    case util_Vec_N_Cond:
+      {
+        V[0] = -1.0 * N;
+        for(i = 1; i < N; i++){
+          V[i * incV] = 1.0;
+        }
+      }
+      break;
+    case util_Vec_N_Cond_Plus_Rand:
+      {
+        V[0] = -1.0 * N;
+        for(i = 1; i < N - 1; i++){
+          V[i * incV] = 1.0;
+        }
+        V[(N - 1) * incV] = util_drand48();
+      }
+      break;
     case util_Vec_Small_Plus_Increasing_Big:
       for (i = 0; i < N; i++) {
         V[i*incV] = small + (big - small) * i / N;
@@ -1402,6 +1426,23 @@ void util_svec_fill(int N, float* V, int incV, util_vec_fill_t Fill, float RealS
         util_svec_shuffle(N, V, incV, NULL, 1);
       }
       return; //don't scale the conditioned numbers
+    case util_Vec_N_Cond:
+      {
+        V[0] = -1.0 * N;
+        for(i = 1; i < N; i++){
+          V[i * incV] = 1.0;
+        }
+      }
+      break;
+    case util_Vec_N_Cond_Plus_Rand:
+      {
+        V[0] = -1.0 * N;
+        for(i = 1; i < N - 1; i++){
+          V[i * incV] = 1.0;
+        }
+        V[(N - 1) * incV] = util_drand48();
+      }
+      break;
     case util_Vec_Small_Plus_Increasing_Big:
       for (i = 0; i < N; i++) {
         V[i*incV] = small + (big - small) * i / N;
@@ -1445,6 +1486,8 @@ void util_zvec_fill(int N, double complex* V, int incV, util_vec_fill_t Fill, do
   switch(Fill){
     case util_Vec_Rand_Drop:
     case util_Vec_Rand:
+    case util_Vec_N_Cond:
+    case util_Vec_N_Cond_Plus_Rand:
     case util_Vec_2_Times_Rand_Minus_1_Drop:
     case util_Vec_2_Times_Rand_Minus_1:
     case util_Vec_Rand_Plus_Rand_Minus_1_Drop:
@@ -1510,6 +1553,8 @@ void util_cvec_fill(int N, float complex* V, int incV, util_vec_fill_t Fill, flo
   switch(Fill){
     case util_Vec_Rand_Drop:
     case util_Vec_Rand:
+    case util_Vec_N_Cond:
+    case util_Vec_N_Cond_Plus_Rand:
     case util_Vec_2_Times_Rand_Minus_1_Drop:
     case util_Vec_2_Times_Rand_Minus_1:
     case util_Vec_Rand_Plus_Rand_Minus_1_Drop:
@@ -1643,6 +1688,12 @@ void util_dmat_fill(char Order, char TransA, int M, int N, double* A, int lda, u
     case util_Mat_Row_Rand_Cond:
       row_fill = util_Vec_Rand_Cond;
       break;
+    case util_Mat_Row_N_Cond:
+      row_fill = util_Vec_N_Cond;
+      break;
+    case util_Mat_Row_N_Cond_Plus_Rand:
+      row_fill = util_Vec_N_Cond_Plus_Rand;
+      break;
     case util_Mat_Row_Small_Plus_Increasing_Big:
       row_fill = util_Vec_Small_Plus_Increasing_Big;
       break;
@@ -1765,6 +1816,12 @@ void util_smat_fill(char Order, char TransA, int M, int N, float* A, int lda, ut
       break;
     case util_Mat_Row_Rand_Cond:
       row_fill = util_Vec_Rand_Cond;
+      break;
+    case util_Mat_Row_N_Cond:
+      row_fill = util_Vec_N_Cond;
+      break;
+    case util_Mat_Row_N_Cond_Plus_Rand:
+      row_fill = util_Vec_N_Cond_Plus_Rand;
       break;
     case util_Mat_Row_Small_Plus_Increasing_Big:
       row_fill = util_Vec_Small_Plus_Increasing_Big;
@@ -1889,6 +1946,12 @@ void util_zmat_fill(char Order, char TransA, int M, int N, double complex* A, in
     case util_Mat_Row_Rand_Cond:
       row_fill = util_Vec_Rand_Cond;
       break;
+    case util_Mat_Row_N_Cond:
+      row_fill = util_Vec_N_Cond;
+      break;
+    case util_Mat_Row_N_Cond_Plus_Rand:
+      row_fill = util_Vec_N_Cond_Plus_Rand;
+      break;
     case util_Mat_Row_Small_Plus_Increasing_Big:
       row_fill = util_Vec_Small_Plus_Increasing_Big;
       break;
@@ -2011,6 +2074,12 @@ void util_cmat_fill(char Order, char TransA, int M, int N, float complex* A, int
       break;
     case util_Mat_Row_Rand_Cond:
       row_fill = util_Vec_Rand_Cond;
+      break;
+    case util_Mat_Row_N_Cond:
+      row_fill = util_Vec_N_Cond;
+      break;
+    case util_Mat_Row_N_Cond_Plus_Rand:
+      row_fill = util_Vec_N_Cond_Plus_Rand;
       break;
     case util_Mat_Row_Small_Plus_Increasing_Big:
       row_fill = util_Vec_Small_Plus_Increasing_Big;

@@ -23,6 +23,8 @@ typedef enum util_vec_fill {
   util_Vec_Small_Plus_Increasing_Big,
   util_Vec_Small_Plus_Rand_Big,
   util_Vec_Rand_Cond,
+  util_Vec_N_Cond,
+  util_Vec_N_Cond_Plus_Rand,
   util_Vec_Constant_Drop,
   util_Vec_Rand_Drop,
   util_Vec_2_Times_Rand_Minus_1_Drop,
@@ -54,6 +56,8 @@ typedef enum util_mat_fill {
   util_Mat_Row_Small_Plus_Increasing_Big,
   util_Mat_Row_Small_Plus_Rand_Big,
   util_Mat_Row_Rand_Cond,
+  util_Mat_Row_N_Cond,
+  util_Mat_Row_N_Cond_Plus_Rand,
   util_Mat_Row_Constant_Drop,
   util_Mat_Row_Rand_Drop,
   util_Mat_Row_2_Times_Rand_Minus_1_Drop,
@@ -77,14 +81,6 @@ void util_ddpd(double* a, double b);
 #ifndef MAX
   #define MAX(A, B) (((A) > (B))? (A): (B))
 #endif
-
-#define DDPD(T0, T1, T2, T3, Yl, Yt, X) \
-  T0 = (X); \
-  T1 = Yl + T0; \
-  T2 = T1 - Yl; \
-  T3 = (Yl - (T1 - T2)) + (T0 - T2); \
-  Yl = T1 + T3; \
-  Yt = T3 - (Yl - T1);
 
 int util_dsoftequals(double a, double b, double bound);
 int util_zsoftequals(double complex a, double complex b, double complex bound);

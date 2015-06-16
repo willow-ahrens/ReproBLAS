@@ -1,0 +1,63 @@
+\documentclass[12pt]{article}
+\usepackage{amsfonts}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{graphicx}
+\usepackage{tikz}
+\pagestyle{myheadings}
+
+\author{Peter Ahrens}
+\title{ReproBLAS: Much Summation}
+\providecommand{\ceil}[1]{\left \lceil #1 \right \rceil }
+\providecommand{\floor}[1]{\left \lfloor #1 \right \rfloor }
+\providecommand{\R}{\ensuremath{\mathbb{R}}}
+\providecommand{\F}{\ensuremath{\mathbb{F}}}
+\providecommand{\Z}{\ensuremath{\mathbb{Z}}}
+\providecommand{\exp}{\ensuremath{\text{exp}}}
+\providecommand{\min}{\ensuremath{\text{min}}}
+\providecommand{\max}{\ensuremath{\text{max}}}
+\providecommand{\ulp}{\ensuremath{\text{ulp}}}
+\providecommand{\ufp}{\ensuremath{\text{ufp}}}
+\graphicspath{{plots}}
+\begin{document}
+\noindent
+\maketitle
+\newpage
+\section{Introduction}
+\section{The Indexed Type}
+  \subsection{Notation and Background}
+    Let $\R, \F, $ and $\Z$ denote the sets of real numbers, floating-point numbers, and integers respectively.
+
+    Assume that floating point arithmetic complies with the IEEE 754-2008 standard in "to nearest even" rounding mode.
+
+    Let $f = s \times 2^e \times m \in \F$ be a floating-point number represented in IEEE 754 format where $s = \pm 1$ is the sign, $e_{\max} \geq e \geq e_{\min}$ is the exponent ($\exp(f)$ is defined to be $e$), $p$ is the precision, and $m = m_0.m_1m_2...m_{p-1}$ where $m_1, ..., m_{p - 1} \in \{0, 1\}$ is the significand of $f$. $f$ is said to be normalized if $m_0 = 1$ and $e > e_{\min}$, unnormalized if $m_0 = 0$, and subnormal if $m_0 = 0$ and $e = e_{\min}$. $f = 0$ if $m_0 = m_1 = ... = m_{p - 1} = 0$ and $e = e_{\min}$.
+
+    As ReproBLAS is written in C, \verb|float| and \verb|double| refer to the floating point types specified in the 1989 C standard \cite{c89} and we assume that they correspond to the 32-bit and 64-bit types in the IEEE-754 floating point standard \cite{ieee754}. If an indexed type is used to sum \verb|double|, then it is composed of \verb|double| and likewise for \verb|float|. If an indexed type is used to sum complex numbers, then it is composed of both a real and imaginary indexed type.
+  \subsection{Overview}
+    The \textbf{indexed type} is used to represent the intermediate result of summation using the algorithms specified by \cite{parallelreproduciblesummation}. In this accumulation scheme, input floating point numbers are split along precomputed boundaries in the exponent range and their constituent components added to accumulators of like magnitude. The indexed type represents $K$ contiguous accumulators where the largest accumulator corresponds to the largest component to have been accumulated so far. An indexed type with $K$ accumulators is referred to as \textbf{$K$-fold}. The accumulators are separated from each other by a factor of $2^W$, corresponding to a \textbf{width} of $W$ bits for each.
+
+
+    In this paper it will sometimes become useful to refer to the \textbf{index} of a floating point type. The magnitudes of accumulators in an indexed type start at the maximum exponent for the floating point type and become smaller by factors of $2^W$. If we numbered these magnitudes starting at 0, the \textbf{index} of an indexed type is the number of the magnitude of its largest magnitude accumulator.
+  \subsection{}
+    
+  \subsubsection{Conversion From Indexed to Floating Point Format}
+    Here we consider the problem of obtaining the floating point representation of an indexed type of index $I$ and fold $K$. This amounts to summing the constituent floating point components of the indexed type. To do so accurately, we sum the components using some extra intermediate precision in descending order of unnormalized exponent
+    
+    If the indexed type is made up of \verb|float| we can use \verb|double| as the intermediate quantity to sum the components (here \verb|float| and \verb|double| correspond to the 32-bit and 64-bit floating point quantities in the IEEE-754 floating point standard \cite{ieee754}). the exponent of a double is However, if the indexed type is made up of \verb|double|, we must be creative in how we sum the numbers. The \verb|long double| type is a possible candidate for use, but it's usage depen
+\section{Indexed BLAS1}
+\section{Indexed General Matrix-Vector Multiply}
+\section{Indexed General Matrix-Matrix Multiply}
+\section{Indexed MPI}
+\begin{thebibliography}{9}
+  \bibitem{sortingsummation}
+    Demmel, James W., and Yozo Hida. Accurate floating point summation. Computer Science Division, University of California, 2002.
+  \bibitem{parallelreproduciblesummation}
+    Demmel, James, and Hong Diep Nguyen. Parallel Reproducible Summation. IEEE Transactions on Computers, 2014.
+  \bibitem{ieee754}
+    IEEE Standard for Floating-Point Arithmetic," IEEE Std 754-2008 , vol., no., pp.1,70, Aug. 29 2008
+  \bibitem{c89}
+    ANSI/ISO 9899-1990 American National Standard for Programming Languages - C, section 6.1.2.5
+\end{thebibliography}
+\end{document}
