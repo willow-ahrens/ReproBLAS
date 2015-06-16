@@ -9,7 +9,11 @@ TARGETS := bench_damax$(EXE) bench_damaxm$(EXE) \
            bench_ddiconv$(EXE) \
            bench_zziconv$(EXE) \
            bench_ssiconv$(EXE) \
-           bench_cciconv$(EXE)
+           bench_cciconv$(EXE) \
+           bench_didiadd$(EXE) \
+           bench_ziziadd$(EXE) \
+           bench_sisiadd$(EXE) \
+           bench_ciciadd$(EXE)
 
 ifneq ($(BLAS),)
 TARGETS += bench_dasum$(EXE) bench_ddot$(EXE) bench_dnrm2$(EXE) \
@@ -26,11 +30,13 @@ bench_camaxm$(EXE)_DEPS = $$(LIBTEST) $$(LIBINDEXEDBLAS) bench_camaxm.o
 bench_cciconv$(EXE)_DEPS = $$(LIBTEST) $$(LIBINDEXEDBLAS) bench_cciconv.o
 bench_cdotc$(EXE)_DEPS = $$(LIBTEST) bench_cdotc.o
 bench_cdotu$(EXE)_DEPS = $$(LIBTEST) bench_cdotu.o
+bench_ciciadd$(EXE)_DEPS = $$(LIBTEST) $$(LIBINDEXEDBLAS) bench_ciciadd.o
 bench_damax$(EXE)_DEPS = $$(LIBTEST) $$(LIBINDEXEDBLAS) bench_damax.o
 bench_damaxm$(EXE)_DEPS = $$(LIBTEST) $$(LIBINDEXEDBLAS) bench_damaxm.o
 bench_dasum$(EXE)_DEPS = $$(LIBTEST) bench_dasum.o
 bench_ddiconv$(EXE)_DEPS = $$(LIBTEST) $$(LIBINDEXEDBLAS) bench_ddiconv.o
 bench_ddot$(EXE)_DEPS = $$(LIBTEST) bench_ddot.o
+bench_didiadd$(EXE)_DEPS = $$(LIBTEST) $$(LIBINDEXEDBLAS) bench_didiadd.o
 bench_dnrm2$(EXE)_DEPS = $$(LIBTEST) bench_dnrm2.o
 bench_dzasum$(EXE)_DEPS = $$(LIBTEST) bench_dzasum.o
 bench_dznrm2$(EXE)_DEPS = $$(LIBTEST) bench_dznrm2.o
@@ -62,12 +68,14 @@ bench_sasum$(EXE)_DEPS = $$(LIBTEST) bench_sasum.o
 bench_scasum$(EXE)_DEPS = $$(LIBTEST) bench_scasum.o
 bench_scnrm2$(EXE)_DEPS = $$(LIBTEST) bench_scnrm2.o
 bench_sdot$(EXE)_DEPS = $$(LIBTEST) bench_sdot.o
+bench_sisiadd$(EXE)_DEPS = $$(LIBTEST) $$(LIBINDEXEDBLAS) bench_sisiadd.o
 bench_snrm2$(EXE)_DEPS = $$(LIBTEST) bench_snrm2.o
 bench_ssiconv$(EXE)_DEPS = $$(LIBTEST) $$(LIBINDEXEDBLAS) bench_ssiconv.o
 bench_zamax$(EXE)_DEPS = $$(LIBTEST) $$(LIBINDEXEDBLAS) bench_zamax.o
 bench_zamaxm$(EXE)_DEPS = $$(LIBTEST) $$(LIBINDEXEDBLAS) bench_zamaxm.o
 bench_zdotc$(EXE)_DEPS = $$(LIBTEST) bench_zdotc.o
 bench_zdotu$(EXE)_DEPS = $$(LIBTEST) bench_zdotu.o
+bench_ziziadd$(EXE)_DEPS = $$(LIBTEST) $$(LIBINDEXEDBLAS) bench_ziziadd.o
 bench_zziconv$(EXE)_DEPS = $$(LIBTEST) $$(LIBINDEXEDBLAS) bench_zziconv.o
 
 #bench_rdgemv$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) bench_rdgemv.o
