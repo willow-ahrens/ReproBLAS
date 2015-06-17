@@ -18,8 +18,12 @@
  */
 void dmnegate(const int fold, double* manX, const int incmanX, double* carX, const int inccarX) {
   int i;
-  for (i = 0; i < fold; i++) {
-    manX[i * incmanX] = (3 * ufp(manX[i * incmanX])) - manX[i * incmanX];
-    carX[i * inccarX] = -carX[i * inccarX];
+  const double *bins;
+  if(manX[0] != 0.0){
+    bins = dmbins(dmindex(manX));
+    for (i = 0; i < fold; i++) {
+      manX[i * incmanX] = bins[i] - (manX[i * incmanX] - bins[i]);
+      carX[i * inccarX] = -carX[i * inccarX];
+    }
   }
 }

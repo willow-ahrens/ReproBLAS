@@ -3,6 +3,8 @@
 
 #include <indexed.h>
 
+#include "../common/common.h"
+
 /**
  * @internal
  * @brief Print manually specified indexed single precision
@@ -21,7 +23,7 @@ void smprint(const int fold, const float *manX, const int incmanX, const float *
   int i;
   float M;
   for (i = 0; i < fold; i++, manX += incmanX, carX += inccarX) {
-    M = ufpf(manX[0]);
+    M = UFPF(manX[0]);
     printf("(2^%d: %g #%g =%g)\n", (int)log2f(M) + 1, manX[0] - 1.5*M, carX[0], ((carX[0] - 6) * 0.25 * M + manX[0]));
   }
 }

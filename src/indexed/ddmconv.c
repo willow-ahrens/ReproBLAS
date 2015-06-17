@@ -92,15 +92,14 @@ double ddmconv(const int fold, const double* manX, const int incmanX, const doub
 
       #else
         double Y = 0.0;
-        //long double Y = 0.0;
         double scale_down;
         double scale_up;
         int scaled;
         X_index = dmindex(manX);
         bins = dmbins(X_index);
         if(X_index <= (DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2))/DIWIDTH){
-          scale_down = ldexp(0.5, -1 * (DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2 + 1)) + 1);
-          scale_up = ldexp(0.5, DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2 + 1) + 1);
+          scale_down = ldexp(0.5, 1 - (DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2 + 1)));
+          scale_up = ldexp(0.5, 1 + DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2 + 1));
           scaled = MIN(X_index + fold, (DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2))/DIWIDTH);
           if(X_index == 0){
             Y += carX[0] * ((bins[0]/6.0) * scale_down * DMEXPANSION);
@@ -157,8 +156,8 @@ double ddmconv(const int fold, const double* manX, const int incmanX, const doub
       X_index = dmindex(manX);
       bins = dmbins(X_index);
       if(X_index <= (DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2))/DIWIDTH){
-        scale_down = ldexp(0.5, -1 * (DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2 + 1)) + 1);
-        scale_up = ldexp(0.5, DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2 + 1) + 1);
+        scale_down = ldexp(0.5, 1 - (DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2 + 1)));
+        scale_up = ldexp(0.5, 1 + DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2 + 1));
         scaled = MIN(X_index + fold, (DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2))/DIWIDTH);
         if(X_index == 0){
           DDPD(t0, t1, t2, t3, t4, t5, Yl, Yt, carX[0] * ((bins[0]/6.0) * scale_down * DMEXPANSION));

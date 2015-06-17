@@ -3,6 +3,8 @@
 
 #include <indexed.h>
 
+#include "../common/common.h"
+
 /**
  * @internal
  * @brief Print manually specified indexed double precision
@@ -21,7 +23,7 @@ void dmprint(const int fold, const double *manX, const int incmanX, const double
   int i;
   double M;
   for (i = 0; i < fold; i++, manX += incmanX, carX += inccarX) {
-    M = ufp(manX[0]);
+    M = UFP(manX[0]);
     printf("(2^%d: %g #%g =%g)\n", (int)log2(M) + 1, manX[0] - 1.5*M, carX[0], ((carX[0] - 6) * 0.25 * M + manX[0]));
   }
 }

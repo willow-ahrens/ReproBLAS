@@ -18,8 +18,12 @@
  */
 void smnegate(const int fold, float* manX, const int incmanX, float* carX, const int inccarX) {
   int i;
-  for (i = 0; i < fold; i++) {
-    manX[i * incmanX] = (3 * ufp(manX[i * incmanX])) - manX[i * incmanX];
-    carX[i * inccarX] = -carX[i * inccarX];
+  const float *bins;
+  if(manX[0] != 0.0){
+    bins = smbins(smindex(manX));
+    for (i = 0; i < fold; i++) {
+      manX[i * incmanX] = bins[i] - (manX[i * incmanX] - bins[i]);
+      carX[i * inccarX] = -carX[i * inccarX];
+    }
   }
 }
