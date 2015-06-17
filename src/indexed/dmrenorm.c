@@ -25,7 +25,11 @@ void dmrenorm(const int fold, double* manX, const int incmanX, double* carX, con
     if (manX0 == 0.0)
       continue;
 
-    M = ufp(manX0);
+    #ifdef MACRO_MATH
+      M = UFP(manX0);
+    #else
+      M = ufp(manX0);
+    #endif
     if (manX0 >= (M * 1.75)) {
       manX[0] -= M * 0.25;
       carX[0] += 1;

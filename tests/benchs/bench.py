@@ -3,7 +3,7 @@ import tests.harness.harness as harness
 
 bench_harness = harness.Harness("bench")
 params = ["N", "a", "u", "fold", "preN"]
-ranges = [[4096], [10000], [0], [3], [1024]]
+ranges = [[4096], [100000], [0], [3], [1024]]
 attribute = "freq"
 #attribute = "time"
 #bench_harness.add_suite(benchs.BenchSuite([benchs.BenchRDSUMTest(), benchs.BenchRDASUMTest(), benchs.BenchRDNRM2Test(), benchs.BenchRDDOTTest()], params, ranges, attribute))
@@ -12,7 +12,7 @@ attribute = "freq"
 #bench_harness.add_suite(benchs.BenchSuite([benchs.BenchRCSUMTest(), benchs.BenchRSCASUMTest(), benchs.BenchRSCNRM2Test(), benchs.BenchRCDOTUTest(), benchs.BenchRCDOTCTest()], params, ranges, attribute))
 #bench_harness.add_suite(benchs.BenchSuite([benchs.BenchDDICONVTest(), benchs.BenchZZICONVTest(), benchs.BenchSSICONVTest(), benchs.BenchCCICONVTest()], params, ranges, attribute))
 bench_harness.add_suite(benchs.BenchSuite([benchs.BenchDIDIADDTest(), benchs.BenchRDSUMTest()], params, ranges, attribute))
-bench_harness.add_suite(benchs.BenchSuite([benchs.BenchZIZIADDTest(), benchs.BenchRZSUMTest()], params, ranges, attribute))
-bench_harness.add_suite(benchs.BenchSuite([benchs.BenchSISIADDTest(), benchs.BenchRSSUMTest()], params, ranges, attribute))
-bench_harness.add_suite(benchs.BenchSuite([benchs.BenchCICIADDTest(), benchs.BenchRCSUMTest()], params, ranges, attribute))
+#bench_harness.add_suite(benchs.BenchSuite([benchs.BenchZIZIADDTest(), benchs.BenchRZSUMTest()], params, ranges, attribute))
+#bench_harness.add_suite(benchs.BenchSuite([benchs.BenchSISIADDTest(), benchs.BenchRSSUMTest()], params, ranges, attribute))
+#bench_harness.add_suite(benchs.BenchSuite([benchs.BenchCICIADDTest(), benchs.BenchRCSUMTest()], params, ranges, attribute))
 bench_harness.run()

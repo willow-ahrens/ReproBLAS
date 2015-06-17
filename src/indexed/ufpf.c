@@ -26,8 +26,5 @@ float ufpf(float X) {
   frexpf(X, &exp);
   return ldexpf(0.5, exp);
   */
-  int_float x;
-  x.f = X;
-  x.i &= 0xFF800000ul;
-  return x.f;
+  return UFPF(X);
 }

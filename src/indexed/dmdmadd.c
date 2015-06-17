@@ -25,6 +25,9 @@
 void dmdmadd(const int fold, const double *manX, const int incmanX, const double *carX, const int inccarX, double* manY, const int incmanY, double* carY, const int inccarY) {
   int i;
   int shift;
+  int X_index;
+  int Y_index;
+  const double *bins;
 
   if (manX[0] == 0.0)
     return;
@@ -42,11 +45,14 @@ void dmdmadd(const int fold, const double *manX, const int incmanX, const double
     return;
   }
 
-  shift = dmindex(manY) - dmindex(manX);
+  X_index = dmindex(manX);
+  Y_index = dmindex(manY);
+  shift = Y_index - X_index;
   if(shift > 0){
+    bins = dmbins(Y_index);
     //shift Y upwards and add X to Y
     for (i = fold - 1; i >= shift; i--) {
-      manY[i*incmanY] = manX[i*incmanX] + (manY[(i - shift)*incmanY] - 1.5*ufp(manY[(i - shift)*incmanY]));
+      manY[i*incmanY] = manX[i*incmanX] + (manY[(i - shift)*incmanY] - bins[i - shift]);
       carY[i*inccarY] = carX[i*inccarX] + carY[(i - shift)*inccarY];
     }
     for (i = 0; i < shift && i < fold; i++) {
@@ -54,9 +60,10 @@ void dmdmadd(const int fold, const double *manX, const int incmanX, const double
       carY[i*inccarY] = carX[i*inccarX];
     }
   }else{
+    bins = dmbins(X_index);
     //shift X upwards and add X to Y
     for (i = 0 - shift; i < fold; i++) {
-      manY[i*incmanY] += manX[(i + shift)*incmanX] - 1.5*ufp(manX[(i + shift)*incmanX]);
+      manY[i*incmanY] += manX[(i + shift)*incmanX] - bins[i + shift];
       carY[i*inccarY] += carX[(i + shift)*inccarX];
     }
   }

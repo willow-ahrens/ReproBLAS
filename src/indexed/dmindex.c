@@ -29,4 +29,5 @@ int dmindex(const double *manX){
     }
     return (DBL_MAX_EXP + DBL_MANT_DIG - DIWIDTH + 1 - exp)/DIWIDTH;
   }
+  //return (DBL_MAX_EXP + DBL_MANT_DIG - DIWIDTH + 1 - EXP(manX[0]))/DIWIDTH;
 }

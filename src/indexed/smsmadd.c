@@ -25,6 +25,9 @@
 void smsmadd(const int fold, const float *manX, const int incmanX, const float *carX, const int inccarX, float* manY, const int incmanY, float* carY, const int inccarY) {
   int i;
   int shift;
+  int X_index;
+  int Y_index;
+  const float *bins;
 
   if (manX[0] == 0.0)
     return;
@@ -42,11 +45,14 @@ void smsmadd(const int fold, const float *manX, const int incmanX, const float *
     return;
   }
 
-  shift = smindex(manY) - smindex(manX);
+  X_index = smindex(manX);
+  Y_index = smindex(manY);
+  shift = Y_index - X_index;
   if(shift > 0){
+    bins = smbins(Y_index);
     //shift Y upwards and add X to Y
     for (i = fold - 1; i >= shift; i--) {
-      manY[i*incmanY] = manX[i*incmanX] + (manY[(i - shift)*incmanY] - 1.5*ufpf(manY[(i - shift)*incmanY]));
+      manY[i*incmanY] = manX[i*incmanX] + (manY[(i - shift)*incmanY] - bins[i - shift]);
       carY[i*inccarY] = carX[i*inccarX] + carY[(i - shift)*inccarY];
     }
     for (i = 0; i < shift && i < fold; i++) {
@@ -54,9 +60,10 @@ void smsmadd(const int fold, const float *manX, const int incmanX, const float *
       carY[i*inccarY] = carX[i*inccarX];
     }
   }else{
+    bins = smbins(X_index);
     //shift X upwards and add X to Y
     for (i = 0 - shift; i < fold; i++) {
-      manY[i*incmanY] += manX[(i + shift)*incmanX] - 1.5*ufpf(manX[(i + shift)*incmanX]);
+      manY[i*incmanY] += manX[(i + shift)*incmanX] - bins[i + shift];
       carY[i*inccarY] += carX[(i + shift)*inccarX];
     }
   }

@@ -26,9 +26,5 @@ double ufp(double X) {
   frexp(X, &exp);
   return ldexp(0.5, exp);
   */
-  //faster
-  long_double x;
-  x.d = X;
-  x.l &= 0xFFF0000000000000ull;
-  return x.d;
+  return UFP(X);
 }

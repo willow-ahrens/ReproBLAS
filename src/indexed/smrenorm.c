@@ -25,7 +25,7 @@ void smrenorm(const int fold, float* manX, const int incmanX, float* carX, const
     if (manX0 == 0.0)
       continue;
 
-    M = ufpf(manX0);
+    M = UFPF(manX0);
     if (manX0 >= (M * 1.75)) {
       manX[0] -= M * 0.25;
       carX[0] += 1;
