@@ -24,22 +24,33 @@
 void dmdupdate(const int fold, const double X, double* manY, const int incmanY, double* carY, const int inccarY) {
   int i;
   int j;
+  int X_index;
+  int shift;
   const double *bins;
 
-  if (isnan(manY[0]) || isinf(manY[0]))
+  if (isnan(manY[0]) || isinf(manY[0])){
     return;
+  }
 
-  int X_index = dindex(X);
-  int shift = dmindex(manY) - X_index;
-  if(shift > 0){
-    for(i = fold - 1; i >= shift; i--){
-      manY[i * incmanY] = manY[(i - shift) * incmanY];
-      carY[i * inccarY] = carY[(i - shift) * inccarY];
-    }
+  X_index = dindex(X);
+  if(manY[0] == 0.0){
     bins = dmbins(X_index);
-    for(j = 0; j < i + 1; j++){
-      manY[j * incmanY] = bins[j];
-      carY[j * inccarY] = 0.0;
+    for(i = 0; i < fold; i++){
+      manY[i * incmanY] = bins[i];
+      carY[i * inccarY] = 0.0;
+    }
+  }else{
+    shift = dmindex(manY) - X_index;
+    if(shift > 0){
+      for(i = fold - 1; i >= shift; i--){
+        manY[i * incmanY] = manY[(i - shift) * incmanY];
+        carY[i * inccarY] = carY[(i - shift) * inccarY];
+      }
+      bins = dmbins(X_index);
+      for(j = 0; j < i + 1; j++){
+        manY[j * incmanY] = bins[j];
+        carY[j * inccarY] = 0.0;
+      }
     }
   }
 }

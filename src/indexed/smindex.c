@@ -33,9 +33,12 @@ int smindex(const float *manX){
     return (FLT_MAX_EXP + FLT_MANT_DIG - SIWIDTH + 1 - exp)/SIWIDTH;
   }
   */
+  /*
   if(manX[0] == 0.0){
     return (FLT_MAX_EXP - FLT_MIN_EXP)/SIWIDTH + MAX_FOLD;
   }else{
     return ((FLT_MAX_EXP + FLT_MANT_DIG - SIWIDTH + 1 + EXPF_BIAS) - EXPF(manX[0]))/SIWIDTH;
   }
+  */
+  return ((FLT_MAX_EXP + FLT_MANT_DIG - SIWIDTH + 1 + EXPF_BIAS) - EXPF(manX[0]))/SIWIDTH;
 }

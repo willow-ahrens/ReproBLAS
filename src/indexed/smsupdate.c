@@ -24,22 +24,33 @@
 void smsupdate(const int fold, const float X, float* manY, const int incmanY, float* carY, const int inccarY) {
   int i;
   int j;
+  int X_index;
+  int shift;
   const float *bins;
 
-  if (isnan(manY[0]) || isinf(manY[0]))
+  if (isnan(manY[0]) || isinf(manY[0])){
     return;
+  }
 
-  int X_index = sindex(X);
-  int shift = smindex(manY) - X_index;
-  if(shift > 0){
-    for(i = fold - 1; i >= shift; i--){
-      manY[i * incmanY] = manY[(i - shift) * incmanY];
-      carY[i * inccarY] = carY[(i - shift) * inccarY];
-    }
+  X_index = sindex(X);
+  if(manY[0] == 0.0){
     bins = smbins(X_index);
-    for(j = 0; j < i + 1; j++){
-      manY[j * incmanY] = bins[j];
-      carY[j * inccarY] = 0.0;
+    for(i = 0; i < fold; i++){
+      manY[i * incmanY] = bins[i];
+      carY[i * inccarY] = 0.0;
+    }
+  }else{
+    shift = smindex(manY) - X_index;
+    if(shift > 0){
+      for(i = fold - 1; i >= shift; i--){
+        manY[i * incmanY] = manY[(i - shift) * incmanY];
+        carY[i * inccarY] = carY[(i - shift) * inccarY];
+      }
+      bins = smbins(X_index);
+      for(j = 0; j < i + 1; j++){
+        manY[j * incmanY] = bins[j];
+        carY[j * inccarY] = 0.0;
+      }
     }
   }
 }
