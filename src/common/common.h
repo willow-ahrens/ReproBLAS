@@ -45,11 +45,15 @@ typedef union int_float_ {
   (int)((tmp_EXP.l >> 52) & 0x7FF);\
   })
 
+#define EXP_BIAS 0x3FE
+
 #define EXPF(X) ({ \
   int_float tmp_EXPF; \
   tmp_EXPF.f = X; \
   (int)((tmp_EXPF.i >> 23) & 0xFF);\
   })
+
+#define EXPF_BIAS 0x7E
 
 #define ISNANINF(X) ({ \
   long_double tmp_ISNANINF; \

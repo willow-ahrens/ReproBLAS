@@ -2,6 +2,8 @@
 
 #include <indexed.h>
 
+#include "../common/common.h"
+
 /**
  * @brief Get index of double precision
  *
@@ -15,6 +17,7 @@
  * @date   19 May 2015
  */
 int dindex(const double X){
+  /*
   int exp;
 
   if(X == 0.0){
@@ -23,4 +26,6 @@ int dindex(const double X){
     frexp(X, &exp);
     return (DBL_MAX_EXP - exp)/DIWIDTH;
   }
+  */
+  return ((DBL_MAX_EXP + EXP_BIAS) - EXP(X))/DIWIDTH;
 }

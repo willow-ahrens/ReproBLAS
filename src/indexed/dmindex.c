@@ -20,6 +20,7 @@
  * @date   19 May 2015
  */
 int dmindex(const double *manX){
+  /*
   int exp;
 
   if(manX[0] == 0.0){
@@ -30,5 +31,11 @@ int dmindex(const double *manX){
       return 0;
     }
     return (DBL_MAX_EXP + DBL_MANT_DIG - DIWIDTH + 1 - exp)/DIWIDTH;
+  }
+  */
+  if(manX[0] == 0.0){
+    return (DBL_MAX_EXP - DBL_MIN_EXP)/DIWIDTH + MAX_FOLD;
+  }else{
+    return ((DBL_MAX_EXP + DBL_MANT_DIG - DIWIDTH + 1 + EXP_BIAS) - EXP(manX[0]))/DIWIDTH;
   }
 }

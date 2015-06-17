@@ -301,7 +301,6 @@ check_suite.add_checks([checks.VerifyRDDOTTest(),\
                          "sine",\
                          "small+grow*big"]])
 
-"""
 DBL_BIN_WIDTH=40
 DBL_MAX_EXP=1024
 DBL_BIG_EXP=27
@@ -508,6 +507,7 @@ for i in range(FLT_BIN_WIDTH + 2):
 #                         "small+grow*big"],\
 #                        ["rand",\
 #                         "small+grow*big"]])
+"""
 
 check_harness = harness.Harness("check")
 check_harness.add_suite(check_suite)

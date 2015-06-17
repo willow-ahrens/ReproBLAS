@@ -2,6 +2,8 @@
 
 #include <indexed.h>
 
+#include "../common/common.h"
+
 #include "../../config.h"
 
 /**
@@ -18,6 +20,7 @@
  * @date   19 May 2015
  */
 int smindex(const float *manX){
+  /*
   int exp;
 
   if(manX[0] == 0.0){
@@ -28,5 +31,11 @@ int smindex(const float *manX){
       return 0;
     }
     return (FLT_MAX_EXP + FLT_MANT_DIG - SIWIDTH + 1 - exp)/SIWIDTH;
+  }
+  */
+  if(manX[0] == 0.0){
+    return (FLT_MAX_EXP - FLT_MIN_EXP)/SIWIDTH + MAX_FOLD;
+  }else{
+    return ((FLT_MAX_EXP + FLT_MANT_DIG - SIWIDTH + 1 + EXPF_BIAS) - EXPF(manX[0]))/SIWIDTH;
   }
 }

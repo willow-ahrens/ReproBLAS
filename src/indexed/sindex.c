@@ -2,6 +2,8 @@
 
 #include <indexed.h>
 
+#include "../common/common.h"
+
 /**
  * @brief Get index of single precision
  *
@@ -15,6 +17,7 @@
  * @date   19 May 2015
  */
 int sindex(const float X){
+  /*
   int exp;
 
   if(X == 0.0){
@@ -23,4 +26,6 @@ int sindex(const float X){
     frexpf(X, &exp);
     return (FLT_MAX_EXP - exp)/SIWIDTH;
   }
+  */
+  return ((FLT_MAX_EXP + EXPF_BIAS) - EXPF(X))/SIWIDTH;
 }
