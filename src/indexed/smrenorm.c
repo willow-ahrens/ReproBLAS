@@ -1,4 +1,8 @@
+#include <math.h>
+
 #include <indexed.h>
+
+#include "../common/common.h"
 
 /**
  * @internal
@@ -19,13 +23,17 @@
 void smrenorm(const int fold, float* manX, const int incmanX, float* carX, const int inccarX) {
   int i;
   float M;
-  float manX0;
+  float manX0 = manX[0];
+
+  if(manX0 == 0.0 || isnan(manX0) || isinf(manX0)){
+    return;
+  }
+
   for (i = 0; i < fold; i++, manX += incmanX, carX += inccarX) {
     manX0 = manX[0];
-    if (manX0 == 0.0)
-      continue;
 
     M = UFPF(manX0);
+
     if (manX0 >= (M * 1.75)) {
       manX[0] -= M * 0.25;
       carX[0] += 1;

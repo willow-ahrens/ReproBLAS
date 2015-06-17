@@ -1,4 +1,8 @@
+#include <math.h>
+
 #include <indexed.h>
+
+#include "../common/common.h"
 
 /**
  * @internal
@@ -19,17 +23,17 @@
 void dmrenorm(const int fold, double* manX, const int incmanX, double* carX, const int inccarX) {
   int i;
   double M;
-  double manX0;
+  double manX0 = manX[0];
+
+  if(manX0 == 0.0 || isnan(manX0) || isinf(manX0)){
+    return;
+  }
+
   for (i = 0; i < fold; i++, manX += incmanX, carX += inccarX) {
     manX0 = manX[0];
-    if (manX0 == 0.0)
-      continue;
 
-    #ifdef MACRO_MATH
-      M = UFP(manX0);
-    #else
-      M = ufp(manX0);
-    #endif
+    M = UFP(manX0);
+
     if (manX0 >= (M * 1.75)) {
       manX[0] -= M * 0.25;
       carX[0] += 1;

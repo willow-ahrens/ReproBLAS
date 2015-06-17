@@ -2,8 +2,8 @@ import tests.benchs.benchs as benchs
 import tests.harness.harness as harness
 
 bench_harness = harness.Harness("bench")
-params = ["N", "a", "u", "fold", "preN"]
-ranges = [[4096], [100000], [0], [3], [1024]]
+params = ["N", "a", "u", "f", "fold", "preN"]
+ranges = [[4096], [100000], [0], ["normal"], [3], [1024]]
 attribute = "freq"
 #attribute = "time"
 #bench_harness.add_suite(benchs.BenchSuite([benchs.BenchRDSUMTest(), benchs.BenchRDASUMTest(), benchs.BenchRDNRM2Test(), benchs.BenchRDDOTTest()], params, ranges, attribute))
