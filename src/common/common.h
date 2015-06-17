@@ -5,6 +5,8 @@
 #ifndef COMMON_H_
 #define COMMON_H_
 
+#include <stdint.h>
+
 #ifndef MAX
 #define MAX(A,B) ((A)>(B)?(A):(B))
 #endif
@@ -14,13 +16,13 @@
 #endif
 
 typedef union long_double_ {
-  double d;
-  long   l;
+  double   d;
+  uint64_t l;
 } long_double;
 
 typedef union int_float_ {
-  float f;
-  int   i;
+  float    f;
+  uint32_t i;
 } int_float;
 
 #endif
