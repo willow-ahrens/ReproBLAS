@@ -39,7 +39,7 @@ class DepositM(deposit.Deposit):
     code_block.dedent()
     code_block.write("}")
 
-  def define_load_ptrs(self, code_block, width):
+  def define_load_ptrs(self, code_block):
       self.load_ptrs = [self.X, self.Z]
 
   def define_load_vars(self, code_block, width):
