@@ -26,7 +26,7 @@ LDFLAGS +=
 #MPICFLAGS =
 
 # select python (comment all for auto)
-#PYTHON = python
+PYTHON = python
 #PYTHON = python3
 
 # select vectorization (comment all for auto)
@@ -43,7 +43,7 @@ LDFLAGS +=
 #SSE4_2 := true
 #SSE4_2 := false
 #AVX := true
-#AVX := false
+AVX := false
 #AVX2 := true
 #AVX2 := false
 
