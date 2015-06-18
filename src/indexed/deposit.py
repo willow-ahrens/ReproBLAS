@@ -28,7 +28,8 @@ class Deposit(Target):
     arguments = []
     for i in range(self.max_expand_fold + 1):
       for vectorization in vectorization_lookup.values():
-        arguments.append("{}_expand_{}_fold_{}".format(self.name, vectorization.name, i))
+        if(i != 0):
+          arguments.append("{}_expand_{}_fold_{}".format(self.name, vectorization.name, i))
         arguments.append("{}_max_pipe_width_{}_fold_{}".format(self.name, vectorization.name, i))
         arguments.append("{}_max_unroll_width_{}_fold_{}".format(self.name, vectorization.name, i))
     return arguments
@@ -37,7 +38,8 @@ class Deposit(Target):
     metrics = {}
     for i in range(self.max_expand_fold + 1):
       for vectorization in vectorization_lookup.values():
-        metrics["{}_expand_{}_fold_{}".format(self.name, vectorization.name, i)] = ["bench_{}_fold_{}".format(self.metric_name, i)]
+        if(i != 0):
+          metrics["{}_expand_{}_fold_{}".format(self.name, vectorization.name, i)] = ["bench_{}_fold_{}".format(self.metric_name, i)]
         metrics["{}_max_pipe_width_{}_fold_{}".format(self.name, vectorization.name, i)] = ["bench_{}_fold_{}".format(self.metric_name, i)]
         metrics["{}_max_unroll_width_{}_fold_{}".format(self.name, vectorization.name, i)] = ["bench_{}_fold_{}".format(self.metric_name, i)]
     return metrics
@@ -47,7 +49,8 @@ class Deposit(Target):
     for i in range(self.max_expand_fold + 1):
       for vectorization in vectorization_lookup.values():
         vec = vectorization(CodeBlock(), self.data_type_class)
-        parameters.append(BooleanParameter("{}_expand_{}_fold_{}".format(self.name, vec.name, i), {"vectorization":vec.name}, i == self.default_fold))
+        if(i != 0):
+          parameters.append(BooleanParameter("{}_expand_{}_fold_{}".format(self.name, vec.name, i), {"vectorization":vec.name}, i == self.default_fold))
         parameters.append(IntegerParameter("{}_max_unroll_width_{}_fold_{}".format(self.name, vec.name, i), {"vectorization":vec.name}, 1, 16, 1, 1))
         name = "{}_max_pipe_width_{}_fold_{}".format(self.name, vec.name, i)
         minimum = max(1, vec.type_size)

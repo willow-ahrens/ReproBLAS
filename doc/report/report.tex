@@ -9,7 +9,7 @@
 \pagestyle{myheadings}
 
 \author{Peter Ahrens}
-\title{ReproBLAS: Much Summation}
+\title{ReproBLAS: Much Summation! So Reproducible!}
 \providecommand{\ceil}[1]{\left \lceil #1 \right \rceil }
 \providecommand{\floor}[1]{\left \lfloor #1 \right \rfloor }
 \providecommand{\R}{\ensuremath{\mathbb{R}}}
@@ -26,17 +26,35 @@
 \maketitle
 \newpage
 \section{Introduction}
+
+\section{Notation and Background}
+  Let $\R, \F, $ and $\Z$ denote the sets of real numbers, floating-point numbers, and integers respectively.
+
+  Assume that floating point arithmetic complies with the IEEE 754-2008 standard in "to nearest even" rounding mode.
+
+  Let $f = s \times 2^e \times m \in \F$ be a floating-point number represented in IEEE 754 format where $s = \pm 1$ is the \textbf{sign}, $e_{\max} \geq e \geq e_{\min}$ is the \textbf{exponent} ($\exp(f)$ is defined to be $e$), $p$ is the \textbf{precision}, and $m = m_0.m_1m_2...m_{p-1}$ where $m_1, ..., m_{p - 1} \in \{0, 1\}$ is the \textbf{significand} of $f$. $f$ is said to be \textbf{normalized} if $m_0 = 1$ and $e > e_{\min}$, \textbf{unnormalized} if $m_0 = 0$, and \textbf{subnormal} if $m_0 = 0$ and $e = e_{\min}$. $f = 0$ if $m_0 = m_1 = ... = m_{p - 1} = 0$ and $e = e_{\min}$.
+
+  As ReproBLAS is written in C, \verb|float| and \verb|double| refer to the floating point types specified in the 1989 C standard \cite{c89} and we assume that they correspond to the 32-bit and 64-bit types in the IEEE-754-2008 floating point standard \cite{ieee754}.
 \section{The Indexed Type}
-  \subsection{Notation and Background}
-    Let $\R, \F, $ and $\Z$ denote the sets of real numbers, floating-point numbers, and integers respectively.
+  \subsection{Representation}
+    The \textbf{indexed type} is used to represent the intermediate result of accumulation using algorithms 6 and 7 specified by Nguyen and Demmel in "Parallel Reproducible Summation" \cite{parallelreproduciblesummation}.
+    An indexed type $Y$ is composed of several accumulators $Y_1, ..., Y_K \in \F$, each holding the sum of inputs in a predetermined exponent range. An indexed type with $K$ accumulators is reffered to as having \textbf{fold} $K$.
 
-    Assume that floating point arithmetic complies with the IEEE 754-2008 standard in "to nearest even" rounding mode.
+    Let $Y$ be the indexed type corresponding to the reproducibly computed sum of $x_1, ..., x_n = s_1 \times 2^{e_1} \times m_1, ..., s_n \times 2^{e_n} \times m_n \in F$.
+    If the exponent range of the accumulator $Y_i$ is $[a, b], a, b \in \Z$, then $Y_i$ is the sum of all input bits with exponents in $[a, b]$. Specifically, $Y_i = \sum \{s_j2^{e_j}{m_j}_k, j \in \{1, ..., n\}, k \in \Z | e_j - k \in [a, b]\}$.
 
-    Let $f = s \times 2^e \times m \in \F$ be a floating-point number represented in IEEE 754 format where $s = \pm 1$ is the sign, $e_{\max} \geq e \geq e_{\min}$ is the exponent ($\exp(f)$ is defined to be $e$), $p$ is the precision, and $m = m_0.m_1m_2...m_{p-1}$ where $m_1, ..., m_{p - 1} \in \{0, 1\}$ is the significand of $f$. $f$ is said to be normalized if $m_0 = 1$ and $e > e_{\min}$, unnormalized if $m_0 = 0$, and subnormal if $m_0 = 0$ and $e = e_{\min}$. $f = 0$ if $m_0 = m_1 = ... = m_{p - 1} = 0$ and $e = e_{\min}$.
+    For ease of computation, the exponent ranges of the accumulators are not arbitrary. They are broken up into precomputed, fixed width intervals starting at the top of the exponent range. An indexed type with accumulators of width $W$ is said to have \textbf{width} $W$.
 
-    As ReproBLAS is written in C, \verb|float| and \verb|double| refer to the floating point types specified in the 1989 C standard \cite{c89} and we assume that they correspond to the 32-bit and 64-bit types in the IEEE-754 floating point standard \cite{ieee754}. If an indexed type is used to sum \verb|double|, then it is composed of \verb|double| and likewise for \verb|float|. If an indexed type is used to sum complex numbers, then it is composed of both a real and imaginary indexed type.
+In this accumulation scheme, input floating point numbers are split along precomputed boundaries in the exponent range and their constituent components added to accumulators of like magnitude. The indexed type represents $K$ contiguous accumulators where the largest accumulator corresponds to the largest component to have been accumulated so far. An indexed type with $K$ accumulators has \textbf{fold} $K$. The accumulators are separated from each other by a factor of $2^W$, corresponding to a \textbf{width} of $W$ bits for each. 
   \subsection{Overview}
-    The \textbf{indexed type} is used to represent the intermediate result of summation using the algorithms specified by \cite{parallelreproduciblesummation}. In this accumulation scheme, input floating point numbers are split along precomputed boundaries in the exponent range and their constituent components added to accumulators of like magnitude. The indexed type represents $K$ contiguous accumulators where the largest accumulator corresponds to the largest component to have been accumulated so far. An indexed type with $K$ accumulators is referred to as \textbf{$K$-fold}. The accumulators are separated from each other by a factor of $2^W$, corresponding to a \textbf{width} of $W$ bits for each.
+    The \textbf{indexed type} is used to represent the intermediate result of accumulation using algorithms 6 and 7 specified by Nguyen and Demmel in "Parallel Reproducible Summation" \cite{parallelreproduciblesummation}. In this accumulation scheme, input floating point numbers are split along precomputed boundaries in the exponent range and their constituent components added to accumulators of like magnitude. The indexed type represents $K$ contiguous accumulators where the largest accumulator corresponds to the largest component to have been accumulated so far. An indexed type with $K$ accumulators has \textbf{fold} $K$. The accumulators are separated from each other by a factor of $2^W$, corresponding to a \textbf{width} of $W$ bits for each.
+  \subsection{Representation}
+
+    As discussed in \cite{parallelreproduciblesummation}, indexed types are represented using floating point numbers to minimize traffic between floating point and integer arithmetic units. If an indexed type is used to sum \verb|double|, then it is composed entirely of \verb|double| and likewise for \verb|float|. If an indexed type is used to sum complex numbers, then it is composed of both a real and imaginary indexed type.
+
+  \subsection{Overview}
+If an indexed type is used to sum \verb|double|, then it is composed entirely of \verb|double| and likewise for \verb|float|. If an indexed type is used to sum complex numbers, then it is composed of both a real and imaginary indexed type.
+    The \textbf{indexed type} is used to represent the intermediate result of summation using the algorithms specified by \cite{parallelreproduciblesummation}. In this accumulation scheme, input floating point numbers are split along precomputed boundaries in the exponent range and their constituent components added to accumulators of like magnitude. The indexed type represents $K$ contiguous accumulators where the largest accumulator corresponds to the largest component to have been accumulated so far. An indexed type with $K$ accumulators has \textbf{$K$-fold}. The accumulators are separated from each other by a factor of $2^W$, corresponding to a \textbf{width} of $W$ bits for each.
 
 
     In this paper it will sometimes become useful to refer to the \textbf{index} of a floating point type. The magnitudes of accumulators in an indexed type start at the maximum exponent for the floating point type and become smaller by factors of $2^W$. If we numbered these magnitudes starting at 0, the \textbf{index} of an indexed type is the number of the magnitude of its largest magnitude accumulator.

@@ -130,6 +130,7 @@ def run(apis):
   generate.serialize_arguments(best_arguments, arguments_file_name)
 
 def main():
+  print("tuning {}".format(terminal.get_vectorization()))
   apis = [create_benchmark_api(benchmark) for benchmark in ["bench_damax",
                                                             "bench_damaxm",
                                                             "bench_zamax",

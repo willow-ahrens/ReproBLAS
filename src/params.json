@@ -18,9 +18,6 @@
     "camaxm_max_unroll_width_SSE": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/camaxm_sub.ccog"
     ],
-    "cdepositDotC_expand_AVX_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/cmcdotc.ccog"
-    ],
     "cdepositDotC_expand_AVX_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/cmcdotc.ccog"
     ],
@@ -33,9 +30,6 @@
     "cdepositDotC_expand_AVX_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/cmcdotc.ccog"
     ],
-    "cdepositDotC_expand_SISD_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/cmcdotc.ccog"
-    ],
     "cdepositDotC_expand_SISD_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/cmcdotc.ccog"
     ],
@@ -46,9 +40,6 @@
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_expand_SISD_fold_4": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/cmcdotc.ccog"
-    ],
-    "cdepositDotC_expand_SSE_fold_0": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_expand_SSE_fold_1": [
@@ -153,9 +144,6 @@
     "cdepositDotC_max_unroll_width_SSE_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/cmcdotc.ccog"
     ],
-    "cdepositDotU_expand_AVX_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/cmcdotu.ccog"
-    ],
     "cdepositDotU_expand_AVX_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/cmcdotu.ccog"
     ],
@@ -168,9 +156,6 @@
     "cdepositDotU_expand_AVX_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/cmcdotu.ccog"
     ],
-    "cdepositDotU_expand_SISD_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/cmcdotu.ccog"
-    ],
     "cdepositDotU_expand_SISD_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/cmcdotu.ccog"
     ],
@@ -181,9 +166,6 @@
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_expand_SISD_fold_4": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/cmcdotu.ccog"
-    ],
-    "cdepositDotU_expand_SSE_fold_0": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_expand_SSE_fold_1": [
@@ -288,9 +270,6 @@
     "cdepositDotU_max_unroll_width_SSE_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/cmcdotu.ccog"
     ],
-    "cdepositSum_expand_AVX_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/cmcsum.ccog"
-    ],
     "cdepositSum_expand_AVX_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/cmcsum.ccog"
     ],
@@ -303,9 +282,6 @@
     "cdepositSum_expand_AVX_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/cmcsum.ccog"
     ],
-    "cdepositSum_expand_SISD_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/cmcsum.ccog"
-    ],
     "cdepositSum_expand_SISD_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/cmcsum.ccog"
     ],
@@ -316,9 +292,6 @@
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_expand_SISD_fold_4": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/cmcsum.ccog"
-    ],
-    "cdepositSum_expand_SSE_fold_0": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_expand_SSE_fold_1": [
@@ -450,9 +423,6 @@
     "damaxm_max_unroll_width_SSE": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/damaxm.ccog"
     ],
-    "ddepositASum_expand_AVX_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmdasum.ccog"
-    ],
     "ddepositASum_expand_AVX_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmdasum.ccog"
     ],
@@ -465,9 +435,6 @@
     "ddepositASum_expand_AVX_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmdasum.ccog"
     ],
-    "ddepositASum_expand_SISD_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmdasum.ccog"
-    ],
     "ddepositASum_expand_SISD_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmdasum.ccog"
     ],
@@ -478,9 +445,6 @@
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_expand_SISD_fold_4": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmdasum.ccog"
-    ],
-    "ddepositASum_expand_SSE_fold_0": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_expand_SSE_fold_1": [
@@ -585,9 +549,6 @@
     "ddepositASum_max_unroll_width_SSE_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmdasum.ccog"
     ],
-    "ddepositDot_expand_AVX_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmddot.ccog"
-    ],
     "ddepositDot_expand_AVX_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmddot.ccog"
     ],
@@ -600,9 +561,6 @@
     "ddepositDot_expand_AVX_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmddot.ccog"
     ],
-    "ddepositDot_expand_SISD_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmddot.ccog"
-    ],
     "ddepositDot_expand_SISD_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmddot.ccog"
     ],
@@ -613,9 +571,6 @@
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmddot.ccog"
     ],
     "ddepositDot_expand_SISD_fold_4": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmddot.ccog"
-    ],
-    "ddepositDot_expand_SSE_fold_0": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmddot.ccog"
     ],
     "ddepositDot_expand_SSE_fold_1": [
@@ -720,9 +675,6 @@
     "ddepositDot_max_unroll_width_SSE_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmddot.ccog"
     ],
-    "ddepositSSq_expand_AVX_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmdssq.ccog"
-    ],
     "ddepositSSq_expand_AVX_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmdssq.ccog"
     ],
@@ -735,9 +687,6 @@
     "ddepositSSq_expand_AVX_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmdssq.ccog"
     ],
-    "ddepositSSq_expand_SISD_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmdssq.ccog"
-    ],
     "ddepositSSq_expand_SISD_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmdssq.ccog"
     ],
@@ -748,9 +697,6 @@
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_expand_SISD_fold_4": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmdssq.ccog"
-    ],
-    "ddepositSSq_expand_SSE_fold_0": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_expand_SSE_fold_1": [
@@ -855,9 +801,6 @@
     "ddepositSSq_max_unroll_width_SSE_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmdssq.ccog"
     ],
-    "ddepositSum_expand_AVX_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmdsum.ccog"
-    ],
     "ddepositSum_expand_AVX_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmdsum.ccog"
     ],
@@ -870,9 +813,6 @@
     "ddepositSum_expand_AVX_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmdsum.ccog"
     ],
-    "ddepositSum_expand_SISD_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmdsum.ccog"
-    ],
     "ddepositSum_expand_SISD_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmdsum.ccog"
     ],
@@ -883,9 +823,6 @@
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_expand_SISD_fold_4": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmdsum.ccog"
-    ],
-    "ddepositSum_expand_SSE_fold_0": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_expand_SSE_fold_1": [
@@ -1008,9 +945,6 @@
     "dmzssq_block_size_N_block_MAX": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmzssq.ccog"
     ],
-    "dzdepositASum_expand_AVX_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmzasum.ccog"
-    ],
     "dzdepositASum_expand_AVX_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmzasum.ccog"
     ],
@@ -1023,9 +957,6 @@
     "dzdepositASum_expand_AVX_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmzasum.ccog"
     ],
-    "dzdepositASum_expand_SISD_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmzasum.ccog"
-    ],
     "dzdepositASum_expand_SISD_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmzasum.ccog"
     ],
@@ -1036,9 +967,6 @@
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_expand_SISD_fold_4": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmzasum.ccog"
-    ],
-    "dzdepositASum_expand_SSE_fold_0": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_expand_SSE_fold_1": [
@@ -1143,9 +1071,6 @@
     "dzdepositASum_max_unroll_width_SSE_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmzasum.ccog"
     ],
-    "dzdepositSSq_expand_AVX_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmzssq.ccog"
-    ],
     "dzdepositSSq_expand_AVX_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmzssq.ccog"
     ],
@@ -1158,9 +1083,6 @@
     "dzdepositSSq_expand_AVX_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmzssq.ccog"
     ],
-    "dzdepositSSq_expand_SISD_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmzssq.ccog"
-    ],
     "dzdepositSSq_expand_SISD_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmzssq.ccog"
     ],
@@ -1171,9 +1093,6 @@
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_expand_SISD_fold_4": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmzssq.ccog"
-    ],
-    "dzdepositSSq_expand_SSE_fold_0": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_expand_SSE_fold_1": [
@@ -1296,9 +1215,6 @@
     "samaxm_max_unroll_width_SSE": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/samaxm.ccog"
     ],
-    "scdepositASum_expand_AVX_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smcasum.ccog"
-    ],
     "scdepositASum_expand_AVX_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smcasum.ccog"
     ],
@@ -1311,9 +1227,6 @@
     "scdepositASum_expand_AVX_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smcasum.ccog"
     ],
-    "scdepositASum_expand_SISD_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smcasum.ccog"
-    ],
     "scdepositASum_expand_SISD_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smcasum.ccog"
     ],
@@ -1324,9 +1237,6 @@
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smcasum.ccog"
     ],
     "scdepositASum_expand_SISD_fold_4": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smcasum.ccog"
-    ],
-    "scdepositASum_expand_SSE_fold_0": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smcasum.ccog"
     ],
     "scdepositASum_expand_SSE_fold_1": [
@@ -1431,9 +1341,6 @@
     "scdepositASum_max_unroll_width_SSE_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smcasum.ccog"
     ],
-    "scdepositSSq_expand_AVX_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smcssq.ccog"
-    ],
     "scdepositSSq_expand_AVX_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smcssq.ccog"
     ],
@@ -1446,9 +1353,6 @@
     "scdepositSSq_expand_AVX_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smcssq.ccog"
     ],
-    "scdepositSSq_expand_SISD_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smcssq.ccog"
-    ],
     "scdepositSSq_expand_SISD_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smcssq.ccog"
     ],
@@ -1459,9 +1363,6 @@
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_expand_SISD_fold_4": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smcssq.ccog"
-    ],
-    "scdepositSSq_expand_SSE_fold_0": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_expand_SSE_fold_1": [
@@ -1566,9 +1467,6 @@
     "scdepositSSq_max_unroll_width_SSE_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smcssq.ccog"
     ],
-    "sdepositASum_expand_AVX_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smsasum.ccog"
-    ],
     "sdepositASum_expand_AVX_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smsasum.ccog"
     ],
@@ -1581,9 +1479,6 @@
     "sdepositASum_expand_AVX_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smsasum.ccog"
     ],
-    "sdepositASum_expand_SISD_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smsasum.ccog"
-    ],
     "sdepositASum_expand_SISD_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smsasum.ccog"
     ],
@@ -1594,9 +1489,6 @@
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smsasum.ccog"
     ],
     "sdepositASum_expand_SISD_fold_4": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smsasum.ccog"
-    ],
-    "sdepositASum_expand_SSE_fold_0": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smsasum.ccog"
     ],
     "sdepositASum_expand_SSE_fold_1": [
@@ -1701,9 +1593,6 @@
     "sdepositASum_max_unroll_width_SSE_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smsasum.ccog"
     ],
-    "sdepositDot_expand_AVX_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smsdot.ccog"
-    ],
     "sdepositDot_expand_AVX_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smsdot.ccog"
     ],
@@ -1716,9 +1605,6 @@
     "sdepositDot_expand_AVX_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smsdot.ccog"
     ],
-    "sdepositDot_expand_SISD_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smsdot.ccog"
-    ],
     "sdepositDot_expand_SISD_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smsdot.ccog"
     ],
@@ -1729,9 +1615,6 @@
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smsdot.ccog"
     ],
     "sdepositDot_expand_SISD_fold_4": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smsdot.ccog"
-    ],
-    "sdepositDot_expand_SSE_fold_0": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smsdot.ccog"
     ],
     "sdepositDot_expand_SSE_fold_1": [
@@ -1836,9 +1719,6 @@
     "sdepositDot_max_unroll_width_SSE_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smsdot.ccog"
     ],
-    "sdepositSSq_expand_AVX_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smsssq.ccog"
-    ],
     "sdepositSSq_expand_AVX_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smsssq.ccog"
     ],
@@ -1851,9 +1731,6 @@
     "sdepositSSq_expand_AVX_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smsssq.ccog"
     ],
-    "sdepositSSq_expand_SISD_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smsssq.ccog"
-    ],
     "sdepositSSq_expand_SISD_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smsssq.ccog"
     ],
@@ -1864,9 +1741,6 @@
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_expand_SISD_fold_4": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smsssq.ccog"
-    ],
-    "sdepositSSq_expand_SSE_fold_0": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_expand_SSE_fold_1": [
@@ -1971,9 +1845,6 @@
     "sdepositSSq_max_unroll_width_SSE_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smsssq.ccog"
     ],
-    "sdepositSum_expand_AVX_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smssum.ccog"
-    ],
     "sdepositSum_expand_AVX_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smssum.ccog"
     ],
@@ -1986,9 +1857,6 @@
     "sdepositSum_expand_AVX_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smssum.ccog"
     ],
-    "sdepositSum_expand_SISD_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smssum.ccog"
-    ],
     "sdepositSum_expand_SISD_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smssum.ccog"
     ],
@@ -1999,9 +1867,6 @@
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smssum.ccog"
     ],
     "sdepositSum_expand_SISD_fold_4": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smssum.ccog"
-    ],
-    "sdepositSum_expand_SSE_fold_0": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smssum.ccog"
     ],
     "sdepositSum_expand_SSE_fold_1": [
@@ -2142,9 +2007,6 @@
     "zamaxm_max_unroll_width_SSE": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/zamaxm_sub.ccog"
     ],
-    "zdepositDotC_expand_AVX_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/zmzdotc.ccog"
-    ],
     "zdepositDotC_expand_AVX_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/zmzdotc.ccog"
     ],
@@ -2157,9 +2019,6 @@
     "zdepositDotC_expand_AVX_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/zmzdotc.ccog"
     ],
-    "zdepositDotC_expand_SISD_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/zmzdotc.ccog"
-    ],
     "zdepositDotC_expand_SISD_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/zmzdotc.ccog"
     ],
@@ -2170,9 +2029,6 @@
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_expand_SISD_fold_4": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/zmzdotc.ccog"
-    ],
-    "zdepositDotC_expand_SSE_fold_0": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_expand_SSE_fold_1": [
@@ -2277,9 +2133,6 @@
     "zdepositDotC_max_unroll_width_SSE_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/zmzdotc.ccog"
     ],
-    "zdepositDotU_expand_AVX_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/zmzdotu.ccog"
-    ],
     "zdepositDotU_expand_AVX_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/zmzdotu.ccog"
     ],
@@ -2292,9 +2145,6 @@
     "zdepositDotU_expand_AVX_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/zmzdotu.ccog"
     ],
-    "zdepositDotU_expand_SISD_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/zmzdotu.ccog"
-    ],
     "zdepositDotU_expand_SISD_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/zmzdotu.ccog"
     ],
@@ -2305,9 +2155,6 @@
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_expand_SISD_fold_4": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/zmzdotu.ccog"
-    ],
-    "zdepositDotU_expand_SSE_fold_0": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_expand_SSE_fold_1": [
@@ -2412,9 +2259,6 @@
     "zdepositDotU_max_unroll_width_SSE_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/zmzdotu.ccog"
     ],
-    "zdepositSum_expand_AVX_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/zmzsum.ccog"
-    ],
     "zdepositSum_expand_AVX_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/zmzsum.ccog"
     ],
@@ -2427,9 +2271,6 @@
     "zdepositSum_expand_AVX_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/zmzsum.ccog"
     ],
-    "zdepositSum_expand_SISD_fold_0": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/zmzsum.ccog"
-    ],
     "zdepositSum_expand_SISD_fold_1": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/zmzsum.ccog"
     ],
@@ -2440,9 +2281,6 @@
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_expand_SISD_fold_4": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/zmzsum.ccog"
-    ],
-    "zdepositSum_expand_SSE_fold_0": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_expand_SSE_fold_1": [
@@ -2576,9 +2414,6 @@
     "camaxm_max_unroll_width_SSE": [
       "bench_camaxm"
     ],
-    "cdepositDotC_expand_AVX_fold_0": [
-      "bench_rcdotc_fold_0"
-    ],
     "cdepositDotC_expand_AVX_fold_1": [
       "bench_rcdotc_fold_1"
     ],
@@ -2591,9 +2426,6 @@
     "cdepositDotC_expand_AVX_fold_4": [
       "bench_rcdotc_fold_4"
     ],
-    "cdepositDotC_expand_SISD_fold_0": [
-      "bench_rcdotc_fold_0"
-    ],
     "cdepositDotC_expand_SISD_fold_1": [
       "bench_rcdotc_fold_1"
     ],
@@ -2605,9 +2437,6 @@
     ],
     "cdepositDotC_expand_SISD_fold_4": [
       "bench_rcdotc_fold_4"
-    ],
-    "cdepositDotC_expand_SSE_fold_0": [
-      "bench_rcdotc_fold_0"
     ],
     "cdepositDotC_expand_SSE_fold_1": [
       "bench_rcdotc_fold_1"
@@ -2711,9 +2540,6 @@
     "cdepositDotC_max_unroll_width_SSE_fold_4": [
       "bench_rcdotc_fold_4"
     ],
-    "cdepositDotU_expand_AVX_fold_0": [
-      "bench_rcdotu_fold_0"
-    ],
     "cdepositDotU_expand_AVX_fold_1": [
       "bench_rcdotu_fold_1"
     ],
@@ -2726,9 +2552,6 @@
     "cdepositDotU_expand_AVX_fold_4": [
       "bench_rcdotu_fold_4"
     ],
-    "cdepositDotU_expand_SISD_fold_0": [
-      "bench_rcdotu_fold_0"
-    ],
     "cdepositDotU_expand_SISD_fold_1": [
       "bench_rcdotu_fold_1"
     ],
@@ -2740,9 +2563,6 @@
     ],
     "cdepositDotU_expand_SISD_fold_4": [
       "bench_rcdotu_fold_4"
-    ],
-    "cdepositDotU_expand_SSE_fold_0": [
-      "bench_rcdotu_fold_0"
     ],
     "cdepositDotU_expand_SSE_fold_1": [
       "bench_rcdotu_fold_1"
@@ -2846,9 +2666,6 @@
     "cdepositDotU_max_unroll_width_SSE_fold_4": [
       "bench_rcdotu_fold_4"
     ],
-    "cdepositSum_expand_AVX_fold_0": [
-      "bench_rcsum_fold_0"
-    ],
     "cdepositSum_expand_AVX_fold_1": [
       "bench_rcsum_fold_1"
     ],
@@ -2861,9 +2678,6 @@
     "cdepositSum_expand_AVX_fold_4": [
       "bench_rcsum_fold_4"
     ],
-    "cdepositSum_expand_SISD_fold_0": [
-      "bench_rcsum_fold_0"
-    ],
     "cdepositSum_expand_SISD_fold_1": [
       "bench_rcsum_fold_1"
     ],
@@ -2875,9 +2689,6 @@
     ],
     "cdepositSum_expand_SISD_fold_4": [
       "bench_rcsum_fold_4"
-    ],
-    "cdepositSum_expand_SSE_fold_0": [
-      "bench_rcsum_fold_0"
     ],
     "cdepositSum_expand_SSE_fold_1": [
       "bench_rcsum_fold_1"
@@ -3008,9 +2819,6 @@
     "damaxm_max_unroll_width_SSE": [
       "bench_damaxm"
     ],
-    "ddepositASum_expand_AVX_fold_0": [
-      "bench_rdasum_fold_0"
-    ],
     "ddepositASum_expand_AVX_fold_1": [
       "bench_rdasum_fold_1"
     ],
@@ -3023,9 +2831,6 @@
     "ddepositASum_expand_AVX_fold_4": [
       "bench_rdasum_fold_4"
     ],
-    "ddepositASum_expand_SISD_fold_0": [
-      "bench_rdasum_fold_0"
-    ],
     "ddepositASum_expand_SISD_fold_1": [
       "bench_rdasum_fold_1"
     ],
@@ -3037,9 +2842,6 @@
     ],
     "ddepositASum_expand_SISD_fold_4": [
       "bench_rdasum_fold_4"
-    ],
-    "ddepositASum_expand_SSE_fold_0": [
-      "bench_rdasum_fold_0"
     ],
     "ddepositASum_expand_SSE_fold_1": [
       "bench_rdasum_fold_1"
@@ -3143,9 +2945,6 @@
     "ddepositASum_max_unroll_width_SSE_fold_4": [
       "bench_rdasum_fold_4"
     ],
-    "ddepositDot_expand_AVX_fold_0": [
-      "bench_rddot_fold_0"
-    ],
     "ddepositDot_expand_AVX_fold_1": [
       "bench_rddot_fold_1"
     ],
@@ -3158,9 +2957,6 @@
     "ddepositDot_expand_AVX_fold_4": [
       "bench_rddot_fold_4"
     ],
-    "ddepositDot_expand_SISD_fold_0": [
-      "bench_rddot_fold_0"
-    ],
     "ddepositDot_expand_SISD_fold_1": [
       "bench_rddot_fold_1"
     ],
@@ -3172,9 +2968,6 @@
     ],
     "ddepositDot_expand_SISD_fold_4": [
       "bench_rddot_fold_4"
-    ],
-    "ddepositDot_expand_SSE_fold_0": [
-      "bench_rddot_fold_0"
     ],
     "ddepositDot_expand_SSE_fold_1": [
       "bench_rddot_fold_1"
@@ -3278,9 +3071,6 @@
     "ddepositDot_max_unroll_width_SSE_fold_4": [
       "bench_rddot_fold_4"
     ],
-    "ddepositSSq_expand_AVX_fold_0": [
-      "bench_rdnrm2_fold_0"
-    ],
     "ddepositSSq_expand_AVX_fold_1": [
       "bench_rdnrm2_fold_1"
     ],
@@ -3293,9 +3083,6 @@
     "ddepositSSq_expand_AVX_fold_4": [
       "bench_rdnrm2_fold_4"
     ],
-    "ddepositSSq_expand_SISD_fold_0": [
-      "bench_rdnrm2_fold_0"
-    ],
     "ddepositSSq_expand_SISD_fold_1": [
       "bench_rdnrm2_fold_1"
     ],
@@ -3307,9 +3094,6 @@
     ],
     "ddepositSSq_expand_SISD_fold_4": [
       "bench_rdnrm2_fold_4"
-    ],
-    "ddepositSSq_expand_SSE_fold_0": [
-      "bench_rdnrm2_fold_0"
     ],
     "ddepositSSq_expand_SSE_fold_1": [
       "bench_rdnrm2_fold_1"
@@ -3413,9 +3197,6 @@
     "ddepositSSq_max_unroll_width_SSE_fold_4": [
       "bench_rdnrm2_fold_4"
     ],
-    "ddepositSum_expand_AVX_fold_0": [
-      "bench_rdsum_fold_0"
-    ],
     "ddepositSum_expand_AVX_fold_1": [
       "bench_rdsum_fold_1"
     ],
@@ -3428,9 +3209,6 @@
     "ddepositSum_expand_AVX_fold_4": [
       "bench_rdsum_fold_4"
     ],
-    "ddepositSum_expand_SISD_fold_0": [
-      "bench_rdsum_fold_0"
-    ],
     "ddepositSum_expand_SISD_fold_1": [
       "bench_rdsum_fold_1"
     ],
@@ -3442,9 +3220,6 @@
     ],
     "ddepositSum_expand_SISD_fold_4": [
       "bench_rdsum_fold_4"
-    ],
-    "ddepositSum_expand_SSE_fold_0": [
-      "bench_rdsum_fold_0"
     ],
     "ddepositSum_expand_SSE_fold_1": [
       "bench_rdsum_fold_1"
@@ -3566,9 +3341,6 @@
     "dmzssq_block_size_N_block_MAX": [
       "bench_rdzasum_fold_3"
     ],
-    "dzdepositASum_expand_AVX_fold_0": [
-      "bench_rdzasum_fold_0"
-    ],
     "dzdepositASum_expand_AVX_fold_1": [
       "bench_rdzasum_fold_1"
     ],
@@ -3581,9 +3353,6 @@
     "dzdepositASum_expand_AVX_fold_4": [
       "bench_rdzasum_fold_4"
     ],
-    "dzdepositASum_expand_SISD_fold_0": [
-      "bench_rdzasum_fold_0"
-    ],
     "dzdepositASum_expand_SISD_fold_1": [
       "bench_rdzasum_fold_1"
     ],
@@ -3595,9 +3364,6 @@
     ],
     "dzdepositASum_expand_SISD_fold_4": [
       "bench_rdzasum_fold_4"
-    ],
-    "dzdepositASum_expand_SSE_fold_0": [
-      "bench_rdzasum_fold_0"
     ],
     "dzdepositASum_expand_SSE_fold_1": [
       "bench_rdzasum_fold_1"
@@ -3701,9 +3467,6 @@
     "dzdepositASum_max_unroll_width_SSE_fold_4": [
       "bench_rdzasum_fold_4"
     ],
-    "dzdepositSSq_expand_AVX_fold_0": [
-      "bench_rdznrm2_fold_0"
-    ],
     "dzdepositSSq_expand_AVX_fold_1": [
       "bench_rdznrm2_fold_1"
     ],
@@ -3716,9 +3479,6 @@
     "dzdepositSSq_expand_AVX_fold_4": [
       "bench_rdznrm2_fold_4"
     ],
-    "dzdepositSSq_expand_SISD_fold_0": [
-      "bench_rdznrm2_fold_0"
-    ],
     "dzdepositSSq_expand_SISD_fold_1": [
       "bench_rdznrm2_fold_1"
     ],
@@ -3730,9 +3490,6 @@
     ],
     "dzdepositSSq_expand_SISD_fold_4": [
       "bench_rdznrm2_fold_4"
-    ],
-    "dzdepositSSq_expand_SSE_fold_0": [
-      "bench_rdznrm2_fold_0"
     ],
     "dzdepositSSq_expand_SSE_fold_1": [
       "bench_rdznrm2_fold_1"
@@ -3854,9 +3611,6 @@
     "samaxm_max_unroll_width_SSE": [
       "bench_samaxm"
     ],
-    "scdepositASum_expand_AVX_fold_0": [
-      "bench_rscasum_fold_0"
-    ],
     "scdepositASum_expand_AVX_fold_1": [
       "bench_rscasum_fold_1"
     ],
@@ -3869,9 +3623,6 @@
     "scdepositASum_expand_AVX_fold_4": [
       "bench_rscasum_fold_4"
     ],
-    "scdepositASum_expand_SISD_fold_0": [
-      "bench_rscasum_fold_0"
-    ],
     "scdepositASum_expand_SISD_fold_1": [
       "bench_rscasum_fold_1"
     ],
@@ -3883,9 +3634,6 @@
     ],
     "scdepositASum_expand_SISD_fold_4": [
       "bench_rscasum_fold_4"
-    ],
-    "scdepositASum_expand_SSE_fold_0": [
-      "bench_rscasum_fold_0"
     ],
     "scdepositASum_expand_SSE_fold_1": [
       "bench_rscasum_fold_1"
@@ -3989,9 +3737,6 @@
     "scdepositASum_max_unroll_width_SSE_fold_4": [
       "bench_rscasum_fold_4"
     ],
-    "scdepositSSq_expand_AVX_fold_0": [
-      "bench_rscnrm2_fold_0"
-    ],
     "scdepositSSq_expand_AVX_fold_1": [
       "bench_rscnrm2_fold_1"
     ],
@@ -4004,9 +3749,6 @@
     "scdepositSSq_expand_AVX_fold_4": [
       "bench_rscnrm2_fold_4"
     ],
-    "scdepositSSq_expand_SISD_fold_0": [
-      "bench_rscnrm2_fold_0"
-    ],
     "scdepositSSq_expand_SISD_fold_1": [
       "bench_rscnrm2_fold_1"
     ],
@@ -4018,9 +3760,6 @@
     ],
     "scdepositSSq_expand_SISD_fold_4": [
       "bench_rscnrm2_fold_4"
-    ],
-    "scdepositSSq_expand_SSE_fold_0": [
-      "bench_rscnrm2_fold_0"
     ],
     "scdepositSSq_expand_SSE_fold_1": [
       "bench_rscnrm2_fold_1"
@@ -4124,9 +3863,6 @@
     "scdepositSSq_max_unroll_width_SSE_fold_4": [
       "bench_rscnrm2_fold_4"
     ],
-    "sdepositASum_expand_AVX_fold_0": [
-      "bench_rsasum_fold_0"
-    ],
     "sdepositASum_expand_AVX_fold_1": [
       "bench_rsasum_fold_1"
     ],
@@ -4139,9 +3875,6 @@
     "sdepositASum_expand_AVX_fold_4": [
       "bench_rsasum_fold_4"
     ],
-    "sdepositASum_expand_SISD_fold_0": [
-      "bench_rsasum_fold_0"
-    ],
     "sdepositASum_expand_SISD_fold_1": [
       "bench_rsasum_fold_1"
     ],
@@ -4153,9 +3886,6 @@
     ],
     "sdepositASum_expand_SISD_fold_4": [
       "bench_rsasum_fold_4"
-    ],
-    "sdepositASum_expand_SSE_fold_0": [
-      "bench_rsasum_fold_0"
     ],
     "sdepositASum_expand_SSE_fold_1": [
       "bench_rsasum_fold_1"
@@ -4259,9 +3989,6 @@
     "sdepositASum_max_unroll_width_SSE_fold_4": [
       "bench_rsasum_fold_4"
     ],
-    "sdepositDot_expand_AVX_fold_0": [
-      "bench_rsdot_fold_0"
-    ],
     "sdepositDot_expand_AVX_fold_1": [
       "bench_rsdot_fold_1"
     ],
@@ -4274,9 +4001,6 @@
     "sdepositDot_expand_AVX_fold_4": [
       "bench_rsdot_fold_4"
     ],
-    "sdepositDot_expand_SISD_fold_0": [
-      "bench_rsdot_fold_0"
-    ],
     "sdepositDot_expand_SISD_fold_1": [
       "bench_rsdot_fold_1"
     ],
@@ -4288,9 +4012,6 @@
     ],
     "sdepositDot_expand_SISD_fold_4": [
       "bench_rsdot_fold_4"
-    ],
-    "sdepositDot_expand_SSE_fold_0": [
-      "bench_rsdot_fold_0"
     ],
     "sdepositDot_expand_SSE_fold_1": [
       "bench_rsdot_fold_1"
@@ -4394,9 +4115,6 @@
     "sdepositDot_max_unroll_width_SSE_fold_4": [
       "bench_rsdot_fold_4"
     ],
-    "sdepositSSq_expand_AVX_fold_0": [
-      "bench_rsnrm2_fold_0"
-    ],
     "sdepositSSq_expand_AVX_fold_1": [
       "bench_rsnrm2_fold_1"
     ],
@@ -4409,9 +4127,6 @@
     "sdepositSSq_expand_AVX_fold_4": [
       "bench_rsnrm2_fold_4"
     ],
-    "sdepositSSq_expand_SISD_fold_0": [
-      "bench_rsnrm2_fold_0"
-    ],
     "sdepositSSq_expand_SISD_fold_1": [
       "bench_rsnrm2_fold_1"
     ],
@@ -4423,9 +4138,6 @@
     ],
     "sdepositSSq_expand_SISD_fold_4": [
       "bench_rsnrm2_fold_4"
-    ],
-    "sdepositSSq_expand_SSE_fold_0": [
-      "bench_rsnrm2_fold_0"
     ],
     "sdepositSSq_expand_SSE_fold_1": [
       "bench_rsnrm2_fold_1"
@@ -4529,9 +4241,6 @@
     "sdepositSSq_max_unroll_width_SSE_fold_4": [
       "bench_rsnrm2_fold_4"
     ],
-    "sdepositSum_expand_AVX_fold_0": [
-      "bench_rssum_fold_0"
-    ],
     "sdepositSum_expand_AVX_fold_1": [
       "bench_rssum_fold_1"
     ],
@@ -4544,9 +4253,6 @@
     "sdepositSum_expand_AVX_fold_4": [
       "bench_rssum_fold_4"
     ],
-    "sdepositSum_expand_SISD_fold_0": [
-      "bench_rssum_fold_0"
-    ],
     "sdepositSum_expand_SISD_fold_1": [
       "bench_rssum_fold_1"
     ],
@@ -4558,9 +4264,6 @@
     ],
     "sdepositSum_expand_SISD_fold_4": [
       "bench_rssum_fold_4"
-    ],
-    "sdepositSum_expand_SSE_fold_0": [
-      "bench_rssum_fold_0"
     ],
     "sdepositSum_expand_SSE_fold_1": [
       "bench_rssum_fold_1"
@@ -4700,9 +4403,6 @@
     "zamaxm_max_unroll_width_SSE": [
       "bench_zamaxm"
     ],
-    "zdepositDotC_expand_AVX_fold_0": [
-      "bench_rzdotc_fold_0"
-    ],
     "zdepositDotC_expand_AVX_fold_1": [
       "bench_rzdotc_fold_1"
     ],
@@ -4715,9 +4415,6 @@
     "zdepositDotC_expand_AVX_fold_4": [
       "bench_rzdotc_fold_4"
     ],
-    "zdepositDotC_expand_SISD_fold_0": [
-      "bench_rzdotc_fold_0"
-    ],
     "zdepositDotC_expand_SISD_fold_1": [
       "bench_rzdotc_fold_1"
     ],
@@ -4729,9 +4426,6 @@
     ],
     "zdepositDotC_expand_SISD_fold_4": [
       "bench_rzdotc_fold_4"
-    ],
-    "zdepositDotC_expand_SSE_fold_0": [
-      "bench_rzdotc_fold_0"
     ],
     "zdepositDotC_expand_SSE_fold_1": [
       "bench_rzdotc_fold_1"
@@ -4835,9 +4529,6 @@
     "zdepositDotC_max_unroll_width_SSE_fold_4": [
       "bench_rzdotc_fold_4"
     ],
-    "zdepositDotU_expand_AVX_fold_0": [
-      "bench_rzdotu_fold_0"
-    ],
     "zdepositDotU_expand_AVX_fold_1": [
       "bench_rzdotu_fold_1"
     ],
@@ -4850,9 +4541,6 @@
     "zdepositDotU_expand_AVX_fold_4": [
       "bench_rzdotu_fold_4"
     ],
-    "zdepositDotU_expand_SISD_fold_0": [
-      "bench_rzdotu_fold_0"
-    ],
     "zdepositDotU_expand_SISD_fold_1": [
       "bench_rzdotu_fold_1"
     ],
@@ -4864,9 +4552,6 @@
     ],
     "zdepositDotU_expand_SISD_fold_4": [
       "bench_rzdotu_fold_4"
-    ],
-    "zdepositDotU_expand_SSE_fold_0": [
-      "bench_rzdotu_fold_0"
     ],
     "zdepositDotU_expand_SSE_fold_1": [
       "bench_rzdotu_fold_1"
@@ -4970,9 +4655,6 @@
     "zdepositDotU_max_unroll_width_SSE_fold_4": [
       "bench_rzdotu_fold_4"
     ],
-    "zdepositSum_expand_AVX_fold_0": [
-      "bench_rzsum_fold_0"
-    ],
     "zdepositSum_expand_AVX_fold_1": [
       "bench_rzsum_fold_1"
     ],
@@ -4985,9 +4667,6 @@
     "zdepositSum_expand_AVX_fold_4": [
       "bench_rzsum_fold_4"
     ],
-    "zdepositSum_expand_SISD_fold_0": [
-      "bench_rzsum_fold_0"
-    ],
     "zdepositSum_expand_SISD_fold_1": [
       "bench_rzsum_fold_1"
     ],
@@ -4999,9 +4678,6 @@
     ],
     "zdepositSum_expand_SISD_fold_4": [
       "bench_rzsum_fold_4"
-    ],
-    "zdepositSum_expand_SSE_fold_0": [
-      "bench_rzsum_fold_0"
     ],
     "zdepositSum_expand_SSE_fold_1": [
       "bench_rzsum_fold_1"
@@ -5131,7 +4807,6 @@
       "cdepositDotC_max_unroll_width_AVX_fold_4",
       "cdepositDotC_max_pipe_width_AVX_fold_4",
       "cmcdotc_block_size_N_block_MAX",
-      "cdepositDotC_expand_SISD_fold_0",
       "cdepositDotC_expand_SISD_fold_1",
       "cdepositDotC_expand_SISD_fold_2",
       "cdepositDotC_expand_SISD_fold_3",
@@ -5142,13 +4817,12 @@
       "cdepositDotC_max_pipe_width_SSE_fold_1",
       "cdepositDotC_max_pipe_width_SISD_fold_0",
       "cdepositDotC_max_pipe_width_SISD_fold_1",
-      "cdepositDotC_max_pipe_width_SISD_fold_2",
-      "cdepositDotC_max_pipe_width_SSE_fold_0",
       "cdepositDotC_max_pipe_width_SSE_fold_3",
+      "cdepositDotC_max_pipe_width_SSE_fold_0",
+      "cdepositDotC_max_pipe_width_SISD_fold_2",
       "cdepositDotC_expand_AVX_fold_4",
       "cdepositDotC_max_pipe_width_SSE_fold_2",
       "cdepositDotC_expand_AVX_fold_1",
-      "cdepositDotC_expand_AVX_fold_0",
       "cdepositDotC_expand_AVX_fold_3",
       "cdepositDotC_expand_AVX_fold_2",
       "cdepositDotC_max_unroll_width_AVX_fold_3",
@@ -5168,7 +4842,6 @@
       "cdepositDotC_max_unroll_width_SSE_fold_1",
       "cdepositDotC_max_unroll_width_SSE_fold_0",
       "cdepositDotC_expand_SSE_fold_1",
-      "cdepositDotC_expand_SSE_fold_0",
       "cdepositDotC_expand_SSE_fold_3",
       "cdepositDotC_expand_SSE_fold_2",
       "cdepositDotC_max_unroll_width_AVX_fold_1",
@@ -5191,7 +4864,6 @@
       "cdepositDotU_expand_AVX_fold_3",
       "cdepositDotU_expand_AVX_fold_2",
       "cdepositDotU_expand_AVX_fold_1",
-      "cdepositDotU_expand_AVX_fold_0",
       "cdepositDotU_max_unroll_width_SISD_fold_0",
       "cdepositDotU_max_unroll_width_SISD_fold_1",
       "cdepositDotU_max_unroll_width_SISD_fold_2",
@@ -5205,13 +4877,11 @@
       "cdepositDotU_expand_SSE_fold_3",
       "cdepositDotU_expand_SSE_fold_2",
       "cdepositDotU_expand_SSE_fold_1",
-      "cdepositDotU_expand_SSE_fold_0",
       "cdepositDotU_expand_SISD_fold_4",
       "cdepositDotU_expand_SSE_fold_4",
       "cdepositDotU_max_unroll_width_AVX_fold_2",
       "cdepositDotU_max_pipe_width_AVX_fold_3",
       "cdepositDotU_expand_SISD_fold_3",
-      "cdepositDotU_expand_SISD_fold_0",
       "cdepositDotU_max_pipe_width_AVX_fold_0",
       "cdepositDotU_max_unroll_width_AVX_fold_1",
       "cdepositDotU_max_unroll_width_AVX_fold_0",
@@ -5223,8 +4893,8 @@
       "cdepositDotU_expand_SISD_fold_1"
     ],
     "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/cmcsum.ccog": [
-      "cdepositSum_expand_SISD_fold_0",
-      "cdepositSum_expand_SSE_fold_0",
+      "cdepositSum_max_unroll_width_SSE_fold_3",
+      "cdepositSum_expand_SISD_fold_1",
       "cdepositSum_expand_SSE_fold_3",
       "cdepositSum_max_pipe_width_AVX_fold_4",
       "cdepositSum_max_unroll_width_SSE_fold_0",
@@ -5243,7 +4913,6 @@
       "cdepositSum_max_pipe_width_SSE_fold_3",
       "cdepositSum_max_pipe_width_SSE_fold_2",
       "cdepositSum_expand_AVX_fold_1",
-      "cdepositSum_expand_AVX_fold_0",
       "cdepositSum_expand_AVX_fold_3",
       "cdepositSum_expand_AVX_fold_2",
       "cdepositSum_expand_AVX_fold_4",
@@ -5258,10 +4927,8 @@
       "cdepositSum_expand_SISD_fold_3",
       "cdepositSum_expand_SISD_fold_4",
       "cdepositSum_expand_SSE_fold_4",
-      "cdepositSum_max_unroll_width_SSE_fold_3",
-      "cdepositSum_max_unroll_width_SSE_fold_1",
-      "cdepositSum_expand_SISD_fold_1",
       "cdepositSum_max_unroll_width_SSE_fold_4",
+      "cdepositSum_max_unroll_width_SSE_fold_1",
       "cdepositSum_max_pipe_width_SISD_fold_4",
       "cmcsum_block_size_N_block_MAX",
       "cdepositSum_expand_SSE_fold_2",
@@ -5284,7 +4951,6 @@
       "dmdasum_block_size_N_block_MAX",
       "ddepositASum_expand_AVX_fold_2",
       "ddepositASum_expand_AVX_fold_3",
-      "ddepositASum_expand_AVX_fold_0",
       "ddepositASum_expand_AVX_fold_1",
       "ddepositASum_expand_AVX_fold_4",
       "ddepositASum_max_unroll_width_SISD_fold_4",
@@ -5294,7 +4960,6 @@
       "ddepositASum_max_unroll_width_SISD_fold_0",
       "ddepositASum_expand_SSE_fold_2",
       "ddepositASum_expand_SSE_fold_3",
-      "ddepositASum_expand_SSE_fold_0",
       "ddepositASum_expand_SSE_fold_1",
       "ddepositASum_expand_SSE_fold_4",
       "ddepositASum_max_pipe_width_AVX_fold_4",
@@ -5323,7 +4988,6 @@
       "ddepositASum_max_unroll_width_SSE_fold_2",
       "ddepositASum_max_unroll_width_SSE_fold_3",
       "ddepositASum_expand_SISD_fold_1",
-      "ddepositASum_expand_SISD_fold_0",
       "ddepositASum_expand_SISD_fold_3",
       "ddepositASum_expand_SISD_fold_2",
       "ddepositASum_expand_SISD_fold_4"
@@ -5331,15 +4995,12 @@
     "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmddot.ccog": [
       "ddepositDot_expand_AVX_fold_2",
       "ddepositDot_expand_AVX_fold_3",
-      "ddepositDot_expand_AVX_fold_0",
       "ddepositDot_expand_AVX_fold_1",
       "ddepositDot_expand_SISD_fold_1",
-      "ddepositDot_expand_SISD_fold_0",
       "ddepositDot_expand_SISD_fold_3",
       "ddepositDot_expand_SISD_fold_2",
       "ddepositDot_max_pipe_width_SISD_fold_4",
       "ddepositDot_expand_AVX_fold_4",
-      "ddepositDot_max_pipe_width_SSE_fold_4",
       "ddepositDot_expand_SISD_fold_4",
       "ddepositDot_max_unroll_width_AVX_fold_1",
       "ddepositDot_max_unroll_width_AVX_fold_2",
@@ -5353,7 +5014,7 @@
       "ddepositDot_max_pipe_width_SSE_fold_1",
       "ddepositDot_expand_SSE_fold_2",
       "ddepositDot_expand_SSE_fold_3",
-      "ddepositDot_expand_SSE_fold_0",
+      "ddepositDot_max_pipe_width_SSE_fold_4",
       "ddepositDot_expand_SSE_fold_1",
       "ddepositDot_max_pipe_width_SISD_fold_1",
       "ddepositDot_max_pipe_width_SISD_fold_0",
@@ -5377,7 +5038,7 @@
       "ddepositDot_max_unroll_width_SISD_fold_4"
     ],
     "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmdssq.ccog": [
-      "ddepositSSq_expand_AVX_fold_0",
+      "ddepositSSq_max_pipe_width_AVX_fold_4",
       "ddepositSSq_expand_AVX_fold_1",
       "ddepositSSq_expand_AVX_fold_2",
       "ddepositSSq_expand_AVX_fold_3",
@@ -5394,8 +5055,6 @@
       "ddepositSSq_expand_SISD_fold_3",
       "ddepositSSq_expand_SISD_fold_2",
       "ddepositSSq_expand_SISD_fold_1",
-      "ddepositSSq_expand_SISD_fold_0",
-      "ddepositSSq_max_pipe_width_AVX_fold_4",
       "ddepositSSq_max_pipe_width_SSE_fold_3",
       "ddepositSSq_max_unroll_width_AVX_fold_4",
       "ddepositSSq_max_unroll_width_AVX_fold_2",
@@ -5409,7 +5068,6 @@
       "ddepositSSq_max_unroll_width_SSE_fold_3",
       "ddepositSSq_max_unroll_width_SSE_fold_0",
       "ddepositSSq_max_unroll_width_SSE_fold_1",
-      "ddepositSSq_expand_SSE_fold_0",
       "ddepositSSq_expand_SSE_fold_1",
       "ddepositSSq_expand_SSE_fold_2",
       "ddepositSSq_expand_SSE_fold_3",
@@ -5432,25 +5090,22 @@
       "ddepositSum_max_unroll_width_SISD_fold_1",
       "ddepositSum_max_unroll_width_SISD_fold_0",
       "ddepositSum_expand_SISD_fold_1",
-      "ddepositSum_expand_SISD_fold_0",
+      "ddepositSum_max_unroll_width_SSE_fold_0",
       "ddepositSum_expand_SISD_fold_3",
       "ddepositSum_expand_SISD_fold_2",
       "ddepositSum_expand_AVX_fold_2",
       "ddepositSum_expand_AVX_fold_3",
-      "ddepositSum_expand_AVX_fold_0",
       "ddepositSum_expand_AVX_fold_1",
       "ddepositSum_expand_SSE_fold_2",
       "ddepositSum_expand_SSE_fold_3",
-      "ddepositSum_expand_SSE_fold_0",
-      "ddepositSum_max_unroll_width_SSE_fold_3",
-      "ddepositSum_max_unroll_width_SSE_fold_4",
       "ddepositSum_max_unroll_width_SSE_fold_2",
-      "ddepositSum_expand_SSE_fold_4",
       "ddepositSum_expand_SSE_fold_1",
+      "ddepositSum_max_unroll_width_SSE_fold_4",
+      "ddepositSum_expand_SSE_fold_4",
+      "ddepositSum_max_unroll_width_SSE_fold_3",
       "ddepositSum_max_pipe_width_SISD_fold_4",
       "ddepositSum_max_pipe_width_SSE_fold_3",
       "ddepositSum_max_pipe_width_SISD_fold_1",
-      "ddepositSum_max_unroll_width_SSE_fold_0",
       "ddepositSum_max_pipe_width_SISD_fold_0",
       "ddepositSum_max_pipe_width_AVX_fold_2",
       "ddepositSum_max_pipe_width_AVX_fold_3",
@@ -5460,64 +5115,61 @@
       "ddepositSum_max_pipe_width_AVX_fold_4",
       "ddepositSum_max_unroll_width_AVX_fold_3",
       "ddepositSum_max_unroll_width_SSE_fold_1",
+      "ddepositSum_max_pipe_width_SISD_fold_2",
       "ddepositSum_expand_AVX_fold_4",
       "ddepositSum_max_unroll_width_AVX_fold_4",
       "dmdsum_block_size_N_block_MAX",
       "ddepositSum_max_pipe_width_SSE_fold_4",
-      "ddepositSum_max_pipe_width_SSE_fold_1",
       "ddepositSum_max_pipe_width_SSE_fold_2",
       "ddepositSum_max_unroll_width_AVX_fold_1",
       "ddepositSum_max_unroll_width_AVX_fold_2",
-      "ddepositSum_max_pipe_width_SISD_fold_2",
+      "ddepositSum_max_pipe_width_SSE_fold_1",
       "ddepositSum_max_unroll_width_AVX_fold_0",
       "ddepositSum_expand_SISD_fold_4"
     ],
     "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmzasum.ccog": [
-      "dzdepositASum_expand_SISD_fold_0",
       "dzdepositASum_expand_SISD_fold_1",
       "dzdepositASum_expand_SISD_fold_2",
       "dzdepositASum_expand_SISD_fold_3",
       "dzdepositASum_expand_SISD_fold_4",
       "dzdepositASum_max_unroll_width_AVX_fold_4",
       "dzdepositASum_max_pipe_width_SSE_fold_1",
-      "dzdepositASum_expand_AVX_fold_0",
+      "dzdepositASum_max_pipe_width_SSE_fold_0",
       "dzdepositASum_max_pipe_width_SSE_fold_3",
-      "dzdepositASum_max_pipe_width_SSE_fold_2",
-      "dzdepositASum_max_pipe_width_SSE_fold_4",
+      "dzdepositASum_expand_AVX_fold_2",
+      "dzdepositASum_expand_AVX_fold_4",
       "dzdepositASum_max_unroll_width_SSE_fold_4",
       "dzdepositASum_max_unroll_width_SSE_fold_3",
       "dzdepositASum_max_unroll_width_SSE_fold_2",
       "dzdepositASum_max_unroll_width_SSE_fold_1",
       "dzdepositASum_max_unroll_width_SSE_fold_0",
-      "dzdepositASum_max_pipe_width_AVX_fold_2",
       "dzdepositASum_max_unroll_width_SISD_fold_3",
       "dzdepositASum_expand_SSE_fold_4",
       "dzdepositASum_expand_SSE_fold_1",
-      "dzdepositASum_expand_SSE_fold_0",
       "dzdepositASum_expand_SSE_fold_3",
       "dzdepositASum_expand_SSE_fold_2",
-      "dzdepositASum_max_pipe_width_SSE_fold_0",
+      "dzdepositASum_max_pipe_width_SSE_fold_4",
       "dzdepositASum_expand_AVX_fold_3",
       "dzdepositASum_max_unroll_width_AVX_fold_3",
       "dzdepositASum_max_unroll_width_AVX_fold_2",
       "dzdepositASum_max_unroll_width_AVX_fold_1",
-      "dzdepositASum_expand_AVX_fold_2",
+      "dzdepositASum_max_pipe_width_SSE_fold_2",
       "dmzasum_block_size_N_block_MAX",
       "dzdepositASum_max_pipe_width_AVX_fold_4",
       "dzdepositASum_max_pipe_width_AVX_fold_1",
       "dzdepositASum_max_pipe_width_AVX_fold_0",
       "dzdepositASum_max_pipe_width_AVX_fold_3",
-      "dzdepositASum_expand_AVX_fold_4",
-      "dzdepositASum_max_unroll_width_SISD_fold_2",
+      "dzdepositASum_max_pipe_width_AVX_fold_2",
+      "dzdepositASum_max_pipe_width_SISD_fold_0",
       "dzdepositASum_expand_AVX_fold_1",
       "dzdepositASum_max_unroll_width_AVX_fold_0",
-      "dzdepositASum_max_pipe_width_SISD_fold_2",
+      "dzdepositASum_max_unroll_width_SISD_fold_0",
       "dzdepositASum_max_pipe_width_SISD_fold_4",
       "dzdepositASum_max_unroll_width_SISD_fold_4",
       "dzdepositASum_max_pipe_width_SISD_fold_3",
-      "dzdepositASum_max_pipe_width_SISD_fold_0",
+      "dzdepositASum_max_unroll_width_SISD_fold_2",
       "dzdepositASum_max_pipe_width_SISD_fold_1",
-      "dzdepositASum_max_unroll_width_SISD_fold_0",
+      "dzdepositASum_max_pipe_width_SISD_fold_2",
       "dzdepositASum_max_unroll_width_SISD_fold_1"
     ],
     "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/dmzssq.ccog": [
@@ -5526,7 +5178,7 @@
       "dzdepositSSq_max_pipe_width_SSE_fold_3",
       "dzdepositSSq_max_pipe_width_SSE_fold_2",
       "dzdepositSSq_expand_SSE_fold_1",
-      "dzdepositSSq_expand_SSE_fold_0",
+      "dzdepositSSq_max_pipe_width_SSE_fold_4",
       "dzdepositSSq_expand_SSE_fold_3",
       "dzdepositSSq_expand_SSE_fold_2",
       "dzdepositSSq_max_pipe_width_AVX_fold_4",
@@ -5546,7 +5198,6 @@
       "dzdepositSSq_max_unroll_width_SISD_fold_4",
       "dzdepositSSq_max_unroll_width_AVX_fold_2",
       "dzdepositSSq_expand_SISD_fold_4",
-      "dzdepositSSq_expand_SISD_fold_0",
       "dzdepositSSq_expand_SISD_fold_1",
       "dzdepositSSq_expand_SISD_fold_2",
       "dzdepositSSq_expand_SISD_fold_3",
@@ -5557,10 +5208,8 @@
       "dzdepositSSq_max_unroll_width_SSE_fold_0",
       "dzdepositSSq_max_unroll_width_SSE_fold_4",
       "dzdepositSSq_expand_AVX_fold_1",
-      "dzdepositSSq_expand_AVX_fold_0",
       "dzdepositSSq_expand_AVX_fold_3",
       "dzdepositSSq_expand_AVX_fold_2",
-      "dzdepositSSq_max_pipe_width_SSE_fold_4",
       "dzdepositSSq_expand_AVX_fold_4",
       "dzdepositSSq_max_unroll_width_AVX_fold_4",
       "dzdepositSSq_max_unroll_width_AVX_fold_3",
@@ -5586,7 +5235,6 @@
       "scdepositASum_max_pipe_width_SSE_fold_2",
       "smcasum_block_size_N_block_MAX",
       "scdepositASum_expand_SISD_fold_4",
-      "scdepositASum_expand_SISD_fold_0",
       "scdepositASum_expand_SISD_fold_1",
       "scdepositASum_expand_SISD_fold_2",
       "scdepositASum_expand_SISD_fold_3",
@@ -5609,7 +5257,6 @@
       "scdepositASum_max_pipe_width_AVX_fold_2",
       "scdepositASum_max_pipe_width_AVX_fold_4",
       "scdepositASum_expand_SSE_fold_1",
-      "scdepositASum_expand_SSE_fold_0",
       "scdepositASum_expand_SSE_fold_3",
       "scdepositASum_expand_SSE_fold_2",
       "scdepositASum_expand_SSE_fold_4",
@@ -5618,7 +5265,6 @@
       "scdepositASum_max_unroll_width_SISD_fold_0",
       "scdepositASum_max_unroll_width_SISD_fold_1",
       "scdepositASum_max_unroll_width_SISD_fold_4",
-      "scdepositASum_expand_AVX_fold_0",
       "scdepositASum_expand_AVX_fold_4",
       "scdepositASum_max_unroll_width_SSE_fold_2",
       "scdepositASum_max_unroll_width_SSE_fold_1",
@@ -5630,7 +5276,6 @@
       "scdepositSSq_max_pipe_width_AVX_fold_2",
       "scdepositSSq_max_pipe_width_AVX_fold_4",
       "scdepositSSq_max_pipe_width_SSE_fold_1",
-      "scdepositSSq_expand_SISD_fold_0",
       "scdepositSSq_expand_SISD_fold_1",
       "scdepositSSq_expand_SISD_fold_2",
       "scdepositSSq_expand_SISD_fold_3",
@@ -5647,7 +5292,6 @@
       "scdepositSSq_expand_AVX_fold_4",
       "scdepositSSq_max_pipe_width_SSE_fold_2",
       "scdepositSSq_expand_AVX_fold_1",
-      "scdepositSSq_expand_AVX_fold_0",
       "scdepositSSq_expand_AVX_fold_3",
       "scdepositSSq_expand_AVX_fold_2",
       "scdepositSSq_max_unroll_width_AVX_fold_3",
@@ -5667,7 +5311,6 @@
       "scdepositSSq_max_unroll_width_SSE_fold_1",
       "scdepositSSq_max_unroll_width_SSE_fold_0",
       "scdepositSSq_expand_SSE_fold_1",
-      "scdepositSSq_expand_SSE_fold_0",
       "scdepositSSq_expand_SSE_fold_3",
       "scdepositSSq_expand_SSE_fold_2",
       "scdepositSSq_expand_SSE_fold_4",
@@ -5675,14 +5318,12 @@
       "scdepositSSq_max_unroll_width_SISD_fold_1"
     ],
     "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smsasum.ccog": [
-      "sdepositASum_expand_AVX_fold_0",
       "sdepositASum_expand_SSE_fold_3",
       "sdepositASum_expand_SSE_fold_2",
-      "sdepositASum_expand_SISD_fold_4",
-      "sdepositASum_expand_SSE_fold_0",
+      "sdepositASum_expand_SSE_fold_1",
       "sdepositASum_expand_SISD_fold_2",
       "sdepositASum_max_unroll_width_SISD_fold_1",
-      "sdepositASum_expand_SISD_fold_0",
+      "sdepositASum_max_unroll_width_SISD_fold_2",
       "sdepositASum_expand_SSE_fold_4",
       "sdepositASum_max_pipe_width_SISD_fold_2",
       "sdepositASum_max_pipe_width_SISD_fold_3",
@@ -5696,7 +5337,7 @@
       "sdepositASum_max_unroll_width_AVX_fold_4",
       "sdepositASum_expand_AVX_fold_4",
       "sdepositASum_max_unroll_width_SISD_fold_4",
-      "sdepositASum_expand_SSE_fold_1",
+      "sdepositASum_expand_SISD_fold_4",
       "sdepositASum_max_unroll_width_SSE_fold_1",
       "sdepositASum_max_unroll_width_SSE_fold_0",
       "sdepositASum_max_unroll_width_SSE_fold_3",
@@ -5705,7 +5346,6 @@
       "sdepositASum_max_unroll_width_SISD_fold_0",
       "sdepositASum_expand_SISD_fold_3",
       "sdepositASum_max_unroll_width_AVX_fold_3",
-      "sdepositASum_max_unroll_width_SISD_fold_2",
       "sdepositASum_expand_SISD_fold_1",
       "sdepositASum_max_unroll_width_SISD_fold_3",
       "sdepositASum_max_pipe_width_AVX_fold_4",
@@ -5723,9 +5363,9 @@
       "sdepositASum_max_pipe_width_SSE_fold_0"
     ],
     "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smsdot.ccog": [
-      "sdepositDot_expand_SISD_fold_0",
+      "sdepositDot_max_unroll_width_SSE_fold_1",
+      "sdepositDot_max_unroll_width_SSE_fold_3",
       "sdepositDot_expand_SISD_fold_1",
-      "sdepositDot_expand_SISD_fold_2",
       "sdepositDot_expand_SSE_fold_3",
       "smsdot_block_size_N_block_MAX",
       "sdepositDot_expand_SSE_fold_2",
@@ -5744,7 +5384,6 @@
       "sdepositDot_max_pipe_width_SSE_fold_3",
       "sdepositDot_max_pipe_width_SSE_fold_2",
       "sdepositDot_expand_AVX_fold_1",
-      "sdepositDot_expand_AVX_fold_0",
       "sdepositDot_expand_AVX_fold_3",
       "sdepositDot_expand_AVX_fold_2",
       "sdepositDot_expand_AVX_fold_4",
@@ -5753,16 +5392,14 @@
       "sdepositDot_max_unroll_width_SISD_fold_3",
       "sdepositDot_max_unroll_width_SISD_fold_0",
       "sdepositDot_max_unroll_width_SISD_fold_1",
-      "sdepositDot_max_unroll_width_SSE_fold_3",
-      "sdepositDot_expand_SSE_fold_0",
-      "sdepositDot_max_unroll_width_SSE_fold_1",
+      "sdepositDot_expand_SSE_fold_1",
+      "sdepositDot_max_unroll_width_SSE_fold_2",
+      "sdepositDot_expand_SISD_fold_2",
       "sdepositDot_max_unroll_width_SSE_fold_0",
       "sdepositDot_expand_SISD_fold_4",
       "sdepositDot_expand_SSE_fold_4",
       "sdepositDot_max_unroll_width_SSE_fold_4",
-      "sdepositDot_expand_SSE_fold_1",
       "sdepositDot_max_pipe_width_AVX_fold_4",
-      "sdepositDot_max_unroll_width_SSE_fold_2",
       "sdepositDot_expand_SISD_fold_3",
       "sdepositDot_max_pipe_width_SISD_fold_4",
       "sdepositDot_max_pipe_width_SISD_fold_0",
@@ -5771,7 +5408,6 @@
       "sdepositDot_max_pipe_width_SISD_fold_3"
     ],
     "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smsssq.ccog": [
-      "sdepositSSq_expand_AVX_fold_0",
       "smsssq_block_size_N_block_MAX",
       "sdepositSSq_max_pipe_width_SSE_fold_3",
       "sdepositSSq_max_pipe_width_SSE_fold_2",
@@ -5780,7 +5416,7 @@
       "sdepositSSq_expand_SSE_fold_3",
       "sdepositSSq_expand_SSE_fold_2",
       "sdepositSSq_expand_SSE_fold_1",
-      "sdepositSSq_expand_SSE_fold_0",
+      "sdepositSSq_max_pipe_width_SSE_fold_4",
       "sdepositSSq_expand_SSE_fold_4",
       "sdepositSSq_max_pipe_width_AVX_fold_3",
       "sdepositSSq_max_pipe_width_AVX_fold_2",
@@ -5793,14 +5429,12 @@
       "sdepositSSq_max_unroll_width_SSE_fold_4",
       "sdepositSSq_max_unroll_width_AVX_fold_4",
       "sdepositSSq_expand_SISD_fold_4",
-      "sdepositSSq_max_unroll_width_AVX_fold_1",
-      "sdepositSSq_max_unroll_width_AVX_fold_0",
-      "sdepositSSq_expand_SISD_fold_0",
-      "sdepositSSq_expand_SISD_fold_1",
       "sdepositSSq_expand_SISD_fold_2",
-      "sdepositSSq_max_pipe_width_SSE_fold_4",
-      "sdepositSSq_expand_SISD_fold_3",
+      "sdepositSSq_max_unroll_width_AVX_fold_0",
       "sdepositSSq_max_unroll_width_AVX_fold_3",
+      "sdepositSSq_expand_SISD_fold_1",
+      "sdepositSSq_max_unroll_width_AVX_fold_1",
+      "sdepositSSq_expand_SISD_fold_3",
       "sdepositSSq_max_unroll_width_AVX_fold_2",
       "sdepositSSq_max_unroll_width_SISD_fold_4",
       "sdepositSSq_max_pipe_width_AVX_fold_4",
@@ -5820,7 +5454,6 @@
     ],
     "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/smssum.ccog": [
       "sdepositSum_expand_SSE_fold_1",
-      "sdepositSum_expand_SSE_fold_0",
       "sdepositSum_expand_SSE_fold_3",
       "sdepositSum_expand_SSE_fold_2",
       "sdepositSum_expand_SSE_fold_4",
@@ -5836,7 +5469,7 @@
       "sdepositSum_max_unroll_width_AVX_fold_4",
       "sdepositSum_max_unroll_width_SSE_fold_3",
       "sdepositSum_expand_AVX_fold_1",
-      "sdepositSum_expand_AVX_fold_0",
+      "smssum_block_size_N_block_MAX",
       "sdepositSum_expand_AVX_fold_3",
       "sdepositSum_expand_AVX_fold_2",
       "sdepositSum_expand_AVX_fold_4",
@@ -5854,7 +5487,6 @@
       "sdepositSum_max_pipe_width_AVX_fold_3",
       "sdepositSum_max_pipe_width_AVX_fold_2",
       "sdepositSum_max_unroll_width_SSE_fold_4",
-      "sdepositSum_expand_SISD_fold_0",
       "sdepositSum_expand_SISD_fold_1",
       "sdepositSum_expand_SISD_fold_2",
       "sdepositSum_expand_SISD_fold_3",
@@ -5863,8 +5495,7 @@
       "sdepositSum_max_pipe_width_SSE_fold_1",
       "sdepositSum_max_pipe_width_SSE_fold_0",
       "sdepositSum_max_pipe_width_SSE_fold_3",
-      "sdepositSum_max_pipe_width_SSE_fold_2",
-      "smssum_block_size_N_block_MAX"
+      "sdepositSum_max_pipe_width_SSE_fold_2"
     ],
     "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/zamax_sub.ccog": [
       "zamax_max_unroll_width_AVX",
@@ -5880,15 +5511,12 @@
       "zdepositDotC_max_unroll_width_SISD_fold_1",
       "zdepositDotC_max_unroll_width_SSE_fold_3",
       "zdepositDotC_expand_SISD_fold_1",
-      "zdepositDotC_expand_SSE_fold_3",
-      "zdepositDotC_expand_SISD_fold_3",
       "zdepositDotC_max_pipe_width_AVX_fold_4",
-      "zdepositDotC_expand_SISD_fold_2",
+      "zdepositDotC_expand_SSE_fold_1",
       "zdepositDotC_max_pipe_width_AVX_fold_2",
       "zdepositDotC_max_pipe_width_AVX_fold_3",
       "zdepositDotC_max_pipe_width_AVX_fold_0",
       "zdepositDotC_max_pipe_width_AVX_fold_1",
-      "zdepositDotC_max_unroll_width_SISD_fold_2",
       "zdepositDotC_max_unroll_width_AVX_fold_4",
       "zdepositDotC_max_unroll_width_AVX_fold_0",
       "zdepositDotC_max_unroll_width_AVX_fold_1",
@@ -5901,34 +5529,33 @@
       "zdepositDotC_max_pipe_width_SSE_fold_1",
       "zdepositDotC_expand_AVX_fold_2",
       "zdepositDotC_expand_AVX_fold_3",
-      "zdepositDotC_expand_AVX_fold_0",
       "zdepositDotC_expand_AVX_fold_1",
       "zdepositDotC_expand_AVX_fold_4",
       "zdepositDotC_max_unroll_width_SSE_fold_4",
       "zdepositDotC_max_unroll_width_SISD_fold_4",
       "zdepositDotC_max_unroll_width_SSE_fold_0",
-      "zdepositDotC_max_unroll_width_SSE_fold_1",
+      "zdepositDotC_max_unroll_width_SISD_fold_2",
       "zdepositDotC_max_unroll_width_SSE_fold_2",
       "zdepositDotC_max_unroll_width_SISD_fold_0",
       "zdepositDotC_expand_SSE_fold_2",
-      "zdepositDotC_expand_SISD_fold_0",
-      "zdepositDotC_expand_SSE_fold_0",
-      "zdepositDotC_expand_SSE_fold_1",
+      "zdepositDotC_expand_SSE_fold_3",
+      "zdepositDotC_expand_SISD_fold_3",
+      "zdepositDotC_expand_SISD_fold_2",
       "zdepositDotC_expand_SISD_fold_4",
       "zdepositDotC_expand_SSE_fold_4",
       "zdepositDotC_max_pipe_width_SISD_fold_4",
       "zmzdotc_block_size_N_block_MAX",
+      "zdepositDotC_max_pipe_width_SISD_fold_3",
       "zdepositDotC_max_unroll_width_SISD_fold_3",
       "zdepositDotC_max_pipe_width_SISD_fold_1",
       "zdepositDotC_max_pipe_width_SISD_fold_0",
-      "zdepositDotC_max_pipe_width_SISD_fold_3",
+      "zdepositDotC_max_unroll_width_SSE_fold_1",
       "zdepositDotC_max_pipe_width_SISD_fold_2"
     ],
     "/Users/peter/Projects/RBLAS/ReproBLAS2/src/indexedBLAS/zmzdotu.ccog": [
       "zdepositDotU_expand_SISD_fold_3",
       "zdepositDotU_expand_SISD_fold_2",
       "zdepositDotU_expand_SISD_fold_1",
-      "zdepositDotU_expand_SISD_fold_0",
       "zdepositDotU_expand_SISD_fold_4",
       "zdepositDotU_max_pipe_width_AVX_fold_0",
       "zdepositDotU_max_pipe_width_AVX_fold_1",
@@ -5936,7 +5563,6 @@
       "zdepositDotU_max_pipe_width_AVX_fold_3",
       "zdepositDotU_max_pipe_width_AVX_fold_4",
       "zdepositDotU_expand_AVX_fold_4",
-      "zdepositDotU_expand_AVX_fold_0",
       "zdepositDotU_expand_AVX_fold_1",
       "zdepositDotU_expand_AVX_fold_2",
       "zdepositDotU_expand_AVX_fold_3",
@@ -5951,7 +5577,6 @@
       "zdepositDotU_max_pipe_width_SISD_fold_1",
       "zdepositDotU_max_pipe_width_SISD_fold_0",
       "zdepositDotU_max_unroll_width_SSE_fold_4",
-      "zdepositDotU_expand_SSE_fold_0",
       "zdepositDotU_expand_SSE_fold_1",
       "zdepositDotU_expand_SSE_fold_2",
       "zdepositDotU_expand_SSE_fold_3",
@@ -5979,7 +5604,6 @@
       "zdepositSum_max_unroll_width_SSE_fold_3",
       "zdepositSum_max_unroll_width_SSE_fold_0",
       "zdepositSum_max_unroll_width_SSE_fold_1",
-      "zdepositSum_expand_SISD_fold_0",
       "zdepositSum_max_pipe_width_AVX_fold_4",
       "zdepositSum_max_pipe_width_AVX_fold_0",
       "zdepositSum_max_pipe_width_AVX_fold_1",
@@ -5992,14 +5616,13 @@
       "zdepositSum_max_pipe_width_SSE_fold_2",
       "zdepositSum_max_pipe_width_SSE_fold_3",
       "zdepositSum_expand_SISD_fold_4",
-      "zdepositSum_expand_SSE_fold_0",
       "zdepositSum_expand_SSE_fold_1",
       "zdepositSum_expand_SSE_fold_2",
       "zdepositSum_expand_SSE_fold_3",
       "zdepositSum_max_unroll_width_SISD_fold_1",
-      "zdepositSum_expand_SISD_fold_2",
-      "zdepositSum_expand_SISD_fold_1",
       "zdepositSum_max_unroll_width_SISD_fold_0",
+      "zdepositSum_expand_SISD_fold_1",
+      "zdepositSum_expand_SISD_fold_2",
       "zmzsum_block_size_N_block_MAX",
       "zdepositSum_max_pipe_width_SISD_fold_3",
       "zdepositSum_max_pipe_width_SISD_fold_2",
@@ -6017,8 +5640,7 @@
       "zdepositSum_expand_AVX_fold_3",
       "zdepositSum_expand_AVX_fold_4",
       "zdepositSum_max_unroll_width_SISD_fold_3",
-      "zdepositSum_expand_SISD_fold_3",
-      "zdepositSum_expand_AVX_fold_0"
+      "zdepositSum_expand_SISD_fold_3"
     ]
   },
   "forward_metrics": {
@@ -6045,13 +5667,10 @@
     "bench_rcdotc_fold_0": [
       "cdepositDotC_max_unroll_width_AVX_fold_0",
       "cdepositDotC_max_unroll_width_SISD_fold_0",
-      "cdepositDotC_expand_SISD_fold_0",
       "cdepositDotC_max_pipe_width_AVX_fold_0",
       "cdepositDotC_max_pipe_width_SISD_fold_0",
       "cdepositDotC_max_pipe_width_SSE_fold_0",
-      "cdepositDotC_max_unroll_width_SSE_fold_0",
-      "cdepositDotC_expand_SSE_fold_0",
-      "cdepositDotC_expand_AVX_fold_0"
+      "cdepositDotC_max_unroll_width_SSE_fold_0"
     ],
     "bench_rcdotc_fold_1": [
       "cdepositDotC_max_unroll_width_AVX_fold_1",
@@ -6099,14 +5718,11 @@
       "cdepositDotC_expand_AVX_fold_4"
     ],
     "bench_rcdotu_fold_0": [
-      "cdepositDotU_expand_AVX_fold_0",
       "cdepositDotU_max_pipe_width_SISD_fold_0",
       "cdepositDotU_max_pipe_width_SSE_fold_0",
-      "cdepositDotU_max_unroll_width_AVX_fold_0",
       "cdepositDotU_max_unroll_width_SSE_fold_0",
-      "cdepositDotU_expand_SSE_fold_0",
+      "cdepositDotU_max_unroll_width_AVX_fold_0",
       "cdepositDotU_max_unroll_width_SISD_fold_0",
-      "cdepositDotU_expand_SISD_fold_0",
       "cdepositDotU_max_pipe_width_AVX_fold_0"
     ],
     "bench_rcdotu_fold_1": [
@@ -6155,13 +5771,10 @@
       "cdepositDotU_expand_AVX_fold_4"
     ],
     "bench_rcsum_fold_0": [
-      "cdepositSum_max_unroll_width_SSE_fold_0",
-      "cdepositSum_max_pipe_width_AVX_fold_0",
-      "cdepositSum_expand_AVX_fold_0",
-      "cdepositSum_max_unroll_width_SISD_fold_0",
-      "cdepositSum_expand_SISD_fold_0",
-      "cdepositSum_expand_SSE_fold_0",
       "cdepositSum_max_unroll_width_AVX_fold_0",
+      "cdepositSum_max_pipe_width_AVX_fold_0",
+      "cdepositSum_max_unroll_width_SISD_fold_0",
+      "cdepositSum_max_unroll_width_SSE_fold_0",
       "cdepositSum_max_pipe_width_SISD_fold_0",
       "cdepositSum_max_pipe_width_SSE_fold_0"
     ],
@@ -6191,9 +5804,9 @@
       "cdepositSum_max_pipe_width_AVX_fold_3",
       "cdepositSum_max_pipe_width_SSE_fold_3",
       "cdepositSum_expand_AVX_fold_3",
-      "cdepositSum_max_unroll_width_SSE_fold_3",
-      "cdepositSum_max_unroll_width_SISD_fold_3",
       "cdepositSum_max_unroll_width_AVX_fold_3",
+      "cdepositSum_max_unroll_width_SISD_fold_3",
+      "cdepositSum_max_unroll_width_SSE_fold_3",
       "cmcsum_block_size_N_block_MAX",
       "cdepositSum_expand_SSE_fold_3",
       "cdepositSum_expand_SISD_fold_3",
@@ -6211,14 +5824,11 @@
       "cdepositSum_max_unroll_width_AVX_fold_4"
     ],
     "bench_rdasum_fold_0": [
-      "ddepositASum_max_pipe_width_SSE_fold_0",
       "ddepositASum_max_pipe_width_AVX_fold_0",
-      "ddepositASum_expand_AVX_fold_0",
-      "ddepositASum_expand_SISD_fold_0",
-      "ddepositASum_max_unroll_width_AVX_fold_0",
-      "ddepositASum_max_unroll_width_SISD_fold_0",
+      "ddepositASum_max_pipe_width_SSE_fold_0",
       "ddepositASum_max_unroll_width_SSE_fold_0",
-      "ddepositASum_expand_SSE_fold_0",
+      "ddepositASum_max_unroll_width_SISD_fold_0",
+      "ddepositASum_max_unroll_width_AVX_fold_0",
       "ddepositASum_max_pipe_width_SISD_fold_0"
     ],
     "bench_rdasum_fold_1": [
@@ -6269,10 +5879,7 @@
     "bench_rddot_fold_0": [
       "ddepositDot_max_unroll_width_AVX_fold_0",
       "ddepositDot_max_pipe_width_SSE_fold_0",
-      "ddepositDot_expand_SISD_fold_0",
-      "ddepositDot_expand_SSE_fold_0",
       "ddepositDot_max_pipe_width_SISD_fold_0",
-      "ddepositDot_expand_AVX_fold_0",
       "ddepositDot_max_pipe_width_AVX_fold_0",
       "ddepositDot_max_unroll_width_SSE_fold_0",
       "ddepositDot_max_unroll_width_SISD_fold_0"
@@ -6325,11 +5932,8 @@
     "bench_rdnrm2_fold_0": [
       "ddepositSSq_max_unroll_width_AVX_fold_0",
       "ddepositSSq_max_unroll_width_SSE_fold_0",
-      "ddepositSSq_expand_AVX_fold_0",
       "ddepositSSq_max_pipe_width_AVX_fold_0",
       "ddepositSSq_max_unroll_width_SISD_fold_0",
-      "ddepositSSq_expand_SISD_fold_0",
-      "ddepositSSq_expand_SSE_fold_0",
       "ddepositSSq_max_pipe_width_SISD_fold_0",
       "ddepositSSq_max_pipe_width_SSE_fold_0"
     ],
@@ -6380,14 +5984,11 @@
     ],
     "bench_rdsum_fold_0": [
       "ddepositSum_max_pipe_width_AVX_fold_0",
-      "ddepositSum_max_pipe_width_SSE_fold_0",
       "ddepositSum_max_unroll_width_SISD_fold_0",
-      "ddepositSum_expand_SISD_fold_0",
       "ddepositSum_max_unroll_width_AVX_fold_0",
       "ddepositSum_max_pipe_width_SISD_fold_0",
-      "ddepositSum_expand_AVX_fold_0",
-      "ddepositSum_max_unroll_width_SSE_fold_0",
-      "ddepositSum_expand_SSE_fold_0"
+      "ddepositSum_max_pipe_width_SSE_fold_0",
+      "ddepositSum_max_unroll_width_SSE_fold_0"
     ],
     "bench_rdsum_fold_1": [
       "ddepositSum_max_pipe_width_AVX_fold_1",
@@ -6435,10 +6036,7 @@
       "ddepositSum_expand_SSE_fold_4"
     ],
     "bench_rdzasum_fold_0": [
-      "dzdepositASum_expand_SISD_fold_0",
       "dzdepositASum_max_pipe_width_SSE_fold_0",
-      "dzdepositASum_expand_SSE_fold_0",
-      "dzdepositASum_expand_AVX_fold_0",
       "dzdepositASum_max_unroll_width_SSE_fold_0",
       "dzdepositASum_max_unroll_width_AVX_fold_0",
       "dzdepositASum_max_pipe_width_SISD_fold_0",
@@ -6458,11 +6056,11 @@
     ],
     "bench_rdzasum_fold_2": [
       "dzdepositASum_expand_SISD_fold_2",
-      "dzdepositASum_expand_AVX_fold_2",
+      "dzdepositASum_max_pipe_width_SSE_fold_2",
       "dzdepositASum_expand_SSE_fold_2",
       "dzdepositASum_max_unroll_width_SSE_fold_2",
       "dzdepositASum_max_unroll_width_AVX_fold_2",
-      "dzdepositASum_max_pipe_width_SSE_fold_2",
+      "dzdepositASum_expand_AVX_fold_2",
       "dzdepositASum_max_unroll_width_SISD_fold_2",
       "dzdepositASum_max_pipe_width_SISD_fold_2",
       "dzdepositASum_max_pipe_width_AVX_fold_2"
@@ -6492,12 +6090,9 @@
       "dzdepositASum_max_pipe_width_SSE_fold_4"
     ],
     "bench_rdznrm2_fold_0": [
-      "dzdepositSSq_expand_AVX_fold_0",
       "dzdepositSSq_max_unroll_width_SISD_fold_0",
       "dzdepositSSq_max_unroll_width_SSE_fold_0",
       "dzdepositSSq_max_pipe_width_SSE_fold_0",
-      "dzdepositSSq_expand_SISD_fold_0",
-      "dzdepositSSq_expand_SSE_fold_0",
       "dzdepositSSq_max_pipe_width_SISD_fold_0",
       "dzdepositSSq_max_pipe_width_AVX_fold_0",
       "dzdepositSSq_max_unroll_width_AVX_fold_0"
@@ -6547,11 +6142,8 @@
       "dzdepositSSq_expand_AVX_fold_4"
     ],
     "bench_rsasum_fold_0": [
-      "sdepositASum_expand_AVX_fold_0",
       "sdepositASum_max_unroll_width_AVX_fold_0",
-      "sdepositASum_expand_SSE_fold_0",
       "sdepositASum_max_unroll_width_SISD_fold_0",
-      "sdepositASum_expand_SISD_fold_0",
       "sdepositASum_max_pipe_width_AVX_fold_0",
       "sdepositASum_max_unroll_width_SSE_fold_0",
       "sdepositASum_max_pipe_width_SISD_fold_0",
@@ -6608,9 +6200,6 @@
       "scdepositASum_max_pipe_width_SSE_fold_0",
       "scdepositASum_max_unroll_width_SSE_fold_0",
       "scdepositASum_max_pipe_width_AVX_fold_0",
-      "scdepositASum_expand_SISD_fold_0",
-      "scdepositASum_expand_AVX_fold_0",
-      "scdepositASum_expand_SSE_fold_0",
       "scdepositASum_max_unroll_width_AVX_fold_0"
     ],
     "bench_rscasum_fold_1": [
@@ -6661,13 +6250,10 @@
     "bench_rscnrm2_fold_0": [
       "scdepositSSq_max_unroll_width_AVX_fold_0",
       "scdepositSSq_max_unroll_width_SISD_fold_0",
-      "scdepositSSq_expand_SISD_fold_0",
       "scdepositSSq_max_pipe_width_AVX_fold_0",
       "scdepositSSq_max_pipe_width_SISD_fold_0",
       "scdepositSSq_max_pipe_width_SSE_fold_0",
-      "scdepositSSq_max_unroll_width_SSE_fold_0",
-      "scdepositSSq_expand_SSE_fold_0",
-      "scdepositSSq_expand_AVX_fold_0"
+      "scdepositSSq_max_unroll_width_SSE_fold_0"
     ],
     "bench_rscnrm2_fold_1": [
       "scdepositSSq_max_unroll_width_AVX_fold_1",
@@ -6715,13 +6301,10 @@
       "scdepositSSq_expand_AVX_fold_4"
     ],
     "bench_rsdot_fold_0": [
-      "sdepositDot_max_unroll_width_SSE_fold_0",
-      "sdepositDot_max_pipe_width_AVX_fold_0",
-      "sdepositDot_expand_AVX_fold_0",
-      "sdepositDot_max_unroll_width_SISD_fold_0",
-      "sdepositDot_expand_SISD_fold_0",
-      "sdepositDot_expand_SSE_fold_0",
       "sdepositDot_max_unroll_width_AVX_fold_0",
+      "sdepositDot_max_pipe_width_AVX_fold_0",
+      "sdepositDot_max_unroll_width_SISD_fold_0",
+      "sdepositDot_max_unroll_width_SSE_fold_0",
       "sdepositDot_max_pipe_width_SISD_fold_0",
       "sdepositDot_max_pipe_width_SSE_fold_0"
     ],
@@ -6774,12 +6357,9 @@
       "sdepositSSq_max_pipe_width_AVX_fold_0",
       "sdepositSSq_max_unroll_width_SSE_fold_0",
       "sdepositSSq_max_pipe_width_SISD_fold_0",
-      "sdepositSSq_expand_AVX_fold_0",
       "sdepositSSq_max_unroll_width_SISD_fold_0",
       "sdepositSSq_max_unroll_width_AVX_fold_0",
-      "sdepositSSq_expand_SISD_fold_0",
-      "sdepositSSq_max_pipe_width_SSE_fold_0",
-      "sdepositSSq_expand_SSE_fold_0"
+      "sdepositSSq_max_pipe_width_SSE_fold_0"
     ],
     "bench_rsnrm2_fold_1": [
       "sdepositSSq_max_pipe_width_AVX_fold_1",
@@ -6829,12 +6409,9 @@
     "bench_rssum_fold_0": [
       "sdepositSum_max_unroll_width_AVX_fold_0",
       "sdepositSum_max_unroll_width_SISD_fold_0",
-      "sdepositSum_expand_SISD_fold_0",
-      "sdepositSum_expand_SSE_fold_0",
       "sdepositSum_max_unroll_width_SSE_fold_0",
       "sdepositSum_max_pipe_width_SISD_fold_0",
       "sdepositSum_max_pipe_width_AVX_fold_0",
-      "sdepositSum_expand_AVX_fold_0",
       "sdepositSum_max_pipe_width_SSE_fold_0"
     ],
     "bench_rssum_fold_1": [
@@ -6883,14 +6460,11 @@
       "sdepositSum_expand_AVX_fold_4"
     ],
     "bench_rzdotc_fold_0": [
-      "zdepositDotC_expand_SISD_fold_0",
       "zdepositDotC_max_pipe_width_AVX_fold_0",
       "zdepositDotC_max_pipe_width_SSE_fold_0",
-      "zdepositDotC_expand_AVX_fold_0",
       "zdepositDotC_max_unroll_width_SSE_fold_0",
       "zdepositDotC_max_unroll_width_SISD_fold_0",
       "zdepositDotC_max_unroll_width_AVX_fold_0",
-      "zdepositDotC_expand_SSE_fold_0",
       "zdepositDotC_max_pipe_width_SISD_fold_0"
     ],
     "bench_rzdotc_fold_1": [
@@ -6916,7 +6490,7 @@
       "zdepositDotC_max_pipe_width_SISD_fold_2"
     ],
     "bench_rzdotc_fold_3": [
-      "zdepositDotC_max_pipe_width_AVX_fold_3",
+      "zdepositDotC_max_pipe_width_SSE_fold_3",
       "zdepositDotC_expand_AVX_fold_3",
       "zdepositDotC_max_unroll_width_SSE_fold_3",
       "zmzdotc_block_size_N_block_MAX",
@@ -6925,7 +6499,7 @@
       "zdepositDotC_expand_SSE_fold_3",
       "zdepositDotC_expand_SISD_fold_3",
       "zdepositDotC_max_pipe_width_SISD_fold_3",
-      "zdepositDotC_max_pipe_width_SSE_fold_3"
+      "zdepositDotC_max_pipe_width_AVX_fold_3"
     ],
     "bench_rzdotc_fold_4": [
       "zdepositDotC_max_unroll_width_SSE_fold_4",
@@ -6940,13 +6514,10 @@
     ],
     "bench_rzdotu_fold_0": [
       "zdepositDotU_max_unroll_width_SISD_fold_0",
-      "zdepositDotU_expand_AVX_fold_0",
+      "zdepositDotU_max_pipe_width_SSE_fold_0",
       "zdepositDotU_max_unroll_width_SSE_fold_0",
-      "zdepositDotU_expand_SISD_fold_0",
       "zdepositDotU_max_pipe_width_SISD_fold_0",
       "zdepositDotU_max_pipe_width_AVX_fold_0",
-      "zdepositDotU_expand_SSE_fold_0",
-      "zdepositDotU_max_pipe_width_SSE_fold_0",
       "zdepositDotU_max_unroll_width_AVX_fold_0"
     ],
     "bench_rzdotu_fold_1": [
@@ -6995,13 +6566,10 @@
       "zdepositDotU_expand_SSE_fold_4"
     ],
     "bench_rzsum_fold_0": [
-      "zdepositSum_max_unroll_width_AVX_fold_0",
       "zdepositSum_max_unroll_width_SSE_fold_0",
-      "zdepositSum_expand_SSE_fold_0",
+      "zdepositSum_max_unroll_width_AVX_fold_0",
       "zdepositSum_max_pipe_width_AVX_fold_0",
       "zdepositSum_max_unroll_width_SISD_fold_0",
-      "zdepositSum_expand_SISD_fold_0",
-      "zdepositSum_expand_AVX_fold_0",
       "zdepositSum_max_pipe_width_SISD_fold_0",
       "zdepositSum_max_pipe_width_SSE_fold_0"
     ],
@@ -7156,17 +6724,6 @@
         ]
       ]
     },
-    "cdepositDotC_expand_AVX_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "cdepositDotC_expand_AVX_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "AVX"
-        ]
-      ]
-    },
     "cdepositDotC_expand_AVX_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -7211,17 +6768,6 @@
         ]
       ]
     },
-    "cdepositDotC_expand_SISD_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "cdepositDotC_expand_SISD_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SISD"
-        ]
-      ]
-    },
     "cdepositDotC_expand_SISD_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -7263,17 +6809,6 @@
         [
           "vectorization",
           "SISD"
-        ]
-      ]
-    },
-    "cdepositDotC_expand_SSE_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "cdepositDotC_expand_SSE_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SSE"
         ]
       ]
     },
@@ -7726,17 +7261,6 @@
         ]
       ]
     },
-    "cdepositDotU_expand_AVX_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "cdepositDotU_expand_AVX_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "AVX"
-        ]
-      ]
-    },
     "cdepositDotU_expand_AVX_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -7781,17 +7305,6 @@
         ]
       ]
     },
-    "cdepositDotU_expand_SISD_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "cdepositDotU_expand_SISD_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SISD"
-        ]
-      ]
-    },
     "cdepositDotU_expand_SISD_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -7833,17 +7346,6 @@
         [
           "vectorization",
           "SISD"
-        ]
-      ]
-    },
-    "cdepositDotU_expand_SSE_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "cdepositDotU_expand_SSE_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SSE"
         ]
       ]
     },
@@ -8296,17 +7798,6 @@
         ]
       ]
     },
-    "cdepositSum_expand_AVX_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "cdepositSum_expand_AVX_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "AVX"
-        ]
-      ]
-    },
     "cdepositSum_expand_AVX_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -8351,17 +7842,6 @@
         ]
       ]
     },
-    "cdepositSum_expand_SISD_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "cdepositSum_expand_SISD_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SISD"
-        ]
-      ]
-    },
     "cdepositSum_expand_SISD_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -8403,17 +7883,6 @@
         [
           "vectorization",
           "SISD"
-        ]
-      ]
-    },
-    "cdepositSum_expand_SSE_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "cdepositSum_expand_SSE_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SSE"
         ]
       ]
     },
@@ -8974,17 +8443,6 @@
         ]
       ]
     },
-    "ddepositASum_expand_AVX_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "ddepositASum_expand_AVX_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "AVX"
-        ]
-      ]
-    },
     "ddepositASum_expand_AVX_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -9029,17 +8487,6 @@
         ]
       ]
     },
-    "ddepositASum_expand_SISD_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "ddepositASum_expand_SISD_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SISD"
-        ]
-      ]
-    },
     "ddepositASum_expand_SISD_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -9081,17 +8528,6 @@
         [
           "vectorization",
           "SISD"
-        ]
-      ]
-    },
-    "ddepositASum_expand_SSE_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "ddepositASum_expand_SSE_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SSE"
         ]
       ]
     },
@@ -9544,17 +8980,6 @@
         ]
       ]
     },
-    "ddepositDot_expand_AVX_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "ddepositDot_expand_AVX_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "AVX"
-        ]
-      ]
-    },
     "ddepositDot_expand_AVX_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -9599,17 +9024,6 @@
         ]
       ]
     },
-    "ddepositDot_expand_SISD_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "ddepositDot_expand_SISD_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SISD"
-        ]
-      ]
-    },
     "ddepositDot_expand_SISD_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -9651,17 +9065,6 @@
         [
           "vectorization",
           "SISD"
-        ]
-      ]
-    },
-    "ddepositDot_expand_SSE_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "ddepositDot_expand_SSE_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SSE"
         ]
       ]
     },
@@ -10114,17 +9517,6 @@
         ]
       ]
     },
-    "ddepositSSq_expand_AVX_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "ddepositSSq_expand_AVX_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "AVX"
-        ]
-      ]
-    },
     "ddepositSSq_expand_AVX_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -10169,17 +9561,6 @@
         ]
       ]
     },
-    "ddepositSSq_expand_SISD_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "ddepositSSq_expand_SISD_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SISD"
-        ]
-      ]
-    },
     "ddepositSSq_expand_SISD_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -10221,17 +9602,6 @@
         [
           "vectorization",
           "SISD"
-        ]
-      ]
-    },
-    "ddepositSSq_expand_SSE_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "ddepositSSq_expand_SSE_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SSE"
         ]
       ]
     },
@@ -10684,17 +10054,6 @@
         ]
       ]
     },
-    "ddepositSum_expand_AVX_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "ddepositSum_expand_AVX_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "AVX"
-        ]
-      ]
-    },
     "ddepositSum_expand_AVX_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -10739,17 +10098,6 @@
         ]
       ]
     },
-    "ddepositSum_expand_SISD_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "ddepositSum_expand_SISD_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SISD"
-        ]
-      ]
-    },
     "ddepositSum_expand_SISD_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -10791,17 +10139,6 @@
         [
           "vectorization",
           "SISD"
-        ]
-      ]
-    },
-    "ddepositSum_expand_SSE_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "ddepositSum_expand_SSE_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SSE"
         ]
       ]
     },
@@ -11302,17 +10639,6 @@
       "name": "dmzssq_block_size_N_block_MAX",
       "tags": []
     },
-    "dzdepositASum_expand_AVX_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "dzdepositASum_expand_AVX_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "AVX"
-        ]
-      ]
-    },
     "dzdepositASum_expand_AVX_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -11357,17 +10683,6 @@
         ]
       ]
     },
-    "dzdepositASum_expand_SISD_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "dzdepositASum_expand_SISD_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SISD"
-        ]
-      ]
-    },
     "dzdepositASum_expand_SISD_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -11409,17 +10724,6 @@
         [
           "vectorization",
           "SISD"
-        ]
-      ]
-    },
-    "dzdepositASum_expand_SSE_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "dzdepositASum_expand_SSE_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SSE"
         ]
       ]
     },
@@ -11872,17 +11176,6 @@
         ]
       ]
     },
-    "dzdepositSSq_expand_AVX_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "dzdepositSSq_expand_AVX_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "AVX"
-        ]
-      ]
-    },
     "dzdepositSSq_expand_AVX_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -11927,17 +11220,6 @@
         ]
       ]
     },
-    "dzdepositSSq_expand_SISD_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "dzdepositSSq_expand_SISD_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SISD"
-        ]
-      ]
-    },
     "dzdepositSSq_expand_SISD_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -11979,17 +11261,6 @@
         [
           "vectorization",
           "SISD"
-        ]
-      ]
-    },
-    "dzdepositSSq_expand_SSE_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "dzdepositSSq_expand_SSE_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SSE"
         ]
       ]
     },
@@ -12526,17 +11797,6 @@
         ]
       ]
     },
-    "scdepositASum_expand_AVX_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "scdepositASum_expand_AVX_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "AVX"
-        ]
-      ]
-    },
     "scdepositASum_expand_AVX_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -12581,17 +11841,6 @@
         ]
       ]
     },
-    "scdepositASum_expand_SISD_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "scdepositASum_expand_SISD_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SISD"
-        ]
-      ]
-    },
     "scdepositASum_expand_SISD_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -12633,17 +11882,6 @@
         [
           "vectorization",
           "SISD"
-        ]
-      ]
-    },
-    "scdepositASum_expand_SSE_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "scdepositASum_expand_SSE_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SSE"
         ]
       ]
     },
@@ -13096,17 +12334,6 @@
         ]
       ]
     },
-    "scdepositSSq_expand_AVX_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "scdepositSSq_expand_AVX_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "AVX"
-        ]
-      ]
-    },
     "scdepositSSq_expand_AVX_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -13151,17 +12378,6 @@
         ]
       ]
     },
-    "scdepositSSq_expand_SISD_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "scdepositSSq_expand_SISD_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SISD"
-        ]
-      ]
-    },
     "scdepositSSq_expand_SISD_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -13203,17 +12419,6 @@
         [
           "vectorization",
           "SISD"
-        ]
-      ]
-    },
-    "scdepositSSq_expand_SSE_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "scdepositSSq_expand_SSE_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SSE"
         ]
       ]
     },
@@ -13666,17 +12871,6 @@
         ]
       ]
     },
-    "sdepositASum_expand_AVX_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "sdepositASum_expand_AVX_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "AVX"
-        ]
-      ]
-    },
     "sdepositASum_expand_AVX_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -13721,17 +12915,6 @@
         ]
       ]
     },
-    "sdepositASum_expand_SISD_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "sdepositASum_expand_SISD_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SISD"
-        ]
-      ]
-    },
     "sdepositASum_expand_SISD_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -13773,17 +12956,6 @@
         [
           "vectorization",
           "SISD"
-        ]
-      ]
-    },
-    "sdepositASum_expand_SSE_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "sdepositASum_expand_SSE_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SSE"
         ]
       ]
     },
@@ -14236,17 +13408,6 @@
         ]
       ]
     },
-    "sdepositDot_expand_AVX_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "sdepositDot_expand_AVX_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "AVX"
-        ]
-      ]
-    },
     "sdepositDot_expand_AVX_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -14291,17 +13452,6 @@
         ]
       ]
     },
-    "sdepositDot_expand_SISD_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "sdepositDot_expand_SISD_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SISD"
-        ]
-      ]
-    },
     "sdepositDot_expand_SISD_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -14343,17 +13493,6 @@
         [
           "vectorization",
           "SISD"
-        ]
-      ]
-    },
-    "sdepositDot_expand_SSE_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "sdepositDot_expand_SSE_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SSE"
         ]
       ]
     },
@@ -14806,17 +13945,6 @@
         ]
       ]
     },
-    "sdepositSSq_expand_AVX_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "sdepositSSq_expand_AVX_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "AVX"
-        ]
-      ]
-    },
     "sdepositSSq_expand_AVX_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -14861,17 +13989,6 @@
         ]
       ]
     },
-    "sdepositSSq_expand_SISD_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "sdepositSSq_expand_SISD_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SISD"
-        ]
-      ]
-    },
     "sdepositSSq_expand_SISD_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -14913,17 +14030,6 @@
         [
           "vectorization",
           "SISD"
-        ]
-      ]
-    },
-    "sdepositSSq_expand_SSE_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "sdepositSSq_expand_SSE_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SSE"
         ]
       ]
     },
@@ -15376,17 +14482,6 @@
         ]
       ]
     },
-    "sdepositSum_expand_AVX_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "sdepositSum_expand_AVX_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "AVX"
-        ]
-      ]
-    },
     "sdepositSum_expand_AVX_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -15431,17 +14526,6 @@
         ]
       ]
     },
-    "sdepositSum_expand_SISD_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "sdepositSum_expand_SISD_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SISD"
-        ]
-      ]
-    },
     "sdepositSum_expand_SISD_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -15483,17 +14567,6 @@
         [
           "vectorization",
           "SISD"
-        ]
-      ]
-    },
-    "sdepositSum_expand_SSE_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "sdepositSum_expand_SSE_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SSE"
         ]
       ]
     },
@@ -16078,17 +15151,6 @@
         ]
       ]
     },
-    "zdepositDotC_expand_AVX_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "zdepositDotC_expand_AVX_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "AVX"
-        ]
-      ]
-    },
     "zdepositDotC_expand_AVX_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -16133,17 +15195,6 @@
         ]
       ]
     },
-    "zdepositDotC_expand_SISD_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "zdepositDotC_expand_SISD_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SISD"
-        ]
-      ]
-    },
     "zdepositDotC_expand_SISD_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -16185,17 +15236,6 @@
         [
           "vectorization",
           "SISD"
-        ]
-      ]
-    },
-    "zdepositDotC_expand_SSE_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "zdepositDotC_expand_SSE_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SSE"
         ]
       ]
     },
@@ -16648,17 +15688,6 @@
         ]
       ]
     },
-    "zdepositDotU_expand_AVX_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "zdepositDotU_expand_AVX_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "AVX"
-        ]
-      ]
-    },
     "zdepositDotU_expand_AVX_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -16703,17 +15732,6 @@
         ]
       ]
     },
-    "zdepositDotU_expand_SISD_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "zdepositDotU_expand_SISD_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SISD"
-        ]
-      ]
-    },
     "zdepositDotU_expand_SISD_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -16755,17 +15773,6 @@
         [
           "vectorization",
           "SISD"
-        ]
-      ]
-    },
-    "zdepositDotU_expand_SSE_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "zdepositDotU_expand_SSE_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SSE"
         ]
       ]
     },
@@ -17218,17 +16225,6 @@
         ]
       ]
     },
-    "zdepositSum_expand_AVX_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "zdepositSum_expand_AVX_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "AVX"
-        ]
-      ]
-    },
     "zdepositSum_expand_AVX_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -17273,17 +16269,6 @@
         ]
       ]
     },
-    "zdepositSum_expand_SISD_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "zdepositSum_expand_SISD_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SISD"
-        ]
-      ]
-    },
     "zdepositSum_expand_SISD_fold_1": {
       "default": false,
       "flavor": "boolean",
@@ -17325,17 +16310,6 @@
         [
           "vectorization",
           "SISD"
-        ]
-      ]
-    },
-    "zdepositSum_expand_SSE_fold_0": {
-      "default": false,
-      "flavor": "boolean",
-      "name": "zdepositSum_expand_SSE_fold_0",
-      "tags": [
-        [
-          "vectorization",
-          "SSE"
         ]
       ]
     },
