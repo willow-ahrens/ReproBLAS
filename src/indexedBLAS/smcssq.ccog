@@ -1356,7 +1356,7 @@ float smcssq(const int fold, const int N, const void *X, const int incX, const f
 
   free(ssq);
 
-  if (isinf(manY[0]) || isnan(manY[0])){
+  if (ISNANINFF(manY[0])){
     return sscale(1.0);
   } else {
     return scl;

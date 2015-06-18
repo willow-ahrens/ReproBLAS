@@ -73,10 +73,10 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
       y += N_block * 2 * incY;
       continue;
     }
-    if (isinf(manZ[0]) || isnan(manZ[0])){
+    if (ISNANINF(manZ[0])){
       amaxm[0] = manZ[0];
     }
-    if (isinf(manZ[1]) || isnan(manZ[1])){
+    if (ISNANINF(manZ[1])){
       amaxm[1] = manZ[1];
     }
 

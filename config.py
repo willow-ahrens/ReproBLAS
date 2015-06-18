@@ -13,8 +13,7 @@ import sys
 import time
 
 def status(i, n):
-  i += 1
-  n = max(n, 1)
+  n = max(n - 1, 1)
   width = 80
   done = (i * (width - 2))//n
   remaining = width - 2 - done

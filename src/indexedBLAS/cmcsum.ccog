@@ -71,10 +71,10 @@ void cmcsum(const int fold, const int N, const void *X, const int incX, float *m
       x += N_block * 2 * incX;
       continue;
     }
-    if (isinf(manY[0]) || isnan(manY[0])){
+    if (ISNANINFF(manY[0])){
       amax[0] = manY[0];
     }
-    if (isinf(manY[1]) || isnan(manY[1])){
+    if (ISNANINFF(manY[1])){
       amax[1] = manY[1];
     }
 
