@@ -28,12 +28,12 @@ void zmzdeposit(const int fold, const void *X, double *manY, const int incmanY){
   double xR = ((double*)X)[0];
   double xI = ((double*)X)[1];
 
-  if (isinf(xR) || isnan(xR) || isinf(manY[0]) || isnan(manY[0])) {
+  if (ISNANINF(xR) || ISNANINF(manY[0])) {
     manY[0] += xR;
     dmddeposit(fold, xI, manY + 1, 2 * incmanY);
     return;
   }
-  if (isinf(xI) || isnan(xI) || isinf(manY[1]) || isnan(manY[1])) {
+  if (ISNANINF(xI) || ISNANINF(manY[1])) {
     manY[1] += xI;
     dmddeposit(fold, xR, manY, 2 * incmanY);
     return;

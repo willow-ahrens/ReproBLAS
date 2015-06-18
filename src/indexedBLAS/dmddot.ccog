@@ -45,7 +45,7 @@ cog.out(generate.generate(blockSize.BlockSize("dmddot", "N_block_MAX", 32, termi
 void dmddot(const int fold, const int N, const double *X, const int incX, const double *Y, const int incY, double *manZ, const int incmanZ, double *carZ, const int inccarZ){
   double amaxm;
   int i, j;
-  int N_block = MIN(N_block_MAX, DIENDURANCE);
+  int N_block = N_block_MAX;
   int deposits = 0;
 
   for (i = 0; i < N; i += N_block) {

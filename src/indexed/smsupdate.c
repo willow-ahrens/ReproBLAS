@@ -28,7 +28,7 @@ void smsupdate(const int fold, const float X, float* manY, const int incmanY, fl
   int shift;
   const float *bins;
 
-  if (isnan(manY[0]) || isinf(manY[0])){
+  if (ISNANINFF(manY[0])){
     return;
   }
 

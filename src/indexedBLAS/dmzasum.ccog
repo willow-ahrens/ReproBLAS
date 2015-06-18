@@ -46,7 +46,7 @@ void dmzasum(const int fold, const int N, const void *X, const int incX, double 
   double amax_tmp[2];
   double amax;
   int i, j;
-  int N_block = MIN(N_block_MAX, DIENDURANCE/2);
+  int N_block = N_block_MAX;
   int deposits = 0;
   double_complex_indexed *asum = zialloc(fold);
   zisetzero(fold, asum);

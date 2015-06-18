@@ -27,7 +27,7 @@ void smsdeposit(const int fold, const float X, float *manY, const int incmanY){
   int i;
   float x = X;
 
-  if (isinf(x) || isnan(x) || isinf(manY[0]) || isnan(manY[0])) {
+  if (ISNANINFF(x) || ISNANINFF(manY[0])) {
     manY[0] += x;
     return;
   }

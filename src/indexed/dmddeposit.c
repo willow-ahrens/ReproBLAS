@@ -27,7 +27,7 @@ void dmddeposit(const int fold, const double X, double *manY, const int incmanY)
   int i;
   double x = X;
 
-  if (isinf(x) || isnan(x) || isinf(manY[0]) || isnan(manY[0])) {
+  if(ISNANINF(x) || ISNANINF(manY[0])){
     manY[0] += x;
     return;
   }

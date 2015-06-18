@@ -47,7 +47,7 @@ double dmdssq(const int fold, const int N, const double *X, const int incX, cons
   double scl = scaleY;
   double new_scl;
   int i, j;
-  int N_block = MIN(N_block_MAX, DIENDURANCE);
+  int N_block = N_block_MAX;
   int deposits = 0;
 
   for (i = 0; i < N; i += N_block) {

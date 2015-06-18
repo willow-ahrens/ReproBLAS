@@ -28,7 +28,7 @@ void dmdupdate(const int fold, const double X, double* manY, const int incmanY, 
   int shift;
   const double *bins;
 
-  if (isnan(manY[0]) || isinf(manY[0])){
+  if (ISNANINF(manY[0])){
     return;
   }
 

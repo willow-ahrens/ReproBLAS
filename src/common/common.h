@@ -58,13 +58,13 @@ typedef union int_float_ {
 #define ISNANINF(X) ({ \
   long_double tmp_ISNANINF; \
   tmp_ISNANINF.d = X; \
-  tmp_ISNANINF.l & 0x7FF0000000000000ull == 0x7FF0000000000000ull;\
+  (tmp_ISNANINF.l & 0x7FF0000000000000ull) == 0x7FF0000000000000ull;\
   })
 
 #define ISNANINFF(X) ({ \
   int_float tmp_ISNANINFF; \
   tmp_ISNANINFF.f = X; \
-  tmp_ISNANINFF.i & 0x7F800000ul == 0x7F800000ul; \
+  (tmp_ISNANINFF.i & 0x7F800000ul) == 0x7F800000ul; \
   })
 
 #endif

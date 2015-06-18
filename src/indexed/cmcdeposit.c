@@ -28,12 +28,12 @@ void cmcdeposit(const int fold, const void *X, float *manY, const int incmanY){
   float xR = ((float*)X)[0];
   float xI = ((float*)X)[1];
 
-  if (isinf(xR) || isnan(xR) || isinf(manY[0]) || isnan(manY[0])) {
+  if (ISNANINFF(xR) || ISNANINFF(manY[0])){
     manY[0] += xR;
     smsdeposit(fold, xI, manY + 1, 2 * incmanY);
     return;
   }
-  if (isinf(xI) || isnan(xI) || isinf(manY[1]) || isnan(manY[1])) {
+  if (ISNANINFF(xI) || ISNANINFF(manY[1])){
     manY[1] += xI;
     smsdeposit(fold, xR, manY, 2 * incmanY);
     return;

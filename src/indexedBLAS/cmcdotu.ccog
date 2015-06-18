@@ -45,7 +45,7 @@ cog.out(generate.generate(blockSize.BlockSize("cmcdotu", "N_block_MAX", 32, term
 void cmcdotu(const int fold, const int N, const void *X, const int incX, const void *Y, const int incY, float *manZ, const int incmanZ, float *carZ, const int inccarZ){
   float amaxm[2];
   int i, j;
-  int N_block = MIN(N_block_MAX, SIENDURANCE);
+  int N_block = N_block_MAX;
   int deposits = 0;
 
   const float *x = (const float*)X;

@@ -2,9 +2,9 @@
 
 #include <indexed.h>
 
-#include "../../config.h"
-
 #include "../common/common.h"
+
+#include "../../config.h"
 
 #define DDPD(T0, T1, T2, T3, T4, T5, Yl, Yt, X) \
   T0 = (X); \
@@ -40,8 +40,9 @@ double ddmconv(const int fold, const double* manX, const int incmanX, const doub
   int X_index;
   const double *bins;
 
-  if (isinf(manX[0]) || isnan(manX[0]))
+  if (ISNANINF(manX[0])){
     return manX[0];
+  }
 
   if (manX[0] == 0.0) {
     return 0.0;

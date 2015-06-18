@@ -46,7 +46,7 @@ cog.out(generate.generate(blockSize.BlockSize("smssum", "N_block_MAX", 32, termi
 void smssum(const int fold, const int N, const float *X, const int incX, float *manY, const int incmanY, float *carY, const int inccarY){
   float amax;
   int i, j;
-  int N_block = MIN(N_block_MAX, SIENDURANCE);
+  int N_block = N_block_MAX;
   int deposits = 0;
 
   for (i = 0; i < N; i += N_block) {

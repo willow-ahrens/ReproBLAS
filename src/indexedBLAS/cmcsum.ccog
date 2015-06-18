@@ -45,7 +45,7 @@ cog.out(generate.generate(blockSize.BlockSize("cmcsum", "N_block_MAX", 32, termi
 void cmcsum(const int fold, const int N, const void *X, const int incX, float *manY, const int incmanY, float *carY, const int inccarY){
   float amax[2];
   int i, j;
-  int N_block = MIN(N_block_MAX, SIENDURANCE);
+  int N_block = N_block_MAX;
   int deposits = 0;
 
   const float *x = (const float*)X;

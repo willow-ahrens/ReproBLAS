@@ -25,7 +25,7 @@ void smrenorm(const int fold, float* manX, const int incmanX, float* carX, const
   float M;
   float manX0 = manX[0];
 
-  if(manX0 == 0.0 || isnan(manX0) || isinf(manX0)){
+  if(manX0 == 0.0 || ISNANINFF(manX0)){
     return;
   }
 

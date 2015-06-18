@@ -2,6 +2,8 @@
 
 #include <indexed.h>
 
+#include "../common/common.h"
+
 /**
  * @internal
  * @brief  Add manually specified indexed double precision (Y += X)
@@ -40,7 +42,7 @@ void dmdmadd(const int fold, const double *manX, const int incmanX, const double
     return;
   }
 
-  if (isinf(manX[0]) || isnan(manX[0]) || isinf(manY[0]) || isnan(manY[0])) {
+  if (ISNANINF(manX[0]) || ISNANINF(manY[0])){
     manY[0] += manX[0];
     return;
   }

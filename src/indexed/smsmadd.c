@@ -2,6 +2,8 @@
 
 #include <indexed.h>
 
+#include "../common/common.h"
+
 /**
  * @internal
  * @brief  Add manually specified indexed single precision (Y += X)
@@ -40,7 +42,7 @@ void smsmadd(const int fold, const float *manX, const int incmanX, const float *
     return;
   }
 
-  if (isinf(manX[0]) || isnan(manX[0]) || isinf(manY[0]) || isnan(manY[0])) {
+  if (ISNANINFF(manX[0]) || ISNANINFF(manY[0])){
     manY[0] += manX[0];
     return;
   }

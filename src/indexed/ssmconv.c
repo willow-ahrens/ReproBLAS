@@ -2,6 +2,8 @@
 
 #include <math.h>
 
+#include "../common/common.h"
+
 /**
  * @internal
  * @brief Convert manually specified indexed single precision to single precision (X -> Y)
@@ -23,8 +25,9 @@ float ssmconv(const int fold, const float* manX, const int incmanX, const float*
   int X_index;
   const float *bins;
 
-  if (isinf(manX[0]) || isnan(manX[0]))
+  if (ISNANINFF(manX[0])){
     return manX[0];
+  }
 
   if (manX[0] == 0.0) {
     return 0.0;

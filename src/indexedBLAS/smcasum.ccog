@@ -46,7 +46,7 @@ void smcasum(const int fold, const int N, const void *X, const int incX, float *
   float amax_tmp[2];
   float amax;
   int i, j;
-  int N_block = MIN(N_block_MAX, SIENDURANCE/2);
+  int N_block = N_block_MAX;
   int deposits = 0;
   float_complex_indexed *asum = cialloc(fold);
   cisetzero(fold, asum);

@@ -25,7 +25,7 @@ void dmrenorm(const int fold, double* manX, const int incmanX, double* carX, con
   double M;
   double manX0 = manX[0];
 
-  if(manX0 == 0.0 || isnan(manX0) || isinf(manX0)){
+  if(manX0 == 0.0 || ISNANINF(manX0)){
     return;
   }
 
