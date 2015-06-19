@@ -70,7 +70,7 @@ class Deposit(Target):
   def write_vec(self, vec_class, code_block):
     self.data_type = self.data_type_class(code_block)
     self.vec = vec_class(code_block, self.data_type_class)
-    self.vec.set_SIMD_daz_ftz()
+    #self.vec.set_SIMD_daz_ftz()
     code_block.new_line()
     expanded_folds = []
     for i in range(1, self.max_expand_fold + 1):
@@ -92,7 +92,7 @@ class Deposit(Target):
         code_block.indent()
         self.write_fold(code_block, fold, self.arguments["{}_max_pipe_width_{}_fold_{}".format(self.name, self.vec.name, fold)], self.arguments["{}_max_unroll_width_{}_fold_{}".format(self.name, self.vec.name, fold)])
         code_block.new_line()
-        self.vec.reset_SIMD_daz_ftz()
+        #self.vec.reset_SIMD_daz_ftz()
         code_block.dedent()
         code_block.write("}")
         code_block.write("break;")

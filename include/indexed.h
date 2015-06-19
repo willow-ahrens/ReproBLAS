@@ -82,7 +82,7 @@ typedef float float_complex_indexed;
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-#define DIWIDTH 40
+#define DIWIDTH 41
 
 /**
  * @brief Indexed single precision bin width
