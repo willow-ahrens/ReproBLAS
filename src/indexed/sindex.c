@@ -27,5 +27,5 @@ int sindex(const float X){
     return (FLT_MAX_EXP - exp)/SIWIDTH;
   }
   */
-  return ((FLT_MAX_EXP + EXPF_BIAS) - EXPF(X))/SIWIDTH;
+  return MIN(((FLT_MAX_EXP + EXPF_BIAS) - EXPF(X))/SIWIDTH, (FLT_MAX_EXP - FLT_MIN_EXP)/SIWIDTH);
 }
