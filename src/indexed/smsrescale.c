@@ -4,7 +4,7 @@
  * @internal
  * @brief rescale manually specified indexed single precision sum of squares
  *
- * Rescale an indexed single precision sum of squares Y to Y' such that Y / (scaleY * scaleY) == Y' / (X * X) and #smindex(Y) == #sindex(1.0)
+ * Rescale an indexed single precision sum of squares Y to Y' such that Y / (scaleY * scaleY) == Y' / (X * X)
  *
  * Note that Y is assumed to have an index at least the index of 1.0, and that X >= scaleY
  *
@@ -23,12 +23,7 @@ void smsrescale(const int fold, const float X, const float scaleY, float *manY, 
   int i;
   float rescaleY;
 
-  if(X == scaleY || X == 0.0){
-    return;
-  }
-
-  if(scaleY == 0.0){
-    smsupdate(fold, 0.0, manY, incmanY, carY, inccarY);
+  if(X == scaleY || X == 0.0 || scaleY == 0.0){
     return;
   }
 

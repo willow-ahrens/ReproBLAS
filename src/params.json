@@ -10592,49 +10592,49 @@
       ]
     },
     "dmdasum_block_size_N_block_MAX": {
-      "default": 2048,
+      "default": 1024,
       "flavor": "poweroftwo",
-      "maximum": 2048,
+      "maximum": 1024,
       "minimum": 32,
       "name": "dmdasum_block_size_N_block_MAX",
       "tags": []
     },
     "dmddot_block_size_N_block_MAX": {
-      "default": 2048,
+      "default": 1024,
       "flavor": "poweroftwo",
-      "maximum": 2048,
+      "maximum": 1024,
       "minimum": 32,
       "name": "dmddot_block_size_N_block_MAX",
       "tags": []
     },
     "dmdssq_block_size_N_block_MAX": {
-      "default": 2048,
+      "default": 1024,
       "flavor": "poweroftwo",
-      "maximum": 2048,
+      "maximum": 1024,
       "minimum": 32,
       "name": "dmdssq_block_size_N_block_MAX",
       "tags": []
     },
     "dmdsum_block_size_N_block_MAX": {
-      "default": 2048,
+      "default": 1024,
       "flavor": "poweroftwo",
-      "maximum": 2048,
+      "maximum": 1024,
       "minimum": 32,
       "name": "dmdsum_block_size_N_block_MAX",
       "tags": []
     },
     "dmzasum_block_size_N_block_MAX": {
-      "default": 1024,
+      "default": 512,
       "flavor": "poweroftwo",
-      "maximum": 1024,
+      "maximum": 512,
       "minimum": 32,
       "name": "dmzasum_block_size_N_block_MAX",
       "tags": []
     },
     "dmzssq_block_size_N_block_MAX": {
-      "default": 1024,
+      "default": 512,
       "flavor": "poweroftwo",
-      "maximum": 1024,
+      "maximum": 512,
       "minimum": 32,
       "name": "dmzssq_block_size_N_block_MAX",
       "tags": []
@@ -16763,25 +16763,25 @@
       ]
     },
     "zmzdotc_block_size_N_block_MAX": {
-      "default": 2048,
+      "default": 1024,
       "flavor": "poweroftwo",
-      "maximum": 2048,
+      "maximum": 1024,
       "minimum": 32,
       "name": "zmzdotc_block_size_N_block_MAX",
       "tags": []
     },
     "zmzdotu_block_size_N_block_MAX": {
-      "default": 2048,
+      "default": 1024,
       "flavor": "poweroftwo",
-      "maximum": 2048,
+      "maximum": 1024,
       "minimum": 32,
       "name": "zmzdotu_block_size_N_block_MAX",
       "tags": []
     },
     "zmzsum_block_size_N_block_MAX": {
-      "default": 2048,
+      "default": 1024,
       "flavor": "poweroftwo",
-      "maximum": 2048,
+      "maximum": 1024,
       "minimum": 32,
       "name": "zmzsum_block_size_N_block_MAX",
       "tags": []

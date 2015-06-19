@@ -23,6 +23,7 @@
  * @author Peter Ahrens
  * @date   1 Jun 2015
  */
+#include <stdio.h>
 float smsmaddsq(const int fold, const float scaleX, const float *manX, const int incmanX, const float *carX, const int inccarX, const float scaleY, float* manY, const int incmanY, float* carY, const int inccarY) {
   if (scaleX > scaleY){
     smsrescale(fold, scaleX, scaleY, manY, incmanY, carY, inccarY);

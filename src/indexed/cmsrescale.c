@@ -17,7 +17,7 @@
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
  * @author Peter Ahrens
- * @date   1 Jun 2015
+ * @date   19 Jun 2015
  */
 void cmsrescale(const int fold, const float X, const float scaleY, float *manY, const int incmanY, float *carY, const int inccarY){
   int i;

@@ -39,7 +39,7 @@ cog.out(generate.generate(blockSize.BlockSize("dmdasum", "N_block_MAX", 32, term
 
 #endif
 
-#define N_block_MAX 2048
+#define N_block_MAX 1024
 //[[[end]]]
 
 void dmdasum(const int fold, const int N, const double *X, const int incX, double *manY, const int incmanY, double *carY, const int inccarY){
@@ -77,8 +77,6 @@ void dmdasum(const int fold, const int N, const double *X, const int incX, doubl
     ]]]*/
     {
       #ifdef __AVX__
-        unsigned int SIMD_daz_ftz_old_tmp;
-        unsigned int SIMD_daz_ftz_new_tmp;
         __m256d abs_mask_tmp;
         {
           __m256d tmp;
@@ -98,11 +96,6 @@ void dmdasum(const int fold, const int N, const double *X, const int incX, doubl
         __m256d cons_tmp; (void)cons_tmp;
         double cons_buffer_tmp[4] __attribute__((aligned(32))); (void)cons_buffer_tmp;
 
-        SIMD_daz_ftz_old_tmp = _mm_getcsr();
-        SIMD_daz_ftz_new_tmp = SIMD_daz_ftz_old_tmp | 0x8040;
-        if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
-          _mm_setcsr(SIMD_daz_ftz_new_tmp);
-        }
 
         switch(fold){
           case 3:
@@ -252,9 +245,6 @@ void dmdasum(const int fold, const int N, const double *X, const int incX, doubl
               _mm256_store_pd(cons_buffer_tmp, s_2_0);
               manY[(incmanY * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3];
 
-              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
-                _mm_setcsr(SIMD_daz_ftz_old_tmp);
-              }
             }
             break;
           default:
@@ -419,16 +409,11 @@ void dmdasum(const int fold, const int N, const double *X, const int incX, doubl
                 manY[(incmanY * j)] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3];
               }
 
-              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
-                _mm_setcsr(SIMD_daz_ftz_old_tmp);
-              }
             }
             break;
         }
 
       #elif defined(__SSE2__)
-        unsigned int SIMD_daz_ftz_old_tmp;
-        unsigned int SIMD_daz_ftz_new_tmp;
         __m128d abs_mask_tmp;
         {
           __m128d tmp;
@@ -448,11 +433,6 @@ void dmdasum(const int fold, const int N, const double *X, const int incX, doubl
         __m128d cons_tmp; (void)cons_tmp;
         double cons_buffer_tmp[2] __attribute__((aligned(16))); (void)cons_buffer_tmp;
 
-        SIMD_daz_ftz_old_tmp = _mm_getcsr();
-        SIMD_daz_ftz_new_tmp = SIMD_daz_ftz_old_tmp | 0x8040;
-        if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
-          _mm_setcsr(SIMD_daz_ftz_new_tmp);
-        }
 
         switch(fold){
           case 3:
@@ -602,9 +582,6 @@ void dmdasum(const int fold, const int N, const double *X, const int incX, doubl
               _mm_store_pd(cons_buffer_tmp, s_2_0);
               manY[(incmanY * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[1];
 
-              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
-                _mm_setcsr(SIMD_daz_ftz_old_tmp);
-              }
             }
             break;
           default:
@@ -769,9 +746,6 @@ void dmdasum(const int fold, const int N, const double *X, const int incX, doubl
                 manY[(incmanY * j)] = cons_buffer_tmp[0] + cons_buffer_tmp[1];
               }
 
-              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
-                _mm_setcsr(SIMD_daz_ftz_old_tmp);
-              }
             }
             break;
         }

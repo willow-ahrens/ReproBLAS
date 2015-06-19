@@ -27,6 +27,14 @@ int dindex(const double X){
     return (DBL_MAX_EXP - exp)/DIWIDTH;
   }
   */
-  return ((DBL_MAX_EXP + EXP_BIAS) - EXP(X))/DIWIDTH;
-;
+  int exp = EXP(X);
+  if(exp == 0){
+    if(X == 0){
+      return ((DBL_MAX_EXP - DBL_MIN_EXP) + DBL_MANT_DIG)/DIWIDTH;
+    }else{
+      frexp(X, &exp);
+      return (DBL_MAX_EXP - exp)/DIWIDTH;
+    }
+  }
+  return ((DBL_MAX_EXP + EXP_BIAS) - exp)/DIWIDTH;
 }

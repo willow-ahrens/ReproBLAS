@@ -4,7 +4,7 @@
  * @internal
  * @brief rescale manually specified indexed double precision sum of squares
  *
- * Rescale an indexed double precision sum of squares Y to Y' such that Y / (scaleY * scaleY) == Y' / (X * X) and #dmindex(Y) == #dindex(1.0)
+ * Rescale an indexed double precision sum of squares Y to Y' such that Y / (scaleY * scaleY) == Y' / (X * X)
  *
  * Note that Y is assumed to have an index at least the index of 1.0, and that X >= scaleY
  *
@@ -17,18 +17,13 @@
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
  * @author Peter Ahrens
- * @date   1 Jun 2015
+ * @date   19 Jun 2015
  */
 void dmdrescale(const int fold, const double X, const double scaleY, double *manY, const int incmanY, double *carY, const int inccarY){
   int i;
   double rescaleY;
 
-  if(X == scaleY || X == 0.0){
-    return;
-  }
-
-  if(scaleY == 0.0){
-    dmdupdate(fold, 0.0, manY, incmanY, carY, inccarY);
+  if(X == scaleY || X == 0.0 || scaleY == 0.0){
     return;
   }
 

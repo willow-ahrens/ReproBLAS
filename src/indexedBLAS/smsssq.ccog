@@ -80,20 +80,17 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
       scl = new_scl;
     }
 
-    new_scl = 1.0/scl;
-    amax *= new_scl;
+    amax /= scl;
     amax = amax * amax;
 
     smsupdate(fold, amax, manY, incmanY, carY, inccarY);
 
     /*[[[cog
-      cog.out(generate.generate(depositSSq.DepositSSq(dataTypes.Float, "N_block", "X", "incX", "manY", "incmanY", "new_scl"), cog.inFile, args, params, mode))
+      cog.out(generate.generate(depositSSq.DepositSSq(dataTypes.Float, "N_block", "X", "incX", "manY", "incmanY", "scl"), cog.inFile, args, params, mode))
       ]]]*/
     {
       #ifdef __AVX__
-        unsigned int SIMD_daz_ftz_old_tmp;
-        unsigned int SIMD_daz_ftz_new_tmp;
-        __m256 scale_mask = _mm256_set1_ps(new_scl);
+        __m256 scale_mask = _mm256_set1_ps(scl);
         __m256 blp_mask_tmp;
         {
           __m256 tmp;
@@ -104,11 +101,6 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
         __m256 cons_tmp; (void)cons_tmp;
         float cons_buffer_tmp[8] __attribute__((aligned(32))); (void)cons_buffer_tmp;
 
-        SIMD_daz_ftz_old_tmp = _mm_getcsr();
-        SIMD_daz_ftz_new_tmp = SIMD_daz_ftz_old_tmp | 0x8040;
-        if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
-          _mm_setcsr(SIMD_daz_ftz_new_tmp);
-        }
 
         switch(fold){
           case 3:
@@ -131,7 +123,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                   compression_0 = _mm256_set1_ps(SMCOMPRESSION);
                   expansion_0 = _mm256_set1_ps(SMEXPANSION);
                   for(i = 0; i + 8 <= N_block; i += 8, X += 8){
-                    X_0 = _mm256_mul_ps(_mm256_loadu_ps(X), scale_mask);
+                    X_0 = _mm256_div_ps(_mm256_loadu_ps(X), scale_mask);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -145,7 +137,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                     s_2_0 = _mm256_add_ps(s_2_0, _mm256_or_ps(X_0, blp_mask_tmp));
                   }
                   if(i < N_block){
-                    X_0 = _mm256_mul_ps(_mm256_set_ps(0, (N_block - i)>6?X[6]:0, (N_block - i)>5?X[5]:0, (N_block - i)>4?X[4]:0, (N_block - i)>3?X[3]:0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask);
+                    X_0 = _mm256_div_ps(_mm256_set_ps(0, (N_block - i)>6?X[6]:0, (N_block - i)>5?X[5]:0, (N_block - i)>4?X[4]:0, (N_block - i)>3?X[3]:0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -161,7 +153,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                   }
                 }else{
                   for(i = 0; i + 8 <= N_block; i += 8, X += 8){
-                    X_0 = _mm256_mul_ps(_mm256_loadu_ps(X), scale_mask);
+                    X_0 = _mm256_div_ps(_mm256_loadu_ps(X), scale_mask);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -175,7 +167,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                     s_2_0 = _mm256_add_ps(s_2_0, _mm256_or_ps(X_0, blp_mask_tmp));
                   }
                   if(i < N_block){
-                    X_0 = _mm256_mul_ps(_mm256_set_ps(0, (N_block - i)>6?X[6]:0, (N_block - i)>5?X[5]:0, (N_block - i)>4?X[4]:0, (N_block - i)>3?X[3]:0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask);
+                    X_0 = _mm256_div_ps(_mm256_set_ps(0, (N_block - i)>6?X[6]:0, (N_block - i)>5?X[5]:0, (N_block - i)>4?X[4]:0, (N_block - i)>3?X[3]:0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -195,7 +187,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                   compression_0 = _mm256_set1_ps(SMCOMPRESSION);
                   expansion_0 = _mm256_set1_ps(SMEXPANSION);
                   for(i = 0; i + 8 <= N_block; i += 8, X += (incX * 8)){
-                    X_0 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
+                    X_0 = _mm256_div_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -209,7 +201,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                     s_2_0 = _mm256_add_ps(s_2_0, _mm256_or_ps(X_0, blp_mask_tmp));
                   }
                   if(i < N_block){
-                    X_0 = _mm256_mul_ps(_mm256_set_ps(0, (N_block - i)>6?X[(incX * 6)]:0, (N_block - i)>5?X[(incX * 5)]:0, (N_block - i)>4?X[(incX * 4)]:0, (N_block - i)>3?X[(incX * 3)]:0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask);
+                    X_0 = _mm256_div_ps(_mm256_set_ps(0, (N_block - i)>6?X[(incX * 6)]:0, (N_block - i)>5?X[(incX * 5)]:0, (N_block - i)>4?X[(incX * 4)]:0, (N_block - i)>3?X[(incX * 3)]:0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -225,7 +217,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                   }
                 }else{
                   for(i = 0; i + 8 <= N_block; i += 8, X += (incX * 8)){
-                    X_0 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
+                    X_0 = _mm256_div_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -239,7 +231,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                     s_2_0 = _mm256_add_ps(s_2_0, _mm256_or_ps(X_0, blp_mask_tmp));
                   }
                   if(i < N_block){
-                    X_0 = _mm256_mul_ps(_mm256_set_ps(0, (N_block - i)>6?X[(incX * 6)]:0, (N_block - i)>5?X[(incX * 5)]:0, (N_block - i)>4?X[(incX * 4)]:0, (N_block - i)>3?X[(incX * 3)]:0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask);
+                    X_0 = _mm256_div_ps(_mm256_set_ps(0, (N_block - i)>6?X[(incX * 6)]:0, (N_block - i)>5?X[(incX * 5)]:0, (N_block - i)>4?X[(incX * 4)]:0, (N_block - i)>3?X[(incX * 3)]:0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -266,9 +258,6 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
               _mm256_store_ps(cons_buffer_tmp, s_2_0);
               manY[(incmanY * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3] + cons_buffer_tmp[4] + cons_buffer_tmp[5] + cons_buffer_tmp[6] + cons_buffer_tmp[7];
 
-              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
-                _mm_setcsr(SIMD_daz_ftz_old_tmp);
-              }
             }
             break;
           default:
@@ -290,7 +279,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                   compression_0 = _mm256_set1_ps(SMCOMPRESSION);
                   expansion_0 = _mm256_set1_ps(SMEXPANSION);
                   for(i = 0; i + 8 <= N_block; i += 8, X += 8){
-                    X_0 = _mm256_mul_ps(_mm256_loadu_ps(X), scale_mask);
+                    X_0 = _mm256_div_ps(_mm256_loadu_ps(X), scale_mask);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     s_0 = s_buffer[0];
@@ -310,7 +299,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                     }
                   }
                   if(i < N_block){
-                    X_0 = _mm256_mul_ps(_mm256_set_ps(0, (N_block - i)>6?X[6]:0, (N_block - i)>5?X[5]:0, (N_block - i)>4?X[4]:0, (N_block - i)>3?X[3]:0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask);
+                    X_0 = _mm256_div_ps(_mm256_set_ps(0, (N_block - i)>6?X[6]:0, (N_block - i)>5?X[5]:0, (N_block - i)>4?X[4]:0, (N_block - i)>3?X[3]:0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     s_0 = s_buffer[0];
@@ -332,7 +321,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                   }
                 }else{
                   for(i = 0; i + 8 <= N_block; i += 8, X += 8){
-                    X_0 = _mm256_mul_ps(_mm256_loadu_ps(X), scale_mask);
+                    X_0 = _mm256_div_ps(_mm256_loadu_ps(X), scale_mask);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     for(j = 0; j < fold - 1; j++){
@@ -345,7 +334,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                     s_buffer[j] = _mm256_add_ps(s_buffer[j], _mm256_or_ps(X_0, blp_mask_tmp));
                   }
                   if(i < N_block){
-                    X_0 = _mm256_mul_ps(_mm256_set_ps(0, (N_block - i)>6?X[6]:0, (N_block - i)>5?X[5]:0, (N_block - i)>4?X[4]:0, (N_block - i)>3?X[3]:0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask);
+                    X_0 = _mm256_div_ps(_mm256_set_ps(0, (N_block - i)>6?X[6]:0, (N_block - i)>5?X[5]:0, (N_block - i)>4?X[4]:0, (N_block - i)>3?X[3]:0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     for(j = 0; j < fold - 1; j++){
@@ -364,7 +353,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                   compression_0 = _mm256_set1_ps(SMCOMPRESSION);
                   expansion_0 = _mm256_set1_ps(SMEXPANSION);
                   for(i = 0; i + 8 <= N_block; i += 8, X += (incX * 8)){
-                    X_0 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
+                    X_0 = _mm256_div_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     s_0 = s_buffer[0];
@@ -384,7 +373,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                     }
                   }
                   if(i < N_block){
-                    X_0 = _mm256_mul_ps(_mm256_set_ps(0, (N_block - i)>6?X[(incX * 6)]:0, (N_block - i)>5?X[(incX * 5)]:0, (N_block - i)>4?X[(incX * 4)]:0, (N_block - i)>3?X[(incX * 3)]:0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask);
+                    X_0 = _mm256_div_ps(_mm256_set_ps(0, (N_block - i)>6?X[(incX * 6)]:0, (N_block - i)>5?X[(incX * 5)]:0, (N_block - i)>4?X[(incX * 4)]:0, (N_block - i)>3?X[(incX * 3)]:0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     s_0 = s_buffer[0];
@@ -406,7 +395,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                   }
                 }else{
                   for(i = 0; i + 8 <= N_block; i += 8, X += (incX * 8)){
-                    X_0 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
+                    X_0 = _mm256_div_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     for(j = 0; j < fold - 1; j++){
@@ -419,7 +408,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                     s_buffer[j] = _mm256_add_ps(s_buffer[j], _mm256_or_ps(X_0, blp_mask_tmp));
                   }
                   if(i < N_block){
-                    X_0 = _mm256_mul_ps(_mm256_set_ps(0, (N_block - i)>6?X[(incX * 6)]:0, (N_block - i)>5?X[(incX * 5)]:0, (N_block - i)>4?X[(incX * 4)]:0, (N_block - i)>3?X[(incX * 3)]:0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask);
+                    X_0 = _mm256_div_ps(_mm256_set_ps(0, (N_block - i)>6?X[(incX * 6)]:0, (N_block - i)>5?X[(incX * 5)]:0, (N_block - i)>4?X[(incX * 4)]:0, (N_block - i)>3?X[(incX * 3)]:0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     for(j = 0; j < fold - 1; j++){
@@ -441,17 +430,12 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                 manY[(incmanY * j)] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3] + cons_buffer_tmp[4] + cons_buffer_tmp[5] + cons_buffer_tmp[6] + cons_buffer_tmp[7];
               }
 
-              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
-                _mm_setcsr(SIMD_daz_ftz_old_tmp);
-              }
             }
             break;
         }
 
       #elif defined(__SSE2__)
-        unsigned int SIMD_daz_ftz_old_tmp;
-        unsigned int SIMD_daz_ftz_new_tmp;
-        __m128 scale_mask = _mm_set1_ps(new_scl);
+        __m128 scale_mask = _mm_set1_ps(scl);
         __m128 blp_mask_tmp;
         {
           __m128 tmp;
@@ -462,11 +446,6 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
         __m128 cons_tmp; (void)cons_tmp;
         float cons_buffer_tmp[4] __attribute__((aligned(16))); (void)cons_buffer_tmp;
 
-        SIMD_daz_ftz_old_tmp = _mm_getcsr();
-        SIMD_daz_ftz_new_tmp = SIMD_daz_ftz_old_tmp | 0x8040;
-        if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
-          _mm_setcsr(SIMD_daz_ftz_new_tmp);
-        }
 
         switch(fold){
           case 3:
@@ -489,7 +468,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                   compression_0 = _mm_set1_ps(SMCOMPRESSION);
                   expansion_0 = _mm_set1_ps(SMEXPANSION);
                   for(i = 0; i + 4 <= N_block; i += 4, X += 4){
-                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask);
+                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -503,7 +482,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                     s_2_0 = _mm_add_ps(s_2_0, _mm_or_ps(X_0, blp_mask_tmp));
                   }
                   if(i < N_block){
-                    X_0 = _mm_mul_ps(_mm_set_ps(0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask);
+                    X_0 = _mm_div_ps(_mm_set_ps(0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -519,7 +498,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                   }
                 }else{
                   for(i = 0; i + 4 <= N_block; i += 4, X += 4){
-                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask);
+                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -533,7 +512,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                     s_2_0 = _mm_add_ps(s_2_0, _mm_or_ps(X_0, blp_mask_tmp));
                   }
                   if(i < N_block){
-                    X_0 = _mm_mul_ps(_mm_set_ps(0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask);
+                    X_0 = _mm_div_ps(_mm_set_ps(0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -553,7 +532,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                   compression_0 = _mm_set1_ps(SMCOMPRESSION);
                   expansion_0 = _mm_set1_ps(SMEXPANSION);
                   for(i = 0; i + 4 <= N_block; i += 4, X += (incX * 4)){
-                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
+                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -567,7 +546,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                     s_2_0 = _mm_add_ps(s_2_0, _mm_or_ps(X_0, blp_mask_tmp));
                   }
                   if(i < N_block){
-                    X_0 = _mm_mul_ps(_mm_set_ps(0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask);
+                    X_0 = _mm_div_ps(_mm_set_ps(0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -583,7 +562,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                   }
                 }else{
                   for(i = 0; i + 4 <= N_block; i += 4, X += (incX * 4)){
-                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
+                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -597,7 +576,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                     s_2_0 = _mm_add_ps(s_2_0, _mm_or_ps(X_0, blp_mask_tmp));
                   }
                   if(i < N_block){
-                    X_0 = _mm_mul_ps(_mm_set_ps(0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask);
+                    X_0 = _mm_div_ps(_mm_set_ps(0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -624,9 +603,6 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
               _mm_store_ps(cons_buffer_tmp, s_2_0);
               manY[(incmanY * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3];
 
-              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
-                _mm_setcsr(SIMD_daz_ftz_old_tmp);
-              }
             }
             break;
           default:
@@ -648,7 +624,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                   compression_0 = _mm_set1_ps(SMCOMPRESSION);
                   expansion_0 = _mm_set1_ps(SMEXPANSION);
                   for(i = 0; i + 4 <= N_block; i += 4, X += 4){
-                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask);
+                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     s_0 = s_buffer[0];
@@ -668,7 +644,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                     }
                   }
                   if(i < N_block){
-                    X_0 = _mm_mul_ps(_mm_set_ps(0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask);
+                    X_0 = _mm_div_ps(_mm_set_ps(0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     s_0 = s_buffer[0];
@@ -690,7 +666,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                   }
                 }else{
                   for(i = 0; i + 4 <= N_block; i += 4, X += 4){
-                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask);
+                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     for(j = 0; j < fold - 1; j++){
@@ -703,7 +679,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                     s_buffer[j] = _mm_add_ps(s_buffer[j], _mm_or_ps(X_0, blp_mask_tmp));
                   }
                   if(i < N_block){
-                    X_0 = _mm_mul_ps(_mm_set_ps(0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask);
+                    X_0 = _mm_div_ps(_mm_set_ps(0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     for(j = 0; j < fold - 1; j++){
@@ -722,7 +698,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                   compression_0 = _mm_set1_ps(SMCOMPRESSION);
                   expansion_0 = _mm_set1_ps(SMEXPANSION);
                   for(i = 0; i + 4 <= N_block; i += 4, X += (incX * 4)){
-                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
+                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     s_0 = s_buffer[0];
@@ -742,7 +718,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                     }
                   }
                   if(i < N_block){
-                    X_0 = _mm_mul_ps(_mm_set_ps(0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask);
+                    X_0 = _mm_div_ps(_mm_set_ps(0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     s_0 = s_buffer[0];
@@ -764,7 +740,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                   }
                 }else{
                   for(i = 0; i + 4 <= N_block; i += 4, X += (incX * 4)){
-                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
+                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     for(j = 0; j < fold - 1; j++){
@@ -777,7 +753,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                     s_buffer[j] = _mm_add_ps(s_buffer[j], _mm_or_ps(X_0, blp_mask_tmp));
                   }
                   if(i < N_block){
-                    X_0 = _mm_mul_ps(_mm_set_ps(0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask);
+                    X_0 = _mm_div_ps(_mm_set_ps(0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     for(j = 0; j < fold - 1; j++){
@@ -799,15 +775,12 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                 manY[(incmanY * j)] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3];
               }
 
-              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
-                _mm_setcsr(SIMD_daz_ftz_old_tmp);
-              }
             }
             break;
         }
 
       #else
-        float scale_mask = new_scl;
+        float scale_mask = scl;
         int_float blp_tmp; (void)blp_tmp;
         float cons_tmp; (void)cons_tmp;
 
@@ -833,7 +806,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                   compression_0 = SMCOMPRESSION;
                   expansion_0 = SMEXPANSION;
                   for(i = 0; i + 1 <= N_block; i += 1, X += 1){
-                    X_0 = X[0] * scale_mask;
+                    X_0 = X[0] / scale_mask;
                     X_0 = X_0 * X_0;
 
                     q_0 = s_0_0;
@@ -854,7 +827,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                   }
                 }else{
                   for(i = 0; i + 1 <= N_block; i += 1, X += 1){
-                    X_0 = X[0] * scale_mask;
+                    X_0 = X[0] / scale_mask;
                     X_0 = X_0 * X_0;
 
                     q_0 = s_0_0;
@@ -879,7 +852,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                   compression_0 = SMCOMPRESSION;
                   expansion_0 = SMEXPANSION;
                   for(i = 0; i + 1 <= N_block; i += 1, X += incX){
-                    X_0 = X[0] * scale_mask;
+                    X_0 = X[0] / scale_mask;
                     X_0 = X_0 * X_0;
 
                     q_0 = s_0_0;
@@ -900,7 +873,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                   }
                 }else{
                   for(i = 0; i + 1 <= N_block; i += 1, X += incX){
-                    X_0 = X[0] * scale_mask;
+                    X_0 = X[0] / scale_mask;
                     X_0 = X_0 * X_0;
 
                     q_0 = s_0_0;
@@ -947,7 +920,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                   compression_0 = SMCOMPRESSION;
                   expansion_0 = SMEXPANSION;
                   for(i = 0; i + 1 <= N_block; i += 1, X += 1){
-                    X_0 = X[0] * scale_mask;
+                    X_0 = X[0] / scale_mask;
                     X_0 = X_0 * X_0;
 
                     s_0 = s_buffer[0];
@@ -974,7 +947,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                   }
                 }else{
                   for(i = 0; i + 1 <= N_block; i += 1, X += 1){
-                    X_0 = X[0] * scale_mask;
+                    X_0 = X[0] / scale_mask;
                     X_0 = X_0 * X_0;
 
                     for(j = 0; j < fold - 1; j++){
@@ -996,7 +969,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                   compression_0 = SMCOMPRESSION;
                   expansion_0 = SMEXPANSION;
                   for(i = 0; i + 1 <= N_block; i += 1, X += incX){
-                    X_0 = X[0] * scale_mask;
+                    X_0 = X[0] / scale_mask;
                     X_0 = X_0 * X_0;
 
                     s_0 = s_buffer[0];
@@ -1023,7 +996,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                   }
                 }else{
                   for(i = 0; i + 1 <= N_block; i += 1, X += incX){
-                    X_0 = X[0] * scale_mask;
+                    X_0 = X[0] / scale_mask;
                     X_0 = X_0 * X_0;
 
                     for(j = 0; j < fold - 1; j++){

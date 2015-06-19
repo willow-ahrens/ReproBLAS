@@ -78,8 +78,6 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
     ]]]*/
     {
       #ifdef __AVX__
-        unsigned int SIMD_daz_ftz_old_tmp;
-        unsigned int SIMD_daz_ftz_new_tmp;
         __m256 blp_mask_tmp;
         {
           __m256 tmp;
@@ -90,11 +88,6 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
         __m256 cons_tmp; (void)cons_tmp;
         float cons_buffer_tmp[8] __attribute__((aligned(32))); (void)cons_buffer_tmp;
 
-        SIMD_daz_ftz_old_tmp = _mm_getcsr();
-        SIMD_daz_ftz_new_tmp = SIMD_daz_ftz_old_tmp | 0x8040;
-        if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
-          _mm_setcsr(SIMD_daz_ftz_new_tmp);
-        }
 
         switch(fold){
           case 3:
@@ -401,9 +394,6 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
               _mm256_store_ps(cons_buffer_tmp, s_2_0);
               manZ[(incmanZ * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3] + cons_buffer_tmp[4] + cons_buffer_tmp[5] + cons_buffer_tmp[6] + cons_buffer_tmp[7];
 
-              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
-                _mm_setcsr(SIMD_daz_ftz_old_tmp);
-              }
             }
             break;
           default:
@@ -745,16 +735,11 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
                 manZ[(incmanZ * j)] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3] + cons_buffer_tmp[4] + cons_buffer_tmp[5] + cons_buffer_tmp[6] + cons_buffer_tmp[7];
               }
 
-              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
-                _mm_setcsr(SIMD_daz_ftz_old_tmp);
-              }
             }
             break;
         }
 
       #elif defined(__SSE2__)
-        unsigned int SIMD_daz_ftz_old_tmp;
-        unsigned int SIMD_daz_ftz_new_tmp;
         __m128 blp_mask_tmp;
         {
           __m128 tmp;
@@ -765,11 +750,6 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
         __m128 cons_tmp; (void)cons_tmp;
         float cons_buffer_tmp[4] __attribute__((aligned(16))); (void)cons_buffer_tmp;
 
-        SIMD_daz_ftz_old_tmp = _mm_getcsr();
-        SIMD_daz_ftz_new_tmp = SIMD_daz_ftz_old_tmp | 0x8040;
-        if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
-          _mm_setcsr(SIMD_daz_ftz_new_tmp);
-        }
 
         switch(fold){
           case 3:
@@ -1076,9 +1056,6 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
               _mm_store_ps(cons_buffer_tmp, s_2_0);
               manZ[(incmanZ * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3];
 
-              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
-                _mm_setcsr(SIMD_daz_ftz_old_tmp);
-              }
             }
             break;
           default:
@@ -1420,9 +1397,6 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
                 manZ[(incmanZ * j)] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3];
               }
 
-              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
-                _mm_setcsr(SIMD_daz_ftz_old_tmp);
-              }
             }
             break;
         }

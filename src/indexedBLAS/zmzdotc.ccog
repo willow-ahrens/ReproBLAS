@@ -39,7 +39,7 @@ cog.out(generate.generate(blockSize.BlockSize("zmzdotc", "N_block_MAX", 32, term
 
 #endif
 
-#define N_block_MAX 2048
+#define N_block_MAX 1024
 //[[[end]]]
 
 void zmzdotc(const int fold, const int N, const void *X, const int incX, const void *Y, const int incY, double *manZ, const int incmanZ, double *carZ, const int inccarZ){
@@ -92,8 +92,6 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
     ]]]*/
     {
       #ifdef __AVX__
-        unsigned int SIMD_daz_ftz_old_tmp;
-        unsigned int SIMD_daz_ftz_new_tmp;
         __m256d conj_mask_tmp;
         {
           __m256d tmp;
@@ -111,11 +109,6 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
         __m256d cons_tmp; (void)cons_tmp;
         double cons_buffer_tmp[4] __attribute__((aligned(32))); (void)cons_buffer_tmp;
 
-        SIMD_daz_ftz_old_tmp = _mm_getcsr();
-        SIMD_daz_ftz_new_tmp = SIMD_daz_ftz_old_tmp | 0x8040;
-        if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
-          _mm_setcsr(SIMD_daz_ftz_new_tmp);
-        }
 
         switch(fold){
           case 3:
@@ -631,9 +624,6 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
               ((double*)manZ)[(incmanZ * 4)] = cons_buffer_tmp[0] + cons_buffer_tmp[2];
               ((double*)manZ)[((incmanZ * 4) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3];
 
-              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
-                _mm_setcsr(SIMD_daz_ftz_old_tmp);
-              }
             }
             break;
           default:
@@ -1170,16 +1160,11 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                 ((double*)manZ)[((incmanZ * j * 2) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3];
               }
 
-              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
-                _mm_setcsr(SIMD_daz_ftz_old_tmp);
-              }
             }
             break;
         }
 
       #elif defined(__SSE2__)
-        unsigned int SIMD_daz_ftz_old_tmp;
-        unsigned int SIMD_daz_ftz_new_tmp;
         __m128d conj_mask_tmp;
         {
           __m128d tmp;
@@ -1197,11 +1182,6 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
         __m128d cons_tmp; (void)cons_tmp;
         double cons_buffer_tmp[2] __attribute__((aligned(16))); (void)cons_buffer_tmp;
 
-        SIMD_daz_ftz_old_tmp = _mm_getcsr();
-        SIMD_daz_ftz_new_tmp = SIMD_daz_ftz_old_tmp | 0x8040;
-        if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
-          _mm_setcsr(SIMD_daz_ftz_new_tmp);
-        }
 
         switch(fold){
           case 3:
@@ -1506,9 +1486,6 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
               ((double*)manZ)[(incmanZ * 4)] = cons_buffer_tmp[0];
               ((double*)manZ)[((incmanZ * 4) + 1)] = cons_buffer_tmp[1];
 
-              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
-                _mm_setcsr(SIMD_daz_ftz_old_tmp);
-              }
             }
             break;
           default:
@@ -1820,9 +1797,6 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                 ((double*)manZ)[((incmanZ * j * 2) + 1)] = cons_buffer_tmp[1];
               }
 
-              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
-                _mm_setcsr(SIMD_daz_ftz_old_tmp);
-              }
             }
             break;
         }

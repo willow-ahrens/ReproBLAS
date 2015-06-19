@@ -39,7 +39,7 @@ cog.out(generate.generate(blockSize.BlockSize("dmzasum", "N_block_MAX", 32, term
 
 #endif
 
-#define N_block_MAX 1024
+#define N_block_MAX 512
 //[[[end]]]
 
 void dmzasum(const int fold, const int N, const void *X, const int incX, double *manY, const int incmanY, double *carY, const int inccarY){
@@ -86,8 +86,6 @@ void dmzasum(const int fold, const int N, const void *X, const int incX, double 
       ]]]*/
     {
       #ifdef __AVX__
-        unsigned int SIMD_daz_ftz_old_tmp;
-        unsigned int SIMD_daz_ftz_new_tmp;
         __m256d abs_mask_tmp;
         {
           __m256d tmp;
@@ -107,11 +105,6 @@ void dmzasum(const int fold, const int N, const void *X, const int incX, double 
         __m256d cons_tmp; (void)cons_tmp;
         double cons_buffer_tmp[4] __attribute__((aligned(32))); (void)cons_buffer_tmp;
 
-        SIMD_daz_ftz_old_tmp = _mm_getcsr();
-        SIMD_daz_ftz_new_tmp = SIMD_daz_ftz_old_tmp | 0x8040;
-        if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
-          _mm_setcsr(SIMD_daz_ftz_new_tmp);
-        }
 
         switch(fold){
           case 3:
@@ -284,9 +277,6 @@ void dmzasum(const int fold, const int N, const void *X, const int incX, double 
               ((double*)asum)[4] = cons_buffer_tmp[0] + cons_buffer_tmp[2];
               ((double*)asum)[5] = cons_buffer_tmp[1] + cons_buffer_tmp[3];
 
-              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
-                _mm_setcsr(SIMD_daz_ftz_old_tmp);
-              }
             }
             break;
           default:
@@ -472,16 +462,11 @@ void dmzasum(const int fold, const int N, const void *X, const int incX, double 
                 ((double*)asum)[((j * 2) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3];
               }
 
-              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
-                _mm_setcsr(SIMD_daz_ftz_old_tmp);
-              }
             }
             break;
         }
 
       #elif defined(__SSE2__)
-        unsigned int SIMD_daz_ftz_old_tmp;
-        unsigned int SIMD_daz_ftz_new_tmp;
         __m128d abs_mask_tmp;
         {
           __m128d tmp;
@@ -501,11 +486,6 @@ void dmzasum(const int fold, const int N, const void *X, const int incX, double 
         __m128d cons_tmp; (void)cons_tmp;
         double cons_buffer_tmp[2] __attribute__((aligned(16))); (void)cons_buffer_tmp;
 
-        SIMD_daz_ftz_old_tmp = _mm_getcsr();
-        SIMD_daz_ftz_new_tmp = SIMD_daz_ftz_old_tmp | 0x8040;
-        if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
-          _mm_setcsr(SIMD_daz_ftz_new_tmp);
-        }
 
         switch(fold){
           case 3:
@@ -619,9 +599,6 @@ void dmzasum(const int fold, const int N, const void *X, const int incX, double 
               ((double*)asum)[4] = cons_buffer_tmp[0];
               ((double*)asum)[5] = cons_buffer_tmp[1];
 
-              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
-                _mm_setcsr(SIMD_daz_ftz_old_tmp);
-              }
             }
             break;
           default:
@@ -740,9 +717,6 @@ void dmzasum(const int fold, const int N, const void *X, const int incX, double 
                 ((double*)asum)[((j * 2) + 1)] = cons_buffer_tmp[1];
               }
 
-              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
-                _mm_setcsr(SIMD_daz_ftz_old_tmp);
-              }
             }
             break;
         }

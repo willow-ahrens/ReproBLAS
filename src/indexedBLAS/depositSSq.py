@@ -18,7 +18,7 @@ class DepositSSq(deposit.Deposit):
     code_block.include("{0} scale_mask = {1};".format(self.vec.type_name, self.vec.set(self.scale)[0]))
     reg_width = self.compute_reg_width(n)
     if partial == "":
-      code_block.set_equal(self.load_vars[0], self.vec.mul(self.vec.load(self.load_ptrs[0], 0, incs[0], n, align), ["scale_mask"] * reg_width))
+      code_block.set_equal(self.load_vars[0], self.vec.div(self.vec.load(self.load_ptrs[0], 0, incs[0], n, align), ["scale_mask"] * reg_width))
     else:
-      code_block.set_equal(self.load_vars[0], self.vec.mul(self.vec.load_partial(self.load_ptrs[0], 0, incs[0], partial), ["scale_mask"] * reg_width))
+      code_block.set_equal(self.load_vars[0], self.vec.div(self.vec.load_partial(self.load_ptrs[0], 0, incs[0], partial), ["scale_mask"] * reg_width))
     code_block.set_equal(self.load_vars[0], self.vec.mul(self.load_vars[0], self.load_vars[0][:reg_width]))

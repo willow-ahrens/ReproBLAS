@@ -52,7 +52,6 @@ check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
                          "+-big",\
                          "sine"]])
 
-"""
 check_suite.add_checks([checks.ValidateInternalRZSUMTest(),\
                         checks.ValidateInternalZIZIADDTest(),\
                         checks.ValidateInternalZIZADDTest(),\
@@ -80,6 +79,7 @@ check_suite.add_checks([checks.ValidateInternalRDNRM2Test(),\
                          "+big",\
                          "++big",\
                          "+-big"]])
+"""
 
 check_suite.add_checks([checks.ValidateInternalRDZNRM2Test(),\
                         checks.ValidateInternalRDZASUMTest(),\
@@ -225,6 +225,7 @@ check_suite.add_checks([checks.ValidateInternalRZDOTUTest(),\
                          "++inf_nan",\
                          "+-inf_nan"]])
 
+"""
 check_suite.add_checks([checks.VerifyRDSUMTest(),\
                         checks.VerifyRDASUMTest(),\
                         checks.VerifyDIDIADDTest(),\
@@ -300,8 +301,8 @@ check_suite.add_checks([checks.VerifyRDDOTTest(),\
                          "rand+(rand-1)",\
                          "sine",\
                          "small+grow*big"]])
-"""
 
+"""
 DBL_BIN_WIDTH=40
 DBL_MAX_EXP=1024
 DBL_BIG_EXP=27
@@ -498,6 +499,7 @@ for i in range(FLT_BIN_WIDTH + 2):
                            "+big",\
                            "++big",\
                            "+-big"]])
+"""
 
 #check_suite.add_checks([checks.VerifyRDGEMVTest()],\
 #                       ["O", "T", "N", "M", "lda", "incX", "incY", "f", "g", "j"],\
