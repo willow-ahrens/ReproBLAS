@@ -121,8 +121,9 @@ class Deposit(Target):
       code_block.define_vars(self.vec.type_name, self.s_vars[0])
     else:
       #define q variables
-      self.q_vars = ["q_" + str(i) for i in range(max_reg_width)]
-      code_block.define_vars(self.vec.type_name, self.q_vars)
+      if (fold > 1):
+        self.q_vars = ["q_" + str(i) for i in range(max_reg_width)]
+        code_block.define_vars(self.vec.type_name, self.q_vars)
       #define s variables
       self.s_vars = [["s_{0}_{1}".format(j, i) for i in range(max_reg_width)] for j in range(fold)]
       for j in range(fold):
