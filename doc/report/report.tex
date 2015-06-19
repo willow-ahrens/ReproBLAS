@@ -35,13 +35,13 @@
 \section{Notation and Background}
   Let $\R, \F, $ and $\Z$ denote the sets of real numbers, floating-point numbers, and integers respectively.
 
-  Assume that floating point arithmetic complies with the IEEE 754-2008 standard in "to nearest even" rounding mode.
+  Assume that floating point arithmetic complies with the IEEE 754-2008 standard in "to nearest even" rounding mode and that underflow occurs gradually.
 
   Let $f = s \times 2^e \times m \in \F$ be a floating-point number represented in IEEE 754 format where $s = \pm 1$ is the \textbf{sign}, $e_{\max} \geq e \geq e_{\min}$ is the \textbf{exponent} ($\exp(f)$ is defined to be $e$), $p$ is the \textbf{precision}, and $m = m_0.m_1m_2...m_{p-1}$ where $m_1, ..., m_{p - 1} \in \{0, 1\}$ is the \textbf{significand} of $f$. $f$ is said to be \textbf{normalized} if $m_0 = 1$ and $e > e_{\min}$, \textbf{unnormalized} if $m_0 = 0$, and \textbf{subnormal} if $m_0 = 0$ and $e = e_{\min}$. $f = 0$ if $m_0 = m_1 = ... = m_{p - 1} = 0$ and $e = e_{\min}$.
 
   As ReproBLAS is written in C, \verb|float| and \verb|double| refer to the floating point types specified in the 1989 C standard \cite{c89} and we assume that they correspond to the 32-bit and 64-bit types in the IEEE-754-2008 floating point standard \cite{ieee754}. 
 
-Note that we will index starting at 0 to increase correspondence with the actual ReproBLAS implementation.
+  All indicies start at 0 to increase correspondence with the actual ReproBLAS implementation.
 
 \section{The Indexed Type}
   \subsection{Representation}
@@ -51,7 +51,7 @@ Note that we will index starting at 0 to increase correspondence with the actual
     Let $Y$ be the indexed type corresponding to the reproducibly computed sum of $x_0, ..., x_{n - 1} = s_0 \times 2^{e_0} \times m_0, ..., s_{n - 1} \times 2^{e_{n - 1}} \times m_{n - 1} \in F$.
     If the accumulator $Y_j$ accumulates input in the bin $[a, b), a > b \in \Z$, then $Y_j$ is the sum of all input bits with exponents in $[a, b)$. Specifically, $Y_j = \sum \{s_i2^{e_i}{m_i}_k, i \in \{0, ..., n - 1\}, k \in \Z | e_i - k \in [a, b)\}$.
 
-    For ease of computation, accumulator ranges are not arbitrary. They are broken up into precomputed, fixed width intervals starting at $e_{\max}$. The possible bins $[a_0, b_0), [a_1, b_1), ...$ for an indexed type of \textbf{width} $W$ are $[e_{\max}, e_{\max} - W), [e_{\max} - W, e_{\max} - 2W), ..., [e_{\min} + (e_{\max} - e_{\min} \mod W), e_{\min} + (e_{\max} - e_{\min} \mod W) - W)$. It will be of note later that we do not accumulate a certain portion of the denormal range.
+    For ease of computation, accumulator ranges are not arbitrary. They are broken up into precomputed, fixed width intervals starting at $e_{\max}$. The possible bins $[a_0, b_0), [a_1, b_1), ...$ for an indexed type of \textbf{width} $W$ are $[e_{\max}, e_{\max} - W), [e_{\max} - W, e_{\max} - 2W), ..., [e_{\min} + (e_{\max} - e_{\min} \mod W), e_{\min} + (e_{\max} - e_{\min} \mod W) - W)$. It will be explained later why input in the bin $[e_{\min} + (e_{\max} - e_{\min} \mod W) - W, e_{\min} - p)$ is not accumulated.
 
     The accumulators in an indexed type correspond to contiguous bins in decreasing order. The \textbf{index} of $Y$ is the smallest $i \in \Z$ such that $2^(a_i + 1) > \max{|x_0|, ..., |x_n|}$ (equivalently, the smallest $i \in \Z$ such that $a_i \geq \max{e_0, ..., e_n}$). If $Y$ has index $i$, then $Y_j, j \in \{1, ..., K\}$ accumulates numbers in the bin $[a_{i + j}, b_{i + j})$.
   \subsection{Implementation}
@@ -60,7 +60,7 @@ Note that we will index starting at 0 to increase correspondence with the actual
     \subsubsection{Primary and Carry}
       An indexed type's accumulators are implemented using two underlying floating point fields. The \textbf{primary} field is used during accumulation, while the \textbf{carry} field holds overflow from the primary field. When discussing the primary and carry fields of the accumulator $Y$, we denote the primary fields by $Y_P$ and the carry fields by $Y_C$, so that ${Y_P}_j$ is the primary field of the accumulator $Y_j$. This reflects the fact that the primary fields are stored separately from the carry fields as the primary fields are frequenly accessed sequentially.
 
-      The primary field ${Y_P}_j$ of an indexed type $Y$ of index $i$ is stored as an offset from $1.5 * \epsilon^{-1} 2^{b_{i + j}}$. The primary driving factor behind this decision is that it greatly simplifies the process of extracting the components of the input belonging in bin $[a_i, b_i)$. As discussed in \cite{repsum}, algorithm \ref{alg:extract} reproducibly extracts the component of $x$ belonging to bin $[a_i, b_i)$ and adds it to ${Y_P}_0$ for all $x \in \F, |x| < 2 * 2^{a_i}$.
+      The primary field ${Y_P}_j$ of an indexed type $Y$ of index $i$ is stored as an offset from $1.5 * \epsilon^{-1} 2^{b_{i + j}}$. The primary driving factor behind this decision is that it greatly simplifies the process of extracting the components of the input belonging in bin $[a_i, b_i)$. As discussed in \cite{repsum}, algorithm \ref{alg:deposit} extracts the components of $x$ belonging to bins $[a_i, b_i), ..., [a_{i + K - 1}, b_{i + K - 1})$ and adds it to ${Y_P}_0$ for all $x \in \F, |x| < 2 * 2^{a_i}$. We will refer to this ex
       \begin{alg}
         Extract component of floating point $x$ in bin $[a_i, b_i)$ and add to $Y$.
         \begin{algorithmic}
