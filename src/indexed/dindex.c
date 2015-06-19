@@ -14,7 +14,7 @@
  *
  * @author Peter Ahrens
  * @author Hong Diep Nguyen
- * @date   19 May 2015
+ * @date   19 Jun 2015
  */
 int dindex(const double X){
   /*
@@ -27,6 +27,6 @@ int dindex(const double X){
     return (DBL_MAX_EXP - exp)/DIWIDTH;
   }
   */
-  return MIN(((DBL_MAX_EXP + EXP_BIAS) - EXP(X))/DIWIDTH, (DBL_MAX_EXP - DBL_MIN_EXP)/DIWIDTH);
+  return ((DBL_MAX_EXP + EXP_BIAS) - EXP(X))/DIWIDTH;
 ;
 }

@@ -14,7 +14,7 @@
  *
  * @author Peter Ahrens
  * @author Hong Diep Nguyen
- * @date   19 May 2015
+ * @date   19 Jun 2015
  */
 int sindex(const float X){
   /*
@@ -27,5 +27,5 @@ int sindex(const float X){
     return (FLT_MAX_EXP - exp)/SIWIDTH;
   }
   */
-  return MIN(((FLT_MAX_EXP + EXPF_BIAS) - EXPF(X))/SIWIDTH, (FLT_MAX_EXP - FLT_MIN_EXP)/SIWIDTH);
+  return ((FLT_MAX_EXP + EXPF_BIAS) - EXPF(X))/SIWIDTH;
 }

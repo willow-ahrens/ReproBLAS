@@ -4,7 +4,7 @@
 
 #include "../../config.h"
 
-static double bins[(DBL_MAX_EXP - DBL_MIN_EXP)/DIWIDTH + MAX_FOLD];
+static double bins[((DBL_MAX_EXP - DBL_MIN_EXP) + DBL_MANT_DIG)/DIWIDTH + MAX_FOLD];
 static int bins_initialized = 0;
 
 /**
@@ -18,17 +18,17 @@ static int bins_initialized = 0;
  *
  * @author Peter Ahrens
  * @author Hong Diep Nguyen
- * @date   5 Jun 2015
+ * @date   19 Jun 2015
  */
 const double *dmbins(const int X) {
   int index;
 
   if (!bins_initialized) {
     bins[0] = ldexp(0.75, DBL_MAX_EXP);
-    for(index = 1; index <= (DBL_MAX_EXP - DBL_MIN_EXP)/DIWIDTH; index++){
+    for(index = 1; index < ((DBL_MAX_EXP - DBL_MIN_EXP) + DBL_MANT_DIG)/DIWIDTH; index++){
       bins[index] = ldexp(0.75, (DBL_MAX_EXP + DBL_MANT_DIG - DIWIDTH + 1 - index * DIWIDTH));
     }
-    for(; index < (DBL_MAX_EXP - DBL_MIN_EXP)/DIWIDTH + MAX_FOLD; index++){
+    for(; index < ((DBL_MAX_EXP - DBL_MIN_EXP) + DBL_MANT_DIG)/DIWIDTH + MAX_FOLD; index++){
       bins[index] = bins[index - 1];
     }
 
