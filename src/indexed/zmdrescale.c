@@ -23,12 +23,7 @@ void zmdrescale(const int fold, const double X, const double scaleY, double *man
   int i;
   double rescaleY;
 
-  if(X == scaleY || X == 0.0){
-    return;
-  }
-
-  if(scaleY == 0.0){
-    zmdupdate(fold, 0.0, manY, incmanY, carY, inccarY);
+  if(X == scaleY || X == 0.0 || scaleY == 0.0){
     return;
   }
 

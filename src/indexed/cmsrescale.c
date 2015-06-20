@@ -23,12 +23,7 @@ void cmsrescale(const int fold, const float X, const float scaleY, float *manY, 
   int i;
   float rescaleY;
 
-  if(X == scaleY || X == 0.0){
-    return;
-  }
-
-  if(scaleY == 0.0){
-    cmsupdate(fold, 0.0, manY, incmanY, carY, inccarY);
+  if(X == scaleY || X == 0.0 || scaleY == 0.0){
     return;
   }
 

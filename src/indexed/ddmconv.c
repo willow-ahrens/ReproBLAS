@@ -166,6 +166,9 @@ double ddmconv(const int fold, const double* manX, const int incmanX, const doub
             DDPD(t0, t1, t2, t3, t4, t5, Yl, Yt, carX[inccarX] * ((bins[1]/6.0) * scale_down));
           }
           DDPD(t0, t1, t2, t3, t4, t5, Yl, Yt, (manX[0] - bins[0]) * scale_down * DMEXPANSION);
+          if(fold == 1){
+            return (Yl + Yt) * scale_up;
+          }
           i = 2;
         }else{
           DDPD(t0, t1, t2, t3, t4, t5, Yl, Yt, carX[0] * ((bins[0]/6.0) * scale_down));
