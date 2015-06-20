@@ -479,6 +479,9 @@ double wrap_daugsum_bound(int fold, int N, wrap_daugsum_func_t func, double *X, 
     case wrap_daugsum_RDNRM2:
       {
         double amax = damax(N, X, incX);
+        if (amax == 0.0){
+          return 0.0;
+        }
         return dibound(fold, N, amax) * (amax / (res + ref));
       }
     case wrap_daugsum_RDDOT:

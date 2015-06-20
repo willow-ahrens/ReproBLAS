@@ -479,6 +479,9 @@ float wrap_saugsum_bound(int fold, int N, wrap_saugsum_func_t func, float *X, in
     case wrap_saugsum_RSNRM2:
       {
         float amax = samax(N, X, incX);
+        if (amax == 0.0){
+          return 0.0;
+        }
         return sibound(fold, N, amax) * (amax / (res + ref));
       }
     case wrap_saugsum_RSDOT:

@@ -88,15 +88,12 @@
         $y = \sum\limits_{j = 0}^{fold - 1} ({Y_P}_j - 1.5 \epsilon^{-1}2^{b_{i + j}}) + {Y_C}_j * 0.25\epsilon^{-1}2^{b_{i + j}}$
         \label{eq:indexedvalue}
       \end{eq}
-    \subsubsection{}
 
-
-
-
-As the amounts added to ${Y_P}_j$ are not in excess absolute value of $2^W b_{i + j}$, $0.25\epsilon^{-1}2^{-W}$ elements may be deposited into ${Y_P}_j$ between renormalizations. As ${Y_C}_j$ must be able to record additions of absolute value 1 without error, ${Y_C}_j$ must stay in the range $(\epsilon^{-1}, -\epsilon^{-1})$. As each renormalization results in addition not in excess absolute value of 2 to ${Y_C}_j$, a maximum of $0.5 * (\epsilon^(-1) - 1)$ renormalizations may be performed, meaning that.
-
-
-      
+    \subsubsection{Overflow}
+    \subsubsection{Underflow}
+    \subsubsection{Limits}
+      As the amounts added to ${Y_P}_j$ are not in excess absolute value of $2^W b_{i + j}$, $0.25\epsilon^{-1}2^{-W}$ elements may be deposited into ${Y_P}_j$ between renormalizations. As ${Y_C}_j$ must be able to record additions of absolute value 1 without error, ${Y_C}_j$ must stay in the range $(\epsilon^{-1}, -\epsilon^{-1})$. As each renormalization results in addition not in excess absolute value of 2 to ${Y_C}_j$, a maximum of $0.5 * (\epsilon^(-1) - 1)$ renormalizations may be performed, meaning that.
+    
 
 
 \section{Indexed BLAS1}

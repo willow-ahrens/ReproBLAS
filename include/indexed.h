@@ -96,6 +96,26 @@ typedef float float_complex_indexed;
 #define SIWIDTH 13
 
 /**
+ * @brief Indexed double precision maximum index
+ *
+ * maximum attainable index
+ *
+ * @author Peter Ahrens
+ * @date   20 Jun 2015
+ */
+#define DIMAXINDEX (((((DBL_MAX_EXP - DBL_MIN_EXP) + DBL_MANT_DIG) - 1)/DIWIDTH) - 1)
+
+/**
+ * @brief Indexed single precision maximum index
+ *
+ * maximum attainable index
+ *
+ * @author Peter Ahrens
+ * @date   20 Jun 2015
+ */
+#define SIMAXINDEX (((((FLT_MAX_EXP - FLT_MIN_EXP) + FLT_MANT_DIG) - 1)/SIWIDTH) - 1)
+
+/**
  * @brief Indexed double precision deposit endurance
  *
  * The number of deposits that can be performed before a renorm is necessary. Applies also to indexed complex double precision.

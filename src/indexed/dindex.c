@@ -29,11 +29,11 @@ int dindex(const double X){
   */
   int exp = EXP(X);
   if(exp == 0){
-    if(X == 0){
-      return ((DBL_MAX_EXP - DBL_MIN_EXP) + DBL_MANT_DIG)/DIWIDTH;
+    if(X == 0.0){
+      return DIMAXINDEX;
     }else{
       frexp(X, &exp);
-      return (DBL_MAX_EXP - exp)/DIWIDTH;
+      return MIN((DBL_MAX_EXP - exp)/DIWIDTH, DIMAXINDEX);
     }
   }
   return ((DBL_MAX_EXP + EXP_BIAS) - exp)/DIWIDTH;

@@ -29,11 +29,11 @@ int sindex(const float X){
   */
   int exp = EXPF(X);
   if(exp == 0){
-    if(X == 0){
-      return ((FLT_MAX_EXP - FLT_MIN_EXP) + FLT_MANT_DIG)/DIWIDTH;
+    if(X == 0.0){
+      return SIMAXINDEX;
     }else{
       frexpf(X, &exp);
-      return (FLT_MAX_EXP - exp)/SIWIDTH;
+      return MIN((FLT_MAX_EXP - exp)/SIWIDTH, SIMAXINDEX);
     }
   }
   return ((FLT_MAX_EXP + EXPF_BIAS) - exp)/SIWIDTH;
