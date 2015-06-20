@@ -28,7 +28,7 @@ static void validate_internal_caugsum_options_initialize(void){
   fold._int.header.long_name  = "fold";
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
-  fold._int.min               = 1;
+  fold._int.min               = 2;
   fold._int.max               = MAX_FOLD;
   fold._int.value             = DEFAULT_FOLD;
 }

@@ -77,7 +77,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
     time_toc();
   }else if(fold._int.value == 0){
     time_tic();
-    for(j = 1; j <= MAX_FOLD; j++){
+    for(j = 2; j <= MAX_FOLD; j++){
       ires = zialloc(j);
       zisetzero(j, ires);
       for(i = 0; i < trials; i++){
@@ -105,10 +105,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   metric_load_double("trials", (double)trials);
   metric_load_double("input", (double)N);
   metric_load_double("output", (double)1);
-  if(fold._int.value == 0){
-    metric_load_double("d_add", (double)(3 * MAX_FOLD * (MAX_FOLD - 1) * 0.5 - 2 * MAX_FOLD) * 2 * N);
-    metric_load_double("d_orb", (double)MAX_FOLD * (MAX_FOLD - 1) * 0.5 * 2 * N);
-  }else{
+  if(fold._int.value != 0){
     metric_load_double("d_add", (double)(3 * fold._int.value - 2) * 2 * N);
     metric_load_double("d_orb", (double)fold._int.value * 2 * N);
   }
