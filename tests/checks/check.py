@@ -7,9 +7,8 @@ check_dir = os.path.dirname(os.path.abspath(__file__))
 
 check_suite = checks.CheckSuite()
 
-folds = [1, 2, 3, 4]
-folds = [2]
-inf_folds = [1, 3, 4]
+folds = [2, 3, 4]
+inf_folds = [2, 3, 4]
 
 """
 check_suite.add_checks([checks.ValidateInternalDSCALETest(),\

@@ -27,36 +27,39 @@ class Deposit(Target):
   def get_arguments(self):
     arguments = []
     for i in range(self.max_expand_fold + 1):
-      for vectorization in vectorization_lookup.values():
-        if(i != 0):
-          arguments.append("{}_expand_{}_fold_{}".format(self.name, vectorization.name, i))
-        arguments.append("{}_max_pipe_width_{}_fold_{}".format(self.name, vectorization.name, i))
-        arguments.append("{}_max_unroll_width_{}_fold_{}".format(self.name, vectorization.name, i))
+      if i != 1:
+        for vectorization in vectorization_lookup.values():
+          if i != 0:
+            arguments.append("{}_expand_{}_fold_{}".format(self.name, vectorization.name, i))
+          arguments.append("{}_max_pipe_width_{}_fold_{}".format(self.name, vectorization.name, i))
+          arguments.append("{}_max_unroll_width_{}_fold_{}".format(self.name, vectorization.name, i))
     return arguments
 
   def get_metrics(self):
     metrics = {}
     for i in range(self.max_expand_fold + 1):
-      for vectorization in vectorization_lookup.values():
-        if(i != 0):
-          metrics["{}_expand_{}_fold_{}".format(self.name, vectorization.name, i)] = ["bench_{}_fold_{}".format(self.metric_name, i)]
-        metrics["{}_max_pipe_width_{}_fold_{}".format(self.name, vectorization.name, i)] = ["bench_{}_fold_{}".format(self.metric_name, i)]
-        metrics["{}_max_unroll_width_{}_fold_{}".format(self.name, vectorization.name, i)] = ["bench_{}_fold_{}".format(self.metric_name, i)]
+      if i != 1:
+        for vectorization in vectorization_lookup.values():
+          if i != 0:
+            metrics["{}_expand_{}_fold_{}".format(self.name, vectorization.name, i)] = ["bench_{}_fold_{}".format(self.metric_name, i)]
+          metrics["{}_max_pipe_width_{}_fold_{}".format(self.name, vectorization.name, i)] = ["bench_{}_fold_{}".format(self.metric_name, i)]
+          metrics["{}_max_unroll_width_{}_fold_{}".format(self.name, vectorization.name, i)] = ["bench_{}_fold_{}".format(self.metric_name, i)]
     return metrics
 
   def get_parameters(self):
     parameters = []
     for i in range(self.max_expand_fold + 1):
-      for vectorization in vectorization_lookup.values():
-        vec = vectorization(CodeBlock(), self.data_type_class)
-        if(i != 0):
-          parameters.append(BooleanParameter("{}_expand_{}_fold_{}".format(self.name, vec.name, i), {"vectorization":vec.name}, i == self.default_fold))
-        parameters.append(IntegerParameter("{}_max_unroll_width_{}_fold_{}".format(self.name, vec.name, i), {"vectorization":vec.name}, 1, 16, 1, 1))
-        name = "{}_max_pipe_width_{}_fold_{}".format(self.name, vec.name, i)
-        minimum = max(1, vec.type_size)
-        maximum = minimum * 16
-        default = minimum
-        parameters.append(PowerOfTwoParameter(name, {"vectorization":vec.name}, minimum, maximum, default))
+      if i != 1:
+        for vectorization in vectorization_lookup.values():
+          vec = vectorization(CodeBlock(), self.data_type_class)
+          if(i != 0):
+            parameters.append(BooleanParameter("{}_expand_{}_fold_{}".format(self.name, vec.name, i), {"vectorization":vec.name}, i == self.default_fold))
+          parameters.append(IntegerParameter("{}_max_unroll_width_{}_fold_{}".format(self.name, vec.name, i), {"vectorization":vec.name}, 1, 16, 1, 1))
+          name = "{}_max_pipe_width_{}_fold_{}".format(self.name, vec.name, i)
+          minimum = max(1, vec.type_size)
+          maximum = minimum * 16
+          default = minimum
+          parameters.append(PowerOfTwoParameter(name, {"vectorization":vec.name}, minimum, maximum, default))
     return parameters
 
   def write(self, code_block):
@@ -73,7 +76,7 @@ class Deposit(Target):
     #self.vec.set_SIMD_daz_ftz()
     code_block.new_line()
     expanded_folds = []
-    for i in range(1, self.max_expand_fold + 1):
+    for i in range(2, self.max_expand_fold + 1):
       if self.arguments["{}_expand_{}_fold_{}".format(self.name, self.vec.name, i)]:
         expanded_folds.append(i)
     expanded_folds.append(0)
@@ -121,9 +124,8 @@ class Deposit(Target):
       code_block.define_vars(self.vec.type_name, self.s_vars[0])
     else:
       #define q variables
-      if (fold > 1):
-        self.q_vars = ["q_" + str(i) for i in range(max_reg_width)]
-        code_block.define_vars(self.vec.type_name, self.q_vars)
+      self.q_vars = ["q_" + str(i) for i in range(max_reg_width)]
+      code_block.define_vars(self.vec.type_name, self.q_vars)
       #define s variables
       self.s_vars = [["s_{0}_{1}".format(j, i) for i in range(max_reg_width)] for j in range(fold)]
       for j in range(fold):
@@ -280,8 +282,6 @@ class Deposit(Target):
         code_block.set_equal(self.s_vars[0], self.buffer0_vars[:reg_width])
         self.vec.add_blp_into(self.q_vars, self.s_vars[0], self.vec.mul(self.load_vars[0][i * reg_width:], itertools.cycle(self.compression_vars)), reg_width)
         code_block.set_equal(self.buffer0_vars, self.q_vars[:reg_width])
-        code_block.write("if(fold > 1){") #TODO we know this at compile time
-        code_block.indent()
         code_block.set_equal(self.q_vars, self.vec.sub(self.s_vars[0], self.q_vars[:reg_width]))
         code_block.set_equal(self.load_vars[0][i * reg_width:], self.vec.add(self.load_vars[0][i * reg_width:], self.vec.mul(self.q_vars[:reg_width], itertools.cycle(self.expansion_vars))))
         code_block.write("for(j = 1; j < fold - 1; j++){")
@@ -294,8 +294,6 @@ class Deposit(Target):
         code_block.dedent()
         code_block.write("}")
         self.vec.add_blp_into(self.buffer_vars, self.buffer_vars, self.load_vars[0][i * reg_width:], reg_width)
-        code_block.dedent()
-        code_block.write("}")
     else:
       for i in range(max(unroll_width, 1)):
         if(fold == 1):

@@ -40,13 +40,8 @@ float ssmconv(const int fold, const float* manX, const int incmanX, const float*
   bins = smbins(X_index);
   if(X_index == 0){
     Y += (double)carX[0] * (double)(bins[0]/6.0) * (double)SMEXPANSION;
-    if(fold > 1){
-      Y += (double)carX[inccarX] * (double)(bins[1]/6.0);
-    }
+    Y += (double)carX[inccarX] * (double)(bins[1]/6.0);
     Y += (double)(manX[0] - bins[0]) * (double)SMEXPANSION;
-    if(fold == 1){
-      return (float)Y;
-    }
     i = 2;
   }else{
     Y += (double)carX[0] * (double)(bins[0]/6.0);
