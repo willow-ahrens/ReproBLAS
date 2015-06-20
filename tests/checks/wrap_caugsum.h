@@ -696,18 +696,22 @@ float complex wrap_caugsum_bound(int fold, int N, wrap_caugsum_func_t func, floa
       }
     case wrap_caugsum_RSCASUM:
       {
-        float complex amax;
-        camax_sub(N, X, incX, &amax);
-        return sibound(fold, N, MAX(crealf(amax), cimagf(amax)));
+        float complex amax2;
+        float amax;
+        camax_sub(N, X, incX, &amax2);
+        amax = MAX(crealf(amax2), cimagf(amax2));
+        return sibound(fold, N, amax);
       }
     case wrap_caugsum_RSCNRM2:
       {
+        float complex amax2;
         float amax;
-        camaxm_sub(N, X, incX, X, incX, &amax);
-        if (crealf(amax) == 0.0){
+        camax_sub(N, X, incX, &amax2);
+        amax = MAX(crealf(amax2), cimagf(amax2));
+        if (amax == 0.0){
           return 0.0;
         }
-        return sibound(fold, N, crealf(amax)) * (crealf(amax) / (res + ref));
+        return sibound(fold, N, amax) * (amax / (res + ref));
       }
     case wrap_caugsum_RCDOTU:
     case wrap_caugsum_RCDOTC:

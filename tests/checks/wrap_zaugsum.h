@@ -696,18 +696,22 @@ double complex wrap_zaugsum_bound(int fold, int N, wrap_zaugsum_func_t func, dou
       }
     case wrap_zaugsum_RDZASUM:
       {
-        double complex amax;
-        zamax_sub(N, X, incX, &amax);
-        return dibound(fold, N, MAX(creal(amax), cimag(amax)));
+        double complex amax2;
+        double amax;
+        zamax_sub(N, X, incX, &amax2);
+        amax = MAX(creal(amax2), cimag(amax2));
+        return dibound(fold, N, amax);
       }
     case wrap_zaugsum_RDZNRM2:
       {
+        double complex amax2;
         double amax;
-        zamaxm_sub(N, X, incX, X, incX, &amax);
-        if (creal(amax) == 0.0){
+        zamax_sub(N, X, incX, &amax2);
+        amax = MAX(creal(amax2), cimag(amax2));
+        if (amax == 0.0){
           return 0.0;
         }
-        return dibound(fold, N, creal(amax)) * (creal(amax) / (res + ref));
+        return dibound(fold, N, amax) * (amax / (res + ref));
       }
     case wrap_zaugsum_RZDOTU:
     case wrap_zaugsum_RZDOTC:
