@@ -53,7 +53,8 @@
     Let $Y$ be the indexed type corresponding to the reproducibly computed sum of $x_0, ..., x_{n - 1} = s_0 \times 2^{e_0} \times m_0, ..., s_{n - 1} \times 2^{e_{n - 1}} \times m_{n - 1} \in F$.
     If the accumulator $Y_j$ accumulates input in the bin $[a, b), a > b \in \Z$, then $Y_j$ is the sum of all input bits with exponents in $[a, b)$. Specifically, $Y_j = \sum \{s_i2^{e_i}{m_i}_k, i \in \{0, ..., n - 1\}, k \in \Z | e_i - k \in [a, b)\}$.
 
-    For ease of computation, accumulator ranges are not arbitrary. They are broken up into precomputed, fixed width intervals starting at $e_{\max}$. The possible bins $[a_0, b_0), [a_1, b_1), ...$ for an indexed type of \textbf{width} $W$ are $[e_{\max}, e_{\max} - W), [e_{\max} - W, e_{\max} - 2W), ..., [e_{\min} - p - (e_{\max} - e_{\min} + p \mod W) + W, e_{\min} - p - (e_{\max} - e_{\min} + p \mod W))$. It will be explained later why input in the bin $[e_{\min} - p + (e_{\max} - e_{\min} + p \mod W), e_{\min} - p)$ is not accumulated.
+    For ease of computation, accumulator ranges are not arbitrary. They are broken up into precomputed, fixed width intervals starting at $e_{\max}$. The possible bins $[a_0, b_0), [a_1, b_1), ...$ for an indexed type of \textbf{width} $W$ are $[e_{\max}, e_{\max} - W), [e_{\max} - W, e_{\max} - 2W), ..., [e_{\min} - p - (e_{\max} - e_{\min} + p \mod W) + W, e_{\min} - p - (e_{\max} - e_{\min} + p \mod W))$. It will be explained later why input in the bin $[e_{\min} - p + (e_{\max} - e_{\min} + p \mod W), e_{\min} - p)$ is not accumulated. for reasons discussed in section (LIMITS), 
+
 
     The accumulators in an indexed type correspond to contiguous bins in decreasing order. The \textbf{index} of $Y$ is the smallest $i \in \Z$ such that $2^(a_i + 1) > \max{|x_0|, ..., |x_n|}$ (equivalently, the smallest $i \in \Z$ such that $a_i \geq \max{e_0, ..., e_n}$). If $Y$ has index $i$, then $Y_j, j \in \{0, ..., fold - 1\}$ accumulates numbers in the bin $[a_{i + j}, b_{i + j})$.
   \subsection{Implementation}
@@ -62,7 +63,7 @@
     \subsubsection{Primary and Carry}
       An indexed type's accumulators are each implemented using two underlying floating point fields. The \textbf{primary} field is used during accumulation, while the \textbf{carry} field holds overflow from the primary field. When discussing the primary and carry fields of the accumulator $Y$, we denote the primary fields by $Y_P$ and the carry fields by $Y_C$, so that ${Y_P}_j$ is the primary field of the accumulator $Y_j$. This reflects the fact that the primary fields are stored separately from the carry fields as the primary fields are frequenly accessed sequentially.
 
-      The primary field ${Y_P}_j$ of an indexed type $Y$ of index $i$ and fold $fold$ is stored as an offset from $1.5 * \epsilon^{-1} 2^{b_{i + j}}$. This greatly simplifies the process of extracting the components of the input belonging in bin $[a_i, b_i)$. As discussed in \cite{repsum}, if we store the primary bins of $Y$ as discussed, algorithm \ref{alg:deposit} extracts the components of $x$ belonging to bins $[a_i, b_i), ..., [a_{i + fold - 1}, b_{i + fold - 1})$ and adds it to ${Y_P}_0, ..., {Y_P}_{fold - 1}$ for all $x \in \F, |x| < 2 * 2^{a_i}$.
+      The primary field ${Y_P}_j$ of an indexed type $Y$ of index $i$ and fold $fold$ is stored as an offset from $1.5 \epsilon^{-1} 2^{b_{i + j}}$. This greatly simplifies the process of extracting the components of the input belonging in bin $[a_i, b_i)$. As discussed in \cite{repsum}, if we store each primary bin ${Y_P}_j$ as an offset from $1.5 \epsilon^{-1} 2^{b_{i + j}}$ and keep ${Y_P}_j$ within the range $(2 \epsilon^{-1} 2^{b_{i + j}}, \epsilon^{-1} 2^{b_{i + j}})$, algorithm \ref{alg:deposit} extracts the components of $x$ belonging to bins $[a_i, b_i), ..., [a_{i + fold - 1}, b_{i + fold - 1})$ and adds them to ${Y_P}_0, ..., {Y_P}_{fold - 1}$ without error (and hence reproducibly) for all $x \in \F, |x| < 2 * 2^{a_i}$.
       \begin{alg}
         Extract components of floating point $x$ in bins $[a_i, b_i), ..., [a_{i + fold - 1}, b_{i + fold - 1})$ and add to indexed $Y$. Here, $(r | 1)$ represents the result of setting the last bit of the mantissa ($m_{p - 1}$) of floating-point $r$ to 1.
         \begin{algorithmic}
@@ -81,21 +82,49 @@
       \end{alg}
       The last bit of $r$ is set to break ties when rounding "to nearest even" such that the amount accumulated does not depend on the size of ${Y_P}i$ so far and the same amount is always deposited in all of $Y$'s primary fields regardless of how full they are already. (A dependency on the amount stored in $Y$'s primary fields would imply that the routine is not reproducible. Adding numbers in different orders would accumulate different amounts into the primary fields $Y_P$ when each input is added to them.)
 
-      Setting the last bit is not the only requirement for algorithm \ref{alg:deposit} to be reproducible. The value of ${Y_P}_j$ must be kept normalized within the range $(2 \epsilon^{-1} 2^{b_{i + j}}, \epsilon^{-1} 2^{b_{i + j}})$. In order to keep the representation of $Y$ unique, ${Y_P}_j$ is routinely renormalized to the range $(1.75 \epsilon^{-1} 2^{b_{i + j}}, 1.5 \epsilon^{-1} 2^{b_{i + j}}]$.
-      To renormalize, ${Y_P}_j$ is adjusted in increments of $0.25 \epsilon^{-1} 2^{b_{i + j}}$, leaving the carry field ${Y_C}_j$ to record the number of such adjustments. Therefore the value represented by an indexed type $Y$ of index $i$ and fold $fold$ (the sum of the accumulators) can be expressed as in equation \ref{eq:indexedvalue}.
+      In order to keep the primary bins in the necessary range during a deposit operation and to keep the representation of $Y$ unique, ${Y_P}_j$ is routinely renormalized to the range $(1.75 \epsilon^{-1} 2^{b_{i + j}}, 1.5 \epsilon^{-1} 2^{b_{i + j}}]$.
+      To renormalize, ${Y_P}_j$ is adjusted by $0.25 \epsilon^{-1} 2^{b_{i + j}}$ when necessary, leaving the carry field ${Y_C}_j$ to record the number of such adjustments. Therefore the value represented by an indexed type $Y$ of index $i$ and fold $fold$ (the sum of the accumulators) can be expressed as in equation \ref{eq:indexedvalue}.
       \begin{eq} The real value $y \in \R$ of an indexed type $Y$
 
         $y = \sum\limits_{j = 0}^{fold - 1} ({Y_P}_j - 1.5 \epsilon^{-1}2^{b_{i + j}}) + {Y_C}_j * 0.25\epsilon^{-1}2^{b_{i + j}}$
         \label{eq:indexedvalue}
       \end{eq}
-
     \subsubsection{Overflow}
+      \label{sec:overflow}
+      Unfortunately, 
     \subsubsection{Underflow}
-    \subsubsection{Limits}
-      As the amounts added to ${Y_P}_j$ are not in excess absolute value of $2^W b_{i + j}$, $0.25\epsilon^{-1}2^{-W}$ elements may be deposited into ${Y_P}_j$ between renormalizations. As ${Y_C}_j$ must be able to record additions of absolute value 1 without error, ${Y_C}_j$ must stay in the range $(\epsilon^{-1}, -\epsilon^{-1})$. As each renormalization results in addition not in excess absolute value of 2 to ${Y_C}_j$, a maximum of $0.5 * (\epsilon^(-1) - 1)$ renormalizations may be performed, meaning that.
-    
 
-
+\section{Basic Operations}
+  \subsection{Update}
+  \subsection{Deposit}
+  \subsection{Renormalize}
+  \subsection{Reduction}
+  \subsection{Limits}
+    \label{sec:limits}
+    As absolute value of individual quantities added to ${Y_P}_j$ are not in excess of $2^W b_{i + j}$, $0.25\epsilon^{-1}2^{-W}$ elements may be deposited into ${Y_P}_j$ between renormalizations. As ${Y_C}_j$ must be able to record additions of absolute value 1 without error, ${Y_C}_j$ must stay in the range $(\epsilon^{-1}, -\epsilon^{-1})$. As each renormalization results in addition not in excess absolute value of 2 to ${Y_C}_j$, a maximum of $0.5 * (\epsilon^(-1) - 1)$ renormalizations may be performed, meaning that.
+\section{Interfaces}
+  \subsubsection{Fold}
+  \subsubsection{Complex Types}
+  \subsubsection{Naming Conventions}
+\section{indexed.h}
+  \subsection{Overview}
+  \subsection{Types}
+  \subsection{Functions}
+    \subsubsection{xixadd}
+    \subsubsection{xixiadd}
+    \subsubsection{xscale}
+    \subsubsection{xixiaddsq}
+\section{idxBLAS.h}
+  \subsection{Overview}
+  \subsection{Functions}
+    \subsubsection{xixdot}
+    \subsubsection{xixnrm2}
+  \section{Indexed General Matrix-Vector Multiply}
+  \section{Indexed General Matrix-Matrix Multiply}
+\section{repBLAS.h}
+\section{idxMPI.h}
+\section{Applications}
+  \subsection{Parallel 
 \section{Indexed BLAS1}
 \section{Indexed General Matrix-Vector Multiply}
 \section{Indexed General Matrix-Matrix Multiply}
