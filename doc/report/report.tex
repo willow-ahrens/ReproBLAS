@@ -48,12 +48,12 @@
 \section{The Indexed Type}
   \subsection{Representation}
     The \textbf{indexed type} is used to represent the intermediate result of accumulation using algorithms 6 and 7 specified by Nguyen and Demmel in "Parallel Reproducible Summation" \cite{repsum}.
-    An indexed type $Y$ is composed of several accumulators $Y_0, ..., Y_{K - 1} \in \F$, each holding the sum of input in a predetermined exponent range (referred to as a \textbf{bin}). An indexed type with $K$ accumulators is referred to as having \textbf{fold} $K$.
+    An indexed type $Y$ is composed of several accumulators $Y_0, ..., Y_{n - 1} \in \F$, each holding the sum of input in a predetermined exponent range (referred to as a \textbf{bin}). An indexed type with $n$ accumulators is referred to as having \textbf{fold} $n$.
 
     Let $Y$ be the indexed type corresponding to the reproducibly computed sum of $x_0, ..., x_{n - 1} = s_0 \times 2^{e_0} \times m_0, ..., s_{n - 1} \times 2^{e_{n - 1}} \times m_{n - 1} \in F$.
     If the accumulator $Y_j$ accumulates input in the bin $[a, b), a > b \in \Z$, then $Y_j$ is the sum of all input bits with exponents in $[a, b)$. Specifically, $Y_j = \sum \{s_i2^{e_i}{m_i}_k, i \in \{0, ..., n - 1\}, k \in \Z | e_i - k \in [a, b)\}$.
 
-    For ease of computation, accumulator ranges are not arbitrary. They are broken up into precomputed, fixed width intervals starting at $e_{\max}$. The possible bins $[a_0, b_0), [a_1, b_1), ...$ for an indexed type of \textbf{width} $W$ are $[e_{\max}, e_{\max} - W), [e_{\max} - W, e_{\max} - 2W), ..., [e_{\min} - p - (e_{\max} - e_{\min} + p \mod W) + W, e_{\min} - p - (e_{\max} - e_{\min} + p \mod W))$. It will be explained later why input in the bin $[e_{\min} - p + (e_{\max} - e_{\min} + p \mod W), e_{\min} - p)$ is not accumulated. for reasons discussed in section (LIMITS), 
+    For ease of computation, accumulator ranges are not arbitrary. They are broken up into precomputed, fixed width intervals starting at $e_{\max}$. The possible bins $[a_0, b_0), [a_1, b_1), ...$ for an indexed type of \textbf{width} $W$ are $[e_{\max}, e_{\max} - W), [e_{\max} - W, e_{\max} - 2W), ..., [e_{\min} - p - (e_{\max} - e_{\min} + p \mod W) + W, e_{\min} - p - (e_{\max} - e_{\min} + p \mod W))$. It will be explained later why input in the bin $[e_{\min} - p + (e_{\max} - e_{\min} + p \mod W), e_{\min} - p)$ is not accumulated. As discussed in section \ref{sec:limits}, $W < p$. As discussed in section
 
 
     The accumulators in an indexed type correspond to contiguous bins in decreasing order. The \textbf{index} of $Y$ is the smallest $i \in \Z$ such that $2^(a_i + 1) > \max{|x_0|, ..., |x_n|}$ (equivalently, the smallest $i \in \Z$ such that $a_i \geq \max{e_0, ..., e_n}$). If $Y$ has index $i$, then $Y_j, j \in \{0, ..., fold - 1\}$ accumulates numbers in the bin $[a_{i + j}, b_{i + j})$.
@@ -98,14 +98,15 @@
   \subsection{Update}
   \subsection{Deposit}
   \subsection{Renormalize}
-  \subsection{Reduction}
+  \subsection{Reduce}
   \subsection{Limits}
     \label{sec:limits}
     As absolute value of individual quantities added to ${Y_P}_j$ are not in excess of $2^W b_{i + j}$, $0.25\epsilon^{-1}2^{-W}$ elements may be deposited into ${Y_P}_j$ between renormalizations. As ${Y_C}_j$ must be able to record additions of absolute value 1 without error, ${Y_C}_j$ must stay in the range $(\epsilon^{-1}, -\epsilon^{-1})$. As each renormalization results in addition not in excess absolute value of 2 to ${Y_C}_j$, a maximum of $0.5 * (\epsilon^(-1) - 1)$ renormalizations may be performed, meaning that.
-\section{Interfaces}
-  \subsubsection{Fold}
-  \subsubsection{Complex Types}
-  \subsubsection{Naming Conventions}
+\section{Interface}
+  \subsection{Fold}
+  \subsection{Complex Types}
+  \subsection{Naming Conventions}
+  \subsection{Build System}
 \section{indexed.h}
   \subsection{Overview}
   \subsection{Types}
@@ -119,16 +120,19 @@
   \subsection{Functions}
     \subsubsection{xixdot}
     \subsubsection{xixnrm2}
-  \section{Indexed General Matrix-Vector Multiply}
-  \section{Indexed General Matrix-Matrix Multiply}
+    \subsubsection{xixgemv}
+    \subsubsection{xixgemm}
+  \subsection{Optimization}
 \section{repBLAS.h}
 \section{idxMPI.h}
+  \subsection{Types}
+  \subsection{Functions}
+    \subsubsection{XIREDUCE}
 \section{Applications}
-  \subsection{Parallel 
-\section{Indexed BLAS1}
-\section{Indexed General Matrix-Vector Multiply}
-\section{Indexed General Matrix-Matrix Multiply}
-\section{Indexed MPI}
+  \subsection{Parallel Reproducible Dot Product}
+  \subsection{Parallel Reproducible Vector Norm}
+  \subsection{Parallel Reproducible Matrix-Vector Multiply}
+  \subsection{Parallel Reproducible Matrix-Matrix Multiply}
 \begin{thebibliography}{9}
   \bibitem{sortingsummation}
     Demmel, James W., and Yozo Hida. Accurate floating point summation. Computer Science Division, University of California, 2002.

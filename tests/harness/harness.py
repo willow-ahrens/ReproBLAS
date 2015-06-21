@@ -14,6 +14,8 @@ import config
 import scripts.terminal as terminal
 import scripts.texttable.texttable as texttable
 
+import timeit
+
 class Harness(object):
   def __init__(self, name):
     self.name = name
@@ -46,9 +48,10 @@ class Harness(object):
       output_list = config.run(command_list, verbose = self.args.verbose)
     else:
       output_list = config.run_parallel(command_list, verbose=self.args.verbose)
+    i = 0
     for suite in self.suites:
-      suite.parse_output_list(output_list[:len(suite.get_command_list())])
-      output_list = output_list[len(suite.get_command_list()):]
+      suite.parse_output_list(output_list[i:i + len(suite.get_command_list())])
+      i += len(suite.get_command_list())
     for suite in self.suites:
       tablecopy = copy.deepcopy(self.table)
       tablecopy.set_cols_align(suite.get_align())
@@ -145,9 +148,10 @@ class MetricSuite(Suite):
     return command_list
 
   def parse_output_list(self, output_list):
+    i = 0
     for metric in self.metrics:
-      metric.parse_output_list(output_list[:len(metric.get_command_list())])
-      output_list = output_list[len(metric.get_command_list()):]
+      metric.parse_output_list(output_list[i:i + metric.get_num_commands()])
+      i += metric.get_num_commands()
 
   def get_header(self):
     return self.params + [metric.get_name() for metric in self.metric_rows[0]]
@@ -191,6 +195,12 @@ class Test(object):
     """
     raise(NotImplementedError())
 
+  def get_num_commands(self):
+    """
+    return the number of commands in the command_list
+    """
+    raise(NotImplementedError())
+
   def parse_output_list(self, output_list):
     """
     parse the output of the command set. The output will be given as a list of
@@ -218,18 +228,14 @@ class ExecutableTest(Test):
     self.executable_output = terminal.make(self.executable, **kwargs)
 
   def get_command_list(self):
-    """
-    return a list of commands that constitute the test to be run on the
-    target architecture
-    """
     return ["{} {} {}".format(self.executable_output, self.base_flags, self.flags)]
+
+  def get_num_commands(self):
+    return 1
 
 class MetricTest(ExecutableTest):
 
   def get_name(self):
-    """
-    return the name of the test
-    """
     return self.name
 
   def setup(self, attribute="", **kwargs):
@@ -237,10 +243,6 @@ class MetricTest(ExecutableTest):
     super(MetricTest, self).setup(**kwargs)
 
   def parse_output_list(self, output_list):
-    """
-    parse the output of the command set. The output will be given as a list of
-    (return code, output)
-    """
     assert len(output_list) == 1, "ReproBLAS error: unexpected test output"
 
     self.output = json.loads(output_list[0][1])
@@ -250,14 +252,8 @@ class MetricTest(ExecutableTest):
     raise(NotImplementedError())
 
   def get_output(self):
-    """
-    return all relevant output (mostly for debugging)
-    """
     return self.output
 
   def get_result(self):
-    """
-    return test result
-    """
     return self.result
 

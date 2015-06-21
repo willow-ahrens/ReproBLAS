@@ -34,9 +34,10 @@ class CheckSuite(harness.Suite):
     return command_list
 
   def parse_output_list(self, output_list):
+    i = 0
     for check in self.checks:
-      check.parse_output_list(output_list[:len(check.get_command_list())])
-      output_list = output_list[len(check.get_command_list()):]
+      check.parse_output_list(output_list[i:i+check.get_num_commands()])
+      i += check.get_num_commands()
 
   def get_header(self):
     return ["Check", "Res"]
@@ -92,6 +93,9 @@ class CheckTest(harness.ExecutableTest):
     target architecture
     """
     return ["{} {} {}".format(self.executable_output, self.base_flags, self.flags), "{} {} {}".format(self.executable_output, self.base_flags, self.flags + " -p")]
+
+  def get_num_commands(self):
+    return 2
 
   def parse_output_list(self, output_list):
     """
