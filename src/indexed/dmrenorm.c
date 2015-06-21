@@ -21,6 +21,7 @@
  * @date   27 Apr 2015
  */
 void dmrenorm(const int fold, double* manX, const int incmanX, double* carX, const int inccarX) {
+  /*
   int i;
   double M;
   double manX0 = manX[0];
@@ -38,14 +39,24 @@ void dmrenorm(const int fold, double* manX, const int incmanX, double* carX, con
       manX[0] -= M * 0.25;
       carX[0] += 1;
     }
-    else if (manX0 < (M * 1.25)) {
-      manX[0] += M * 0.5;
-      carX[0] -= 2;
-    }
     else if (manX0 < (M * 1.5)) {
       manX[0] += M * 0.25;
       carX[0] -= 1;
     }
   }
-}
+  */
+  int i;
+  long_double tmp_renorm;
 
+  if(manX[0] == 0.0 || ISNANINF(manX[0])){
+    return;
+  }
+
+  for (i = 0; i < fold; i++, manX += incmanX, carX += inccarX) {
+    tmp_renorm.d = manX[0];
+    carX[0] += (int)((tmp_renorm.l >> (DBL_MANT_DIG - 3)) & 3) - 2;
+    tmp_renorm.l &= ~(1ull << (DBL_MANT_DIG - 3));
+    tmp_renorm.l |= 1ull << (DBL_MANT_DIG - 2);
+    manX[0] = tmp_renorm.d;
+  }
+}
