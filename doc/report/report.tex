@@ -149,8 +149,9 @@
       Furthermore, since $x$ is scaled by a factor of two, the significand of $r$ is equal to that of $x$.
       Therefore, the component of $r$ belonging to the bin $[e_{\max} - p + W, e_{\max} - p)$ is equivalent to the component of $x$ belonging to the bin $[e_{\max}, e_{\max} - W)$ scaled by $2^{p - W}$. This component of $r$ is extracted, stored in q, and added to ${Y_P}_0$. We can therefore scale this component by $2^{p - w}$ to obtain the component of $x$ belonging to the bin $[e_{\max}, e_{\max} - W)$. As $x$ is representable, so is this component. We can then subtract this component from $x$ and continue as in algorithm \ref{alg:deposit}.
 
-      Notice that after the first extraction, we cannot simply subtract $q$ from $r$ and then scale $r$ up and continue, as there may be underflow when scaling $x$ down. We must scale $q$ up and subtract from the original $x$.
+      Notice that after the first extraction, we cannot simply subtract $q$ from $r$ and then scale $r$ up and continue, as there may have been underflow when scaling $x$ down. We must scale $q$ up and subtract it from the original $x$.
     \subsubsection{Underflow}
+      
     \subsubsection{Exceptions}
 \section{Basic Operations}
   \subsection{Update}

@@ -7,8 +7,8 @@
  * Performs the operation X = 0
  *
  * @param fold the fold of the indexed types
- * @param manX X's mantissa vector
- * @param incmanX stride within X's mantissa vector (use every incmanX'th element)
+ * @param priX X's primary vector
+ * @param incpriX stride within X's primary vector (use every incpriX'th element)
  * @param carX X's carry vector
  * @param inccarX stride within X's carry vector (use every inccarX'th element)
  *
@@ -16,7 +16,7 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zmsetzero(const int fold, double *manX, const int incmanX, double *carX, const int inccarX){
-  dmsetzero(fold, manX, 2 * incmanX, carX, 2 * inccarX);
-  dmsetzero(fold, manX + 1, 2 * incmanX, carX + 1, 2 * inccarX);
+void zmsetzero(const int fold, double *priX, const int incpriX, double *carX, const int inccarX){
+  dmsetzero(fold, priX, 2 * incpriX, carX, 2 * inccarX);
+  dmsetzero(fold, priX + 1, 2 * incpriX, carX + 1, 2 * inccarX);
 }

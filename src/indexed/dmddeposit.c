@@ -14,58 +14,58 @@
  *
  * @param fold the fold of the indexed types
  * @param X scalar X
- * @param manY Y's mantissa vector
- * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
+ * @param priY Y's primary vector
+ * @param incpriY stride within Y's primary vector (use every incpriY'th element)
  *
  * @author Hong Diep Nguyen
  * @author Peter Ahrens
  * @date   10 Jun 2015
  */
-void dmddeposit(const int fold, const double X, double *manY, const int incmanY){
+void dmddeposit(const int fold, const double X, double *priY, const int incpriY){
   double M;
   long_double q;
   int i;
   double x = X;
 
-  if(ISNANINF(x) || ISNANINF(manY[0])){
-    manY[0] += x;
+  if(ISNANINF(x) || ISNANINF(priY[0])){
+    priY[0] += x;
     return;
   }
 
-  if(dmindex0(manY)){
-    M = manY[0];
+  if(dmindex0(priY)){
+    M = priY[0];
     q.d = x * DMCOMPRESSION;
     q.l |= 1;
     q.d += M;
-    manY[0] = q.d;
+    priY[0] = q.d;
     if (fold > 1) {
       M -= q.d;
       x += M * DMEXPANSION;
       for (i = 1; i < fold - 1; i++) {
-        M = manY[i * incmanY];
+        M = priY[i * incpriY];
         q.d = x;
         q.l |= 1;
         q.d += M;
-        manY[i * incmanY] = q.d;
+        priY[i * incpriY] = q.d;
         M -= q.d;
         x += M;
       }
       q.d = x;
       q.l |= 1;
-      manY[i * incmanY] += q.d;
+      priY[i * incpriY] += q.d;
     }
   }else{
     for (i = 0; i < fold - 1; i++) {
-      M = manY[i * incmanY];
+      M = priY[i * incpriY];
       q.d = x;
       q.l |= 1;
       q.d += M;
-      manY[i * incmanY] = q.d;
+      priY[i * incpriY] = q.d;
       M -= q.d;
       x += M;
     }
     q.d = x;
     q.l |= 1;
-    manY[i * incmanY] += q.d;
+    priY[i * incpriY] += q.d;
   }
 }

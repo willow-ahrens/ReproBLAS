@@ -3,7 +3,7 @@
 /**
  * @brief Renormalize indexed complex single precision
  *
- * Renormalization keeps the mantissa vector within the necessary bins by shifting over to the carry vector
+ * Renormalization keeps the primary vector within the necessary bins by shifting over to the carry vector
  *
  * @param fold the fold of the indexed types
  * @param X indexed scalar X

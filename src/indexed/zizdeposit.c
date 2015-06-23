@@ -9,8 +9,8 @@
  *
  * @param fold the fold of the indexed types
  * @param X scalar X
- * @param manY Y's mantissa vector
- * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
+ * @param priY Y's primary vector
+ * @param incpriY stride within Y's primary vector (use every incpriY'th element)
  *
  * @author Hong Diep Nguyen
  * @author Peter Ahrens

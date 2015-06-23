@@ -11,15 +11,15 @@
  * @param fold the fold of the indexed types
  * @param X Y's new scaleY (X == #sscale(Y) for some @c float Y) (X >= scaleY)
  * @param scaleY Y's current scaleY (scaleY == #sscale(Y) for some @c float Y) (X >= scaleY)
- * @param manY Y's mantissa vector (#smindex(Y) >= #sindex(1.0))
- * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
+ * @param priY Y's primary vector (#smindex(Y) >= #sindex(1.0))
+ * @param incpriY stride within Y's primary vector (use every incpriY'th element)
  * @param carY Y's carry vector
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
  * @author Peter Ahrens
  * @date   19 Jun 2015
  */
-void cmsrescale(const int fold, const float X, const float scaleY, float *manY, const int incmanY, float *carY, const int inccarY){
+void cmsrescale(const int fold, const float X, const float scaleY, float *priY, const int incpriY, float *carY, const int inccarY){
   int i;
   float rescaleY;
 
@@ -30,10 +30,10 @@ void cmsrescale(const int fold, const float X, const float scaleY, float *manY, 
   rescaleY = X/scaleY;
   rescaleY *= rescaleY;
   for(i = 0; i < fold; i++){
-    manY[i * 2 * incmanY] /= rescaleY;
-    manY[i * 2 * incmanY + 1] /= rescaleY;
-    if(manY[i * incmanY] == 0.0){
-      cmsupdate(fold - i, 0.0, manY + i * 2 * incmanY, incmanY, carY + i * 2 * inccarY, inccarY);
+    priY[i * 2 * incpriY] /= rescaleY;
+    priY[i * 2 * incpriY + 1] /= rescaleY;
+    if(priY[i * incpriY] == 0.0){
+      cmsupdate(fold - i, 0.0, priY + i * 2 * incpriY, incpriY, carY + i * 2 * inccarY, inccarY);
       return;
     }
   }

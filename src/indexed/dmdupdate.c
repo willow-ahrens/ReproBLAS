@@ -12,8 +12,8 @@
  *
  * @param fold the fold of the indexed types
  * @param X scalar X
- * @param manY Y's mantissa vector
- * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
+ * @param priY Y's primary vector
+ * @param incpriY stride within Y's primary vector (use every incpriY'th element)
  * @param carY Y's carry vector
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
@@ -21,34 +21,34 @@
  * @author Peter Ahrens
  * @date   5 May 2015
  */
-void dmdupdate(const int fold, const double X, double* manY, const int incmanY, double* carY, const int inccarY) {
+void dmdupdate(const int fold, const double X, double* priY, const int incpriY, double* carY, const int inccarY) {
   int i;
   int j;
   int X_index;
   int shift;
   const double *bins;
 
-  if (ISNANINF(manY[0])){
+  if (ISNANINF(priY[0])){
     return;
   }
 
   X_index = dindex(X);
-  if(manY[0] == 0.0){
+  if(priY[0] == 0.0){
     bins = dmbins(X_index);
     for(i = 0; i < fold; i++){
-      manY[i * incmanY] = bins[i];
+      priY[i * incpriY] = bins[i];
       carY[i * inccarY] = 0.0;
     }
   }else{
-    shift = dmindex(manY) - X_index;
+    shift = dmindex(priY) - X_index;
     if(shift > 0){
       for(i = fold - 1; i >= shift; i--){
-        manY[i * incmanY] = manY[(i - shift) * incmanY];
+        priY[i * incpriY] = priY[(i - shift) * incpriY];
         carY[i * inccarY] = carY[(i - shift) * inccarY];
       }
       bins = dmbins(X_index);
       for(j = 0; j < i + 1; j++){
-        manY[j * incmanY] = bins[j];
+        priY[j * incpriY] = bins[j];
         carY[j * inccarY] = 0.0;
       }
     }

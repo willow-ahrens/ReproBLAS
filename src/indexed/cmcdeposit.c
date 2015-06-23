@@ -14,48 +14,48 @@
  *
  * @param fold the fold of the indexed types
  * @param X scalar X
- * @param manY Y's mantissa vector
- * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
+ * @param priY Y's primary vector
+ * @param incpriY stride within Y's primary vector (use every incpriY'th element)
  *
  * @author Hong Diep Nguyen
  * @author Peter Ahrens
  * @date   10 Jun 2015
  */
-void cmcdeposit(const int fold, const void *X, float *manY, const int incmanY){
+void cmcdeposit(const int fold, const void *X, float *priY, const int incpriY){
   float MR, MI;
   int_float qR, qI;
   int i;
   float xR = ((float*)X)[0];
   float xI = ((float*)X)[1];
 
-  if (ISNANINFF(xR) || ISNANINFF(manY[0])){
-    manY[0] += xR;
-    smsdeposit(fold, xI, manY + 1, 2 * incmanY);
+  if (ISNANINFF(xR) || ISNANINFF(priY[0])){
+    priY[0] += xR;
+    smsdeposit(fold, xI, priY + 1, 2 * incpriY);
     return;
   }
-  if (ISNANINFF(xI) || ISNANINFF(manY[1])){
-    manY[1] += xI;
-    smsdeposit(fold, xR, manY, 2 * incmanY);
+  if (ISNANINFF(xI) || ISNANINFF(priY[1])){
+    priY[1] += xI;
+    smsdeposit(fold, xR, priY, 2 * incpriY);
     return;
   }
 
-  if(smindex0(manY) || smindex0(manY + 1)){
-    smsdeposit(fold, xR, manY, 2 * incmanY);
-    smsdeposit(fold, xI, manY + 1, 2 * incmanY);
+  if(smindex0(priY) || smindex0(priY + 1)){
+    smsdeposit(fold, xR, priY, 2 * incpriY);
+    smsdeposit(fold, xI, priY + 1, 2 * incpriY);
     return;
   }
 
   for (i = 0; i < fold - 1; i++) {
-    MR = manY[i * 2 * incmanY];
-    MI = manY[i * 2 * incmanY + 1];
+    MR = priY[i * 2 * incpriY];
+    MI = priY[i * 2 * incpriY + 1];
     qR.f = xR;
     qI.f = xI;
     qR.i |= 1;
     qI.i |= 1;
     qR.f += MR;
     qI.f += MI;
-    manY[i * 2 * incmanY] = qR.f;
-    manY[i * 2 * incmanY + 1] = qI.f;
+    priY[i * 2 * incpriY] = qR.f;
+    priY[i * 2 * incpriY + 1] = qI.f;
     MR -= qR.f;
     MI -= qI.f;
     xR += MR;
@@ -65,6 +65,6 @@ void cmcdeposit(const int fold, const void *X, float *manY, const int incmanY){
   qI.f = xI;
   qR.i |= 1;
   qI.i |= 1;
-  manY[i * 2 * incmanY] += qR.f;
-  manY[i * 2 * incmanY + 1] += qI.f;
+  priY[i * 2 * incpriY] += qR.f;
+  priY[i * 2 * incpriY + 1] += qI.f;
 }

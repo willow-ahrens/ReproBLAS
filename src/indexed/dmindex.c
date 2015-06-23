@@ -12,21 +12,21 @@
  *
  * The index of an indexed type is the bin that it corresponds to. Higher indicies correspond to smaller bins.
  *
- * @param manX X's mantissa vector
+ * @param priX X's primary vector
  * @return X's index
  *
  * @author Peter Ahrens
  * @author Hong Diep Nguyen
  * @date   19 May 2015
  */
-int dmindex(const double *manX){
+int dmindex(const double *priX){
   /*
   int exp;
 
-  if(manX[0] == 0.0){
+  if(priX[0] == 0.0){
     return (DBL_MAX_EXP - DBL_MIN_EXP)/DIWIDTH + MAX_FOLD;
   }else{
-    frexp(manX[0], &exp);
+    frexp(priX[0], &exp);
     if(exp == DBL_MAX_EXP){
       return 0;
     }
@@ -34,11 +34,11 @@ int dmindex(const double *manX){
   }
   */
   /*
-  if(manX[0] == 0.0){
+  if(priX[0] == 0.0){
     return (DBL_MAX_EXP - DBL_MIN_EXP)/DIWIDTH + MAX_FOLD;
   }else{
-    return ((DBL_MAX_EXP + DBL_MANT_DIG - DIWIDTH + 1 + EXP_BIAS) - EXP(manX[0]))/DIWIDTH;
+    return ((DBL_MAX_EXP + DBL_MANT_DIG - DIWIDTH + 1 + EXP_BIAS) - EXP(priX[0]))/DIWIDTH;
   }
   */
-  return ((DBL_MAX_EXP + DBL_MANT_DIG - DIWIDTH + 1 + EXP_BIAS) - EXP(manX[0]))/DIWIDTH;
+  return ((DBL_MAX_EXP + DBL_MANT_DIG - DIWIDTH + 1 + EXP_BIAS) - EXP(priX[0]))/DIWIDTH;
 }

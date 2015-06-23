@@ -6,8 +6,8 @@
  *
  * @param fold the fold of the indexed types
  * @param X scalar X
- * @param manY Y's mantissa vector
- * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
+ * @param priY Y's primary vector
+ * @param incpriY stride within Y's primary vector (use every incpriY'th element)
  * @param carY Y's carry vector
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
@@ -15,7 +15,7 @@
  * @author Peter Ahrens
  * @date   30 Apr 2015
  */
-void smsconv(const int fold, const float X, float* manY, const int incmanY, float* carY, const int inccarY) {
-  smsetzero(fold, manY, incmanY, carY, inccarY);
-  smsadd(fold, X, manY, incmanY, carY, inccarY);
+void smsconv(const int fold, const float X, float* priY, const int incpriY, float* carY, const int inccarY) {
+  smsetzero(fold, priY, incpriY, carY, inccarY);
+  smsadd(fold, X, priY, incpriY, carY, inccarY);
 }

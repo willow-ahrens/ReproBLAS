@@ -8,8 +8,8 @@
  *
  * @param fold the fold of the indexed types
  * @param X scalar X
- * @param manY Y's mantissa vector
- * @param incmanY stride within Y's mantissa vector (use every incmanY'th element)
+ * @param priY Y's primary vector
+ * @param incpriY stride within Y's primary vector (use every incpriY'th element)
  * @param carY Y's carry vector
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
@@ -17,8 +17,8 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void smsadd(const int fold, const float X, float *manY, const int incmanY, float *carY, const int inccarY){
-  smsupdate(fold, X, manY, incmanY, carY, inccarY);
-  smsdeposit(fold, X, manY, incmanY);
-  smrenorm(fold, manY, incmanY, carY, inccarY);
+void smsadd(const int fold, const float X, float *priY, const int incpriY, float *carY, const int inccarY){
+  smsupdate(fold, X, priY, incpriY, carY, inccarY);
+  smsdeposit(fold, X, priY, incpriY);
+  smrenorm(fold, priY, incpriY, carY, inccarY);
 }

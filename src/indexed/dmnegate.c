@@ -7,8 +7,8 @@
  * Performs the operation X = -X
  *
  * @param fold the fold of the indexed types
- * @param manX X's mantissa vector
- * @param incmanX stride within X's mantissa vector (use every incmanX'th element)
+ * @param priX X's primary vector
+ * @param incpriX stride within X's primary vector (use every incpriX'th element)
  * @param carX X's carry vector
  * @param inccarX stride within X's carry vector (use every inccarX'th element)
  *
@@ -16,13 +16,13 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void dmnegate(const int fold, double* manX, const int incmanX, double* carX, const int inccarX) {
+void dmnegate(const int fold, double* priX, const int incpriX, double* carX, const int inccarX) {
   int i;
   const double *bins;
-  if(manX[0] != 0.0){
-    bins = dmbins(dmindex(manX));
+  if(priX[0] != 0.0){
+    bins = dmbins(dmindex(priX));
     for (i = 0; i < fold; i++) {
-      manX[i * incmanX] = bins[i] - (manX[i * incmanX] - bins[i]);
+      priX[i * incpriX] = bins[i] - (priX[i * incpriX] - bins[i]);
       carX[i * inccarX] = -carX[i * inccarX];
     }
   }
