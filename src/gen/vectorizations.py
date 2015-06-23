@@ -422,8 +422,8 @@ class SSE(SIMD):
                               "}")
 
   def include_SIMD_daz_ftz_vars(self):
-    self.code_block.include("unsigned int SIMD_daz_ftz_old_tmp;")
-    self.code_block.include("unsigned int SIMD_daz_ftz_new_tmp;")
+    self.code_block.include("unsigned int SIMD_daz_ftz_old_tmp = 0;")
+    self.code_block.include("unsigned int SIMD_daz_ftz_new_tmp = 0;")
 
   def consolidate_into(self, dst_ptr, offset, inc, src_vars, common_summand_ptr, common_summand_offset, common_summand_inc):
     self.include_consolidation_vars()
@@ -684,8 +684,8 @@ class AVX(SIMD):
                               "}")
 
   def include_SIMD_daz_ftz_vars(self):
-    self.code_block.include("unsigned int SIMD_daz_ftz_old_tmp;")
-    self.code_block.include("unsigned int SIMD_daz_ftz_new_tmp;")
+    self.code_block.include("unsigned int SIMD_daz_ftz_old_tmp = 0;")
+    self.code_block.include("unsigned int SIMD_daz_ftz_new_tmp = 0;")
 
   def consolidate_into(self, dst_ptr, offset, inc, src_vars, common_summand_ptr, common_summand_offset, common_summand_inc):
     self.include_consolidation_vars()

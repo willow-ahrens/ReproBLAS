@@ -95,7 +95,7 @@ class Deposit(Target):
         code_block.indent()
         self.write_fold(code_block, fold, self.arguments["{}_max_pipe_width_{}_fold_{}".format(self.name, self.vec.name, fold)], self.arguments["{}_max_unroll_width_{}_fold_{}".format(self.name, self.vec.name, fold)])
         code_block.new_line()
-        #self.vec.reset_SIMD_daz_ftz()
+        self.vec.reset_SIMD_daz_ftz()
         code_block.dedent()
         code_block.write("}")
         code_block.write("break;")
