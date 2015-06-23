@@ -12,7 +12,7 @@ import itertools
   #REG_WIDTH = number of variables needed to hold the independently loaded elements
   #UNROLL_WIDTH = number of times PIPE_WIDTH elements per indexed sum are to be processed in the inner loop
 class Deposit(Target):
-  def __init__(self, data_type_class, N, X, incX, manY, incmanY):
+  def __init__(self, data_type_class, N, X, incX, priY, incpriY):
     super(Deposit, self).__init__()
     self.default_fold = terminal.get_default_fold()
     self.max_fold = terminal.get_max_fold()
@@ -21,8 +21,8 @@ class Deposit(Target):
     self.N = N
     self.X = X
     self.incX = incX
-    self.manY = manY
-    self.incmanY = incmanY
+    self.priY = priY
+    self.incpriY = incpriY
 
   def get_arguments(self):
     arguments = []
@@ -73,7 +73,11 @@ class Deposit(Target):
   def write_vec(self, vec_class, code_block):
     self.data_type = self.data_type_class(code_block)
     self.vec = vec_class(code_block, self.data_type_class)
-    #self.vec.set_SIMD_daz_ftz()
+    code_block.write("if(!{}mdenorm(fold, {})){{".format(self.data_type.name_char, self.priY))
+    code_block.indent()
+    self.vec.set_SIMD_daz_ftz()
+    code_block.dedent()
+    code_block.write("}")
     code_block.new_line()
     expanded_folds = []
     for i in range(2, self.max_expand_fold + 1):
@@ -142,12 +146,12 @@ class Deposit(Target):
     if fold == 0:
       code_block.write("for(j = 0; j < fold; j += 1){")
       code_block.indent()
-      self.vec.propagate_into(self.buffer_vars, self.manY, "j", self.incmanY)
+      self.vec.propagate_into(self.buffer_vars, self.priY, "j", self.incpriY)
       code_block.dedent()
       code_block.write("}")
     else:
       for j in range(fold):
-        self.vec.propagate_into(self.s_vars[j], self.manY, j, self.incmanY)
+        self.vec.propagate_into(self.s_vars[j], self.priY, j, self.incpriY)
 
     code_block.new_line()
 
@@ -159,12 +163,12 @@ class Deposit(Target):
     if fold == 0:
       code_block.write("for(j = 0; j < fold; j += 1){")
       code_block.indent()
-      self.vec.consolidate_into(self.manY, "j", self.incmanY, self.buffer_vars, self.manY, "j", self.incmanY)
+      self.vec.consolidate_into(self.priY, "j", self.incpriY, self.buffer_vars, self.priY, "j", self.incpriY)
       code_block.dedent()
       code_block.write("}")
     else:
       for j in range(fold):
-        self.vec.consolidate_into(self.manY, j, self.incmanY, self.s_vars[j], self.manY, j, self.incmanY)
+        self.vec.consolidate_into(self.priY, j, self.incpriY, self.s_vars[j], self.priY, j, self.incpriY)
 
   def write_increments(self, code_block, fold, max_pipe_width, max_unroll_width):
     code_block.write("if({} == 1){{".format(self.incX))
@@ -205,12 +209,12 @@ class Deposit(Target):
         self.process0(code_block, fold, reg_width, n // max_pipe_width)
 
     if self.data_type.is_complex:
-      code_block.write("if({0}mindex0({1}) || {0}mindex0({1} + 1)){{".format(self.data_type.base_type.name_char, self.manY))
+      code_block.write("if({0}mindex0({1}) || {0}mindex0({1} + 1)){{".format(self.data_type.base_type.name_char, self.priY))
       code_block.indent()
 
-      code_block.write("if({0}mindex0({1})){{".format(self.data_type.base_type.name_char, self.manY))
+      code_block.write("if({0}mindex0({1})){{".format(self.data_type.base_type.name_char, self.priY))
       code_block.indent()
-      code_block.write("if({0}mindex0({1} + 1)){{".format(self.data_type.base_type.name_char, self.manY))
+      code_block.write("if({0}mindex0({1} + 1)){{".format(self.data_type.base_type.name_char, self.priY))
       code_block.indent()
       code_block.set_equal(self.compression_vars, self.vec.set("{0}MCOMPRESSION".format(self.data_type.base_type.name_char.upper())))
       code_block.set_equal(self.expansion_vars, self.vec.set("{0}MEXPANSION".format(self.data_type.base_type.name_char.upper())))
@@ -236,7 +240,7 @@ class Deposit(Target):
       code_block.dedent()
       code_block.write("}")
     else:
-      code_block.write("if({0}mindex0({1})){{".format(self.data_type.base_type.name_char, self.manY))
+      code_block.write("if({0}mindex0({1})){{".format(self.data_type.base_type.name_char, self.priY))
       code_block.indent()
       code_block.set_equal(self.compression_vars, self.vec.set("{0}MCOMPRESSION".format(self.data_type.base_type.name_char.upper())))
       code_block.set_equal(self.expansion_vars, self.vec.set("{0}MEXPANSION".format(self.data_type.base_type.name_char.upper())))

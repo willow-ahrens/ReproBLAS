@@ -259,14 +259,19 @@ int sindex(const float X);
 int smindex(const float *priX);
 int smindex0(const float *priX);
 
-void ciprint(const int fold, const float_complex_indexed *X);
-void cmprint(const int fold, const float* priX, const int incpriX, const float* carX, const int inccarX);
+int dmdenorm(const int fold, const double *priX);
+int zmdenorm(const int fold, const double *priX);
+int smdenorm(const int fold, const float *priX);
+int cmdenorm(const int fold, const float *priX);
+
 void diprint(const int fold, const double_indexed *X);
 void dmprint(const int fold, const double *priX, const int incpriX, const double *carX, const int inccarX);
-void siprint(const int fold, const float_indexed *X);
-void smprint(const int fold, const float *priX, const int incpriX, const float *carX, const int inccarX);
 void ziprint(const int fold, const double_complex_indexed *X);
 void zmprint(const int fold, const double *priX, const int incpriX, const double *carX, const int inccarX);
+void siprint(const int fold, const float_indexed *X);
+void smprint(const int fold, const float *priX, const int incpriX, const float *carX, const int inccarX);
+void ciprint(const int fold, const float_complex_indexed *X);
+void cmprint(const int fold, const float* priX, const int incpriX, const float* carX, const int inccarX);
 
 void didiset(const int fold, const double_indexed *X, double_indexed *Y);
 void dmdmset(const int fold, const double *priX, const int incpriX, const double *carX, const int inccarX, double *priY, const int incpriY, double *carY, const int inccarY);

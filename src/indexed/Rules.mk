@@ -28,6 +28,7 @@ libindexed.a_DEPS = cciconv_sub.o \
                     cmcmadd.o \
                     cmcmset.o \
                     cmcupdate.o \
+                    cmdenorm.o \
                     cmnegate.o \
                     cmprint.o \
                     cmrenorm.o \
@@ -56,6 +57,7 @@ libindexed.a_DEPS = cciconv_sub.o \
                     dmdadd.o \
                     dmdconv.o \
                     dmddeposit.o \
+                    dmdenorm.o \
                     dmdmadd.o \
                     dmdmaddsq.o \
                     dmdmset.o \
@@ -84,6 +86,7 @@ libindexed.a_DEPS = cciconv_sub.o \
                     sisize.o \
                     sisupdate.o \
                     smbins.o \
+                    smdenorm.o \
                     smindex.o \
                     smindex0.o \
                     smnegate.o \
@@ -118,6 +121,7 @@ libindexed.a_DEPS = cciconv_sub.o \
                     ziziadd.o \
                     ziziset.o \
                     zizupdate.o \
+                    zmdenorm.o \
                     zmdmset.o \
                     zmdrescale.o \
                     zmdupdate.o \
