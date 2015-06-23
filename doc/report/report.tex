@@ -48,14 +48,14 @@
 \section{The Indexed Type}
   \subsection{Representation}
     The \textbf{indexed type} is used to represent the intermediate result of accumulation using algorithms 6 and 7 specified by Nguyen and Demmel in "Parallel Reproducible Summation" \cite{repsum}.
-    An indexed type $Y$ is composed of several accumulators $Y_0, ..., Y_{n - 1} \in \F$, each holding the sum of input in a predetermined exponent range (referred to as a \textbf{bin}). An indexed type with $n$ accumulators is referred to as having \textbf{fold} $n$.
+    An indexed type $Y$ is composed of several accumulators $Y_0, ..., Y_{n - 1} \in \F$, each holding the sum of input in a predetermined exponent range (referred to as a \textbf{bin}). An indexed type with $n$ accumulators is referred to as having \textbf{fold} $n$. Due to their wild innacuraccy, indexed types of fold 1 are not considered. It is assumed that indexed types have fold > 1.
 
     Let $Y$ be the indexed type corresponding to the reproducibly computed sum of $x_0, ..., x_{n - 1} = s_0 \times 2^{e_0} \times m_0, ..., s_{n - 1} \times 2^{e_{n - 1}} \times m_{n - 1} \in F$.
     If the accumulator $Y_j$ accumulates input in the bin $[a, b), a > b \in \Z$, then $Y_j$ is the sum of all input bits with exponents in $[a, b)$. Specifically, $Y_j = \sum \{s_i2^{e_i}{m_i}_k, i \in \{0, ..., n - 1\}, k \in \Z | e_i - k \in [a, b)\}$.
 
     For ease of computation, accumulator ranges are not arbitrary. They are broken up into precomputed, fixed width intervals starting at $e_{\max}$. The possible bins $[a_0, b_0), [a_1, b_1), ...$ for an indexed type of \textbf{width} $W$ are $[e_{\max}, e_{\max} - W), [e_{\max} - W, e_{\max} - 2W), ..., [e_{\min} - p - (e_{\max} - e_{\min} + p \mod W) + W, e_{\min} - p - (e_{\max} - e_{\min} + p \mod W))$. It will be explained later why input in the bin $[e_{\min} - p + (e_{\max} - e_{\min} + p \mod W), e_{\min} - p)$ is not accumulated. As discussed in \cite{repsum}, $W < p - 2$. As discussed in section \ref{sec:overflow}, $2W > p$.
 
-    The accumulators in an indexed type correspond to contiguous bins in decreasing order. The \textbf{index} of $Y$ is the smallest $i \in \Z$ such that $2^(a_i + 1) > \max{|x_0|, ..., |x_n|}$ (equivalently, the smallest $i \in \Z$ such that $a_i \geq \max{e_0, ..., e_n}$). If $Y$ has index $i$, then $Y_j, j \in \{0, ..., fold - 1\}$ accumulates numbers in the bin $[a_{i + j}, b_{i + j})$.
+    The accumulators in an indexed type correspond to contiguous bins in decreasing order. The \textbf{index} of $Y$ is the smallest $i \in \Z$ such that $2^{a_i + 1} > \max(|x_0|, ..., |x_n|)$ (equivalently, the smallest $i \in \Z$ such that $a_i \geq \max{e_0, ..., e_n}$). If $Y$ has index $i$, then $Y_j, j \in \{0, ..., fold - 1\}$ accumulates numbers in the bin $[a_{i + j}, b_{i + j})$.
   \subsection{Implementation}
     \subsubsection{Data Types}
       As discussed in \cite{repsum}, indexed types are represented using floating point numbers to minimize traffic between floating point and integer arithmetic units. If an indexed type is used to sum \verb|double|, then it is composed entirely of \verb|double| and likewise for \verb|float|. ReproBLAS supports complex types as pairs of real and imaginary components (stored contiguously in memory). If an indexed type is used to sum complex \verb|double| or \verb|float|, then it is composed of pairs of real and imaginary \verb|double| or \verb|float| respectively. The decision to keep the real and imaginary components together (as opposed to keeping separate indexed types for real and imaginary parts of the sum) was motivated by a desire to process accumulators simultaneously with vectorized (SIMD, single instruction multiple data) instructions.
@@ -63,6 +63,12 @@
       An indexed type's accumulators are each implemented using two underlying floating point fields. The \textbf{primary} field is used during accumulation, while the \textbf{carry} field holds overflow from the primary field. When discussing the primary and carry fields of the accumulator $Y$, we denote the primary fields by $Y_P$ and the carry fields by $Y_C$, so that ${Y_P}_j$ is the primary field of the accumulator $Y_j$. This reflects the fact that the primary fields are stored separately from the carry fields as the primary fields are frequenly accessed sequentially.
 
       The primary field ${Y_P}_j$ of an indexed type $Y$ of index $i$ and fold $fold$ is stored as an offset from $1.5\times \epsilon^{-1} \times 2^{b_{i + j}}$. This greatly simplifies the process of extracting the components of the input belonging in bin $[a_i, b_i)$.
+      The value ${y_P}_j$ stored in the primary field ${Y_P}_j$ of an indexed type $Y$ of index $i$ expressed in equation \ref{eq:pri}
+      \begin{eq} The value ${y_P}_j$ stored in the primary field ${Y_P}_j$ of an indexed type $Y$ of index $i$
+
+        ${y_P}_j = {Y_P}_j - 1.5\times\epsilon^{-1}\times2^{b_{i + j}}$
+        \label{eq:pri}
+      \end{eq}
       As discussed in \cite{repsum}, if we store each primary bin ${Y_P}_j$ as an offset from $1.5 \times \epsilon^{-1} \times 2^{b_{i + j}}$ and keep ${Y_P}_j$ within the range $(2 \times \epsilon^{-1} \times 2^{b_{i + j}}, \epsilon^{-1} \times 2^{b_{i + j}})$, algorithm \ref{alg:deposit} extracts the components of $x$ belonging to bins $[a_i, b_i), ..., [a_{i + fold - 1}, b_{i + fold - 1})$ and adds them to ${Y_P}_0, ..., {Y_P}_{fold - 1}$ without error (and hence reproducibly) for all $x \in \F, |x| < 2 * 2^{a_i}$.
       \begin{alg}
         Extract components of floating point $x$ in bins $[a_i, b_i), ..., [a_{i + fold - 1}, b_{i + fold - 1})$ and add to indexed $Y$. Here, $(r | 1)$ represents the result of setting the last bit of the mantissa ($m_{p - 1}$) of floating-point $r$ to 1.
@@ -83,26 +89,67 @@
       The last bit of $r$ is set to break ties when rounding "to nearest even" such that the amount accumulated does not depend on the size of ${Y_P}i$ so far and the same amount is always deposited in all of $Y$'s primary fields regardless of how full they are already. (A dependency on the amount stored in $Y$'s primary fields would imply that the routine is not reproducible. Adding numbers in different orders would accumulate different amounts into the primary fields $Y_P$ when each input is added to them.)
 
       In order to keep the primary bins in the necessary range during a deposit operation and to keep the representation of $Y$ unique, ${Y_P}_j$ is routinely renormalized to the range $(1.75 \times\epsilon^{-1} \times2^{b_{i + j}}, 1.5 \times\epsilon^{-1} \times2^{b_{i + j}}]$.
-      To renormalize, ${Y_P}_j$ is adjusted by $0.25 \times\epsilon^{-1} \times 2^{b_{i + j}}$ when necessary, leaving the carry field ${Y_C}_j$ to record the number of such adjustments. Therefore the value represented by an indexed type $Y$ of index $i$ and fold $fold$ (the sum of the accumulators) can be expressed as in equation \ref{eq:indexedvalue}.
-      \begin{eq} The real value $y \in \R$ of an indexed type $Y$
+      To renormalize, ${Y_P}_j$ is adjusted by $0.25 \times\epsilon^{-1} \times 2^{b_{i + j}}$ when necessary, leaving the carry field ${Y_C}_j$ to record the number of such adjustments.
+      The value ${y_C}_j$ stored in the carry field ${Y_C}_j$ of an indexed type $Y$ of index $i$ expressed in equation \ref{eq:car}
+      \begin{eq} The value ${y_C}_j$ stored in the carry field ${Y_C}_j$ of an indexed type $Y$ of index $i$
 
-        $y = \sum\limits_{j = 0}^{fold - 1} ({Y_P}_j - 1.5 \times\epsilon^{-1}\times 2^{b_{i + j}}) + {Y_C}_j \times 0.25\times\epsilon^{-1}\times2^{b_{i + j}}$
+        ${y_C}_j = {Y_C}_j \times 0.25\times\epsilon^{-1}\times2^{b_{i + j}}$
+        \label{eq:car}
+      \end{eq}
+ Therefore the value represented by an indexed type $Y$ of index $i$ and fold $fold$ (the sum of the accumulators) can be expressed as in equation \ref{eq:indexedvalue}.
+      \begin{eq} The real value $y \in \R$ of an indexed type $Y$ of index $i$
+\
+        $y = \sum\limits_{j = 0}^{fold - 1} {y_P}_j + {y_C}_j = \sum\limits_{j = 0}^{fold - 1} ({Y_P}_j - 1.5 \times\epsilon^{-1}\times 2^{b_{i + j}}) + {Y_C}_j \times 0.25\times\epsilon^{-1}\times2^{b_{i + j}}$
         \label{eq:indexedvalue}
       \end{eq}
+      It is worth noting here that because the primary field ${Y_P}_0$ is stored with an exponent of $b_i + p$, it is unnecessary to store the index of an indexed type explicitly. The index can be determined by simply examining the exponent of ${Y_P}_0$. (Possible detailed discussion of index calculation could go here. It involves the assumption that 2W > p)
     \subsubsection{Overflow}
       \label{sec:overflow}
-      If an indexed type $Y$ has index 0 and the width is $W$, then the value in the primary field ${Y_P}_0$ is stored as an offset from $1.5\times\epsilon^{-1}\times2^{e_{\max} - W} = 1.5 \times 2^{e_{\max} + (p - W)} >= 2 * 2^{e_max}$ since $W < p - 2$ \cite{repsum}, so it is out of the range of the floating-point system and not representable. Before discussing the solution to this overflow problem, take note of theorem \ref{thm:overflow}.
+      If an indexed type $Y$ has index 0 and the width is $W$, then the value in the primary field ${Y_P}_0$ is stored as an offset from $1.5\times\epsilon^{-1}\times2^{e_{\max} - W}$. However, $1.5\times\epsilon^{-1}\times2^{e_{\max} - W} = 1.5 \times 2^{e_{\max} + (p - W)} > 2 * 2^{e_{\max}}$ since $W < p - 2$ \cite{repsum}, so it is out of the range of the floating-point system and not representable. Before discussing the solution to this overflow problem, take note of theorem \ref{thm:overflow}.
       \begin{thm}
-        If $2W > p$, then for any indexed type $Y$ of index $i$ and for any ${Y_P}_j$ such that $i + j \geq 1$, $|{Y_P}_j| < 2^{e_{\max}}$.
+        If $2W > p$, then for any indexed type $Y$ of index $i$ and any ${Y_P}_j$ such that $i + j \geq 1$, $|{Y_P}_j| < 2^{e_{\max}}$.
 
         $b_1 = e_{\max} - 2W$ by definition, therefore $b_1 < e_{\max} - p$ and since all quantities are integers, $b_1 \leq e_{\max} - 1 - p$. As $b_0, b_1, ...$ is a positive decreasing sequence, $b_{i + j} \leq e_{\max} - 1 - p$ since $i + j \geq 1$.
 
-        The ${Y_P}_j$ are kept within the range $(2 \times \epsilon^{-1} \times 2^{b_{i + j}}, \epsilon^{-1} \times 2^{b_{i + j}})$, therefore 
+        ${Y_P}_j$ is kept within the range $(2 \times \epsilon^{-1} \times 2^{b_{i + j}}, \epsilon^{-1} \times 2^{b_{i + j}})$, therefore 
         $|{Y_P}_j| < 2 \times \epsilon^{-1} \times 2^{b_{i + j}} \leq 2^{1 + p} \times 2^{e_{\max} - 1 - p} = 2^{e_{\max}}$.
 
         \label{thm:overflow}
       \end{thm}
+      By theorem \ref{thm:overflow}, if $2W > p$ then the only primary field that could possibly be in overflow is a primary field corresponding to bin 0, and all other primary fields have exponent less than $e_{\max}$. Therefore, we impose $2W > p$ and express the value of the primary field corresponding to bin 0 as a scaled offset from $1.5\times2^{e_{\max}}$. Note that this still distinguishes the primary field corresponding to bin 0 because no other primary field has an exponent of $e_{\max}$. The value ${y_P}_0$ of the primary field ${Y_P}_0$ of an indexed type $Y$ of index 0 is expressed in equation \ref{eq:pri0}.
+      \begin{eq} The value ${y_P}_0$ of the primary field ${Y_P}_0$ of an indexed type $Y$ of index 0.
 
+        ${y_P}_0 = 2^{p - W}\times({Y_P}_0 - 1.5\times2^{e_{\max}})$
+        \label{eq:pri0}
+      \end{eq}
+      Of course, what remains to be seen is how we can extract and add (as in algorithm \ref{alg:deposit}) the components of a floating point number to an indexed type $Y$ of index 0. Algorithm \ref{alg:deposit0} shows the adaptation of algorithm $\ref{alg:deposit}$ for types of index 0. Note that all of the same assumptions must hold from \ref{alg:deposit} except that ${Y_P}_0$ must now be kept within the range $(2 \times 2^{e_{\max}}, 2^{e_{\max}})$.
+      \begin{alg}
+        Extract components of floating point $x$ in bins $[a_0, b_0), ..., [a_{fold - 1}, b_{fold - 1})$ and add to indexed $Y$ of index 0. Here, $(r | 1)$ represents the result of setting the last bit of the mantissa ($m_{p - 1}$) of floating-point $r$ to 1.
+        \begin{algorithmic}
+          \Function{Deposit0}{fold, Y, x}
+            \State $r \gets x / 2^{p - w}$
+            \State $S \gets {Y_P}_0 + (r | 1)$
+            \State $q \gets S - {Y_P}_0$
+            \State ${Y_P}_0 \gets S$
+            \State $q \gets q \times 2^{p - w}$
+            \State $r \gets x - q$
+            \For{$i = 1 \to (fold - 2)$}
+              \State $S \gets {Y_P}_i + (r | 1)$
+              \State $q \gets S - {Y_P}_i$
+              \State ${Y_P}_i \gets S$
+              \State $r \gets r - q$
+            \EndFor
+            \State ${Y_P}_{fold - 1} \gets {Y_P}_{fold - 1} + (r | 1)$
+          \EndFunction
+        \end{algorithmic}
+        \label{alg:deposit0}
+      \end{alg}
+
+      Algorithm \ref{alg:deposit0} has a few key features worth pointing out. First, since $x < 2 \times 2^{e_{\max}}$, then the value of $r$ after it's first assignment satisfies $r < 2 \times 2^{e_{\max} - p + W}$.
+      Furthermore, since $x$ is scaled by a factor of two, the significand of $r$ is equal to that of $x$.
+      Therefore, the component of $r$ belonging to the bin $[e_{\max} - p + W, e_{\max} - p)$ is equivalent to the component of $x$ belonging to the bin $[e_{\max}, e_{\max} - W)$ scaled by $2^{p - W}$. This component of $r$ is extracted, stored in q, and added to ${Y_P}_0$. We can therefore scale this component by $2^{p - w}$ to obtain the component of $x$ belonging to the bin $[e_{\max}, e_{\max} - W)$. As $x$ is representable, so is this component. We can then subtract this component from $x$ and continue as in algorithm \ref{alg:deposit}.
+
+      Notice that after the first extraction, we cannot simply subtract $q$ from $r$ and then scale $r$ up and continue, as there may be underflow when scaling $x$ down. We must scale $q$ up and subtract from the original $x$.
     \subsubsection{Underflow}
     \subsubsection{Exceptions}
 \section{Basic Operations}
