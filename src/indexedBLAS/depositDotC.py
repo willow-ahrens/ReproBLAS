@@ -5,9 +5,9 @@ import dataTypes
 import depositM
 
 class DepositDotC(depositM.DepositM):
-  def __init__(self, data_type_class, N, X, incX, manY, incmanY, Z, incZ):
+  def __init__(self, data_type_class, fold_name, N_name, X_name, incX_name, manY_name, incmanY_name, Z_name, incZ_name):
     assert data_type_class.is_complex, "dotc is only for complex types"
-    super(DepositDotC, self).__init__(data_type_class, N, X, incX, manY, incmanY, Z, incZ)
+    super(DepositDotC, self).__init__(data_type_class, fold_name, N_name, X_name, incX_name, manY_name, incmanY_name, Z_name, incZ_name)
     self.name = "{0}depositDotC".format(self.data_type_class.name_char)
     self.metric_name = "r{0}dotc".format(self.data_type_class.name_char)
 

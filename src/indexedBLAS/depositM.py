@@ -7,46 +7,46 @@ from generate import *
 from src.indexed import deposit
 
 class DepositM(deposit.Deposit):
-  def __init__(self, data_type_class, N, X, incX, manY, incmanY, Z, incZ):
-    super(DepositM, self).__init__(data_type_class, N, X, incX, manY, incmanY)
-    self.Z = Z
-    self.incZ = incZ
+  def __init__(self, data_type_class, fold_name, N_name, X_name, incX_name, manY_name, incmanY_name, Z_name, incZ_name):
+    super(DepositM, self).__init__(data_type_class, fold_name, N_name, X_name, incX_name, manY_name, incmanY_name)
+    self.Z_name = Z_name
+    self.incZ_name = incZ_name
 
   def write_increments(self, code_block, fold, max_pipe_width, max_unroll_width):
-    code_block.write("if({} == 1){{".format(self.incX))
+    code_block.write("if({} == 1){{".format(self.incX_name))
     code_block.indent()
-    code_block.write("if({} == 1){{".format(self.incZ))
+    code_block.write("if({} == 1){{".format(self.incZ_name))
     code_block.indent()
     self.write_core(code_block, fold, max_pipe_width, max_unroll_width, [1, 1])
     code_block.dedent()
     code_block.write("}else{")
     code_block.indent()
-    self.write_core(code_block, fold, max_pipe_width, max_unroll_width, [1, self.incZ])
+    self.write_core(code_block, fold, max_pipe_width, max_unroll_width, [1, self.incZ_name])
     code_block.dedent()
     code_block.write("}")
     code_block.dedent()
     code_block.write("}else{")
     code_block.indent()
-    code_block.write("if({} == 1){{".format(self.incZ))
+    code_block.write("if({} == 1){{".format(self.incZ_name))
     code_block.indent()
-    self.write_core(code_block, fold, max_pipe_width, max_unroll_width, [self.incX, 1])
+    self.write_core(code_block, fold, max_pipe_width, max_unroll_width, [self.incX_name, 1])
     code_block.dedent()
     code_block.write("}else{")
     code_block.indent()
-    self.write_core(code_block, fold, max_pipe_width, max_unroll_width, [self.incX, self.incZ])
+    self.write_core(code_block, fold, max_pipe_width, max_unroll_width, [self.incX_name, self.incZ_name])
     code_block.dedent()
     code_block.write("}")
     code_block.dedent()
     code_block.write("}")
 
   def define_load_ptrs(self, code_block):
-      self.load_ptrs = [self.X, self.Z]
+      self.load_ptrs = [self.X_name, self.Z_name]
 
   def define_load_vars(self, code_block, width):
     if self.data_type.is_complex:
-      self.load_vars = [["{}_{}".format(self.X, i) for i in range(width)], ["{}_{}".format(self.Z, i) for i in range(width//2)]]
+      self.load_vars = [["{}_{}".format(self.X_name, i) for i in range(width)], ["{}_{}".format(self.Z_name, i) for i in range(width//2)]]
     else:
-      self.load_vars = [["{}_{}".format(self.X, i) for i in range(width)], ["{}_{}".format(self.Z, i) for i in range(width)]]
+      self.load_vars = [["{}_{}".format(self.X_name, i) for i in range(width)], ["{}_{}".format(self.Z_name, i) for i in range(width)]]
     code_block.define_vars(self.vec.type_name, self.load_vars[0])
     code_block.define_vars(self.vec.type_name, self.load_vars[1])
 

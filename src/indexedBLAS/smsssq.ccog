@@ -86,7 +86,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
     smsupdate(fold, amax, manY, incmanY, carY, inccarY);
 
     /*[[[cog
-      cog.out(generate.generate(depositSSq.DepositSSq(dataTypes.Float, "N_block", "X", "incX", "manY", "incmanY", "scl"), cog.inFile, args, params, mode))
+      cog.out(generate.generate(depositSSq.DepositSSq(dataTypes.Float, "fold", "N_block", "X", "incX", "manY", "incmanY", "scl"), cog.inFile, args, params, mode))
       ]]]*/
     {
       #ifdef __AVX__

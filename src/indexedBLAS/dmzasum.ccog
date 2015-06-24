@@ -82,7 +82,7 @@ void dmzasum(const int fold, const int N, const void *X, const int incX, double 
     zidupdate(fold, amax, asum);
 
     /*[[[cog
-      cog.out(generate.generate(depositASum.DepositASum(dataTypes.DoubleComplex, "N_block", "x", "incX", "asum", 1), cog.inFile, args, params, mode))
+      cog.out(generate.generate(depositASum.DepositASum(dataTypes.DoubleComplex, "fold", "N_block", "x", "incX", "asum", 1), cog.inFile, args, params, mode))
       ]]]*/
     {
       #ifdef __AVX__

@@ -88,7 +88,7 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
     cmcupdate(fold, amaxm, manZ, incmanZ, carZ, inccarZ);
 
     /*[[[cog
-    cog.out(generate.generate(depositDotC.DepositDotC(dataTypes.FloatComplex, "N_block", "x", "incX", "manZ", "incmanZ", "y", "incY"), cog.inFile, args, params, mode))
+    cog.out(generate.generate(depositDotC.DepositDotC(dataTypes.FloatComplex, "fold", "N_block", "x", "incX", "manZ", "incmanZ", "y", "incY"), cog.inFile, args, params, mode))
     ]]]*/
     {
       #ifdef __AVX__

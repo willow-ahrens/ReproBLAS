@@ -86,7 +86,7 @@ double dmdssq(const int fold, const int N, const double *X, const int incX, cons
     dmdupdate(fold, amax, manY, incmanY, carY, inccarY);
 
     /*[[[cog
-      cog.out(generate.generate(depositSSq.DepositSSq(dataTypes.Double, "N_block", "X", "incX", "manY", "incmanY", "scl"), cog.inFile, args, params, mode))
+      cog.out(generate.generate(depositSSq.DepositSSq(dataTypes.Double, "fold", "N_block", "X", "incX", "manY", "incmanY", "scl"), cog.inFile, args, params, mode))
       ]]]*/
     {
       #ifdef __AVX__

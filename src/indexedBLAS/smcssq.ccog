@@ -96,7 +96,7 @@ float smcssq(const int fold, const int N, const void *X, const int incX, const f
     cisupdate(fold, amax, ssq);
 
     /*[[[cog
-      cog.out(generate.generate(depositSSq.DepositSSq(dataTypes.FloatComplex, "N_block", "x", "incX", "ssq", 1, "scl"), cog.inFile, args, params, mode))
+      cog.out(generate.generate(depositSSq.DepositSSq(dataTypes.FloatComplex, "fold", "N_block", "x", "incX", "ssq", 1, "scl"), cog.inFile, args, params, mode))
       ]]]*/
     {
       #ifdef __AVX__

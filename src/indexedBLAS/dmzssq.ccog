@@ -95,7 +95,7 @@ double dmzssq(const int fold, const int N, const void *X, const int incX, const 
     zidupdate(fold, amax, ssq);
 
     /*[[[cog
-      cog.out(generate.generate(depositSSq.DepositSSq(dataTypes.DoubleComplex, "N_block", "x", "incX", "ssq", 1, "scl"), cog.inFile, args, params, mode))
+      cog.out(generate.generate(depositSSq.DepositSSq(dataTypes.DoubleComplex, "fold", "N_block", "x", "incX", "ssq", 1, "scl"), cog.inFile, args, params, mode))
       ]]]*/
     {
       #ifdef __AVX__

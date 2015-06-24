@@ -299,7 +299,7 @@ check_suite.add_checks([checks.VerifyRDDOTTest(),\
                          "sine",\
                          "small+grow*big"]])
 
-DBL_BIN_WIDTH=40
+DBL_BIN_WIDTH=41
 DBL_MAX_EXP=1024
 DBL_BIG_EXP=27
 DBL_SMALL_EXP=-27

@@ -5,8 +5,8 @@ import dataTypes
 from src.indexed import deposit
 
 class DepositASum(deposit.Deposit):
-  def __init__(self, data_type_class, N, X, incX, manY, incmanY):
-    super(DepositASum, self).__init__(data_type_class, N, X, incX, manY, incmanY)
+  def __init__(self, data_type_class, fold_name, N_name, X_name, incX_name, manY_name, incmanY_name):
+    super(DepositASum, self).__init__(data_type_class, fold_name, N_name, X_name, incX_name, manY_name, incmanY_name)
     redundant_char = ""
     if self.data_type_class.is_complex:
       redundant_char = self.data_type_class.base_type.name_char

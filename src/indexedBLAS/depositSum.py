@@ -5,8 +5,8 @@ import dataTypes
 from src.indexed import deposit
 
 class DepositSum(deposit.Deposit):
-  def __init__(self, data_type_class, N, X, incX, manY, incmanY):
-    super(DepositSum, self).__init__(data_type_class, N, X, incX, manY, incmanY)
+  def __init__(self, data_type_class, fold_name, N_name, X_name, incX_name, manY_name, incmanY_name):
+    super(DepositSum, self).__init__(data_type_class, fold_name, N_name, X_name, incX_name, manY_name, incmanY_name)
     self.name = "{0}depositSum".format(self.data_type_class.name_char)
     self.metric_name = "r{0}sum".format(self.data_type_class.name_char)
 

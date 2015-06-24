@@ -53,7 +53,7 @@
     Let $Y$ be the indexed type corresponding to the reproducibly computed sum of $x_0, ..., x_{n - 1} = s_0 \times 2^{e_0} \times m_0, ..., s_{n - 1} \times 2^{e_{n - 1}} \times m_{n - 1} \in F$.
     If the accumulator $Y_j$ accumulates input in the bin $[a, b), a > b \in \Z$, then $Y_j$ is the sum of all input bits with exponents in $[a, b)$. Specifically, $Y_j = \sum \{s_i2^{e_i}{m_i}_k, i \in \{0, ..., n - 1\}, k \in \Z | e_i - k \in [a, b)\}$.
 
-    For ease of computation, accumulator ranges are not arbitrary. They are broken up into precomputed, fixed width intervals starting at $e_{\max}$. The possible bins $[a_0, b_0), [a_1, b_1), ...$ for an indexed type of \textbf{width} $W$ are $[e_{\max}, e_{\max} - W), [e_{\max} - W, e_{\max} - 2W), ..., [e_{\min} - p - (e_{\max} - e_{\min} + p \mod W) + W, e_{\min} - p - (e_{\max} - e_{\min} + p \mod W))$. It will be explained later why input in the bin $[e_{\min} - p + (e_{\max} - e_{\min} + p \mod W), e_{\min} - p)$ is not accumulated. As discussed in \cite{repsum}, $W < p - 2$. As discussed in section \ref{sec:overflow}, $2W > p$.
+    For ease of computation, accumulator ranges are not arbitrary. They are broken up into precomputed, fixed width intervals starting at $e_{\max}$. The possible bins $[a_0, b_0), [a_1, b_1), ...$ for an indexed type of \textbf{width} $W$ are $[e_{\max}, e_{\max} - W), [e_{\max} - W, e_{\max} - 2W), ..., [e_{\min} - p + 2 + 2W - (e_{\max} - e_{\min} + p - 2 \mod W), e_{\min} - p + 2 + W - (e_{\max} - e_{\min} + p - 2 \mod W))$. Section \ref{sec:underflow} explains why input in the bin $[e_{\min} - p + 2 (e_{\max} - e_{\min} + p - 2 \mod W), e_{\min} - p)$ is not accumulated. As discussed in \cite{repsum}, $W < p - 2$. As discussed in section \ref{sec:overflow}, $2W > p$.
 
     The accumulators in an indexed type correspond to contiguous bins in decreasing order. The \textbf{index} of $Y$ is the smallest $i \in \Z$ such that $2^{a_i + 1} > \max(|x_0|, ..., |x_n|)$ (equivalently, the smallest $i \in \Z$ such that $a_i \geq \max{e_0, ..., e_n}$). If $Y$ has index $i$, then $Y_j, j \in \{0, ..., fold - 1\}$ accumulates numbers in the bin $[a_{i + j}, b_{i + j})$.
   \subsection{Implementation}
@@ -151,8 +151,17 @@
 
       Notice that after the first extraction, we cannot simply subtract $q$ from $r$ and then scale $r$ up and continue, as there may have been underflow when scaling $x$ down. We must scale $q$ up and subtract it from the original $x$.
     \subsubsection{Underflow}
-      
+      Here we consider the effects of underflow on algorithms described in \cite{repsum} and how they can be avoided. For the primary effect of overflow, the reader is encouraged to review algorithm \ref{alg:deposit}. When the last bit of $r$ is set to 1, it is assumed that this last bit will only serve to fix the direction of the rounding mode. However, if $r$ is a denormalized number, that last bit may very well be accumulated!
+
+      For algorithm \ref{alg:deposit} to work correctly when adding $r | 1$ to ${Y_P}_j$, $|r - (r | 1)|$ must have value less than half of the rounding error when adding a number to ${Y_P}_j$. Mathematically, $\ulp(r) < \ulp({Y_P}_j)/2$.
+      If $r$ is a normalized number, then because it is assumed $\ufp({Y_P}_j) \geq 2^{p - W}\ufp(r)$ and $W < p - 2$, we have $\ulp(r) < \ulp({Y_P}_j)/2$. Therefore, it is only possible for $\ulp(r) \geq \ulp({Y_P}_j)/2$ if $r$ is denormalized.
+
+      The value of the last bit of a denormalized number is a constant equal to $2 \times 2^{\emin - p}$. Therefore, the smallest bin $[a, b)$ for which algorithm \ref{alg:deposit} works correctly has $b > \e_{\min} - p + 2$. The smallest bin is $[e_{\min} - p + 2 + 2W - (e_{\max} - e_{\min} + p - 2 \mod W), e_{\min} - p + 2 + W - (e_{\max} - e_{\min} + p - 2 \mod W))$, and since $e_{\min} - p + 2 + W - (e_{\max} - e_{\min} + p - 2 \mod W) > e_{\min} - p + 2$, this bin is valid.
+      Since $W < p - 2$, $e_{\min} - p + 2 + W - (e_{\max} - e_{\min} + p - 2 \mod W) < e_{\min}$. Therefore, at least all of the input in the bin $[e_{\max}, e_{\min}]$ is accumulated.
+
+      There are several ways to accumulate the input in the denormal range. One simple way the algorithm could be extended to denormal inputs would be to scale the bottom bins up, as was done to handle overflow. Another way to accumulate this input would be to simply add it to a final primary field without setting the last bit. Because the denormal number would fit entirely in the final bin, this operation would be performed without error. This would come at the cost of additional branching. Because of the relatively low priority for accumulating denormal values, these methods were not implemented.
     \subsubsection{Exceptions}
+      Indexed types are capable of representing exceptional cases such as NaN (Not a Number) and Inf (Infinity). An indexed type $Y$ 
 \section{Basic Operations}
   \subsection{Update}
   \subsection{Deposit}
@@ -204,4 +213,4 @@
   \bibitem{c89}
     ANSI/ISO 9899-1990 American National Standard for Programming Languages - C, section 6.1.2.5
 \end{thebibliography}
-\end{document}
+\end{documente_{\min} - p + 2 - (e_{\max} - e_{\min} + p - 2 \mod W))}

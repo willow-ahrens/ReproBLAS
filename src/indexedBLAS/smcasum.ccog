@@ -82,7 +82,7 @@ void smcasum(const int fold, const int N, const void *X, const int incX, float *
     cisupdate(fold, amax, asum);
 
     /*[[[cog
-      cog.out(generate.generate(depositASum.DepositASum(dataTypes.FloatComplex, "N_block", "x", "incX", "asum", 1), cog.inFile, args, params, mode))
+      cog.out(generate.generate(depositASum.DepositASum(dataTypes.FloatComplex, "fold", "N_block", "x", "incX", "asum", 1), cog.inFile, args, params, mode))
       ]]]*/
     {
       #ifdef __AVX__

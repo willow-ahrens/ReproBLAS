@@ -98,22 +98,22 @@ typedef float float_complex_indexed;
 /**
  * @brief Indexed double precision maximum index
  *
- * maximum attainable index
+ * maximum index (inclusive)
  *
  * @author Peter Ahrens
- * @date   20 Jun 2015
+ * @date   24 Jun 2015
  */
-#define DIMAXINDEX (((((DBL_MAX_EXP - DBL_MIN_EXP) + DBL_MANT_DIG) - 1)/DIWIDTH) - 1)
+#define DIMAXINDEX (((((DBL_MAX_EXP - DBL_MIN_EXP) + DBL_MANT_DIG) - 2)/DIWIDTH) - 1)
 
 /**
  * @brief Indexed single precision maximum index
  *
- * maximum attainable index
+ * maximum index (inclusive)
  *
  * @author Peter Ahrens
- * @date   20 Jun 2015
+ * @date   24 Jun 2015
  */
-#define SIMAXINDEX (((((FLT_MAX_EXP - FLT_MIN_EXP) + FLT_MANT_DIG) - 1)/SIWIDTH) - 1)
+#define SIMAXINDEX (((((FLT_MAX_EXP - FLT_MIN_EXP) + FLT_MANT_DIG) - 2)/SIWIDTH) - 1)
 
 /**
  * @brief Indexed double precision deposit endurance

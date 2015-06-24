@@ -24,7 +24,7 @@ const double *dmbins(const int X) {
   int index;
 
   if (!bins_initialized) {
-    bins[0] = ldexp(0.75, DBL_MAX_EXP);
+    bins[0] = 2.0 * ldexp(0.75, DBL_MAX_EXP - 1);
     for(index = 1; index <= DIMAXINDEX; index++){
       bins[index] = ldexp(0.75, (DBL_MAX_EXP + DBL_MANT_DIG - DIWIDTH + 1 - index * DIWIDTH));
     }

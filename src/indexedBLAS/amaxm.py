@@ -10,20 +10,20 @@ import amax
 class AMaxM(amax.AMax):
   name = "amaxm"
 
-  def __init__(self, data_type_class, N, X, incX, Y, incY, amaxm):
-    super(AMaxM, self).__init__(data_type_class, N, X, incX, amaxm)
-    self.Y = Y
-    self.incY = incY
-    self.standard_incs = [incX, incY]
+  def __init__(self, data_type_class, N_name, X_name, incX_name, Y_name, incY_name, amaxm_name):
+    super(AMaxM, self).__init__(data_type_class, N_name, X_name, incX_name, amaxm_name)
+    self.Y_name = Y_name
+    self.incY_name = incY_name
+    self.standard_incs = [incX_name, incY_name]
 
   def define_load_ptrs(self, code_block, reg_width):
-    self.load_ptrs = [self.X, self.Y]
+    self.load_ptrs = [self.X_name, self.Y_name]
 
   def define_load_vars(self, code_block, reg_width):
     if self.data_type.is_complex:
-      self.load_vars = [["{}_{}".format(self.X, i) for i in range(reg_width)], ["{}_{}".format(self.Y, i) for i in range(reg_width//2)]]
+      self.load_vars = [["{}_{}".format(self.X_name, i) for i in range(reg_width)], ["{}_{}".format(self.Y_name, i) for i in range(reg_width//2)]]
     else:
-      self.load_vars = [["{}_{}".format(self.X, i) for i in range(reg_width)], ["{}_{}".format(self.Y, i) for i in range(reg_width)]]
+      self.load_vars = [["{}_{}".format(self.X_name, i) for i in range(reg_width)], ["{}_{}".format(self.Y_name, i) for i in range(reg_width)]]
     code_block.define_vars(self.vec.type_name, self.load_vars[0])
     code_block.define_vars(self.vec.type_name, self.load_vars[1])
 

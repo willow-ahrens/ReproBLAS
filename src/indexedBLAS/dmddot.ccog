@@ -74,7 +74,7 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
     dmdupdate(fold, amaxm, manZ, incmanZ, carZ, inccarZ);
 
     /*[[[cog
-    cog.out(generate.generate(depositDot.DepositDot(dataTypes.Double, "N_block", "X", "incX", "manZ", "incmanZ", "Y", "incY"), cog.inFile, args, params, mode))
+    cog.out(generate.generate(depositDot.DepositDot(dataTypes.Double, "fold", "N_block", "X", "incX", "manZ", "incmanZ", "Y", "incY"), cog.inFile, args, params, mode))
     ]]]*/
     {
       #ifdef __AVX__

@@ -86,7 +86,7 @@ void zmzsum(const int fold, const int N, const void *X, const int incX, double *
     zmzupdate(fold, amax, manY, incmanY, carY, inccarY);
 
     /*[[[cog
-    cog.out(generate.generate(depositSum.DepositSum(dataTypes.DoubleComplex, "N_block", "x", "incX", "manY", "incmanY"), cog.inFile, args, params, mode))
+    cog.out(generate.generate(depositSum.DepositSum(dataTypes.DoubleComplex, "fold", "N_block", "x", "incX", "manY", "incmanY"), cog.inFile, args, params, mode))
     ]]]*/
     {
       #ifdef __AVX__
