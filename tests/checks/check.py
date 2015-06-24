@@ -9,7 +9,6 @@ check_suite = checks.CheckSuite()
 
 folds = [2, 3, 4]
 inf_folds = [2, 3, 4]
-"""
 
 check_suite.add_checks([checks.ValidateInternalDSCALETest(),\
                         checks.ValidateInternalSSCALETest()],\
@@ -300,7 +299,6 @@ check_suite.add_checks([checks.VerifyRDDOTTest(),\
                          "sine",\
                          "small+grow*big"]])
 
-"""
 DBL_BIN_WIDTH=41
 DBL_MAX_EXP=1024
 DBL_BIG_EXP=27
@@ -308,7 +306,6 @@ DBL_SMALL_EXP=-27
 DBL_MIN_EXP=-1021
 
 for i in range(DBL_BIN_WIDTH + 2):
-  """
   check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
                           checks.ValidateInternalDIDIADDTest(),\
                           checks.ValidateInternalDIDADDTest(),\
@@ -350,7 +347,6 @@ for i in range(DBL_BIN_WIDTH + 2):
                            "+big",\
                            "++big",\
                            "+-big"]])
-  """
 
   check_suite.add_checks([checks.ValidateInternalRZSUMTest(),\
                           checks.ValidateInternalZIZIADDTest(),\
@@ -399,10 +395,6 @@ for i in range(DBL_BIN_WIDTH + 2):
                            "+big",\
                            "++big",\
                            "+-big"]])
-
-
-
-"""
 
 FLT_BIN_WIDTH=13
 FLT_MAX_EXP=128
@@ -510,7 +502,6 @@ for i in range(FLT_BIN_WIDTH + 2):
 #                         "small+grow*big"],\
 #                        ["rand",\
 #                         "small+grow*big"]])
-"""
 
 check_harness = harness.Harness("check")
 check_harness.add_suite(check_suite)

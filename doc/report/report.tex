@@ -94,7 +94,7 @@
       To renormalize, ${Y_P}_j$ is adjusted by $0.25 \times\epsilon^{-1} \times 2^{b_{i + j}}$ when necessary, leaving the carry field ${Y_C}_j$ to record the number of such adjustments.
       The value ${y_C}_j$ stored in the carry field ${Y_C}_j$ of an indexed type $Y$ of index $i$ expressed in equation \ref{eq:car}
       \begin{eq} The value ${y_C}_j$ stored in the carry field ${Y_C}_j$ of an indexed type $Y$ of index $i$
-
+. (Possible detailed discussion of index calculation could go here. It involves the assumption that $2\times W > p$)
         ${y_C}_j = {Y_C}_j \times 0.25\times\epsilon^{-1}\times2^{b_{i + j}}$
         \label{eq:car}
       \end{eq}
@@ -104,7 +104,7 @@
         $y = \sum\limits_{j = 0}^{fold - 1} {y_P}_j + {y_C}_j = \sum\limits_{j = 0}^{fold - 1} ({Y_P}_j - 1.5 \times\epsilon^{-1}\times 2^{b_{i + j}}) + {Y_C}_j \times 0.25\times\epsilon^{-1}\times2^{b_{i + j}}$
         \label{eq:indexedvalue}
       \end{eq}
-      It is worth noting here that because the primary field ${Y_P}_0$ is stored with an exponent of $b_i + p$, it is unnecessary to store the index of an indexed type explicitly. The index can be determined by simply examining the exponent of ${Y_P}_0$. (Possible detailed discussion of index calculation could go here. It involves the assumption that $2\times W > p$)
+      It is worth noting here that because the primary field ${Y_P}_0$ is stored with an exponent of $b_i + p$, it is unnecessary to store the index of an indexed type explicitly. The index can be determined by simply examining the exponent of ${Y_P}_0$, as the mapping between the exponent of ${Y_P}_0$ and the index of $Y$ is bijective.
 
     \subsubsection{Overflow}
       \label{sec:overflow}
@@ -185,6 +185,7 @@
 
 \section{Basic Operations}
   \subsection{Update}
+    As noted in algorithm \ref{alg:deposit}, when adding $x \in \F$ to an indexed type $Y$ of index $i$ and fold $fold$, we make the assumption that $|x| < 2 * 2^{a_i}$. However, this is not always the case and sometimes it is necessary to adjust the index of $Y$. This adjustment is called an \textbf{update}. The process of shifting $Y$ to have index $i' > i$ involves
   \subsection{Deposit}
   \subsection{Renormalize}
   \subsection{Reduce}
