@@ -53,12 +53,14 @@
     Let $Y$ be the indexed type corresponding to the reproducibly computed sum of $x_0, ..., x_{n - 1} = s_0 \times 2^{e_0} \times m_0, ..., s_{n - 1} \times 2^{e_{n - 1}} \times m_{n - 1} \in F$.
     If the accumulator $Y_j$ accumulates input in the bin $[a, b), a > b \in \Z$, then $Y_j$ is the sum of all input bits with exponents in $[a, b)$. Specifically, $Y_j = \sum \{s_i2^{e_i}{m_i}_k, i \in \{0, ..., n - 1\}, k \in \Z | e_i - k \in [a, b)\}$.
 
-    For ease of computation, accumulator ranges are not arbitrary. They are broken up into precomputed, fixed width intervals starting at $e_{\max}$. The possible bins $[a_0, b_0), [a_1, b_1), ...$ for an indexed type of \textbf{width} $W$ are $[e_{\max}, e_{\max} - W), [e_{\max} - W, e_{\max} - 2W), ..., [e_{\min} - p + 2 + 2W - (e_{\max} - e_{\min} + p - 2 \mod W), e_{\min} - p + 2 + W - (e_{\max} - e_{\min} + p - 2 \mod W))$. Section \ref{sec:underflow} explains why input in the bin $[e_{\min} - p + 2 (e_{\max} - e_{\min} + p - 2 \mod W), e_{\min} - p)$ is not accumulated. As discussed in \cite{repsum}, $W < p - 2$. As discussed in section \ref{sec:overflow}, $2W > p$.
+    For ease of computation, accumulator ranges are not arbitrary. They are broken up into precomputed, fixed width intervals starting at $e_{\max}$. The possible bins $[a_0, b_0), [a_1, b_1), ...$ for an indexed type of \textbf{width} $W$ are $[e_{\max}, e_{\max} - W), [e_{\max} - W, e_{\max} - 2\times W), ..., [e_{\min} - p + 2 + 2\times W - (e_{\max} - e_{\min} + p - 2 \mod W), e_{\min} - p + 2 + W - (e_{\max} - e_{\min} + p - 2 \mod W))$. Section \ref{sec:underflow} explains why input in the bin $[e_{\min} - p + 2 (e_{\max} - e_{\min} + p - 2 \mod W), e_{\min} - p)$ is not accumulated. As discussed in \cite{repsum}, $W < p - 2$. As discussed in section \ref{sec:overflow}, $2\times W > p$.
 
     The accumulators in an indexed type correspond to contiguous bins in decreasing order. The \textbf{index} of $Y$ is the smallest $i \in \Z$ such that $2^{a_i + 1} > \max(|x_0|, ..., |x_n|)$ (equivalently, the smallest $i \in \Z$ such that $a_i \geq \max{e_0, ..., e_n}$). If $Y$ has index $i$, then $Y_j, j \in \{0, ..., fold - 1\}$ accumulates numbers in the bin $[a_{i + j}, b_{i + j})$.
+
   \subsection{Implementation}
     \subsubsection{Data Types}
       As discussed in \cite{repsum}, indexed types are represented using floating point numbers to minimize traffic between floating point and integer arithmetic units. If an indexed type is used to sum \verb|double|, then it is composed entirely of \verb|double| and likewise for \verb|float|. ReproBLAS supports complex types as pairs of real and imaginary components (stored contiguously in memory). If an indexed type is used to sum complex \verb|double| or \verb|float|, then it is composed of pairs of real and imaginary \verb|double| or \verb|float| respectively. The decision to keep the real and imaginary components together (as opposed to keeping separate indexed types for real and imaginary parts of the sum) was motivated by a desire to process accumulators simultaneously with vectorized (SIMD, single instruction multiple data) instructions.
+
     \subsubsection{Primary and Carry}
       An indexed type's accumulators are each implemented using two underlying floating point fields. The \textbf{primary} field is used during accumulation, while the \textbf{carry} field holds overflow from the primary field. When discussing the primary and carry fields of the accumulator $Y$, we denote the primary fields by $Y_P$ and the carry fields by $Y_C$, so that ${Y_P}_j$ is the primary field of the accumulator $Y_j$. This reflects the fact that the primary fields are stored separately from the carry fields as the primary fields are frequenly accessed sequentially.
 
@@ -102,21 +104,22 @@
         $y = \sum\limits_{j = 0}^{fold - 1} {y_P}_j + {y_C}_j = \sum\limits_{j = 0}^{fold - 1} ({Y_P}_j - 1.5 \times\epsilon^{-1}\times 2^{b_{i + j}}) + {Y_C}_j \times 0.25\times\epsilon^{-1}\times2^{b_{i + j}}$
         \label{eq:indexedvalue}
       \end{eq}
-      It is worth noting here that because the primary field ${Y_P}_0$ is stored with an exponent of $b_i + p$, it is unnecessary to store the index of an indexed type explicitly. The index can be determined by simply examining the exponent of ${Y_P}_0$. (Possible detailed discussion of index calculation could go here. It involves the assumption that 2W > p)
+      It is worth noting here that because the primary field ${Y_P}_0$ is stored with an exponent of $b_i + p$, it is unnecessary to store the index of an indexed type explicitly. The index can be determined by simply examining the exponent of ${Y_P}_0$. (Possible detailed discussion of index calculation could go here. It involves the assumption that $2\times W > p$)
+
     \subsubsection{Overflow}
       \label{sec:overflow}
       If an indexed type $Y$ has index 0 and the width is $W$, then the value in the primary field ${Y_P}_0$ is stored as an offset from $1.5\times\epsilon^{-1}\times2^{e_{\max} - W}$. However, $1.5\times\epsilon^{-1}\times2^{e_{\max} - W} = 1.5 \times 2^{e_{\max} + (p - W)} > 2 * 2^{e_{\max}}$ since $W < p - 2$ \cite{repsum}, so it is out of the range of the floating-point system and not representable. Before discussing the solution to this overflow problem, take note of theorem \ref{thm:overflow}.
       \begin{thm}
-        If $2W > p$, then for any indexed type $Y$ of index $i$ and any ${Y_P}_j$ such that $i + j \geq 1$, $|{Y_P}_j| < 2^{e_{\max}}$.
+        If $2\times W > p$, then for any indexed type $Y$ of index $i$ and any ${Y_P}_j$ such that $i + j \geq 1$, $|{Y_P}_j| < 2^{e_{\max}}$.
 
-        $b_1 = e_{\max} - 2W$ by definition, therefore $b_1 < e_{\max} - p$ and since all quantities are integers, $b_1 \leq e_{\max} - 1 - p$. As $b_0, b_1, ...$ is a positive decreasing sequence, $b_{i + j} \leq e_{\max} - 1 - p$ since $i + j \geq 1$.
+        $b_1 = e_{\max} - 2\times W$ by definition, therefore $b_1 < e_{\max} - p$ and since all quantities are integers, $b_1 \leq e_{\max} - 1 - p$. As $b_0, b_1, ...$ is a positive decreasing sequence, $b_{i + j} \leq e_{\max} - 1 - p$ since $i + j \geq 1$.
 
         ${Y_P}_j$ is kept within the range $(2 \times \epsilon^{-1} \times 2^{b_{i + j}}, \epsilon^{-1} \times 2^{b_{i + j}})$, therefore 
         $|{Y_P}_j| < 2 \times \epsilon^{-1} \times 2^{b_{i + j}} \leq 2^{1 + p} \times 2^{e_{\max} - 1 - p} = 2^{e_{\max}}$.
 
         \label{thm:overflow}
       \end{thm}
-      By theorem \ref{thm:overflow}, if $2W > p$ then the only primary field that could possibly be in overflow is a primary field corresponding to bin 0, and all other primary fields have exponent less than $e_{\max}$. Therefore, we impose $2W > p$ and express the value of the primary field corresponding to bin 0 as a scaled offset from $1.5\times2^{e_{\max}}$. Note that this still distinguishes the primary field corresponding to bin 0 because no other primary field has an exponent of $e_{\max}$. The value ${y_P}_0$ of the primary field ${Y_P}_0$ of an indexed type $Y$ of index 0 is expressed in equation \ref{eq:pri0}.
+      By theorem \ref{thm:overflow}, if $2\times W > p$ then the only primary field that could possibly be in overflow is a primary field corresponding to bin 0, and all other primary fields have exponent less than $e_{\max}$. Therefore, we impose $2\times W > p$ and express the value of the primary field corresponding to bin 0 as a scaled offset from $1.5\times2^{e_{\max}}$. Note that this still distinguishes the primary field corresponding to bin 0 because no other primary field has an exponent of $e_{\max}$. The value ${y_P}_0$ of the primary field ${Y_P}_0$ of an indexed type $Y$ of index 0 is expressed in equation \ref{eq:pri0}.
       \begin{eq} The value ${y_P}_0$ of the primary field ${Y_P}_0$ of an indexed type $Y$ of index 0.
 
         ${y_P}_0 = 2^{p - W}\times({Y_P}_0 - 1.5\times2^{e_{\max}})$
@@ -150,18 +153,36 @@
       Therefore, the component of $r$ belonging to the bin $[e_{\max} - p + W, e_{\max} - p)$ is equivalent to the component of $x$ belonging to the bin $[e_{\max}, e_{\max} - W)$ scaled by $2^{p - W}$. This component of $r$ is extracted, stored in q, and added to ${Y_P}_0$. We can therefore scale this component by $2^{p - w}$ to obtain the component of $x$ belonging to the bin $[e_{\max}, e_{\max} - W)$. As $x$ is representable, so is this component. We can then subtract this component from $x$ and continue as in algorithm \ref{alg:deposit}.
 
       Notice that after the first extraction, we cannot simply subtract $q$ from $r$ and then scale $r$ up and continue, as there may have been underflow when scaling $x$ down. We must scale $q$ up and subtract it from the original $x$.
-    \subsubsection{Underflow}
-      Here we consider the effects of underflow on algorithms described in \cite{repsum} and how they can be avoided. For the primary effect of overflow, the reader is encouraged to review algorithm \ref{alg:deposit}. When the last bit of $r$ is set to 1, it is assumed that this last bit will only serve to fix the direction of the rounding mode. However, if $r$ is a denormalized number, that last bit may very well be accumulated!
 
-      For algorithm \ref{alg:deposit} to work correctly when adding $r | 1$ to ${Y_P}_j$, $|r - (r | 1)|$ must have value less than half of the rounding error when adding a number to ${Y_P}_j$. Mathematically, $\ulp(r) < \ulp({Y_P}_j)/2$.
+    \subsubsection{Underflow}
+      \label{sec:underflow}
+      Here we consider the effects of underflow on algorithms described in \cite{repsum} and how they can be avoided. In algorithm \ref{alg:deposit}, when the last bit of $r$ is set to 1, it is assumed that this last bit will only serve to fix the direction of the rounding mode. However, if $r$ is a denormalized number, that last bit may very well be accumulated!
+
+      For algorithm \ref{alg:deposit} to work correctly when adding $r | 1$ to ${Y_P}_j$, $|r - (r | 1)|$ must be less than half of the rounding error when adding a number to ${Y_P}_j$. Mathematically, $\ulp(r) < \ulp({Y_P}_j)/2$.
       If $r$ is a normalized number, then because it is assumed $\ufp({Y_P}_j) \geq 2^{p - W}\ufp(r)$ and $W < p - 2$, we have $\ulp(r) < \ulp({Y_P}_j)/2$. Therefore, it is only possible for $\ulp(r) \geq \ulp({Y_P}_j)/2$ if $r$ is denormalized.
 
-      The value of the last bit of a denormalized number is a constant equal to $2 \times 2^{\emin - p}$. Therefore, the smallest bin $[a, b)$ for which algorithm \ref{alg:deposit} works correctly has $b > \e_{\min} - p + 2$. The smallest bin is $[e_{\min} - p + 2 + 2W - (e_{\max} - e_{\min} + p - 2 \mod W), e_{\min} - p + 2 + W - (e_{\max} - e_{\min} + p - 2 \mod W))$, and since $e_{\min} - p + 2 + W - (e_{\max} - e_{\min} + p - 2 \mod W) > e_{\min} - p + 2$, this bin is valid.
+      The value of the last bit of a denormalized number is a constant equal to $2 \times 2^{e_{\min} - p}$. Therefore, the smallest bin $[a, b)$ for which algorithm \ref{alg:deposit} works correctly has $b > e_{\min} - p + 2$. The smallest bin is $[e_{\min} - p + 2 + 2\times W - (e_{\max} - e_{\min} + p - 2 \mod W), e_{\min} - p + 2 + W - (e_{\max} - e_{\min} + p - 2 \mod W))$, and since $e_{\min} - p + 2 + W - (e_{\max} - e_{\min} + p - 2 \mod W) > e_{\min} - p + 2$, this bin is valid.
       Since $W < p - 2$, $e_{\min} - p + 2 + W - (e_{\max} - e_{\min} + p - 2 \mod W) < e_{\min}$. Therefore, at least all of the input in the bin $[e_{\max}, e_{\min}]$ is accumulated.
 
       There are several ways to accumulate the input in the denormal range. One simple way the algorithm could be extended to denormal inputs would be to scale the bottom bins up, as was done to handle overflow. Another way to accumulate this input would be to simply add it to a final primary field without setting the last bit. Because the denormal number would fit entirely in the final bin, this operation would be performed without error. This would come at the cost of additional branching. Because of the relatively low priority for accumulating denormal values, these methods were not implemented.
+
     \subsubsection{Exceptions}
-      Indexed types are capable of representing exceptional cases such as NaN (Not a Number) and Inf (Infinity). An indexed type $Y$ 
+      Indexed types are capable of representing exceptional cases such as \verb|NaN| (Not a Number) and \verb|Inf| (Infinity). An indexed type $Y$ stores it's exception status in it's first primary field ${Y_P}_0$.
+
+      A value of $0$ in ${Y_P}_0$ indicates that nothing has been added to ${Y_P}_0$ yet. The smallest bin is $[e_{\min} - p + 2 + 2\times W - (e_{\max} - e_{\min} + p - 2 \mod W), e_{\min} - p + 2 + W - (e_{\max} - e_{\min} + p - 2 \mod W))$, and since the ${Y_P}_j$ are kept within the range $(2 \times \epsilon^{-1} \times 2^{b_{i + j}}, \epsilon^{-1} \times 2^{b_{i + j}})$ (where $i$ is the index), the smallest possible ${Y_P}_j$ is $\epsilon^{-1} \times 2^{e_{\min} - p + 2 + W - (e_{\max} - e_{\min} + p - 2 \mod W)} > 2^{e_{\min}} > 0$, so $0$ is unused in other contexts and is a valid sentinel value.
+
+      A value of \verb|Inf| or \verb|-Inf| in ${Y_P}_0$ indicates that one or more \verb|Inf| or \verb|-Inf| (and no other exeptional values) have been added to $Y$ respectively.
+
+      A value of \verb|NaN| in ${Y_P}_0$ indicates that one or more \verb|NaN| have been added to $Y$ or one or more of both \verb|Inf| and \verb|-Inf| have been added to $Y$.
+
+      As the ${Y_P}_j$ are kept finite to store finite values, \verb|Inf|, \verb|-Inf|, and \verb|NaN| are unused and are valid sentinel values.
+
+      This behavior follows the behaviour for exceptional values in IEEE 754-2008 floating point arithmetic and is therefore easy to implement. At the beginning of \ref{alg:deposit}, we may simply check $x$ and ${Y_P}_0$ for the exceptional values \verb|Inf|, \verb|-Inf|, and \verb|NaN|. If any one of $x$ or ${Y_P}_0$ is indeed exceptional, we add $x$ to the (possibly finite) ${Y_P}_0$. Otherwise, we can continue adding finite values as we have always done.
+
+      As \verb|Inf|, \verb|-Inf|, and \verb|NaN| add associatively, this behaviour is reproducible.
+
+      It should be noted here that it is very much possible to achieve a final result of \verb|Inf| or \verb|-Inf| when ${Y_P}_0$ is finite. This is due to the fact that the indexed representation can express values outside of the range of the floating point numbers that it is composed with. More specifically, it is very much possible for the value $y$ represented by the indexed type $Y$ to satisfy $|y| \geq 2 * 2^{e_{\max}}$.
+
 \section{Basic Operations}
   \subsection{Update}
   \subsection{Deposit}
@@ -213,4 +234,4 @@
   \bibitem{c89}
     ANSI/ISO 9899-1990 American National Standard for Programming Languages - C, section 6.1.2.5
 \end{thebibliography}
-\end{documente_{\min} - p + 2 - (e_{\max} - e_{\min} + p - 2 \mod W))}
+\end{document}
