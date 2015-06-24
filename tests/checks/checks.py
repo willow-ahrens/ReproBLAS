@@ -62,10 +62,10 @@ class CheckSuite(harness.Suite):
           rows.append([check.get_name(), "Pass"])
         passed += 1
       elif check.get_result() == 125:
-        rows.append([check.get_name() + "\n" + check.get_output() + "\nReproduce:\n" + "\n".join(check.get_command_list()), "N/A"])
+        rows.append([check.get_name() + "\n\n" + check.get_output() + "\n\n" + "\n".join(check.get_command_list()), "N/A"])
         na += 1
       else:
-        rows.append([check.get_name() + "\n" + check.get_output() + "\nReproduce:\n" + "\n".join(check.get_command_list()), "Fail"])
+        rows.append([check.get_name() + "\n\n({})\n\n".format(check.get_result()) + check.get_output() + "\n\n" + "\n".join(check.get_command_list()), "Fail"])
         failed += 1
     emoticon = ":("
     if passed == len(self.checks):

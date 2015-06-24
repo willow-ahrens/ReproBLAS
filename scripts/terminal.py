@@ -22,7 +22,7 @@ def callsafe(command, verbose="false"):
     else:
       out = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
   except subprocess.CalledProcessError as e:
-    rc = e.returncode
+    rc = -e.returncode
     out = e.output.decode(sys.stdout.encoding)
   if(verbose == "true"):
     print(out)
