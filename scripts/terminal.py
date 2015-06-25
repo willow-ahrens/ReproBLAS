@@ -93,6 +93,24 @@ def get_vectorization(verbose="false"):
   return get_vectorization.vectorization
 get_vectorization.vectorization = None
 
+def get_dimaxindex(verbose="false"):
+  if not get_dimaxindex.dimaxindex:
+    getter_file = open(os.path.join(top, "scripts/getter.json"), "r")
+    getter = json.load(getter_file)
+    getter_file.close()
+    get_dimaxindex.dimaxindex = getter["dimaxindex"]
+  return get_dimaxindex.dimaxindex
+get_dimaxindex.dimaxindex = None
+
+def get_simaxindex(verbose="false"):
+  if not get_simaxindex.simaxindex:
+    getter_file = open(os.path.join(top, "scripts/getter.json"), "r")
+    getter = json.load(getter_file)
+    getter_file.close()
+    get_simaxindex.simaxindex = getter["simaxindex"]
+  return get_simaxindex.simaxindex
+get_simaxindex.simaxindex = None
+
 def get_dimaxfold(verbose="false"):
   if not get_dimaxfold.dimaxfold:
     getter_file = open(os.path.join(top, "scripts/getter.json"), "r")

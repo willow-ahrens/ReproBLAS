@@ -1,0 +1,52 @@
+#include <mpi.h>
+#include <stdio.h>
+
+#include <indexed.h>
+
+#include <../config.h>
+
+static inline void sisiaddsqv(const int fold, const int N, const float *X, float *Y){
+  int i;
+  for(i = 0; i < N; i++, X += dinum(fold) + 1, Y += dinum(fold) + 1){
+    smsmaddsq(fold, X[0], (float_indexed*)(X + 1), 1, (float_indexed*)(X + 1 + fold), 1, Y[0], (float_indexed*)(Y + 1), 1, (float_indexed*)(Y + 1 + fold), 1);
+  }
+}
+
+/*[[[cog
+import cog
+from scripts import terminal
+for fold in range(2, terminal.get_simaxindex() + 1):
+  cog.outl("static void idxdMPI_sisiaddsq_{}(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){{".format(fold))
+  cog.outl("  sisiaddsqv({}, *len, (float*)invec, (float*)inoutvec);".format(fold))
+  cog.outl("}")
+  cog.outl("")
+]]]*/
+//[[[end]]]
+
+static MPI_Op ops[SIMAXFOLD + 1];
+static int ops_initialized[SIMAXFOLD + 1]; //initializes to 0
+
+MPI_Op idxdMPI_SISIADDSQ(const int fold){
+  int rc;
+  if(!ops_initialized[fold]){
+    switch(fold){
+      /*[[[cog
+      import cog
+      from scripts import terminal
+      for fold in range(2, terminal.get_simaxindex() + 1):
+        cog.outl("case {}:".format(fold))
+        cog.outl("  rc = MPI_Op_create(&idxdMPI_sisiaddsq_{0}, 1, ops + {0});".format(fold))
+        cog.outl("  break;")
+        cog.outl("")
+      ]]]*/
+      //[[[end]]]
+    }
+    if(rc != MPI_SUCCESS){
+      fprintf(stderr, "[%s.%d] ReproBLAS error: MPI_Op_create error: %d\n", __FILE__, __LINE__, rc);
+      MPI_Abort(MPI_COMM_WORLD, rc);
+      return 0;
+    }
+    ops_initialized[fold] = 1;
+  }
+  return ops[fold];
+}

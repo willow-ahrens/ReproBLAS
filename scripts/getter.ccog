@@ -26,6 +26,10 @@ int main(int argc, char** argv){
   ]]]*/
   //[[[end]]]
 
+  printf("  \"dimaxindex\": %d,\n", DIMAXINDEX);
+
+  printf("  \"simaxindex\": %d,\n", SIMAXINDEX);
+
   printf("  \"dimaxfold\": %d,\n", DIMAXFOLD);
 
   printf("  \"simaxfold\": %d,\n", SIMAXFOLD);
