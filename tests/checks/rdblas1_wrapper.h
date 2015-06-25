@@ -32,7 +32,7 @@ double wrap_rdsum(int N, double *x, int incx, double *y, int incy) {
 void wrap_didsum(int N, double *x, int incx, double *y, int incy, double_indexed *z) {
   (void)y;
   (void)incy;
-  didsum(DEFAULT_FOLD, N, x, incx, z);
+  didsum(DIDEFAULTFOLD, N, x, incx, z);
 }
 
 double wrap_rdasum(int N, double *x, int incx, double *y, int incy) {
@@ -44,7 +44,7 @@ double wrap_rdasum(int N, double *x, int incx, double *y, int incy) {
 void wrap_didasum(int N, double *x, int incx, double *y, int incy, double_indexed *z) {
   (void)y;
   (void)incy;
-  didasum(DEFAULT_FOLD, N, x, incx, z);
+  didasum(DIDEFAULTFOLD, N, x, incx, z);
 }
 
 double wrap_rddot(int N, double *x, int incx, double *y, int incy) {
@@ -52,7 +52,7 @@ double wrap_rddot(int N, double *x, int incx, double *y, int incy) {
 }
 
 void wrap_diddot(int N, double *x, int incx, double *y, int incy, double_indexed *z) {
-  diddot(DEFAULT_FOLD, N, x, incx, y, incy, z);
+  diddot(DIDEFAULTFOLD, N, x, incx, y, incy, z);
 }
 
 double wrap_rdnrm2(int N, double *x, int incx, double *y, int incy) {
@@ -64,7 +64,7 @@ double wrap_rdnrm2(int N, double *x, int incx, double *y, int incy) {
 void wrap_didnrm(int N, double *x, int incx, double *y, int incy, double_indexed *z) {
   (void)y;
   (void)incy;
-  didssq(DEFAULT_FOLD, N, x, incx, 0.0, z);
+  didssq(DIDEFAULTFOLD, N, x, incx, 0.0, z);
 }
 
 wrap_rdblas1 wrap_rdblas1_func(int func) {

@@ -62,12 +62,12 @@ int file_test(int argc, char** argv, char *fname) {
   float complex *Y;
 
   float complex ref;
-  float_complex_indexed *Iref = cialloc(DEFAULT_FOLD);
-  cisetzero(DEFAULT_FOLD, Iref);
+  float_complex_indexed *Iref = cialloc(SIDEFAULTFOLD);
+  cisetzero(SIDEFAULTFOLD, Iref);
 
   float complex res;
-  float_complex_indexed *Ires = cialloc(DEFAULT_FOLD);
-  cisetzero(DEFAULT_FOLD, Ires);
+  float_complex_indexed *Ires = cialloc(SIDEFAULTFOLD);
+  cisetzero(SIDEFAULTFOLD, Ires);
 
   file_read_vector(fname, &N, (void**)&X, sizeof(float complex));
   Y = util_cvec_alloc(N, 1);
@@ -87,28 +87,28 @@ int file_test(int argc, char** argv, char *fname) {
     Iref = Ires;
 
     file_write_vector(ref_fname, 1, &ref, sizeof(ref));
-    file_write_vector(Iref_fname, 1, Iref, cisize(DEFAULT_FOLD));
+    file_write_vector(Iref_fname, 1, Iref, cisize(SIDEFAULTFOLD));
   } else {
     void *data;
     int unused0;
     file_read_vector(ref_fname, &unused0, &data, sizeof(ref));
     ref = *(float complex*)data;
     free(data);
-    file_read_vector(Iref_fname, &unused0, &data, cisize(DEFAULT_FOLD));
+    file_read_vector(Iref_fname, &unused0, &data, cisize(SIDEFAULTFOLD));
     free(Iref);
     Iref = (float_complex_indexed*)data;
     if(ref != res){
       printf("%s(%s) = %g + %gi != %g + %gi\n", wrap_rcblas1_names[func_type._named.value], fname, crealf(res), cimagf(res), crealf(ref), cimagf(ref));
       return 1;
     }
-    if(memcmp(Iref, Ires, cisize(DEFAULT_FOLD)) != 0){
-      cciconv_sub(DEFAULT_FOLD, Ires, &res);
-      cciconv_sub(DEFAULT_FOLD, Iref, &ref);
+    if(memcmp(Iref, Ires, cisize(SIDEFAULTFOLD)) != 0){
+      cciconv_sub(SIDEFAULTFOLD, Ires, &res);
+      cciconv_sub(SIDEFAULTFOLD, Iref, &ref);
       printf("I%s(%s) = %g + %gi != %g + %gi\n", wrap_rcblas1_names[func_type._named.value], fname, crealf(res), cimagf(res), crealf(ref), cimagf(ref));
       printf("Ref I_float_Complex:\n");
-      ciprint(DEFAULT_FOLD, Iref);
+      ciprint(SIDEFAULTFOLD, Iref);
       printf("\nRes I_float_Complex:\n");
-      ciprint(DEFAULT_FOLD, Ires);
+      ciprint(SIDEFAULTFOLD, Ires);
       printf("\n");
       return 1;
     }

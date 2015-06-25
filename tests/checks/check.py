@@ -146,7 +146,7 @@ check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
                         checks.ValidateInternalSISDEPOSITTest(),\
                         ],\
                        ["N", "fold", "incX", "RealScaleX", "f"],\
-                       [[4095], inf_folds, [1, 4], [1.0, -1.0],\
+                       [[255], inf_folds, [1, 4], [1.0, -1.0],\
                         ["+inf",\
                          "++inf",\
                          "+-inf",\
@@ -168,7 +168,7 @@ check_suite.add_checks([checks.ValidateInternalRZSUMTest(),\
                         checks.ValidateInternalCICADDTest(),\
                         checks.ValidateInternalCICDEPOSITTest()],\
                        ["N", "fold", "incX", "RealScaleX", "ImagScaleX", "f"],\
-                       [[4095], inf_folds, [1, 4], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0],\
+                       [[255], inf_folds, [1, 4], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0],\
                         ["+inf",\
                          "++inf",\
                          "+-inf",\
@@ -181,7 +181,7 @@ check_suite.add_checks([checks.ValidateInternalRDDOTTest(),\
                         checks.ValidateInternalRSDOTTest(),\
                         ],\
                        ["N", "fold", "incX", "RealScaleX", "RealScaleY", "f", "g"],\
-                       [[4095], inf_folds, [1, 4], [1.0, -1.0], [1.0, -1.0],\
+                       [[255], inf_folds, [1, 4], [1.0, -1.0], [1.0, -1.0],\
                         ["constant",\
                          "+inf",\
                          "++inf",\
@@ -205,7 +205,7 @@ check_suite.add_checks([checks.ValidateInternalRZDOTUTest(),\
                         checks.ValidateInternalRCDOTCTest(),\
                         ],\
                        ["N", "fold", "incX", "RealScaleX", "ImagScaleX", "RealScaleY", "ImagScaleY", "f", "g"],\
-                       [[4095], inf_folds, [1, 4], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0],
+                       [[255], inf_folds, [1, 4], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0],
                         ["constant",\
                          "+inf",\
                          "++inf",\

@@ -4,13 +4,13 @@
 #include "../../config.h"
 
 void rzdotc_sub(const int N, const void* X, const int incX, const void *Y, const int incY, void *dotc) {
-  double_complex_indexed *dotci = zialloc(DEFAULT_FOLD);
+  double_complex_indexed *dotci = zialloc(DIDEFAULTFOLD);
 
-  zisetzero(DEFAULT_FOLD, dotci);
+  zisetzero(DIDEFAULTFOLD, dotci);
 
-  zizdotc(DEFAULT_FOLD, N, X, incX, Y, incY, dotci);
+  zizdotc(DIDEFAULTFOLD, N, X, incX, Y, incY, dotci);
 
-  zziconv_sub(DEFAULT_FOLD, dotci, dotc);
+  zziconv_sub(DIDEFAULTFOLD, dotci, dotc);
   free(dotci);
   return;
 }

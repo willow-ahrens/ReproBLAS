@@ -27,7 +27,7 @@ int verify_rsblas1_reproducibility(int N, float* X, int incX, float* Y, int incY
   // GENERATE DATA
   int i;
   float res;
-  float_indexed *Ires = sialloc(DEFAULT_FOLD);
+  float_indexed *Ires = sialloc(SIDEFAULTFOLD);
   int num_blocks = 1;
 
   int block_N = (N + num_blocks - 1) / num_blocks;
@@ -38,23 +38,23 @@ int verify_rsblas1_reproducibility(int N, float* X, int incX, float* Y, int incY
       res = (wrap_rsblas1_func(func))(N, X, incX, Y, incY);
     else {
       block_N =  (N + num_blocks - 1) / num_blocks;
-      sisetzero(DEFAULT_FOLD, Ires);
+      sisetzero(SIDEFAULTFOLD, Ires);
       for (i = 0; i < N; i += block_N) {
         block_N = block_N < N - i ? block_N : (N-i);
         (wrap_siblas1_func(func))(block_N, X + i * incX, incX, Y + i * incY, incY, Ires);
       }
-      res = ssiconv(DEFAULT_FOLD, Ires);
+      res = ssiconv(SIDEFAULTFOLD, Ires);
     }
     if (res != ref) {
       printf("%s(X, Y)[num_blocks=%d,block_N=%d] = %g != %g\n", wrap_rsblas1_names[func], num_blocks, block_N, res, ref);
       if (num_blocks == 1) {
-        sisetzero(DEFAULT_FOLD, Ires);
+        sisetzero(SIDEFAULTFOLD, Ires);
         (wrap_siblas1_func(func))(N, X, incX, Y, incY, Ires);
       }
       printf("Ref I_float:\n");
-      siprint(DEFAULT_FOLD, Iref);
+      siprint(SIDEFAULTFOLD, Iref);
       printf("\nRes I_float:\n");
-      siprint(DEFAULT_FOLD, Ires);
+      siprint(SIDEFAULTFOLD, Ires);
       printf("\n");
       return 1;
     }
@@ -84,7 +84,7 @@ const char* vecvec_fill_name(int argc, char** argv){
 int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX, double ImagScaleX, int incX, int FillY, double RealScaleY, double ImagScaleY, int incY){
   int rc = 0;
   float ref;
-  float_indexed *Iref = sialloc(DEFAULT_FOLD);
+  float_indexed *Iref = sialloc(SIDEFAULTFOLD);
   int max_num_blocks = 1024;
 
   verify_rsblas1_options_intitialize();
@@ -107,7 +107,7 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX,
 
   //compute with unpermuted data
   ref  = (wrap_rsblas1_func(func_type._named.value))(N, X, incX, Y, incY);
-  sisetzero(DEFAULT_FOLD, Iref);
+  sisetzero(SIDEFAULTFOLD, Iref);
   (wrap_siblas1_func(func_type._named.value))(N, X, incX, Y, incY, Iref);
 
   P = util_identity_permutation(N);

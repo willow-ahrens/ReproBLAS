@@ -26,7 +26,7 @@ cog.out(str(code_block))
 
 cog.outl()
 
-cog.out(generate.generate(blockSize.BlockSize("cmcdotc", "N_block_MAX", 32, terminal.get_siendurance(), terminal.get_siendurance(), ["bench_rcdotc_fold_{}".format(terminal.get_default_fold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("cmcdotc", "N_block_MAX", 32, terminal.get_siendurance(), terminal.get_siendurance(), ["bench_rcdotc_fold_{}".format(terminal.get_sidefaultfold())]), cog.inFile, args, params, mode))
 ]]]*/
 #ifdef __AVX__
   #include <immintrin.h>
@@ -108,6 +108,8 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
         }
         __m256 cons_tmp; (void)cons_tmp;
         float cons_buffer_tmp[8] __attribute__((aligned(32))); (void)cons_buffer_tmp;
+        unsigned int SIMD_daz_ftz_old_tmp = 0;
+        unsigned int SIMD_daz_ftz_new_tmp = 0;
 
 
         switch(fold){
@@ -624,6 +626,9 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
               ((float*)manZ)[(incmanZ * 4)] = cons_buffer_tmp[0] + cons_buffer_tmp[2] + cons_buffer_tmp[4] + cons_buffer_tmp[6];
               ((float*)manZ)[((incmanZ * 4) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3] + cons_buffer_tmp[5] + cons_buffer_tmp[7];
 
+              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
+                _mm_setcsr(SIMD_daz_ftz_old_tmp);
+              }
             }
             break;
           default:
@@ -635,7 +640,7 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
               __m256 expansion_0;
               __m256 q_0, q_1;
               __m256 s_0, s_1;
-              __m256 s_buffer[(MAX_FOLD * 2)];
+              __m256 s_buffer[(SIMAXFOLD * 2)];
 
               for(j = 0; j < fold; j += 1){
                 s_buffer[(j * 2)] = s_buffer[((j * 2) + 1)] = (__m256)_mm256_broadcast_sd((double *)(((float*)manZ) + (incmanZ * j * 2)));
@@ -668,26 +673,24 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                       q_1 = _mm256_add_ps(s_1, _mm256_or_ps(_mm256_mul_ps(x_1, compression_0), blp_mask_tmp));
                       s_buffer[0] = q_0;
                       s_buffer[1] = q_1;
-                      if(fold > 1){
+                      q_0 = _mm256_sub_ps(s_0, q_0);
+                      q_1 = _mm256_sub_ps(s_1, q_1);
+                      x_0 = _mm256_add_ps(x_0, _mm256_mul_ps(q_0, expansion_0));
+                      x_1 = _mm256_add_ps(x_1, _mm256_mul_ps(q_1, expansion_0));
+                      for(j = 1; j < fold - 1; j++){
+                        s_0 = s_buffer[(j * 2)];
+                        s_1 = s_buffer[((j * 2) + 1)];
+                        q_0 = _mm256_add_ps(s_0, _mm256_or_ps(x_0, blp_mask_tmp));
+                        q_1 = _mm256_add_ps(s_1, _mm256_or_ps(x_1, blp_mask_tmp));
+                        s_buffer[(j * 2)] = q_0;
+                        s_buffer[((j * 2) + 1)] = q_1;
                         q_0 = _mm256_sub_ps(s_0, q_0);
                         q_1 = _mm256_sub_ps(s_1, q_1);
-                        x_0 = _mm256_add_ps(x_0, _mm256_mul_ps(q_0, expansion_0));
-                        x_1 = _mm256_add_ps(x_1, _mm256_mul_ps(q_1, expansion_0));
-                        for(j = 1; j < fold - 1; j++){
-                          s_0 = s_buffer[(j * 2)];
-                          s_1 = s_buffer[((j * 2) + 1)];
-                          q_0 = _mm256_add_ps(s_0, _mm256_or_ps(x_0, blp_mask_tmp));
-                          q_1 = _mm256_add_ps(s_1, _mm256_or_ps(x_1, blp_mask_tmp));
-                          s_buffer[(j * 2)] = q_0;
-                          s_buffer[((j * 2) + 1)] = q_1;
-                          q_0 = _mm256_sub_ps(s_0, q_0);
-                          q_1 = _mm256_sub_ps(s_1, q_1);
-                          x_0 = _mm256_add_ps(x_0, q_0);
-                          x_1 = _mm256_add_ps(x_1, q_1);
-                        }
-                        s_buffer[(j * 2)] = _mm256_add_ps(s_buffer[(j * 2)], _mm256_or_ps(x_0, blp_mask_tmp));
-                        s_buffer[((j * 2) + 1)] = _mm256_add_ps(s_buffer[((j * 2) + 1)], _mm256_or_ps(x_1, blp_mask_tmp));
+                        x_0 = _mm256_add_ps(x_0, q_0);
+                        x_1 = _mm256_add_ps(x_1, q_1);
                       }
+                      s_buffer[(j * 2)] = _mm256_add_ps(s_buffer[(j * 2)], _mm256_or_ps(x_0, blp_mask_tmp));
+                      s_buffer[((j * 2) + 1)] = _mm256_add_ps(s_buffer[((j * 2) + 1)], _mm256_or_ps(x_1, blp_mask_tmp));
                     }
                     if(i < N_block){
                       x_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)x))[2]:0, (N_block - i)>1?((double*)((float*)x))[1]:0, ((double*)((float*)x))[0]);
@@ -701,26 +704,24 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                       q_1 = _mm256_add_ps(s_1, _mm256_or_ps(_mm256_mul_ps(x_1, compression_0), blp_mask_tmp));
                       s_buffer[0] = q_0;
                       s_buffer[1] = q_1;
-                      if(fold > 1){
+                      q_0 = _mm256_sub_ps(s_0, q_0);
+                      q_1 = _mm256_sub_ps(s_1, q_1);
+                      x_0 = _mm256_add_ps(x_0, _mm256_mul_ps(q_0, expansion_0));
+                      x_1 = _mm256_add_ps(x_1, _mm256_mul_ps(q_1, expansion_0));
+                      for(j = 1; j < fold - 1; j++){
+                        s_0 = s_buffer[(j * 2)];
+                        s_1 = s_buffer[((j * 2) + 1)];
+                        q_0 = _mm256_add_ps(s_0, _mm256_or_ps(x_0, blp_mask_tmp));
+                        q_1 = _mm256_add_ps(s_1, _mm256_or_ps(x_1, blp_mask_tmp));
+                        s_buffer[(j * 2)] = q_0;
+                        s_buffer[((j * 2) + 1)] = q_1;
                         q_0 = _mm256_sub_ps(s_0, q_0);
                         q_1 = _mm256_sub_ps(s_1, q_1);
-                        x_0 = _mm256_add_ps(x_0, _mm256_mul_ps(q_0, expansion_0));
-                        x_1 = _mm256_add_ps(x_1, _mm256_mul_ps(q_1, expansion_0));
-                        for(j = 1; j < fold - 1; j++){
-                          s_0 = s_buffer[(j * 2)];
-                          s_1 = s_buffer[((j * 2) + 1)];
-                          q_0 = _mm256_add_ps(s_0, _mm256_or_ps(x_0, blp_mask_tmp));
-                          q_1 = _mm256_add_ps(s_1, _mm256_or_ps(x_1, blp_mask_tmp));
-                          s_buffer[(j * 2)] = q_0;
-                          s_buffer[((j * 2) + 1)] = q_1;
-                          q_0 = _mm256_sub_ps(s_0, q_0);
-                          q_1 = _mm256_sub_ps(s_1, q_1);
-                          x_0 = _mm256_add_ps(x_0, q_0);
-                          x_1 = _mm256_add_ps(x_1, q_1);
-                        }
-                        s_buffer[(j * 2)] = _mm256_add_ps(s_buffer[(j * 2)], _mm256_or_ps(x_0, blp_mask_tmp));
-                        s_buffer[((j * 2) + 1)] = _mm256_add_ps(s_buffer[((j * 2) + 1)], _mm256_or_ps(x_1, blp_mask_tmp));
+                        x_0 = _mm256_add_ps(x_0, q_0);
+                        x_1 = _mm256_add_ps(x_1, q_1);
                       }
+                      s_buffer[(j * 2)] = _mm256_add_ps(s_buffer[(j * 2)], _mm256_or_ps(x_0, blp_mask_tmp));
+                      s_buffer[((j * 2) + 1)] = _mm256_add_ps(s_buffer[((j * 2) + 1)], _mm256_or_ps(x_1, blp_mask_tmp));
                       x += ((N_block - i) * 2), y += ((N_block - i) * 2);
                     }
                   }else{
@@ -794,26 +795,24 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                       q_1 = _mm256_add_ps(s_1, _mm256_or_ps(_mm256_mul_ps(x_1, compression_0), blp_mask_tmp));
                       s_buffer[0] = q_0;
                       s_buffer[1] = q_1;
-                      if(fold > 1){
+                      q_0 = _mm256_sub_ps(s_0, q_0);
+                      q_1 = _mm256_sub_ps(s_1, q_1);
+                      x_0 = _mm256_add_ps(x_0, _mm256_mul_ps(q_0, expansion_0));
+                      x_1 = _mm256_add_ps(x_1, _mm256_mul_ps(q_1, expansion_0));
+                      for(j = 1; j < fold - 1; j++){
+                        s_0 = s_buffer[(j * 2)];
+                        s_1 = s_buffer[((j * 2) + 1)];
+                        q_0 = _mm256_add_ps(s_0, _mm256_or_ps(x_0, blp_mask_tmp));
+                        q_1 = _mm256_add_ps(s_1, _mm256_or_ps(x_1, blp_mask_tmp));
+                        s_buffer[(j * 2)] = q_0;
+                        s_buffer[((j * 2) + 1)] = q_1;
                         q_0 = _mm256_sub_ps(s_0, q_0);
                         q_1 = _mm256_sub_ps(s_1, q_1);
-                        x_0 = _mm256_add_ps(x_0, _mm256_mul_ps(q_0, expansion_0));
-                        x_1 = _mm256_add_ps(x_1, _mm256_mul_ps(q_1, expansion_0));
-                        for(j = 1; j < fold - 1; j++){
-                          s_0 = s_buffer[(j * 2)];
-                          s_1 = s_buffer[((j * 2) + 1)];
-                          q_0 = _mm256_add_ps(s_0, _mm256_or_ps(x_0, blp_mask_tmp));
-                          q_1 = _mm256_add_ps(s_1, _mm256_or_ps(x_1, blp_mask_tmp));
-                          s_buffer[(j * 2)] = q_0;
-                          s_buffer[((j * 2) + 1)] = q_1;
-                          q_0 = _mm256_sub_ps(s_0, q_0);
-                          q_1 = _mm256_sub_ps(s_1, q_1);
-                          x_0 = _mm256_add_ps(x_0, q_0);
-                          x_1 = _mm256_add_ps(x_1, q_1);
-                        }
-                        s_buffer[(j * 2)] = _mm256_add_ps(s_buffer[(j * 2)], _mm256_or_ps(x_0, blp_mask_tmp));
-                        s_buffer[((j * 2) + 1)] = _mm256_add_ps(s_buffer[((j * 2) + 1)], _mm256_or_ps(x_1, blp_mask_tmp));
+                        x_0 = _mm256_add_ps(x_0, q_0);
+                        x_1 = _mm256_add_ps(x_1, q_1);
                       }
+                      s_buffer[(j * 2)] = _mm256_add_ps(s_buffer[(j * 2)], _mm256_or_ps(x_0, blp_mask_tmp));
+                      s_buffer[((j * 2) + 1)] = _mm256_add_ps(s_buffer[((j * 2) + 1)], _mm256_or_ps(x_1, blp_mask_tmp));
                     }
                     if(i < N_block){
                       x_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)x))[2]:0, (N_block - i)>1?((double*)((float*)x))[1]:0, ((double*)((float*)x))[0]);
@@ -827,26 +826,24 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                       q_1 = _mm256_add_ps(s_1, _mm256_or_ps(_mm256_mul_ps(x_1, compression_0), blp_mask_tmp));
                       s_buffer[0] = q_0;
                       s_buffer[1] = q_1;
-                      if(fold > 1){
+                      q_0 = _mm256_sub_ps(s_0, q_0);
+                      q_1 = _mm256_sub_ps(s_1, q_1);
+                      x_0 = _mm256_add_ps(x_0, _mm256_mul_ps(q_0, expansion_0));
+                      x_1 = _mm256_add_ps(x_1, _mm256_mul_ps(q_1, expansion_0));
+                      for(j = 1; j < fold - 1; j++){
+                        s_0 = s_buffer[(j * 2)];
+                        s_1 = s_buffer[((j * 2) + 1)];
+                        q_0 = _mm256_add_ps(s_0, _mm256_or_ps(x_0, blp_mask_tmp));
+                        q_1 = _mm256_add_ps(s_1, _mm256_or_ps(x_1, blp_mask_tmp));
+                        s_buffer[(j * 2)] = q_0;
+                        s_buffer[((j * 2) + 1)] = q_1;
                         q_0 = _mm256_sub_ps(s_0, q_0);
                         q_1 = _mm256_sub_ps(s_1, q_1);
-                        x_0 = _mm256_add_ps(x_0, _mm256_mul_ps(q_0, expansion_0));
-                        x_1 = _mm256_add_ps(x_1, _mm256_mul_ps(q_1, expansion_0));
-                        for(j = 1; j < fold - 1; j++){
-                          s_0 = s_buffer[(j * 2)];
-                          s_1 = s_buffer[((j * 2) + 1)];
-                          q_0 = _mm256_add_ps(s_0, _mm256_or_ps(x_0, blp_mask_tmp));
-                          q_1 = _mm256_add_ps(s_1, _mm256_or_ps(x_1, blp_mask_tmp));
-                          s_buffer[(j * 2)] = q_0;
-                          s_buffer[((j * 2) + 1)] = q_1;
-                          q_0 = _mm256_sub_ps(s_0, q_0);
-                          q_1 = _mm256_sub_ps(s_1, q_1);
-                          x_0 = _mm256_add_ps(x_0, q_0);
-                          x_1 = _mm256_add_ps(x_1, q_1);
-                        }
-                        s_buffer[(j * 2)] = _mm256_add_ps(s_buffer[(j * 2)], _mm256_or_ps(x_0, blp_mask_tmp));
-                        s_buffer[((j * 2) + 1)] = _mm256_add_ps(s_buffer[((j * 2) + 1)], _mm256_or_ps(x_1, blp_mask_tmp));
+                        x_0 = _mm256_add_ps(x_0, q_0);
+                        x_1 = _mm256_add_ps(x_1, q_1);
                       }
+                      s_buffer[(j * 2)] = _mm256_add_ps(s_buffer[(j * 2)], _mm256_or_ps(x_0, blp_mask_tmp));
+                      s_buffer[((j * 2) + 1)] = _mm256_add_ps(s_buffer[((j * 2) + 1)], _mm256_or_ps(x_1, blp_mask_tmp));
                       x += ((N_block - i) * 2), y += (incY * (N_block - i) * 2);
                     }
                   }else{
@@ -922,26 +919,24 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                       q_1 = _mm256_add_ps(s_1, _mm256_or_ps(_mm256_mul_ps(x_1, compression_0), blp_mask_tmp));
                       s_buffer[0] = q_0;
                       s_buffer[1] = q_1;
-                      if(fold > 1){
+                      q_0 = _mm256_sub_ps(s_0, q_0);
+                      q_1 = _mm256_sub_ps(s_1, q_1);
+                      x_0 = _mm256_add_ps(x_0, _mm256_mul_ps(q_0, expansion_0));
+                      x_1 = _mm256_add_ps(x_1, _mm256_mul_ps(q_1, expansion_0));
+                      for(j = 1; j < fold - 1; j++){
+                        s_0 = s_buffer[(j * 2)];
+                        s_1 = s_buffer[((j * 2) + 1)];
+                        q_0 = _mm256_add_ps(s_0, _mm256_or_ps(x_0, blp_mask_tmp));
+                        q_1 = _mm256_add_ps(s_1, _mm256_or_ps(x_1, blp_mask_tmp));
+                        s_buffer[(j * 2)] = q_0;
+                        s_buffer[((j * 2) + 1)] = q_1;
                         q_0 = _mm256_sub_ps(s_0, q_0);
                         q_1 = _mm256_sub_ps(s_1, q_1);
-                        x_0 = _mm256_add_ps(x_0, _mm256_mul_ps(q_0, expansion_0));
-                        x_1 = _mm256_add_ps(x_1, _mm256_mul_ps(q_1, expansion_0));
-                        for(j = 1; j < fold - 1; j++){
-                          s_0 = s_buffer[(j * 2)];
-                          s_1 = s_buffer[((j * 2) + 1)];
-                          q_0 = _mm256_add_ps(s_0, _mm256_or_ps(x_0, blp_mask_tmp));
-                          q_1 = _mm256_add_ps(s_1, _mm256_or_ps(x_1, blp_mask_tmp));
-                          s_buffer[(j * 2)] = q_0;
-                          s_buffer[((j * 2) + 1)] = q_1;
-                          q_0 = _mm256_sub_ps(s_0, q_0);
-                          q_1 = _mm256_sub_ps(s_1, q_1);
-                          x_0 = _mm256_add_ps(x_0, q_0);
-                          x_1 = _mm256_add_ps(x_1, q_1);
-                        }
-                        s_buffer[(j * 2)] = _mm256_add_ps(s_buffer[(j * 2)], _mm256_or_ps(x_0, blp_mask_tmp));
-                        s_buffer[((j * 2) + 1)] = _mm256_add_ps(s_buffer[((j * 2) + 1)], _mm256_or_ps(x_1, blp_mask_tmp));
+                        x_0 = _mm256_add_ps(x_0, q_0);
+                        x_1 = _mm256_add_ps(x_1, q_1);
                       }
+                      s_buffer[(j * 2)] = _mm256_add_ps(s_buffer[(j * 2)], _mm256_or_ps(x_0, blp_mask_tmp));
+                      s_buffer[((j * 2) + 1)] = _mm256_add_ps(s_buffer[((j * 2) + 1)], _mm256_or_ps(x_1, blp_mask_tmp));
                     }
                     if(i < N_block){
                       x_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)x))[(incX * 2)]:0, (N_block - i)>1?((double*)((float*)x))[incX]:0, ((double*)((float*)x))[0]);
@@ -955,26 +950,24 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                       q_1 = _mm256_add_ps(s_1, _mm256_or_ps(_mm256_mul_ps(x_1, compression_0), blp_mask_tmp));
                       s_buffer[0] = q_0;
                       s_buffer[1] = q_1;
-                      if(fold > 1){
+                      q_0 = _mm256_sub_ps(s_0, q_0);
+                      q_1 = _mm256_sub_ps(s_1, q_1);
+                      x_0 = _mm256_add_ps(x_0, _mm256_mul_ps(q_0, expansion_0));
+                      x_1 = _mm256_add_ps(x_1, _mm256_mul_ps(q_1, expansion_0));
+                      for(j = 1; j < fold - 1; j++){
+                        s_0 = s_buffer[(j * 2)];
+                        s_1 = s_buffer[((j * 2) + 1)];
+                        q_0 = _mm256_add_ps(s_0, _mm256_or_ps(x_0, blp_mask_tmp));
+                        q_1 = _mm256_add_ps(s_1, _mm256_or_ps(x_1, blp_mask_tmp));
+                        s_buffer[(j * 2)] = q_0;
+                        s_buffer[((j * 2) + 1)] = q_1;
                         q_0 = _mm256_sub_ps(s_0, q_0);
                         q_1 = _mm256_sub_ps(s_1, q_1);
-                        x_0 = _mm256_add_ps(x_0, _mm256_mul_ps(q_0, expansion_0));
-                        x_1 = _mm256_add_ps(x_1, _mm256_mul_ps(q_1, expansion_0));
-                        for(j = 1; j < fold - 1; j++){
-                          s_0 = s_buffer[(j * 2)];
-                          s_1 = s_buffer[((j * 2) + 1)];
-                          q_0 = _mm256_add_ps(s_0, _mm256_or_ps(x_0, blp_mask_tmp));
-                          q_1 = _mm256_add_ps(s_1, _mm256_or_ps(x_1, blp_mask_tmp));
-                          s_buffer[(j * 2)] = q_0;
-                          s_buffer[((j * 2) + 1)] = q_1;
-                          q_0 = _mm256_sub_ps(s_0, q_0);
-                          q_1 = _mm256_sub_ps(s_1, q_1);
-                          x_0 = _mm256_add_ps(x_0, q_0);
-                          x_1 = _mm256_add_ps(x_1, q_1);
-                        }
-                        s_buffer[(j * 2)] = _mm256_add_ps(s_buffer[(j * 2)], _mm256_or_ps(x_0, blp_mask_tmp));
-                        s_buffer[((j * 2) + 1)] = _mm256_add_ps(s_buffer[((j * 2) + 1)], _mm256_or_ps(x_1, blp_mask_tmp));
+                        x_0 = _mm256_add_ps(x_0, q_0);
+                        x_1 = _mm256_add_ps(x_1, q_1);
                       }
+                      s_buffer[(j * 2)] = _mm256_add_ps(s_buffer[(j * 2)], _mm256_or_ps(x_0, blp_mask_tmp));
+                      s_buffer[((j * 2) + 1)] = _mm256_add_ps(s_buffer[((j * 2) + 1)], _mm256_or_ps(x_1, blp_mask_tmp));
                       x += (incX * (N_block - i) * 2), y += ((N_block - i) * 2);
                     }
                   }else{
@@ -1048,26 +1041,24 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                       q_1 = _mm256_add_ps(s_1, _mm256_or_ps(_mm256_mul_ps(x_1, compression_0), blp_mask_tmp));
                       s_buffer[0] = q_0;
                       s_buffer[1] = q_1;
-                      if(fold > 1){
+                      q_0 = _mm256_sub_ps(s_0, q_0);
+                      q_1 = _mm256_sub_ps(s_1, q_1);
+                      x_0 = _mm256_add_ps(x_0, _mm256_mul_ps(q_0, expansion_0));
+                      x_1 = _mm256_add_ps(x_1, _mm256_mul_ps(q_1, expansion_0));
+                      for(j = 1; j < fold - 1; j++){
+                        s_0 = s_buffer[(j * 2)];
+                        s_1 = s_buffer[((j * 2) + 1)];
+                        q_0 = _mm256_add_ps(s_0, _mm256_or_ps(x_0, blp_mask_tmp));
+                        q_1 = _mm256_add_ps(s_1, _mm256_or_ps(x_1, blp_mask_tmp));
+                        s_buffer[(j * 2)] = q_0;
+                        s_buffer[((j * 2) + 1)] = q_1;
                         q_0 = _mm256_sub_ps(s_0, q_0);
                         q_1 = _mm256_sub_ps(s_1, q_1);
-                        x_0 = _mm256_add_ps(x_0, _mm256_mul_ps(q_0, expansion_0));
-                        x_1 = _mm256_add_ps(x_1, _mm256_mul_ps(q_1, expansion_0));
-                        for(j = 1; j < fold - 1; j++){
-                          s_0 = s_buffer[(j * 2)];
-                          s_1 = s_buffer[((j * 2) + 1)];
-                          q_0 = _mm256_add_ps(s_0, _mm256_or_ps(x_0, blp_mask_tmp));
-                          q_1 = _mm256_add_ps(s_1, _mm256_or_ps(x_1, blp_mask_tmp));
-                          s_buffer[(j * 2)] = q_0;
-                          s_buffer[((j * 2) + 1)] = q_1;
-                          q_0 = _mm256_sub_ps(s_0, q_0);
-                          q_1 = _mm256_sub_ps(s_1, q_1);
-                          x_0 = _mm256_add_ps(x_0, q_0);
-                          x_1 = _mm256_add_ps(x_1, q_1);
-                        }
-                        s_buffer[(j * 2)] = _mm256_add_ps(s_buffer[(j * 2)], _mm256_or_ps(x_0, blp_mask_tmp));
-                        s_buffer[((j * 2) + 1)] = _mm256_add_ps(s_buffer[((j * 2) + 1)], _mm256_or_ps(x_1, blp_mask_tmp));
+                        x_0 = _mm256_add_ps(x_0, q_0);
+                        x_1 = _mm256_add_ps(x_1, q_1);
                       }
+                      s_buffer[(j * 2)] = _mm256_add_ps(s_buffer[(j * 2)], _mm256_or_ps(x_0, blp_mask_tmp));
+                      s_buffer[((j * 2) + 1)] = _mm256_add_ps(s_buffer[((j * 2) + 1)], _mm256_or_ps(x_1, blp_mask_tmp));
                     }
                     if(i < N_block){
                       x_0 = (__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)x))[(incX * 2)]:0, (N_block - i)>1?((double*)((float*)x))[incX]:0, ((double*)((float*)x))[0]);
@@ -1081,26 +1072,24 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                       q_1 = _mm256_add_ps(s_1, _mm256_or_ps(_mm256_mul_ps(x_1, compression_0), blp_mask_tmp));
                       s_buffer[0] = q_0;
                       s_buffer[1] = q_1;
-                      if(fold > 1){
+                      q_0 = _mm256_sub_ps(s_0, q_0);
+                      q_1 = _mm256_sub_ps(s_1, q_1);
+                      x_0 = _mm256_add_ps(x_0, _mm256_mul_ps(q_0, expansion_0));
+                      x_1 = _mm256_add_ps(x_1, _mm256_mul_ps(q_1, expansion_0));
+                      for(j = 1; j < fold - 1; j++){
+                        s_0 = s_buffer[(j * 2)];
+                        s_1 = s_buffer[((j * 2) + 1)];
+                        q_0 = _mm256_add_ps(s_0, _mm256_or_ps(x_0, blp_mask_tmp));
+                        q_1 = _mm256_add_ps(s_1, _mm256_or_ps(x_1, blp_mask_tmp));
+                        s_buffer[(j * 2)] = q_0;
+                        s_buffer[((j * 2) + 1)] = q_1;
                         q_0 = _mm256_sub_ps(s_0, q_0);
                         q_1 = _mm256_sub_ps(s_1, q_1);
-                        x_0 = _mm256_add_ps(x_0, _mm256_mul_ps(q_0, expansion_0));
-                        x_1 = _mm256_add_ps(x_1, _mm256_mul_ps(q_1, expansion_0));
-                        for(j = 1; j < fold - 1; j++){
-                          s_0 = s_buffer[(j * 2)];
-                          s_1 = s_buffer[((j * 2) + 1)];
-                          q_0 = _mm256_add_ps(s_0, _mm256_or_ps(x_0, blp_mask_tmp));
-                          q_1 = _mm256_add_ps(s_1, _mm256_or_ps(x_1, blp_mask_tmp));
-                          s_buffer[(j * 2)] = q_0;
-                          s_buffer[((j * 2) + 1)] = q_1;
-                          q_0 = _mm256_sub_ps(s_0, q_0);
-                          q_1 = _mm256_sub_ps(s_1, q_1);
-                          x_0 = _mm256_add_ps(x_0, q_0);
-                          x_1 = _mm256_add_ps(x_1, q_1);
-                        }
-                        s_buffer[(j * 2)] = _mm256_add_ps(s_buffer[(j * 2)], _mm256_or_ps(x_0, blp_mask_tmp));
-                        s_buffer[((j * 2) + 1)] = _mm256_add_ps(s_buffer[((j * 2) + 1)], _mm256_or_ps(x_1, blp_mask_tmp));
+                        x_0 = _mm256_add_ps(x_0, q_0);
+                        x_1 = _mm256_add_ps(x_1, q_1);
                       }
+                      s_buffer[(j * 2)] = _mm256_add_ps(s_buffer[(j * 2)], _mm256_or_ps(x_0, blp_mask_tmp));
+                      s_buffer[((j * 2) + 1)] = _mm256_add_ps(s_buffer[((j * 2) + 1)], _mm256_or_ps(x_1, blp_mask_tmp));
                       x += (incX * (N_block - i) * 2), y += (incY * (N_block - i) * 2);
                     }
                   }else{
@@ -1160,6 +1149,9 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                 ((float*)manZ)[((incmanZ * j * 2) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3] + cons_buffer_tmp[5] + cons_buffer_tmp[7];
               }
 
+              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
+                _mm_setcsr(SIMD_daz_ftz_old_tmp);
+              }
             }
             break;
         }
@@ -1181,6 +1173,8 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
         }
         __m128 cons_tmp; (void)cons_tmp;
         float cons_buffer_tmp[4] __attribute__((aligned(16))); (void)cons_buffer_tmp;
+        unsigned int SIMD_daz_ftz_old_tmp = 0;
+        unsigned int SIMD_daz_ftz_new_tmp = 0;
 
 
         switch(fold){
@@ -1697,6 +1691,9 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
               ((float*)manZ)[(incmanZ * 4)] = cons_buffer_tmp[0] + cons_buffer_tmp[2];
               ((float*)manZ)[((incmanZ * 4) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3];
 
+              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
+                _mm_setcsr(SIMD_daz_ftz_old_tmp);
+              }
             }
             break;
           default:
@@ -1708,7 +1705,7 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
               __m128 expansion_0;
               __m128 q_0, q_1;
               __m128 s_0, s_1;
-              __m128 s_buffer[(MAX_FOLD * 2)];
+              __m128 s_buffer[(SIMAXFOLD * 2)];
 
               for(j = 0; j < fold; j += 1){
                 s_buffer[(j * 2)] = s_buffer[((j * 2) + 1)] = (__m128)_mm_load1_pd((double *)(((float*)manZ) + (incmanZ * j * 2)));
@@ -1741,26 +1738,24 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                       q_1 = _mm_add_ps(s_1, _mm_or_ps(_mm_mul_ps(x_1, compression_0), blp_mask_tmp));
                       s_buffer[0] = q_0;
                       s_buffer[1] = q_1;
-                      if(fold > 1){
+                      q_0 = _mm_sub_ps(s_0, q_0);
+                      q_1 = _mm_sub_ps(s_1, q_1);
+                      x_0 = _mm_add_ps(x_0, _mm_mul_ps(q_0, expansion_0));
+                      x_1 = _mm_add_ps(x_1, _mm_mul_ps(q_1, expansion_0));
+                      for(j = 1; j < fold - 1; j++){
+                        s_0 = s_buffer[(j * 2)];
+                        s_1 = s_buffer[((j * 2) + 1)];
+                        q_0 = _mm_add_ps(s_0, _mm_or_ps(x_0, blp_mask_tmp));
+                        q_1 = _mm_add_ps(s_1, _mm_or_ps(x_1, blp_mask_tmp));
+                        s_buffer[(j * 2)] = q_0;
+                        s_buffer[((j * 2) + 1)] = q_1;
                         q_0 = _mm_sub_ps(s_0, q_0);
                         q_1 = _mm_sub_ps(s_1, q_1);
-                        x_0 = _mm_add_ps(x_0, _mm_mul_ps(q_0, expansion_0));
-                        x_1 = _mm_add_ps(x_1, _mm_mul_ps(q_1, expansion_0));
-                        for(j = 1; j < fold - 1; j++){
-                          s_0 = s_buffer[(j * 2)];
-                          s_1 = s_buffer[((j * 2) + 1)];
-                          q_0 = _mm_add_ps(s_0, _mm_or_ps(x_0, blp_mask_tmp));
-                          q_1 = _mm_add_ps(s_1, _mm_or_ps(x_1, blp_mask_tmp));
-                          s_buffer[(j * 2)] = q_0;
-                          s_buffer[((j * 2) + 1)] = q_1;
-                          q_0 = _mm_sub_ps(s_0, q_0);
-                          q_1 = _mm_sub_ps(s_1, q_1);
-                          x_0 = _mm_add_ps(x_0, q_0);
-                          x_1 = _mm_add_ps(x_1, q_1);
-                        }
-                        s_buffer[(j * 2)] = _mm_add_ps(s_buffer[(j * 2)], _mm_or_ps(x_0, blp_mask_tmp));
-                        s_buffer[((j * 2) + 1)] = _mm_add_ps(s_buffer[((j * 2) + 1)], _mm_or_ps(x_1, blp_mask_tmp));
+                        x_0 = _mm_add_ps(x_0, q_0);
+                        x_1 = _mm_add_ps(x_1, q_1);
                       }
+                      s_buffer[(j * 2)] = _mm_add_ps(s_buffer[(j * 2)], _mm_or_ps(x_0, blp_mask_tmp));
+                      s_buffer[((j * 2) + 1)] = _mm_add_ps(s_buffer[((j * 2) + 1)], _mm_or_ps(x_1, blp_mask_tmp));
                     }
                     if(i < N_block){
                       x_0 = _mm_set_ps(0, 0, ((float*)x)[1], ((float*)x)[0]);
@@ -1774,26 +1769,24 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                       q_1 = _mm_add_ps(s_1, _mm_or_ps(_mm_mul_ps(x_1, compression_0), blp_mask_tmp));
                       s_buffer[0] = q_0;
                       s_buffer[1] = q_1;
-                      if(fold > 1){
+                      q_0 = _mm_sub_ps(s_0, q_0);
+                      q_1 = _mm_sub_ps(s_1, q_1);
+                      x_0 = _mm_add_ps(x_0, _mm_mul_ps(q_0, expansion_0));
+                      x_1 = _mm_add_ps(x_1, _mm_mul_ps(q_1, expansion_0));
+                      for(j = 1; j < fold - 1; j++){
+                        s_0 = s_buffer[(j * 2)];
+                        s_1 = s_buffer[((j * 2) + 1)];
+                        q_0 = _mm_add_ps(s_0, _mm_or_ps(x_0, blp_mask_tmp));
+                        q_1 = _mm_add_ps(s_1, _mm_or_ps(x_1, blp_mask_tmp));
+                        s_buffer[(j * 2)] = q_0;
+                        s_buffer[((j * 2) + 1)] = q_1;
                         q_0 = _mm_sub_ps(s_0, q_0);
                         q_1 = _mm_sub_ps(s_1, q_1);
-                        x_0 = _mm_add_ps(x_0, _mm_mul_ps(q_0, expansion_0));
-                        x_1 = _mm_add_ps(x_1, _mm_mul_ps(q_1, expansion_0));
-                        for(j = 1; j < fold - 1; j++){
-                          s_0 = s_buffer[(j * 2)];
-                          s_1 = s_buffer[((j * 2) + 1)];
-                          q_0 = _mm_add_ps(s_0, _mm_or_ps(x_0, blp_mask_tmp));
-                          q_1 = _mm_add_ps(s_1, _mm_or_ps(x_1, blp_mask_tmp));
-                          s_buffer[(j * 2)] = q_0;
-                          s_buffer[((j * 2) + 1)] = q_1;
-                          q_0 = _mm_sub_ps(s_0, q_0);
-                          q_1 = _mm_sub_ps(s_1, q_1);
-                          x_0 = _mm_add_ps(x_0, q_0);
-                          x_1 = _mm_add_ps(x_1, q_1);
-                        }
-                        s_buffer[(j * 2)] = _mm_add_ps(s_buffer[(j * 2)], _mm_or_ps(x_0, blp_mask_tmp));
-                        s_buffer[((j * 2) + 1)] = _mm_add_ps(s_buffer[((j * 2) + 1)], _mm_or_ps(x_1, blp_mask_tmp));
+                        x_0 = _mm_add_ps(x_0, q_0);
+                        x_1 = _mm_add_ps(x_1, q_1);
                       }
+                      s_buffer[(j * 2)] = _mm_add_ps(s_buffer[(j * 2)], _mm_or_ps(x_0, blp_mask_tmp));
+                      s_buffer[((j * 2) + 1)] = _mm_add_ps(s_buffer[((j * 2) + 1)], _mm_or_ps(x_1, blp_mask_tmp));
                       x += ((N_block - i) * 2), y += ((N_block - i) * 2);
                     }
                   }else{
@@ -1867,26 +1860,24 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                       q_1 = _mm_add_ps(s_1, _mm_or_ps(_mm_mul_ps(x_1, compression_0), blp_mask_tmp));
                       s_buffer[0] = q_0;
                       s_buffer[1] = q_1;
-                      if(fold > 1){
+                      q_0 = _mm_sub_ps(s_0, q_0);
+                      q_1 = _mm_sub_ps(s_1, q_1);
+                      x_0 = _mm_add_ps(x_0, _mm_mul_ps(q_0, expansion_0));
+                      x_1 = _mm_add_ps(x_1, _mm_mul_ps(q_1, expansion_0));
+                      for(j = 1; j < fold - 1; j++){
+                        s_0 = s_buffer[(j * 2)];
+                        s_1 = s_buffer[((j * 2) + 1)];
+                        q_0 = _mm_add_ps(s_0, _mm_or_ps(x_0, blp_mask_tmp));
+                        q_1 = _mm_add_ps(s_1, _mm_or_ps(x_1, blp_mask_tmp));
+                        s_buffer[(j * 2)] = q_0;
+                        s_buffer[((j * 2) + 1)] = q_1;
                         q_0 = _mm_sub_ps(s_0, q_0);
                         q_1 = _mm_sub_ps(s_1, q_1);
-                        x_0 = _mm_add_ps(x_0, _mm_mul_ps(q_0, expansion_0));
-                        x_1 = _mm_add_ps(x_1, _mm_mul_ps(q_1, expansion_0));
-                        for(j = 1; j < fold - 1; j++){
-                          s_0 = s_buffer[(j * 2)];
-                          s_1 = s_buffer[((j * 2) + 1)];
-                          q_0 = _mm_add_ps(s_0, _mm_or_ps(x_0, blp_mask_tmp));
-                          q_1 = _mm_add_ps(s_1, _mm_or_ps(x_1, blp_mask_tmp));
-                          s_buffer[(j * 2)] = q_0;
-                          s_buffer[((j * 2) + 1)] = q_1;
-                          q_0 = _mm_sub_ps(s_0, q_0);
-                          q_1 = _mm_sub_ps(s_1, q_1);
-                          x_0 = _mm_add_ps(x_0, q_0);
-                          x_1 = _mm_add_ps(x_1, q_1);
-                        }
-                        s_buffer[(j * 2)] = _mm_add_ps(s_buffer[(j * 2)], _mm_or_ps(x_0, blp_mask_tmp));
-                        s_buffer[((j * 2) + 1)] = _mm_add_ps(s_buffer[((j * 2) + 1)], _mm_or_ps(x_1, blp_mask_tmp));
+                        x_0 = _mm_add_ps(x_0, q_0);
+                        x_1 = _mm_add_ps(x_1, q_1);
                       }
+                      s_buffer[(j * 2)] = _mm_add_ps(s_buffer[(j * 2)], _mm_or_ps(x_0, blp_mask_tmp));
+                      s_buffer[((j * 2) + 1)] = _mm_add_ps(s_buffer[((j * 2) + 1)], _mm_or_ps(x_1, blp_mask_tmp));
                     }
                     if(i < N_block){
                       x_0 = _mm_set_ps(0, 0, ((float*)x)[1], ((float*)x)[0]);
@@ -1900,26 +1891,24 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                       q_1 = _mm_add_ps(s_1, _mm_or_ps(_mm_mul_ps(x_1, compression_0), blp_mask_tmp));
                       s_buffer[0] = q_0;
                       s_buffer[1] = q_1;
-                      if(fold > 1){
+                      q_0 = _mm_sub_ps(s_0, q_0);
+                      q_1 = _mm_sub_ps(s_1, q_1);
+                      x_0 = _mm_add_ps(x_0, _mm_mul_ps(q_0, expansion_0));
+                      x_1 = _mm_add_ps(x_1, _mm_mul_ps(q_1, expansion_0));
+                      for(j = 1; j < fold - 1; j++){
+                        s_0 = s_buffer[(j * 2)];
+                        s_1 = s_buffer[((j * 2) + 1)];
+                        q_0 = _mm_add_ps(s_0, _mm_or_ps(x_0, blp_mask_tmp));
+                        q_1 = _mm_add_ps(s_1, _mm_or_ps(x_1, blp_mask_tmp));
+                        s_buffer[(j * 2)] = q_0;
+                        s_buffer[((j * 2) + 1)] = q_1;
                         q_0 = _mm_sub_ps(s_0, q_0);
                         q_1 = _mm_sub_ps(s_1, q_1);
-                        x_0 = _mm_add_ps(x_0, _mm_mul_ps(q_0, expansion_0));
-                        x_1 = _mm_add_ps(x_1, _mm_mul_ps(q_1, expansion_0));
-                        for(j = 1; j < fold - 1; j++){
-                          s_0 = s_buffer[(j * 2)];
-                          s_1 = s_buffer[((j * 2) + 1)];
-                          q_0 = _mm_add_ps(s_0, _mm_or_ps(x_0, blp_mask_tmp));
-                          q_1 = _mm_add_ps(s_1, _mm_or_ps(x_1, blp_mask_tmp));
-                          s_buffer[(j * 2)] = q_0;
-                          s_buffer[((j * 2) + 1)] = q_1;
-                          q_0 = _mm_sub_ps(s_0, q_0);
-                          q_1 = _mm_sub_ps(s_1, q_1);
-                          x_0 = _mm_add_ps(x_0, q_0);
-                          x_1 = _mm_add_ps(x_1, q_1);
-                        }
-                        s_buffer[(j * 2)] = _mm_add_ps(s_buffer[(j * 2)], _mm_or_ps(x_0, blp_mask_tmp));
-                        s_buffer[((j * 2) + 1)] = _mm_add_ps(s_buffer[((j * 2) + 1)], _mm_or_ps(x_1, blp_mask_tmp));
+                        x_0 = _mm_add_ps(x_0, q_0);
+                        x_1 = _mm_add_ps(x_1, q_1);
                       }
+                      s_buffer[(j * 2)] = _mm_add_ps(s_buffer[(j * 2)], _mm_or_ps(x_0, blp_mask_tmp));
+                      s_buffer[((j * 2) + 1)] = _mm_add_ps(s_buffer[((j * 2) + 1)], _mm_or_ps(x_1, blp_mask_tmp));
                       x += ((N_block - i) * 2), y += (incY * (N_block - i) * 2);
                     }
                   }else{
@@ -1995,26 +1984,24 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                       q_1 = _mm_add_ps(s_1, _mm_or_ps(_mm_mul_ps(x_1, compression_0), blp_mask_tmp));
                       s_buffer[0] = q_0;
                       s_buffer[1] = q_1;
-                      if(fold > 1){
+                      q_0 = _mm_sub_ps(s_0, q_0);
+                      q_1 = _mm_sub_ps(s_1, q_1);
+                      x_0 = _mm_add_ps(x_0, _mm_mul_ps(q_0, expansion_0));
+                      x_1 = _mm_add_ps(x_1, _mm_mul_ps(q_1, expansion_0));
+                      for(j = 1; j < fold - 1; j++){
+                        s_0 = s_buffer[(j * 2)];
+                        s_1 = s_buffer[((j * 2) + 1)];
+                        q_0 = _mm_add_ps(s_0, _mm_or_ps(x_0, blp_mask_tmp));
+                        q_1 = _mm_add_ps(s_1, _mm_or_ps(x_1, blp_mask_tmp));
+                        s_buffer[(j * 2)] = q_0;
+                        s_buffer[((j * 2) + 1)] = q_1;
                         q_0 = _mm_sub_ps(s_0, q_0);
                         q_1 = _mm_sub_ps(s_1, q_1);
-                        x_0 = _mm_add_ps(x_0, _mm_mul_ps(q_0, expansion_0));
-                        x_1 = _mm_add_ps(x_1, _mm_mul_ps(q_1, expansion_0));
-                        for(j = 1; j < fold - 1; j++){
-                          s_0 = s_buffer[(j * 2)];
-                          s_1 = s_buffer[((j * 2) + 1)];
-                          q_0 = _mm_add_ps(s_0, _mm_or_ps(x_0, blp_mask_tmp));
-                          q_1 = _mm_add_ps(s_1, _mm_or_ps(x_1, blp_mask_tmp));
-                          s_buffer[(j * 2)] = q_0;
-                          s_buffer[((j * 2) + 1)] = q_1;
-                          q_0 = _mm_sub_ps(s_0, q_0);
-                          q_1 = _mm_sub_ps(s_1, q_1);
-                          x_0 = _mm_add_ps(x_0, q_0);
-                          x_1 = _mm_add_ps(x_1, q_1);
-                        }
-                        s_buffer[(j * 2)] = _mm_add_ps(s_buffer[(j * 2)], _mm_or_ps(x_0, blp_mask_tmp));
-                        s_buffer[((j * 2) + 1)] = _mm_add_ps(s_buffer[((j * 2) + 1)], _mm_or_ps(x_1, blp_mask_tmp));
+                        x_0 = _mm_add_ps(x_0, q_0);
+                        x_1 = _mm_add_ps(x_1, q_1);
                       }
+                      s_buffer[(j * 2)] = _mm_add_ps(s_buffer[(j * 2)], _mm_or_ps(x_0, blp_mask_tmp));
+                      s_buffer[((j * 2) + 1)] = _mm_add_ps(s_buffer[((j * 2) + 1)], _mm_or_ps(x_1, blp_mask_tmp));
                     }
                     if(i < N_block){
                       x_0 = _mm_set_ps(0, 0, ((float*)x)[1], ((float*)x)[0]);
@@ -2028,26 +2015,24 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                       q_1 = _mm_add_ps(s_1, _mm_or_ps(_mm_mul_ps(x_1, compression_0), blp_mask_tmp));
                       s_buffer[0] = q_0;
                       s_buffer[1] = q_1;
-                      if(fold > 1){
+                      q_0 = _mm_sub_ps(s_0, q_0);
+                      q_1 = _mm_sub_ps(s_1, q_1);
+                      x_0 = _mm_add_ps(x_0, _mm_mul_ps(q_0, expansion_0));
+                      x_1 = _mm_add_ps(x_1, _mm_mul_ps(q_1, expansion_0));
+                      for(j = 1; j < fold - 1; j++){
+                        s_0 = s_buffer[(j * 2)];
+                        s_1 = s_buffer[((j * 2) + 1)];
+                        q_0 = _mm_add_ps(s_0, _mm_or_ps(x_0, blp_mask_tmp));
+                        q_1 = _mm_add_ps(s_1, _mm_or_ps(x_1, blp_mask_tmp));
+                        s_buffer[(j * 2)] = q_0;
+                        s_buffer[((j * 2) + 1)] = q_1;
                         q_0 = _mm_sub_ps(s_0, q_0);
                         q_1 = _mm_sub_ps(s_1, q_1);
-                        x_0 = _mm_add_ps(x_0, _mm_mul_ps(q_0, expansion_0));
-                        x_1 = _mm_add_ps(x_1, _mm_mul_ps(q_1, expansion_0));
-                        for(j = 1; j < fold - 1; j++){
-                          s_0 = s_buffer[(j * 2)];
-                          s_1 = s_buffer[((j * 2) + 1)];
-                          q_0 = _mm_add_ps(s_0, _mm_or_ps(x_0, blp_mask_tmp));
-                          q_1 = _mm_add_ps(s_1, _mm_or_ps(x_1, blp_mask_tmp));
-                          s_buffer[(j * 2)] = q_0;
-                          s_buffer[((j * 2) + 1)] = q_1;
-                          q_0 = _mm_sub_ps(s_0, q_0);
-                          q_1 = _mm_sub_ps(s_1, q_1);
-                          x_0 = _mm_add_ps(x_0, q_0);
-                          x_1 = _mm_add_ps(x_1, q_1);
-                        }
-                        s_buffer[(j * 2)] = _mm_add_ps(s_buffer[(j * 2)], _mm_or_ps(x_0, blp_mask_tmp));
-                        s_buffer[((j * 2) + 1)] = _mm_add_ps(s_buffer[((j * 2) + 1)], _mm_or_ps(x_1, blp_mask_tmp));
+                        x_0 = _mm_add_ps(x_0, q_0);
+                        x_1 = _mm_add_ps(x_1, q_1);
                       }
+                      s_buffer[(j * 2)] = _mm_add_ps(s_buffer[(j * 2)], _mm_or_ps(x_0, blp_mask_tmp));
+                      s_buffer[((j * 2) + 1)] = _mm_add_ps(s_buffer[((j * 2) + 1)], _mm_or_ps(x_1, blp_mask_tmp));
                       x += (incX * (N_block - i) * 2), y += ((N_block - i) * 2);
                     }
                   }else{
@@ -2121,26 +2106,24 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                       q_1 = _mm_add_ps(s_1, _mm_or_ps(_mm_mul_ps(x_1, compression_0), blp_mask_tmp));
                       s_buffer[0] = q_0;
                       s_buffer[1] = q_1;
-                      if(fold > 1){
+                      q_0 = _mm_sub_ps(s_0, q_0);
+                      q_1 = _mm_sub_ps(s_1, q_1);
+                      x_0 = _mm_add_ps(x_0, _mm_mul_ps(q_0, expansion_0));
+                      x_1 = _mm_add_ps(x_1, _mm_mul_ps(q_1, expansion_0));
+                      for(j = 1; j < fold - 1; j++){
+                        s_0 = s_buffer[(j * 2)];
+                        s_1 = s_buffer[((j * 2) + 1)];
+                        q_0 = _mm_add_ps(s_0, _mm_or_ps(x_0, blp_mask_tmp));
+                        q_1 = _mm_add_ps(s_1, _mm_or_ps(x_1, blp_mask_tmp));
+                        s_buffer[(j * 2)] = q_0;
+                        s_buffer[((j * 2) + 1)] = q_1;
                         q_0 = _mm_sub_ps(s_0, q_0);
                         q_1 = _mm_sub_ps(s_1, q_1);
-                        x_0 = _mm_add_ps(x_0, _mm_mul_ps(q_0, expansion_0));
-                        x_1 = _mm_add_ps(x_1, _mm_mul_ps(q_1, expansion_0));
-                        for(j = 1; j < fold - 1; j++){
-                          s_0 = s_buffer[(j * 2)];
-                          s_1 = s_buffer[((j * 2) + 1)];
-                          q_0 = _mm_add_ps(s_0, _mm_or_ps(x_0, blp_mask_tmp));
-                          q_1 = _mm_add_ps(s_1, _mm_or_ps(x_1, blp_mask_tmp));
-                          s_buffer[(j * 2)] = q_0;
-                          s_buffer[((j * 2) + 1)] = q_1;
-                          q_0 = _mm_sub_ps(s_0, q_0);
-                          q_1 = _mm_sub_ps(s_1, q_1);
-                          x_0 = _mm_add_ps(x_0, q_0);
-                          x_1 = _mm_add_ps(x_1, q_1);
-                        }
-                        s_buffer[(j * 2)] = _mm_add_ps(s_buffer[(j * 2)], _mm_or_ps(x_0, blp_mask_tmp));
-                        s_buffer[((j * 2) + 1)] = _mm_add_ps(s_buffer[((j * 2) + 1)], _mm_or_ps(x_1, blp_mask_tmp));
+                        x_0 = _mm_add_ps(x_0, q_0);
+                        x_1 = _mm_add_ps(x_1, q_1);
                       }
+                      s_buffer[(j * 2)] = _mm_add_ps(s_buffer[(j * 2)], _mm_or_ps(x_0, blp_mask_tmp));
+                      s_buffer[((j * 2) + 1)] = _mm_add_ps(s_buffer[((j * 2) + 1)], _mm_or_ps(x_1, blp_mask_tmp));
                     }
                     if(i < N_block){
                       x_0 = _mm_set_ps(0, 0, ((float*)x)[1], ((float*)x)[0]);
@@ -2154,26 +2137,24 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                       q_1 = _mm_add_ps(s_1, _mm_or_ps(_mm_mul_ps(x_1, compression_0), blp_mask_tmp));
                       s_buffer[0] = q_0;
                       s_buffer[1] = q_1;
-                      if(fold > 1){
+                      q_0 = _mm_sub_ps(s_0, q_0);
+                      q_1 = _mm_sub_ps(s_1, q_1);
+                      x_0 = _mm_add_ps(x_0, _mm_mul_ps(q_0, expansion_0));
+                      x_1 = _mm_add_ps(x_1, _mm_mul_ps(q_1, expansion_0));
+                      for(j = 1; j < fold - 1; j++){
+                        s_0 = s_buffer[(j * 2)];
+                        s_1 = s_buffer[((j * 2) + 1)];
+                        q_0 = _mm_add_ps(s_0, _mm_or_ps(x_0, blp_mask_tmp));
+                        q_1 = _mm_add_ps(s_1, _mm_or_ps(x_1, blp_mask_tmp));
+                        s_buffer[(j * 2)] = q_0;
+                        s_buffer[((j * 2) + 1)] = q_1;
                         q_0 = _mm_sub_ps(s_0, q_0);
                         q_1 = _mm_sub_ps(s_1, q_1);
-                        x_0 = _mm_add_ps(x_0, _mm_mul_ps(q_0, expansion_0));
-                        x_1 = _mm_add_ps(x_1, _mm_mul_ps(q_1, expansion_0));
-                        for(j = 1; j < fold - 1; j++){
-                          s_0 = s_buffer[(j * 2)];
-                          s_1 = s_buffer[((j * 2) + 1)];
-                          q_0 = _mm_add_ps(s_0, _mm_or_ps(x_0, blp_mask_tmp));
-                          q_1 = _mm_add_ps(s_1, _mm_or_ps(x_1, blp_mask_tmp));
-                          s_buffer[(j * 2)] = q_0;
-                          s_buffer[((j * 2) + 1)] = q_1;
-                          q_0 = _mm_sub_ps(s_0, q_0);
-                          q_1 = _mm_sub_ps(s_1, q_1);
-                          x_0 = _mm_add_ps(x_0, q_0);
-                          x_1 = _mm_add_ps(x_1, q_1);
-                        }
-                        s_buffer[(j * 2)] = _mm_add_ps(s_buffer[(j * 2)], _mm_or_ps(x_0, blp_mask_tmp));
-                        s_buffer[((j * 2) + 1)] = _mm_add_ps(s_buffer[((j * 2) + 1)], _mm_or_ps(x_1, blp_mask_tmp));
+                        x_0 = _mm_add_ps(x_0, q_0);
+                        x_1 = _mm_add_ps(x_1, q_1);
                       }
+                      s_buffer[(j * 2)] = _mm_add_ps(s_buffer[(j * 2)], _mm_or_ps(x_0, blp_mask_tmp));
+                      s_buffer[((j * 2) + 1)] = _mm_add_ps(s_buffer[((j * 2) + 1)], _mm_or_ps(x_1, blp_mask_tmp));
                       x += (incX * (N_block - i) * 2), y += (incY * (N_block - i) * 2);
                     }
                   }else{
@@ -2233,6 +2214,9 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                 ((float*)manZ)[((incmanZ * j * 2) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3];
               }
 
+              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
+                _mm_setcsr(SIMD_daz_ftz_old_tmp);
+              }
             }
             break;
         }
@@ -2946,7 +2930,7 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
               float expansion_0, expansion_1;
               float q_0, q_1, q_2, q_3;
               float s_0, s_1, s_2, s_3;
-              float s_buffer[(MAX_FOLD * 4)];
+              float s_buffer[(SIMAXFOLD * 4)];
 
               for(j = 0; j < fold; j += 1){
                 s_buffer[(j * 4)] = s_buffer[((j * 4) + 2)] = ((float*)manZ)[(incmanZ * j * 2)];
@@ -3002,58 +2986,56 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                       s_buffer[1] = q_1;
                       s_buffer[2] = q_2;
                       s_buffer[3] = q_3;
-                      if(fold > 1){
+                      q_0 = s_0 - q_0;
+                      q_1 = s_1 - q_1;
+                      q_2 = s_2 - q_2;
+                      q_3 = s_3 - q_3;
+                      x_0 = x_0 + q_0 * expansion_0;
+                      x_1 = x_1 + q_1 * expansion_1;
+                      x_2 = x_2 + q_2 * expansion_0;
+                      x_3 = x_3 + q_3 * expansion_1;
+                      for(j = 1; j < fold - 1; j++){
+                        s_0 = s_buffer[(j * 4)];
+                        s_1 = s_buffer[((j * 4) + 1)];
+                        s_2 = s_buffer[((j * 4) + 2)];
+                        s_3 = s_buffer[((j * 4) + 3)];
+                        blp_tmp.f = x_0;
+                        blp_tmp.i |= 1;
+                        q_0 = s_0 + blp_tmp.f;
+                        blp_tmp.f = x_1;
+                        blp_tmp.i |= 1;
+                        q_1 = s_1 + blp_tmp.f;
+                        blp_tmp.f = x_2;
+                        blp_tmp.i |= 1;
+                        q_2 = s_2 + blp_tmp.f;
+                        blp_tmp.f = x_3;
+                        blp_tmp.i |= 1;
+                        q_3 = s_3 + blp_tmp.f;
+                        s_buffer[(j * 4)] = q_0;
+                        s_buffer[((j * 4) + 1)] = q_1;
+                        s_buffer[((j * 4) + 2)] = q_2;
+                        s_buffer[((j * 4) + 3)] = q_3;
                         q_0 = s_0 - q_0;
                         q_1 = s_1 - q_1;
                         q_2 = s_2 - q_2;
                         q_3 = s_3 - q_3;
-                        x_0 = x_0 + q_0 * expansion_0;
-                        x_1 = x_1 + q_1 * expansion_1;
-                        x_2 = x_2 + q_2 * expansion_0;
-                        x_3 = x_3 + q_3 * expansion_1;
-                        for(j = 1; j < fold - 1; j++){
-                          s_0 = s_buffer[(j * 4)];
-                          s_1 = s_buffer[((j * 4) + 1)];
-                          s_2 = s_buffer[((j * 4) + 2)];
-                          s_3 = s_buffer[((j * 4) + 3)];
-                          blp_tmp.f = x_0;
-                          blp_tmp.i |= 1;
-                          q_0 = s_0 + blp_tmp.f;
-                          blp_tmp.f = x_1;
-                          blp_tmp.i |= 1;
-                          q_1 = s_1 + blp_tmp.f;
-                          blp_tmp.f = x_2;
-                          blp_tmp.i |= 1;
-                          q_2 = s_2 + blp_tmp.f;
-                          blp_tmp.f = x_3;
-                          blp_tmp.i |= 1;
-                          q_3 = s_3 + blp_tmp.f;
-                          s_buffer[(j * 4)] = q_0;
-                          s_buffer[((j * 4) + 1)] = q_1;
-                          s_buffer[((j * 4) + 2)] = q_2;
-                          s_buffer[((j * 4) + 3)] = q_3;
-                          q_0 = s_0 - q_0;
-                          q_1 = s_1 - q_1;
-                          q_2 = s_2 - q_2;
-                          q_3 = s_3 - q_3;
-                          x_0 = x_0 + q_0;
-                          x_1 = x_1 + q_1;
-                          x_2 = x_2 + q_2;
-                          x_3 = x_3 + q_3;
-                        }
-                        blp_tmp.f = x_0;
-                        blp_tmp.i |= 1;
-                        s_buffer[(j * 4)] = s_buffer[(j * 4)] + blp_tmp.f;
-                        blp_tmp.f = x_1;
-                        blp_tmp.i |= 1;
-                        s_buffer[((j * 4) + 1)] = s_buffer[((j * 4) + 1)] + blp_tmp.f;
-                        blp_tmp.f = x_2;
-                        blp_tmp.i |= 1;
-                        s_buffer[((j * 4) + 2)] = s_buffer[((j * 4) + 2)] + blp_tmp.f;
-                        blp_tmp.f = x_3;
-                        blp_tmp.i |= 1;
-                        s_buffer[((j * 4) + 3)] = s_buffer[((j * 4) + 3)] + blp_tmp.f;
+                        x_0 = x_0 + q_0;
+                        x_1 = x_1 + q_1;
+                        x_2 = x_2 + q_2;
+                        x_3 = x_3 + q_3;
                       }
+                      blp_tmp.f = x_0;
+                      blp_tmp.i |= 1;
+                      s_buffer[(j * 4)] = s_buffer[(j * 4)] + blp_tmp.f;
+                      blp_tmp.f = x_1;
+                      blp_tmp.i |= 1;
+                      s_buffer[((j * 4) + 1)] = s_buffer[((j * 4) + 1)] + blp_tmp.f;
+                      blp_tmp.f = x_2;
+                      blp_tmp.i |= 1;
+                      s_buffer[((j * 4) + 2)] = s_buffer[((j * 4) + 2)] + blp_tmp.f;
+                      blp_tmp.f = x_3;
+                      blp_tmp.i |= 1;
+                      s_buffer[((j * 4) + 3)] = s_buffer[((j * 4) + 3)] + blp_tmp.f;
                     }
                   }else{
                     for(i = 0; i + 1 <= N_block; i += 1, x += 2, y += 2){
@@ -3158,58 +3140,56 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                       s_buffer[1] = q_1;
                       s_buffer[2] = q_2;
                       s_buffer[3] = q_3;
-                      if(fold > 1){
+                      q_0 = s_0 - q_0;
+                      q_1 = s_1 - q_1;
+                      q_2 = s_2 - q_2;
+                      q_3 = s_3 - q_3;
+                      x_0 = x_0 + q_0 * expansion_0;
+                      x_1 = x_1 + q_1 * expansion_1;
+                      x_2 = x_2 + q_2 * expansion_0;
+                      x_3 = x_3 + q_3 * expansion_1;
+                      for(j = 1; j < fold - 1; j++){
+                        s_0 = s_buffer[(j * 4)];
+                        s_1 = s_buffer[((j * 4) + 1)];
+                        s_2 = s_buffer[((j * 4) + 2)];
+                        s_3 = s_buffer[((j * 4) + 3)];
+                        blp_tmp.f = x_0;
+                        blp_tmp.i |= 1;
+                        q_0 = s_0 + blp_tmp.f;
+                        blp_tmp.f = x_1;
+                        blp_tmp.i |= 1;
+                        q_1 = s_1 + blp_tmp.f;
+                        blp_tmp.f = x_2;
+                        blp_tmp.i |= 1;
+                        q_2 = s_2 + blp_tmp.f;
+                        blp_tmp.f = x_3;
+                        blp_tmp.i |= 1;
+                        q_3 = s_3 + blp_tmp.f;
+                        s_buffer[(j * 4)] = q_0;
+                        s_buffer[((j * 4) + 1)] = q_1;
+                        s_buffer[((j * 4) + 2)] = q_2;
+                        s_buffer[((j * 4) + 3)] = q_3;
                         q_0 = s_0 - q_0;
                         q_1 = s_1 - q_1;
                         q_2 = s_2 - q_2;
                         q_3 = s_3 - q_3;
-                        x_0 = x_0 + q_0 * expansion_0;
-                        x_1 = x_1 + q_1 * expansion_1;
-                        x_2 = x_2 + q_2 * expansion_0;
-                        x_3 = x_3 + q_3 * expansion_1;
-                        for(j = 1; j < fold - 1; j++){
-                          s_0 = s_buffer[(j * 4)];
-                          s_1 = s_buffer[((j * 4) + 1)];
-                          s_2 = s_buffer[((j * 4) + 2)];
-                          s_3 = s_buffer[((j * 4) + 3)];
-                          blp_tmp.f = x_0;
-                          blp_tmp.i |= 1;
-                          q_0 = s_0 + blp_tmp.f;
-                          blp_tmp.f = x_1;
-                          blp_tmp.i |= 1;
-                          q_1 = s_1 + blp_tmp.f;
-                          blp_tmp.f = x_2;
-                          blp_tmp.i |= 1;
-                          q_2 = s_2 + blp_tmp.f;
-                          blp_tmp.f = x_3;
-                          blp_tmp.i |= 1;
-                          q_3 = s_3 + blp_tmp.f;
-                          s_buffer[(j * 4)] = q_0;
-                          s_buffer[((j * 4) + 1)] = q_1;
-                          s_buffer[((j * 4) + 2)] = q_2;
-                          s_buffer[((j * 4) + 3)] = q_3;
-                          q_0 = s_0 - q_0;
-                          q_1 = s_1 - q_1;
-                          q_2 = s_2 - q_2;
-                          q_3 = s_3 - q_3;
-                          x_0 = x_0 + q_0;
-                          x_1 = x_1 + q_1;
-                          x_2 = x_2 + q_2;
-                          x_3 = x_3 + q_3;
-                        }
-                        blp_tmp.f = x_0;
-                        blp_tmp.i |= 1;
-                        s_buffer[(j * 4)] = s_buffer[(j * 4)] + blp_tmp.f;
-                        blp_tmp.f = x_1;
-                        blp_tmp.i |= 1;
-                        s_buffer[((j * 4) + 1)] = s_buffer[((j * 4) + 1)] + blp_tmp.f;
-                        blp_tmp.f = x_2;
-                        blp_tmp.i |= 1;
-                        s_buffer[((j * 4) + 2)] = s_buffer[((j * 4) + 2)] + blp_tmp.f;
-                        blp_tmp.f = x_3;
-                        blp_tmp.i |= 1;
-                        s_buffer[((j * 4) + 3)] = s_buffer[((j * 4) + 3)] + blp_tmp.f;
+                        x_0 = x_0 + q_0;
+                        x_1 = x_1 + q_1;
+                        x_2 = x_2 + q_2;
+                        x_3 = x_3 + q_3;
                       }
+                      blp_tmp.f = x_0;
+                      blp_tmp.i |= 1;
+                      s_buffer[(j * 4)] = s_buffer[(j * 4)] + blp_tmp.f;
+                      blp_tmp.f = x_1;
+                      blp_tmp.i |= 1;
+                      s_buffer[((j * 4) + 1)] = s_buffer[((j * 4) + 1)] + blp_tmp.f;
+                      blp_tmp.f = x_2;
+                      blp_tmp.i |= 1;
+                      s_buffer[((j * 4) + 2)] = s_buffer[((j * 4) + 2)] + blp_tmp.f;
+                      blp_tmp.f = x_3;
+                      blp_tmp.i |= 1;
+                      s_buffer[((j * 4) + 3)] = s_buffer[((j * 4) + 3)] + blp_tmp.f;
                     }
                   }else{
                     for(i = 0; i + 1 <= N_block; i += 1, x += 2, y += (incY * 2)){
@@ -3316,58 +3296,56 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                       s_buffer[1] = q_1;
                       s_buffer[2] = q_2;
                       s_buffer[3] = q_3;
-                      if(fold > 1){
+                      q_0 = s_0 - q_0;
+                      q_1 = s_1 - q_1;
+                      q_2 = s_2 - q_2;
+                      q_3 = s_3 - q_3;
+                      x_0 = x_0 + q_0 * expansion_0;
+                      x_1 = x_1 + q_1 * expansion_1;
+                      x_2 = x_2 + q_2 * expansion_0;
+                      x_3 = x_3 + q_3 * expansion_1;
+                      for(j = 1; j < fold - 1; j++){
+                        s_0 = s_buffer[(j * 4)];
+                        s_1 = s_buffer[((j * 4) + 1)];
+                        s_2 = s_buffer[((j * 4) + 2)];
+                        s_3 = s_buffer[((j * 4) + 3)];
+                        blp_tmp.f = x_0;
+                        blp_tmp.i |= 1;
+                        q_0 = s_0 + blp_tmp.f;
+                        blp_tmp.f = x_1;
+                        blp_tmp.i |= 1;
+                        q_1 = s_1 + blp_tmp.f;
+                        blp_tmp.f = x_2;
+                        blp_tmp.i |= 1;
+                        q_2 = s_2 + blp_tmp.f;
+                        blp_tmp.f = x_3;
+                        blp_tmp.i |= 1;
+                        q_3 = s_3 + blp_tmp.f;
+                        s_buffer[(j * 4)] = q_0;
+                        s_buffer[((j * 4) + 1)] = q_1;
+                        s_buffer[((j * 4) + 2)] = q_2;
+                        s_buffer[((j * 4) + 3)] = q_3;
                         q_0 = s_0 - q_0;
                         q_1 = s_1 - q_1;
                         q_2 = s_2 - q_2;
                         q_3 = s_3 - q_3;
-                        x_0 = x_0 + q_0 * expansion_0;
-                        x_1 = x_1 + q_1 * expansion_1;
-                        x_2 = x_2 + q_2 * expansion_0;
-                        x_3 = x_3 + q_3 * expansion_1;
-                        for(j = 1; j < fold - 1; j++){
-                          s_0 = s_buffer[(j * 4)];
-                          s_1 = s_buffer[((j * 4) + 1)];
-                          s_2 = s_buffer[((j * 4) + 2)];
-                          s_3 = s_buffer[((j * 4) + 3)];
-                          blp_tmp.f = x_0;
-                          blp_tmp.i |= 1;
-                          q_0 = s_0 + blp_tmp.f;
-                          blp_tmp.f = x_1;
-                          blp_tmp.i |= 1;
-                          q_1 = s_1 + blp_tmp.f;
-                          blp_tmp.f = x_2;
-                          blp_tmp.i |= 1;
-                          q_2 = s_2 + blp_tmp.f;
-                          blp_tmp.f = x_3;
-                          blp_tmp.i |= 1;
-                          q_3 = s_3 + blp_tmp.f;
-                          s_buffer[(j * 4)] = q_0;
-                          s_buffer[((j * 4) + 1)] = q_1;
-                          s_buffer[((j * 4) + 2)] = q_2;
-                          s_buffer[((j * 4) + 3)] = q_3;
-                          q_0 = s_0 - q_0;
-                          q_1 = s_1 - q_1;
-                          q_2 = s_2 - q_2;
-                          q_3 = s_3 - q_3;
-                          x_0 = x_0 + q_0;
-                          x_1 = x_1 + q_1;
-                          x_2 = x_2 + q_2;
-                          x_3 = x_3 + q_3;
-                        }
-                        blp_tmp.f = x_0;
-                        blp_tmp.i |= 1;
-                        s_buffer[(j * 4)] = s_buffer[(j * 4)] + blp_tmp.f;
-                        blp_tmp.f = x_1;
-                        blp_tmp.i |= 1;
-                        s_buffer[((j * 4) + 1)] = s_buffer[((j * 4) + 1)] + blp_tmp.f;
-                        blp_tmp.f = x_2;
-                        blp_tmp.i |= 1;
-                        s_buffer[((j * 4) + 2)] = s_buffer[((j * 4) + 2)] + blp_tmp.f;
-                        blp_tmp.f = x_3;
-                        blp_tmp.i |= 1;
-                        s_buffer[((j * 4) + 3)] = s_buffer[((j * 4) + 3)] + blp_tmp.f;
+                        x_0 = x_0 + q_0;
+                        x_1 = x_1 + q_1;
+                        x_2 = x_2 + q_2;
+                        x_3 = x_3 + q_3;
                       }
+                      blp_tmp.f = x_0;
+                      blp_tmp.i |= 1;
+                      s_buffer[(j * 4)] = s_buffer[(j * 4)] + blp_tmp.f;
+                      blp_tmp.f = x_1;
+                      blp_tmp.i |= 1;
+                      s_buffer[((j * 4) + 1)] = s_buffer[((j * 4) + 1)] + blp_tmp.f;
+                      blp_tmp.f = x_2;
+                      blp_tmp.i |= 1;
+                      s_buffer[((j * 4) + 2)] = s_buffer[((j * 4) + 2)] + blp_tmp.f;
+                      blp_tmp.f = x_3;
+                      blp_tmp.i |= 1;
+                      s_buffer[((j * 4) + 3)] = s_buffer[((j * 4) + 3)] + blp_tmp.f;
                     }
                   }else{
                     for(i = 0; i + 1 <= N_block; i += 1, x += (incX * 2), y += 2){
@@ -3472,58 +3450,56 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                       s_buffer[1] = q_1;
                       s_buffer[2] = q_2;
                       s_buffer[3] = q_3;
-                      if(fold > 1){
+                      q_0 = s_0 - q_0;
+                      q_1 = s_1 - q_1;
+                      q_2 = s_2 - q_2;
+                      q_3 = s_3 - q_3;
+                      x_0 = x_0 + q_0 * expansion_0;
+                      x_1 = x_1 + q_1 * expansion_1;
+                      x_2 = x_2 + q_2 * expansion_0;
+                      x_3 = x_3 + q_3 * expansion_1;
+                      for(j = 1; j < fold - 1; j++){
+                        s_0 = s_buffer[(j * 4)];
+                        s_1 = s_buffer[((j * 4) + 1)];
+                        s_2 = s_buffer[((j * 4) + 2)];
+                        s_3 = s_buffer[((j * 4) + 3)];
+                        blp_tmp.f = x_0;
+                        blp_tmp.i |= 1;
+                        q_0 = s_0 + blp_tmp.f;
+                        blp_tmp.f = x_1;
+                        blp_tmp.i |= 1;
+                        q_1 = s_1 + blp_tmp.f;
+                        blp_tmp.f = x_2;
+                        blp_tmp.i |= 1;
+                        q_2 = s_2 + blp_tmp.f;
+                        blp_tmp.f = x_3;
+                        blp_tmp.i |= 1;
+                        q_3 = s_3 + blp_tmp.f;
+                        s_buffer[(j * 4)] = q_0;
+                        s_buffer[((j * 4) + 1)] = q_1;
+                        s_buffer[((j * 4) + 2)] = q_2;
+                        s_buffer[((j * 4) + 3)] = q_3;
                         q_0 = s_0 - q_0;
                         q_1 = s_1 - q_1;
                         q_2 = s_2 - q_2;
                         q_3 = s_3 - q_3;
-                        x_0 = x_0 + q_0 * expansion_0;
-                        x_1 = x_1 + q_1 * expansion_1;
-                        x_2 = x_2 + q_2 * expansion_0;
-                        x_3 = x_3 + q_3 * expansion_1;
-                        for(j = 1; j < fold - 1; j++){
-                          s_0 = s_buffer[(j * 4)];
-                          s_1 = s_buffer[((j * 4) + 1)];
-                          s_2 = s_buffer[((j * 4) + 2)];
-                          s_3 = s_buffer[((j * 4) + 3)];
-                          blp_tmp.f = x_0;
-                          blp_tmp.i |= 1;
-                          q_0 = s_0 + blp_tmp.f;
-                          blp_tmp.f = x_1;
-                          blp_tmp.i |= 1;
-                          q_1 = s_1 + blp_tmp.f;
-                          blp_tmp.f = x_2;
-                          blp_tmp.i |= 1;
-                          q_2 = s_2 + blp_tmp.f;
-                          blp_tmp.f = x_3;
-                          blp_tmp.i |= 1;
-                          q_3 = s_3 + blp_tmp.f;
-                          s_buffer[(j * 4)] = q_0;
-                          s_buffer[((j * 4) + 1)] = q_1;
-                          s_buffer[((j * 4) + 2)] = q_2;
-                          s_buffer[((j * 4) + 3)] = q_3;
-                          q_0 = s_0 - q_0;
-                          q_1 = s_1 - q_1;
-                          q_2 = s_2 - q_2;
-                          q_3 = s_3 - q_3;
-                          x_0 = x_0 + q_0;
-                          x_1 = x_1 + q_1;
-                          x_2 = x_2 + q_2;
-                          x_3 = x_3 + q_3;
-                        }
-                        blp_tmp.f = x_0;
-                        blp_tmp.i |= 1;
-                        s_buffer[(j * 4)] = s_buffer[(j * 4)] + blp_tmp.f;
-                        blp_tmp.f = x_1;
-                        blp_tmp.i |= 1;
-                        s_buffer[((j * 4) + 1)] = s_buffer[((j * 4) + 1)] + blp_tmp.f;
-                        blp_tmp.f = x_2;
-                        blp_tmp.i |= 1;
-                        s_buffer[((j * 4) + 2)] = s_buffer[((j * 4) + 2)] + blp_tmp.f;
-                        blp_tmp.f = x_3;
-                        blp_tmp.i |= 1;
-                        s_buffer[((j * 4) + 3)] = s_buffer[((j * 4) + 3)] + blp_tmp.f;
+                        x_0 = x_0 + q_0;
+                        x_1 = x_1 + q_1;
+                        x_2 = x_2 + q_2;
+                        x_3 = x_3 + q_3;
                       }
+                      blp_tmp.f = x_0;
+                      blp_tmp.i |= 1;
+                      s_buffer[(j * 4)] = s_buffer[(j * 4)] + blp_tmp.f;
+                      blp_tmp.f = x_1;
+                      blp_tmp.i |= 1;
+                      s_buffer[((j * 4) + 1)] = s_buffer[((j * 4) + 1)] + blp_tmp.f;
+                      blp_tmp.f = x_2;
+                      blp_tmp.i |= 1;
+                      s_buffer[((j * 4) + 2)] = s_buffer[((j * 4) + 2)] + blp_tmp.f;
+                      blp_tmp.f = x_3;
+                      blp_tmp.i |= 1;
+                      s_buffer[((j * 4) + 3)] = s_buffer[((j * 4) + 3)] + blp_tmp.f;
                     }
                   }else{
                     for(i = 0; i + 1 <= N_block; i += 1, x += (incX * 2), y += (incY * 2)){

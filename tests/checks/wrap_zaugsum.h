@@ -42,7 +42,7 @@ static const char* wrap_zaugsum_func_descs[] = {"rzsum",
 double complex wrap_rzsum(int fold, int N, double complex *x, int incx, double complex *y, int incy) {
   (void)y;
   (void)incy;
-  if(fold == DEFAULT_FOLD){
+  if(fold == DIDEFAULTFOLD){
     double complex res;
     rzsum_sub(N, x, incx, &res);
     return res;
@@ -66,7 +66,7 @@ void wrap_zizsum(int fold, int N, double complex *x, int incx, double complex *y
 double complex wrap_rdzasum(int fold, int N, double complex *x, int incx, double complex *y, int incy) {
   (void)y;
   (void)incy;
-  if(fold == DEFAULT_FOLD){
+  if(fold == DIDEFAULTFOLD){
     return rdzasum(N, x, incx);
   }else{
     double_indexed *ires = dialloc(fold);
@@ -87,7 +87,7 @@ void wrap_dizasum(int fold, int N, double complex *x, int incx, double complex *
 double complex wrap_rdznrm2(int fold, int N, double complex *x, int incx, double complex *y, int incy) {
   (void)y;
   (void)incy;
-  if(fold == DEFAULT_FOLD){
+  if(fold == DIDEFAULTFOLD){
     return rdznrm2(N, x, incx);
   }else{
     double_indexed *ires = dialloc(fold);
@@ -106,7 +106,7 @@ void wrap_dizssq(int fold, int N, double complex *x, int incx, double complex *y
 }
 
 double complex wrap_rzdotu(int fold, int N, double complex *x, int incx, double complex *y, int incy) {
-  if(fold == DEFAULT_FOLD){
+  if(fold == DIDEFAULTFOLD){
     double complex res;
     rzdotu_sub(N, x, incx, y, incy, &res);
     return res;
@@ -126,7 +126,7 @@ void wrap_zizdotu(int fold, int N, double complex *x, int incx, double complex *
 }
 
 double complex wrap_rzdotc(int fold, int N, double complex *x, int incx, double complex *y, int incy) {
-  if(fold == DEFAULT_FOLD){
+  if(fold == DIDEFAULTFOLD){
     double complex res;
     rzdotc_sub(N, x, incx, y, incy, &res);
     return res;

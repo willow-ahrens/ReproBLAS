@@ -39,7 +39,7 @@ static const char* wrap_daugsum_func_descs[] = {"rdsum",
 double wrap_rdsum(int fold, int N, double *x, int incx, double *y, int incy) {
   (void)y;
   (void)incy;
-  if(fold == DEFAULT_FOLD){
+  if(fold == DIDEFAULTFOLD){
     return rdsum(N, x, incx);
   }else{
     double_indexed *ires = dialloc(fold);
@@ -60,7 +60,7 @@ void wrap_didsum(int fold, int N, double *x, int incx, double *y, int incy, doub
 double wrap_rdasum(int fold, int N, double *x, int incx, double *y, int incy) {
   (void)y;
   (void)incy;
-  if(fold == DEFAULT_FOLD){
+  if(fold == DIDEFAULTFOLD){
     return rdasum(N, x, incx);
   }else{
     double_indexed *ires = dialloc(fold);
@@ -81,7 +81,7 @@ void wrap_didasum(int fold, int N, double *x, int incx, double *y, int incy, dou
 double wrap_rdnrm2(int fold, int N, double *x, int incx, double *y, int incy) {
   (void)y;
   (void)incy;
-  if(fold == DEFAULT_FOLD){
+  if(fold == DIDEFAULTFOLD){
     return rdnrm2(N, x, incx);
   }else{
     double_indexed *ires = dialloc(fold);
@@ -100,7 +100,7 @@ void wrap_didssq(int fold, int N, double *x, int incx, double *y, int incy, doub
 }
 
 double wrap_rddot(int fold, int N, double *x, int incx, double *y, int incy) {
-  if(fold == DEFAULT_FOLD){
+  if(fold == DIDEFAULTFOLD){
     return rddot(N, x, incx, y, incy);
   }else{
     double_indexed *ires = dialloc(fold);

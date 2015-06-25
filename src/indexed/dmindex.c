@@ -24,7 +24,7 @@ int dmindex(const double *priX){
   int exp;
 
   if(priX[0] == 0.0){
-    return (DBL_MAX_EXP - DBL_MIN_EXP)/DIWIDTH + MAX_FOLD;
+    return (DBL_MAX_EXP - DBL_MIN_EXP)/DIWIDTH + DIMAXFOLD;
   }else{
     frexp(priX[0], &exp);
     if(exp == DBL_MAX_EXP){
@@ -35,7 +35,7 @@ int dmindex(const double *priX){
   */
   /*
   if(priX[0] == 0.0){
-    return (DBL_MAX_EXP - DBL_MIN_EXP)/DIWIDTH + MAX_FOLD;
+    return (DBL_MAX_EXP - DBL_MIN_EXP)/DIWIDTH + DIMAXFOLD;
   }else{
     return ((DBL_MAX_EXP + DBL_MANT_DIG - DIWIDTH + 1 + EXP_BIAS) - EXP(priX[0]))/DIWIDTH;
   }

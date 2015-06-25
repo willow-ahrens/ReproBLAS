@@ -22,8 +22,8 @@ static void bench_rsdot_options_initialize(void){
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
   fold._int.min               = 0;
-  fold._int.max               = MAX_FOLD;
-  fold._int.value             = DEFAULT_FOLD;
+  fold._int.max               = SIMAXFOLD;
+  fold._int.value             = SIDEFAULTFOLD;
 }
 
 int bench_vecvec_fill_show_help(void){
@@ -67,7 +67,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   util_svec_fill(N, X, incX, FillX, RealScaleX, ImagScaleX);
   util_svec_fill(N, Y, incY, FillY, RealScaleY, ImagScaleY);
 
-  if(fold._int.value == DEFAULT_FOLD){
+  if(fold._int.value == SIDEFAULTFOLD){
     time_tic();
     for(i = 0; i < trials; i++){
       res = rsdot(N, X, incX, Y, incY);
@@ -75,7 +75,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
     time_toc();
   }else if(fold._int.value == 0){
     time_tic();
-    for(j = 2; j <= MAX_FOLD; j++){
+    for(j = 2; j <= SIMAXFOLD; j++){
       ires = sialloc(j);
       sisetzero(j, ires);
       for(i = 0; i < trials; i++){

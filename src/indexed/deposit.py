@@ -14,8 +14,12 @@ import itertools
 class Deposit(Target):
   def __init__(self, data_type_class, fold_name, N_name, X_name, incX_name, priY_name, incpriY_name):
     super(Deposit, self).__init__()
-    self.default_fold = terminal.get_default_fold()
-    self.max_fold = terminal.get_max_fold()
+    if data_type_class.base_type.name == "double":
+      self.default_fold = terminal.get_didefaultfold()
+      self.max_fold = terminal.get_dimaxfold()
+    else:
+      self.default_fold = terminal.get_sidefaultfold()
+      self.max_fold = terminal.get_simaxfold()
     self.max_expand_fold = min(self.max_fold, 6)
     self.data_type_class = data_type_class
     self.fold_name = fold_name
@@ -133,7 +137,7 @@ class Deposit(Target):
         code_block.define_vars(self.vec.type_name, self.s_vars[j])
 
     if fold == 0:
-      code_block.write("{0} s_buffer[{1}];".format(self.vec.type_name, mix("*", max_reg_width, "MAX_FOLD")))
+      code_block.write("{0} s_buffer[{1}];".format(self.vec.type_name, mix("*", max_reg_width, "{}IMAXFOLD".format(self.data_type.base_type.name_char.upper()))))
       self.buffer_vars = ["s_buffer[{0}]".format(mix("+", mix("*", "j", max_reg_width), i)) for i in range(max_reg_width)]
       self.buffer0_vars = ["s_buffer[{0}]".format(mix("+", mix("*", "0", max_reg_width), i)) for i in range(max_reg_width)]
 

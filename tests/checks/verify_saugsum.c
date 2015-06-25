@@ -39,8 +39,8 @@ static void verify_saugsum_options_initialize(void){
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
   fold._int.min               = 2;
-  fold._int.max               = MAX_FOLD;
-  fold._int.value             = DEFAULT_FOLD;
+  fold._int.max               = SIMAXFOLD;
+  fold._int.value             = SIDEFAULTFOLD;
 }
 
 int verify_saugsum_reproducibility(int fold, int N, float* X, int incX, float* Y, int incY, int func, float ref, float_indexed *iref, int max_num_blocks) {

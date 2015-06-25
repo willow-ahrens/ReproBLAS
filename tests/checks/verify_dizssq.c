@@ -28,8 +28,8 @@ static void verify_dizssq_options_initialize(void){
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
   fold._int.min               = 2;
-  fold._int.max               = MAX_FOLD;
-  fold._int.value             = DEFAULT_FOLD;
+  fold._int.max               = DIMAXFOLD;
+  fold._int.value             = DIDEFAULTFOLD;
 }
 
 int verify_dizssq_reproducibility(int fold, int N, double complex* X, int incX, double refscl, double refssq, double_indexed *iref, int max_num_blocks) {

@@ -4,14 +4,14 @@
 #include "../../config.h"
 
 double rddot(const int N, const double* X, const int incX, const double *Y, const int incY) {
-  double_indexed *doti = dialloc(DEFAULT_FOLD);
+  double_indexed *doti = dialloc(DIDEFAULTFOLD);
   double dot;
 
-  disetzero(DEFAULT_FOLD, doti);
+  disetzero(DIDEFAULTFOLD, doti);
 
-  diddot(DEFAULT_FOLD, N, X, incX, Y, incY, doti);
+  diddot(DIDEFAULTFOLD, N, X, incX, Y, incY, doti);
 
-  dot = ddiconv(DEFAULT_FOLD, doti);
+  dot = ddiconv(DIDEFAULTFOLD, doti);
   free(doti);
   return dot;
 }

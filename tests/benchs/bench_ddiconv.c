@@ -21,8 +21,8 @@ static void bench_ddiconv_options_initialize(void){
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
   fold._int.min               = 0;
-  fold._int.max               = MAX_FOLD;
-  fold._int.value             = DEFAULT_FOLD;
+  fold._int.max               = DIMAXFOLD;
+  fold._int.value             = DIDEFAULTFOLD;
 }
 
 int bench_vecvec_fill_show_help(void){
@@ -69,11 +69,11 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   util_dvec_fill(N, X, incX, FillX, RealScaleX, ImagScaleX);
 
   if(fold._int.value == 0){
-    ires = dialloc(MAX_FOLD);
-    disetzero(MAX_FOLD, ires);
-    didsum(MAX_FOLD, N, X, incX, ires);
+    ires = dialloc(DIMAXFOLD);
+    disetzero(DIMAXFOLD, ires);
+    didsum(DIMAXFOLD, N, X, incX, ires);
     time_tic();
-    for(j = 1; j <= MAX_FOLD; j++){
+    for(j = 1; j <= DIMAXFOLD; j++){
       for(i = 0; i < trials; i++){
         res = ddiconv(j, ires);
       }
@@ -96,7 +96,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   metric_load_double("res", res);
   metric_load_double("trials", (double)trials);
   if(fold._int.value == 0){
-    metric_load_double("input", (double)MAX_FOLD);
+    metric_load_double("input", (double)DIMAXFOLD);
   }else{
     metric_load_double("input", (double)1);
   }

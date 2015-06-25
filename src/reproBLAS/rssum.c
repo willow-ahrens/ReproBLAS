@@ -4,14 +4,14 @@
 #include "../../config.h"
 
 float rssum(const int N, const float* X, const int incX) {
-  float_indexed *sumi = sialloc(DEFAULT_FOLD);
+  float_indexed *sumi = sialloc(SIDEFAULTFOLD);
   float sum;
 
-  sisetzero(DEFAULT_FOLD, sumi);
+  sisetzero(SIDEFAULTFOLD, sumi);
 
-  sissum(DEFAULT_FOLD, N, X, incX, sumi);
+  sissum(SIDEFAULTFOLD, N, X, incX, sumi);
 
-  sum = ssiconv(DEFAULT_FOLD, sumi);
+  sum = ssiconv(SIDEFAULTFOLD, sumi);
   free(sumi);
   return sum;
 }

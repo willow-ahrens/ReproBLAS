@@ -21,8 +21,8 @@ static void bench_zziconv_options_initialize(void){
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
   fold._int.min               = 0;
-  fold._int.max               = MAX_FOLD;
-  fold._int.value             = DEFAULT_FOLD;
+  fold._int.max               = DIMAXFOLD;
+  fold._int.value             = DIDEFAULTFOLD;
 }
 
 int bench_vecvec_fill_show_help(void){
@@ -69,11 +69,11 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   util_zvec_fill(N, X, incX, FillX, RealScaleX, ImagScaleX);
 
   if(fold._int.value == 0){
-    ires = zialloc(MAX_FOLD);
-    zisetzero(MAX_FOLD, ires);
-    zizsum(MAX_FOLD, N, X, incX, ires);
+    ires = zialloc(DIMAXFOLD);
+    zisetzero(DIMAXFOLD, ires);
+    zizsum(DIMAXFOLD, N, X, incX, ires);
     time_tic();
-    for(j = 1; j <= MAX_FOLD; j++){
+    for(j = 1; j <= DIMAXFOLD; j++){
       for(i = 0; i < trials; i++){
         zziconv_sub(j, ires, &res);
       }
@@ -97,7 +97,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   metric_load_double("res_imag", cimagf(res));
   metric_load_double("trials", (double)trials);
   if(fold._int.value == 0){
-    metric_load_double("input", (double)MAX_FOLD);
+    metric_load_double("input", (double)DIMAXFOLD);
   }else{
     metric_load_double("input", (double)1);
   }

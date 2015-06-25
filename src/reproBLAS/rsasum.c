@@ -4,14 +4,14 @@
 #include "../../config.h"
 
 float rsasum(const int N, const float* X, const int incX) {
-  float_indexed *asumi = sialloc(DEFAULT_FOLD);
+  float_indexed *asumi = sialloc(SIDEFAULTFOLD);
   float asum;
 
-  sisetzero(DEFAULT_FOLD, asumi);
+  sisetzero(SIDEFAULTFOLD, asumi);
 
-  sisasum(DEFAULT_FOLD, N, X, incX, asumi);
+  sisasum(SIDEFAULTFOLD, N, X, incX, asumi);
 
-  asum = ssiconv(DEFAULT_FOLD, asumi);
+  asum = ssiconv(SIDEFAULTFOLD, asumi);
   free(asumi);
   return asum;
 }

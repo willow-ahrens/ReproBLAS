@@ -63,12 +63,12 @@ int file_test(int argc, char** argv, char *fname) {
   double *Y;
 
   double ref;
-  double_indexed *Iref = dialloc(DEFAULT_FOLD);
-  disetzero(DEFAULT_FOLD, Iref);
+  double_indexed *Iref = dialloc(DIDEFAULTFOLD);
+  disetzero(DIDEFAULTFOLD, Iref);
 
   double res;
-  double_indexed *Ires = dialloc(DEFAULT_FOLD);
-  disetzero(DEFAULT_FOLD, Ires);
+  double_indexed *Ires = dialloc(DIDEFAULTFOLD);
+  disetzero(DIDEFAULTFOLD, Ires);
 
   file_read_vector(fname, &N, (void**)&X, sizeof(double));
   Y = util_dvec_alloc(N, 1);
@@ -88,26 +88,26 @@ int file_test(int argc, char** argv, char *fname) {
     Iref = Ires;
 
     file_write_vector(ref_fname, 1, &ref, sizeof(ref));
-    file_write_vector(Iref_fname, 1, Iref, disize(DEFAULT_FOLD));
+    file_write_vector(Iref_fname, 1, Iref, disize(DIDEFAULTFOLD));
   } else {
     void *data;
     int unused0;
     file_read_vector(ref_fname, &unused0, &data, sizeof(ref));
     ref = *(double*)data;
     free(data);
-    file_read_vector(Iref_fname, &unused0, &data, disize(DEFAULT_FOLD));
+    file_read_vector(Iref_fname, &unused0, &data, disize(DIDEFAULTFOLD));
     free(Iref);
     Iref = data;
     if(ref != res){
       printf("%s(%s) = %g != %g\n", wrap_rdblas1_names[func_type._named.value], fname, res, ref);
       return 1;
     }
-    if(memcmp(&Iref, &Ires, disize(DEFAULT_FOLD)) != 0){
-      printf("I%s(%s) = %g != %g\n", wrap_rdblas1_names[func_type._named.value], fname, ddiconv(DEFAULT_FOLD, Ires), ddiconv(DEFAULT_FOLD, Iref));
+    if(memcmp(&Iref, &Ires, disize(DIDEFAULTFOLD)) != 0){
+      printf("I%s(%s) = %g != %g\n", wrap_rdblas1_names[func_type._named.value], fname, ddiconv(DIDEFAULTFOLD, Ires), ddiconv(DIDEFAULTFOLD, Iref));
       printf("Ref I_double:\n");
-      diprint(DEFAULT_FOLD, Iref);
+      diprint(DIDEFAULTFOLD, Iref);
       printf("\nRes I_double:\n");
-      diprint(DEFAULT_FOLD, Ires);
+      diprint(DIDEFAULTFOLD, Ires);
       printf("\n");
       return 1;
     }

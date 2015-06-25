@@ -38,7 +38,7 @@ float complex wrap_rcsum(int N, float complex *x, int incx, float complex *y, in
 void wrap_cicsum(int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *z) {
   (void)y;
   (void)incy;
-  cicsum(DEFAULT_FOLD, N, x, incx, z);
+  cicsum(SIDEFAULTFOLD, N, x, incx, z);
 }
 
 float complex wrap_rscasum(int N, float complex *x, int incx, float complex *y, int incy) {
@@ -50,7 +50,7 @@ float complex wrap_rscasum(int N, float complex *x, int incx, float complex *y, 
 void wrap_sicasum(int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *z) {
   (void)y;
   (void)incy;
-  smcasum(DEFAULT_FOLD, N, x, incx, z, 2, z + 2 * DEFAULT_FOLD, 2);
+  smcasum(SIDEFAULTFOLD, N, x, incx, z, 2, z + 2 * SIDEFAULTFOLD, 2);
 }
 
 float complex wrap_rcdotu(int N, float complex *x, int incx, float complex *y, int incy) {
@@ -60,7 +60,7 @@ float complex wrap_rcdotu(int N, float complex *x, int incx, float complex *y, i
 }
 
 void wrap_cicdotu(int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *z) {
-  cicdotu(DEFAULT_FOLD, N, x, incx, y, incy, z);
+  cicdotu(SIDEFAULTFOLD, N, x, incx, y, incy, z);
 }
 
 float complex wrap_rcdotc(int N, float complex *x, int incx, float complex *y, int incy) {
@@ -70,7 +70,7 @@ float complex wrap_rcdotc(int N, float complex *x, int incx, float complex *y, i
 }
 
 void wrap_cicdotc(int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *z) {
-  cicdotc(DEFAULT_FOLD, N, x, incx, y, incy, z);
+  cicdotc(SIDEFAULTFOLD, N, x, incx, y, incy, z);
 }
 
 float complex wrap_rscnrm2(int N, float complex *x, int incx, float complex *y, int incy) {
@@ -82,7 +82,7 @@ float complex wrap_rscnrm2(int N, float complex *x, int incx, float complex *y, 
 void wrap_sicnrm(int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *z) {
   (void)y;
   (void)incy;
-  smcssq(DEFAULT_FOLD, N, x, incx, 0.0, z, 2, z + 2 * DEFAULT_FOLD, 2);
+  smcssq(SIDEFAULTFOLD, N, x, incx, 0.0, z, 2, z + 2 * SIDEFAULTFOLD, 2);
 }
 
 wrap_rcblas1 wrap_rcblas1_func(int func) {

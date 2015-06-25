@@ -4,7 +4,7 @@
 
 #include "../../config.h"
 
-static double bins[DIMAXINDEX + MAX_FOLD];
+static double bins[DIMAXINDEX + DIMAXFOLD];
 static int bins_initialized = 0;
 
 /**
@@ -28,7 +28,7 @@ const double *dmbins(const int X) {
     for(index = 1; index <= DIMAXINDEX; index++){
       bins[index] = ldexp(0.75, (DBL_MAX_EXP + DBL_MANT_DIG - DIWIDTH + 1 - index * DIWIDTH));
     }
-    for(; index < DIMAXINDEX + MAX_FOLD; index++){
+    for(; index < DIMAXINDEX + DIMAXFOLD; index++){
       bins[index] = bins[index - 1];
     }
 

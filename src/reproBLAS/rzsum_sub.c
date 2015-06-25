@@ -4,13 +4,13 @@
 #include "../../config.h"
 
 void rzsum_sub(const int N, const void* X, const int incX, void *sum) {
-  double_complex_indexed *sumi = zialloc(DEFAULT_FOLD);
+  double_complex_indexed *sumi = zialloc(DIDEFAULTFOLD);
 
-  zisetzero(DEFAULT_FOLD, sumi);
+  zisetzero(DIDEFAULTFOLD, sumi);
 
-  zizsum(DEFAULT_FOLD, N, X, incX, sumi);
+  zizsum(DIDEFAULTFOLD, N, X, incX, sumi);
 
-  zziconv_sub(DEFAULT_FOLD, sumi, sum);
+  zziconv_sub(DIDEFAULTFOLD, sumi, sum);
   free(sumi);
   return;
 }

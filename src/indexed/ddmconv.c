@@ -70,7 +70,7 @@ double ddmconv(const int fold, const double* priX, const int incpriX, const doub
     //the number of carries equal to 1.
     X_index = dmindex(priX);
     bins = dmbins(X_index);
-    #if 0 && ((LDBL_MANT_DIG - DBL_MANT_DIG) > 15 || 1 << (LDBL_MANT_DIG - DBL_MANT_DIG) >= 2 * MAX_FOLD)
+    #if 0 && ((LDBL_MANT_DIG - DBL_MANT_DIG) > 15 || 1 << (LDBL_MANT_DIG - DBL_MANT_DIG) >= 2 * DIMAXFOLD)
       #if 0 && LDBL_MAX_EXP > DBL_MAX_EXP + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2)
         long double Y = 0.0;
         if(X_index == 0){

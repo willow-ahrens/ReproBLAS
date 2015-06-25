@@ -4,14 +4,14 @@
 #include "../../config.h"
 
 double rdasum(const int N, const double* X, const int incX) {
-  double_indexed *asumi = dialloc(DEFAULT_FOLD);
+  double_indexed *asumi = dialloc(DIDEFAULTFOLD);
   double asum;
 
-  disetzero(DEFAULT_FOLD, asumi);
+  disetzero(DIDEFAULTFOLD, asumi);
 
-  didasum(DEFAULT_FOLD, N, X, incX, asumi);
+  didasum(DIDEFAULTFOLD, N, X, incX, asumi);
 
-  asum = ddiconv(DEFAULT_FOLD, asumi);
+  asum = ddiconv(DIDEFAULTFOLD, asumi);
   free(asumi);
   return asum;
 }

@@ -21,8 +21,8 @@ static void bench_cciconv_options_initialize(void){
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
   fold._int.min               = 0;
-  fold._int.max               = MAX_FOLD;
-  fold._int.value             = DEFAULT_FOLD;
+  fold._int.max               = SIMAXFOLD;
+  fold._int.value             = SIDEFAULTFOLD;
 }
 
 int bench_vecvec_fill_show_help(void){
@@ -69,11 +69,11 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   util_cvec_fill(N, X, incX, FillX, RealScaleX, ImagScaleX);
 
   if(fold._int.value == 0){
-    ires = cialloc(MAX_FOLD);
-    cisetzero(MAX_FOLD, ires);
-    cicsum(MAX_FOLD, N, X, incX, ires);
+    ires = cialloc(SIMAXFOLD);
+    cisetzero(SIMAXFOLD, ires);
+    cicsum(SIMAXFOLD, N, X, incX, ires);
     time_tic();
-    for(j = 1; j <= MAX_FOLD; j++){
+    for(j = 1; j <= SIMAXFOLD; j++){
       for(i = 0; i < trials; i++){
         cciconv_sub(j, ires, &res);
       }
@@ -97,7 +97,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   metric_load_float("res_imag", cimagf(res));
   metric_load_double("trials", (double)trials);
   if(fold._int.value == 0){
-    metric_load_double("input", (double)MAX_FOLD);
+    metric_load_double("input", (double)SIMAXFOLD);
   }else{
     metric_load_double("input", (double)1);
   }

@@ -22,8 +22,8 @@ static void bench_rdsum_options_initialize(void){
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
   fold._int.min               = 0;
-  fold._int.max               = MAX_FOLD;
-  fold._int.value             = DEFAULT_FOLD;
+  fold._int.max               = DIMAXFOLD;
+  fold._int.value             = DIDEFAULTFOLD;
 }
 
 int bench_vecvec_fill_show_help(void){
@@ -69,7 +69,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   //fill X
   util_dvec_fill(N, X, incX, FillX, RealScaleX, ImagScaleX);
 
-  if(fold._int.value == DEFAULT_FOLD){
+  if(fold._int.value == DIDEFAULTFOLD){
     time_tic();
     for(i = 0; i < trials; i++){
       res = rdsum(N, X, incX);
@@ -77,7 +77,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
     time_toc();
   }else if(fold._int.value == 0){
     time_tic();
-    for(j = 2; j <= MAX_FOLD; j++){
+    for(j = 2; j <= DIMAXFOLD; j++){
       ires = dialloc(j);
       disetzero(j, ires);
       for(i = 0; i < trials; i++){

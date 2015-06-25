@@ -23,8 +23,8 @@ static void bench_sisiadd_options_initialize(void){
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
   fold._int.min               = 0;
-  fold._int.max               = MAX_FOLD;
-  fold._int.value             = DEFAULT_FOLD;
+  fold._int.max               = SIMAXFOLD;
+  fold._int.value             = SIDEFAULTFOLD;
 
   preN._int.header.type       = opt_int;
   preN._int.header.short_name = 'k';
@@ -82,7 +82,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   util_svec_fill(N * preN._int.value, preX, incX, FillX, RealScaleX, ImagScaleX);
 
   if(fold._int.value == 0){
-    for(j = 1; j <= MAX_FOLD; j++){
+    for(j = 1; j <= SIMAXFOLD; j++){
       X = (float_indexed*)util_svec_alloc(N * sinum(j), 1);
       for(i = 0; i < N; i++){
         sisetzero(j, X + sinum(j));

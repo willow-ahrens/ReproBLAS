@@ -24,7 +24,7 @@ int smindex(const float *priX){
   int exp;
 
   if(priX[0] == 0.0){
-    return (FLT_MAX_EXP - FLT_MIN_EXP)/SIWIDTH + MAX_FOLD;
+    return (FLT_MAX_EXP - FLT_MIN_EXP)/SIWIDTH + SIMAXFOLD;
   }else{
     frexpf(priX[0], &exp);
     if(exp == FLT_MAX_EXP){
@@ -35,7 +35,7 @@ int smindex(const float *priX){
   */
   /*
   if(priX[0] == 0.0){
-    return (FLT_MAX_EXP - FLT_MIN_EXP)/SIWIDTH + MAX_FOLD;
+    return (FLT_MAX_EXP - FLT_MIN_EXP)/SIWIDTH + SIMAXFOLD;
   }else{
     return ((FLT_MAX_EXP + FLT_MANT_DIG - SIWIDTH + 1 + EXPF_BIAS) - EXPF(priX[0]))/SIWIDTH;
   }

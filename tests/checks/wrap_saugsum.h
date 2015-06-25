@@ -39,7 +39,7 @@ static const char* wrap_saugsum_func_descs[] = {"rssum",
 float wrap_rssum(int fold, int N, float *x, int incx, float *y, int incy) {
   (void)y;
   (void)incy;
-  if(fold == DEFAULT_FOLD){
+  if(fold == SIDEFAULTFOLD){
     return rssum(N, x, incx);
   }else{
     float_indexed *ires = sialloc(fold);
@@ -60,7 +60,7 @@ void wrap_sissum(int fold, int N, float *x, int incx, float *y, int incy, float_
 float wrap_rsasum(int fold, int N, float *x, int incx, float *y, int incy) {
   (void)y;
   (void)incy;
-  if(fold == DEFAULT_FOLD){
+  if(fold == SIDEFAULTFOLD){
     return rsasum(N, x, incx);
   }else{
     float_indexed *ires = sialloc(fold);
@@ -81,7 +81,7 @@ void wrap_sisasum(int fold, int N, float *x, int incx, float *y, int incy, float
 float wrap_rsnrm2(int fold, int N, float *x, int incx, float *y, int incy) {
   (void)y;
   (void)incy;
-  if(fold == DEFAULT_FOLD){
+  if(fold == SIDEFAULTFOLD){
     return rsnrm2(N, x, incx);
   }else{
     float_indexed *ires = sialloc(fold);
@@ -100,7 +100,7 @@ void wrap_sisssq(int fold, int N, float *x, int incx, float *y, int incy, float_
 }
 
 float wrap_rsdot(int fold, int N, float *x, int incx, float *y, int incy) {
-  if(fold == DEFAULT_FOLD){
+  if(fold == SIDEFAULTFOLD){
     return rsdot(N, x, incx, y, incy);
   }else{
     float_indexed *ires = sialloc(fold);

@@ -62,12 +62,12 @@ int file_test(int argc, char** argv, char *fname) {
   double complex *Y;
 
   double complex ref;
-  double_complex_indexed *Iref = zialloc(DEFAULT_FOLD);
-  zisetzero(DEFAULT_FOLD, Iref);
+  double_complex_indexed *Iref = zialloc(DIDEFAULTFOLD);
+  zisetzero(DIDEFAULTFOLD, Iref);
 
   double complex res;
-  double_complex_indexed *Ires = zialloc(DEFAULT_FOLD);
-  zisetzero(DEFAULT_FOLD, Ires);
+  double_complex_indexed *Ires = zialloc(DIDEFAULTFOLD);
+  zisetzero(DIDEFAULTFOLD, Ires);
 
   file_read_vector(fname, &N, (void**)&X, sizeof(double complex));
   Y = util_zvec_alloc(N, 1);
@@ -86,14 +86,14 @@ int file_test(int argc, char** argv, char *fname) {
     Iref = Ires;
 
     file_write_vector(ref_fname, 1, &ref, sizeof(ref));
-    file_write_vector(Iref_fname, 1, Iref, zisize(DEFAULT_FOLD));
+    file_write_vector(Iref_fname, 1, Iref, zisize(DIDEFAULTFOLD));
   } else {
     void *data;
     int unused0;
     file_read_vector(ref_fname, &unused0, &data, sizeof(ref));
     ref = *(double complex*)data;
     free(data);
-    file_read_vector(Iref_fname, &unused0, &data, zisize(DEFAULT_FOLD));
+    file_read_vector(Iref_fname, &unused0, &data, zisize(DIDEFAULTFOLD));
     free(Iref);
     Iref = data;
     if(ref != res){
@@ -101,13 +101,13 @@ int file_test(int argc, char** argv, char *fname) {
       return 1;
     }
     if(memcmp(&Iref, &Ires, sizeof(Iref)) != 0){
-      zziconv_sub(DEFAULT_FOLD, Ires, &res);
-      zziconv_sub(DEFAULT_FOLD, Iref, &ref);
+      zziconv_sub(DIDEFAULTFOLD, Ires, &res);
+      zziconv_sub(DIDEFAULTFOLD, Iref, &ref);
       printf("I%s(%s) = %g + %gi != %g + %gi\n", wrap_rzblas1_names[func_type._named.value], fname, creal(res), cimag(res), creal(ref), cimag(ref));
       printf("Ref I_double_Complex:\n");
-      ziprint(DEFAULT_FOLD, Iref);
+      ziprint(DIDEFAULTFOLD, Iref);
       printf("\nRes I_double_Complex:\n");
-      ziprint(DEFAULT_FOLD, Ires);
+      ziprint(DIDEFAULTFOLD, Ires);
       printf("\n");
       return 1;
     }

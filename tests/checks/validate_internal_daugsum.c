@@ -29,8 +29,8 @@ static void validate_internal_daugsum_options_initialize(void){
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
   fold._int.min               = 2;
-  fold._int.max               = MAX_FOLD;
-  fold._int.value             = DEFAULT_FOLD;
+  fold._int.max               = DIMAXFOLD;
+  fold._int.value             = DIDEFAULTFOLD;
 }
 
 int validate_internal_daugsum(int fold, int N, double* X, int incX, double* Y, int incY, int func, double ref) {

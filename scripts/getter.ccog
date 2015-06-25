@@ -26,9 +26,13 @@ int main(int argc, char** argv){
   ]]]*/
   //[[[end]]]
 
-  printf("  \"max_fold\": %d,\n", MAX_FOLD);
+  printf("  \"dimaxfold\": %d,\n", DIMAXFOLD);
 
-  printf("  \"default_fold\": %d,\n", DEFAULT_FOLD);
+  printf("  \"simaxfold\": %d,\n", SIMAXFOLD);
+
+  printf("  \"didefaultfold\": %d,\n", DIDEFAULTFOLD);
+
+  printf("  \"sidefaultfold\": %d,\n", SIDEFAULTFOLD);
 
   printf("  \"diendurance\": %d,\n", DIENDURANCE);
 

@@ -42,7 +42,7 @@ static const char* wrap_caugsum_func_descs[] = {"rcsum",
 float complex wrap_rcsum(int fold, int N, float complex *x, int incx, float complex *y, int incy) {
   (void)y;
   (void)incy;
-  if(fold == DEFAULT_FOLD){
+  if(fold == SIDEFAULTFOLD){
     float complex res;
     rcsum_sub(N, x, incx, &res);
     return res;
@@ -66,7 +66,7 @@ void wrap_cicsum(int fold, int N, float complex *x, int incx, float complex *y, 
 float complex wrap_rscasum(int fold, int N, float complex *x, int incx, float complex *y, int incy) {
   (void)y;
   (void)incy;
-  if(fold == DEFAULT_FOLD){
+  if(fold == SIDEFAULTFOLD){
     return rscasum(N, x, incx);
   }else{
     float_indexed *ires = sialloc(fold);
@@ -87,7 +87,7 @@ void wrap_sicasum(int fold, int N, float complex *x, int incx, float complex *y,
 float complex wrap_rscnrm2(int fold, int N, float complex *x, int incx, float complex *y, int incy) {
   (void)y;
   (void)incy;
-  if(fold == DEFAULT_FOLD){
+  if(fold == SIDEFAULTFOLD){
     return rscnrm2(N, x, incx);
   }else{
     float_indexed *ires = sialloc(fold);
@@ -106,7 +106,7 @@ void wrap_sicssq(int fold, int N, float complex *x, int incx, float complex *y, 
 }
 
 float complex wrap_rcdotu(int fold, int N, float complex *x, int incx, float complex *y, int incy) {
-  if(fold == DEFAULT_FOLD){
+  if(fold == SIDEFAULTFOLD){
     float complex res;
     rcdotu_sub(N, x, incx, y, incy, &res);
     return res;
@@ -126,7 +126,7 @@ void wrap_cicdotu(int fold, int N, float complex *x, int incx, float complex *y,
 }
 
 float complex wrap_rcdotc(int fold, int N, float complex *x, int incx, float complex *y, int incy) {
-  if(fold == DEFAULT_FOLD){
+  if(fold == SIDEFAULTFOLD){
     float complex res;
     rcdotc_sub(N, x, incx, y, incy, &res);
     return res;

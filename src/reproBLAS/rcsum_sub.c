@@ -4,13 +4,13 @@
 #include "../../config.h"
 
 void rcsum_sub(const int N, const void* X, const int incX, void *sum) {
-  float_complex_indexed *sumi = cialloc(DEFAULT_FOLD);
+  float_complex_indexed *sumi = cialloc(SIDEFAULTFOLD);
 
-  cisetzero(DEFAULT_FOLD, sumi);
+  cisetzero(SIDEFAULTFOLD, sumi);
 
-  cicsum(DEFAULT_FOLD, N, X, incX, sumi);
+  cicsum(SIDEFAULTFOLD, N, X, incX, sumi);
 
-  cciconv_sub(DEFAULT_FOLD, sumi, sum);
+  cciconv_sub(SIDEFAULTFOLD, sumi, sum);
   free(sumi);
   return;
 }

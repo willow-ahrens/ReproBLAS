@@ -26,7 +26,7 @@ cog.out(str(code_block))
 
 cog.outl()
 
-cog.out(generate.generate(blockSize.BlockSize("smcssq", "N_block_MAX", 32, terminal.get_siendurance()//2, terminal.get_siendurance()//2, ["bench_rscnrm2_fold_{}".format(terminal.get_default_fold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("smcssq", "N_block_MAX", 32, terminal.get_siendurance()//2, terminal.get_siendurance()//2, ["bench_rscnrm2_fold_{}".format(terminal.get_sidefaultfold())]), cog.inFile, args, params, mode))
 ]]]*/
 #ifdef __AVX__
   #include <immintrin.h>
@@ -110,6 +110,8 @@ float smcssq(const int fold, const int N, const void *X, const int incX, const f
         }
         __m256 cons_tmp; (void)cons_tmp;
         float cons_buffer_tmp[8] __attribute__((aligned(32))); (void)cons_buffer_tmp;
+        unsigned int SIMD_daz_ftz_old_tmp = 0;
+        unsigned int SIMD_daz_ftz_new_tmp = 0;
 
 
         switch(fold){
@@ -291,6 +293,9 @@ float smcssq(const int fold, const int N, const void *X, const int incX, const f
               ((float*)ssq)[4] = cons_buffer_tmp[0] + cons_buffer_tmp[2] + cons_buffer_tmp[4] + cons_buffer_tmp[6];
               ((float*)ssq)[5] = cons_buffer_tmp[1] + cons_buffer_tmp[3] + cons_buffer_tmp[5] + cons_buffer_tmp[7];
 
+              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
+                _mm_setcsr(SIMD_daz_ftz_old_tmp);
+              }
             }
             break;
           default:
@@ -301,7 +306,7 @@ float smcssq(const int fold, const int N, const void *X, const int incX, const f
               __m256 expansion_0;
               __m256 q_0;
               __m256 s_0;
-              __m256 s_buffer[MAX_FOLD];
+              __m256 s_buffer[SIMAXFOLD];
 
               for(j = 0; j < fold; j += 1){
                 s_buffer[j] = (__m256)_mm256_broadcast_sd((double *)(((float*)ssq) + (j * 2)));
@@ -328,18 +333,16 @@ float smcssq(const int fold, const int N, const void *X, const int incX, const f
                     s_0 = s_buffer[0];
                     q_0 = _mm256_add_ps(s_0, _mm256_or_ps(_mm256_mul_ps(x_0, compression_0), blp_mask_tmp));
                     s_buffer[0] = q_0;
-                    if(fold > 1){
+                    q_0 = _mm256_sub_ps(s_0, q_0);
+                    x_0 = _mm256_add_ps(x_0, _mm256_mul_ps(q_0, expansion_0));
+                    for(j = 1; j < fold - 1; j++){
+                      s_0 = s_buffer[j];
+                      q_0 = _mm256_add_ps(s_0, _mm256_or_ps(x_0, blp_mask_tmp));
+                      s_buffer[j] = q_0;
                       q_0 = _mm256_sub_ps(s_0, q_0);
-                      x_0 = _mm256_add_ps(x_0, _mm256_mul_ps(q_0, expansion_0));
-                      for(j = 1; j < fold - 1; j++){
-                        s_0 = s_buffer[j];
-                        q_0 = _mm256_add_ps(s_0, _mm256_or_ps(x_0, blp_mask_tmp));
-                        s_buffer[j] = q_0;
-                        q_0 = _mm256_sub_ps(s_0, q_0);
-                        x_0 = _mm256_add_ps(x_0, q_0);
-                      }
-                      s_buffer[j] = _mm256_add_ps(s_buffer[j], _mm256_or_ps(x_0, blp_mask_tmp));
+                      x_0 = _mm256_add_ps(x_0, q_0);
                     }
+                    s_buffer[j] = _mm256_add_ps(s_buffer[j], _mm256_or_ps(x_0, blp_mask_tmp));
                   }
                   if(i < N_block){
                     x_0 = _mm256_div_ps((__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)x))[2]:0, (N_block - i)>1?((double*)((float*)x))[1]:0, ((double*)((float*)x))[0]), scale_mask);
@@ -348,18 +351,16 @@ float smcssq(const int fold, const int N, const void *X, const int incX, const f
                     s_0 = s_buffer[0];
                     q_0 = _mm256_add_ps(s_0, _mm256_or_ps(_mm256_mul_ps(x_0, compression_0), blp_mask_tmp));
                     s_buffer[0] = q_0;
-                    if(fold > 1){
+                    q_0 = _mm256_sub_ps(s_0, q_0);
+                    x_0 = _mm256_add_ps(x_0, _mm256_mul_ps(q_0, expansion_0));
+                    for(j = 1; j < fold - 1; j++){
+                      s_0 = s_buffer[j];
+                      q_0 = _mm256_add_ps(s_0, _mm256_or_ps(x_0, blp_mask_tmp));
+                      s_buffer[j] = q_0;
                       q_0 = _mm256_sub_ps(s_0, q_0);
-                      x_0 = _mm256_add_ps(x_0, _mm256_mul_ps(q_0, expansion_0));
-                      for(j = 1; j < fold - 1; j++){
-                        s_0 = s_buffer[j];
-                        q_0 = _mm256_add_ps(s_0, _mm256_or_ps(x_0, blp_mask_tmp));
-                        s_buffer[j] = q_0;
-                        q_0 = _mm256_sub_ps(s_0, q_0);
-                        x_0 = _mm256_add_ps(x_0, q_0);
-                      }
-                      s_buffer[j] = _mm256_add_ps(s_buffer[j], _mm256_or_ps(x_0, blp_mask_tmp));
+                      x_0 = _mm256_add_ps(x_0, q_0);
                     }
+                    s_buffer[j] = _mm256_add_ps(s_buffer[j], _mm256_or_ps(x_0, blp_mask_tmp));
                     x += ((N_block - i) * 2);
                   }
                 }else{
@@ -412,18 +413,16 @@ float smcssq(const int fold, const int N, const void *X, const int incX, const f
                     s_0 = s_buffer[0];
                     q_0 = _mm256_add_ps(s_0, _mm256_or_ps(_mm256_mul_ps(x_0, compression_0), blp_mask_tmp));
                     s_buffer[0] = q_0;
-                    if(fold > 1){
+                    q_0 = _mm256_sub_ps(s_0, q_0);
+                    x_0 = _mm256_add_ps(x_0, _mm256_mul_ps(q_0, expansion_0));
+                    for(j = 1; j < fold - 1; j++){
+                      s_0 = s_buffer[j];
+                      q_0 = _mm256_add_ps(s_0, _mm256_or_ps(x_0, blp_mask_tmp));
+                      s_buffer[j] = q_0;
                       q_0 = _mm256_sub_ps(s_0, q_0);
-                      x_0 = _mm256_add_ps(x_0, _mm256_mul_ps(q_0, expansion_0));
-                      for(j = 1; j < fold - 1; j++){
-                        s_0 = s_buffer[j];
-                        q_0 = _mm256_add_ps(s_0, _mm256_or_ps(x_0, blp_mask_tmp));
-                        s_buffer[j] = q_0;
-                        q_0 = _mm256_sub_ps(s_0, q_0);
-                        x_0 = _mm256_add_ps(x_0, q_0);
-                      }
-                      s_buffer[j] = _mm256_add_ps(s_buffer[j], _mm256_or_ps(x_0, blp_mask_tmp));
+                      x_0 = _mm256_add_ps(x_0, q_0);
                     }
+                    s_buffer[j] = _mm256_add_ps(s_buffer[j], _mm256_or_ps(x_0, blp_mask_tmp));
                   }
                   if(i < N_block){
                     x_0 = _mm256_div_ps((__m256)_mm256_set_pd(0, (N_block - i)>2?((double*)((float*)x))[(incX * 2)]:0, (N_block - i)>1?((double*)((float*)x))[incX]:0, ((double*)((float*)x))[0]), scale_mask);
@@ -432,18 +431,16 @@ float smcssq(const int fold, const int N, const void *X, const int incX, const f
                     s_0 = s_buffer[0];
                     q_0 = _mm256_add_ps(s_0, _mm256_or_ps(_mm256_mul_ps(x_0, compression_0), blp_mask_tmp));
                     s_buffer[0] = q_0;
-                    if(fold > 1){
+                    q_0 = _mm256_sub_ps(s_0, q_0);
+                    x_0 = _mm256_add_ps(x_0, _mm256_mul_ps(q_0, expansion_0));
+                    for(j = 1; j < fold - 1; j++){
+                      s_0 = s_buffer[j];
+                      q_0 = _mm256_add_ps(s_0, _mm256_or_ps(x_0, blp_mask_tmp));
+                      s_buffer[j] = q_0;
                       q_0 = _mm256_sub_ps(s_0, q_0);
-                      x_0 = _mm256_add_ps(x_0, _mm256_mul_ps(q_0, expansion_0));
-                      for(j = 1; j < fold - 1; j++){
-                        s_0 = s_buffer[j];
-                        q_0 = _mm256_add_ps(s_0, _mm256_or_ps(x_0, blp_mask_tmp));
-                        s_buffer[j] = q_0;
-                        q_0 = _mm256_sub_ps(s_0, q_0);
-                        x_0 = _mm256_add_ps(x_0, q_0);
-                      }
-                      s_buffer[j] = _mm256_add_ps(s_buffer[j], _mm256_or_ps(x_0, blp_mask_tmp));
+                      x_0 = _mm256_add_ps(x_0, q_0);
                     }
+                    s_buffer[j] = _mm256_add_ps(s_buffer[j], _mm256_or_ps(x_0, blp_mask_tmp));
                     x += (incX * (N_block - i) * 2);
                   }
                 }else{
@@ -484,6 +481,9 @@ float smcssq(const int fold, const int N, const void *X, const int incX, const f
                 ((float*)ssq)[((j * 2) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3] + cons_buffer_tmp[5] + cons_buffer_tmp[7];
               }
 
+              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
+                _mm_setcsr(SIMD_daz_ftz_old_tmp);
+              }
             }
             break;
         }
@@ -499,6 +499,8 @@ float smcssq(const int fold, const int N, const void *X, const int incX, const f
         }
         __m128 cons_tmp; (void)cons_tmp;
         float cons_buffer_tmp[4] __attribute__((aligned(16))); (void)cons_buffer_tmp;
+        unsigned int SIMD_daz_ftz_old_tmp = 0;
+        unsigned int SIMD_daz_ftz_new_tmp = 0;
 
 
         switch(fold){
@@ -680,6 +682,9 @@ float smcssq(const int fold, const int N, const void *X, const int incX, const f
               ((float*)ssq)[4] = cons_buffer_tmp[0] + cons_buffer_tmp[2];
               ((float*)ssq)[5] = cons_buffer_tmp[1] + cons_buffer_tmp[3];
 
+              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
+                _mm_setcsr(SIMD_daz_ftz_old_tmp);
+              }
             }
             break;
           default:
@@ -690,7 +695,7 @@ float smcssq(const int fold, const int N, const void *X, const int incX, const f
               __m128 expansion_0;
               __m128 q_0;
               __m128 s_0;
-              __m128 s_buffer[MAX_FOLD];
+              __m128 s_buffer[SIMAXFOLD];
 
               for(j = 0; j < fold; j += 1){
                 s_buffer[j] = (__m128)_mm_load1_pd((double *)(((float*)ssq) + (j * 2)));
@@ -717,18 +722,16 @@ float smcssq(const int fold, const int N, const void *X, const int incX, const f
                     s_0 = s_buffer[0];
                     q_0 = _mm_add_ps(s_0, _mm_or_ps(_mm_mul_ps(x_0, compression_0), blp_mask_tmp));
                     s_buffer[0] = q_0;
-                    if(fold > 1){
+                    q_0 = _mm_sub_ps(s_0, q_0);
+                    x_0 = _mm_add_ps(x_0, _mm_mul_ps(q_0, expansion_0));
+                    for(j = 1; j < fold - 1; j++){
+                      s_0 = s_buffer[j];
+                      q_0 = _mm_add_ps(s_0, _mm_or_ps(x_0, blp_mask_tmp));
+                      s_buffer[j] = q_0;
                       q_0 = _mm_sub_ps(s_0, q_0);
-                      x_0 = _mm_add_ps(x_0, _mm_mul_ps(q_0, expansion_0));
-                      for(j = 1; j < fold - 1; j++){
-                        s_0 = s_buffer[j];
-                        q_0 = _mm_add_ps(s_0, _mm_or_ps(x_0, blp_mask_tmp));
-                        s_buffer[j] = q_0;
-                        q_0 = _mm_sub_ps(s_0, q_0);
-                        x_0 = _mm_add_ps(x_0, q_0);
-                      }
-                      s_buffer[j] = _mm_add_ps(s_buffer[j], _mm_or_ps(x_0, blp_mask_tmp));
+                      x_0 = _mm_add_ps(x_0, q_0);
                     }
+                    s_buffer[j] = _mm_add_ps(s_buffer[j], _mm_or_ps(x_0, blp_mask_tmp));
                   }
                   if(i < N_block){
                     x_0 = _mm_div_ps(_mm_set_ps(0, 0, ((float*)x)[1], ((float*)x)[0]), scale_mask);
@@ -737,18 +740,16 @@ float smcssq(const int fold, const int N, const void *X, const int incX, const f
                     s_0 = s_buffer[0];
                     q_0 = _mm_add_ps(s_0, _mm_or_ps(_mm_mul_ps(x_0, compression_0), blp_mask_tmp));
                     s_buffer[0] = q_0;
-                    if(fold > 1){
+                    q_0 = _mm_sub_ps(s_0, q_0);
+                    x_0 = _mm_add_ps(x_0, _mm_mul_ps(q_0, expansion_0));
+                    for(j = 1; j < fold - 1; j++){
+                      s_0 = s_buffer[j];
+                      q_0 = _mm_add_ps(s_0, _mm_or_ps(x_0, blp_mask_tmp));
+                      s_buffer[j] = q_0;
                       q_0 = _mm_sub_ps(s_0, q_0);
-                      x_0 = _mm_add_ps(x_0, _mm_mul_ps(q_0, expansion_0));
-                      for(j = 1; j < fold - 1; j++){
-                        s_0 = s_buffer[j];
-                        q_0 = _mm_add_ps(s_0, _mm_or_ps(x_0, blp_mask_tmp));
-                        s_buffer[j] = q_0;
-                        q_0 = _mm_sub_ps(s_0, q_0);
-                        x_0 = _mm_add_ps(x_0, q_0);
-                      }
-                      s_buffer[j] = _mm_add_ps(s_buffer[j], _mm_or_ps(x_0, blp_mask_tmp));
+                      x_0 = _mm_add_ps(x_0, q_0);
                     }
+                    s_buffer[j] = _mm_add_ps(s_buffer[j], _mm_or_ps(x_0, blp_mask_tmp));
                     x += ((N_block - i) * 2);
                   }
                 }else{
@@ -801,18 +802,16 @@ float smcssq(const int fold, const int N, const void *X, const int incX, const f
                     s_0 = s_buffer[0];
                     q_0 = _mm_add_ps(s_0, _mm_or_ps(_mm_mul_ps(x_0, compression_0), blp_mask_tmp));
                     s_buffer[0] = q_0;
-                    if(fold > 1){
+                    q_0 = _mm_sub_ps(s_0, q_0);
+                    x_0 = _mm_add_ps(x_0, _mm_mul_ps(q_0, expansion_0));
+                    for(j = 1; j < fold - 1; j++){
+                      s_0 = s_buffer[j];
+                      q_0 = _mm_add_ps(s_0, _mm_or_ps(x_0, blp_mask_tmp));
+                      s_buffer[j] = q_0;
                       q_0 = _mm_sub_ps(s_0, q_0);
-                      x_0 = _mm_add_ps(x_0, _mm_mul_ps(q_0, expansion_0));
-                      for(j = 1; j < fold - 1; j++){
-                        s_0 = s_buffer[j];
-                        q_0 = _mm_add_ps(s_0, _mm_or_ps(x_0, blp_mask_tmp));
-                        s_buffer[j] = q_0;
-                        q_0 = _mm_sub_ps(s_0, q_0);
-                        x_0 = _mm_add_ps(x_0, q_0);
-                      }
-                      s_buffer[j] = _mm_add_ps(s_buffer[j], _mm_or_ps(x_0, blp_mask_tmp));
+                      x_0 = _mm_add_ps(x_0, q_0);
                     }
+                    s_buffer[j] = _mm_add_ps(s_buffer[j], _mm_or_ps(x_0, blp_mask_tmp));
                   }
                   if(i < N_block){
                     x_0 = _mm_div_ps(_mm_set_ps(0, 0, ((float*)x)[1], ((float*)x)[0]), scale_mask);
@@ -821,18 +820,16 @@ float smcssq(const int fold, const int N, const void *X, const int incX, const f
                     s_0 = s_buffer[0];
                     q_0 = _mm_add_ps(s_0, _mm_or_ps(_mm_mul_ps(x_0, compression_0), blp_mask_tmp));
                     s_buffer[0] = q_0;
-                    if(fold > 1){
+                    q_0 = _mm_sub_ps(s_0, q_0);
+                    x_0 = _mm_add_ps(x_0, _mm_mul_ps(q_0, expansion_0));
+                    for(j = 1; j < fold - 1; j++){
+                      s_0 = s_buffer[j];
+                      q_0 = _mm_add_ps(s_0, _mm_or_ps(x_0, blp_mask_tmp));
+                      s_buffer[j] = q_0;
                       q_0 = _mm_sub_ps(s_0, q_0);
-                      x_0 = _mm_add_ps(x_0, _mm_mul_ps(q_0, expansion_0));
-                      for(j = 1; j < fold - 1; j++){
-                        s_0 = s_buffer[j];
-                        q_0 = _mm_add_ps(s_0, _mm_or_ps(x_0, blp_mask_tmp));
-                        s_buffer[j] = q_0;
-                        q_0 = _mm_sub_ps(s_0, q_0);
-                        x_0 = _mm_add_ps(x_0, q_0);
-                      }
-                      s_buffer[j] = _mm_add_ps(s_buffer[j], _mm_or_ps(x_0, blp_mask_tmp));
+                      x_0 = _mm_add_ps(x_0, q_0);
                     }
+                    s_buffer[j] = _mm_add_ps(s_buffer[j], _mm_or_ps(x_0, blp_mask_tmp));
                     x += (incX * (N_block - i) * 2);
                   }
                 }else{
@@ -873,6 +870,9 @@ float smcssq(const int fold, const int N, const void *X, const int incX, const f
                 ((float*)ssq)[((j * 2) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3];
               }
 
+              if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
+                _mm_setcsr(SIMD_daz_ftz_old_tmp);
+              }
             }
             break;
         }
@@ -1109,7 +1109,7 @@ float smcssq(const int fold, const int N, const void *X, const int incX, const f
               float expansion_0, expansion_1;
               float q_0, q_1;
               float s_0, s_1;
-              float s_buffer[(MAX_FOLD * 2)];
+              float s_buffer[(SIMAXFOLD * 2)];
 
               for(j = 0; j < fold; j += 1){
                 s_buffer[(j * 2)] = ((float*)ssq)[(j * 2)];
@@ -1150,34 +1150,32 @@ float smcssq(const int fold, const int N, const void *X, const int incX, const f
                     q_1 = s_1 + blp_tmp.f;
                     s_buffer[0] = q_0;
                     s_buffer[1] = q_1;
-                    if(fold > 1){
-                      q_0 = s_0 - q_0;
-                      q_1 = s_1 - q_1;
-                      x_0 = x_0 + q_0 * expansion_0;
-                      x_1 = x_1 + q_1 * expansion_1;
-                      for(j = 1; j < fold - 1; j++){
-                        s_0 = s_buffer[(j * 2)];
-                        s_1 = s_buffer[((j * 2) + 1)];
-                        blp_tmp.f = x_0;
-                        blp_tmp.i |= 1;
-                        q_0 = s_0 + blp_tmp.f;
-                        blp_tmp.f = x_1;
-                        blp_tmp.i |= 1;
-                        q_1 = s_1 + blp_tmp.f;
-                        s_buffer[(j * 2)] = q_0;
-                        s_buffer[((j * 2) + 1)] = q_1;
-                        q_0 = s_0 - q_0;
-                        q_1 = s_1 - q_1;
-                        x_0 = x_0 + q_0;
-                        x_1 = x_1 + q_1;
-                      }
+                    q_0 = s_0 - q_0;
+                    q_1 = s_1 - q_1;
+                    x_0 = x_0 + q_0 * expansion_0;
+                    x_1 = x_1 + q_1 * expansion_1;
+                    for(j = 1; j < fold - 1; j++){
+                      s_0 = s_buffer[(j * 2)];
+                      s_1 = s_buffer[((j * 2) + 1)];
                       blp_tmp.f = x_0;
                       blp_tmp.i |= 1;
-                      s_buffer[(j * 2)] = s_buffer[(j * 2)] + blp_tmp.f;
+                      q_0 = s_0 + blp_tmp.f;
                       blp_tmp.f = x_1;
                       blp_tmp.i |= 1;
-                      s_buffer[((j * 2) + 1)] = s_buffer[((j * 2) + 1)] + blp_tmp.f;
+                      q_1 = s_1 + blp_tmp.f;
+                      s_buffer[(j * 2)] = q_0;
+                      s_buffer[((j * 2) + 1)] = q_1;
+                      q_0 = s_0 - q_0;
+                      q_1 = s_1 - q_1;
+                      x_0 = x_0 + q_0;
+                      x_1 = x_1 + q_1;
                     }
+                    blp_tmp.f = x_0;
+                    blp_tmp.i |= 1;
+                    s_buffer[(j * 2)] = s_buffer[(j * 2)] + blp_tmp.f;
+                    blp_tmp.f = x_1;
+                    blp_tmp.i |= 1;
+                    s_buffer[((j * 2) + 1)] = s_buffer[((j * 2) + 1)] + blp_tmp.f;
                   }
                 }else{
                   for(i = 0; i + 1 <= N_block; i += 1, x += 2){
@@ -1244,34 +1242,32 @@ float smcssq(const int fold, const int N, const void *X, const int incX, const f
                     q_1 = s_1 + blp_tmp.f;
                     s_buffer[0] = q_0;
                     s_buffer[1] = q_1;
-                    if(fold > 1){
-                      q_0 = s_0 - q_0;
-                      q_1 = s_1 - q_1;
-                      x_0 = x_0 + q_0 * expansion_0;
-                      x_1 = x_1 + q_1 * expansion_1;
-                      for(j = 1; j < fold - 1; j++){
-                        s_0 = s_buffer[(j * 2)];
-                        s_1 = s_buffer[((j * 2) + 1)];
-                        blp_tmp.f = x_0;
-                        blp_tmp.i |= 1;
-                        q_0 = s_0 + blp_tmp.f;
-                        blp_tmp.f = x_1;
-                        blp_tmp.i |= 1;
-                        q_1 = s_1 + blp_tmp.f;
-                        s_buffer[(j * 2)] = q_0;
-                        s_buffer[((j * 2) + 1)] = q_1;
-                        q_0 = s_0 - q_0;
-                        q_1 = s_1 - q_1;
-                        x_0 = x_0 + q_0;
-                        x_1 = x_1 + q_1;
-                      }
+                    q_0 = s_0 - q_0;
+                    q_1 = s_1 - q_1;
+                    x_0 = x_0 + q_0 * expansion_0;
+                    x_1 = x_1 + q_1 * expansion_1;
+                    for(j = 1; j < fold - 1; j++){
+                      s_0 = s_buffer[(j * 2)];
+                      s_1 = s_buffer[((j * 2) + 1)];
                       blp_tmp.f = x_0;
                       blp_tmp.i |= 1;
-                      s_buffer[(j * 2)] = s_buffer[(j * 2)] + blp_tmp.f;
+                      q_0 = s_0 + blp_tmp.f;
                       blp_tmp.f = x_1;
                       blp_tmp.i |= 1;
-                      s_buffer[((j * 2) + 1)] = s_buffer[((j * 2) + 1)] + blp_tmp.f;
+                      q_1 = s_1 + blp_tmp.f;
+                      s_buffer[(j * 2)] = q_0;
+                      s_buffer[((j * 2) + 1)] = q_1;
+                      q_0 = s_0 - q_0;
+                      q_1 = s_1 - q_1;
+                      x_0 = x_0 + q_0;
+                      x_1 = x_1 + q_1;
                     }
+                    blp_tmp.f = x_0;
+                    blp_tmp.i |= 1;
+                    s_buffer[(j * 2)] = s_buffer[(j * 2)] + blp_tmp.f;
+                    blp_tmp.f = x_1;
+                    blp_tmp.i |= 1;
+                    s_buffer[((j * 2) + 1)] = s_buffer[((j * 2) + 1)] + blp_tmp.f;
                   }
                 }else{
                   for(i = 0; i + 1 <= N_block; i += 1, x += (incX * 2)){

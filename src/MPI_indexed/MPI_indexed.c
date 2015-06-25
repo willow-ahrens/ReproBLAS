@@ -36,7 +36,7 @@ int MPI_IFLOAT_Create(MPI_Datatype* newtype) {
 	MPI_Get_address(&sample.c, &carry_address);
 
 	array_of_blocklengths[0] = (carry_address - mantissa_address) / sizeof(float);
-	array_of_blocklengths[1] = DEFAULT_FOLD;
+	array_of_blocklengths[1] = SIDEFAULTFOLD;
 
 	array_of_displacements[0] = mantissa_address - base_address;
 	array_of_displacements[1] = carry_address - base_address;
@@ -81,21 +81,21 @@ int RMPI_Init() {
 	MPI_Aint carry_address;
 
 	// I_DOUBLE
-   	status = dIMPICreate(DEFAULT_FOLD, &MPI_IDOUBLE );
+   	status = dIMPICreate(DIDEFAULTFOLD, &MPI_IDOUBLE );
 	if (status != MPI_SUCCESS) {
 		MPI_Abort(MPI_COMM_WORLD, status);
 		return status;
 	}
 
 	// I_DOUBLE_COMPLEX
-   	status = zIMPICreate(DEFAULT_FOLD, &MPI_IDOUBLE_COMPLEX );
+   	status = zIMPICreate(DIDEFAULTFOLD, &MPI_IDOUBLE_COMPLEX );
 	if (status != MPI_SUCCESS) {
 		MPI_Abort(MPI_COMM_WORLD, status);
 		return status;
 	}
 
 	// Double scale
-   	dIMPIScaleCreate(DEFAULT_FOLD, &MPI_IDOUBLE_SCALE );
+   	dIMPIScaleCreate(DIDEFAULTFOLD, &MPI_IDOUBLE_SCALE );
 
 	// I_FLOAT
 	MPI_Get_address(&sample, &base_address);
@@ -103,7 +103,7 @@ int RMPI_Init() {
 	MPI_Get_address(&sample.c, &carry_address);
 
 	array_of_blocklengths[0] = (carry_address - mantissa_address) / sizeof(float);
-	array_of_blocklengths[1] = DEFAULT_FOLD;
+	array_of_blocklengths[1] = SIDEFAULTFOLD;
 
 	array_of_displacements[0] = mantissa_address - base_address;
 	array_of_displacements[1] = carry_address - base_address;
@@ -153,7 +153,7 @@ int RMPI_Init() {
 	MPI_Get_address(&csample.c, &carry_address);
 
 	array_of_blocklengths[0] = (carry_address - mantissa_address) / sizeof(float complex);
-	array_of_blocklengths[1] = 2 * DEFAULT_FOLD;
+	array_of_blocklengths[1] = 2 * SIDEFAULTFOLD;
 
 	array_of_displacements[0] = mantissa_address - base_address;
 	array_of_displacements[1] = carry_address - base_address;

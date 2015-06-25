@@ -4,7 +4,7 @@
 
 #include "../../config.h"
 
-static float bins[SIMAXINDEX + MAX_FOLD];
+static float bins[SIMAXINDEX + SIMAXFOLD];
 static int bins_initialized = 0;
 
 /**
@@ -28,7 +28,7 @@ const float *smbins(const int X) {
     for(index = 1; index <= SIMAXINDEX; index++){
       bins[index] = ldexpf(0.75, (FLT_MAX_EXP + FLT_MANT_DIG - SIWIDTH + 1 - index * SIWIDTH));
     }
-    for(; index < SIMAXINDEX + MAX_FOLD; index++){
+    for(; index < SIMAXINDEX + SIMAXFOLD; index++){
       bins[index] = bins[index - 1];
     }
 

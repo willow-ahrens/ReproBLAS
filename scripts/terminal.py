@@ -93,23 +93,41 @@ def get_vectorization(verbose="false"):
   return get_vectorization.vectorization
 get_vectorization.vectorization = None
 
-def get_max_fold(verbose="false"):
-  if not get_max_fold.max_fold:
+def get_dimaxfold(verbose="false"):
+  if not get_dimaxfold.dimaxfold:
     getter_file = open(os.path.join(top, "scripts/getter.json"), "r")
     getter = json.load(getter_file)
     getter_file.close()
-    get_max_fold.max_fold = getter["max_fold"]
-  return get_max_fold.max_fold
-get_max_fold.max_fold = None
+    get_dimaxfold.dimaxfold = getter["dimaxfold"]
+  return get_dimaxfold.dimaxfold
+get_dimaxfold.dimaxfold = None
 
-def get_default_fold(verbose="false"):
-  if not get_default_fold.default_fold:
+def get_simaxfold(verbose="false"):
+  if not get_simaxfold.simaxfold:
     getter_file = open(os.path.join(top, "scripts/getter.json"), "r")
     getter = json.load(getter_file)
     getter_file.close()
-    get_default_fold.default_fold = getter["default_fold"]
-  return get_default_fold.default_fold
-get_default_fold.default_fold = None
+    get_simaxfold.simaxfold = getter["simaxfold"]
+  return get_simaxfold.simaxfold
+get_simaxfold.simaxfold = None
+
+def get_didefaultfold(verbose="false"):
+  if not get_didefaultfold.didefaultfold:
+    getter_file = open(os.path.join(top, "scripts/getter.json"), "r")
+    getter = json.load(getter_file)
+    getter_file.close()
+    get_didefaultfold.didefaultfold = getter["didefaultfold"]
+  return get_didefaultfold.didefaultfold
+get_didefaultfold.didefaultfold = None
+
+def get_sidefaultfold(verbose="false"):
+  if not get_sidefaultfold.sidefaultfold:
+    getter_file = open(os.path.join(top, "scripts/getter.json"), "r")
+    getter = json.load(getter_file)
+    getter_file.close()
+    get_sidefaultfold.sidefaultfold = getter["sidefaultfold"]
+  return get_sidefaultfold.sidefaultfold
+get_sidefaultfold.sidefaultfold = None
 
 def get_diendurance(verbose="false"):
   if not get_diendurance.diendurance:

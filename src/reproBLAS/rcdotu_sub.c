@@ -4,13 +4,13 @@
 #include "../../config.h"
 
 void rcdotu_sub(const int N, const void* X, const int incX, const void *Y, const int incY, void *dotu) {
-  float_complex_indexed *dotui = cialloc(DEFAULT_FOLD);
+  float_complex_indexed *dotui = cialloc(SIDEFAULTFOLD);
 
-  cisetzero(DEFAULT_FOLD, dotui);
+  cisetzero(SIDEFAULTFOLD, dotui);
 
-  cicdotu(DEFAULT_FOLD, N, X, incX, Y, incY, dotui);
+  cicdotu(SIDEFAULTFOLD, N, X, incX, Y, incY, dotui);
 
-  cciconv_sub(DEFAULT_FOLD, dotui, dotu);
+  cciconv_sub(SIDEFAULTFOLD, dotui, dotu);
   free(dotui);
   return;
 }
