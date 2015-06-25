@@ -8,4 +8,5 @@ LIBMPIINDEXED := $(OBJPATH)/libmpiindexed.a
 LDFLAGS += $(MPILDFLAGS)
 CFLAGS += $(MPICFLAGS)
 
-libmpiindexed.a_DEPS = $$(LIBINDEXED) #MPI_indexed.o MPI_dIndexed.o MPI_sIndexed.o
+#libmpiindexed.a_DEPS = $$(LIBINDEXED) #MPI_indexed.o MPI_dIndexed.o MPI_sIndexed.o
+libmpiindexed.a_DEPS = $$(LIBINDEXED) DOUBLE_INDEXED.o

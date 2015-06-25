@@ -12,6 +12,7 @@ libindexed.a_DEPS = cciconv_sub.o \
                     cicconv.o \
                     cicdeposit.o \
                     ciciadd.o \
+                    ciciaddv.o \
                     ciciset.o \
                     cicupdate.o \
                     cinegate.o \
@@ -44,6 +45,7 @@ libindexed.a_DEPS = cciconv_sub.o \
                     didconv.o \
                     diddeposit.o \
                     didiadd.o \
+                    didiaddv.o \
                     didiset.o \
                     didupdate.o \
                     dindex.o \
@@ -82,6 +84,7 @@ libindexed.a_DEPS = cciconv_sub.o \
                     sisdeposit.o \
                     sisetzero.o \
                     sisiadd.o \
+                    sisiaddv.o \
                     sisiset.o \
                     sisize.o \
                     sisupdate.o \
@@ -119,6 +122,7 @@ libindexed.a_DEPS = cciconv_sub.o \
                     zizconv.o \
                     zizdeposit.o \
                     ziziadd.o \
+                    ziziaddv.o \
                     ziziset.o \
                     zizupdate.o \
                     zmdenorm.o \

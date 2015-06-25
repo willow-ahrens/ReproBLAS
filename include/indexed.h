@@ -304,6 +304,11 @@ void smsmadd(const int fold, const float *priX, const int incpriX, const float *
 void ciciadd(const int fold, const float_complex_indexed *X, float_complex_indexed *Y);
 void cmcmadd(const int fold, const float *priX, const int incpriX, const float *carX, const int inccarX, float* priY, const int incpriY, float* carY, const int inccarY) ;
 
+void didiadd(const int fold, const int N, const double_indexed *X, const int incX, double_indexed *Y, const int incY);
+void ziziadd(const int fold, const int N, const double_complex_indexed *X, const int incX, double_complex_indexed *Y, const int incY);
+void sisiadd(const int fold, const int N, const float_indexed *X, const int incX, float_indexed *Y, const int incY);
+void ciciadd(const int fold, const int N, const float_complex_indexed *X, const int incX, float_complex_indexed *Y, const int incY);
+
 void didadd(const int fold, const double X, double_indexed *Y);
 void dmdadd(const int fold, const double X, double *priY, const int incpriY, double *carY, const int inccarY);
 void zizadd(const int fold, const void *X, double_complex_indexed *Y);
