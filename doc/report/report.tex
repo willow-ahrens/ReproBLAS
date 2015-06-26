@@ -258,30 +258,73 @@
     To speed up this operation, the factors $1.5 \times \epsilon^{-1} \times a_k$ for all valid $k \in Z$ are stored in a precomputed array.
 
   \subsection{Deposit}
-    The deposit operation (here referred to as algorithm \ref{alg:deposit}, a special case where $fold = 3$ is described as \verb|ExtractVector3| in \cite{repsum}) lies firmly at the heart of ReproBLAS. Due to the proportion of time spent in the deposit routine, optimization of the deposit routine was prioritized. In the event that multiple $x$ need to be added to $Y$, the deposit routine can be vectorized by accumulating the $x$ in copies of $Y$. The process is formalized in \ref{alg:depositvectorized}. $c$, the number of copies to make, is a tuning parameter.
-      \begin{alg}
-        Extract components of floating point vector $\langle x_0, ..., x_{c - 1} \rangle$ in bins $(a_i, b_i], ..., (a_{i + fold - 1}, b_{i + fold - 1}]$ and add to indexed $Y$. Here, $(r | 1)$ represents the result of setting the last bit of the mantissa ($m_{p - 1}$) of floating-point $r$ to 1. Note that $\vec{Z}$ is used to represent a $c$-vector of values $\langle Z_0, ..., Z_{c - 1} \rangle$.
-        \begin{algorithmic}
-          \Function{DepositVectorized}{fold, $\vec{x}$, Y}
-            \State $\vec{Z} \gets \langle Y, ..., Y \rangle$
-            \State $\vec{r} \gets \vec{x}$
-            \For{$i = 0 \to (fold - 2)$}
-              \State $\vec{S} \gets {\vec{Z_P}}_i + (\vec{r} | 1)$
-              \State $\vec{q} \gets \vec{S} - {\vec{Z_P}}_i$
-              \State ${\vec{Z_P}}_i \gets \vec{S}$
-              \State $\vec{r} \gets \vec{r} - \vec{q}$
-            \EndFor
-            \State ${\vec{Z_P}}_{fold - 1} \gets {\vec{Z_P}}_{fold - 1} + (\vec{r} | 1)$
-            \State $Y_P \gets Y_P + \sum(\vec{Z_P} - \langle Y_P, ..., Y_P \rangle)$
-          \EndFunction
-        \end{algorithmic}
-        \label{alg:depositvectorized}
-      \end{alg}
-      It is clear that before the last line of algorithm \ref{alg:depositvectorized}, each $Z_k \in \langle Z_0, ..., Z_{c - 1} \rangle$ represents the result of depositing (using algorithm \ref{alg:deposit}) $x_k$ in $Y$. Assuming that ${Y_P}_j$ is renormalized to the range $[1.5 \times $
+    The deposit operation (here referred to as algorithm \ref{alg:deposit}, a special case where $fold = 3$ is described as \verb|ExtractVector3| in \cite{repsum}) lies firmly at the heart of ReproBLAS.
 
-    \subsection{Renormalize}
+    The indexed type $Y$ that results from depositing the floating point values $x_0, ..., x_{n - 1}$ into an empty indexed type is referred to as the \textbf{indexed sum} of $x_0, ..., x_{n - 1}$
+
+  \subsection{Renormalize}
+    When depositing values into an indexed type $Y$ of index $i$, the assumption is made that ${Y_P}_j \in (\epsilon^{-1}\times 2^{a_{i + j}}, 2 \times \epsilon^{-1}\times 2^{a_{i + j}})$ throughout the routine. To enforce this condition, the indexed type must be renormalized every $2^{p - w - 2}$ deposit operations. The renormalization procedure is shown in algorithm \ref{alg:renorm}.
+    \begin{alg}
+      For an indexed $Y$ with index $i$, assuming ${Y_P}_j \in [1.25 \times \epsilon^{-1}\times 2^{a_{i + j}}, 2 \times \epsilon^{-1}\times 2^{a_{i + j}})$, renormalize $Y$ such that ${Y_P}_j \in [1.5 \times \epsilon^{-1}\times 2^{a_{i + j}}, 1.75 \times \epsilon^{-1}\times 2^{a_{i + j}})$.
+      \begin{algorithmic}
+        \Function{Renorm}{fold, Y}
+          \For{$j \in 0 \to fold - 1$}
+            \If{${Y_P}_j < 1.5 \times \ufp({Y_P}_j)$}
+              \State ${Y_P}_j \gets {Y_P}_j + 0.25 \times \ufp({Y_P}_j)$
+              \State ${Y_C}_j \gets {Y_C}_j - 1$
+            \EndIf
+            \If{${Y_P}_j \geq 1.75 \times \ufp({Y_P}_j)$}
+              \State ${Y_P}_j \gets {Y_P}_j - 0.25 \times \ufp({Y_P}_j)$
+              \State ${Y_C}_j \gets {Y_C}_j + 1$
+            \EndIf
+          \EndFor
+        \EndFunction
+      \end{algorithmic}
+      \label{alg:renorm}
+    \end{alg}
+    The renormalization operation is described in the carry-bit propagation section of algorithm $6$ in \cite{repsum}, although it has been slightly modified so as not to include an extraneous case.
+
+    To show the reasoning behind the assumptions in algorithm \ref{alg:renorm}, consider the case in which floating point $x_0, x_1, ...$ are succesively deposited in an indexed type $Y$ which satisfies ${Y_P}_j \in [1.5 \times \epsilon^{-1}\times 2^{a_{i + j}}, 1.75 \times \epsilon^{-1}\times 2^{a_{i + j}})$. (Such a condition is satisfied upon initialization of an empty $Y$)
+
+    Let $d_{j, k}$ denote the amount added to ${Y_P}_j$ with the $k^th$ deposit (without renormalization).
+
+    As the deposit operation extracts and adds the appropriate component of $x_k$ exactly (assuming ${Y_P}_j$ lies within the appropriate boundaries at each step, which will be shown), $d_{j, k}$ is completely contained in the bin $[a_{i + j}, b_{i + j})$, meaning $|d_{j, k}| < 2^{b_{i + j}} = 2^{a_{i + j} + W}$.
+
+    Therefore,
+
+    $|\sum \limits_{n = 0}^{k - 1} d_{j, k}| < \sum \limits_{k = 0}^{n - 1} |d_k| < n \times 2^{a_{i + j} + W}$
+
+    and if $n <= 2^{p - W - 2}$, then after the $n^{th}$ deposit
+
+    ${Y_P}_j \in [(1.5 \times \epsilon^{-1} - n \times 2^W)\times 2^{a_{i + j}}, (1.75 \times \epsilon^{-1} + n \times 2^W)\times 2^{a_{i + j}})$
+
+    \indent\indent$\in [1.25 \times \epsilon^{-1}\times 2^{a_{i + j}}, 2 \times \epsilon^{-1}\times 2^{a_{i + j}})$
+
   \subsection{Reduce}
+    An operation to produce the sum of two indexed types is necessary to perform a reduction. For completeness we include the algorithm here, although apart from the renormalization step, it is equivalent to algorithm $7$ in \cite{repsum}.
+    \begin{alg}
+      For an indexed type $Y$ (the indexed sum of some $x_0, ..., x_{n - 1} \in \F$) with index $i$ and indexed type $Y'$ with index $i'$ (the indexed sum of some $x_n, ..., x_{n + m - 1} \in \F$), add $Y'$ to $Y$. That is, set $Y$ to the indexed sum of $x_0, ..., x_{n + m - 1}$. At the start and end of the algorithm, we may assume ${Y_P}_j, {Y'_P}_j \in [1.5 \times \epsilon^{-1}\times 2^{a_{i + j}}, 1.75 \times \epsilon^{-1}\times 2^{a_{i + j}})$
+      \begin{algorithmic}
+        \Function{Reduce}{fold, Y, Y'}
+          \If{$i' > i$}
+            \State $Y^{\prime\prime} \gets Y'$
+            \State \Call{Reduce}{fold, $Y^{\prime\prime}$, $Y$}
+            \State $Y \gets Y^{\prime\prime}$
+          \EndIf
+          \For{$j \in 0 \to i'$}
+            \State ${Y_P}_{j + i - i'} \gets {Y_P}_{j + i - i'} + {Y'_P}_j - 1.5 \times \ufp({Y_P}_j)$
+            \State ${Y_C}_{j + i - i'} \gets {Y_C}_{j + i - i'} + {Y'_C}_j$
+          \EndFor
+          \State \Call{Renorm}{fold, $Y$}
+        \EndFunction
+      \end{algorithmic}
+      \label{alg:reduce}
+    \end{alg}
+
   \subsection{Convert}
+    At certain points in using the alternate number system provided by ReproBLAS, the user may wish to convert between indexed and floating point types.
+
+
   \subsection{Error Bound}
   \subsection{Limits}
     \label{sec:limits}
@@ -299,7 +342,7 @@
     \subsubsection{xixiadd}
     \subsubsection{xscale}
     \subsubsection{xixiaddsq}
-\section{idxBLAS.h}
+\section{idxdBLAS.h}
   \subsection{Overview}
   \subsection{Functions}
     \subsubsection{xixdot}
@@ -307,11 +350,31 @@
     \subsubsection{xixgemv}
     \subsubsection{xixgemm}
   \subsection{Optimization}
+    Due to the proportion of time spent in the deposit routine, optimization of the deposit routine was prioritized. In the event that multiple $x$ need to be added to $Y$, the deposit routine can be vectorized by accumulating the $x$ in copies of $Y$. The process is formalized in \ref{alg:depositvectorized}. The number of copies of $Y$ to make, $c$, is a tuning parameter.
+      \begin{alg}
+        Extract components of each $x_k$ in a floating point vector $\langle x_0, ..., x_{c - 1} \rangle$ in bins $(a_i, b_i], ..., (a_{i + fold - 1}, b_{i + fold - 1}]$ and add to indexed $Y$. Here, $(\vec{r} | 1)$ represents the result of setting the last bit of the mantissa ($m_{p - 1}$) of each floating-point $r_k$ to 1. Note that $\vec{Z}$ is used to represent a $c$-vector of values $\langle Z_0, ..., Z_{c - 1} \rangle$.
+        \begin{algorithmic}
+          \Function{DepositVectorized}{fold, $\vec{x}$, Y}
+            \State $\vec{Z} \gets \langle Y, ..., Y \rangle$
+            \State $\vec{r} \gets \vec{x}$
+            \For{$i = 0 \to (fold - 2)$}
+              \State $\vec{S} \gets {\vec{Z_P}}_i + (\vec{r} | 1)$
+              \State $\vec{q} \gets \vec{S} - {\vec{Z_P}}_i$
+              \State ${\vec{Z_P}}_i \gets \vec{S}$
+              \State $\vec{r} \gets \vec{r} - \vec{q}$
+            \EndFor
+            \State ${\vec{Z_P}}_{fold - 1} \gets {\vec{Z_P}}_{fold - 1} + (\vec{r} | 1)$
+            \State $Y_P \gets Y_P + \sum(\vec{Z_P} - \langle Y_P, ..., Y_P \rangle)$
+          \EndFunction
+        \end{algorithmic}
+        \label{alg:depositvectorized}
+      \end{alg}
+      It is clear that before the last line of algorithm \ref{alg:depositvectorized}, each $Z_k \in \langle Z_0, ..., Z_{c - 1} \rangle$ represents the result of depositing (using algorithm \ref{alg:deposit}) $x_k$ in $Y$. Assuming that ${Y_P}_j$ is renormalized to the range $[1.5 \times $
 \section{repBLAS.h}
-\section{idxMPI.h}
+\section{idxdMPI.h}
   \subsection{Types}
   \subsection{Functions}
-    \subsubsection{XIREDUCE}
+    \subsubsection{XIXIREDUCE}
 \section{Applications}
   \subsection{Parallel Reproducible Dot Product}
   \subsection{Parallel Reproducible Vector Norm}
