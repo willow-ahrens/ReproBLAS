@@ -322,8 +322,42 @@
     \end{alg}
 
   \subsection{Convert}
-    At certain points in using the alternate number system provided by ReproBLAS, the user may wish to convert between indexed and floating point types.
+    At certain points in using the alternate number system provided by ReproBLAS, the user may wish to convert between indexed and floating point representations of a number.
 
+    Converting a floating point number to an indexed type should produce, for transparency and reproducibility, an indexed type equivalent to the indexed sum of the floating point number.
+    The procedure is very simply summarized by algorithm \ref{alg:conv2indexed}
+    \begin{alg}
+      Convert floating point $x$ to indeded $Y$ with fold $fold$.
+      \begin{algorithmic}
+        \Function{ConvertFloatToIndexed}{fold, x, Y}
+          \State $Y \gets 0$
+          \State \Call{Deposit}{fold, x, Y}
+        \EndFunction
+      \end{algorithmic}
+      \label{alg:conv2indexed}
+    \end{alg}
+
+    Converting an indexed type to a floating point number is more difficult. However, because \cite{repsum} guarantees that all fields in the indexed type are reproducible, the problem comes down to evaluating equation \ref{eq:indexedValue} accurately and without unnecessary overflow. Following the methods in \cite{sortsum}, we add the floating point numbers in order of decreasing unnormalized exponent using a higher intermediate precision.
+
+    When adding the fields it is not necessary to examine the values in the fields or sort them explicitly. Their unnormalized exponent does not depend on their values, and their unnormalized exponents have a predetermined order.
+
+    Consider indexed $Y$ of index $i$ and fold $fold$.
+    As each primary field can be expressed as an offset from $1.5 \times \epsilon^{-1} \times 2^{a_{i + j}}$, ${y_P}_j$ can be expressed exactly using an unnormalized floating point type ${y'_P}_j$ with an exponent of $a_{i + j} + p$.
+    As each carry field ${Y_C}_j$ is a count of renormalization adjustments later scaled by $0.25 \times \epsilon^{-1} \times 2^{a_{i + j}}$, ${y_C}_j$ can be expressed exactly using an unnormalized floating point number ${y'_C}_j$ with an exponent of $a_{i + j} + p + p - 2$.
+
+    For all $k < j$, $\exp({y'_P}_k) > \exp({y'_P}_j)$ and $\exp({y'_C}_k) > \exp({y'_C}_j)$ because $a_{i + k} > a_{i + j}$.
+
+    $\exp({y'_C}_j) = a_{i + j} + p + p - 2$ and $\exp({y'_P}_{j - 1}) = a_{i + j - 1} + p = a_{i + j} + p + W$. Therefore $\exp({y'_C}_j) > \exp({y'_P}_{j - 1})$ using $W < p - 2$.
+
+    $\exp({y'_C}_j) = a_{i + j} + p + p - 2$ and $\exp({y'_P}_{j - 2}) = a_{i + j - 1} + p = a_{i + j} + p + 2\times W$. Therefore $\exp({y'_C}_j) < \exp({y'_P}_{j - 2})$ using $2W > p$.
+
+    Therefore, $\exp({y'_C}_0) > \exp({y'_C}_1) > \exp({y'_P}_0) > \exp({y'_C}_2) > \exp({y'_P}_1) > ... > \exp({y'_C}_{fold - 2}) > \exp({y'_P}_{fold - 3}) > \exp({y'_C}_{fold - 1}) > \exp({y'_P}_{fold - 2}) > \exp({y'_P}_{fold - 1})$.
+
+    It should be noted that the ${y'_P}_j$ and the ${y'_C}_j$ can be expressed exactly using the same floating point types as ${Y_P}_j$ and ${Y_C}_j$, and their values can be obtained using equations \ref{eq:} and \ref{eq:}
+
+
+    Although the fields have an intrinsic unnormalized ordering, this ordering does not necessarily guard against overflow. If the intermediate precision used for summation does not have a larger exponent range that the indexed precision (they must at least be equal), we must scale the top of the range down by some factor during addition.
+        $y = \sum\limits_{j = 0}^{fold - 1} {y_P}_j + {y_C}_j = \sum\limits_{j = 0}^{fold - 1} ({Y_P}_j - 1.5 \times\epsilon^{-1}\times 2^{a_{i + j}}) + {Y_C}_j \times 0.25\times\epsilon^{-1}\times2^{a_{i + j}}$
 
   \subsection{Error Bound}
   \subsection{Limits}
