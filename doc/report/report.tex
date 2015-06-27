@@ -337,7 +337,7 @@
       \label{alg:conv2indexed}
     \end{alg}
 
-    Converting an indexed type to a floating point number is more difficult. However, because \cite{repsum} guarantees that all fields in the indexed type are reproducible, the problem comes down to evaluating equation \ref{eq:indexedValue} accurately and without unnecessary overflow. Following the methods in \cite{sortsum}, we add the floating point numbers in order of decreasing unnormalized exponent using a higher intermediate precision.
+    Converting an indexed type to a floating point number is more difficult. However, because \cite{repsum} guarantees that all fields in the indexed type are reproducible, the problem comes down to evaluating equation \ref{eq:indexedvalue} accurately and without unnecessary overflow. Following the methods in \cite{sortsum}, we add the floating point numbers in order of decreasing unnormalized exponent using a higher intermediate precision. As discussed in $\cite{sortsum}$, the intermediate precision must be greater than $p + \ceil{\log_2(2 \times fold)}$ as there are $2 \times fold$ elements to be summed.
 
     When adding the fields it is not necessary to examine the values in the fields or sort them explicitly. Their unnormalized exponent does not depend on their values, and their unnormalized exponents have a predetermined order.
 
@@ -351,12 +351,39 @@
 
     $\exp({y'_C}_j) = a_{i + j} + p + p - 2$ and $\exp({y'_P}_{j - 2}) = a_{i + j - 1} + p = a_{i + j} + p + 2\times W$. Therefore $\exp({y'_C}_j) < \exp({y'_P}_{j - 2})$ using $2W > p$.
 
-    Therefore, $\exp({y'_C}_0) > \exp({y'_C}_1) > \exp({y'_P}_0) > \exp({y'_C}_2) > \exp({y'_P}_1) > ... > \exp({y'_C}_{fold - 2}) > \exp({y'_P}_{fold - 3}) > \exp({y'_C}_{fold - 1}) > \exp({y'_P}_{fold - 2}) > \exp({y'_P}_{fold - 1})$.
+    Therefore, $\exp({y'_C}_0) > \exp({y'_C}_1) > \exp({y'_P}_0) > \exp({y'_C}_2) > \exp({y'_P}_1) > ... > \exp({y'_C}_{fold - 2}) > \exp({y'_P}_{fold - 3}) > \exp({y'_C}_{fold - 1}) > \exp({y'_P}_{fold - 2}) > \exp({y'_P}_{fold - 1})$. These numbers may, for convenience of notation, be referred to in order as $y'_0, ..., y'_{2 \times fold - 1}$
 
-    It should be noted that the ${y'_P}_j$ and the ${y'_C}_j$ can be expressed exactly using the same floating point types as ${Y_P}_j$ and ${Y_C}_j$, and their values can be obtained using equations \ref{eq:} and \ref{eq:}
+    It should be noted that the ${y'_P}_j$ and the ${y'_C}_j$ can be expressed exactly using the same floating point types as ${Y_P}_j$ and ${Y_C}_j$ (except in the case of overflow, in which a scaled version may be obtained), and such exact floating point representations can be obtained using equations \ref{eq:pri} and \ref{eq:car}.
 
+    As $|{y'_C}_0|$ can be bounded by $2^{e_{\max} - W + p + p - 1}$, the absolute value of all fields in an indexed type can be bounded by $2^{e_{\max} - W + p + p - 1}$.
 
-    Although the fields have an intrinsic unnormalized ordering, this ordering does not necessarily guard against overflow. If the intermediate precision used for summation does not have a larger exponent range that the indexed precision (they must at least be equal), we must scale the top of the range down by some factor during addition.
+    As the maximum useful $fold$ is $\floor{(e_{\max} - e_{\min} + p - 2)/W} + 1$,
+
+    $\sum_{k = 0}^{2 \times fold - 1} |y_k| < e_{\max} - W + p + p - 1 + \ceil{\log_2{\floor{(e_{\max} - e_{\min} + p - 2)/W}}}$
+
+    If the intermediate precision has a maximum exponent greater than or equal to $e_{\max} - W + p + p - 1 + \ceil{\log_2{\floor{(e_{\max} - e_{\min} + p - 2)/W}}}$, then no special cases to guard against overflow are needed.
+
+    Algorithm \ref{alg:conv2float} represents a conversion routine in such a case.
+
+    \begin{alg}
+      Convert indexed $Y$ with index $i$ and fold $fold$ to floating point $x$. Here, $z$ is a floating point type with precision $P$ greater than $p + \ceil{\log_2(2 \times fold)}$ and maximum exponent $E_{\max}$ greater than $e_{\max} - W + p + p - 1 + \ceil{\log_2{\floor{(e_{\max} - e_{\min} + p - 2)/W}}}$
+      \begin{algorithmic}
+        \Function{ConvertIndexedToFloat}{fold, x, Y}
+          \State $z \gets {y'_C}_0$
+          \For{$j \in 1 \to fold - 1$}
+            \State $z \gets z + {y'_C}_j$
+            \State $z \gets z + {y'_P}_{j - 1}$
+          \EndFor
+          \State $z \gets {y'_P}_{fold - 1}$
+          \State $x \gets z$
+        \EndFunction
+      \end{algorithmic}
+      \label{alg:conv2float}
+    \end{alg}
+
+    If an intermediate type with exponent greater than $e_{\max} - W + p + p - 1 + \ceil{\log_2{\floor{(e_{\max} - e_{\min} + p - 2)/W}}}$ is not available, we must scale the intermediate sum appropriately.
+    Although the fields have an intrinsic unnormalized ordering, this ordering does not necessarily guard against overflow. If the intermediate precision used for summation does not have a larger exponent range that the indexed precision (they must at least be equal), we must scale the top of the range down by some factor during addition, and then scale it back up when subsequent additions can no longer affect an overflow situation.
+
         $y = \sum\limits_{j = 0}^{fold - 1} {y_P}_j + {y_C}_j = \sum\limits_{j = 0}^{fold - 1} ({Y_P}_j - 1.5 \times\epsilon^{-1}\times 2^{a_{i + j}}) + {Y_C}_j \times 0.25\times\epsilon^{-1}\times2^{a_{i + j}}$
 
   \subsection{Error Bound}
@@ -421,7 +448,7 @@
     IEEE Standard for Floating-Point Arithmetic," IEEE Std 754-2008 , vol., no., pp.1,70, Aug. 29 2008
   \bibitem{c89}
     ANSI/ISO 9899-1990 American National Standard for Programming Languages - C, section 6.1.2.5
-  \bibitem{sortingsummation}
+  \bibitem{sortsum}
     Demmel, James W., and Yozo Hida. Accurate floating point summation. Computer Science Division, University of California, 2002.
 \end{thebibliography}
 \end{document}
