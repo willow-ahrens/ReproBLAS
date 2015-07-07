@@ -51,7 +51,7 @@
     An indexed type $Y$ is composed of several accumulators $Y_0, ..., Y_{n - 1} \in \F$, each holding the sum of input in a predetermined exponent range (referred to as a \textbf{bin}). An indexed type with $n$ accumulators is referred to as having \textbf{fold} $n$. Due to their wild innacuraccy, indexed types of fold 1 are not considered. It is assumed that indexed types have fold greater than 1.
 
     Let $Y$ be the indexed type corresponding to the reproducibly computed sum of $x_0, ..., x_{n - 1} = s_0 \times 2^{e_0} \times m_0, ..., s_{n - 1} \times 2^{e_{n - 1}} \times m_{n - 1} \in F$.
-    If the accumulator $Y_j$ accumulates input in the bin $(a, b], a < b \in \Z$, then $Y_j$ is the sum of all input bits with exponents in $(a, b]$. Specifically, $Y_j = \sum \{s_i2^{e_i}{m_i}_k, i \in \{0, ..., n - 1\}, k \in \Z | e_i - k \in (a, b]\}$.
+    If the accumulator $Y_j$ accumulates input in the bin $(a, b], a < b \in \Z$, then $Y_j$ is the sum of all input bits with exponents in $(a, b]$. Specifically, $Y_j = \sum \{s_i2^{e_i}{m_i}_k: i \in \{0, ..., n - 1\}, k \in \Z, e_i - k \in (a, b]\}$.
 
     For ease of computation, accumulator ranges are not arbitrary. They are broken up into precomputed, fixed width intervals starting at $e_{\max}$. The possible bins
 
@@ -97,7 +97,7 @@
         ${y_P}_j = {Y_P}_j - 1.5\times\epsilon^{-1}\times2^{a_{i + j}}$
         \label{eq:pri}
       \end{eq}
-      As discussed in \cite{repsum}, if we store each primary bin ${Y_P}_j$ as an offset from $1.5 \times \epsilon^{-1} \times 2^{a_{i + j}}$ and keep ${Y_P}_j$ within the range $(\epsilon^{-1} \times 2^{a_{i + j}}, 2 \times \epsilon^{-1} \times 2^{a_{i + j}})$, algorithm \ref{alg:deposit} extracts the components of $x$ belonging to bins $(a_i, b_i], ..., (a_{i + fold - 1}, b_{i + fold - 1}]$ and adds them to ${Y_P}_0, ..., {Y_P}_{fold - 1}$ without error (and hence reproducibly) for all $x \in \F, |x| < 2 * 2^{b_i}$.
+      As discussed in \cite{repsum}, if we store each primary bin ${Y_P}_j$ as an offset from $1.5 \times \epsilon^{-1} \times 2^{a_{i + j}}$ and keep ${Y_P}_j$ within the range $(\epsilon^{-1} \times 2^{a_{i + j}}, 2 \times \epsilon^{-1} \times 2^{a_{i + j}})$, algorithm \ref{alg:deposit} extracts the components of $x$ belonging to bins $(a_i, b_i], ..., (a_{i + fold - 1}, b_{i + fold - 1}]$ and adds them to ${Y_P}_0, ..., {Y_P}_{fold - 1}$ without error (and hence reproducibly) for all $x \in \F, |x| < 2 \times 2^{b_i}$.
       \begin{alg}
         Extract components of floating point $x$ in bins $(a_i, b_i], ..., (a_{i + fold - 1}, b_{i + fold - 1}]$ and add to indexed $Y$. Here, $(r | 1)$ represents the result of setting the last bit of the mantissa ($m_{p - 1}$) of floating-point $r$ to 1.
         \begin{algorithmic}
@@ -134,7 +134,7 @@
 
     \subsubsection{Overflow}
       \label{sec:overflow}
-      If an indexed type $Y$ has index 0 and the width is $W$, then the value in the primary field ${Y_P}_0$ is stored as an offset from $1.5\times\epsilon^{-1}\times2^{e_{\max} - W}$. However, $1.5\times\epsilon^{-1}\times2^{e_{\max} - W} = 1.5 \times 2^{e_{\max} + (p - W)} > 2 * 2^{e_{\max}}$ since $W < p - 2$ \cite{repsum}, so it is out of the range of the floating-point system and not representable. Before discussing the solution to this overflow problem, take note of theorem \ref{thm:overflow}.
+      If an indexed type $Y$ has index 0 and the width is $W$, then the value in the primary field ${Y_P}_0$ is stored as an offset from $1.5\times\epsilon^{-1}\times2^{e_{\max} - W}$. However, $1.5\times\epsilon^{-1}\times2^{e_{\max} - W} = 1.5 \times 2^{e_{\max} + (p - W)} > 2 \times 2^{e_{\max}}$ since $W < p - 2$ \cite{repsum}, so it is out of the range of the floating-point system and not representable. Before discussing the solution to this overflow problem, take note of theorem \ref{thm:overflow}.
       \begin{thm}
         If $2\times W > p$, then for any indexed type $Y$ of index $i$ and any ${Y_P}_j$ such that $i + j \geq 1$, $|{Y_P}_j| < 2^{e_{\max}}$.
 
@@ -232,11 +232,11 @@
 
       As \verb|Inf|, \verb|-Inf|, and \verb|NaN| add associatively, this behaviour is reproducible.
 
-      It should be noted here that it is very much possible to achieve a final result of \verb|Inf| or \verb|-Inf| when ${Y_P}_0$ is finite. This is due to the fact that the indexed representation can express values outside of the range of the floating point numbers that it is composed with. More specifically, it is very much possible for the value $y$ represented by the indexed type $Y$ to satisfy $|y| \geq 2 * 2^{e_{\max}}$.
+      It should be noted here that it is very much possible to achieve a final result of \verb|Inf| or \verb|-Inf| when ${Y_P}_0$ is finite. This is due to the fact that the indexed representation can express values outside of the range of the floating point numbers that it is composed with. More specifically, it is very much possible for the value $y$ represented by the indexed type $Y$ to satisfy $|y| \geq 2 \times 2^{e_{\max}}$.
 
 \section{Basic Operations}
   \subsection{Update}
-    As noted in algorithm \ref{alg:deposit}, when adding $x \in \F$ to an indexed type $Y$ of index $i$ and fold $fold$, we make the assumption that $|x| < 2 * 2^{b_i}$. However, this is not always the case and sometimes it is necessary to adjust the index of $Y$. This adjustment is called an \textbf{update}. The process of updating $Y$ to have index $i' > i$ is summarized succinctly in algorithm \ref{alg:update}.
+    As noted in algorithm \ref{alg:deposit}, when adding $x \in \F$ to an indexed type $Y$ of index $i$ and fold $fold$, we make the assumption that $|x| < 2 \times 2^{b_i}$. However, this is not always the case and sometimes it is necessary to adjust the index of $Y$. This adjustment is called an \textbf{update}. The process of updating $Y$ to have index $i' > i$ is summarized succinctly in algorithm \ref{alg:update}.
     \begin{alg}
       Update indexed $Y$ of index $i$ and fold $fold$ to have an index suitable to deposit $x$ where $x$ lies in the bin $(a_{i'}, b_{i'}]$.
       \begin{algorithmic}
@@ -322,6 +322,7 @@
     \end{alg}
 
   \subsection{Convert}
+    \label{sec:convert}
     It is necessary to provide the ability to convert between indexed and floating point representations of a number.
 
     Converting a floating point number to an indexed type should produce, for transparency and reproducibility, an indexed type equivalent to the indexed sum of the floating point number.
@@ -383,7 +384,7 @@
 
     If the sum is to overflow, it will overflow regardless of the values of any ${y'_P}_j$ or ${y'_C}_j$ with $|{y'_P}_j| < 0.5 \times 2^{-P} \times 2^{e_max}$ or $|{y'_C}_j| < 0.5 \times 2^{-P} \times 2^{e_{\max}}$. If the floating point sum of precision $P$ has exponent greater than or equal to $e_{\max}$ these numbers are not large enough to have any effect when added to the sum. If the sum has exponent less than $e_{\max}$, then additions of these numbers cannot cause the exponent of the sum to exceed $e_{\max}$ for similar reasons.
 
-    As the maximum absolute value of the sum is bounded by $2^{e_{\max} - W + p + p}$, a sufficient scaling factor is $2^{p + p - W}$, bounding the maximum absolute value of the scaled sum by $2^{e_{\max}}$. When $\exp(y'_k) < e_{\max} - P$, we may scale the sum back up and add the remaining numbers without scaling.
+    As the maximum absolute value of the sum is bounded by $2^{e_{\max} - W + p + p}$, a sufficient scaling factor is $2^{p + p - W}$, bounding the maximum absolute value of the scaled sum by $2^{e_{\max}}$. When $\exp(y'_k) < e_{\max} - P$, we may scale the sum back up and add the remaining numbers without scaling. Notice here that no overflow occurs during addition. If an overflow is to occur, it will happen only when scaling back up.
 
     If the sum is not going to overflow, then the smaller $y'_k$ must be added as unscaled numbers to avoid underflow.
 
@@ -409,10 +410,135 @@
 
     If an indexed type is composed of \verb|float|, then \verb|double| provides sufficient precision and exponent to use as an intermediate type and algorithm \ref{alg:conv2float} may be used to convert to a floating point number.
     However, if an indexed type is composed of \verb|double|, many machines may not have any higher precision available. To provide a conversion function that is identical across hardware, we use \verb|double-double| precision implemented in software to achieve sufficient intermediate precision \cite{doubledouble}. As this does not extend the exponent range we must use algorithm \ref{alg:conv2floatoverflow} to convert to a floating point number.
+
   \subsection{Error Bound}
+    Consider the indexed sum $Y$ of fold $fold$ of floating point numbers $x_0, ..., x_{n - 1}$. We denote the true sum $\sum \limits_{k = 0}^{n - 1} x_k$ by $S$, the true value of the indexed sum as obtained using equation \ref{eq:indexedvalue} by $y$, and the floating point approximation of $y$ obtained using an appropriate algorithm from section \ref{sec:convert} by $\overline{y}$.
+    Throughout this section we assume that all input falls within a bin and that $S$ and $y$ are larger than the largest denormalized floating point number.
+
+    To show an error bound for the conversion routine, we must first state theorem \ref{thm:sortsum} and prove theorem \ref{thm:sortsum2}.
+
+    \begin{thm}
+      This theorem is a restatement of statement 1 of theorem $1$ in \cite{sortsum}.
+
+      Assume we have a floating point format of precision $p$ and an intermediate format of precision $P$. Assume that the following hold:
+      \begin{enumerate}
+        \item $p \geq 2$ (there are at least 2 bits of precision in the bins)
+        \item $P \geq p + 1$ (the intermediate precision is larger than the original)
+        \item the intermediate exponenent range is at least as large as the original
+        \item rounding is in "to nearest" mode (breaking ties arbitrarily)
+        \item underflow is gradual
+        \item no overflow occurs
+      \end{enumerate}
+      Then, if we sum at most $1 + \floor{\frac{2^{P - p}}{(1 - 2^{-p})}}$ unnormalized numbers in order of decreasing exponent using the intermediate precision, the error is less than $(\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times \ulp(S)$, where $S$ is the true sum.
+      \label{thm:sortsum}
+    \end{thm}
+
+    \begin{thm}
+      Assume all assumptions of theorem \ref{thm:sortsum}.
+
+      Assume that $x'_0, ..., x'_{n - 1}$ are unnormalized floating point numbers in the original format in order of decreasing exponent and that $x_0, ..., x_{n - 1}$ are normalized or denormalized floating point numbers in the original format such that $x'_k = x_k$ as real numbers.
+      Let both $S'_k$ and $S_k$ be floating point numbers of the intermediate precision. Let $S'_0 = x'_0$ and $S_0 = x_0$. Let $S'_k = \fl(S'_{k - 1} + x'_k)$, and $S_k = \fl(S_{k - 1} + x_k)$. Then $S'_k = S_k$ for all $k \in \Z, k \geq 0$.
+
+      This can be shown inductively. As a base case, notice that $S'_0 = x'_0 = x_0 = S_0$. As an inductive step, if $S'_{k - 1} = S_{k - 1}$, then since $x'_k = x_k$ as real numbers, $S'_{k - 1} + x'_k = S_{k - 1} + x_k$ as real numbers and therefore $S'_k = \fl(S'_{k - 1} + x'_k) = \fl(S_{k - 1} + x_k) = S_k$.
+      \label{thm:sortsum2}
+    \end{thm}
+
+    It has been shown in \cite{repsum} that
+
+    $|S - y| < n \times 2^{W \times (1 - fold) - 1} \times \max|x_k|$
+
+    Because the intermediate precision $P$ used to sum the values stored in the various fields of $Y$ is assumed greater than $p + \ceil{\log_2(2 \times fold)}$, we sum at most $2^{P - p} < 1 + \floor{\frac{2^{P - p}}{1 - 2^{-p}}}$ values in order of decreasing unnormalized exponent, and theorems \ref{thm:sortsum} and \ref{thm:sortsum2} apply to yield
+
+    $|y - \overline{y}| < (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times \ulp(y)$.
+
+    By the triangle inequality
+
+    $|y| \leq |S| + |S - y| < |S| + n \times 2^{W \times (1 - fold) - 1} \times \max|x_k|$,
+
+    and because $S$ is assumed to be in the normalized range,
+
+    $\ulp(y) \leq \ulp(|S| + n \times 2^{W \times (1 - fold) - 1} \times \max|x_k|) \leq $
+
+    \indent \indent$(|S| + n \times 2^{W \times (1 - fold) - 1} \times \max|x_k|) \times 2 \times \epsilon$.
+
+    The above results can be used to obtain equation \ref{eq:error}.
+
+    \begin{eq} The absolute error of the floating point approximation of an indexed sum $|S - \overline{y}|$ is bounded by
+
+      $|S - \overline{y}| \leq |S - y| + |y - \overline{y}| <$
+
+      $n \times 2^{W \times (1 - fold) - 1} \times \max|x_k| + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times \ulp(y) < $
+
+      $n \times 2^{W \times (1 - fold) - 1} \times \max|x_k| + $
+
+      \indent \indent$(\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times(|S| + n \times 2^{W \times (1 - fold) - 1} \times \max|x_k|) \times 2 \times \epsilon < $
+
+      $n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} \times(1 + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2}) \times 2 \times \epsilon) + $
+
+      \indent \indent$(\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times |S| \times 2 \times \epsilon$
+      \label{eq:error}
+    \end{eq}
+
+    Equation \ref{eq:error} can be approximated as equation \ref{eq:errorapprox}.
+
+    \begin{eq} The absolute error of the floating point approximation of an indexed sum $|S - \overline{y}|$ is approximately bounded by
+
+      $n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} \times(1 + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2}) \times 2 \times \epsilon) + $
+
+      \indent \indent$(\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times |S| \times 2 \times \epsilon \approx$
+
+      $n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} + 3 \times \epsilon \times |S|$
+      \label{eq:errorapprox}
+    \end{eq}
+
+    A perhaps more useful mathematical construction is the error expressed relative to the result $\overline{y}$, and not the theoretical sum $S$. Again by the triangle inequality,
+
+    $|y| \leq |\overline{y}| + |y - \overline{y}|$.
+
+    Applying the bound on $|y - \overline{y}|$ yeilds
+
+    $|y| < |\overline{y}| + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times \ulp(y)$.
+
+    and because $y$ is assumed to be in the normalized range,
+
+    $|y| < |\overline{y}| + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times|y|\times 2 \times \epsilon$.
+
+    After simplification,
+
+    $|y| < |\overline{y}|\times (1 - (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times 2 \times \epsilon)^{-1}$.
+
+    Again because $y$ is assumed to be in the normalized range,
+
+    $\ulp(y) \leq \ulp(|\overline{y}|\times (1 - (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times 2 \times \epsilon)^{-1}) \leq |\overline{y}|\times (1 - (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times 2 \times \epsilon)^{-1} \times 2 \times \epsilon$.
+
+    The above results can be used to obtain equation \ref{eq:error2}.
+
+    \begin{eq} The absolute error of the floating point approximation of an indexed sum $|S - \overline{y}|$ is bounded by
+
+      $|S - \overline{y}| \leq |S - y| + |y - \overline{y}| <$
+
+      $n \times 2^{W \times (1 - fold) - 1} \times \max|x_k| + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times \ulp(y) < $
+
+      $n \times 2^{W \times (1 - fold) - 1} \times \max|x_k| + $
+
+      \indent \indent$(\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times|\overline{y}|\times (1 - (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times 2 \times \epsilon)^{-1} \times 2 \times \epsilon$
+      \label{eq:error2}
+    \end{eq}
+
+    Equation \ref{eq:error2} can be approximated as equation \ref{eq:error2approx}.
+
+    \begin{eq} The absolute error of the floating point approximation of an indexed sum $|S - \overline{y}|$ is approximately bounded by
+
+      $n \times 2^{W \times (1 - fold) - 1} \times \max|x_k| + $
+
+      \indent \indent$(\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times|\overline{y}|\times (1 - (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times 2 \times \epsilon)^{-1} \times 2 \times \epsilon \approx$
+
+      $n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} + 3 \times \epsilon \times |\overline{y}|$
+      \label{eq:error2approx}
+    \end{eq}
   \subsection{Limits}
     \label{sec:limits}
-    As absolute value of individual quantities added to ${Y_P}_j$ are not in excess of $2^W b_{i + j}$, $0.25\epsilon^{-1}2^{-W}$ elements may be deposited into ${Y_P}_j$ between renormalizations. As ${Y_C}_j$ must be able to record additions of absolute value 1 without error, ${Y_C}_j$ must stay in the range $(\epsilon^{-1}, -\epsilon^{-1})$. As each renormalization results in addition not in excess absolute value of 2 to ${Y_C}_j$, a maximum of $0.5 * (\epsilon^(-1) - 1)$ renormalizations may be performed, meaning that.
+    As absolute value of individual quantities added to ${Y_P}_j$ are not in excess of $2^W b_{i + j}$, $0.25\epsilon^{-1}2^{-W}$ elements may be deposited into ${Y_P}_j$ between renormalizations. As ${Y_C}_j$ must be able to record additions of absolute value 1 without error, ${Y_C}_j$ must stay in the range $(\epsilon^{-1}, -\epsilon^{-1})$. As each renormalization results in addition not in excess absolute value of 2 to ${Y_C}_j$, a maximum of $0.5 \times (\epsilon^(-1) - 1)$ renormalizations may be performed, meaning that.
 \section{Interface}
   \subsection{Fold}
   \subsection{Complex Types}
