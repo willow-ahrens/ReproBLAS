@@ -156,10 +156,10 @@ double ddmconv(const int fold, const double* priX, const int incpriX, const doub
       int scaled;
       X_index = dmindex(priX);
       bins = dmbins(X_index);
-      if(X_index <= (DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2))/DIWIDTH){
-        scale_down = ldexp(0.5, 1 - (DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2 + 1)));
-        scale_up = ldexp(0.5, 1 + DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2 + 1));
-        scaled = MIN(X_index + fold, (DBL_MANT_DIG + (DBL_MANT_DIG - 1) + (DBL_MANT_DIG - DIWIDTH - 2))/DIWIDTH);
+      if(X_index <= (3 * DBL_MANT_DIG - 1)/DIWIDTH){
+        scale_down = ldexp(0.5, 1 - (2 * DBL_MANT_DIG - DIWIDTH - 1));
+        scale_up = ldexp(0.5, 1 + (2 * DBL_MANT_DIG - DIWIDTH - 1));
+        scaled = MAX(MIN(fold, (3 * DBL_MANT_DIG - 1)/DIWIDTH - X_index), 0);
         if(X_index == 0){
           DDPD(t0, t1, t2, t3, t4, t5, Yl, Yt, carX[0] * ((bins[0]/6.0) * scale_down * DMEXPANSION));
           DDPD(t0, t1, t2, t3, t4, t5, Yl, Yt, carX[inccarX] * ((bins[1]/6.0) * scale_down));
@@ -169,7 +169,7 @@ double ddmconv(const int fold, const double* priX, const int incpriX, const doub
           DDPD(t0, t1, t2, t3, t4, t5, Yl, Yt, carX[0] * ((bins[0]/6.0) * scale_down));
           i = 1;
         }
-        for(; i < scaled && i < fold; i++){
+        for(; i < scaled; i++){
           DDPD(t0, t1, t2, t3, t4, t5, Yl, Yt, carX[i * inccarX] * ((bins[i]/6.0) * scale_down));
           DDPD(t0, t1, t2, t3, t4, t5, Yl, Yt, (priX[(i - 1) * incpriX] - bins[i - 1]) * scale_down);
         }

@@ -10,6 +10,7 @@ check_suite = checks.CheckSuite()
 folds = [2, 3, 4]
 inf_folds = [2, 3, 4]
 
+"""
 check_suite.add_checks([checks.ValidateInternalDSCALETest(),\
                         checks.ValidateInternalSSCALETest()],\
                        ["N", "incX"],\
@@ -298,6 +299,7 @@ check_suite.add_checks([checks.VerifyRDDOTTest(),\
                          "rand+(rand-1)",\
                          "sine",\
                          "small+grow*big"]])
+"""
 
 DBL_BIN_WIDTH=41
 DBL_MAX_EXP=1024
@@ -322,6 +324,7 @@ for i in range(DBL_BIN_WIDTH + 2):
                            "++big",\
                            "+-big"],\
                           ["constant"]])
+  """
 
   check_suite.add_checks([checks.ValidateInternalRDDOTTest(),\
                           ],\
@@ -492,6 +495,7 @@ for i in range(FLT_BIN_WIDTH + 2):
                            "+big",\
                            "++big",\
                            "+-big"]])
+"""
 
 #check_suite.add_checks([checks.VerifyRDGEMVTest()],\
 #                       ["O", "T", "N", "M", "lda", "incX", "incY", "f", "g", "j"],\

@@ -31,6 +31,7 @@
 \begin{document}
 \noindent
 \maketitle
+\tableofcontents
 \newpage
 \section{Introduction}
 
@@ -552,6 +553,7 @@
     As ${Y_C}_j$ must be able to record additions of absolute value 1 without error, ${Y_C}_j$ must stay in the range $(-\epsilon^{-1}, \epsilon^{-1})$. As each renormalization results in addition not in excess absolute value of 1 to ${Y_C}_j$, a maximum of $(\epsilon^{-1} - 1)$ renormalizations may be performed, meaning that an indexed sum represents the sum of a maximum of $0.25\epsilon^{-1}2^{-W} \times (\epsilon^{-1} - 1) \approx 2^{p + p - W - 2}$. For indexed \verb|double| this number is ?, whereas for indexed \verb|float| this number is ?
 
     The indexed types provided by ReproBLAS will, when used correctly, avoid intermediate overflow.
+
 \section{Interface}
   \subsection{Fold}
   \subsection{Complex Types}
@@ -592,7 +594,6 @@
         \end{algorithmic}
         \label{alg:depositvectorized}
       \end{alg}
-      It is clear that before the last line of algorithm \ref{alg:depositvectorized}, each $Z_k \in \langle Z_0, ..., Z_{c - 1} \rangle$ represents the result of depositing (using algorithm \ref{alg:deposit}) $x_k$ in $Y$. Assuming that ${Y_P}_j$ is renormalized to the range $[1.5 \times $
 \section{repBLAS.h}
 \section{idxdMPI.h}
   \subsection{Types}
@@ -615,8 +616,4 @@
   \bibitem{doubledouble}
     Hida, Yozo, Xiaoye S. Li, and David H. Bailey. Quad-double arithmetic: Algorithms, implementation, and application. 15th IEEE Symposium on Computer Arithmetic, 2000.
 \end{thebibliography}
-extra crap
-
-    $\sum_{k = 0}^{2 \times fold - 1} |y_k| < e_{\max} - W + p + p - 1 + \ceil{\log_2{\floor{(e_{\max} - e_{\min} + p - 2)/W}}}$
-
 \end{document}
