@@ -41,7 +41,7 @@
 
   Let $f = s \times 2^e \times m \in \F$ be a floating-point number represented in IEEE 754 format where $s = \pm 1$ is the \textbf{sign}, $e_{\max} \geq e \geq e_{\min}$ is the \textbf{exponent} ($\exp(f)$ is defined to be $e$), $p$ is the \textbf{precision}, and $m = m_0.m_1m_2...m_{p-1}$ where $m_1, ..., m_{p - 1} \in \{0, 1\}$ is the \textbf{significand} of $f$. $f$ is said to be \textbf{normalized} if $m_0 = 1$ and $e > e_{\min}$, \textbf{unnormalized} if $m_0 = 0$, and \textbf{subnormal} if $m_0 = 0$ and $e = e_{\min}$. $f = 0$ if $m_0 = m_1 = ... = m_{p - 1} = 0$ and $e = e_{\min}$.
 
-  As ReproBLAS is written in C, \verb|float| and \verb|double| refer to the floating point types specified in the 1989 C standard \cite{c89} and we assume that they correspond to the 32-bit and 64-bit types in the IEEE-754-2008 floating point standard \cite{ieee754}. 
+  As ReproBLAS is written in C, \verb|float| and \verb|double| refer to the floating point types specified in the 1989 C standard \cite{c89} and we assume that they correspond to the \verb|binary-32| and \verb|binary-64| types in the IEEE-754-2008 floating point standard \cite{ieee754}.
 
   All indicies start at 0 to increase correspondence with the actual ReproBLAS implementation.
 
@@ -263,6 +263,7 @@
     The indexed type $Y$ that results from depositing the floating point values $x_0, ..., x_{n - 1}$ into an empty indexed type is referred to as the \textbf{indexed sum} of $x_0, ..., x_{n - 1}$
 
   \subsection{Renormalize}
+    \label{sec:renormalize}
     When depositing values into an indexed type $Y$ of index $i$, the assumption is made that ${Y_P}_j \in (\epsilon^{-1}\times 2^{a_{i + j}}, 2 \times \epsilon^{-1}\times 2^{a_{i + j}})$ throughout the routine. To enforce this condition, the indexed type must be renormalized every $2^{p - w - 2}$ deposit operations. The renormalization procedure is shown in algorithm \ref{alg:renorm}.
     \begin{alg}
       For an indexed $Y$ with index $i$, assuming ${Y_P}_j \in [1.25 \times \epsilon^{-1}\times 2^{a_{i + j}}, 2 \times \epsilon^{-1}\times 2^{a_{i + j}})$, renormalize $Y$ such that ${Y_P}_j \in [1.5 \times \epsilon^{-1}\times 2^{a_{i + j}}, 1.75 \times \epsilon^{-1}\times 2^{a_{i + j}})$.
@@ -538,7 +539,19 @@
     \end{eq}
   \subsection{Limits}
     \label{sec:limits}
-    As absolute value of individual quantities added to ${Y_P}_j$ are not in excess of $2^W b_{i + j}$, $0.25\epsilon^{-1}2^{-W}$ elements may be deposited into ${Y_P}_j$ between renormalizations. As ${Y_C}_j$ must be able to record additions of absolute value 1 without error, ${Y_C}_j$ must stay in the range $(\epsilon^{-1}, -\epsilon^{-1})$. As each renormalization results in addition not in excess absolute value of 2 to ${Y_C}_j$, a maximum of $0.5 \times (\epsilon^(-1) - 1)$ renormalizations may be performed, meaning that.
+    As discussed previously, the minimum fold accepted by ReproBLAS is 2. The maximum useful fold is $\floor{(e_{\max} - e_{\min} + p - 2)/W} + 1$, as this covers all of the bins.
+
+    As discussed in \cite{repsum}, $W < p - 2$. As discussed in section \ref{sec:overflow}, $2\times W > p$.
+
+    ReproBLAS uses the values $W = 41$ for indexed \verb|double| and $W = 13$ for indexed \verb|float|.
+
+    As discussed in section \ref{sec:underflow}, input in the bin $(e_{\min} - p, e_{\min} - p + 2 + W + (e_{\max} - e_{\min} + p - 2 \mod W)]$ is not accumulated. For \verb|double| this amounts to the least significant expressible ? bits and for \verb|float| this amounts to the least significant expressible ? bits.
+
+    As absolute value of individual quantities added to ${Y_P}_j$ are not in excess of $2^W b_{i + j}$, a maximum of $0.25\epsilon^{-1}2^{-W}$ elements may be deposited into ${Y_P}_j$ between renormalizations, as discussed in section \ref{sec:renormalize}. For indexed \verb|double| this number is ?, whereas for indexed \verb|float| this number is ?
+
+    As ${Y_C}_j$ must be able to record additions of absolute value 1 without error, ${Y_C}_j$ must stay in the range $(-\epsilon^{-1}, \epsilon^{-1})$. As each renormalization results in addition not in excess absolute value of 1 to ${Y_C}_j$, a maximum of $(\epsilon^{-1} - 1)$ renormalizations may be performed, meaning that an indexed sum represents the sum of a maximum of $0.25\epsilon^{-1}2^{-W} \times (\epsilon^{-1} - 1) \approx 2^{p + p - W - 2}$. For indexed \verb|double| this number is ?, whereas for indexed \verb|float| this number is ?
+
+    The indexed types provided by ReproBLAS will, when used correctly, avoid intermediate overflow.
 \section{Interface}
   \subsection{Fold}
   \subsection{Complex Types}
@@ -603,8 +616,6 @@
     Hida, Yozo, Xiaoye S. Li, and David H. Bailey. Quad-double arithmetic: Algorithms, implementation, and application. 15th IEEE Symposium on Computer Arithmetic, 2000.
 \end{thebibliography}
 extra crap
-
-    As the maximum useful $fold$ is $\floor{(e_{\max} - e_{\min} + p - 2)/W} + 1$,
 
     $\sum_{k = 0}^{2 \times fold - 1} |y_k| < e_{\max} - W + p + p - 1 + \ceil{\log_2{\floor{(e_{\max} - e_{\min} + p - 2)/W}}}$
 
