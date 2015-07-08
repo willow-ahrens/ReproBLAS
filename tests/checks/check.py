@@ -1,7 +1,8 @@
 import os
 
-import tests.checks.checks as checks
-import tests.harness.harness as harness
+from tests.checks import checks
+from tests.harness import harness
+from scripts import terminal
 
 check_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -9,6 +10,27 @@ check_suite = checks.CheckSuite()
 
 folds = [2, 3, 4]
 inf_folds = [2, 3, 4]
+
+FLT_BIN_WIDTH=13
+FLT_MAX_EXP=128
+FLT_BIG_EXP=13
+FLT_SMALL_EXP=-12
+FLT_MIN_EXP=-125
+FLT_MANT_DIG=24
+FLT_ONES = 0
+for i in range(FLT_MANT_DIG):
+  FLT_ONES += 2.0 ** -i
+
+DBL_BIN_WIDTH=41
+DBL_MAX_EXP=1024
+DBL_BIG_EXP=27
+DBL_SMALL_EXP=-27
+DBL_MIN_EXP=-1021
+DBL_MANT_DIG=53
+DBL_ONES = 0
+for i in range(DBL_MANT_DIG):
+  DBL_ONES += 2.0 ** -i
+
 
 check_suite.add_checks([checks.ValidateInternalDSCALETest(),\
                         checks.ValidateInternalSSCALETest()],\
@@ -299,13 +321,21 @@ check_suite.add_checks([checks.VerifyRDDOTTest(),\
                          "sine",\
                          "small+grow*big"]])
 
-DBL_BIN_WIDTH=41
-DBL_MAX_EXP=1024
-DBL_BIG_EXP=27
-DBL_SMALL_EXP=-27
-DBL_MIN_EXP=-1021
 
 for i in range(DBL_BIN_WIDTH + 2):
+  check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
+                          checks.ValidateInternalDIDIADDTest(),\
+                          checks.ValidateInternalDIDADDTest(),\
+                          checks.ValidateInternalDIDDEPOSITTest(),\
+                          checks.ValidateInternalRDASUMTest(),\
+                          checks.ValidateInternalRDNRM2Test(),\
+                          checks.ValidateInternalRDDOTTest(),\
+                          ],\
+                         ["N", "fold", "incX", "RealScaleX", "f", "g"],\
+                         [[8192], folds, [1, 4], [DBL_ONES + 2 ** i],\
+                          ["constant"],\
+                          ["constant"]])
+
   check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
                           checks.ValidateInternalDIDIADDTest(),\
                           checks.ValidateInternalDIDADDTest(),\
@@ -396,13 +426,21 @@ for i in range(DBL_BIN_WIDTH + 2):
                            "++big",\
                            "+-big"]])
 
-FLT_BIN_WIDTH=13
-FLT_MAX_EXP=128
-FLT_BIG_EXP=13
-FLT_SMALL_EXP=-12
-FLT_MIN_EXP=-125
 
 for i in range(FLT_BIN_WIDTH + 2):
+  check_suite.add_checks([checks.ValidateInternalRSSUMTest(),\
+                          checks.ValidateInternalSISIADDTest(),\
+                          checks.ValidateInternalSISADDTest(),\
+                          checks.ValidateInternalSISDEPOSITTest(),\
+                          checks.ValidateInternalRSASUMTest(),\
+                          checks.ValidateInternalRSNRM2Test(),\
+                          checks.ValidateInternalRSDOTTest(),\
+                          ],\
+                         ["N", "fold", "incX", "RealScaleX", "f", "g"],\
+                         [[8192], folds, [1, 4], [FLT_ONES * 2.0 ** i],\
+                          ["constant",],\
+                          ["constant"]])
+
   check_suite.add_checks([checks.ValidateInternalRSSUMTest(),\
                           checks.ValidateInternalSISIADDTest(),\
                           checks.ValidateInternalSISADDTest(),\
