@@ -345,29 +345,29 @@
     When adding the fields it is not necessary to examine the values in the fields or sort them explicitly. Their unnormalized exponent does not depend on their values, and their unnormalized exponents have a predetermined order.
 
     Consider indexed $Y$ of index $i$ and fold $fold$.
-    As each primary field ${Y_P}_j$ is an offset from $1.5 \times \epsilon^{-1} \times 2^{a_{i + j}}$, ${y_P}_j$ can be expressed exactly using an unnormalized floating point number ${y'_P}_j$ with an exponent of $a_{i + j} + p$.
-    As each carry field ${Y_C}_j$ is a count of renormalization adjustments later scaled by $0.25 \times \epsilon^{-1} \times 2^{a_{i + j}}$, ${y_C}_j$ can be expressed exactly using an unnormalized floating point number ${y'_C}_j$ with an exponent of $a_{i + j} + p + p - 2$.
+    As each primary field ${Y_P}_j$ is an offset from $1.5 \times \epsilon^{-1} \times 2^{a_{i + j}}$, ${y_P}_j$ can be expressed exactly using an unnormalized floating point number ${y'_P}_j$ with an exponent of $a_{i + j} + p - 1$.
+    As each carry field ${Y_C}_j$ is a count of renormalization adjustments later scaled by $0.25 \times \epsilon^{-1} \times 2^{a_{i + j}}$, ${y_C}_j$ can be expressed exactly using an unnormalized floating point number ${y'_C}_j$ with an exponent of $a_{i + j} + p + p - 3$.
 
     For all $k < j$, $\exp({y'_P}_k) > \exp({y'_P}_j)$ and $\exp({y'_C}_k) > \exp({y'_C}_j)$ because $a_{i + k} > a_{i + j}$.
 
-    $\exp({y'_C}_j) = a_{i + j} + p + p - 2$ and $\exp({y'_P}_{j - 1}) = a_{i + j - 1} + p = a_{i + j} + p + W$. Therefore $\exp({y'_C}_j) > \exp({y'_P}_{j - 1})$ using $W < p - 2$.
+    $\exp({y'_C}_j) = a_{i + j} + p + p - 3$ and $\exp({y'_P}_{j - 1}) = a_{i + j - 1} + p - 1 = a_{i + j} + p - 1 + W$. Therefore $\exp({y'_C}_j) > \exp({y'_P}_{j - 1})$ using $W < p - 2$.
 
-    $\exp({y'_C}_j) = a_{i + j} + p + p - 2$ and $\exp({y'_P}_{j - 2}) = a_{i + j - 1} + p = a_{i + j} + p + 2\times W$. Therefore $\exp({y'_C}_j) < \exp({y'_P}_{j - 2})$ using $2W > p$.
+    $\exp({y'_C}_j) = a_{i + j} + p + p - 3$ and $\exp({y'_P}_{j - 2}) = a_{i + j - 1} + p - 1 = a_{i + j} + p - 1 + 2\times W$. Therefore $\exp({y'_C}_j) < \exp({y'_P}_{j - 2})$ using $2W > p$.
 
-    Therefore, $\exp({y'_C}_0) > \exp({y'_C}_1) > \exp({y'_P}_0) > \exp({y'_C}_2) > \exp({y'_P}_1) > ... > \exp({y'_C}_{fold - 2}) > \exp({y'_P}_{fold - 3}) > \exp({y'_C}_{fold - 1}) > \exp({y'_P}_{fold - 2}) > \exp({y'_P}_{fold - 1})$. These numbers may, for convenience of notation, be referred to in order as $y'_0, ..., y'_{2 \times fold - 1}$
+    Therefore, $\exp({y'_C}_0) > \exp({y'_C}_1) > \exp({y'_P}_0) > \exp({y'_C}_2) > \exp({y'_P}_1) > ... > \exp({y'_C}_{fold - 2}) > \exp({y'_P}_{fold - 3}) > \exp({y'_C}_{fold - 1}) > \exp({y'_P}_{fold - 2}) > \exp({y'_P}_{fold - 1})$. These numbers may, for convenience of notation, be referred to in order as $\gamma'_0, ..., \gamma'_{2 \times fold - 1}$. We use a different symbol here to reflect the difference in indexing between the accumulator values of $Y$, $y_k$, and the unnormalized fields of $Y$ in sorted order $\gamma'_k$.
 
     It should be noted that the ${y'_P}_j$ and the ${y'_C}_j$ can be expressed exactly using floating point types of the same precision and exponent as ${Y_P}_j$ and ${Y_C}_j$ (except in the case of overflow, in which a scaled version may be obtained), and such exact floating point representations can be obtained using equations \ref{eq:pri} and \ref{eq:car}.
 
-    As $|{y'_C}_0| = |y'_0|$ can be bounded by $2^{e_{\max} - W + p + p - 1}$, and $\exp(y'_0) < ... < \exp{y'_{2 \times fold - 1}}$, we have $|y'_j| \leq 2^{e_{\max} - W + p + p - 1 - j}$. The absolute value represented by an indexed type can therefore be bounded by
+    As $|{y'_C}_0| = |\gamma'_0|$ can be bounded by $2^{e_{\max} - W + p + p - 2}$, and $\exp(\gamma'_0) < ... < \exp{\gamma'_{2 \times fold - 1}}$, we have $|\gamma'_k| \leq 2^{e_{\max} - W + p + p - 2 - k}$. The absolute value represented by an indexed type can therefore be bounded by
 
-    $\sum\limits_{k = 0}^{2 \times fold - 1} |y_k| \leq \sum\limits_{k = 0}^{2 \times fold - 1} 2^{e_{\max} - W + p + p - 1 - k} < \sum\limits_{k = 0}^{\infty} 2^{e_{\max} - W + p + p - 1 - k} < 2^{e_{\max} - W + p + p}$.
+    $\sum\limits_{k = 0}^{2 \times fold - 1} |\gamma_k| \leq \sum\limits_{k = 0}^{2 \times fold - 1} 2^{e_{\max} - W + p + p - 2 - k} < \sum\limits_{k = 0}^{\infty} 2^{e_{\max} - W + p + p - 2 - k} = 2^{e_{\max} - W + p + p - 1}$.
 
-    If the intermediate precision has a maximum exponent greater than or equal to $e_{\max} - W + p + p$, then no special cases to guard against overflow are needed.
+    If the intermediate precision has a maximum exponent greater than or equal to $e_{\max} - W + p + p - 1$, then no special cases to guard against overflow are needed.
 
     Algorithm \ref{alg:conv2float} represents a conversion routine in such a case.
 
     \begin{alg}
-      Convert indexed $Y$ with index $i$ and fold $fold$ to floating point $x$. Here, $z$ is a floating point type with precision $P$ greater than $p + \ceil{\log_2(2 \times fold)}$ and maximum exponent $E_{\max}$ greater than $e_{\max} - W + p + p$
+      Convert indexed $Y$ with index $i$ and fold $fold$ to floating point $x$. Here, $z$ is a floating point type with precision $P$ greater than $p + \ceil{\log_2(2 \times fold)}$ and maximum exponent $E_{\max}$ greater than $e_{\max} - W + p + p - 1$
       \begin{algorithmic}
         \Function{ConvertIndexedToFloat}{fold, x, Y}
           \State $z \gets {y'_C}_0$
@@ -382,11 +382,11 @@
       \label{alg:conv2float}
     \end{alg}
 
-    If an intermediate type with exponent greater than $e_{\max} - W + p + p$ is not available, we must scale the $y'_k$ down by some factor during addition, and then scale them back up when subsequent additions can no longer effect an overflow situation.
+    If an intermediate type with exponent greater than $e_{\max} - W + p + p - 1$ is not available, we must scale the $\gamma'_k$ down by some factor during addition, and then scale them back up when subsequent additions can no longer effect an overflow situation.
 
-    If the sum is to overflow, it will overflow regardless of the values of any ${y'_P}_j$ or ${y'_C}_j$ with $|{y'_P}_j| < 0.5 \times 2^{-P} \times 2^{e_max}$ or $|{y'_C}_j| < 0.5 \times 2^{-P} \times 2^{e_{\max}}$. If the floating point sum of precision $P$ has exponent greater than or equal to $e_{\max}$ these numbers are not large enough to have any effect when added to the sum. If the sum has exponent less than $e_{\max}$, then additions of these numbers cannot cause the exponent of the sum to exceed $e_{\max}$ for similar reasons.
+    If the sum is to overflow, it will overflow regardless of the values of any ${y'_P}_j$ or ${y'_C}_j$ with $|{y'_P}_j| < 0.5 \times 2^{-P} \times 2^{e_{\max}}$ or $|{y'_C}_j| < 0.5 \times 2^{-P} \times 2^{e_{\max}}$. If the floating point sum of precision $P$ has exponent greater than or equal to $e_{\max}$ these numbers are not large enough to have any effect when added to the sum. If the sum has exponent less than $e_{\max}$, then additions of these numbers cannot cause the exponent of the sum to exceed $e_{\max}$ for similar reasons.
 
-    As the maximum absolute value of the sum is bounded by $2^{e_{\max} - W + p + p}$, a sufficient scaling factor is $2^{p + p - W}$, bounding the maximum absolute value of the scaled sum by $2^{e_{\max}}$. When $\exp(y'_k) < e_{\max} - P$, we may scale the sum back up and add the remaining numbers without scaling. Notice here that no overflow occurs during addition. If an overflow is to occur, it will happen only when scaling back up.
+    As the maximum absolute value of the sum is bounded by $2^{e_{\max} - W + p + p - 1}$, a sufficient scaling factor is $2^{p + p - W - 1}$, bounding the maximum absolute value of the scaled sum by $2^{e_{\max}}$. When $\exp(\gamma'_k) < e_{\max} - P - 1$, we may scale the sum back up and add the remaining numbers without scaling. Notice here that no overflow occurs during addition. If an overflow is to occur, it will happen only when scaling back up.
 
     If the sum is not going to overflow, then the smaller $y'_k$ must be added as unscaled numbers to avoid underflow.
 
@@ -396,13 +396,15 @@
       Convert indexed $Y$ with index $i$ and fold $fold$ to floating point $x$. Here, $z$ is a floating point type with precision $P$ greater than $p + \ceil{\log_2(2 \times fold)}$.
       \begin{algorithmic}
         \Function{ConvertIndexedToFloat}{fold, x, Y}
-          \State{$j \gets 1$}
-          \While{$j \leq 2 \times fold$ and $\exp(y'_j) \geq e_{\max} - P$}
-            \State $z \gets z + (y'_j / 2^{p + p - W})$
+          \State $j \gets 1$
+          \While{$j \leq 2 \times fold$ and $\exp(y'_j) \geq e_{\max} - P - 1$}
+            \State $z \gets z + (y'_j / 2^{p + p - W - 1})$
+            \State $j \gets j + 1$
           \EndWhile
-          \State $z \gets z \times 2^{p + p - W}$
+          \State $z \gets z \times 2^{p + p - W - 1}$
           \While{$j \leq 2 \times fold$}
             \State $z \gets z + y'_j$
+            \State $j \gets j + 1$
           \EndWhile
           \State $x \gets z$
         \EndFunction
