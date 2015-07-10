@@ -157,8 +157,8 @@ double ddmconv(const int fold, const double* priX, const int incpriX, const doub
       X_index = dmindex(priX);
       bins = dmbins(X_index);
       if(X_index <= (3 * DBL_MANT_DIG - 1)/DIWIDTH){
-        scale_down = ldexp(0.5, 1 - (2 * DBL_MANT_DIG - DIWIDTH - 1));
-        scale_up = ldexp(0.5, 1 + (2 * DBL_MANT_DIG - DIWIDTH - 1));
+        scale_down = ldexp(0.5, 1 - (2 * DBL_MANT_DIG - DIWIDTH - 2));
+        scale_up = ldexp(0.5, 1 + (2 * DBL_MANT_DIG - DIWIDTH - 2));
         scaled = MAX(MIN(fold, (3 * DBL_MANT_DIG - 1)/DIWIDTH - X_index), 0);
         if(X_index == 0){
           DDPD(t0, t1, t2, t3, t4, t5, Yl, Yt, carX[0] * ((bins[0]/6.0) * scale_down * DMEXPANSION));
