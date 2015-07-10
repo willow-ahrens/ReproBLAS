@@ -22,6 +22,7 @@
 \providecommand{\ulp}{\ensuremath{\text{ulp}}}
 \providecommand{\ufp}{\ensuremath{\text{ufp}}}
 \providecommand{\fl}{\ensuremath{\text{fl}}}
+\providecommand{\roundfromzero}{\ensuremath{\text{round}_\text{away from 0}}}
 \theoremstyle{plain}
 \newtheorem{thm}{Theorem}[section]
 \newtheorem{lem}[thm]{Lemma}
@@ -38,11 +39,13 @@
 \section{Notation and Background}
   Let $\R, \F, $ and $\Z$ denote the sets of real numbers, floating-point numbers, and integers respectively.
 
-  Assume that floating point arithmetic complies with the IEEE 754-2008 standard in "to nearest even" rounding mode and that underflow occurs gradually.
+  Assume that floating point arithmetic complies with the IEEE 754-2008 standard \cite{ieee754} in "to nearest even" rounding mode and that underflow occurs gradually.
 
-  Let $f = s \times 2^e \times m \in \F$ be a floating-point number represented in IEEE 754 format where $s = \pm 1$ is the \textbf{sign}, $e_{\max} \geq e \geq e_{\min}$ is the \textbf{exponent} ($\exp(f)$ is defined to be $e$), $p$ is the \textbf{precision}, and $m = m_0.m_1m_2...m_{p-1}$ where $m_1, ..., m_{p - 1} \in \{0, 1\}$ is the \textbf{significand} of $f$. $f$ is said to be \textbf{normalized} if $m_0 = 1$ and $e > e_{\min}$, \textbf{unnormalized} if $m_0 = 0$, and \textbf{subnormal} if $m_0 = 0$ and $e = e_{\min}$. $f = 0$ if $m_0 = m_1 = ... = m_{p - 1} = 0$ and $e = e_{\min}$.
+  Let $f = s \times 2^e \times m \in \F$ be a floating-point number represented in IEEE 754-2008 format \cite{ieee754} where $s = \pm 1$ is the \textbf{sign}, $e_{\max} \geq e \geq e_{\min}$ is the \textbf{exponent} ($\exp(f)$ is defined to be $e$), $p$ is the \textbf{precision}, and $m = m_0.m_1m_2...m_{p-1}$ where $m_1, ..., m_{p - 1} \in \{0, 1\}$ is the \textbf{significand} of $f$. $f$ is said to be \textbf{normalized} if $m_0 = 1$ and $e > e_{\min}$, \textbf{unnormalized} if $m_0 = 0$, and \textbf{subnormal} if $m_0 = 0$ and $e = e_{\min}$. $f = 0$ if $m_0 = m_1 = ... = m_{p - 1} = 0$ and $e = e_{\min}$.
 
-  As ReproBLAS is written in C, \verb|float| and \verb|double| refer to the floating point types specified in the 1989 C standard \cite{c89} and we assume that they correspond to the \verb|binary-32| and \verb|binary-64| types in the IEEE-754-2008 floating point standard \cite{ieee754}.
+  We define the function $\roundfromzero(x, y)$ as $\roundfromzero(x, y) = \begin{cases}\ceil{x/y} \times y \text{ if } x \geq 0\\ \floor{x/y}\times y \text{ otherwise}\end{cases}$
+
+  As ReproBLAS is written in C, \verb|float| and \verb|double| refer to the floating point types specified in the 1989 C standard \cite{c89} and we assume that they correspond to the \verb|binary-32| and \verb|binary-64| types in the IEEE 754-2008 floating point standard \cite{ieee754}.
 
   All indicies start at 0 to increase correspondence with the actual ReproBLAS implementation.
 
@@ -51,8 +54,10 @@
     The \textbf{indexed type} is used to represent the intermediate result of accumulation using algorithms 6 and 7 specified by Nguyen and Demmel in "Parallel Reproducible Summation" \cite{repsum}.
     An indexed type $Y$ is composed of several accumulators $Y_0, ..., Y_{n - 1} \in \F$, each holding the sum of input in a predetermined exponent range (referred to as a \textbf{bin}). An indexed type with $n$ accumulators is referred to as having \textbf{fold} $n$. Due to their wild innacuraccy, indexed types of fold 1 are not considered. It is assumed that indexed types have fold greater than 1.
 
-    Let $Y$ be the indexed type corresponding to the reproducibly computed sum of $x_0, ..., x_{n - 1} = s_0 \times 2^{e_0} \times m_0, ..., s_{n - 1} \times 2^{e_{n - 1}} \times m_{n - 1} \in F$.
-    If the accumulator $Y_j$ accumulates input in the bin $(a, b], a < b \in \Z$, then $Y_j$ is the sum of all input bits with exponents in $(a, b]$. Specifically, $Y_j = \sum \{s_i2^{e_i}{m_i}_k: i \in \{0, ..., n - 1\}, k \in \Z, e_i - k \in (a, b]\}$.
+    Let $Y$ be the indexed type corresponding to the reproducibly computed sum of $x_0, ..., x_{n - 1} \in F$.
+    If the accumulator $Y_j$ accumulates input in the bin $(a, b], a < b \in \Z$, then the value $y_j$ represented by $Y_j$ is the sum of all input that can be expressed using bits with values $2^e, e \in (a, b]$. Specifically, $Y_j = \sum\limits_{k = 0}^{n - 1}d(x_k, a, b)$ where
+
+    $d(x, a, b) = \begin{cases}\roundfromzero(x - \roundfromzero(x, 2 \times 2^b), 2 \times 2^a) \text{ if } |x| \geq 2^b \\ \roundfromzero(x, 2 \times 2^a) \text{ if } 2^b > |x| \geq 2^a \\ 0 \text{ if } 2^a > |x| \end{cases}$
 
     For ease of computation, accumulator ranges are not arbitrary. They are broken up into precomputed, fixed width intervals starting at $e_{\max}$. The possible bins
 
@@ -64,19 +69,19 @@
 
     for an indexed type of \textbf{width} $W$ are
 
-    $(e_{\max} - W, e_{\max}],$
+    $(e_{\max} + 1 - W, e_{\max} + 1],$
 
-    $(e_{\max} - 2\times W, e_{\max} - W],$
+    $(e_{\max} + 1 - 2\times W, e_{\max} + 1 - W],$
 
     $\vdots$
 
-    $(e_{\min} - p + 2 + W - (e_{\max} - e_{\min} + p - 2 \mod W),$
+    $(e_{\min} - p + 2 + W - (e_{\max} + 1 - e_{\min} + p - 2 \mod W),$
 
-    \indent \indent $e_{\min} - p + 2 + 2 \times W - (e_{\max} - e_{\min} + p - 2 \mod W)]$.
+    \indent \indent $e_{\min} - p + 2 + 2 \times W - (e_{\max} + 1 - e_{\min} + p - 2 \mod W)]$.
 
     Section \ref{sec:underflow} explains why input in the bin
 
-    $(e_{\min} - p, e_{\min} - p + 2 + W + (e_{\max} - e_{\min} + p - 2 \mod W)]$
+    $(e_{\min} - p, e_{\min} - p + 2 + W + (e_{\max} + 1 - e_{\min} + p - 2 \mod W)]$
 
     is not accumulated.
 
@@ -98,9 +103,9 @@
         ${y_P}_j = {Y_P}_j - 1.5\times\epsilon^{-1}\times2^{a_{i + j}}$
         \label{eq:pri}
       \end{eq}
-      As discussed in \cite{repsum}, if we store each primary bin ${Y_P}_j$ as an offset from $1.5 \times \epsilon^{-1} \times 2^{a_{i + j}}$ and keep ${Y_P}_j$ within the range $(\epsilon^{-1} \times 2^{a_{i + j}}, 2 \times \epsilon^{-1} \times 2^{a_{i + j}})$, algorithm \ref{alg:deposit} extracts the components of $x$ belonging to bins $(a_i, b_i], ..., (a_{i + fold - 1}, b_{i + fold - 1}]$ and adds them to ${Y_P}_0, ..., {Y_P}_{fold - 1}$ without error (and hence reproducibly) for all $x \in \F, |x| < 2 \times 2^{b_i}$.
+      As discussed in \cite{repsum}, if we store each primary bin ${Y_P}_j$ as an offset from $1.5 \times \epsilon^{-1} \times 2^{a_{i + j}}$ and keep ${Y_P}_j$ within the range $(\epsilon^{-1} \times 2^{a_{i + j}}, 2 \times \epsilon^{-1} \times 2^{a_{i + j}})$, algorithm \ref{alg:deposit} extracts the components of $x$ belonging to bins $(a_i, b_i], ..., (a_{i + fold - 1}, b_{i + fold - 1}]$ and adds them to ${Y_P}_0, ..., {Y_P}_{fold - 1}$ without error (and hence reproducibly) for all $x \in \F, |x| < 2^{b_i}$.
       \begin{alg}
-        Extract components of floating point $x$ in bins $(a_i, b_i], ..., (a_{i + fold - 1}, b_{i + fold - 1}]$ and add to indexed $Y$. Here, $(r | 1)$ represents the result of setting the last bit of the mantissa ($m_{p - 1}$) of floating-point $r$ to 1.
+        Extract components of floating point $x \in \F, |x| < 2^{b_i}$ in bins $(a_i, b_i], ..., (a_{i + fold - 1}, b_{i + fold - 1}]$ and add to indexed $Y$. Here, $(r | 1)$ represents the result of setting the last bit of the mantissa ($m_{p - 1}$) of floating-point $r$ to 1.
         \begin{algorithmic}
           \Function{Deposit}{fold, x, Y}
             \State $r \gets x$
@@ -115,7 +120,7 @@
         \end{algorithmic}
         \label{alg:deposit}
       \end{alg}
-      The last bit of $r$ is set to break ties when rounding "to nearest even" such that the amount accumulated does not depend on the size of ${Y_P}_i$ so far and the same amount is always deposited in all of $Y$'s primary fields regardless of how full they are already. (A dependency on the amount stored in $Y$'s primary fields would imply that the routine is not reproducible. Adding numbers in different orders would accumulate different amounts into the primary fields $Y_P$ when each input is added to them.)
+      The last bit of $r$ is set to break ties when rounding "to nearest even" such that the amount accumulated does not depend on the size of ${Y_P}_i$ so far and the same amount ($d(r, a_{i + j}, b_{i + j})$) is always deposited in all of $Y$'s primary fields regardless of how full they are already. (A dependency on the amount stored in $Y$'s primary fields would imply that the routine is not reproducible. Adding numbers in different orders would accumulate different amounts into the primary fields $Y_P$ when each input is added to them.) Because $d(r, a_{i + j}, b_{i + j}) = 0$ for bins that are larger than the input, the top $fold$ bins can be computed reproducibly.
 
       In order to keep the primary bins in the necessary range during a deposit operation and to keep the representation of $Y$ unique, ${Y_P}_j$ is routinely renormalized to the range $[1.5 \times\epsilon^{-1} \times 2^{a_{i + j}}, 1.75 \times\epsilon^{-1} \times 2^{a_{i + j}})$.
       To renormalize, ${Y_P}_j$ is adjusted by $0.25 \times\epsilon^{-1} \times 2^{a_{i + j}}$ when necessary, leaving the carry field ${Y_C}_j$ to record the number of such adjustments.
@@ -125,21 +130,21 @@
         ${y_C}_j = {Y_C}_j \times 0.25\times\epsilon^{-1}\times2^{a_{i + j}}$
         \label{eq:car}
       \end{eq}
- Therefore the value represented by an indexed type $Y$ of index $i$ and fold $fold$ (the sum of the accumulators) can be expressed as in equation \ref{eq:indexedvalue}.
+ Therefore the value represented by an indexed type $Y$ of index $i$ and fold $fold$ (the sum of $Y$'s accumulators) can be expressed as in equation \ref{eq:indexedvalue}.
       \begin{eq} The real value $y \in \R$ of an indexed type $Y$ of index $i$
 
         $y = \sum\limits_{j = 0}^{fold - 1} {y_P}_j + {y_C}_j = \sum\limits_{j = 0}^{fold - 1} ({Y_P}_j - 1.5 \times\epsilon^{-1}\times 2^{a_{i + j}}) + {Y_C}_j \times 0.25\times\epsilon^{-1}\times2^{a_{i + j}}$
         \label{eq:indexedvalue}
       \end{eq}
-      It is worth noting here that because the primary field ${Y_P}_0$ is stored with an exponent of $a_i + p$, it is unnecessary to store the index of an indexed type explicitly. The index can be determined by simply examining the exponent of ${Y_P}_0$, as the mapping between the exponent of ${Y_P}_0$ and the index of $Y$ is bijective.
+      It is worth noting here that because the primary field ${Y_P}_0$ is stored with an exponent of $a_i + p$, it is unnecessary to store the index of an indexed type explicitly. The index can be determined by simply examining the exponent of ${Y_P}_0$, as all $a_i$ are distinct and the mapping between the exponent of ${Y_P}_0$ and the index of $Y$ is bijective.
 
     \subsubsection{Overflow}
       \label{sec:overflow}
-      If an indexed type $Y$ has index 0 and the width is $W$, then the value in the primary field ${Y_P}_0$ is stored as an offset from $1.5\times\epsilon^{-1}\times2^{e_{\max} - W}$. However, $1.5\times\epsilon^{-1}\times2^{e_{\max} - W} = 1.5 \times 2^{e_{\max} + (p - W)} > 2 \times 2^{e_{\max}}$ since $W < p - 2$ \cite{repsum}, so it is out of the range of the floating-point system and not representable. Before discussing the solution to this overflow problem, take note of theorem \ref{thm:overflow}.
+      If an indexed type $Y$ has index 0 and the width is $W$, then the value in the primary field ${Y_P}_0$ is stored as an offset from $1.5\times\epsilon^{-1}\times2^{e_{\max} + 1 - W}$. However, $1.5\times\epsilon^{-1}\times2^{e_{\max} + 1 - W} = 1.5 \times 2^{e_{\max} + 1 + (p - W)} > 2 \times 2^{e_{\max}}$ since $W < p - 2$ \cite{repsum}, so it is out of the range of the floating-point system and not representable. Before discussing the solution to this overflow problem, take note of theorem \ref{thm:overflow}.
       \begin{thm}
         If $2\times W > p$, then for any indexed type $Y$ of index $i$ and any ${Y_P}_j$ such that $i + j \geq 1$, $|{Y_P}_j| < 2^{e_{\max}}$.
 
-        $a_1 = e_{\max} - 2\times W$ by definition, therefore $a_1 < e_{\max} - p$ and since all quantities are integers, $a_1 \leq e_{\max} - 1 - p$. As $a_0, a_1, ...$ is a positive decreasing sequence, $a_{i + j} \leq e_{\max} - 1 - p$ since $i + j \geq 1$.
+        $a_1 = e_{\max} + 1 - 2\times W$ by definition, therefore $a_1 < e_{\max} + 1 - p$ and since all quantities are integers, $a_1 \leq e_{\max} - p$. As $a_0, a_1, ...$ is a positive decreasing sequence, $a_{i + j} \leq e_{\max} - p$ since $i + j \geq 1$.
 
         ${Y_P}_j$ is kept within the range $(\epsilon^{-1} \times 2^{a_{i + j}}, 2 \times \epsilon^{-1} \times 2^{a_{i + j}})$, therefore
         $|{Y_P}_j| < 2 \times \epsilon^{-1} \times 2^{a_{i + j}} \leq 2^{1 + p} \times 2^{e_{\max} - 1 - p} = 2^{e_{\max}}$.
