@@ -22,7 +22,7 @@
 \providecommand{\ulp}{\ensuremath{\text{ulp}}}
 \providecommand{\ufp}{\ensuremath{\text{ufp}}}
 \providecommand{\fl}{\ensuremath{\text{fl}}}
-\providecommand{\roundfromzero}{\ensuremath{\text{round}_\text{away from 0}}}
+\providecommand{\roundtonearestinfty}{\ensuremath{\text{round}_\text{to nearest, $\infty$}}}
 \theoremstyle{plain}
 \newtheorem{thm}{Theorem}[section]
 \newtheorem{lem}[thm]{Lemma}
@@ -51,9 +51,9 @@
 
   $\fl(\dot)$ denotes the evaluated result of an expression in floating point arithmetic.
 
-  We define the function $\roundfromzero(x, y)$ as
+  We define the function $\roundtonearestinfty(x, y)$ as
 
-  $\roundfromzero(x, y) = \begin{cases}\ceil{x/y} \times y \text{ if } x \geq 0\\ \floor{x/y}\times y \text{ otherwise}\end{cases}$
+  $\roundtonearestinfty(x, y) = \begin{cases}\floor{\frac{x}{y} + \frac{1}{2}} \times y \text{ if } x \geq 0\\ \\ \ceil{\frac{x}{y} - \frac{1}{2}}\times y \text{ otherwise}\end{cases}$
 
   As ReproBLAS is written in C, \verb|float| and \verb|double| refer to the floating point types specified in the 1989 C standard \cite{c89} and we assume that they correspond to the \verb|binary-32| and \verb|binary-64| types in the IEEE 754-2008 floating point standard \cite{ieee754}.
 
@@ -67,7 +67,7 @@
     Let $Y$ be the indexed type corresponding to the reproducibly computed sum of $x_0, ..., x_{n - 1} \in F$.
     If the accumulator $Y_j$ accumulates input in the bin $(a, b], a < b \in \Z$, then the value $y_j$ represented by $Y_j$ is the sum of all input that can be expressed using bits with values $2^e, e \in (a, b]$. Specifically, $Y_j = \sum\limits_{k = 0}^{n - 1}d(x_k, a, b)$ where
 
-    $d(x, a, b) = \begin{cases}\roundfromzero(x - \roundfromzero(x, 2 \times 2^b), 2 \times 2^a) \text{ if } |x| \geq 2^b \\ \roundfromzero(x, 2 \times 2^a) \text{ if } 2^b > |x| \geq 2^a \\ 0 \text{ if } 2^a > |x| \end{cases}$
+    $d(x, a, b) = \begin{cases}\roundtonearestinfty(x - \roundtonearestinfty(x, 2 \times 2^b), 2 \times 2^a) \text{ if } |x| \geq 2^b \\ \roundtonearestinfty(x, 2 \times 2^a) \text{ if } 2^b > |x| \geq 2^a \\ 0 \text{ if } 2^a > |x| \end{cases}$
 
     For ease of computation, accumulator ranges are not arbitrary. They are broken up into precomputed, fixed width intervals starting at $e_{\max}$. The possible bins
 
@@ -85,7 +85,7 @@
 
     $\vdots$
 
-    $(e_{\min} - p + 1 + W - (e_{\max} - e_{\min} + p \mod W),$
+    $(e_{\min} - p + 1 + W - (e_{\max} - e_{\min} + p - 2\mod W),$
 
     \indent \indent $e_{\min} - p + 1 + 2 \times W - (e_{\max} - e_{\min} + p - 2 \mod W)]$.
 
@@ -615,13 +615,13 @@
     Which is not as tight a bound as equation $\ref{eq:errorapprox}$, and grows as the user tries to add more bins to increase accuracy.
   \subsection{Limits}
     \label{sec:limits}
-    As discussed previously, the minimum fold accepted by ReproBLAS is 2. The maximum useful fold is $\floor{(e_{\max} - e_{\min} + p - 2)/W} + 1$, as this covers all of the bins.
+    As discussed previously, the minimum fold accepted by ReproBLAS is 2. The maximum useful fold is $\floor{(e_{\max} - e_{\min} + p - 2)/W}$, as this covers all of the bins.
 
-    As discussed in \cite{repsum}, $W < p - 2$. As discussed in section \ref{sec:overflow}, $2\times W > p$.
+    As discussed in \cite{repsum}, $W < p - 2$. As discussed in section \ref{sec:overflow}, $2\times W > p + 1$.
 
-    ReproBLAS uses the values $W = 41$ for indexed \verb|double| and $W = 13$ for indexed \verb|float|.
+    ReproBLAS uses the values $W = 40$ for indexed \verb|double| and $W = 13$ for indexed \verb|float|.
 
-    As discussed in section \ref{sec:underflow}, input corresponding to bin $(e_{\min} - p, e_{\min} - p + 1 + W + (e_{\max} - e_{\min} + p - 2 \mod W)]$ is not accumulated. For \verb|double| this amounts to the least significant expressible ? bits and for \verb|float| this amounts to the least significant expressible ? bits.
+    As discussed in section \ref{sec:underflow}, input corresponding to bin $(e_{\min} - p, e_{\min} - p + 1 + W + (e_{\max} - e_{\min} + p - 2 \mod W)]$ is not accumulated. For \verb|double| this amounts to the least significant expressible  bits and for \verb|float| this amounts to the least significant expressible  bits.
 
     As absolute value of individual quantities added to ${Y_P}_j$ are not in excess of $2^{b_{i + j}}$, a maximum of $0.25\epsilon^{-1}2^{-W}$ elements may be deposited into ${Y_P}_j$ between renormalizations, as discussed in section \ref{sec:renormalize}. For indexed \verb|double| this number is ?, whereas for indexed \verb|float| this number is ?
 
