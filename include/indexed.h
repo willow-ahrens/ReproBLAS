@@ -82,7 +82,7 @@ typedef float float_complex_indexed;
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-#define DIWIDTH 41
+#define DIWIDTH 40
 
 /**
  * @brief Indexed single precision bin width
@@ -136,6 +136,26 @@ typedef float float_complex_indexed;
  * @date   27 Apr 2015
  */
 #define SIENDURANCE (1 << (FLT_MANT_DIG - SIWIDTH - 2))
+
+/**
+ * @brief Indexed double precision capacity
+ *
+ * The maximum number of double precision numbers that can be summed using indexed double precision. Applies also to indexed complex double precision.
+ *
+ * @author Peter Ahrens
+ * @date   27 Apr 2015
+ */
+#define DICAPACITY (DIENDURANCE*(1.0/DBL_EPSILON - 1.0))
+
+/**
+ * @brief Indexed single precision capacity
+ *
+ * The maximum number of single precision numbers that can be summed using indexed single precision. Applies also to indexed complex double precision.
+ *
+ * @author Peter Ahrens
+ * @date   27 Apr 2015
+ */
+#define SICAPACITY (SIENDURANCE*(1.0/FLT_EPSILON - 1.0))
 
 /**
  * @internal
