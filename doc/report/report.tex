@@ -245,7 +245,7 @@
 
       As the ${Y_P}_j$ are kept finite to store finite values, \verb|Inf|, \verb|-Inf|, and \verb|NaN| are previously unused in other contexts and are valid sentinel values. (As the exponent of \verb|Inf|, \verb|-Inf|, and \verb|NaN| is distinct from the exponent of finite values, the bijection between the index of an indexed type $Y$ and the exponent of ${Y_P}_0$ is preserved)
 
-      This behavior follows the behaviour for exceptional values in IEEE 754-2008 floating point arithmetic and is therefore easy to implement. At the beginning of \ref{alg:deposit}, we may simply check $x$ and ${Y_P}_0$ for the exceptional values \verb|Inf|, \verb|-Inf|, and \verb|NaN|. If any one of $x$ or ${Y_P}_0$ is indeed exceptional, we add $x$ to the (possibly finite) ${Y_P}_0$. Otherwise, we can continue adding finite values as we have always done.
+      This behavior follows the behaviour for exceptional values in IEEE 754-2008 floating point arithmetic and is therefore easy to implement. At the beginning of \ref{alg:deposit}, we may simply check $x$ and ${Y_P}_0$ for the exceptional values \verb|Inf|, \verb|-Inf|, and \verb|NaN|. If any one of $x$ or ${Y_P}_0$ is indeed exceptional, we add $x$ to the (possibly finite) ${Y_P}_0$. Otherwise, we deposit the finite value normally.
 
       As \verb|Inf|, \verb|-Inf|, and \verb|NaN| add associatively, this behaviour is reproducible.
 
@@ -623,9 +623,9 @@
 
     As discussed in section \ref{sec:underflow}, only input corresponding to the bin $(e_{\min} - 1, e_{\max} + 1]$ is guaranteed to be accumulated.
 
-    As absolute value of individual quantities added to ${Y_P}_j$ are not in excess of $2^{b_{i + j}}$, a maximum of $0.25\epsilon^{-1}2^{-W}$ elements may be deposited into ${Y_P}_j$ between renormalizations, as discussed in section \ref{sec:renormalize}. For indexed \verb|double| this number is $2^11$, whereas for indexed \verb|float| this number is $2^9$. This number is supplied programatically using the \verb|XIENDURANCE| macro.
+    As absolute value of individual quantities added to ${Y_P}_j$ are not in excess of $2^{b_{i + j}}$, a maximum of $0.25\epsilon^{-1}2^{-W}$ elements may be deposited into ${Y_P}_j$ between renormalizations, as discussed in section \ref{sec:renormalize}. For indexed \verb|double| this number is $2^{11}$, whereas for indexed \verb|float| this number is $2^9$. This number is supplied programatically using the \verb|XIENDURANCE| macro.
 
-    As ${Y_C}_j$ must be able to record additions of absolute value 1 without error, ${Y_C}_j$ must stay in the range $(-\epsilon^{-1}, \epsilon^{-1})$. As each renormalization results in addition not in excess absolute value of 1 to ${Y_C}_j$, a maximum of $(\epsilon^{-1} - 1)$ renormalizations may be performed, meaning that an indexed sum represents the sum of a maximum of $0.25\epsilon^{-1}2^{-W} \times (\epsilon^{-1} - 1) \approx 2^{p + p - W - 2}$. For indexed \verb|double| this number is almost $2^64$, whereas for indexed \verb|float| this number is almost $2^33$. This number is supplied programatically using the \verb|XIENDURANCE| macro.
+    As ${Y_C}_j$ must be able to record additions of absolute value 1 without error, ${Y_C}_j$ must stay in the range $(-\epsilon^{-1}, \epsilon^{-1})$. As each renormalization results in addition not in excess absolute value of 1 to ${Y_C}_j$, a maximum of $(\epsilon^{-1} - 1)$ renormalizations may be performed, meaning that an indexed sum represents the sum of a maximum of $0.25\epsilon^{-1}2^{-W} \times (\epsilon^{-1} - 1) \approx 2^{p + p - W - 2}$. For indexed \verb|double| this number is almost $2^64$, whereas for indexed \verb|float| this number is almost $2^33$. This number is supplied programatically using the \verb|XICAPACITY| macro.
 
     The indexed types provided by ReproBLAS will, when used correctly, avoid intermediate overflow.
 
