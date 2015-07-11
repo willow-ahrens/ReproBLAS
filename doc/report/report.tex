@@ -85,13 +85,13 @@
 
     $\vdots$
 
-    $(e_{\min} - p + 1 + W - (e_{\max} - e_{\min} + p - 2\mod W),$
+    $(e_{\min} - p + 1 + W - (e_{\max} - e_{\min} + p \mod W),$
 
-    \indent \indent $e_{\min} - p + 1 + 2 \times W - (e_{\max} - e_{\min} + p - 2 \mod W)]$.
+    \indent \indent $e_{\min} - p + 1 + 2 \times W - (e_{\max} - e_{\min} + p \mod W)]$.
 
     Section \ref{sec:underflow} explains why input in the bin
 
-    $(e_{\min} - p, e_{\min} - p + 1 + W + (e_{\max} - e_{\min} + p - 2 \mod W)]$
+    $(e_{\min} - p, e_{\min} - p + 1 + W + (e_{\max} - e_{\min} + p \mod W)]$
 
     is not accumulated.
 
@@ -206,19 +206,19 @@
 
       The unit in the last place of a denormalized number is always equal to $2^{e_{\min} - p + 1}$. Therefore, $\ulp(r) < \ulp({Y_P}_j)/2$ implies $e_{\min} - p + 1 < a$. The smallest bin is
 
-      $(e_{\min} - p + 1 + W - (e_{\max} - e_{\min} + p - 2 \mod W),$
+      $(e_{\min} - p + 1 + W - (e_{\max} - e_{\min} + p \mod W),$
 
-      \indent \indent $e_{\min} - p + 1 + 2 \times W - (e_{\max} - e_{\min} + p - 2 \mod W)]$.
+      \indent \indent $e_{\min} - p + 1 + 2 \times W - (e_{\max} - e_{\min} + p \mod W)]$.
 
       and since
 
-      $e_{\min} - p + 1 + W - (e_{\max} - e_{\min} + p - 2 \mod W) > e_{\min} - p + 1$,
+      $e_{\min} - p + 1 + W - (e_{\max} - e_{\min} + p \mod W) > e_{\min} - p + 1$,
 
       deposits on the smallest bin and all larger bins satisfy $\ulp(r) < \ulp({Y_P}_j)/2$ and are exact.
 
       Since $W < p - 2$,
 
-      $e_{\min} - p + 1 + W - (e_{\max} - e_{\min} + p - 2 \mod W) < e_{\min} - 1$.
+      $e_{\min} - p + 1 + W - (e_{\max} - e_{\min} + p \mod W) < e_{\min} - 1$.
 
       Therefore, all input in the bin $(e_{\min} - 1, e_{\max} + 1]$ is deposited.
 
@@ -229,13 +229,13 @@
 
       A value of $0$ in ${Y_P}_0$ indicates that nothing has been added to ${Y_P}_0$ yet. The smallest bin is
 
-      $(e_{\min} - p + 1 + W - (e_{\max} - e_{\min} + p - 2 \mod W),$
+      $(e_{\min} - p + 1 + W - (e_{\max} - e_{\min} + p \mod W),$
 
-      \indent \indent $e_{\min} - p + 1 + 2 \times W - (e_{\max} - e_{\min} + p - 2 \mod W)]$
+      \indent \indent $e_{\min} - p + 1 + 2 \times W - (e_{\max} - e_{\min} + p \mod W)]$
 
       and since the ${Y_P}_j$ are kept within the range $(\epsilon^{-1} \times 2^{a_{i + j}}, 2 \times \epsilon^{-1} \times 2^{a_{i + j}})$ (where $i$ is the index), the smallest possible ${Y_P}_j$ is
 
-      $\epsilon^{-1} \times 2^{e_{\min} - p + 1 + W - (e_{\max} - e_{\min} + p - 2 \mod W)} > 2^{e_{\min} + 1}$.
+      $\epsilon^{-1} \times 2^{e_{\min} - p + 1 + W - (e_{\max} - e_{\min} + p \mod W)} > 2^{e_{\min} + 1}$.
 
       Therefore $0$ is previously unused in other contexts and is a valid sentinel value. (As the exponent of $0$ is distinct from the exponent of normalized values, the bijection between the index of an indexed type $Y$ and the exponent of ${Y_P}_0$ is preserved)
 
