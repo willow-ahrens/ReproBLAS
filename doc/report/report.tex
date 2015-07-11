@@ -53,7 +53,7 @@
 
   We define the function $\roundtonearestinfty(x, y)$ as
 
-  $\roundtonearestinfty(x, y) = \begin{cases}\floor{\frac{x}{y} + \frac{1}{2}} \times y \text{ if } x \geq 0\\ \\ \ceil{\frac{x}{y} - \frac{1}{2}}\times y \text{ otherwise}\end{cases}$
+  $\roundtonearestinfty(x, y) = \begin{cases}\floor{x/y + 1/2} \times y \text{ if } x \geq 0\\ \\ \ceil{x/y - 1/2}\times y \text{ otherwise}\end{cases}$
 
   As ReproBLAS is written in C, \verb|float| and \verb|double| refer to the floating point types specified in the 1989 C standard \cite{c89} and we assume that they correspond to the \verb|binary-32| and \verb|binary-64| types in the IEEE 754-2008 floating point standard \cite{ieee754}.
 
@@ -206,21 +206,21 @@
 
       The unit in the last place of a denormalized number is always equal to $2^{e_{\min} - p + 1}$. Therefore, $\ulp(r) < \ulp({Y_P}_j)/2$ implies $e_{\min} - p + 1 < a$. The smallest bin is
 
-      $(e_{\min} - p + 1 + W - (e_{\max} - e_{\min} + p \mod W),$
+      $(e_{\min} - p + 1 + W - (e_{\max} - e_{\min} + p - 2 \mod W),$
 
-      \indent \indent $e_{\min} - p + 1 + 2 \times W - (e_{\max} - e_{\min} + p \mod W)]$.
+      \indent \indent $e_{\min} - p + 1 + 2 \times W - (e_{\max} - e_{\min} + p - 2 \mod W)]$.
 
       and since
 
-      $e_{\min} - p + 1 + W - (e_{\max} - e_{\min} + p \mod W) > e_{\min} - p + 1$,
+      $e_{\min} - p + 1 + W - (e_{\max} - e_{\min} + p - 2 \mod W) > e_{\min} - p + 1$,
 
       deposits on the smallest bin and all larger bins satisfy $\ulp(r) < \ulp({Y_P}_j)/2$ and are exact.
 
       Since $W < p - 2$,
 
-      $e_{\min} - p + 1 + W - (e_{\max} - e_{\min} + p \mod W) < e_{\min} - 1$.
+      $e_{\min} - p + 1 + W - (e_{\max} - e_{\min} + p - 2 \mod W) < e_{\min} - 1$.
 
-      Therefore, all input in the bin $(e_{\min} - 1, e_{\max}$ can be deposited.
+      Therefore, all input in the bin $(e_{\min} - 1, e_{\max} + 1]$ is deposited.
 
       There are several ways to deposit the input in the denormal range. One simple way the algorithm could be extended to denormal inputs would be to scale the bottom bins up, as was done to handle overflow. Due to the relatively low priority for accumulating denormal values, these methods were not implemented.
 
@@ -229,9 +229,9 @@
 
       A value of $0$ in ${Y_P}_0$ indicates that nothing has been added to ${Y_P}_0$ yet. The smallest bin is
 
-      $(e_{\min} - p + 1 + W - (e_{\max} - e_{\min} + p \mod W),$
+      $(e_{\min} - p + 1 + W - (e_{\max} - e_{\min} + p - 2 \mod W),$
 
-      \indent \indent $e_{\min} - p + 1 + 2 \times W - (e_{\max} - e_{\min} + p \mod W)]$
+      \indent \indent $e_{\min} - p + 1 + 2 \times W - (e_{\max} - e_{\min} + p - 2 \mod W)]$
 
       and since the ${Y_P}_j$ are kept within the range $(\epsilon^{-1} \times 2^{a_{i + j}}, 2 \times \epsilon^{-1} \times 2^{a_{i + j}})$ (where $i$ is the index), the smallest possible ${Y_P}_j$ is
 
@@ -621,11 +621,11 @@
 
     ReproBLAS uses the values $W = 40$ for indexed \verb|double| and $W = 13$ for indexed \verb|float|.
 
-    As discussed in section \ref{sec:underflow}, input corresponding to bin $(e_{\min} - p, e_{\min} - p + 1 + W + (e_{\max} - e_{\min} + p - 2 \mod W)]$ is not accumulated. For \verb|double| this amounts to the least significant expressible  bits and for \verb|float| this amounts to the least significant expressible  bits.
+    As discussed in section \ref{sec:underflow}, only input corresponding to the bin $(e_{\min} - 1, e_{\max} + 1]$ is guaranteed to be accumulated.
 
-    As absolute value of individual quantities added to ${Y_P}_j$ are not in excess of $2^{b_{i + j}}$, a maximum of $0.25\epsilon^{-1}2^{-W}$ elements may be deposited into ${Y_P}_j$ between renormalizations, as discussed in section \ref{sec:renormalize}. For indexed \verb|double| this number is ?, whereas for indexed \verb|float| this number is ?
+    As absolute value of individual quantities added to ${Y_P}_j$ are not in excess of $2^{b_{i + j}}$, a maximum of $0.25\epsilon^{-1}2^{-W}$ elements may be deposited into ${Y_P}_j$ between renormalizations, as discussed in section \ref{sec:renormalize}. For indexed \verb|double| this number is $2^11$, whereas for indexed \verb|float| this number is $2^9$.
 
-    As ${Y_C}_j$ must be able to record additions of absolute value 1 without error, ${Y_C}_j$ must stay in the range $(-\epsilon^{-1}, \epsilon^{-1})$. As each renormalization results in addition not in excess absolute value of 1 to ${Y_C}_j$, a maximum of $(\epsilon^{-1} - 1)$ renormalizations may be performed, meaning that an indexed sum represents the sum of a maximum of $0.25\epsilon^{-1}2^{-W} \times (\epsilon^{-1} - 1) \approx 2^{p + p - W - 2}$. For indexed \verb|double| this number is ?, whereas for indexed \verb|float| this number is ?
+    As ${Y_C}_j$ must be able to record additions of absolute value 1 without error, ${Y_C}_j$ must stay in the range $(-\epsilon^{-1}, \epsilon^{-1})$. As each renormalization results in addition not in excess absolute value of 1 to ${Y_C}_j$, a maximum of $(\epsilon^{-1} - 1)$ renormalizations may be performed, meaning that an indexed sum represents the sum of a maximum of $0.25\epsilon^{-1}2^{-W} \times (\epsilon^{-1} - 1) \approx 2^{p + p - W - 2}$. For indexed \verb|double| this number is approximately $2^64$, whereas for indexed \verb|float| this number is approximately $2^33$.
 
     The indexed types provided by ReproBLAS will, when used correctly, avoid intermediate overflow.
 
