@@ -39,7 +39,7 @@ cog.out(generate.generate(blockSize.BlockSize("zmzdotu", "N_block_MAX", 32, term
 
 #endif
 
-#define N_block_MAX 1024
+#define N_block_MAX 2048
 //[[[end]]]
 
 void zmzdotu(const int fold, const int N, const void *X, const int incX, const void *Y, const int incY, double *manZ, const int incmanZ, double *carZ, const int inccarZ){

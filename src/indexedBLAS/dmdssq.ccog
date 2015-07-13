@@ -39,7 +39,7 @@ cog.out(generate.generate(blockSize.BlockSize("dmdssq", "N_block_MAX", 32, termi
 
 #endif
 
-#define N_block_MAX 1024
+#define N_block_MAX 2048
 //[[[end]]]
 
 double dmdssq(const int fold, const int N, const double *X, const int incX, const double scaleY, double *manY, const int incmanY, double *carY, const int inccarY){

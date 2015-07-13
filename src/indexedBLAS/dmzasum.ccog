@@ -39,7 +39,7 @@ cog.out(generate.generate(blockSize.BlockSize("dmzasum", "N_block_MAX", 32, term
 
 #endif
 
-#define N_block_MAX 512
+#define N_block_MAX 1024
 //[[[end]]]
 
 void dmzasum(const int fold, const int N, const void *X, const int incX, double *manY, const int incmanY, double *carY, const int inccarY){

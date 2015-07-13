@@ -210,6 +210,10 @@ static void idxdMPI_didiadd_50(void *invec, void *inoutvec, int *len, MPI_Dataty
   didiaddv(50, *len, (double_indexed*)invec, 1, (double_indexed*)inoutvec, 1);
 }
 
+static void idxdMPI_didiadd_51(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddv(51, *len, (double_indexed*)invec, 1, (double_indexed*)inoutvec, 1);
+}
+
 //[[[end]]]
 
 static MPI_Op ops[DIMAXFOLD + 1];
@@ -422,6 +426,10 @@ MPI_Op idxdMPI_DIDIADD(const int fold){
 
       case 50:
         rc = MPI_Op_create(&idxdMPI_didiadd_50, 1, ops + 50);
+        break;
+
+      case 51:
+        rc = MPI_Op_create(&idxdMPI_didiadd_51, 1, ops + 51);
         break;
 
       //[[[end]]]

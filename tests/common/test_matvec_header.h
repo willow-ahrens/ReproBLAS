@@ -6,7 +6,7 @@
 
 int matvec_show_help(void);
 const char *matvec_name(int argc, char** argv);
-int matvec_test(int argc, char** argv, char Order, char TransA, int M, int N, int lda, int incX);
+int matvec_test(int argc, char** argv, char Order, char TransA, int M, int N, int lda, int incX, int incY);
 
 static const char *Order_names[] = {"RowMajor", "ColMajor"};
 static const char *Order_descs[] = {"Row Major", "Column Major"};
@@ -18,6 +18,7 @@ static opt_option M;
 static opt_option N;
 static opt_option lda;
 static opt_option incX;
+static opt_option incY;
 
 static void matvec_options_initialize(void){
   Order._named.header.type       = opt_named;
@@ -75,6 +76,15 @@ static void matvec_options_initialize(void){
   incX._int.min               = 1;
   incX._int.max               = INT_MAX;
   incX._int.value             = 1;
+
+  incX._int.header.type       = opt_int;
+  incX._int.header.short_name = 'y';
+  incX._int.header.long_name  = "incY";
+  incX._int.header.help       = "Y vector increment";
+  incX._int.required          = 0;
+  incX._int.min               = 1;
+  incX._int.max               = INT_MAX;
+  incX._int.value             = 1;
 }
 
 int show_help(void){
@@ -86,6 +96,7 @@ int show_help(void){
   opt_show_option(N);
   opt_show_option(lda);
   opt_show_option(incX);
+  opt_show_option(incY);
   return matvec_show_help();
 }
 
@@ -100,7 +111,8 @@ const char* name(int argc, char** argv){
   opt_eval_option(argc, argv, &N);
   opt_eval_option(argc, argv, &lda);
   opt_eval_option(argc, argv, &incX);
-  snprintf(name_buffer, MAX_LINE, "%s Order=%c TransA=%c M=%d N=%d lda=%d incX=%d", matvec_name(argc, argv), Order._named.names[Order._named.value][0], TransA._named.names[TransA._named.value][0], M._int.value, N._int.value, lda._int.value, incX._int.value);
+  opt_eval_option(argc, argv, &incY);
+  snprintf(name_buffer, MAX_LINE, "%s Order=%c TransA=%c M=%d N=%d lda=%d incX=%d incY=%d", matvec_name(argc, argv), Order._named.names[Order._named.value][0], TransA._named.names[TransA._named.value][0], M._int.value, N._int.value, lda._int.value, incX._int.value, incY._int.value);
   return name_buffer;
 }
 
@@ -115,6 +127,7 @@ int test(int argc, char** argv){
   opt_eval_option(argc, argv, &N);
   opt_eval_option(argc, argv, &lda);
   opt_eval_option(argc, argv, &incX);
+  opt_eval_option(argc, argv, &incY);
 
   switch(Order._named.names[Order._named.value][0]){
     case 'r':
@@ -127,8 +140,7 @@ int test(int argc, char** argv){
         return 125;
       }
       break;
-    case 'c':
-    case 'C':
+    default:
       if(lda._int.value == 0){
         lda._int.value = M._int.value;
       }
@@ -138,6 +150,6 @@ int test(int argc, char** argv){
       }
       break;
   }
-  rc = matvec_test(argc, argv, Order._named.names[Order._named.value][0], TransA._named.names[TransA._named.value][0], M._int.value, N._int.value, lda._int.value, incX._int.value);
+  rc = matvec_test(argc, argv, Order._named.names[Order._named.value][0], TransA._named.names[TransA._named.value][0], M._int.value, N._int.value, lda._int.value, incX._int.value, incY._int.value);
   return rc;
 }

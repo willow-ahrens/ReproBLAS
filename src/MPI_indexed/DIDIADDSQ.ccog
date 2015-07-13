@@ -217,6 +217,10 @@ static void idxdMPI_didiaddsq_50(void *invec, void *inoutvec, int *len, MPI_Data
   didiaddsqv(50, *len, (double*)invec, (double*)inoutvec);
 }
 
+static void idxdMPI_didiaddsq_51(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(51, *len, (double*)invec, (double*)inoutvec);
+}
+
 //[[[end]]]
 
 static MPI_Op ops[DIMAXFOLD + 1];
@@ -429,6 +433,10 @@ MPI_Op idxdMPI_DIDIADDSQ(const int fold){
 
       case 50:
         rc = MPI_Op_create(&idxdMPI_didiaddsq_50, 1, ops + 50);
+        break;
+
+      case 51:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_51, 1, ops + 51);
         break;
 
       //[[[end]]]

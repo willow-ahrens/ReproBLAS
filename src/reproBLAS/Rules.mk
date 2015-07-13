@@ -9,4 +9,5 @@ libreproblas.a_DEPS = $$(LIBINDEXED) $$(LIBINDEXEDBLAS)                        \
                       rdsum.o rdasum.o rdnrm2.o rddot.o                        \
                       rzsum_sub.o rdzasum.o rdznrm2.o rzdotc_sub.o rzdotu_sub.o\
                       rssum.o rsasum.o rsnrm2.o rsdot.o                        \
-                      rcsum_sub.o rscasum.o rscnrm2.o rcdotc_sub.o rcdotu_sub.o
+                      rcsum_sub.o rscasum.o rscnrm2.o rcdotc_sub.o rcdotu_sub.o\
+                      rdgemv.o

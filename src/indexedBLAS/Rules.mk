@@ -10,7 +10,8 @@ COGGED = damax.ccog damaxm.ccog                                        \
          dmdsum.ccog dmdasum.ccog dmdssq.ccog dmddot.ccog              \
          smssum.ccog smsasum.ccog smsssq.ccog smsdot.ccog              \
          cmcsum.ccog smcasum.ccog smcssq.ccog cmcdotu.ccog cmcdotc.ccog\
-         zmzsum.ccog dmzasum.ccog dmzssq.ccog zmzdotu.ccog zmzdotc.ccog
+         zmzsum.ccog dmzasum.ccog dmzssq.ccog zmzdotu.ccog zmzdotc.ccog\
+         dmdgemv.ccog
 
 PRECIOUS = damax.c damaxm.c                               \
            zamax_sub.c zamaxm_sub.c                       \
@@ -19,7 +20,8 @@ PRECIOUS = damax.c damaxm.c                               \
            smssum.c smsasum.c smsssq.c smsdot.c           \
            dmdsum.c dmdasum.c dmdssq.c dmddot.c           \
            cmcsum.c smcasum.c smcssq.c cmcdotu.c cmcdotc.c\
-           zmzsum.c dmzasum.c dmzssq.c zmzdotu.c zmzdotc.c
+           zmzsum.c dmzasum.c dmzssq.c zmzdotu.c zmzdotc.c\
+           dmdgemv.c
 
 LIBINDEXEDBLAS := $(OBJPATH)/libindexedblas.a
 
@@ -35,7 +37,8 @@ libindexedblas.a_DEPS = $$(LIBINDEXED)                                 \
                         didsum.o didasum.o didssq.o diddot.o           \
                         sissum.o sisasum.o sisssq.o sisdot.o           \
                         cicsum.o sicasum.o sicssq.o cicdotu.o cicdotc.o\
-                        zizsum.o dizasum.o dizssq.o zizdotu.o zizdotc.o
+                        zizsum.o dizasum.o dizssq.o zizdotu.o zizdotc.o\
+                        dmdgemv.o
                         #TODO dIAccum.o zIAccum.o sIAccum.o cIAccum.o        \
 
 
@@ -47,14 +50,14 @@ samax.c_DEPS = samax.ccog
 samaxm.c_DEPS = samaxm.ccog
 camax_sub.c_DEPS = camax_sub.ccog
 camaxm_sub.c_DEPS = camaxm_sub.ccog
-smssum.c_DEPS = $$(GETTER) smssum.ccog
-smsasum.c_DEPS = $$(GETTER) smsasum.ccog
-smsssq.c_DEPS = $$(GETTER) smsssq.ccog
-smsdot.c_DEPS = $$(GETTER) smsdot.ccog
 dmdsum.c_DEPS = $$(GETTER) dmdsum.ccog
 dmdasum.c_DEPS = $$(GETTER) dmdasum.ccog
 dmdssq.c_DEPS = $$(GETTER) dmdssq.ccog
 dmddot.c_DEPS = $$(GETTER) dmddot.ccog
+smssum.c_DEPS = $$(GETTER) smssum.ccog
+smsasum.c_DEPS = $$(GETTER) smsasum.ccog
+smsssq.c_DEPS = $$(GETTER) smsssq.ccog
+smsdot.c_DEPS = $$(GETTER) smsdot.ccog
 cmcsum.c_DEPS = $$(GETTER) cmcsum.ccog
 smcasum.c_DEPS = $$(GETTER) smcasum.ccog
 smcssq.c_DEPS = $$(GETTER) smcssq.ccog
@@ -65,3 +68,4 @@ dmzasum.c_DEPS = $$(GETTER) dmzasum.ccog
 dmzssq.c_DEPS = $$(GETTER) dmzssq.ccog
 zmzdotu.c_DEPS = $$(GETTER) zmzdotu.ccog
 zmzdotc.c_DEPS = $$(GETTER) zmzdotc.ccog
+dmdgemv.c_DEPS = $$(GETTER) dmdgemv.ccog
