@@ -666,6 +666,7 @@ ${Z_j}_S \in [1.5 \times \epsilon^{-1}\times 2^{a_{J + j}}, 1.75 \times \epsilon
     \subsubsection{xixgemv}
     \subsubsection{xixgemm}
   \subsection{Optimization}
+    Due to the proportion of time spent in the deposit routine, optimization of the deposit routine was prioritized. In the event that multiple $x$ need to be added to $Y$, the deposit routine can be vectorized by accumulating the $x$ in multiple copies of $Y$. The number of copies of $Y$ to make, $c$, and the number of unrolled loop iterations, $u$ are tuning parameters.
 \section{repBLAS.h}
 \section{idxdMPI.h}
   \subsection{Types}
