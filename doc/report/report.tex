@@ -39,7 +39,7 @@
 \section{Notation and Background}
   Let $\R, \F, $ and $\Z$ denote the sets of real numbers, floating-point numbers, and integers respectively.
 
-  Assume that floating point arithmetic complies with the IEEE 754-2008 standard \cite{ieee754} in "to nearest even" rounding mode and that underflow occurs gradually.
+  Assume that floating point arithmetic complies with the IEEE 754-2008 standard \cite{ieee754} in ``to nearest even'' rounding mode and that underflow occurs gradually.
 
   Let $f = s \times 2^e \times m \in \F$ be a floating-point number represented in IEEE 754-2008 format \cite{ieee754} where $s = \pm 1$ is the \textbf{sign}, $e_{\max} \geq e \geq e_{\min}$ is the \textbf{exponent} ($\exp(f)$ is defined to be $e$), $p$ is the \textbf{precision}, and $m = m_0.m_1m_2...m_{p-1}$ where $m_1, ..., m_{p - 1} \in \{0, 1\}$ is the \textbf{significand} of $f$. $f$ is said to be \textbf{normalized} if $m_0 = 1$ and $e > e_{\min}$, \textbf{unnormalized} if $m_0 = 0$, and \textbf{denormalized} if $m_0 = 0$ and $e = e_{\min}$. $f = 0$ if all $m_k = 0$ and $e = e_{\min}$.
 
@@ -137,7 +137,7 @@
         \end{algorithmic}
         \label{alg:deposit}
       \end{alg}
-      The last bit of $r$ is set to break ties when rounding "to nearest even" such that the amount accumulated does not depend on the size of ${Y_I}_P$ so far and the same amount ($d(x, a_{I + j}, b_{I + j})$) is always correctly deposited in each of $Y$'s primary fields assuming the value in each field satisfies previously specified constraints. Because $d(x, a_{I + j}, b_{I + j}) = 0$ for bins that are larger than the input, the top $fold$ accumulators can be computed reproducibly by computing the values in the top $fold$ accumulators needed for the largest $x$ seen so far and shifting them upwards (towards index $0$) as necessary. \cite{repsum} contains further discussions of the reproducibility of the algorithm.
+      The last bit of $r$ is set to break ties when rounding ``to nearest even'' such that the amount accumulated does not depend on the size of ${Y_I}_P$ so far and the same amount ($d(x, a_{I + j}, b_{I + j})$) is always correctly deposited in each of $Y$'s primary fields assuming the value in each field satisfies previously specified constraints. Because $d(x, a_{I + j}, b_{I + j}) = 0$ for bins that are larger than the input, the top $fold$ accumulators can be computed reproducibly by computing the values in the top $fold$ accumulators needed for the largest $x$ seen so far and shifting them upwards (towards index $0$) as necessary. \cite{repsum} contains further discussions of the reproducibility of the algorithm.
       It is worth noting here that due to Corollary $3$ in \cite{repsum}, $|r| \leq 2^{b_{I + j}}$ when adding $(r | 1)$ to ${Y_j}_P$.
 
       In order to keep the primary fields in the necessary range during a deposit operation and to keep the representation of $Y_j$ unique, ${Y_j}_P$ is routinely renormalized to the range $[1.5 \times\epsilon^{-1} \times 2^{a_{I + j}}, 1.75 \times\epsilon^{-1} \times 2^{a_{I + j}})$.
@@ -565,7 +565,7 @@
         \item $p \geq 2$ (there are at least 2 bits of precision in the bins)
         \item $P \geq p + 1$ (the intermediate precision is larger than the original)
         \item the intermediate exponent range is at least as large as the original
-        \item rounding is in "to nearest" mode (breaking ties arbitrarily)
+        \item rounding is in ``to nearest'' mode (breaking ties arbitrarily)
         \item underflow is gradual
         \item no overflow occurs
       \end{enumerate}
@@ -728,7 +728,7 @@
 
     As absolute value of individual quantities added to ${Y_j}_P$ are not in excess of $2^{b_{I + j}}$, a maximum of $0.25\epsilon^{-1}2^{-W}$ elements may be deposited into ${Y_j}_P$ between renormalizations, as discussed in section \ref{sec:renormalize}. For indexed \verb|double| this number is $2^{11}$, whereas for indexed \verb|float| this number is $2^9$. This number is supplied programmatically using the \verb|XIENDURANCE| macro.
 
-    As ${Y_j}_C$ must be able to record additions of absolute value 1 without error, ${Y_j}_C$ must stay in the range $(-\epsilon^{-1}, \epsilon^{-1})$. As each renormalization results in addition not in excess absolute value of 1 to ${Y_j}_C$, a maximum of $(\epsilon^{-1} - 1)$ renormalizations may be performed, meaning that an indexed sum represents the sum of a maximum of $0.25\epsilon^{-1}2^{-W} \times (\epsilon^{-1} - 1) \approx 2^{p + p - W - 2}$. For indexed \verb|double| this number is almost $2^64$, whereas for indexed \verb|float| this number is almost $2^33$. This number is supplied programmatically using the \verb|XICAPACITY| macro.
+    As ${Y_j}_C$ must be able to record additions of absolute value 1 without error, ${Y_j}_C$ must stay in the range $(-\epsilon^{-1}, \epsilon^{-1})$. As each renormalization results in addition not in excess absolute value of 1 to ${Y_j}_C$, a maximum of $(\epsilon^{-1} - 1)$ renormalizations may be performed, meaning that an indexed sum represents the sum of a maximum of $0.25\epsilon^{-1}2^{-W} \times (\epsilon^{-1} - 1) \approx 2^{p + p - W - 2}$. For indexed \verb|double| this number is almost $2^{64}$, whereas for indexed \verb|float| this number is almost $2^{33}$. This number is supplied programmatically using the \verb|XICAPACITY| macro.
 
     The indexed types provided by ReproBLAS will, when used correctly, avoid intermediate overflow.
 
@@ -768,7 +768,7 @@
   \bibitem{repsum}
     Demmel, James, and Hong Diep Nguyen. Parallel Reproducible Summation. IEEE Transactions on Computers, 2014.
   \bibitem{ieee754}
-    IEEE Standard for Floating-Point Arithmetic," IEEE Std 754-2008 , vol., no., pp.1,70, Aug. 29 2008
+    IEEE Standard for Floating-Point Arithmetic, IEEE Std 754-2008 , vol., no., pp.1,70, Aug. 29 2008
   \bibitem{c89}
     ANSI/ISO 9899-1990 American National Standard for Programming Languages - C, section 6.1.2.5
   \bibitem{sortsum}
