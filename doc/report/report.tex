@@ -41,7 +41,7 @@
 
   Assume that floating point arithmetic complies with the IEEE 754-2008 standard \cite{ieee754} in "to nearest even" rounding mode and that underflow occurs gradually.
 
-  Let $f = s \times 2^e \times m \in \F$ be a floating-point number represented in IEEE 754-2008 format \cite{ieee754} where $s = \pm 1$ is the \textbf{sign}, $e_{\max} \geq e \geq e_{\min}$ is the \textbf{exponent} ($\exp(f)$ is defined to be $e$), $p$ is the \textbf{precision}, and $m = m_0.m_1m_2...m_{p-1}$ where $m_1, ..., m_{p - 1} \in \{0, 1\}$ is the \textbf{significand} of $f$. $f$ is said to be \textbf{normalized} if $m_0 = 1$ and $e > e_{\min}$, \textbf{unnormalized} if $m_0 = 0$, and \textbf{subnormal} if $m_0 = 0$ and $e = e_{\min}$. $f = 0$ if all $m_k = 0$ and $e = e_{\min}$.
+  Let $f = s \times 2^e \times m \in \F$ be a floating-point number represented in IEEE 754-2008 format \cite{ieee754} where $s = \pm 1$ is the \textbf{sign}, $e_{\max} \geq e \geq e_{\min}$ is the \textbf{exponent} ($\exp(f)$ is defined to be $e$), $p$ is the \textbf{precision}, and $m = m_0.m_1m_2...m_{p-1}$ where $m_1, ..., m_{p - 1} \in \{0, 1\}$ is the \textbf{significand} of $f$. $f$ is said to be \textbf{normalized} if $m_0 = 1$ and $e > e_{\min}$, \textbf{unnormalized} if $m_0 = 0$, and \textbf{denormalized} if $m_0 = 0$ and $e = e_{\min}$. $f = 0$ if all $m_k = 0$ and $e = e_{\min}$.
 
   Machine epsilon, $\epsilon$, the difference between 1 and the largest floating point number smaller than 1, is defined as $\epsilon = 2^{-p}$.
 
@@ -718,13 +718,13 @@
 
   \subsection{Limits}
     \label{sec:limits}
-    As discussed previously, the minimum fold accepted by ReproBLAS is 2. The maximum useful fold is $\floor{(e_{\max} - e_{\min} + p)/W}$, as this covers all of the bins.
+    As discussed previously, the minimum fold accepted by ReproBLAS is 2. The maximum useful fold is $\floor{(e_{\max} - e_{\min} + p - 1)/W}$, as this covers all of the bins.
 
     As discussed in \cite{repsum}, $W < p - 2$. As discussed in section \ref{sec:overflow}, $2\times W > p + 1$.
 
     ReproBLAS uses the values $W = 40$ for indexed \verb|double| and $W = 13$ for indexed \verb|float|. $W$ is available as the \verb|XIWIDTH| macro.
 
-    As discussed in section \ref{sec:underflow}, only input corresponding to the bin $(e_{\min} - 2, e_{\max} + 1]$ is guaranteed to be accumulated.
+    As discussed in section \ref{sec:underflow}, only input corresponding to the bin $(e_{\min} - 1, e_{\max} + 1]$ is guaranteed to be accumulated.
 
     As absolute value of individual quantities added to ${Y_j}_P$ are not in excess of $2^{b_{I + j}}$, a maximum of $0.25\epsilon^{-1}2^{-W}$ elements may be deposited into ${Y_j}_P$ between renormalizations, as discussed in section \ref{sec:renormalize}. For indexed \verb|double| this number is $2^{11}$, whereas for indexed \verb|float| this number is $2^9$. This number is supplied programmatically using the \verb|XIENDURANCE| macro.
 
