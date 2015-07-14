@@ -202,7 +202,7 @@
         \label{alg:deposit0}
       \end{alg}
 
-      Algorithm \ref{alg:deposit0} has a few key features worth pointing out. First, since $|x| < 2^{e_{\max} + 1}$, then the value of $r$ after it's first assignment satisfies $|r| < 2^{e_{\max} - p + W + 1}$. This shows both that the extraction of the top bin will work correctly and that the top bin is the largest bin necessary to deposit any finite $x \in \F$.
+      Algorithm \ref{alg:deposit0} has a few key features worth pointing out. First, since $|x| < 2^{e_{\max} + 1}$, then the value of $r$ after it's first assignment satisfies $|r| < 2^{e_{\max} - p + W + 1}$. This shows both that the extraction of the top denormalized bin will work correctly and that the top bin is the largest bin necessary to deposit any finite $x \in \F$.
       Furthermore, since $x$ is scaled by a factor of two, the significand of $r$ is equal to that of $x$.
       Therefore, the component of $r$ belonging to the bin $(e_{\max} - p, e_{\max} - p + W]$ is equivalent to the component of $x$ belonging to the bin $(e_{\max} + 1 - W, e_{\max} + 1]$ scaled by $2^{p - W + 1}$. This component of $r$ is extracted, stored in q, and added to ${Y_0}_P$. We can therefore scale this component by $2^{p - W + 1}$ to obtain the component of $x$ belonging to the bin $(e_{\max} + 1 - W, e_{\max} + 1]$. As $x$ is representable, so is this component. We can then subtract this component from $x$ and continue as in Algorithm \ref{alg:deposit}.
 
@@ -210,7 +210,7 @@
 
     \subsubsection{Underflow}
       \label{sec:underflow}
-      Here we consider the effects of underflow on algorithms described in \cite{repsum} and how they can be avoided. In Algorithm \ref{alg:deposit}, when the last bit of $r$ is set to 1, it is assumed that this last bit will only serve to fix the direction of the rounding mode. However, if ${Y_j}_P$ is denormal, that last bit may very well be accumulated!
+      Here we consider the effects of underflow on algorithms described in \cite{repsum} and how they can be avoided. In Algorithm \ref{alg:deposit}, when the last bit of $r$ is set to 1, it is assumed that this last bit will only serve to fix the direction of the rounding mode. However, if ${Y_j}_P$ is denormalized, that last bit may very well be accumulated!
 
       For Algorithm \ref{alg:deposit} to work correctly when adding $r | 1$ to ${Y_j}_P$, $\ulp(r)$ must be less than half of the rounding error when adding a number to ${Y_j}_P$. Mathematically, $\ulp(r) < \ulp({Y_j}_P)/2$.
 
@@ -244,7 +244,7 @@
 
       Therefore, all input in the bin $(e_{\min} - 1, e_{\max} + 1]$ is deposited.
 
-      There are several ways to deposit the input in the denormal range. One simple way the algorithm could be extended to denormal inputs would be to scale the bottom bins up, as was done to handle overflow. Due to the relatively low priority for accumulating denormal values, these methods were not implemented.
+      There are several ways to deposit the input in the denormalized range. One simple way the algorithm could be extended to denormalized inputs would be to scale the bottom bins up, as was done to handle overflow. Due to the relatively low priority for accumulating denormalized values, these methods were not implemented.
 
     \subsubsection{Exceptions}
       Indexed types are capable of representing exceptional cases such as \verb|NaN| (Not a Number) and \verb|Inf| (Infinity). An indexed type $Y$ stores it's exception status in it's first primary field ${Y_0}_P$.
