@@ -43,7 +43,7 @@
 
   Let $f = s \times 2^e \times m \in \F$ be a floating-point number represented in IEEE 754-2008 format \cite{ieee754} where $s = \pm 1$ is the \textbf{sign}, $e_{\max} \geq e \geq e_{\min}$ is the \textbf{exponent} ($\exp(f)$ is defined to be $e$), $p$ is the \textbf{precision}, and $m = m_0.m_1m_2...m_{p-1}$ where $m_1, ..., m_{p - 1} \in \{0, 1\}$ is the \textbf{significand} of $f$. $f$ is said to be \textbf{normalized} if $m_0 = 1$ and $e > e_{\min}$, \textbf{unnormalized} if $m_0 = 0$, and \textbf{denormalized} if $m_0 = 0$ and $e = e_{\min}$. $f = 0$ if all $m_k = 0$ and $e = e_{\min}$.
 
-  Machine epsilon, $\epsilon$, the difference between 1 and the largest floating point number smaller than 1, is defined as $\epsilon = 2^{-p}$.
+  Machine epsilon, $\epsilon$, the difference between 1 and the greatest floating point number smaller than 1, is defined as $\epsilon = 2^{-p}$.
 
   The unit in the last place of $f \in \F$, $\ulp(f)$, is the spacing between two consecutive floating point numbers of the same exponent as $f$. If $f$ is normalized, $\ulp(f) = 2^{\exp(f) - p + 1} = 2 \times \epsilon \times 2^{\exp(f)}$.
 
@@ -79,16 +79,20 @@
     For ease of computation, accumulator ranges are chosen to be precomputed, fixed width intervals starting at $e_{\max}$. The possible bins $(a_0, b_0], (a_1, b_1], ...$ for an indexed type of width $W$ are
 
     \begin{equation*}
-    (e_{\max} + 1 - (i + 1)\times W, e_{\max} + 1 - i \times W], 0 \leq i < (e_{\max} - e_{\min} + p - 1)/W
+      a_i = e_{\max} - W + 1 - i\times W, 0 \leq i < (e_{\max} - W - e_{\min} + p - 1)/W
     \end{equation*}
 
-    We use $i < (e_{\max} - e_{\min} + p - 1)/W$ to ensure that $a_i > e_{\min} - p + 1$ as discussed in section \ref{sec:underflow}. This means that the largest bin is
+    \begin{equation*}
+      b_i = a_i + W
+    \end{equation*}
+
+    We use $i < (e_{\max} - W - e_{\min} + p - 1)/W$ to ensure that $a_i > e_{\min} - p + 1$ as discussed in section \ref{sec:underflow}. This means that the highest bin is
 
     \begin{equation*}
     (e_{\max} + 1 - W, e_{\max} + 1]
     \end{equation*}
 
-    and the smallest bin is
+    and the lowest bin is
 
     \begin{equation*}
     (e_{\min} - p + 2 + ((e_{\max} - e_{\min} + p - 1)\mod W),
@@ -105,7 +109,7 @@
 
     As discussed in \cite{repsum}, $W < p - 2$. As discussed in section \ref{sec:overflow}, $2\times W > p + 1$.
 
-    The accumulators in an indexed type correspond to contiguous bins in decreasing order. The index of $Y$ is defined as the smallest $I \in \Z$ such that $2^{b_I + 1} > \max(|x_0|, ..., |x_n|)$ (equivalently, the smallest $I \in \Z$ such that $b_I > \max(e_0, ..., e_n)$). If $Y$ has index $I$, then $Y_j, j \in \{0, ..., fold - 1\}$ accumulates numbers in the bin $(a_{I + j}, b_{I + j}]$.
+    The accumulators in an indexed type correspond to contiguous bins in decreasing order. The index of $Y$ is defined as the least $I \in \Z$ such that $2^{b_I + 1} > \max(|x_0|, ..., |x_n|)$ (equivalently, the least $I \in \Z$ such that $b_I > \max(e_0, ..., e_n)$). If $Y$ has index $I$, then $Y_j, j \in \{0, ..., fold - 1\}$ accumulates numbers in the bin $(a_{I + j}, b_{I + j}]$.
 
   \subsection{Implementation}
     \subsubsection{Data Types}
@@ -202,7 +206,7 @@
         \label{alg:deposit0}
       \end{alg}
 
-      Algorithm \ref{alg:deposit0} has a few key features worth pointing out. First, since $|x| < 2^{e_{\max} + 1}$, then the value of $r$ after it's first assignment satisfies $|r| < 2^{e_{\max} - p + W + 1}$. This shows both that the extraction of the top denormalized bin will work correctly and that the top bin is the largest bin necessary to deposit any finite $x \in \F$.
+      Algorithm \ref{alg:deposit0} has a few key features worth pointing out. First, since $|x| < 2^{e_{\max} + 1}$, then the value of $r$ after it's first assignment satisfies $|r| < 2^{e_{\max} - p + W + 1}$. This shows both that the extraction of the top denormalized bin will work correctly and that the top bin is the highest bin necessary to deposit any finite $x \in \F$.
       Furthermore, since $x$ is scaled by a factor of two, the significand of $r$ is equal to that of $x$.
       Therefore, the component of $r$ belonging to the bin $(e_{\max} - p, e_{\max} - p + W]$ is equivalent to the component of $x$ belonging to the bin $(e_{\max} + 1 - W, e_{\max} + 1]$ scaled by $2^{p - W + 1}$. This component of $r$ is extracted, stored in q, and added to ${Y_0}_P$. We can therefore scale this component by $2^{p - W + 1}$ to obtain the component of $x$ belonging to the bin $(e_{\max} + 1 - W, e_{\max} + 1]$. As $x$ is representable, so is this component. We can then subtract this component from $x$ and continue as in Algorithm \ref{alg:deposit}.
 
@@ -220,7 +224,7 @@
 
       If $r$ is denormalized, $\ulp(r) = 2^{e_{\min} - p + 1}$ since the unit in the last place of a denormalized number is always equal to $2^{e_{\min} - p + 1}$.
 
-      The smallest bin is
+      The lowest bin is
 
       \begin{equation*}
       (e_{\min} - p + 2 + ((e_{\max} - e_{\min} + p - 1 ) \mod W), e_{\min} - p + 2 + W + ((e_{\max} - e_{\min} + p - 1)\mod W)]
@@ -234,7 +238,7 @@
 
       ${Y_j}_P$ is normalized and the unit in the last place of ${Y_j}_P$ is $a_{I + j} > e_{\min} - p + 1$.
 
-        Therefore, $\ulp(r) < \ulp({Y_j}_P)/2$ and deposits on the smallest bin and all larger bins satisfy $\ulp(r) < \ulp({Y_j}_P)/2$ and are exact.
+        Therefore, $\ulp(r) < \ulp({Y_j}_P)/2$ and deposits on the lowest bin and all larger bins satisfy $\ulp(r) < \ulp({Y_j}_P)/2$ and are exact.
 
       Since $W < p - 2$,
 
@@ -249,15 +253,15 @@
     \subsubsection{Exceptions}
       Indexed types are capable of representing exceptional cases such as \verb|NaN| (Not a Number) and \verb|Inf| (Infinity). An indexed type $Y$ stores it's exception status in it's first primary field ${Y_0}_P$.
 
-      A value of $0$ in ${Y_0}_P$ indicates that nothing has been added to ${Y_0}_P$ yet. The smallest bin is
+      A value of $0$ in ${Y_0}_P$ indicates that nothing has been added to ${Y_0}_P$ yet. The lowest bin is
 
-      The smallest bin is
+      The lowest bin is
 
       \begin{equation*}
       (e_{\min} - p + 2 + ((e_{\max} - e_{\min} + p - 1 ) \mod W), e_{\min} - p + 2 + W + ((e_{\max} - e_{\min} + p - 1)\mod W)]
       \end{equation*}
 
-      and since the ${Y_j}_P$ are kept within the range $(\epsilon^{-1} \times 2^{a_{I + j}}, 2 \times \epsilon^{-1} \times 2^{a_{I + j}})$ (where $I$ is the index), the smallest possible ${Y_j}_P$ is
+      and since the ${Y_j}_P$ are kept within the range $(\epsilon^{-1} \times 2^{a_{I + j}}, 2 \times \epsilon^{-1} \times 2^{a_{I + j}})$ (where $I$ is the index), the least possible ${Y_j}_P$ is
 
       \begin{equation*}
       \epsilon^{-1} \times 2^{e_{\min} - p + 2 + ((e_{\max} - e_{\min} + p - 1)\mod W)} > 2^{e_{\min}}

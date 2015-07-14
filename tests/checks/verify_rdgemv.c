@@ -36,9 +36,6 @@ static void verify_rdgemv_options_initialize(void){
 }
 
 int verify_dgemv_reproducibility(int fold, char Order, char TransA, int M, int N, int NX, int NY, double alpha, double *A, int lda, double* X, int incX, double beta, double *Y, double_indexed *YI, int incY, double *ref, double_indexed *Iref, int max_num_blocks) {
-  (void)NX;
-  (void)alpha;
-  (void)beta;
 
   // GENERATE DATA
   int i;
