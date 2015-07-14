@@ -41,7 +41,7 @@
 
   Assume that floating point arithmetic complies with the IEEE 754-2008 standard \cite{ieee754} in "to nearest even" rounding mode and that underflow occurs gradually.
 
-  Let $f = s \times 2^e \times m \in \F$ be a floating-point number represented in IEEE 754-2008 format \cite{ieee754} where $s = \pm 1$ is the \textbf{sign}, $e_{\max} \geq e \geq e_{\min}$ is the \textbf{exponent} ($\exp(f)$ is defined to be $e$), $p$ is the \textbf{precision}, and $m = m_0.m_1m_2...m_{p-1}$ where $m_1, ..., m_{p - 1} \in \{0, 1\}$ is the \textbf{significand} of $f$. $f$ is said to be \textbf{normalized} if $m_0 = 1$ and $e > e_{\min}$, \textbf{unnormalized} if $m_0 = 0$, and \textbf{subnormal} if $m_0 = 0$ and $e = e_{\min}$. $f = 0$ if $m_0 = m_1 = ... = m_{p - 1} = 0$ and $e = e_{\min}$.
+  Let $f = s \times 2^e \times m \in \F$ be a floating-point number represented in IEEE 754-2008 format \cite{ieee754} where $s = \pm 1$ is the \textbf{sign}, $e_{\max} \geq e \geq e_{\min}$ is the \textbf{exponent} ($\exp(f)$ is defined to be $e$), $p$ is the \textbf{precision}, and $m = m_0.m_1m_2...m_{p-1}$ where $m_1, ..., m_{p - 1} \in \{0, 1\}$ is the \textbf{significand} of $f$. $f$ is said to be \textbf{normalized} if $m_0 = 1$ and $e > e_{\min}$, \textbf{unnormalized} if $m_0 = 0$, and \textbf{subnormal} if $m_0 = 0$ and $e = e_{\min}$. $f = 0$ if all $m_k = 0$ and $e = e_{\min}$.
 
   Machine epsilon, $\epsilon$, the difference between 1 and the largest floating point number smaller than 1, is defined as $\epsilon = 2^{-p}$.
 
@@ -53,7 +53,9 @@
 
   We define the function $\roundtonearestinfty(x, 2^k), x \in R, k \in \Z$ as
 
-  $\roundtonearestinfty(x, 2^k) = \begin{cases}\floor{x/2^k + 1/2} \times 2^k \text{ if } x \geq 0\\ \\ \ceil{x/2^k - 1/2}\times 2^k \text{ otherwise}\end{cases}$
+  \begin{equation*}
+  \roundtonearestinfty(x, k) = \begin{cases}\floor{x/2^k + 1/2} \times 2^k \text{ if } x \geq 0\\ \\ \ceil{x/2^k - 1/2}\times 2^k \text{ otherwise}\end{cases}
+  \end{equation*}
 
   $\roundtonearestinfty(x, 2^k)$ rounds $x$ to the nearest multiple of $2^k$, breaking ties away from 0.
 
@@ -64,136 +66,137 @@
 \section{The Indexed Type}
   \subsection{Representation}
     The \textbf{indexed type} is used to represent the intermediate result of accumulation using Algorithms 6 and $7$ in \cite{repsum}.
-    An indexed type $Y$ is a data structure composed of several accumulator data structures $Y_0, ..., Y_{fold - 1}$. The number of accumulators in an indexed type is referred to as its \textbf{fold}. Due to their wild inaccuracy, indexed types of fold 1 are not considered.
+    An indexed type $Y$ is a data structure composed of several accumulator data structures $Y_0, ..., Y_{fold - 1}$. The number of accumulators in an indexed type is referred to as its \textbf{fold}. Due to their low accuracy, indexed types of fold 1 are not considered.
 
-    Let $Y$ be the indexed type corresponding to the reproducibly computed sum of $x_0, ..., x_{n - 1} \in F$.
-    Each accumulator $Y_j$ accumulates input in a \textbf{bin} $(a_j, b_j], a < b \in \Z$. The real number value $\mathcal{Y}_j$ represented by an accumulator data structure $Y_j$ is the sum of all input that can be expressed using bits with values $2^e, e \in (a_j, b_j]$. Specifically, $Y_j = \sum\limits_{k = 0}^{n - 1}d(x_k, a_j, b_j)$ where
+    Let $Y$ be the indexed type corresponding to the reproducibly computed sum of $x_0, ..., x_{n - 1} \in \F$.
+    Each accumulator $Y_j$ accumulates input in some \textbf{bin} $(a_{I + j}, b_{I + j}], a_{I + j} < b_{I + j} \in \Z$ where $I$ is the \textbf{index} of $Y$. The \textbf{width} of an indexed type is equal to the width of its bins, ($b_{I + j} - a_{I + j}$). The real number value $\mathcal{Y}_j$ represented by an accumulator data structure $Y_j$ is the sum of all input that can be expressed using bits with values $2^e, e \in (a_{I + j}, b_{I + j}]$. Specifically, $\mathcal{Y}_j = \sum\limits_{k = 0}^{n - 1}d(x_k, a_{I + j}, b_{I + j})$. $d(x, a, b)$ is defined in equation \ref{eq:bin}.
 
-    $d(x, a, b) = \begin{cases}\roundtonearestinfty(x - \roundtonearestinfty(x, 2 \times 2^b), 2 \times 2^a) \text{ if } |x| \geq 2^b \\ \roundtonearestinfty(x, 2 \times 2^a) \text{ if } 2^b > |x| \geq 2^a \\ 0 \text{ if } 2^a > |x| \end{cases}$
+    \begin{equation}
+    \label{eq:bin}
+    d(x, a, b) = \begin{cases}\roundtonearestinfty(x - \roundtonearestinfty(x, b + 1, a + 1) \text{ if } |x| \geq 2^b \\ \roundtonearestinfty(x, a + 1) \text{ if } 2^b > |x| \geq 2^a \\ 0 \text{ if } 2^a > |x| \end{cases}
+    \end{equation}
 
-    For ease of computation, accumulator ranges are chosen to be precomputed, fixed width intervals starting at $e_{\max}$. The possible bins
+    For ease of computation, accumulator ranges are chosen to be precomputed, fixed width intervals starting at $e_{\max}$. The possible bins $(a_0, b_0], (a_1, b_1], ...$ for an indexed type of width $W$ are
 
-    $(a_0, b_0],$
+    \begin{equation*}
+    (e_{\max} + 1 - (i + 1)\times W, e_{\max} + 1 - i \times W], 0 \leq i < (e_{\max} - e_{\min} + p - 1)/W
+    \end{equation*}
 
-    $(a_1, b_1],$
+    We use $i < (e_{\max} - e_{\min} + p - 1)/W$ to ensure that $a_i > e_{\min} - p + 1$ as discussed in section \ref{sec:underflow}. This means that the largest bin is
 
-    $\vdots$
+    \begin{equation*}
+    (e_{\max} + 1 - W, e_{\max} + 1]
+    \end{equation*}
 
-    for an indexed type of \textbf{width} $W$ are
+    and the smallest bin is
 
-    $(e_{\max} + 1 - W, e_{\max} + 1],$
-
-    $(e_{\max} + 1 - 2\times W, e_{\max} + 1 - W],$
-
-    $\vdots$
-
-    $(e_{\min} - p + 1 + (e_{\max} - e_{\min} + p \mod W),$
-
-    \indent \indent $e_{\min} - p + 1 + W + (e_{\max} - e_{\min} + p \mod W)]$.
+    \begin{equation*}
+    (e_{\min} - p + 2 + ((e_{\max} - e_{\min} + p - 1)\mod W),
+    e_{\min} - p + 2 + W + ((e_{\max} - e_{\min} + p - 1)\mod W)]
+    \end{equation*}
 
     Section \ref{sec:underflow} explains why input in the bin
 
-    $(e_{\min} - p, e_{\min} - p + 1 + (e_{\max} - e_{\min} + p \mod W)]$
+    \begin{equation*}
+    (e_{\min} - p, e_{\min} - p + 2 + ((e_{\max} - e_{\min} + p - 1) \mod W)]
+    \end{equation*}
 
     is not accumulated.
 
     As discussed in \cite{repsum}, $W < p - 2$. As discussed in section \ref{sec:overflow}, $2\times W > p + 1$.
 
-    The accumulators in an indexed type correspond to contiguous bins in decreasing order. The \textbf{index} of $Y$ is the smallest $I \in \Z$ such that $2^{b_I + 1} > \max(|x_0|, ..., |x_n|)$ (equivalently, the smallest $I \in \Z$ such that $b_I \geq \max{e_0, ..., e_n}$). If $Y$ has index $I$, then $Y_j, j \in \{0, ..., fold - 1\}$ accumulates numbers in the bin $(a_{I + j}, b_{I + j}]$.
+    The accumulators in an indexed type correspond to contiguous bins in decreasing order. The index of $Y$ is defined as the smallest $I \in \Z$ such that $2^{b_I + 1} > \max(|x_0|, ..., |x_n|)$ (equivalently, the smallest $I \in \Z$ such that $b_I > \max(e_0, ..., e_n)$). If $Y$ has index $I$, then $Y_j, j \in \{0, ..., fold - 1\}$ accumulates numbers in the bin $(a_{I + j}, b_{I + j}]$.
 
   \subsection{Implementation}
     \subsubsection{Data Types}
-      As discussed in \cite{repsum}, indexed types are represented using floating point numbers to minimize traffic between floating point and integer arithmetic units. If an indexed type is used to sum \verb|double|, then it is composed entirely of \verb|double| and likewise for \verb|float|. ReproBLAS supports complex types as pairs of real and imaginary components (stored contiguously in memory). If an indexed type is used to sum complex \verb|double| or \verb|float|, then it is composed of pairs of real and imaginary \verb|double| or \verb|float| respectively. The decision to keep the real and imaginary components together (as opposed to keeping separate indexed types for real and imaginary parts of the sum) was motivated by a desire to process accumulators simultaneously with vectorized (SIMD, single instruction multiple data) instructions.
+      As discussed in \cite{repsum}, indexed types are represented using floating point numbers to minimize traffic between floating point and integer arithmetic units. If an indexed type is used to sum \verb|doubles|, then it is composed entirely of \verb|doubles| and likewise for \verb|floats|. ReproBLAS supports complex types as pairs of real and imaginary components (stored contiguously in memory). If an indexed type is used to sum complex \verb|doubles| or \verb|floats|, then it is composed of pairs of real and imaginary \verb|doubles| or \verb|floats| respectively. The decision to keep the real and imaginary components together (as opposed to keeping separate indexed types for real and imaginary parts of the sum) was motivated by a desire to process accumulators simultaneously with vectorized (SIMD) instructions.
 
     \subsubsection{Primary and Carry}
-      An indexed type's accumulators are each implemented using two underlying floating point fields. The \textbf{primary} field is used during accumulation, while the \textbf{carry} field holds overflow from the primary field. We denote the primary field and carry field of the accumulator $Y_j$ by ${Y_j}_S$ and ${Y_j}_C$. Because primary fields are frequently accessed sequentially, the primary fields and carry fields are each stored contiguously in separate arrays.
+      The accumulators $Y_j$ of an indexed type $Y$ are each implemented using two underlying floating point fields. The \textbf{primary} field ${Y_j}_P$ is used during accumulation, while the \textbf{carry} field ${Y_j}_C$ holds overflow from the primary field. Because primary fields are frequently accessed sequentially, the primary fields and carry fields are each stored contiguously in separate arrays. Note that the notation for the primary field ${Y_j}_P$ and carry field ${Y_j}_C$ corresponds to the $S_k$ and $C_k$ of algorithm $6$ in \cite{repsum}.
 
-      The value ${\mathcal{Y}_j}_S$ is stored in the primary field ${Y_j}_S$ as an offset from $1.5\times \epsilon^{-1} \times 2^{a_{I + j}}$. This greatly simplifies the process of extracting the components of the input belonging in bin $(a_{I + j}, b_{I + j}]$.
-      The value ${\mathcal{Y}_j}_S$ stored in the primary field ${Y_j}_S$ is expressed in Equation \ref{eq:pri}
-      \begin{eq} The value ${\mathcal{Y}_j}_S$ stored in the primary field ${Y_j}_S$ of an indexed type $Y$ of index $I$
-
-        ${\mathcal{Y}_j}_S = {Y_j}_S - 1.5\times\epsilon^{-1}\times2^{a_{I + j}}$
+      The value ${\mathcal{Y}_j}_P$ is stored in the primary field ${Y_j}_P$ as an offset from $1.5\times \epsilon^{-1} \times 2^{a_{I + j}}$ (corresponding to $M_{[i]}$ at the beginning of section IV.A. in \cite{repsum}). This greatly simplifies the process of extracting the components of the input belonging in bin $(a_{I + j}, b_{I + j}]$.
+      The value ${\mathcal{Y}_j}_P$ stored in the primary field ${Y_j}_P$ of an indexed type $Y$ of index $I$ is expressed in Equation \ref{eq:pri}
+      \begin{equation}
+        {\mathcal{Y}_j}_P = {Y_j}_P - 1.5\times\epsilon^{-1}\times2^{a_{I + j}}
         \label{eq:pri}
-      \end{eq}
-      As discussed in \cite{repsum}, if we store each primary value ${\mathcal{Y}_j}_S$ as an offset from $1.5 \times \epsilon^{-1} \times 2^{a_{I + j}}$ and keep ${Y_j}_S$ within the range $(\epsilon^{-1} \times 2^{a_{I + j}}, 2 \times \epsilon^{-1} \times 2^{a_{I + j}})$, Algorithm \ref{alg:deposit} extracts the components of $x$ belonging to bins $(a_I, b_I], ..., (a_{I + fold - 1}, b_{I + fold - 1}]$ and adds them to ${Y_0}_S, ..., {Y_{fold - 1}}_S$ without error (and hence reproducibly) for all $x \in \F, |x| < 2^{b_I}$.
+      \end{equation}
+      As discussed in \cite{repsum}, if we store each primary value ${\mathcal{Y}_j}_P$ as an offset from $1.5 \times \epsilon^{-1} \times 2^{a_{I + j}}$ and keep ${Y_j}_P$ within the range $(\epsilon^{-1} \times 2^{a_{I + j}}, 2 \times \epsilon^{-1} \times 2^{a_{I + j}})$, Algorithm \ref{alg:deposit} extracts the components of $x$ belonging to bins $(a_I, b_I], ..., (a_{I + fold - 1}, b_{I + fold - 1}]$ and adds them to ${Y_0}_P, ..., {Y_{fold - 1}}_P$ without error (and hence reproducibly) for all $x \in \F, |x| < 2^{b_I}$.
       \begin{alg}
         Extract components of floating point $x \in \F, |x| < 2^{b_I}$ in bins $(a_I, b_I], ..., (a_{I + fold - 1}, b_{I + fold - 1}]$ and add to indexed $Y$. Here, $(r | 1)$ represents the result of setting the last bit of the mantissa ($m_{p - 1}$) of floating-point $r$ to 1.
         \begin{algorithmic}
           \Function{Deposit}{fold, x, Y}
             \State $r \gets x$
             \For{$j = 0 \to (fold - 2)$}
-              \State $M \gets {Y_j}_S + (r | 1)$
-              \State $q \gets M - {Y_j}_S$
-              \State ${Y_j}_S \gets M$
+              \State $S \gets {Y_j}_P + (r | 1)$
+              \State $q \gets S - {Y_j}_P$
+              \State ${Y_j}_P \gets S$
               \State $r \gets r - q$
             \EndFor
-            \State ${Y_{fold - 1}}_S \gets {Y_{fold - 1}}_S + (r | 1)$
+            \State ${Y_{fold - 1}}_P \gets {Y_{fold - 1}}_P + (r | 1)$
           \EndFunction
         \end{algorithmic}
         \label{alg:deposit}
       \end{alg}
-      The last bit of $r$ is set to break ties when rounding "to nearest even" such that the amount accumulated does not depend on the size of ${Y_I}_S$ so far and the same amount ($d(x, a_{I + j}, b_{I + j})$) is always correctly deposited in each of $Y$'s primary fields assuming the value in each field satisfies previously specified constraints. Because $d(x, a_{I + j}, b_{I + j}) = 0$ for bins that are larger than the input, the top $fold$ accumulators can be computed reproducibly by computing the values in the top $fold$ accumulators needed for the largest $x$ seen so far and shifting them upwards (towards index $0$) as necessary. \cite{repsum} contains further discussions of the reproducibility of the algorithm.
-      It is worth noting here that due to Corollary $3$ in \cite{repsum}, $|r| \leq 2^{b_{I + j}}$ when adding $(r | 1)$ to ${Y_j}_S$.
+      The last bit of $r$ is set to break ties when rounding "to nearest even" such that the amount accumulated does not depend on the size of ${Y_I}_P$ so far and the same amount ($d(x, a_{I + j}, b_{I + j})$) is always correctly deposited in each of $Y$'s primary fields assuming the value in each field satisfies previously specified constraints. Because $d(x, a_{I + j}, b_{I + j}) = 0$ for bins that are larger than the input, the top $fold$ accumulators can be computed reproducibly by computing the values in the top $fold$ accumulators needed for the largest $x$ seen so far and shifting them upwards (towards index $0$) as necessary. \cite{repsum} contains further discussions of the reproducibility of the algorithm.
+      It is worth noting here that due to Corollary $3$ in \cite{repsum}, $|r| \leq 2^{b_{I + j}}$ when adding $(r | 1)$ to ${Y_j}_P$.
 
-      In order to keep the primary fields in the necessary range during a deposit operation and to keep the representation of $Y_j$ unique, ${Y_j}_S$ is routinely renormalized to the range $[1.5 \times\epsilon^{-1} \times 2^{a_{I + j}}, 1.75 \times\epsilon^{-1} \times 2^{a_{I + j}})$.
-      To renormalize, ${Y_j}_S$ is adjusted by $0.25 \times\epsilon^{-1} \times 2^{a_{I + j}}$ when necessary, leaving the carry field ${Y_j}_C$ to record the number of such adjustments.
-      The value ${\mathcal{Y}_j}_C$ stored in the carry field ${Y_j}_C$ is expressed in Equation \ref{eq:car}
-      \begin{eq} The value ${\mathcal{Y}_j}_C$ stored in the carry field ${Y_j}_C$ of an indexed type $Y$ of index $I$
-
-        ${\mathcal{Y}_j}_C = {Y_j}_C \times 0.25\times\epsilon^{-1}\times2^{a_{I + j}}$
+      In order to keep the primary fields in the necessary range during a deposit operation and to keep the representation of $Y_j$ unique, ${Y_j}_P$ is routinely renormalized to the range $[1.5 \times\epsilon^{-1} \times 2^{a_{I + j}}, 1.75 \times\epsilon^{-1} \times 2^{a_{I + j}})$.
+      To renormalize, ${Y_j}_P$ is adjusted by $0.25 \times\epsilon^{-1} \times 2^{a_{I + j}}$ when necessary, leaving the carry field ${Y_j}_C$ to record the number of such adjustments.
+      The value ${\mathcal{Y}_j}_C$ stored in the carry field ${Y_j}_C$ of an indexed type $Y$ of index $I$ is expressed in Equation \ref{eq:car}
+      \begin{equation}
+        {\mathcal{Y}_j}_C = {Y_j}_C \times 0.25\times\epsilon^{-1}\times2^{a_{I + j}}
         \label{eq:car}
-      \end{eq}
-      The value $\mathcal{Y}_j$ stored in the accumulator $Y_j$ is expressed in Equation \ref{eq:acc}
-      \begin{eq} The value $\mathcal{Y}_j$ stored in the accumulator $Y_j$ of an indexed type $Y$ of index $I$
-
-        $\mathcal{Y}_j = {\mathcal{Y}_j}_S + {\mathcal{Y}_j}_C = ({Y_j}_S - 1.5 \times\epsilon^{-1}\times 2^{a_{I + j}}) + {Y_j}_C \times 0.25\times\epsilon^{-1}\times2^{a_{I + j}}$
+      \end{equation}
+      The value $\mathcal{Y}_j$ stored in the accumulator $Y_j$ of an indexed type $Y$ of index $I$ is expressed in Equation \ref{eq:acc}
+      \begin{equation}
+        \mathcal{Y}_j = {\mathcal{Y}_j}_P + {\mathcal{Y}_j}_C = ({Y_j}_P - 1.5 \times\epsilon^{-1}\times 2^{a_{I + j}}) + {Y_j}_C \times 0.25\times\epsilon^{-1}\times2^{a_{I + j}}
         \label{eq:acc}
-      \end{eq}
+      \end{equation}
       Therefore the value $\mathcal{Y}$ represented by an indexed type $Y$ of index $I$ and fold $fold$ (the sum of $Y$'s accumulators) can be expressed as in Equation \ref{eq:indexedvalue}.
-      \begin{eq} The real value $y \in \R$ of an indexed type $Y$ of index $I$
-
-        $y = \sum\limits_{j = 0}^{fold - 1} \mathcal{Y}_j = \sum\limits_{j = 0}^{fold - 1} ({Y_j}_S - 1.5 \times\epsilon^{-1}\times 2^{a_{I + j}}) + {Y_j}_C \times 0.25\times\epsilon^{-1}\times2^{a_{I + j}}$
+      \begin{equation}
+        y = \sum\limits_{j = 0}^{fold - 1} \mathcal{Y}_j = \sum\limits_{j = 0}^{fold - 1} ({Y_j}_P - 1.5 \times\epsilon^{-1}\times 2^{a_{I + j}}) + {Y_j}_C \times 0.25\times\epsilon^{-1}\times2^{a_{I + j}}
         \label{eq:indexedvalue}
-      \end{eq}
-      It is worth noting here that because the primary field ${Y_0}_S$ is stored with an exponent of $a_I + p$, it is unnecessary to store the index of an indexed type explicitly. The index can be determined by simply examining the exponent of ${Y_0}_S$, as all $a_I$ are distinct and the mapping between the exponent of ${Y_0}_S$ and the index of $Y$ is bijective.
+      \end{equation}
+      It is worth noting here that because the primary field ${Y_0}_P$ is stored with an exponent of $a_I + p$, it is unnecessary to store the index of an indexed type explicitly. The index can be determined by simply examining the exponent of ${Y_0}_P$, as all $a_I$ are distinct and the mapping between the exponent of ${Y_0}_P$ and the index of $Y$ is bijective.
 
     \subsubsection{Overflow}
       \label{sec:overflow}
-      If an indexed type $Y$ has index 0 and the width is $W$, then the value in the primary field ${Y_0}_S$ is stored as an offset from $1.5\times\epsilon^{-1}\times2^{e_{\max} + 1 - W}$. However, $1.5\times\epsilon^{-1}\times2^{e_{\max} + 1 - W} = 1.5 \times 2^{e_{\max} + 1 + (p - W)} > 2 \times 2^{e_{\max}}$ since $W < p - 2$ \cite{repsum}, so it is out of the range of the floating-point system and not representable. Before discussing the solution to this overflow problem, take note of Theorem \ref{thm:overflow}.
+      If an indexed type $Y$ has index 0 and the width is $W$, then the value in the primary field ${Y_0}_P$ is stored as an offset from $1.5\times\epsilon^{-1}\times2^{e_{\max} + 1 - W}$. However, $1.5\times\epsilon^{-1}\times2^{e_{\max} + 1 - W} = 1.5 \times 2^{e_{\max} + 1 + (p - W)} > 2 \times 2^{e_{\max}}$ since $W < p - 2$ \cite{repsum}, so it is out of the range of the floating-point system and not representable. Before discussing the solution to this overflow problem, take note of Theorem \ref{thm:overflow}.
       \begin{thm}
-        If $2\times W > p + 1$, then for any indexed type $Y$ of index $I$ and any ${Y_j}_S$ such that $I + j \geq 1$, $|{Y_j}_S| < 2^{e_{\max}}$.
+        If $2\times W > p + 1$, then for any indexed type $Y$ of index $I$ and any ${Y_j}_P$ such that $I + j \geq 1$, $|{Y_j}_P| < 2^{e_{\max}}$.
 
         $a_1 = e_{\max} + 1 - 2\times W$ by definition, therefore $a_1 < e_{\max} - p$ and since all quantities are integers, $a_1 \leq e_{\max} - p - 1$. As $a_0, a_1, ...$ is a positive decreasing sequence, $a_{I + j} \leq e_{\max} - p - 1$ since $I + j \geq 1$.
 
-        ${Y_j}_S$ is kept within the range $(\epsilon^{-1} \times 2^{a_{I + j}}, 2 \times \epsilon^{-1} \times 2^{a_{I + j}})$, therefore
-        $|{Y_j}_S| < 2 \times \epsilon^{-1} \times 2^{a_{I + j}} \leq 2^{1 + p} \times 2^{e_{\max} - 1 - p} = 2^{e_{\max}}$.
+        ${Y_j}_P$ is kept within the range $(\epsilon^{-1} \times 2^{a_{I + j}}, 2 \times \epsilon^{-1} \times 2^{a_{I + j}})$, therefore
+        \begin{equation*}
+        |{Y_j}_P| < 2 \times \epsilon^{-1} \times 2^{a_{I + j}} \leq 2^{1 + p} \times 2^{e_{\max} - 1 - p} = 2^{e_{\max}}
+        \end{equation*}
 
         \label{thm:overflow}
       \end{thm}
-      By Theorem \ref{thm:overflow}, if $2\times W > p + 1$ then the only primary field that could possibly be in overflow is a primary field corresponding to bin 0, and all other primary fields have exponent less than $e_{\max}$. Therefore, we impose $2\times W > p + 1$ and express the value of the primary field corresponding to bin 0 as a scaled offset from $1.5\times2^{e_{\max}}$. Note that this preserves uniqueness of the exponent of the primary field corresponding to bin 0 because no other primary field has an exponent of $e_{\max}$. The value ${\mathcal{Y}_0}_S$ stored in the primary field ${Y_0}_S$ is expressed in Equation \ref{eq:pri0}.
-      \begin{eq} The value ${\mathcal{Y}_0}_S$ stored in the primary field ${Y_0}_S$ of an indexed type $Y$ of index 0.
-
-        ${\mathcal{Y}_0}_S = 2^{p - W + 1}\times({Y_0}_S - 1.5\times2^{e_{\max}})$
+      By Theorem \ref{thm:overflow}, if $2\times W > p + 1$ then the only primary field that could possibly be in overflow is a primary field corresponding to bin 0, and all other primary fields have exponent less than $e_{\max}$. Therefore, we impose $2\times W > p + 1$ and express the value of the primary field corresponding to bin 0 as a scaled offset from $1.5\times2^{e_{\max}}$. Note that this preserves uniqueness of the exponent of the primary field corresponding to bin 0 because no other primary field has an exponent of $e_{\max}$. The value ${\mathcal{Y}_0}_P$ stored in the primary field ${Y_0}_P$ of an indexed type $Y$ of index 0 is expressed in Equation \ref{eq:pri0}.
+      \begin{equation}
+        {\mathcal{Y}_0}_P = 2^{p - W + 1}\times({Y_0}_P - 1.5\times2^{e_{\max}})
         \label{eq:pri0}
-      \end{eq}
-      Of course, what remains to be seen is how we can extract and add (as in Algorithm \ref{alg:deposit}) the components of a floating point number to an indexed type $Y$ of index 0. Algorithm \ref{alg:deposit0} shows the adaptation of Algorithm $\ref{alg:deposit}$ for types of index 0. Note that all of the same assumptions must hold from \ref{alg:deposit} except that ${Y_0}_S$ must now be kept within the range $(2^{e_{\max}}, 2 \times 2^{e_{\max}})$.
+      \end{equation}
+      Of course, what remains to be seen is how we can extract and add (as in Algorithm \ref{alg:deposit}) the components of a floating point number to an indexed type $Y$ of index 0. Algorithm \ref{alg:deposit0} shows the adaptation of Algorithm $\ref{alg:deposit}$ for types of index 0. Note that all of the same assumptions must hold from \ref{alg:deposit} except that ${Y_0}_P$ must now be kept within the range $(2^{e_{\max}}, 2 \times 2^{e_{\max}})$.
       \begin{alg}
         Extract components of floating point $x$ in bins $(a_0, b_0], ..., (a_{fold - 1}, b_{fold - 1}]$ and add to indexed $Y$ of index 0. Here, $(r | 1)$ represents the result of setting the last bit of the mantissa ($m_{p - 1}$) of floating-point $r$ to 1.
         \begin{algorithmic}
           \Function{Deposit0}{fold, x, Y}
             \State $r \gets x / 2^{p - W + 1}$
-            \State $M \gets {Y_0}_S + (r | 1)$
-            \State $q \gets M - {Y_0}_S$
-            \State ${Y_0}_S \gets M$
+            \State $S \gets {Y_0}_P + (r | 1)$
+            \State $q \gets S - {Y_0}_P$
+            \State ${Y_0}_P \gets S$
             \State $q \gets q \times 2^{p - W + 1}$
             \State $r \gets x - q$
             \For{$j = 1 \to (fold - 2)$}
-              \State $M \gets {Y_j}_S + (r | 1)$
-              \State $q \gets M - {Y_j}_S$
-              \State ${Y_j}_S \gets M$
+              \State $S \gets {Y_j}_P + (r | 1)$
+              \State $q \gets S - {Y_j}_P$
+              \State ${Y_j}_P \gets S$
               \State $r \gets r - q$
             \EndFor
-            \State ${Y_{fold - 1}}_S \gets {Y_{fold - 1}}_S + (r | 1)$
+            \State ${Y_{fold - 1}}_P \gets {Y_{fold - 1}}_P + (r | 1)$
           \EndFunction
         \end{algorithmic}
         \label{alg:deposit0}
@@ -201,63 +204,78 @@
 
       Algorithm \ref{alg:deposit0} has a few key features worth pointing out. First, since $|x| < 2^{e_{\max} + 1}$, then the value of $r$ after it's first assignment satisfies $|r| < 2^{e_{\max} - p + W + 1}$. This shows both that the extraction of the top bin will work correctly and that the top bin is the largest bin necessary to deposit any finite $x \in \F$.
       Furthermore, since $x$ is scaled by a factor of two, the significand of $r$ is equal to that of $x$.
-      Therefore, the component of $r$ belonging to the bin $(e_{\max} - p, e_{\max} - p + W]$ is equivalent to the component of $x$ belonging to the bin $(e_{\max} + 1 - W, e_{\max} + 1]$ scaled by $2^{p - W + 1}$. This component of $r$ is extracted, stored in q, and added to ${Y_0}_S$. We can therefore scale this component by $2^{p - W + 1}$ to obtain the component of $x$ belonging to the bin $(e_{\max} + 1 - W, e_{\max} + 1]$. As $x$ is representable, so is this component. We can then subtract this component from $x$ and continue as in Algorithm \ref{alg:deposit}.
+      Therefore, the component of $r$ belonging to the bin $(e_{\max} - p, e_{\max} - p + W]$ is equivalent to the component of $x$ belonging to the bin $(e_{\max} + 1 - W, e_{\max} + 1]$ scaled by $2^{p - W + 1}$. This component of $r$ is extracted, stored in q, and added to ${Y_0}_P$. We can therefore scale this component by $2^{p - W + 1}$ to obtain the component of $x$ belonging to the bin $(e_{\max} + 1 - W, e_{\max} + 1]$. As $x$ is representable, so is this component. We can then subtract this component from $x$ and continue as in Algorithm \ref{alg:deposit}.
 
       Notice that after the first extraction, we cannot simply subtract $q$ from $r$ and then scale $r$ up and continue, as there may have been underflow when scaling $x$ down. We must scale $q$ up and subtract it from the original $x$.
 
     \subsubsection{Underflow}
       \label{sec:underflow}
-      Here we consider the effects of underflow on algorithms described in \cite{repsum} and how they can be avoided. In Algorithm \ref{alg:deposit}, when the last bit of $r$ is set to 1, it is assumed that this last bit will only serve to fix the direction of the rounding mode. However, if ${Y_j}_S$ is denormal, that last bit may very well be accumulated!
+      Here we consider the effects of underflow on algorithms described in \cite{repsum} and how they can be avoided. In Algorithm \ref{alg:deposit}, when the last bit of $r$ is set to 1, it is assumed that this last bit will only serve to fix the direction of the rounding mode. However, if ${Y_j}_P$ is denormal, that last bit may very well be accumulated!
 
-      For Algorithm \ref{alg:deposit} to work correctly when adding $r | 1$ to ${Y_j}_S$, $\ulp(r)$ must be less than half of the rounding error when adding a number to ${Y_j}_S$. Mathematically, $\ulp(r) < \ulp({Y_j}_S)/2$.
-      If $r$ is a normalized number, then because $|r| \leq 2^{b_{I + j}} = \ufp({Y_j}_S)/2^{p - W}$, and $W < p - 2$, we have $\ulp(r) < \ulp({Y_j}_S)/2$. Therefore, it is only possible for $\ulp(r) \geq \ulp({Y_j}_S)/2$ if $r$ is denormalized.
+      For Algorithm \ref{alg:deposit} to work correctly when adding $r | 1$ to ${Y_j}_P$, $\ulp(r)$ must be less than half of the rounding error when adding a number to ${Y_j}_P$. Mathematically, $\ulp(r) < \ulp({Y_j}_P)/2$.
 
-      The unit in the last place of a denormalized number is always equal to $2^{e_{\min} - p + 1}$. Therefore, $\ulp(r) < \ulp({Y_j}_S)/2$ implies $e_{\min} - p + 1 < a$. The smallest bin is
+      We can show $\ulp(r) < \ulp({Y_j}_P)/2$ by examining the cases where $r$ is either normalized or denormalized.
 
-      $(e_{\min} - p + 1 + (e_{\max} - e_{\min} + p \mod W),$
+      If $r$ is normalized, then because $|r| \leq 2^{b_{I + j}} = \ufp({Y_j}_P)/2^{p - W}$, and $W < p - 2$, we have $\ulp(r) < \ulp({Y_j}_P)/2$.
 
-      \indent \indent $e_{\min} - p + 1 + W + (e_{\max} - e_{\min} + p \mod W)]$.
+      If $r$ is denormalized, $\ulp(r) = 2^{e_{\min} - p + 1}$ since the unit in the last place of a denormalized number is always equal to $2^{e_{\min} - p + 1}$.
 
-      and since
+      The smallest bin is
 
-      $e_{\min} - p + 1 + (e_{\max} - e_{\min} + p \mod W) > e_{\min} - p + 1$,
+      \begin{equation*}
+      (e_{\min} - p + 2 + ((e_{\max} - e_{\min} + p - 1 ) \mod W), e_{\min} - p + 2 + W + ((e_{\max} - e_{\min} + p - 1)\mod W)]
+      \end{equation*}
 
-      deposits on the smallest bin and all larger bins satisfy $\ulp(r) < \ulp({Y_j}_S)/2$ and are exact.
+      Because ${Y_j}_P \in (\epsilon \times a_{I + j}, 2 \times \epsilon \times a_{I + j})$ and
+
+      \begin{equation*}
+      e_{\min} - p + 2 + ((e_{\max} - e_{\min} + p- 1) \mod W) > e_{\min} - p + 1
+      \end{equation*}
+
+      ${Y_j}_P$ is normalized and the unit in the last place of ${Y_j}_P$ is $a_{I + j} > e_{\min} - p + 1$.
+
+        Therefore, $\ulp(r) < \ulp({Y_j}_P)/2$ and deposits on the smallest bin and all larger bins satisfy $\ulp(r) < \ulp({Y_j}_P)/2$ and are exact.
 
       Since $W < p - 2$,
 
-      $e_{\min} - p + 1 + (e_{\max} - e_{\min} + p \mod W) < e_{\min} - 1$.
+      \begin{equation*}
+      e_{\min} - p + 2 + ((e_{\max} - e_{\min} + p - 2)\mod W) < e_{\min}
+      \end{equation*}
 
       Therefore, all input in the bin $(e_{\min} - 1, e_{\max} + 1]$ is deposited.
 
       There are several ways to deposit the input in the denormal range. One simple way the algorithm could be extended to denormal inputs would be to scale the bottom bins up, as was done to handle overflow. Due to the relatively low priority for accumulating denormal values, these methods were not implemented.
 
     \subsubsection{Exceptions}
-      Indexed types are capable of representing exceptional cases such as \verb|NaN| (Not a Number) and \verb|Inf| (Infinity). An indexed type $Y$ stores it's exception status in it's first primary field ${Y_0}_S$.
+      Indexed types are capable of representing exceptional cases such as \verb|NaN| (Not a Number) and \verb|Inf| (Infinity). An indexed type $Y$ stores it's exception status in it's first primary field ${Y_0}_P$.
 
-      A value of $0$ in ${Y_0}_S$ indicates that nothing has been added to ${Y_0}_S$ yet. The smallest bin is
+      A value of $0$ in ${Y_0}_P$ indicates that nothing has been added to ${Y_0}_P$ yet. The smallest bin is
 
-      $(e_{\min} - p + 1 + (e_{\max} - e_{\min} + p \mod W),$
+      The smallest bin is
 
-      \indent \indent $e_{\min} - p + 1 + W + (e_{\max} - e_{\min} + p \mod W)]$
+      \begin{equation*}
+      (e_{\min} - p + 2 + ((e_{\max} - e_{\min} + p - 1 ) \mod W), e_{\min} - p + 2 + W + ((e_{\max} - e_{\min} + p - 1)\mod W)]
+      \end{equation*}
 
-      and since the ${Y_j}_S$ are kept within the range $(\epsilon^{-1} \times 2^{a_{I + j}}, 2 \times \epsilon^{-1} \times 2^{a_{I + j}})$ (where $I$ is the index), the smallest possible ${Y_j}_S$ is
+      and since the ${Y_j}_P$ are kept within the range $(\epsilon^{-1} \times 2^{a_{I + j}}, 2 \times \epsilon^{-1} \times 2^{a_{I + j}})$ (where $I$ is the index), the smallest possible ${Y_j}_P$ is
 
-      $\epsilon^{-1} \times 2^{e_{\min} - p + 1 + (e_{\max} - e_{\min} + p \mod W)} > 2^{e_{\min} + 1}$.
+      \begin{equation*}
+      \epsilon^{-1} \times 2^{e_{\min} - p + 2 + ((e_{\max} - e_{\min} + p - 1)\mod W)} > 2^{e_{\min}}
+      \end{equation*}
 
-      Therefore $0$ is previously unused in other contexts and is a valid sentinel value. (As the exponent of $0$ is distinct from the exponent of normalized values, the bijection between the index of an indexed type $Y$ and the exponent of ${Y_0}_S$ is preserved)
+      Therefore $0$ is a previously unused value in primary fields and is a valid sentinel value. (As the exponent of $0$ is distinct from the exponent of normalized values, the bijection between the index of an indexed type $Y$ and the exponent of ${Y_0}_P$ is preserved)
 
-      A value of \verb|Inf| or \verb|-Inf| in ${Y_0}_S$ indicates that one or more \verb|Inf| or \verb|-Inf| (and no other exceptional values) have been added to $Y$ respectively.
+      A value of \verb|Inf| or \verb|-Inf| in ${Y_0}_P$ indicates that one or more \verb|Inf| or \verb|-Inf| (and no other exceptional values) have been added to $Y$ respectively.
 
-      A value of \verb|NaN| in ${Y_0}_S$ indicates that one or more \verb|NaN| have been added to $Y$ or one or more of both \verb|Inf| and \verb|-Inf| have been added to $Y$.
+      A value of \verb|NaN| in ${Y_0}_P$ indicates that one or more \verb|NaN| have been added to $Y$ or one or more of both \verb|Inf| and \verb|-Inf| have been added to $Y$.
 
-      As the ${Y_j}_S$ are kept finite to store finite values, \verb|Inf|, \verb|-Inf|, and \verb|NaN| are previously unused in other contexts and are valid sentinel values. (As the exponent of \verb|Inf|, \verb|-Inf|, and \verb|NaN| is distinct from the exponent of finite values, the bijection between the index of an indexed type $Y$ and the exponent of ${Y_0}_S$ is preserved)
+      As the ${Y_j}_P$ are kept finite to store finite values, \verb|Inf|, \verb|-Inf|, and \verb|NaN| are previously unused in other contexts and are valid sentinel values. (As the exponent of \verb|Inf|, \verb|-Inf|, and \verb|NaN| is distinct from the exponent of finite values, the bijection between the index of an indexed type $Y$ and the exponent of ${Y_0}_P$ is preserved)
 
-      This behavior follows the behavior for exceptional values in IEEE 754-2008 floating point arithmetic and is therefore easy to implement. At the beginning of \ref{alg:deposit}, we may simply check $x$ and ${Y_0}_S$ for the exceptional values \verb|Inf|, \verb|-Inf|, and \verb|NaN|. If any one of $x$ or ${Y_0}_S$ is indeed exceptional, we add $x$ to the (possibly finite) ${Y_0}_S$. Otherwise, we deposit the finite value normally.
+      This behavior follows the behavior for exceptional values in IEEE 754-2008 floating point arithmetic and is therefore easy to implement. At the beginning of \ref{alg:deposit}, we may simply check $x$ and ${Y_0}_P$ for the exceptional values \verb|Inf|, \verb|-Inf|, and \verb|NaN|. If any one of $x$ or ${Y_0}_P$ is indeed exceptional, we add $x$ to the (possibly finite) ${Y_0}_P$. Otherwise, we deposit the finite value normally.
 
       As \verb|Inf|, \verb|-Inf|, and \verb|NaN| add associatively, this behavior is reproducible.
 
-      It should be noted here that it is very much possible to achieve a final result of \verb|Inf| or \verb|-Inf| when ${Y_0}_S$ is finite. This is due to the fact that the indexed representation can express values outside of the range of the floating point numbers that it is composed with. More specifically, it is very much possible for the value $y$ represented by the indexed type $Y$ to satisfy $|y| \geq 2 \times 2^{e_{\max}}$.
+      It should be noted here that it is very much possible to achieve a final result of \verb|Inf| or \verb|-Inf| when ${Y_0}_P$ is finite. This is due to the fact that the indexed representation can express values outside of the range of the floating point numbers that it is composed with. More specifically, it is very much possible for the value $y$ represented by the indexed type $Y$ to satisfy $|y| \geq 2 \times 2^{e_{\max}}$.
 
 \section{Basic Operations}
   \subsection{Update}
@@ -267,8 +285,8 @@
       \begin{algorithmic}
         \Function{Update}{fold, x, Y}
           \If{$J < I$}
-            \State $[{Y_{\min(I - J, fold)}}_S, ..., {Y_{fold - 1}}_S] \gets [{Y_0}_S, ..., {Y_{fold - 1 - \min(I - J, fold)}}_S]$
-            \State $[{Y_0}_S, ..., {Y_{\min(I - J, fold) - 1}}_S] \gets [1.5 \times \epsilon^{-1} \times a_{J}, ..., 1.5 \times \epsilon^{-1} \times a_{\min(I, fold + J) - 1}]$
+            \State $[{Y_{\min(I - J, fold)}}_P, ..., {Y_{fold - 1}}_P] \gets [{Y_0}_P, ..., {Y_{fold - 1 - \min(I - J, fold)}}_P]$
+            \State $[{Y_0}_P, ..., {Y_{\min(I - J, fold) - 1}}_P] \gets [1.5 \times \epsilon^{-1} \times a_{J}, ..., 1.5 \times \epsilon^{-1} \times a_{\min(I, fold + J) - 1}]$
             \State $[{Y_{\min(I - J, fold)}}_C, ..., {Y_{fold - 1}}_C] \gets [{Y_0}_C, ..., {Y_{fold - 1 - \min(I - J, fold)}}_C]$
             \State $[{Y_0}_C, ..., {Y_{\min(I - J, fold) - 1}}_C] \gets [0, ..., 0]$
           \EndIf
@@ -278,7 +296,7 @@
     \end{alg}
     The update operation is described in the update section of Algorithm $6$ in \cite{repsum}.
 
-    It should be noted that if ${Y_0}_S$ is 0, then the update is performed as if $I + fold < J$. If ${Y_0}_S$ is \verb|Inf|, \verb|-Inf|, or \verb|NaN|, then $Y$ is not modified by an update.
+    It should be noted that if ${Y_0}_P$ is 0, then the update is performed as if $I + fold < J$. If ${Y_0}_P$ is \verb|Inf|, \verb|-Inf|, or \verb|NaN|, then $Y$ is not modified by an update.
 
     To speed up this operation, the factors $1.5 \times \epsilon^{-1} \times a_k$ for all valid $k \in Z$ are stored in a precomputed array.
 
@@ -289,18 +307,18 @@
 
   \subsection{Renormalize}
     \label{sec:renormalize}
-    When depositing values into an indexed type $Y$ of index $I$, the assumption is made that ${Y_j}_S \in (\epsilon^{-1}\times 2^{a_{I + j}}, 2 \times \epsilon^{-1}\times 2^{a_{I + j}})$ throughout the routine. To enforce this condition, the indexed type must be renormalized every $2^{p - w - 2}$ deposit operations. The renormalization procedure is shown in Algorithm \ref{alg:renorm}.
+    When depositing values into an indexed type $Y$ of index $I$, the assumption is made that ${Y_j}_P \in (\epsilon^{-1}\times 2^{a_{I + j}}, 2 \times \epsilon^{-1}\times 2^{a_{I + j}})$ throughout the routine. To enforce this condition, the indexed type must be renormalized every $2^{p - w - 2}$ deposit operations. The renormalization procedure is shown in Algorithm \ref{alg:renorm}.
     \begin{alg}
-      For an indexed $Y$ with index $I$, assuming ${Y_j}_S \in [1.25 \times \epsilon^{-1}\times 2^{a_{I + j}}, 2 \times \epsilon^{-1}\times 2^{a_{I + j}})$, renormalize $Y$ such that ${Y_j}_S \in [1.5 \times \epsilon^{-1}\times 2^{a_{I + j}}, 1.75 \times \epsilon^{-1}\times 2^{a_{I + j}})$.
+      For an indexed $Y$ with index $I$, assuming ${Y_j}_P \in [1.25 \times \epsilon^{-1}\times 2^{a_{I + j}}, 2 \times \epsilon^{-1}\times 2^{a_{I + j}})$, renormalize $Y$ such that ${Y_j}_P \in [1.5 \times \epsilon^{-1}\times 2^{a_{I + j}}, 1.75 \times \epsilon^{-1}\times 2^{a_{I + j}})$.
       \begin{algorithmic}
         \Function{Renorm}{fold, Y}
           \For{$j \in 0 \to fold - 1$}
-            \If{${Y_j}_S < 1.5 \times \ufp({Y_j}_S)$}
-              \State ${Y_j}_S \gets {Y_j}_S + 0.25 \times \ufp({Y_j}_S)$
+            \If{${Y_j}_P < 1.5 \times \ufp({Y_j}_P)$}
+              \State ${Y_j}_P \gets {Y_j}_P + 0.25 \times \ufp({Y_j}_P)$
               \State ${Y_j}_C \gets {Y_j}_C - 1$
             \EndIf
-            \If{${Y_j}_S \geq 1.75 \times \ufp({Y_j}_S)$}
-              \State ${Y_j}_S \gets {Y_j}_S - 0.25 \times \ufp({Y_j}_S)$
+            \If{${Y_j}_P \geq 1.75 \times \ufp({Y_j}_P)$}
+              \State ${Y_j}_P \gets {Y_j}_P - 0.25 \times \ufp({Y_j}_P)$
               \State ${Y_j}_C \gets {Y_j}_C + 1$
             \EndIf
           \EndFor
@@ -310,34 +328,46 @@
     \end{alg}
     The renormalization operation is described in the carry-bit propagation section of Algorithm $6$ in \cite{repsum}, although it has been slightly modified so as not to include an extraneous case.
 
-    To show the reasoning behind the assumptions in Algorithm \ref{alg:renorm}, consider the case in which floating point $x_0, x_1, ...$ are successively deposited in an indexed type $Y$ which satisfies ${Y_j}_S \in [1.5 \times \epsilon^{-1}\times 2^{a_{I + j}}, 1.75 \times \epsilon^{-1}\times 2^{a_{I + j}})$. (Such a condition is satisfied upon initialization of an empty $Y$)
+    To show the reasoning behind the assumptions in Algorithm \ref{alg:renorm}, consider the case in which floating point $x_0, x_1, ...$ are successively deposited in an indexed type $Y$ which satisfies ${Y_j}_P \in [1.5 \times \epsilon^{-1}\times 2^{a_{I + j}}, 1.75 \times \epsilon^{-1}\times 2^{a_{I + j}})$. (Such a condition is satisfied upon initialization of an empty $Y$)
 
-    First, note that $|d(x_k, a_{I + j}, b_{I + j})| \leq 2^{b_{I + j}}$, where $d(x_k, a_{I + j}, b_{I + j})$ is the amount added to ${Y_j}_S$ on iteration $j$. This is due to the definition of $d(x_k, a_{I+j}, b_{I + j})$ or to Corollary 3 of \cite{repsum}.
+    First, note that $|d(x_k, a_{I + j}, b_{I + j})| \leq 2^{b_{I + j}}$, where $d(x_k, a_{I + j}, b_{I + j})$ is the amount added to ${Y_j}_P$ on iteration $j$. This is due to the definition of $d(x_k, a_{I+j}, b_{I + j})$ or to Corollary 3 of \cite{repsum}.
 
-    As the deposit operation extracts and adds the appropriate component of $x_k$ exactly (assuming ${Y_j}_S$ lies within the appropriate boundaries at each step, which will be shown),
+    As the deposit operation extracts and adds the appropriate component of $x_k$ exactly (assuming ${Y_j}_P$ lies within the appropriate boundaries at each step, which will be shown),
 
     Therefore,
 
-    $|\sum \limits_{n = 0}^{k - 1} d(x_k, a_{I + j}, b_{I + j})| \leq n \times 2^{b_{I + j}} = n \times 2^{W} \times 2^{a_{I + j}}$
+    \begin{equation*}
+    |\sum \limits_{n = 0}^{k - 1} d(x_k, a_{I + j}, b_{I + j})| \leq n \times 2^{b_{I + j}} = n \times 2^{W} \times 2^{a_{I + j}}
+    \end{equation*}
 
     and if $n <= 2^{p - W - 2}$, then after the $n^{th}$ deposit
 
-    ${Y_j}_S \in [(1.5 \times \epsilon^{-1} - n \times 2^W)\times 2^{a_{I + j}}, (1.75 \times \epsilon^{-1} + n \times 2^W)\times 2^{a_{I + j}})$
+    \begin{equation*}
+    {Y_j}_P \in [(1.5 \times \epsilon^{-1} - n \times 2^W)\times 2^{a_{I + j}}, (1.75 \times \epsilon^{-1} + n \times 2^W)\times 2^{a_{I + j}})
+    \end{equation*}
 
-    \indent\indent$\in [1.25 \times \epsilon^{-1}\times 2^{a_{I + j}}, 2 \times \epsilon^{-1}\times 2^{a_{I + j}})$
+    \begin{equation*}
+    \in [1.25 \times \epsilon^{-1}\times 2^{a_{I + j}}, 2 \times \epsilon^{-1}\times 2^{a_{I + j}})
+    \end{equation*}
 
     Therefore, after another renormalization, the primary fields would once again satisfy
 
-    ${Y_j}_S \in [1.5 \times \epsilon^{-1}\times 2^{a_{I + j}}, 1.75 \times \epsilon^{-1}\times 2^{a_{I + j}})$
+    \begin{equation*}
+    {Y_j}_P \in [1.5 \times \epsilon^{-1}\times 2^{a_{I + j}}, 1.75 \times \epsilon^{-1}\times 2^{a_{I + j}})
+    \end{equation*}
 
   \subsection{Reduce}
     An operation to produce the sum of two indexed types is necessary to perform a reduction. For completeness we include the algorithm here, although apart from the renormalization step, it is equivalent to Algorithm $7$ in \cite{repsum}.
     \begin{alg}
       For an indexed type $Y$ (the indexed sum of some $x_0, ..., x_{n - 1} \in \F$) with index $I$ and indexed type $Z$ with index $J$ (the indexed sum of some $x_n, ..., x_{n + m - 1} \in \F$), add $Z$ to $Y$. That is, set $Y$ to the indexed sum of $x_0, ..., x_{n + m - 1}$. At the start and end of the algorithm, we may assume
 
-${Y_j}_S \in [1.5 \times \epsilon^{-1}\times 2^{a_{I + j}}, 1.75 \times \epsilon^{-1}\times 2^{a_{I + j}})$ and
-
-${Z_j}_S \in [1.5 \times \epsilon^{-1}\times 2^{a_{J + j}}, 1.75 \times \epsilon^{-1}\times 2^{a_{J + j}}).$
+    \begin{equation*}
+      {Y_j}_P \in [1.5 \times \epsilon^{-1}\times 2^{a_{I + j}}, 1.75 \times \epsilon^{-1}\times 2^{a_{I + j}})
+    \end{equation*}
+    and
+    \begin{equation*}
+      {Z_j}_P \in [1.5 \times \epsilon^{-1}\times 2^{a_{J + j}}, 1.75 \times \epsilon^{-1}\times 2^{a_{J + j}})
+    \end{equation*}
       \begin{algorithmic}
         \Function{Reduce}{fold, Y, Z}
           \If{$J > I$}
@@ -346,7 +376,7 @@ ${Z_j}_S \in [1.5 \times \epsilon^{-1}\times 2^{a_{J + j}}, 1.75 \times \epsilon
             \State $Y \gets R$
           \EndIf
           \For{$j \in 0 \to J$}
-            \State ${Y_{j + I - J}}_S \gets {Y_{j + I - J}}_S + {Z_j}_S - 1.5 \times \epsilon^{-1} \times 2^{a_{I + j}}$
+            \State ${Y_{j + I - J}}_P \gets {Y_{j + I - J}}_P + {Z_j}_P - 1.5 \times \epsilon^{-1} \times 2^{a_{I + j}}$
             \State ${Y_{j + I - J}}_C \gets {Y_{j + I - J}}_C + {Z_j}_C$
           \EndFor
           \State \Call{Renorm}{fold, $Y$}
@@ -379,59 +409,89 @@ ${Z_j}_S \in [1.5 \times \epsilon^{-1}\times 2^{a_{J + j}}, 1.75 \times \epsilon
     When adding the fields it is not necessary to examine the values in the fields or sort them explicitly. Their unnormalized exponent does not depend on their values, and their unnormalized exponents have a predetermined order.
 
     Consider indexed $Y$ of index $I$ and fold $fold$.
-    As each value ${\mathcal{Y}_j}_S$ in a primary field ${Y_j}_S$ is an offset from $1.5 \times \epsilon^{-1} \times 2^{a_{I + j}}$ and ${Y_j}_S \in (\epsilon^{-1} \times 2^{a_{I + j}}, 2 \times \epsilon^{-1} \times 2^{a_{I + j}})$, ${\mathcal{Y}_j}_S$ can be expressed exactly using an unnormalized floating point number ${\mathcal{Y}'_P}_j$ with an exponent of $a_{I + j} + p - 1$.
+    As each value ${\mathcal{Y}_j}_P$ in a primary field ${Y_j}_P$ is an offset from $1.5 \times \epsilon^{-1} \times 2^{a_{I + j}}$ and ${Y_j}_P \in (\epsilon^{-1} \times 2^{a_{I + j}}, 2 \times \epsilon^{-1} \times 2^{a_{I + j}})$, ${\mathcal{Y}_j}_P$ can be expressed exactly using an unnormalized floating point number ${\mathcal{Y}'_P}_j$ with an exponent of $a_{I + j} + p - 1$.
     As each carry field ${Y_j}_C$ is a count of renormalization adjustments later scaled by $0.25 \times \epsilon^{-1} \times 2^{a_{I + j}}$, ${\mathcal{Y}_j}_C$ can be expressed exactly using an unnormalized floating point number ${\mathcal{Y}'_j}_C$ with an exponent of $a_{I + j} + p + p - 3$.
 
-    For all $k < j$, $\exp({\mathcal{Y}'_k}_S) > \exp({\mathcal{Y}'_j}_S)$ and $\exp({\mathcal{Y}'_k}_C) > \exp({\mathcal{Y}'_j}_C)$ because $a_{I + k} > a_{I + j}$.
+    For all $k < j$, $\exp({\mathcal{Y}'_k}_P) > \exp({\mathcal{Y}'_j}_P)$ and $\exp({\mathcal{Y}'_k}_C) > \exp({\mathcal{Y}'_j}_C)$ because $a_{I + k} > a_{I + j}$.
 
-    Note that $\exp({\mathcal{Y}'_j}_C) = a_{I + j} + p + p - 3$
-
-    and
-
-    $\exp({\mathcal{Y}'_{j - 1}}_S) = a_{I + j - 1} + p - 1 = a_{I + j} + W + p - 1$.
-
-    Therefore $\exp({\mathcal{Y}'_j}_C) > \exp({\mathcal{Y}'_{j - 1}}_S)$ using $W < p - 2$.
-
-    Note that $\exp({\mathcal{Y}'_j}_C) = a_{I + j} + p + p - 3$
+    Note that
+    \begin{equation*}
+      \exp({\mathcal{Y}'_j}_C) = a_{I + j} + p + p - 3
+    \end{equation*}
 
     and
 
-    $\exp({\mathcal{Y}'_{j - 2}}_S) = a_{I + j - 1} + p - 1 = a_{I + j} + 2\times W + p - 1$.
+    \begin{equation*}
+      \exp({\mathcal{Y}'_{j - 1}}_P) = a_{I + j - 1} + p - 1 = a_{I + j} + W + p - 1
+    \end{equation*}
 
-    Therefore $\exp({\mathcal{Y}'_j}_C) < \exp({\mathcal{Y}'_{j - 2}}_S)$ using $2 \times W > p + 1$.
+    Therefore $\exp({\mathcal{Y}'_j}_C) > \exp({\mathcal{Y}'_{j - 1}}_P)$ using $W < p - 2$.
+
+    Note that
+
+    \begin{equation*}
+      \exp({\mathcal{Y}'_{j - 2}}_P) = a_{I + j - 1} + p - 1 = a_{I + j} + 2\times W + p - 1
+    \end{equation*}
+
+    Therefore $\exp({\mathcal{Y}'_j}_C) < \exp({\mathcal{Y}'_{j - 2}}_P)$ using $2 \times W > p + 1$.
 
     Combining the above inequalities,
 
-    \indent\indent $\exp({\mathcal{Y}'_0}_C)$
+    \begin{equation*}
+    \exp({\mathcal{Y}'_0}_C)
+    \end{equation*}
 
-    \indent\indent $ > \exp({\mathcal{Y}'_1}_C)$
+    \begin{equation*}
+    > \exp({\mathcal{Y}'_1}_C)
+    \end{equation*}
 
-    \indent\indent $ > \exp({\mathcal{Y}'_0}_S)$
+    \begin{equation*}
+    > \exp({\mathcal{Y}'_0}_P)
+    \end{equation*}
 
-    \indent\indent $ > \exp({\mathcal{Y}'_2}_C)$
+    \begin{equation*}
+    > \exp({\mathcal{Y}'_2}_C)
+    \end{equation*}
 
-    \indent\indent $ > \exp({\mathcal{Y}'_1}_S)$
+    \begin{equation*}
+    > \exp({\mathcal{Y}'_1}_P)
+    \end{equation*}
 
-    \indent\indent $ \vdots$
+    \begin{equation*}
+    \vdots
+    \end{equation*}
 
-    \indent\indent $ > \exp({\mathcal{Y}'_{fold - 2}}_C)$
+    \begin{equation*}
+    > \exp({\mathcal{Y}'_{fold - 2}}_C)
+    \end{equation*}
 
-    \indent\indent $ > \exp({\mathcal{Y}'_{fold - 3}}_S)$
+    \begin{equation*}
+    > \exp({\mathcal{Y}'_{fold - 3}}_P)
+    \end{equation*}
 
-    \indent\indent $ > \exp({\mathcal{Y}'_{fold - 1}}_C)$
+    \begin{equation*}
+    > \exp({\mathcal{Y}'_{fold - 1}}_C)
+    \end{equation*}
 
-    \indent\indent $ > \exp({\mathcal{Y}'_{fold - 2}}_S)$
+    \begin{equation*}
+    > \exp({\mathcal{Y}'_{fold - 2}}_P)
+    \end{equation*}
 
-    \indent\indent $ > \exp({\mathcal{Y}'_{fold - 1}}_S)$.
+    \begin{equation*}
+    > \exp({\mathcal{Y}'_{fold - 1}}_P)
+    \end{equation*}
 
-    These numbers may, for convenience of notation, be referred to in order as $\gamma'_0, ..., \gamma'_{2 \times fold - 1}$.
+    These unnormalized floating point numbers may, for convenience of notation, be referred to in decreasing order of unnormalized exponent as $\gamma'_0, ..., \gamma'_{2 \times fold - 1}$.
     $\gamma_k$ denotes the normalized representations of the $\gamma'_k$, and it should be noted that $\gamma_k = \gamma'_k$ as real numbers and that $\exp(\gamma_k) \leq \exp(\gamma'_k)$.
 
-    It should be noted that the ${\mathcal{Y}'_j}_S$ and the ${\mathcal{Y}'_j}_C$ can be expressed exactly using floating point types of the same precision as ${Y_j}_S$ and ${Y_j}_C$ (except in the case of overflow, in which a scaled version may be obtained), and such exact floating point representations can be obtained using Equation \ref{eq:pri} and Equation \ref{eq:car}.
+    It should be noted that the ${\mathcal{Y}'_j}_P$ and the ${\mathcal{Y}'_j}_C$ can be expressed exactly using floating point types of the same precision as ${Y_j}_P$ and ${Y_j}_C$ (except in the case of overflow, in which a scaled version may be obtained), and such exact floating point representations can be obtained using Equation \ref{eq:pri} and Equation \ref{eq:car}.
 
     Notice that $|\gamma'_0| = |{\mathcal{Y}'_0}_C| < 2 \times 2^{\exp({\mathcal{Y}'_0}_C)} = 2 \times 2^{e_{\max} + 1 - W + p + p - 3}$ and $\exp(\gamma'_0) > ... > \exp(\gamma'_{2 \times fold - 1})$.  Therefore $|\gamma'_k| \leq 2^{e_{\max} - W + p + p - 1 - k}$. The absolute value represented by an indexed type can therefore be bounded by
 
-    $\sum\limits_{k = 0}^{2 \times fold - 1} |\gamma_k| < \sum\limits_{k = 0}^{2 \times fold - 1} 2^{e_{\max} - W + p + p - 1 - k} < \sum\limits_{k = 0}^{\infty} 2^{e_{\max} - W + p + p - 1 - k} = 2^{e_{\max} - W + p + p}$.
+    \begin{equation}
+      \label{eq:maxindexedvalue}
+      \sum\limits_{k = 0}^{2 \times fold - 1} |\gamma_k| < \sum\limits_{k = 0}^{2 \times fold - 1} 2^{e_{\max} - W + p + p - 1 - k} < \sum\limits_{k = 0}^{\infty} 2^{e_{\max} - W + p + p - 1 - k} = 2^{e_{\max} - W + p + p}
+    \end{equation}
 
     If the intermediate precision has a maximum exponent greater than or equal to $e_{\max} - W + p + p - 1$, then no special cases to guard against overflow are needed.
 
@@ -444,9 +504,9 @@ ${Z_j}_S \in [1.5 \times \epsilon^{-1}\times 2^{a_{J + j}}, 1.75 \times \epsilon
           \State $z \gets {\mathcal{Y}_0}_C$
           \For{$j \in 1 \to fold - 1$}
             \State $z \gets z + {\mathcal{Y}_j}_C$
-            \State $z \gets z + {\mathcal{Y}_{j - 1}}_S$
+            \State $z \gets z + {\mathcal{Y}_{j - 1}}_P$
           \EndFor
-          \State $z \gets {\mathcal{Y}_{fold - 1}}_S$
+          \State $z \gets {\mathcal{Y}_{fold - 1}}_P$
           \State $x \gets z$
         \EndFunction
       \end{algorithmic}
@@ -455,7 +515,7 @@ ${Z_j}_S \in [1.5 \times \epsilon^{-1}\times 2^{a_{J + j}}, 1.75 \times \epsilon
 
     If an intermediate type with exponent greater than ore equal to $e_{\max} - W + p + p - 1$ is not available, the $\gamma_k$ must be scaled down by some factor during addition and the sum scaled back up when subsequent additions can no longer effect an overflow situation.
 
-    If the sum is to overflow, it will overflow regardless of the values of any ${\mathcal{Y}_j}_S$ or ${\mathcal{Y}_j}_C$ with $|{\mathcal{Y}_j}_S| < 0.5 \times 2^{-P} \times 2^{e_{\max}}$ or $|{\mathcal{Y}_j}_C| < 0.5 \times 2^{-P} \times 2^{e_{\max}}$. If the floating point sum of precision $P$ has exponent greater than or equal to $e_{\max}$ these numbers are not large enough to have any effect when added to the sum. If the sum has exponent less than $e_{\max}$, then additions of these numbers cannot cause the exponent of the sum to exceed $e_{\max}$ for similar reasons.
+    If the sum is to overflow, it will overflow regardless of the values of any ${\mathcal{Y}_j}_P$ or ${\mathcal{Y}_j}_C$ with $|{\mathcal{Y}_j}_P| < 0.5 \times 2^{-P} \times 2^{e_{\max}}$ or $|{\mathcal{Y}_j}_C| < 0.5 \times 2^{-P} \times 2^{e_{\max}}$. If the floating point sum of precision $P$ has exponent greater than or equal to $e_{\max}$ these numbers are not large enough to have any effect when added to the sum. If the sum has exponent less than $e_{\max}$, then additions of these numbers cannot cause the exponent of the sum to exceed $e_{\max}$ for similar reasons.
 
     As the maximum absolute value of the true sum is strictly smaller than $2^{e_{\max} - W + p + p}$, a sufficient scaling factor is $2^{p + p - W - 2}$, meaning that the maximum absolute value of the true scaled sum is strictly smaller $2 \times 2^{e_{\max} - 1}$ (and since it will be shown later that the computed sum is accurate to within a small factor of the true sum, the computed sum will stay strictly smaller than $2 \times 2^{e_{\max}}$ and will not overflow.)
 
@@ -515,119 +575,146 @@ ${Z_j}_S \in [1.5 \times \epsilon^{-1}\times 2^{a_{J + j}}, 1.75 \times \epsilon
 
     It has been shown in \cite{repsum} that
 
-    $|T - \mathcal{Y}| < n \times 2^{W \times (1 - fold) - 1} \times \max|x_k|$
+    \begin{equation}
+      \label{eq:repbound}
+      |T - \mathcal{Y}| < n \times 2^{W \times (1 - fold) - 1} \times \max|x_k|
+    \end{equation}
 
     Because the intermediate precision $P$ used to sum the values stored in the various fields of $Y$ is assumed greater than $p + \ceil{\log_2(2 \times fold)}$, we sum at most $2^{P - p} < 1 + \floor{\frac{2^{P - p}}{1 - 2^{-p}}}$ values that may be considered as unnormalized values in order of decreasing unnormalized exponent (the same argument is made in the proof of Theorem 2 of \cite{sortsum}), and Theorem \ref{thm:sortsum} applies to yield
 
-    $|\mathcal{Y} - \overline{\mathcal{Y}}| < (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times \ulp(\mathcal{Y})$.
+    \begin{equation*}
+      |\mathcal{Y} - \overline{\mathcal{Y}}| < (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times \ulp(\mathcal{Y})
+    \end{equation*}
 
     By the triangle inequality
 
-    $|\mathcal{Y}| \leq |T| + |T - \mathcal{Y}| < |T| + n \times 2^{W \times (1 - fold) - 1} \times \max|x_k|$,
+    \begin{equation*}
+      |\mathcal{Y}| \leq |T| + |T - \mathcal{Y}| < |T| + n \times 2^{W \times (1 - fold) - 1} \times \max|x_k|
+    \end{equation*}
 
     and because $T$ is assumed to be in the normalized range,
 
-    $\ulp(\mathcal{Y}) \leq \ulp(|T| + n \times 2^{W \times (1 - fold) - 1} \times \max|x_k|)$
+    \begin{equation*}
+      \ulp(\mathcal{Y}) \leq \ulp(|T| + n \times 2^{W \times (1 - fold) - 1} \times \max|x_k|)
+    \end{equation*}
 
-    \indent \indent$\leq (|T| + n \times 2^{W \times (1 - fold) - 1} \times \max|x_k|) \times 2 \times \epsilon$.
+    \begin{equation*}
+    \leq (|T| + n \times 2^{W \times (1 - fold) - 1} \times \max|x_k|) \times 2 \times \epsilon
+    \end{equation*}
 
-    The above results can be used to obtain Equation \ref{eq:error}.
+    The above results can be used to obtain Equation \ref{eq:error}, the absolute error of the floating point approximation of an indexed sum $|T - \overline{\mathcal{Y}}|$.
 
-    \begin{eq} The absolute error of the floating point approximation of an indexed sum $|T - \overline{\mathcal{Y}}|$ is bounded by
+    \begin{equation*}
+      |T - \overline{\mathcal{Y}}| \leq |T - \mathcal{Y}| + |\mathcal{Y} - \overline{\mathcal{Y}}|
+    \end{equation*}
 
-      $|T - \overline{\mathcal{Y}}| \leq |T - \mathcal{Y}| + |\mathcal{Y} - \overline{\mathcal{Y}}|$
+    \begin{equation*}
+      < n \times 2^{W \times (1 - fold) - 1} \times \max|x_k| + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times \ulp(\mathcal{Y})
+    \end{equation*}
 
-      \indent\indent$< n \times 2^{W \times (1 - fold) - 1} \times \max|x_k| + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times \ulp(\mathcal{Y})$
+    \begin{equation*}
+      < n \times 2^{W \times (1 - fold) - 1} \times \max|x_k| + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times(|T| + n \times 2^{W \times (1 - fold) - 1} \times \max|x_k|) \times 2 \times \epsilon
+    \end{equation*}
 
-      \indent\indent$< n \times 2^{W \times (1 - fold) - 1} \times \max|x_k| + $
-
-      \indent\indent \indent$(\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times(|T| + n \times 2^{W \times (1 - fold) - 1} \times \max|x_k|) \times 2 \times \epsilon$
-
-      \indent\indent$< n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} \times(1 + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2}) \times 2 \times \epsilon) + $
-
-      \indent\indent \indent$(\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times |T| \times 2 \times \epsilon$
+    \begin{equation}
+      < n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} \times(1 + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2}) \times 2 \times \epsilon) + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times |T| \times 2 \times \epsilon
       \label{eq:error}
-    \end{eq}
+    \end{equation}
 
     Equation \ref{eq:error} can be approximated as Equation \ref{eq:errorapprox}.
 
-    \begin{eq} The absolute error of the floating point approximation of an indexed sum $|T - \overline{\mathcal{Y}}|$ is approximately bounded by
+    \begin{equation*}
+      |T - \overline{\mathcal{Y}}| < n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} \times(1 + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2}) \times 2 \times \epsilon) + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times |T| \times 2 \times \epsilon
+    \end{equation*}
 
-      $|T - \overline{\mathcal{Y}}| < n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} \times(1 + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2}) \times 2 \times \epsilon) + $
-
-      \indent \indent$(\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times |T| \times 2 \times \epsilon$
-
-      \indent\indent$\approx n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} + 3 \times \epsilon \times |T|$
+    \begin{equation}
+    \approx n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} + 3 \times \epsilon \times |T|
       \label{eq:errorapprox}
-    \end{eq}
+    \end{equation}
 
     A perhaps more useful mathematical construction is the error expressed relative to the result $\overline{\mathcal{Y}}$, and not the theoretical sum $T$. Again by the triangle inequality,
 
-    $|\mathcal{Y}| \leq |\overline{\mathcal{Y}}| + |\mathcal{Y} - \overline{\mathcal{Y}}|$.
+    \begin{equation*}
+      |\mathcal{Y}| \leq |\overline{\mathcal{Y}}| + |\mathcal{Y} - \overline{\mathcal{Y}}|
+    \end{equation*}
 
     Applying the bound on $|\mathcal{Y} - \overline{\mathcal{Y}}|$ yields
 
-    $|\mathcal{Y}| < |\overline{\mathcal{Y}}| + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times \ulp(\mathcal{Y})$.
+    \begin{equation*}
+      |\mathcal{Y}| < |\overline{\mathcal{Y}}| + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times \ulp(\mathcal{Y})
+    \end{equation*}
 
     and because $\mathcal{Y}$ is assumed to be in the normalized range,
 
-    $|\mathcal{Y}| < |\overline{\mathcal{Y}}| + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times|\mathcal{Y}|\times 2 \times \epsilon$.
+    \begin{equation*}
+      |\mathcal{Y}| < |\overline{\mathcal{Y}}| + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times|\mathcal{Y}|\times 2 \times \epsilon
+    \end{equation*}
 
     After simplification,
 
-    $|\mathcal{Y}| < |\overline{\mathcal{Y}}|\times (1 - (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times 2 \times \epsilon)^{-1}$.
+    \begin{equation*}
+      |\mathcal{Y}| < |\overline{\mathcal{Y}}|\times (1 - (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times 2 \times \epsilon)^{-1}
+    \end{equation*}
 
     Again because $\mathcal{Y}$ is assumed to be in the normalized range,
 
-    $\ulp(\mathcal{Y}) \leq \ulp(|\overline{\mathcal{Y}}|\times (1 - (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times 2 \times \epsilon)^{-1})$
+    \begin{equation*}
+      \ulp(\mathcal{Y}) \leq \ulp(|\overline{\mathcal{Y}}|\times (1 - (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times 2 \times \epsilon)^{-1})
+    \end{equation*}
 
-    \indent \indent$\leq |\overline{\mathcal{Y}}|\times (1 - (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times 2 \times \epsilon)^{-1} \times 2 \times \epsilon$.
+    \begin{equation*}
+      \leq |\overline{\mathcal{Y}}|\times (1 - (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times 2 \times \epsilon)^{-1} \times 2 \times \epsilon
+    \end{equation*}
 
-    The above results can be used to obtain Equation \ref{eq:error2}.
+    The above results can be used to obtain Equation \ref{eq:error2}, the absolute error of the floating point approximation of an indexed sum $|T - \overline{\mathcal{Y}}|$.
 
-    \begin{eq} The absolute error of the floating point approximation of an indexed sum $|T - \overline{\mathcal{Y}}|$ is bounded by
+    \begin{equation*}
+      |T - \overline{\mathcal{Y}}| \leq |T - \mathcal{Y}| + |\mathcal{Y} - \overline{\mathcal{Y}}|
+    \end{equation*}
 
-      $|T - \overline{\mathcal{Y}}| \leq |T - \mathcal{Y}| + |\mathcal{Y} - \overline{\mathcal{Y}}|$
+    \begin{equation*}
+      < n \times 2^{W \times (1 - fold) - 1} \times \max|x_k| + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times \ulp(\mathcal{Y})
+    \end{equation*}
 
-      \indent\indent$< n \times 2^{W \times (1 - fold) - 1} \times \max|x_k| + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times \ulp(\mathcal{Y})$
-
-      \indent\indent$< n \times 2^{W \times (1 - fold) - 1} \times \max|x_k| + $
-
-      \indent\indent \indent$(\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times|\overline{\mathcal{Y}}|\times (1 - (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times 2 \times \epsilon)^{-1} \times 2 \times \epsilon$
+    \begin{equation}
+      < n \times 2^{W \times (1 - fold) - 1} \times \max|x_k| + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times|\overline{\mathcal{Y}}|\times (1 - (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times 2 \times \epsilon)^{-1} \times 2 \times \epsilon
       \label{eq:error2}
-    \end{eq}
+    \end{equation}
 
     Equation \ref{eq:error2} can be approximated as Equation \ref{eq:error2approx}.
 
-    \begin{eq} The absolute error of the floating point approximation of an indexed sum $|T - \overline{\mathcal{Y}}|$ is approximately bounded by
+    \begin{equation*}
+      |T - \overline{\mathcal{Y}}| < n \times 2^{W \times (1 - fold) - 1} \times \max|x_k| + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times|\overline{\mathcal{Y}}|\times (1 - (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times 2 \times \epsilon)^{-1} \times 2 \times \epsilon
+    \end{equation*}
 
-      $|T - \overline{\mathcal{Y}}| < n \times 2^{W \times (1 - fold) - 1} \times \max|x_k| + $
-
-      \indent \indent$(\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times|\overline{\mathcal{Y}}|\times (1 - (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times 2 \times \epsilon)^{-1} \times 2 \times \epsilon$
-
-      \indent\indent$\approx n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} + 3 \times \epsilon \times |\overline{\mathcal{Y}}|$
+    \begin{equation}
+      \approx n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} + 3 \times \epsilon \times |\overline{\mathcal{Y}}|
       \label{eq:error2approx}
-    \end{eq}
+    \end{equation}
 
     We can compare Equation \ref{eq:errorapprox} to the error bound obtained if the accumulator fields were summed without extra precision. In this case, only the standard summation bound would apply and the absolute error would be bounded by
 
-    $n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} + (2 \times fold - 1) \times \epsilon \times \sum\limits_0^{2 \times fold - 1}\gamma_k$
+    \begin{equation*}
+    n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} + (2 \times fold - 1) \times \epsilon \times \sum\limits_0^{2 \times fold - 1}\gamma_k
+    \end{equation*}
 
-    \indent\indent $= n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} + (2 \times fold - 1) \times \epsilon \times |\mathcal{Y}|$
+    \begin{equation*}
+    = n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} + (2 \times fold - 1) \times \epsilon \times |\mathcal{Y}|
+    \end{equation*}
 
-    \indent\indent$< n \times \max|x_k|\times 2^{W \times (1 - fold) - 1}$
+    \begin{equation*}
+    < n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} + (2 \times fold - 1) \times \epsilon \times (|T| + n \times \max|x_k|\times 2^{W \times (1 - fold) - 1})
+    \end{equation*}
 
-    \indent\indent\indent$ + (2 \times fold - 1) \times \epsilon \times (|T| + n \times \max|x_k|\times 2^{W \times (1 - fold) - 1})$
+    \begin{equation*}
+    = n \times \max|x_k|\times 2^{W \times (1 - fold) - 1}\times (1 + (2 \times fold - 1)\times \epsilon) + (2 \times fold - 1) \times \epsilon \times |T|
+    \end{equation*}
 
-    \indent\indent$= n \times \max|x_k|\times 2^{W \times (1 - fold) - 1}\times (1 + (2 \times fold - 1)\times \epsilon)$
+    \begin{equation*}
+    \approx n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} + (2 \times fold - 1) \times \epsilon \times |T|
+    \end{equation*}
 
-    \indent\indent\indent$ + (2 \times fold - 1) \times \epsilon \times |T|$
-
-    \indent\indent$\approx n \times \max|x_k|\times 2^{W \times (1 - fold) - 1}$
-
-    \indent\indent\indent$ + (2 \times fold - 1) \times \epsilon \times |T|$
-
-    Which is not as tight a bound as Equation $\ref{eq:errorapprox}$, and grows as the user tries to add more bins to increase accuracy.
+    Which is not as tight a bound as Equation $\ref{eq:errorapprox}$, and begins to grow linearly as the user increases the fold in an attempt to increase accuracy.
 
   \subsection{Limits}
     \label{sec:limits}
@@ -637,9 +724,9 @@ ${Z_j}_S \in [1.5 \times \epsilon^{-1}\times 2^{a_{J + j}}, 1.75 \times \epsilon
 
     ReproBLAS uses the values $W = 40$ for indexed \verb|double| and $W = 13$ for indexed \verb|float|. $W$ is available as the \verb|XIWIDTH| macro.
 
-    As discussed in section \ref{sec:underflow}, only input corresponding to the bin $(e_{\min} - 1, e_{\max} + 1]$ is guaranteed to be accumulated.
+    As discussed in section \ref{sec:underflow}, only input corresponding to the bin $(e_{\min} - 2, e_{\max} + 1]$ is guaranteed to be accumulated.
 
-    As absolute value of individual quantities added to ${Y_j}_S$ are not in excess of $2^{b_{I + j}}$, a maximum of $0.25\epsilon^{-1}2^{-W}$ elements may be deposited into ${Y_j}_S$ between renormalizations, as discussed in section \ref{sec:renormalize}. For indexed \verb|double| this number is $2^{11}$, whereas for indexed \verb|float| this number is $2^9$. This number is supplied programmatically using the \verb|XIENDURANCE| macro.
+    As absolute value of individual quantities added to ${Y_j}_P$ are not in excess of $2^{b_{I + j}}$, a maximum of $0.25\epsilon^{-1}2^{-W}$ elements may be deposited into ${Y_j}_P$ between renormalizations, as discussed in section \ref{sec:renormalize}. For indexed \verb|double| this number is $2^{11}$, whereas for indexed \verb|float| this number is $2^9$. This number is supplied programmatically using the \verb|XIENDURANCE| macro.
 
     As ${Y_j}_C$ must be able to record additions of absolute value 1 without error, ${Y_j}_C$ must stay in the range $(-\epsilon^{-1}, \epsilon^{-1})$. As each renormalization results in addition not in excess absolute value of 1 to ${Y_j}_C$, a maximum of $(\epsilon^{-1} - 1)$ renormalizations may be performed, meaning that an indexed sum represents the sum of a maximum of $0.25\epsilon^{-1}2^{-W} \times (\epsilon^{-1} - 1) \approx 2^{p + p - W - 2}$. For indexed \verb|double| this number is almost $2^64$, whereas for indexed \verb|float| this number is almost $2^33$. This number is supplied programmatically using the \verb|XICAPACITY| macro.
 
