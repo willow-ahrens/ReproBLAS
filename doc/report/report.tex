@@ -173,9 +173,9 @@
 
         If $r_{j + 1} = r_j - ({Z_j}_P - {Y_j}_P) < 2^{a_{I + j}}$, then ${Z_j}_P - {Y_j}_P = {Z_j}_P - {Y_j}_P = \roundtonearestinfty(r_j, a_{I + j} + 1)$.
 
-        If $r_{j + 1} = r_j - ({Z_j}_P - {Y_j}_P) = 2^{a_{I + j}}$, then since $\ulp(r_j) < 2^{a_{I + j}}$, $(r_j | 1) - r_j > 0$ and the rounding in line \ref{alg:deposit:split} must have gone towards infinity. ${Z_j}_P - {Y_j}_P = {Z_j}_P - {Y_j}_P = \roundtonearestinfty(r_j, a_{I + j} + 1)$.
+        If $r_{j + 1} = r_j - ({Z_j}_P - {Y_j}_P) = 2^{a_{I + j}}$, then since $\ulp(r_j) < 2^{a_{I + j}}$, $(r_j | 1) - r_j > 0$ and the rounding in line \ref{alg:deposit:split} must have gone away from 0. ${Z_j}_P - {Y_j}_P = {Z_j}_P - {Y_j}_P = \roundtonearestinfty(r_j, a_{I + j} + 1)$.
 
-        We show ${Z_j}_P - {Y_j}_P = d(x, a_{I + j}, b_{I + j})$ for all $j \in \{0, ..., fold - 1\}$ by induction.
+        We show ${Z_j}_P - {Y_j}_P = d(x, a_{I + j}, b_{I + j})$ for all $j \in \{0, ..., fold - 1\}$ by induction. As a base case, $|r_0| = |x| < 2^{b_I}$ and ${Z_0}_P - {Y_0}_P = \roundtonearestinfty(r_0, a_{I} + 1)$, therefore ${Z_0}_P - {Y_0}_P = d(x, a_I, b_I)$. As an inductive step, if ${Z_j}_P - {Y_j}_P = d(x, a_{I + j}, b_{I + j})$, then since ...
       \end{proof}
 
   Because $d(x, a_{I + j}, b_{I + j}) = 0$ for bins that are larger than the input, the top $fold$ accumulators can be computed reproducibly by computing the values in the top $fold$ accumulators needed for the largest $x$ seen so far and shifting them upwards (towards index $0$) as necessary. \cite{repsum} contains further discussions of the reproducibility of the algorithm.
