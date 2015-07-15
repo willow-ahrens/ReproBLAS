@@ -80,10 +80,10 @@ int verify_dgemv_reproducibility(int fold, char Order, char TransA, int M, int N
               switch(Order){
                 case 'r':
                 case 'R':
-                  wrap_dgemvI(Order, TransA, block_N, N, alpha, A + i * lda, lda, X + i * incX, incX, Ires, incY);
+                  didgemv(fold, Order, TransA, block_N, N, alpha, A + i * lda, lda, X + i * incX, incX, Ires, incY);
                   break;
                 default:
-                  wrap_dgemvI(Order, TransA, block_N, N, alpha, A + i, lda, X + i * incX, incX, Ires, incY);
+                  didgemv(fold, Order, TransA, block_N, N, alpha, A + i, lda, X + i * incX, incX, Ires, incY);
                   break;
               }
             }
@@ -131,10 +131,9 @@ const char* matvec_fill_name(int argc, char** argv){
   return name_buffer;
 }
 
-int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int N, int FillA, double RealScaleA, double ImagScaleA, int lda, int FillX, double RealScaleX, double ImagScaleX, int incX){
+int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int N, double complex alpha, int FillA, double RealScaleA, double ImagScaleA, int lda, int FillX, double RealScaleX, double ImagScaleX, int incX, double complex beta, int FillY, double RealScaleY, double ImagScaleY, int incY){
   int rc = 0;
   int i;
-  int max_num_blocks;
 
   verify_rdgemv_options_initialize();
 
@@ -168,9 +167,9 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
 
   util_dmat_fill(Order, 'n', M, N, A, lda, FillA, RealScaleA, ImagScaleA);
   util_dvec_fill(NX, X, incX, FillX, RealScaleX, ImagScaleX);
-  util_dvec_fill(NY, Y, incY, FillY._named.value, RealScaleY._double.value, ImagScaleY._double.value);
+  util_dvec_fill(NY, Y, incY, FillY, RealScaleY, ImagScaleY);
   for(i = 0; i < NY; i++){
-    didconv(fold._int.value, Y[i * incY] * ((double*)beta)[0], YI + i * incY * dinum(fold._int.value));
+    didconv(fold._int.value, Y[i * incY] * ((double*)&beta)[0], YI + i * incY * dinum(fold._int.value));
   }
   double *ref  = (double*)malloc(NY * incY * sizeof(double));
   double_indexed *Iref = (double_indexed*)malloc(NY * incY * disize(fold._int.value));
@@ -179,8 +178,8 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   memcpy(ref, Y, NY * incY * sizeof(double));
   memcpy(Iref, YI, NY * incY * disize(fold._int.value));
 
-  wrap_rdgemv(Order, TransA, M, N, A, alpha, lda, X, incX, beta, ref, incY);
-  wrap_dgemvI(Order, TransA, M, N, A, alpha, lda, X, incX, beta, Iref, incY);
+  wrap_rdgemv(fold._int.value, Order, TransA, M, N, alpha, A, lda, X, incX, beta, ref, incY);
+  didgemv(fold._int.value, Order, TransA, M, N, alpha, A, lda, X, incX, Iref, incY);
 
   P = util_identity_permutation(NX);
   util_dvec_reverse(NX, X, incX, P, 1);

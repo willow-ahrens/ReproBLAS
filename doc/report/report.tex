@@ -69,24 +69,38 @@
     An indexed type $Y$ is a data structure composed of several accumulator data structures $Y_0, ..., Y_{fold - 1}$. The number of accumulators in an indexed type is referred to as its \textbf{fold}. Due to their low accuracy, indexed types of fold 1 are not considered.
 
     Let $Y$ be the indexed type corresponding to the reproducibly computed sum of $x_0, ..., x_{n - 1} \in \F$.
-    Each accumulator $Y_j$ accumulates input in some \textbf{bin} $(a_{I + j}, b_{I + j}], a_{I + j} < b_{I + j} \in \Z$ where $I$ is the \textbf{index} of $Y$. The \textbf{width} of an indexed type is equal to the width of its bins, ($b_{I + j} - a_{I + j}$). The real number value $\mathcal{Y}_j$ represented by an accumulator data structure $Y_j$ is the sum of all input that can be expressed using bits with values $2^e, e \in (a_{I + j}, b_{I + j}]$. Specifically, $\mathcal{Y}_j = \sum\limits_{k = 0}^{n - 1}d(x_k, a_{I + j}, b_{I + j})$. $d(x, a, b)$ is defined in equation \ref{eq:bin}.
+    Each accumulator $Y_j$ is a data structure used to accumulate input in some \textbf{bin} $(a_{I + j}, b_{I + j}], a_{I + j} < b_{I + j} \in \Z$ where $I$ is the \textbf{index} of $Y$. The \textbf{width} of an indexed type is equal to the width of its bins, ($b_{I + j} - a_{I + j}$). The input that resides in a bin $(a, b]$ is the portion of input that can be expressed using bits with values $2^e, e \in (a, b]$. Specifically, the \textbf{slice} of input $x \in \F$ in the bin $(a, b]$ is defined as $d(x, a, b)$. $d(x, a, b)$ is defined in equation \ref{eq:bin}.
 
     \begin{equation}
-    \label{eq:bin}
-    d(x, a, b) = \begin{cases}\roundtonearestinfty(x - \roundtonearestinfty(x, b + 1, a + 1) \text{ if } |x| \geq 2^b \\ \roundtonearestinfty(x, a + 1) \text{ if } 2^b > |x| \geq 2^a \\ 0 \text{ if } 2^a > |x| \end{cases}
+      \label{eq:bin}
+      d(x, a, b) = \begin{cases}\roundtonearestinfty(x - \roundtonearestinfty(x, b + 1), a + 1) \text{ if } |x| \geq 2^b \\ \roundtonearestinfty(x, a + 1) \text{ if } 2^b > |x| \end{cases}
     \end{equation}
 
-    For ease of computation, accumulator ranges are chosen to be precomputed, fixed width intervals starting at $e_{\max}$. The possible bins $(a_0, b_0], (a_1, b_1], ...$ for an indexed type of width $W$ are
+    \ref{thm:dzero} and \ref{thm:dtransitive} follow from the definition of $d$.
+
+    \begin{thm}
+      For all $a < b \in \Z$, $x \in \F$ such that $2^a > |x|$, $d(x, a, b) = 0$
+      \label{thm:dzero}
+      TODO: proof
+    \end{thm}
+
+    \begin{thm}
+      For all $a < b < c \in \Z$, $x \in \F$, $d(x, a, b) + d(x, b, c) = d(x, a, c)$.
+      TODO: proof
+      \label{thm:dtransitive}
+    \end{thm}
+
+    For ease of computation, accumulator ranges are chosen from precomputed, fixed width intervals starting at $e_{\max}$. The possible bins $(a_0, b_0], (a_1, b_1], ...$ for an indexed type of width $W$ are
 
     \begin{equation*}
-      a_i = e_{\max} - W + 1 - i\times W, 0 \leq i < (e_{\max} - W - e_{\min} + p - 1)/W
+      a_i = e_{\max} - W + 1 - i\times W, 0 \leq i < (e_{\max} - e_{\min} + p - 1)/W
     \end{equation*}
 
     \begin{equation*}
       b_i = a_i + W
     \end{equation*}
 
-    We use $i < (e_{\max} - W - e_{\min} + p - 1)/W$ to ensure that $a_i > e_{\min} - p + 1$ as discussed in section \ref{sec:underflow}. This means that the highest bin is
+    We use $i < (e_{\max} - e_{\min} + p - 1)/W$ to ensure that $a_i > e_{\min} - p + 1$ as discussed in Section \ref{sec:underflow}. This means that the highest bin is
 
     \begin{equation*}
     (e_{\max} + 1 - W, e_{\max} + 1]
@@ -99,49 +113,72 @@
     e_{\min} - p + 2 + W + ((e_{\max} - e_{\min} + p - 1)\mod W)]
     \end{equation*}
 
-    Section \ref{sec:underflow} explains why input in the bin
+    Section \ref{sec:underflow} explains why the slices of input in the bin
 
     \begin{equation*}
     (e_{\min} - p, e_{\min} - p + 2 + ((e_{\max} - e_{\min} + p - 1) \mod W)]
     \end{equation*}
 
-    is not accumulated.
+    are not accumulated.
 
-    As discussed in \cite{repsum}, $W < p - 2$. As discussed in section \ref{sec:overflow}, $2\times W > p + 1$.
+    As discussed in \cite{repsum}, $W < p - 2$. As discussed in Section \ref{sec:overflow}, $2\times W > p + 1$.
 
-    The accumulators in an indexed type correspond to contiguous bins in decreasing order. The index of $Y$ is defined as the least $I \in \Z$ such that $2^{b_I + 1} > \max(|x_0|, ..., |x_n|)$ (equivalently, the least $I \in \Z$ such that $b_I > \max(e_0, ..., e_n)$). If $Y$ has index $I$, then $Y_j, j \in \{0, ..., fold - 1\}$ accumulates numbers in the bin $(a_{I + j}, b_{I + j}]$.
+    The accumulators in an indexed type correspond to contiguous bins in decreasing order. The index of $Y$ is defined as the least $I \in \Z$ such that $2^{b_I + 1} > \max(|x_0|, ..., |x_n|)$ (equivalently, the least $I \in \Z$ such that $b_I > \max(e_0, ..., e_n)$). If $Y$ has index $I$, then $Y_j, j \in \{0, ..., fold - 1\}$ accumulates slices of input in the bin $(a_{I + j}, b_{I + j}]$.
 
   \subsection{Implementation}
     \subsubsection{Data Types}
       As discussed in \cite{repsum}, indexed types are represented using floating point numbers to minimize traffic between floating point and integer arithmetic units. If an indexed type is used to sum \verb|doubles|, then it is composed entirely of \verb|doubles| and likewise for \verb|floats|. ReproBLAS supports complex types as pairs of real and imaginary components (stored contiguously in memory). If an indexed type is used to sum complex \verb|doubles| or \verb|floats|, then it is composed of pairs of real and imaginary \verb|doubles| or \verb|floats| respectively. The decision to keep the real and imaginary components together (as opposed to keeping separate indexed types for real and imaginary parts of the sum) was motivated by a desire to process accumulators simultaneously with vectorized (SIMD) instructions.
 
     \subsubsection{Primary and Carry}
-      The accumulators $Y_j$ of an indexed type $Y$ are each implemented using two underlying floating point fields. The \textbf{primary} field ${Y_j}_P$ is used during accumulation, while the \textbf{carry} field ${Y_j}_C$ holds overflow from the primary field. Because primary fields are frequently accessed sequentially, the primary fields and carry fields are each stored contiguously in separate arrays. Note that the notation for the primary field ${Y_j}_P$ and carry field ${Y_j}_C$ corresponds to the $S_k$ and $C_k$ of algorithm $6$ in \cite{repsum}.
+      The accumulators $Y_j$ of an indexed type $Y$ are each implemented using two underlying floating point fields. The \textbf{primary} field ${Y_j}_P$ is used during accumulation, while the \textbf{carry} field ${Y_j}_C$ holds overflow from the primary field. Because primary fields are frequently accessed sequentially, the primary fields and carry fields are each stored contiguously in separate arrays. The notation for the primary field ${Y_j}_P$ and carry field ${Y_j}_C$ corresponds to the $S_k$ and $C_k$ of Algorithm $6$ in \cite{repsum}.
 
-      The value ${\mathcal{Y}_j}_P$ is stored in the primary field ${Y_j}_P$ as an offset from $1.5\times \epsilon^{-1} \times 2^{a_{I + j}}$ (corresponding to $M_{[i]}$ at the beginning of section IV.A. in \cite{repsum}). This greatly simplifies the process of extracting the components of the input belonging in bin $(a_{I + j}, b_{I + j}]$.
+      The value ${\mathcal{Y}_j}_P$ is stored in the primary field ${Y_j}_P$ as an offset from $1.5\times \epsilon^{-1} \times 2^{a_{I + j}}$ (corresponding to $M_{[i]}$ at the beginning of Section IV.A. in \cite{repsum}). This greatly simplifies the process of extracting the slices of the input in bin $(a_{I + j}, b_{I + j}]$.
       The value ${\mathcal{Y}_j}_P$ stored in the primary field ${Y_j}_P$ of an indexed type $Y$ of index $I$ is expressed in Equation \ref{eq:pri}
       \begin{equation}
         {\mathcal{Y}_j}_P = {Y_j}_P - 1.5\times\epsilon^{-1}\times2^{a_{I + j}}
         \label{eq:pri}
       \end{equation}
-      As discussed in \cite{repsum}, if we store each primary value ${\mathcal{Y}_j}_P$ as an offset from $1.5 \times \epsilon^{-1} \times 2^{a_{I + j}}$ and keep ${Y_j}_P$ within the range $(\epsilon^{-1} \times 2^{a_{I + j}}, 2 \times \epsilon^{-1} \times 2^{a_{I + j}})$, Algorithm \ref{alg:deposit} extracts the components of $x$ belonging to bins $(a_I, b_I], ..., (a_{I + fold - 1}, b_{I + fold - 1}]$ and adds them to ${Y_0}_P, ..., {Y_{fold - 1}}_P$ without error (and hence reproducibly) for all $x \in \F, |x| < 2^{b_I}$.
+      It will be shown in Theorem \ref{thm:ddeposit} that if we store each primary value ${\mathcal{Y}_j}_P$ as an offset from $1.5 \times \epsilon^{-1} \times 2^{a_{I + j}}$ and keep ${Y_j}_P$ within the range $(\epsilon^{-1} \times 2^{a_{I + j}}, 2 \times \epsilon^{-1} \times 2^{a_{I + j}})$, Algorithm \ref{alg:deposit} extracts the slices of $x$ belonging to bins $(a_I, b_I], ..., (a_{I + fold - 1}, b_{I + fold - 1}]$ and adds them to ${Y_0}_P, ..., {Y_{fold - 1}}_P$ without error (and hence reproducibly) for all $x \in \F, |x| < 2^{b_I}$.
       \begin{alg}
         Extract components of floating point $x \in \F, |x| < 2^{b_I}$ in bins $(a_I, b_I], ..., (a_{I + fold - 1}, b_{I + fold - 1}]$ and add to indexed $Y$. Here, $(r | 1)$ represents the result of setting the last bit of the mantissa ($m_{p - 1}$) of floating-point $r$ to 1.
-        \begin{algorithmic}
+        \begin{algorithmic}[1]
           \Function{Deposit}{fold, x, Y}
-            \State $r \gets x$
-            \For{$j = 0 \to (fold - 2)$}
-              \State $S \gets {Y_j}_P + (r | 1)$
+            \State $r_0 \gets x$ \label{alg:deposit:rgetsx}
+            \For{$j = 0 \to (fold - 2)$} \label{alg:deposit:loop}
+              \State $S \gets {Y_j}_P + (r_j | 1)$ \label{alg:deposit:split}
               \State $q \gets S - {Y_j}_P$
               \State ${Y_j}_P \gets S$
-              \State $r \gets r - q$
+              \State $r_{j + 1} \gets r_j - q$\label{alg:deposit:endsplit}
             \EndFor
-            \State ${Y_{fold - 1}}_P \gets {Y_{fold - 1}}_P + (r | 1)$
+            \State ${Y_{fold - 1}}_P \gets {Y_{fold - 1}}_P + (r_{fold - 1} | 1)$
           \EndFunction
         \end{algorithmic}
         \label{alg:deposit}
       \end{alg}
-      The last bit of $r$ is set to break ties when rounding ``to nearest even'' such that the amount accumulated does not depend on the size of ${Y_I}_P$ so far and the same amount ($d(x, a_{I + j}, b_{I + j})$) is always correctly deposited in each of $Y$'s primary fields assuming the value in each field satisfies previously specified constraints. Because $d(x, a_{I + j}, b_{I + j}) = 0$ for bins that are larger than the input, the top $fold$ accumulators can be computed reproducibly by computing the values in the top $fold$ accumulators needed for the largest $x$ seen so far and shifting them upwards (towards index $0$) as necessary. \cite{repsum} contains further discussions of the reproducibility of the algorithm.
+      The last bit of $r$ is set to break ties when rounding ``to nearest even'' such that the amount accumulated does not depend on the size of ${Y_I}_P$ so far, meaning that the amount added to each ${Y_j}_P$, ($d(x, a_{I + j}, b_{I + j})$), is well-defined.
+
+      \begin{thm}
+        Let $Y$ be an indexed type of index $I$ and fold $fold$. Let $Z$ be the resulting indexed type from running Algorithm \ref{alg:deposit} on some $x \in \F$, $|x| < 2^{b_I}$. For all $j \in \{0, ..., fold - 1\}$, if ${Y_j}_P, {Z_j}_P \in (\epsilon^{-1} \times 2^{a_{I + j}}, 2 \times \epsilon^{-1} \times 2^{a_{I + j}})$, then ${\mathcal{Z}_j}_P = {\mathcal{Y}_j}_P + d(x, a_{I + j}, b_{I + j})$.
+        \label{thm:ddeposit}
+      \end{thm}
+      \begin{proof}
+        Note that lines \ref{alg:deposit:split}-\ref{alg:deposit:endsplit} correspond to \cite{repsum}[Algorithm 4].
+        Therefore, if $\ulp({Y_j}_P) = \ulp({Z_j}_P)$ and $\ulp(r_j) < \frac{1}{2}\ulp({Y_j}_P)$, Corollary 3 of \cite{repsum} applies and we have that ${Z_j}_P - {Y_j}_P \in \ulp({Y_j})\Z \in 2^{a_{I + j} + 1}\Z$ and that after line \ref{alg:deposit:endsplit}, $|r_{j + 1}| \leq \frac{1}{2}\ulp({Y_j}_P) = 2^{a_{I + j}}\Z$.
+
+        As ${Y_j}_P, {Z_j}_P \in (\epsilon^{-1} \times 2^{a_{I + j}}, 2 \times \epsilon^{-1} \times 2^{a_{I + j}})$, we have $\ulp({Z_j}_P) = \ulp({Y_j}_P)$ for all $j \in \{0, ..., fold - 1\}$.
+
+        We show $|r_j| \leq 2^{b_{I + j}} = 2^{a_{I + j + 1}}$ for all $j \in \{0, ..., fold - 1\}$ inductively. As a base case, since $r_0 = x$ (from line \ref{alg:deposit:rgetsx}), $|r_0| = |x| \leq 2^{b_{I + j}}$. If $|r_j| \leq 2^{b_{I + j}}$ then Theorem \ref{thm:underflowulp} yields $\ulp(r_j) < \frac{1}{2}\ulp({Y_j}_P)$. Thus, Corollary 3 of \cite{repsum} applies and we have that $|r_{j + 1}| \leq \frac{1}{2}\ulp({Y_j}_P) = 2^{a_{I + j}}$.
+
+        Next, we show ${Z_j}_P - {Y_j}_P = \roundtonearestinfty(r_j, a_{I + j} + 1)$. As Corollary 3 of \cite{repsum} applies for all $j$, then ${Z_j}_P - {Y_j}_P \in 2^{a_{I + j} + 1}\Z$. As $r_{j + 1} = r_j - ({Z_j}_P - {Y_j}_P) \leq 2^{a_{I + j}}$, we consider two cases.
+
+        If $r_{j + 1} = r_j - ({Z_j}_P - {Y_j}_P) < 2^{a_{I + j}}$, then ${Z_j}_P - {Y_j}_P = {Z_j}_P - {Y_j}_P = \roundtonearestinfty(r_j, a_{I + j} + 1)$.
+
+        If $r_{j + 1} = r_j - ({Z_j}_P - {Y_j}_P) = 2^{a_{I + j}}$, then since $\ulp(r_j) < 2^{a_{I + j}}$, $(r_j | 1) - r_j > 0$ and the rounding in line \ref{alg:deposit:split} must have gone towards infinity. ${Z_j}_P - {Y_j}_P = {Z_j}_P - {Y_j}_P = \roundtonearestinfty(r_j, a_{I + j} + 1)$.
+
+        We show ${Z_j}_P - {Y_j}_P = d(x, a_{I + j}, b_{I + j})$ for all $j \in \{0, ..., fold - 1\}$ by induction.
+      \end{proof}
+
+  Because $d(x, a_{I + j}, b_{I + j}) = 0$ for bins that are larger than the input, the top $fold$ accumulators can be computed reproducibly by computing the values in the top $fold$ accumulators needed for the largest $x$ seen so far and shifting them upwards (towards index $0$) as necessary. \cite{repsum} contains further discussions of the reproducibility of the algorithm.
       It is worth noting here that due to Corollary $3$ in \cite{repsum}, $|r| \leq 2^{b_{I + j}}$ when adding $(r | 1)$ to ${Y_j}_P$.
 
       In order to keep the primary fields in the necessary range during a deposit operation and to keep the representation of $Y_j$ unique, ${Y_j}_P$ is routinely renormalized to the range $[1.5 \times\epsilon^{-1} \times 2^{a_{I + j}}, 1.75 \times\epsilon^{-1} \times 2^{a_{I + j}})$.
@@ -158,7 +195,7 @@
       \end{equation}
       Therefore the value $\mathcal{Y}$ represented by an indexed type $Y$ of index $I$ and fold $fold$ (the sum of $Y$'s accumulators) can be expressed as in Equation \ref{eq:indexedvalue}.
       \begin{equation}
-        y = \sum\limits_{j = 0}^{fold - 1} \mathcal{Y}_j = \sum\limits_{j = 0}^{fold - 1} ({Y_j}_P - 1.5 \times\epsilon^{-1}\times 2^{a_{I + j}}) + {Y_j}_C \times 0.25\times\epsilon^{-1}\times2^{a_{I + j}}
+        \mathcal{Y} = \sum\limits_{j = 0}^{fold - 1} \mathcal{Y}_j = \sum\limits_{j = 0}^{fold - 1} ({Y_j}_P - 1.5 \times\epsilon^{-1}\times 2^{a_{I + j}}) + {Y_j}_C \times 0.25\times\epsilon^{-1}\times2^{a_{I + j}}
         \label{eq:indexedvalue}
       \end{equation}
       It is worth noting here that because the primary field ${Y_0}_P$ is stored with an exponent of $a_I + p$, it is unnecessary to store the index of an indexed type explicitly. The index can be determined by simply examining the exponent of ${Y_0}_P$, as all $a_I$ are distinct and the mapping between the exponent of ${Y_0}_P$ and the index of $Y$ is bijective.
@@ -216,14 +253,13 @@
       \label{sec:underflow}
       Here we consider the effects of underflow on algorithms described in \cite{repsum} and how they can be avoided. In Algorithm \ref{alg:deposit}, when the last bit of $r$ is set to 1, it is assumed that this last bit will only serve to fix the direction of the rounding mode. However, if ${Y_j}_P$ is denormalized, that last bit may very well be accumulated!
 
-      For Algorithm \ref{alg:deposit} to work correctly when adding $r | 1$ to ${Y_j}_P$, $\ulp(r)$ must be less than half of the rounding error when adding a number to ${Y_j}_P$. Mathematically, $\ulp(r) < \ulp({Y_j}_P)/2$.
+      For Algorithm \ref{alg:deposit} to work correctly when adding $r | 1$ to ${Y_j}_P$, $\ulp(r)$ must be less than half of the rounding error when adding a number to ${Y_j}_P$. Mathematically, $\ulp(r) < \frac{1}{2}\ulp({Y_j}_P)$.
 
-      We can show $\ulp(r) < \ulp({Y_j}_P)/2$ by examining the cases where $r$ is either normalized or denormalized.
-
-      If $r$ is normalized, then because $|r| \leq 2^{b_{I + j}} = \ufp({Y_j}_P)/2^{p - W}$, and $W < p - 2$, we have $\ulp(r) < \ulp({Y_j}_P)/2$.
-
-      If $r$ is denormalized, $\ulp(r) = 2^{e_{\min} - p + 1}$ since the unit in the last place of a denormalized number is always equal to $2^{e_{\min} - p + 1}$.
-
+      \begin{thm}
+        For any primary field ${Y_j}_P$ of an indexed type $Y$ of index $I$ and any $r \in \F$, $\ulp(r) < \frac{1}{2}\ulp({Y_j}_P)$ and $a_{I + j} > e_{\min} - p + 1$.
+        \label{thm:underflowulp}
+      \end{thm}
+      \begin{proof}
       The lowest bin is
 
       \begin{equation*}
@@ -233,20 +269,17 @@
       Because ${Y_j}_P \in (\epsilon \times a_{I + j}, 2 \times \epsilon \times a_{I + j})$ and
 
       \begin{equation*}
-      e_{\min} - p + 2 + ((e_{\max} - e_{\min} + p- 1) \mod W) > e_{\min} - p + 1
+      e_{\min} - p + 2 + ((e_{\max} - e_{\min} + p- 1) \mod W) > e_{\min} - p + 2
       \end{equation*}
 
-      ${Y_j}_P$ is normalized and the unit in the last place of ${Y_j}_P$ is $a_{I + j} > e_{\min} - p + 1$.
+      ${Y_j}_P$ is normalized and the unit in the last place of ${Y_j}_P$ is $a_{I + j} + 1 > e_{\min} - p + 2$.
 
-        Therefore, $\ulp(r) < \ulp({Y_j}_P)/2$ and deposits on the lowest bin and all larger bins satisfy $\ulp(r) < \ulp({Y_j}_P)/2$ and are exact.
+      If $r$ is normalized, then because $\ulp(r) \leq 2^{1 - p}|r| \leq 2^{b_{I + j} - (p - 1)} \leq 2^{a_{I + j} + W - (p - 1)}$, and $W < p - 2$, we have $\ulp(r) < \frac{1}{2}\ulp({Y_j}_P)$.
 
-      Since $W < p - 2$,
+      If $r$ is denormalized, $\ulp(r) = 2^{e_{\min} - p + 1}$ since the unit in the last place of a denormalized number is always equal to $2^{e_{\min} - p + 1}$. Therefore $\ulp(r) = 2^{e_{\min} - p + 1} < 2^{a_{I + j}} = \frac{1}{2}\ulp({Y_j}_P)$.
+      \end{proof}
 
-      \begin{equation*}
-      e_{\min} - p + 2 + ((e_{\max} - e_{\min} + p - 2)\mod W) < e_{\min}
-      \end{equation*}
-
-      Therefore, all input in the bin $(e_{\min} - 1, e_{\max} + 1]$ is deposited.
+      A consequence of theorem \ref{thm:underflowulp} and theorem \ref{thm:dtransitive} is that the slice of input in the bin $(e_{\min} - 1, e_{\max} + 1]$ can be deposited.
 
       There are several ways to deposit the input in the denormalized range. One simple way the algorithm could be extended to denormalized inputs would be to scale the bottom bins up, as was done to handle overflow. Due to the relatively low priority for accumulating denormalized values, these methods were not implemented.
 

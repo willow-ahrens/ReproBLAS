@@ -5,7 +5,7 @@
 
 int matvec_fill_show_help(void);
 const char *matvec_fill_name(int argc, char** argv);
-int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int N, double complex alpha, int FillA, double RealScaleA, double ImagScaleA, int lda, int FillX, double RealScaleX, double ImagScaleX, int incX, double complax beta, int FillY, double RealScaleY, double ImagScaleY, int incY);
+int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int N, double complex alpha, int FillA, double RealScaleA, double ImagScaleA, int lda, int FillX, double RealScaleX, double ImagScaleX, int incX, double complex beta, int FillY, double RealScaleY, double ImagScaleY, int incY);
 
 static opt_option FillA;
 static opt_option RealScaleA;
@@ -184,7 +184,7 @@ const char* matvec_name(int argc, char** argv){
   return name_buffer;
 }
 
-int matvec_test(int argc, char** argv, char Order, char TransA, int M, int N, int lda, int incX){
+int matvec_test(int argc, char** argv, char Order, char TransA, int M, int N, int lda, int incX, int incY){
   int rc;
   double alpha[2];
   double beta[2];
