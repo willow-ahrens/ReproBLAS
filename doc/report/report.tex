@@ -22,12 +22,14 @@
 \providecommand{\ulp}{\ensuremath{\text{ulp}}}
 \providecommand{\ufp}{\ensuremath{\text{ufp}}}
 \providecommand{\fl}{\ensuremath{\text{fl}}}
-\providecommand{\roundtonearestinfty}{\ensuremath{\text{round}_\text{to nearest, $\infty$}}}
+\providecommand{\To}{\ensuremath{\text{ to }}}
+\providecommand{\roundtonearestinfty}{\ensuremath{\mathcal{R}_\text{$\infty$}}}
 \theoremstyle{plain}
 \newtheorem{thm}{Theorem}[section]
 \newtheorem{lem}[thm]{Lemma}
 \newtheorem{alg}{Algorithm}[section]
-\newtheorem{eq}{Equation}[section]
+\numberwithin{equation}{section}
+
 \graphicspath{{plots}}
 \begin{document}
 \noindent
@@ -39,9 +41,9 @@
 \section{Notation and Background}
   Let $\R, \F, $ and $\Z$ denote the sets of real numbers, floating-point numbers, and integers respectively.
 
-  Assume that floating point arithmetic complies with the IEEE 754-2008 standard \cite{ieee754} in ``to nearest even'' rounding mode and that underflow occurs gradually.
+  Assume that floating point arithmetic complies with the IEEE 754-2008 standard \cite{ieee754} in ``to nearest even'' rounding mode and that underflow occurs gradually, although the case of flush-to-zero will be considered in Section \ref{sec:underflow}.
 
-  Let $f = s \times 2^e \times m \in \F$ be a floating-point number represented in IEEE 754-2008 format \cite{ieee754} where $s = \pm 1$ is the \textbf{sign}, $e_{\max} \geq e \geq e_{\min}$ is the \textbf{exponent} ($\exp(f)$ is defined to be $e$), $p$ is the \textbf{precision}, and $m = m_0.m_1m_2...m_{p-1}$ where $m_1, ..., m_{p - 1} \in \{0, 1\}$ is the \textbf{significand} of $f$. $f$ is said to be \textbf{normalized} if $m_0 = 1$ and $e > e_{\min}$, \textbf{unnormalized} if $m_0 = 0$, and \textbf{denormalized} if $m_0 = 0$ and $e = e_{\min}$. $f = 0$ if all $m_k = 0$ and $e = e_{\min}$.
+  Let $f = s \times 2^e \times m \in \F$ be a floating-point number represented in IEEE 754-2008 format \cite{ieee754} where $s = \pm 1$ is the \textbf{sign}, $e_{\max} \geq e \geq e_{\min}$ is the \textbf{exponent} ($\exp(f)$ is defined to be $e$), $p$ is the \textbf{precision}, and $m = m_0.m_1m_2...m_{p-1}$ where $m_0, ..., m_{p - 1} \in \{0, 1\}$ is the \textbf{significand} of $f$. $f$ is said to be \textbf{normalized} if $m_0 = 1$ and $e > e_{\min}$, \textbf{unnormalized} if $m_0 = 0$, and \textbf{denormalized} if $m_0 = 0$ and $e = e_{\min}$. $f = 0$ if all $m_k = 0$ and $e = e_{\min}$.
 
   Machine epsilon, $\epsilon$, the difference between 1 and the greatest floating point number smaller than 1, is defined as $\epsilon = 2^{-p}$.
 
@@ -51,106 +53,185 @@
 
   $\fl(\dot)$ denotes the evaluated result of an expression in floating point arithmetic.
 
-  We define the function $\roundtonearestinfty(x, 2^k), x \in R, k \in \Z$ as
+  We define the function $\roundtonearestinfty(x, k), x \in R, k \in \Z$ as
 
-  \begin{equation*}
+  \begin{equation}
   \roundtonearestinfty(x, k) = \begin{cases}\floor{x/2^k + 1/2} \times 2^k \text{ if } x \geq 0\\ \\ \ceil{x/2^k - 1/2}\times 2^k \text{ otherwise}\end{cases}
-  \end{equation*}
+  \end{equation}
 
-  $\roundtonearestinfty(x, 2^k)$ rounds $x$ to the nearest multiple of $2^k$, breaking ties away from 0.
+  $\roundtonearestinfty(x, 2^k)$ rounds $x$ to the nearest multiple of $2^k$, breaking ties away from 0. A property of such rounding is shown in equation \ref{eq:round}
+
+  \begin{equation}
+    |x - \roundtonearestinfty(x, k)| \leq 2^{k - 1}
+    \label{eq:round}
+  \end{equation}
 
   As ReproBLAS is written in C, \verb|float| and \verb|double| refer to the floating point types specified in the 1989 C standard \cite{c89} and we assume that they correspond to the \verb|binary-32| and \verb|binary-64| types in the IEEE 754-2008 floating point standard \cite{ieee754}.
 
   All indices start at $0$ in correspondence with the actual ReproBLAS implementation.
-
 \section{The Indexed Type}
-  \subsection{Representation}
-    The \textbf{indexed type} is used to represent the intermediate result of accumulation using Algorithms 6 and $7$ in \cite{repsum}.
-    An indexed type $Y$ is a data structure composed of several accumulator data structures $Y_0, ..., Y_{fold - 1}$. The number of accumulators in an indexed type is referred to as its \textbf{fold}. Due to their low accuracy, indexed types of fold 1 are not considered.
-
-    Let $Y$ be the indexed type corresponding to the reproducibly computed sum of $x_0, ..., x_{n - 1} \in \F$.
-    Each accumulator $Y_j$ is a data structure used to accumulate input in some \textbf{bin} $(a_{I + j}, b_{I + j}], a_{I + j} < b_{I + j} \in \Z$ where $I$ is the \textbf{index} of $Y$. The \textbf{width} of an indexed type is equal to the width of its bins, ($b_{I + j} - a_{I + j}$). The input that resides in a bin $(a, b]$ is the portion of input that can be expressed using bits with values $2^e, e \in (a, b]$. Specifically, the \textbf{slice} of input $x \in \F$ in the bin $(a, b]$ is defined as $d(x, a, b)$. $d(x, a, b)$ is defined in equation \ref{eq:bin}.
+  \subsection{Binning}
+    We start by dividing the exponent range $(e_{\min} - p, ..., e_{\max} + 1]$ into \textbf{bins} $(a_i, b_i]$ of \textbf{width} $W$ according to Equations \ref{eq:a} and \ref{eq:b}.
 
     \begin{equation}
-      \label{eq:bin}
-      d(x, a, b) = \begin{cases}\roundtonearestinfty(x - \roundtonearestinfty(x, b + 1), a + 1) \text{ if } |x| \geq 2^b \\ \roundtonearestinfty(x, a + 1) \text{ if } 2^b > |x| \end{cases}
+      a_i = e_{\max} - W + 1 - i\times W, 0 \leq i < (e_{\max} - e_{\min} + p - 1)/W
+      \label{eq:a}
     \end{equation}
 
-    \ref{thm:dzero} and \ref{thm:dtransitive} follow from the definition of $d$.
-
-    \begin{thm}
-      For all $a < b \in \Z$, $x \in \F$ such that $2^a > |x|$, $d(x, a, b) = 0$
-      \label{thm:dzero}
-      TODO: proof
-    \end{thm}
-
-    \begin{thm}
-      For all $a < b < c \in \Z$, $x \in \F$, $d(x, a, b) + d(x, b, c) = d(x, a, c)$.
-      TODO: proof
-      \label{thm:dtransitive}
-    \end{thm}
-
-    For ease of computation, accumulator ranges are chosen from precomputed, fixed width intervals starting at $e_{\max}$. The possible bins $(a_0, b_0], (a_1, b_1], ...$ for an indexed type of width $W$ are
-
-    \begin{equation*}
-      a_i = e_{\max} - W + 1 - i\times W, 0 \leq i < (e_{\max} - e_{\min} + p - 1)/W
-    \end{equation*}
-
-    \begin{equation*}
+    \begin{equation}
       b_i = a_i + W
-    \end{equation*}
+      \label{eq:b}
+    \end{equation}
+
+    We say the bin $(a_{i_0}, b_{i_0}]$ is \textbf{higher} than the bin $(a_{i_1}, b_{i_1}]$ if $a_{i_0} < a_{i_1}$ (which is equivalent to both $b_{i_0} > b_{i_1}$ and $i_0 < i_1$).
+
+    We say the bin $(a_{i_0}, b_{i_0}]$ is \textbf{lower} than the bin $(a_{i_1}, b_{i_1}]$ if $a_{i_0} > a_{i_1}$ (which is equivalent to both $b_{i_0} < b_{i_1}$ and $i_0 > i_1$).
 
     We use $i < (e_{\max} - e_{\min} + p - 1)/W$ to ensure that $a_i > e_{\min} - p + 1$ as discussed in Section \ref{sec:underflow}. This means that the highest bin is
 
-    \begin{equation*}
-    (e_{\max} + 1 - W, e_{\max} + 1]
-    \end{equation*}
+    \begin{equation}
+      (e_{\max} + 1 - W, e_{\max} + 1]
+      \label{eq:binmax}
+    \end{equation}
 
     and the lowest bin is
 
-    \begin{equation*}
-    (e_{\min} - p + 2 + ((e_{\max} - e_{\min} + p - 1)\mod W),
-    e_{\min} - p + 2 + W + ((e_{\max} - e_{\min} + p - 1)\mod W)]
-    \end{equation*}
+    \begin{equation}
+      (e_{\min} - p + 2 + ((e_{\max} - e_{\min} + p - 1)\mod W),
+      e_{\min} - p + 2 + W + ((e_{\max} - e_{\min} + p - 1)\mod W)]
+      \label{eq:binmin}
+    \end{equation}
 
-    Section \ref{sec:underflow} explains why the slices of input in the bin
+    Section \ref{sec:underflow} explains why the range
 
     \begin{equation*}
     (e_{\min} - p, e_{\min} - p + 2 + ((e_{\max} - e_{\min} + p - 1) \mod W)]
     \end{equation*}
 
-    are not accumulated.
+    is ignored.
 
-    As discussed in \cite{repsum}, $W < p - 2$. As discussed in Section \ref{sec:overflow}, $2\times W > p + 1$.
+    Throughout the text we will refer to the \textbf{slice} of some $x \in \F$ in the \textbf{bin} $(a_i, b_i]$. $x$ can be split into several slices, each slice corresponding to a bin $(a_i, b_i]$ and expressible as the (possibly negated) sum of a subset of $\{2^e, e \in (a_i, b_i]\}$, such that the sum of the slices provides a good approximation of $x$. Specifically, the slice of $x \in \F$ in the bin $(a_i, b_i]$ is defined as $d(x, i)$ in Equation \ref{eq:d}.
+    \begin{equation}
+      d(x, i) = \roundtonearestinfty(x - \sum\limits_{k=0}^{i - 1}d(x,k), a_i + 1)
+      \label{eq:d}
+    \end{equation}
 
-    The accumulators in an indexed type correspond to contiguous bins in decreasing order. The index of $Y$ is defined as the least $I \in \Z$ such that $2^{b_I + 1} > \max(|x_0|, ..., |x_n|)$ (equivalently, the least $I \in \Z$ such that $b_I > \max(e_0, ..., e_n)$). If $Y$ has index $I$, then $Y_j, j \in \{0, ..., fold - 1\}$ accumulates slices of input in the bin $(a_{I + j}, b_{I + j}]$.
+    As it may be unclear that $d(x, i)$ is well defined, Theorem \ref{thm:ddefined} follows.
+    \begin{thm}
+      $d(x, i)$ is well defined for all bins $(a_i, b_i]$ and $x \in \F$.
+      \label{thm:ddefined}
+    \end{thm}
+    \begin{proof}
+      We show the claim by induction on $i$.
+
+      In the base case, $d(x, 0) = \roundtonearestinfty(x, a_0 + 1)$ and $d(x, 0)$ is well defined for all $x \in \F$.
+
+      In the inductive step, assume that $d(x, 0), ..., d(x, i)$ are well defined for all $x \in \F$. $d(x, i + 1)$ is expressed as a well defined expression of well defined terms.
+    \end{proof}
+
+    \ref{thm:dzero} and \ref{thm:dmiddle} follow from the definition of $d(x, i)$
+
+    \begin{thm}
+      For all bins $(a_i, b_i]$ and $x \in \F$ such that $|x| < 2^{a_i}$, $d(x, i) = 0$
+      \label{thm:dzero}
+    \end{thm}
+    \begin{proof}
+      We prove the theorem by induction on $i$.
+
+      In the base case, we have $|x| < 2^{a_0}$ and $d(x, 0) = \roundtonearestinfty(x, a_0 + 1)$. By the triangle inequality and Equation \ref{eq:round},
+      \begin{equation*}
+        |\roundtonearestinfty(x, a_0 + 1)| \leq |x| + |x - \roundtonearestinfty(x, a_0 + 1)| < 2^{a_0 + 1}
+      \end{equation*}
+      Since $\roundtonearestinfty(x, a_0 + 1) \in 2^{a_0 + 1}\Z$, we then have
+      \begin{equation*}
+        d(x, 0) = \roundtonearestinfty(x, a_0 + 1) = 0
+      \end{equation*}
+
+      In the inductive step, we have $|x| < 2^{a_{i + 1}} \leq ... \leq 2^{a_0}$ by Equation \ref{eq:a} and therefore $d(x, i)= ... = d(x, 0) = 0$. Thus,
+      \begin{equation*}
+        d(x, i + 1) = \roundtonearestinfty(x - \sum\limits_{k = 0}^{i}d(x, k), a_{i + 1} + 1) = \roundtonearestinfty(x, a_{i+1} + 1)
+      \end{equation*}
+      Again by the triangle inequality and Equation \ref{eq:round},
+      \begin{equation*}
+        |\roundtonearestinfty(x, a_{i + 1} + 1)| \leq |x| + |x - \roundtonearestinfty(x, a_{i + 1} + 1)| < 2^{a_{i + 1} + 1}
+      \end{equation*}
+      Since $\roundtonearestinfty(x, a_{i + 1} + 1) \in 2^{a_{i + 1} + 1}\Z$, we then have
+      \begin{equation*}
+        d(x, i + 1) = \roundtonearestinfty(x, a_{i + 1} + 1) = 0
+      \end{equation*}
+    \end{proof}
+
+    \begin{thm}
+      For all bins $(a_i, b_i]$ and $x \in \F$ such that $|x| < 2^{b_i}$, $d(x, i) = \roundtonearestinfty(x, a_i + 1)$
+      \label{thm:dmiddle}
+    \end{thm}
+    \begin{proof}
+      The claim is a simple consequence of Theorem \ref{thm:dzero}.
+
+      By Equations \ref{eq:a} and \ref{eq:b}, $|x| < 2^{b_i} \leq 2^{a_{i - 1}} \leq  ... \leq 2^{a_0}$. Therefore Theorem \ref{thm:dzero} implies $d(x, 0) = ... = d(x, i - 1) = 0$ and we have
+      \begin{equation*}
+        d(x, i) = \roundtonearestinfty(x - \sum\limits_{k = 0}^{i - 1}d(x, k), a_{i} + 1) = \roundtonearestinfty(x, a_{i} + 1)
+      \end{equation*}
+    \end{proof}
+
+    Theorem \ref{thm:dzero}, Theorem \ref{thm:dmiddle}, and Equation \ref{eq:d} can be combined to yield an alternate definition of $d(x, i)$ for all bins $(a_i, b_i]$ and $x \in \F$.
+
+    \begin{equation}
+      d(x, i) = \begin{cases}0 \text{ if } |x| < 2^{a_i}\\ \roundtonearestinfty(x, a_i + 1) \text{ if } 2^{a_i} \leq |x| < 2^{b_i}\\\roundtonearestinfty(x - \sum\limits_{k=0}^{i - 1}d(x,k), a_i + 1) \text{ if } 2^{b_i} \leq |x| \end{cases}
+      \label{eq:d2}
+    \end{equation}
+
+    Theorem \ref{thm:dround} shows that sum of the slices of $x \in \F$ provides a good approximation of $x$.
+
+    \begin{thm}
+      For all bins $(a_i, b_i]$ and $x \in \F$, $|x - \sum \limits_{k = 0}^id(x, k)| \leq 2^{a_i}$
+      \label{thm:dround}
+    \end{thm}
+
+    \begin{proof}
+      We apply Equation \ref{eq:round} and \ref{eq:d2}
+      \begin{equation*}
+        |x - \sum \limits_{k = 0}^{i}d(x, k)| = |(x - \sum \limits_{k = 0}^{i - 1}d(x, k)) - d(x, i)|
+      \end{equation*}
+      \begin{equation*}
+         = |(x - \sum \limits_{k = 0}^{i - 1}d(x, k)) - \roundtonearestinfty(x - \sum \limits_{k = 0}^{i - 1}d(x, k), a_{i} + 1)| \leq 2^{a_{i}}
+      \end{equation*}
+    \end{proof}
+
+  \subsection{Representation}
+    The \textbf{indexed type} is used to represent the intermediate result of accumulation using Algorithms 6 and $7$ in \cite{repsum}.
+    An indexed type $Y$ is a data structure composed of several accumulator data structures $Y_0, ..., Y_{fold - 1}$. The number of accumulators in an indexed type is referred to as its \textbf{fold}. Due to their low accuracy, indexed types of fold 1 are not considered.
+
+    Let $Y$ be the indexed type corresponding to the reproducibly computed sum of $x_0, ..., x_{n - 1} \in \F$.
+    Each accumulator $Y_j$ is a data structure used to accumulate the slices of input in the bin $(a_{I + j}, b_{I + j}]$ where $I$ is the \textbf{index} of $Y$. The \textbf{width} of an indexed type is equal to the width of its bins, $W$. As discussed in \cite{repsum}, $W < p - 2$. As discussed in Section \ref{sec:overflow}, $2\times W > p + 1$.
+
+    The accumulators in an indexed type correspond to contiguous bins in order of decreasing height. The index of $Y$ is defined as the least $I \in \Z$ such that $2^{b_I + 1} > \max(|x_0|, ..., |x_n|)$ (equivalently, the least $I \in \Z$ such that $b_I > \max(e_0, ..., e_n)$). If $Y$ has index $I$, then $Y_j, j \in \{0, ..., fold - 1\}$ accumulates slices of input in the bin $(a_{I + j}, b_{I + j}]$.
 
   \subsection{Implementation}
     \subsubsection{Data Types}
-      As discussed in \cite{repsum}, indexed types are represented using floating point numbers to minimize traffic between floating point and integer arithmetic units. If an indexed type is used to sum \verb|doubles|, then it is composed entirely of \verb|doubles| and likewise for \verb|floats|. ReproBLAS supports complex types as pairs of real and imaginary components (stored contiguously in memory). If an indexed type is used to sum complex \verb|doubles| or \verb|floats|, then it is composed of pairs of real and imaginary \verb|doubles| or \verb|floats| respectively. The decision to keep the real and imaginary components together (as opposed to keeping separate indexed types for real and imaginary parts of the sum) was motivated by a desire to process accumulators simultaneously with vectorized (SIMD) instructions.
+      As discussed in \cite{repsum}, indexed types are represented using floating point numbers to minimize traffic between floating point and integer arithmetic units. If an indexed type is used to sum \verb|doubles|, then it is composed entirely of \verb|doubles| and likewise for \verb|floats|. ReproBLAS supports complex types as pairs of real and imaginary components (stored contiguously in memory). If an indexed type is used to sum complex \verb|doubles| or \verb|floats|, then it is composed of pairs (real part, imaginary part) of \verb|doubles| or \verb|floats| respectively. The decision to keep the real and imaginary components together (as opposed to keeping separate indexed types for real and imaginary parts of the sum) was motivated by a desire to process accumulators simultaneously with vectorized (SIMD) instructions.
 
     \subsubsection{Primary and Carry}
-      The accumulators $Y_j$ of an indexed type $Y$ are each implemented using two underlying floating point fields. The \textbf{primary} field ${Y_j}_P$ is used during accumulation, while the \textbf{carry} field ${Y_j}_C$ holds overflow from the primary field. Because primary fields are frequently accessed sequentially, the primary fields and carry fields are each stored contiguously in separate arrays. The notation for the primary field ${Y_j}_P$ and carry field ${Y_j}_C$ corresponds to the $S_k$ and $C_k$ of Algorithm $6$ in \cite{repsum}.
+      The accumulators $Y_j$ of an indexed type $Y$ are each implemented using two underlying floating point fields. The \textbf{primary} field ${Y_j}_P$ is used during accumulation, while the \textbf{carry} field ${Y_j}_C$ holds overflow from the primary field. Because primary fields are frequently accessed sequentially, the primary fields and carry fields are each stored contiguously in separate arrays. The notation for the primary field ${Y_j}_P$ and carry field ${Y_j}_C$ corresponds to the ``$S_k$'' and ``$C_k$'' of Algorithm $6$ in \cite{repsum}.
 
-      The value ${\mathcal{Y}_j}_P$ is stored in the primary field ${Y_j}_P$ as an offset from $1.5\times \epsilon^{-1} \times 2^{a_{I + j}}$ (corresponding to $M_{[i]}$ at the beginning of Section IV.A. in \cite{repsum}). This greatly simplifies the process of extracting the slices of the input in bin $(a_{I + j}, b_{I + j}]$.
-      The value ${\mathcal{Y}_j}_P$ stored in the primary field ${Y_j}_P$ of an indexed type $Y$ of index $I$ is expressed in Equation \ref{eq:pri}
+      The value ${\mathcal{Y}_j}_P$ represented by data stored in the primary field ${Y_j}_P$ is an offset from $1.5\times \epsilon^{-1} \times 2^{a_{I + j}}$ (corresponding to ``$M_{[i]}$'' at the beginning of Section IV.A. in \cite{repsum}).
       \begin{equation}
         {\mathcal{Y}_j}_P = {Y_j}_P - 1.5\times\epsilon^{-1}\times2^{a_{I + j}}
         \label{eq:pri}
       \end{equation}
-      It will be shown in Theorem \ref{thm:ddeposit} that if we store each primary value ${\mathcal{Y}_j}_P$ as an offset from $1.5 \times \epsilon^{-1} \times 2^{a_{I + j}}$ and keep ${Y_j}_P$ within the range $(\epsilon^{-1} \times 2^{a_{I + j}}, 2 \times \epsilon^{-1} \times 2^{a_{I + j}})$, Algorithm \ref{alg:deposit} extracts the slices of $x$ belonging to bins $(a_I, b_I], ..., (a_{I + fold - 1}, b_{I + fold - 1}]$ and adds them to ${Y_0}_P, ..., {Y_{fold - 1}}_P$ without error (and hence reproducibly) for all $x \in \F, |x| < 2^{b_I}$.
+      This greatly simplifies the process of extracting the slices of input in bins $(a_{I + j}, b_{I + j}]$. It will be shown in Theorem \ref{thm:ddeposit} that if we represent each primary value ${\mathcal{Y}_j}_P$ as in (\ref{eq:pri}) and keep ${Y_j}_P$ within the range $(\epsilon^{-1} \times 2^{a_{I + j}}, 2 \times \epsilon^{-1} \times 2^{a_{I + j}})$, Algorithm \ref{alg:deposit} extracts the slices of $x$ in bins $(a_I, b_I], ..., (a_{I + fold - 1}, b_{I + fold - 1}]$ and adds them to ${Y_0}_P, ..., {Y_{fold - 1}}_P$ without error (and hence reproducibly) for all $x \in \F, |x| < 2^{b_I}$.
       \begin{alg}
-        Extract components of floating point $x \in \F, |x| < 2^{b_I}$ in bins $(a_I, b_I], ..., (a_{I + fold - 1}, b_{I + fold - 1}]$ and add to indexed $Y$. Here, $(r | 1)$ represents the result of setting the last bit of the mantissa ($m_{p - 1}$) of floating-point $r$ to 1.
+        Extract slices of floating point $x \in \F, |x| < 2^{b_I}$ in bins $(a_I, b_I], ..., (a_{I + fold - 1}, b_{I + fold - 1}]$ and add to indexed $Y$. Here, $(r | 1)$ represents the result of setting the last bit of the mantissa ($m_{p - 1}$) of floating point number $r$ to 1. This is a restatement of lines 15-17 of Algorithm 6 in \cite{repsum}
         \begin{algorithmic}[1]
           \Function{Deposit}{fold, x, Y}
-            \State $r_0 \gets x$ \label{alg:deposit:rgetsx}
-            \For{$j = 0 \to (fold - 2)$} \label{alg:deposit:loop}
-              \State $S \gets {Y_j}_P + (r_j | 1)$ \label{alg:deposit:split}
-              \State $q \gets S - {Y_j}_P$
-              \State ${Y_j}_P \gets S$
-              \State $r_{j + 1} \gets r_j - q$\label{alg:deposit:endsplit}
+            \State $r = x$ \label{alg:deposit:rgetsx}
+            \For{$j = 0 \To (fold - 2)$} \label{alg:deposit:loop}
+              \State $S = {Y_j}_P + (r | 1)$ \label{alg:deposit:split}
+              \State $q = S - {Y_j}_P$
+              \State ${Y_j}_P = S$
+              \State $r = r - q$\label{alg:deposit:endsplit}
             \EndFor
-            \State ${Y_{fold - 1}}_P \gets {Y_{fold - 1}}_P + (r_{fold - 1} | 1)$
+            \State ${Y_{fold - 1}}_P = {Y_{fold - 1}}_P + (r | 1)$
           \EndFunction
         \end{algorithmic}
         \label{alg:deposit}
@@ -158,27 +239,43 @@
       The last bit of $r$ is set to break ties when rounding ``to nearest even'' such that the amount accumulated does not depend on the size of ${Y_I}_P$ so far, meaning that the amount added to each ${Y_j}_P$, ($d(x, a_{I + j}, b_{I + j})$), is well-defined.
 
       \begin{thm}
-        Let $Y$ be an indexed type of index $I$ and fold $fold$. Let $Z$ be the resulting indexed type from running Algorithm \ref{alg:deposit} on some $x \in \F$, $|x| < 2^{b_I}$. For all $j \in \{0, ..., fold - 1\}$, if ${Y_j}_P, {Z_j}_P \in (\epsilon^{-1} \times 2^{a_{I + j}}, 2 \times \epsilon^{-1} \times 2^{a_{I + j}})$, then ${\mathcal{Z}_j}_P = {\mathcal{Y}_j}_P + d(x, a_{I + j}, b_{I + j})$.
+        Let $Y$ be an indexed type of index $I$ and fold $fold$. Assume that we run Algorithm \ref{alg:deposit} on $Y$ and some $x \in \F$, $|x| < 2^{b_I}$. For all $j \in \{0, ..., fold - 1\}$, if ${Y_j}_P \in (\epsilon^{-1} \times 2^{a_{I + j}}, 2 \times \epsilon^{-1} \times 2^{a_{I + j}})$ at all times, then the amount added to ${Y_j}_P$ is exactly $d(x, I + j)$
         \label{thm:ddeposit}
       \end{thm}
       \begin{proof}
-        Note that lines \ref{alg:deposit:split}-\ref{alg:deposit:endsplit} correspond to \cite{repsum}[Algorithm 4].
-        Therefore, if $\ulp({Y_j}_P) = \ulp({Z_j}_P)$ and $\ulp(r_j) < \frac{1}{2}\ulp({Y_j}_P)$, Corollary 3 of \cite{repsum} applies and we have that ${Z_j}_P - {Y_j}_P \in \ulp({Y_j})\Z \in 2^{a_{I + j} + 1}\Z$ and that after line \ref{alg:deposit:endsplit}, $|r_{j + 1}| \leq \frac{1}{2}\ulp({Y_j}_P) = 2^{a_{I + j}}\Z$.
+        Throughout the proof, assume that the phrase ``for all $j$'' means ``for all $j \in \{0, ..., fold - 1\}$.'' Assume also that $r_j$ and $S_j$ refer to the value of $r$ and $S$ after executing line \ref{alg:deposit:split} in the $j^{th}$ iteration of the loop. Throughout the proof, we will assume ${Y_j}_P$ to refers to the initial value of ${Y_j}_P$ and $S_j$ refers to the final value of ${Y_j}_P$. Therefore, $S_j - {Y_j}_P$ is the amount deposited into ${Y_j}_P$.
 
-        As ${Y_j}_P, {Z_j}_P \in (\epsilon^{-1} \times 2^{a_{I + j}}, 2 \times \epsilon^{-1} \times 2^{a_{I + j}})$, we have $\ulp({Z_j}_P) = \ulp({Y_j}_P)$ for all $j \in \{0, ..., fold - 1\}$.
+        Note that lines \ref{alg:deposit:split}-\ref{alg:deposit:endsplit} correspond to Algorithm 4 of \cite{repsum}.
+        Therefore, if $\ulp({Y_j}_P) = \ulp(S_j)$ and $\ulp(r_j) < \frac{1}{2}\ulp({Y_j}_P)$, Corollary 3 of \cite{repsum} applies and we have that $S_j - {Y_j}_P \in \ulp({Y_j})\Z \in 2^{a_{I + j} + 1}\Z$ and that after line \ref{alg:deposit:endsplit}, $|r_{j + 1}| \leq \frac{1}{2}\ulp({Y_j}_P) = 2^{a_{I + j}}$.
 
-        We show $|r_j| \leq 2^{b_{I + j}} = 2^{a_{I + j + 1}}$ for all $j \in \{0, ..., fold - 1\}$ inductively. As a base case, since $r_0 = x$ (from line \ref{alg:deposit:rgetsx}), $|r_0| = |x| \leq 2^{b_{I + j}}$. If $|r_j| \leq 2^{b_{I + j}}$ then Theorem \ref{thm:underflowulp} yields $\ulp(r_j) < \frac{1}{2}\ulp({Y_j}_P)$. Thus, Corollary 3 of \cite{repsum} applies and we have that $|r_{j + 1}| \leq \frac{1}{2}\ulp({Y_j}_P) = 2^{a_{I + j}}$.
+        As ${Y_j}_P, S_j \in (\epsilon^{-1} \times 2^{a_{I + j}}, 2 \times \epsilon^{-1} \times 2^{a_{I + j}})$, we have $\ulp(S_j) = \ulp({Y_j}_P)$ for all $j$.
 
-        Next, we show ${Z_j}_P - {Y_j}_P = \roundtonearestinfty(r_j, a_{I + j} + 1)$. As Corollary 3 of \cite{repsum} applies for all $j$, then ${Z_j}_P - {Y_j}_P \in 2^{a_{I + j} + 1}\Z$. As $r_{j + 1} = r_j - ({Z_j}_P - {Y_j}_P) \leq 2^{a_{I + j}}$, we consider two cases.
+        We show $|r_j| \leq 2^{b_{I + j}} = 2^{a_{I + j + 1}}$ for all $j$ inductively. As a base case, since $r_0 = x$ (from line \ref{alg:deposit:rgetsx}), $|r_0| = |x| < 2^{b_{I}}$.
+        As an inductive step, if $|r_j| \leq 2^{b_{I + j}}$ then Theorem \ref{thm:underflowulp} yields $\ulp(r_j) < \frac{1}{2}\ulp({Y_j}_P)$. Thus, Corollary 3 of \cite{repsum} applies and we have that $|r_{j + 1}| \leq \frac{1}{2}\ulp({Y_j}_P) = 2^{a_{I + j}}$.
 
-        If $r_{j + 1} = r_j - ({Z_j}_P - {Y_j}_P) < 2^{a_{I + j}}$, then ${Z_j}_P - {Y_j}_P = {Z_j}_P - {Y_j}_P = \roundtonearestinfty(r_j, a_{I + j} + 1)$.
+        Next, we show $S_j - {Y_j}_P = \roundtonearestinfty(r_j, a_{I + j} + 1)$. As Corollary 3 of \cite{repsum} applies for all $j$, then $S_j - {Y_j}_P \in 2^{a_{I + j} + 1}\Z$. By Theorem 3 of \cite{repsum}, $r_{j + 1} = r_j - (S_j - {Y_j}_P)$. Since $|r_{j + 1}| \leq 2^{a_{I + j}}$, we consider two cases.
 
-        If $r_{j + 1} = r_j - ({Z_j}_P - {Y_j}_P) = 2^{a_{I + j}}$, then since $\ulp(r_j) < 2^{a_{I + j}}$, $(r_j | 1) - r_j > 0$ and the rounding in line \ref{alg:deposit:split} must have gone away from 0. ${Z_j}_P - {Y_j}_P = {Z_j}_P - {Y_j}_P = \roundtonearestinfty(r_j, a_{I + j} + 1)$.
+        If $|r_j - (S_j - {Y_j}_P)| < 2^{a_{I + j}}$, then ${S_j}_P - {Y_j}_P = \roundtonearestinfty(r_j, a_{I + j} + 1)$.
 
-        We show ${Z_j}_P - {Y_j}_P = d(x, a_{I + j}, b_{I + j})$ for all $j \in \{0, ..., fold - 1\}$ by induction. As a base case, $|r_0| = |x| < 2^{b_I}$ and ${Z_0}_P - {Y_0}_P = \roundtonearestinfty(r_0, a_{I} + 1)$, therefore ${Z_0}_P - {Y_0}_P = d(x, a_I, b_I)$. As an inductive step, if ${Z_j}_P - {Y_j}_P = d(x, a_{I + j}, b_{I + j})$, then since ...
+        If $|r_j - (S_j - {Y_j}_P)| = 2^{a_{I + j}}$, then $r_j \in 2^{a_{I + j}}\Z$ and because $\ulp(r_j) < 2^{a_{I + j}}$, $(r_j | 1) - r_j > 0$ and the rounding ``to nearest'' in line \ref{alg:deposit:split} must have gone away from 0. $S_j - {Y_j}_P = \roundtonearestinfty(r_j, a_{I + j} + 1)$.
+
+        We can now show $r_{j + 1} = x - \sum\limits_{i = 0}^{I + j}d(x, i)$ and $S_j - {Y_j}_P = d(x, I + j)$ for all $j$ by induction on $j$.
+
+        In the base case, $S_0 - {Y_0}_P = \roundtonearestinfty(r_0, a_I + 1) = \roundtonearestinfty(x, a_I + 1)$. As $|x| < b_I$, Theorem \ref{thm:dmiddle} implies $S_0 - {Y_0}_P = d(x, I)$. By Theorem 3 of \cite{repsum}, $r_1 = r_0 - (S_0 - {Y_0}_P) = x - d(x,I)$. By assumption and Equations \ref{eq:a} and \ref{eq:b}, $|x| < b_I \leq a_{i}$ for all $i \in \{0, ..., I - 1\}$, and therefore by Theorem \ref{thm:dzero}, $r_1 = x - \sum\limits_{i = 0}^Id(x, i)$.
+
+        In the inductive step, assume $r_{j + 1} = x - \sum\limits_{i = 0}^{I + j}d(x, i)$. Then by definition,
+
+        \begin{equation*}
+          S_{j + 1} - {Y_{j + 1}}_P = \roundtonearestinfty(r_{j + 1}, a_{I + j + 1} + 1) = \roundtonearestinfty(x - \sum\limits_{i = 0}^{I + j}d(x, i), a_{I + j + 1} + 1) = d(x, I + j + 1)
+        \end{equation*}
+
+        And by Theorem 3 of \cite{repsum},
+        \begin{equation*}
+          r_{j + 2} = r_{j + 1} + (S_{j + 1} - {Y_{j + 1}}_P) = (x - \sum\limits_{i = 0}^{I + j}d(x, i)) - d(x, I + j + 1) = x - \sum\limits_{i = 0}^{I + j + 1}d(x, i)
+        \end{equation*}
       \end{proof}
 
-  Because $d(x, a_{I + j}, b_{I + j}) = 0$ for bins that are larger than the input, the top $fold$ accumulators can be computed reproducibly by computing the values in the top $fold$ accumulators needed for the largest $x$ seen so far and shifting them upwards (towards index $0$) as necessary. \cite{repsum} contains further discussions of the reproducibility of the algorithm.
+      Because $d(x, a_{I + j}, b_{I + j}) = 0$ for bins that are larger than the input, the top $fold$ accumulators can be computed reproducibly by computing the values in the top $fold$ accumulators needed for the largest $x$ seen so far and shifting them upwards (towards index $0$) as necessary. \cite{repsum} contains further discussions of the reproducibility of the algorithm.
       It is worth noting here that due to Corollary $3$ in \cite{repsum}, $|r| \leq 2^{b_{I + j}}$ when adding $(r | 1)$ to ${Y_j}_P$.
 
       In order to keep the primary fields in the necessary range during a deposit operation and to keep the representation of $Y_j$ unique, ${Y_j}_P$ is routinely renormalized to the range $[1.5 \times\epsilon^{-1} \times 2^{a_{I + j}}, 1.75 \times\epsilon^{-1} \times 2^{a_{I + j}})$.
@@ -732,7 +829,7 @@
     We can compare Equation \ref{eq:errorapprox} to the error bound obtained if the accumulator fields were summed without extra precision. In this case, only the standard summation bound would apply and the absolute error would be bounded by
 
     \begin{equation*}
-    n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} + (2 \times fold - 1) \times \epsilon \times \sum\limits_0^{2 \times fold - 1}\gamma_k
+    n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} + (2 \times fold - 1) \times \epsilon \times \sum\limits_0^{2 \times fold - 1}|\gamma_k|
     \end{equation*}
 
     \begin{equation*}
@@ -814,3 +911,8 @@
     Hida, Yozo, Xiaoye S. Li, and David H. Bailey. Quad-double arithmetic: Algorithms, implementation, and application. 15th IEEE Symposium on Computer Arithmetic, 2000.
 \end{thebibliography}
 \end{document}
+    Given $x_0, ..., x_{n - 1} \in \R$, the slice of $x_0, ..., x_{n - 1}$ in the bin $(a_i, b_i]$ is defined as $\sum\limits_{k = 0}^{n - 1} d(x_k, i)$.
+    \begin{equation}
+      d(x, i) = \begin{cases}\roundtonearestinfty(x, a_i + 1) \text{ if } 2^{b_i} > |x| \\ \roundtonearestinfty(x - \sum\limits_{k=0}^{i - 1}d(x,k), a_i + 1) \text{ if } |x| \geq 2^{b_i} \end{cases}
+      \label{eq:d}
+    \end{equation}
