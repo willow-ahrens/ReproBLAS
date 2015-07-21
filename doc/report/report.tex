@@ -683,6 +683,158 @@
     However, if an indexed type is composed of \verb|double|, many machines may not have any higher precision available. To provide a conversion function that is identical across hardware, we use \verb|double-double| precision implemented in software to achieve sufficient intermediate precision \cite{doubledouble}. As this does not extend the exponent range we must use Algorithm \ref{alg:conv2floatoverflow} to convert to a floating point number.
 
   \subsection{Error Bound}
+    \begin{thm}
+      Given $n$ floating point numbers $f_0, ..., f_{n - 1}$ for which there exists (possibly unnormalized) floating point numbers $f'_0, ..., f'_{n - 1}$ such that
+      \begin{enumerate}
+        \item $f_k = f'_k$ for all $k \in \{0, ..., n - 1\}$
+        \item $\exp(f'_0) > ... > \exp(f'_{n - 1})$
+        \item $\exp(f'_k) \geq \exp(f'_{k + 2}) + \ceil{\frac{p + 1}{2}}$ for all $k \in \{0, ..., n - 3\}$
+      \end{enumerate}
+      \label{thm:mysortsum}
+    \end{thm}
+
+    \begin{proof}
+      Let $S_0 = \overline{S_0} = f_0$, $S_k = S_{k - 1} + f_k$, and $\overline{S_k} = \fl(\overline{S_{k - 1}} + f_k)$ so that $S_{n - 1} = \sum \limits_{k = 0}^{n - 1} f_k$ and $\overline{S_{n - 1}} = \fl(\sum \limits_{k = 0}^{n - 1} f_k)$.
+
+      Let $m$ be the location of the first error such that $S_{m - 1} = \overline{S_{m - 1}}$ and $S_{m} \neq \overline{S_{m}}$.
+
+      If no such $m$ exists then because $S_0 = \overline{S_0}$ the computed sum is exact ($\fl(\sum \limits_{k = 0}^{n - 1} f_k) = \sum \limits_{k = 0}^{n - 1} f_k$) and we are done.
+
+      If such an $m$ exists, then because $\exp(f_0') > ... > \exp(f_m')$, $f_0, ..., f_m \in \ulp(f_m')\Z$. Thus, $S_m \in \ulp(f_m')\Z$.
+
+      Assume for contradiction that $|S_m| < 2 \times 2^{\exp(f_m')}$. Because $S_m \in \ulp(f_m')\Z$, this would imply that $S_m$ is representable as a floating point number with exponent $\exp(f_m')$, a contradiction as $\overline{S_m} \neq S_m$. Therefore, we have
+      \begin{equation}
+        |S_m| \geq 2 \times 2^{\exp(f_m')}
+        \label{eq:smbound}
+      \end{equation}
+
+      If $n - 1 \geq m + 1$, then because $\exp(f_m') > \exp(f_{m + 1}')$,
+      \begin{equation}
+        |f_{m + 1}| < 2\times2^{\exp(f_m' - 1)} = 2^{\exp(f_m')}
+        \label{eq:smpbound}
+      \end{equation}
+
+      If $n - 1 \geq m + 2$, then because $\exp(f_m') \geq \exp(f_{m + 2}') + \ceil{\frac{p + 1}{2}}$ and $\exp(f_0') > ... > \exp(f_{n - 1}')$,
+      \begin{equation*}
+        |\sum \limits_{k = m + 2}^{n - 1} f_k| < \sum \limits_{k = m + 2}^{n - 1} |f_k| < \sum \limits_{k = m + 2}^{n - 1} 2 \times 2^{\exp(f_k')} \leq \sum \limits_{k = m + 2}^{n - 1} 2 \times 2^{\exp(f_m') - \ceil{\frac{p + 1}{2}} - (m + 2 - k)}
+      \end{equation*}
+      \begin{equation}
+        < \sum \limits_{k = 0}^{\infty} 2 \times \sqrt{\epsilon} \times 2^{\exp(f_m') - k} = 4 \times \sqrt\epsilon \times 2^{\exp(f_m')}
+        \label{eq:smppbound}
+      \end{equation}
+
+      We can combine Equations \ref{eq:smpbound} and \ref{eq:smppbound} to obtain
+
+      \begin{equation}
+        |\sum\limits_{k = m + 1}^{n - 1} f_k| \leq \sum\limits_{k = m + 1}^{n - 1} |f_k| < 2^{\exp{f_m'}} + 4 \times \sqrt\epsilon \times 2^{\exp(f_m')} = (1 + 4 \times \sqrt\epsilon )\times 2^{\exp(f_m')}
+        \label{eq:smsbound}
+      \end{equation}
+
+      By Equations \ref{eq:smbound} and \ref{eq:smsbound},
+
+      \begin{equation*}
+        |\sum\limits_{k = 0}^{n - 1} f_k| \geq |\sum\limits_{k = 0}^{m} f_k| - |\sum\limits_{k = m + 1}^{n - 1} f_k| = |S_m| - |\sum\limits_{k = m + 1}^{n - 1} f_k|
+      \end{equation*}
+
+      \begin{equation}
+        \geq 2 \times 2^{\exp(f_{m}')} - (1 + 4 \times \sqrt\epsilon)\times 2^{\exp(f_m')} = (1 - 4 \times \sqrt\epsilon)\times 2^{\exp(f_m')}
+        \label{eq:sbound}
+      \end{equation}
+
+      By Equations \ref{eq:sbound} and \ref{eq:smsbound},
+      \begin{equation}
+        \sum\limits_{k = m + 1}^{n - 1}|f_k| \leq (1 + 4 \times \sqrt\epsilon)\times2^{\exp(f_m')}\leq (\frac{1 + 4 \times \sqrt\epsilon}{1 - 4 \times \sqrt\epsilon})|\sum\limits_{k = 0}^{n - 1}f_k|
+        \label{eq:smsrelsbound}
+      \end{equation}
+
+      And by Equations \ref{eq:sbound} and \ref{eq:smsrelsbound},
+
+      \begin{equation}
+        |S_m| \leq \sum\limits_{k = 0}^{n - 1}|f_k| + |\sum\limits_{k = m + 1}^{n - 1} f_k| \leq (1 + (\frac{1 + 4 \times \sqrt\epsilon}{1 - 4 \times \sqrt\epsilon}))|\sum\limits_{k = 0}^{n - 1}f_k| \leq (\frac{2}{1 - 4 \times \sqrt\epsilon})|\sum\limits_{k = 0}^{n - 1}f_k|
+        \label{eq:smrelsbound}
+      \end{equation}
+
+      Notice that since $S_{m - 1} = \overline{S_{m - 1}}$,
+      \begin{equation*}
+        |\sum \limits_{k = 0}^{n - 1} f_k - \fl(\sum \limits_{k = 0}^{n - 1} f_k)| = |(S_{m - 1} + \sum \limits_{k = m}^{n - 1} f_k) - \fl(\overline{S_{m - 1}} + \sum \limits_{k = m}^{n - 1} f_k)|
+      \end{equation*}
+
+      If $n - 1 \leq m + 4$, we may combine Equations \ref{eq:smrelsbound} and \ref{eq:smsrelsbound} with Equation 2.4 from () to obtain
+
+      \begin{equation*}
+        |\sum \limits_{k = 0}^{n - 1} f_k - \fl(\sum \limits_{k = 0}^{n - 1} f_k)| = |(S_{m - 1} + \sum \limits_{k = m}^{n - 1} f_k) - \fl(\overline{S_{m - 1}} + \sum \limits_{k = m}^{n - 1} f_k)|
+      \end{equation*}
+      \begin{equation*}
+        \leq (\frac{5\epsilon}{1 - 5 \epsilon})|S_{m - 1} + f_m| + (\frac{4\epsilon}{1 - 4 \epsilon})\sum\limits_{k = m + 1}^{n - 1}|f_k|
+      \end{equation*}
+      \begin{equation*}
+        \leq (\frac{5\epsilon}{1 - 5 \epsilon})|S_m| + (\frac{4\epsilon}{1 - 4 \epsilon})\sum\limits_{k = m + 1}^{n - 1}|f_k|
+      \end{equation*}
+      \begin{equation*}
+ \leq ((\frac{5\epsilon}{1 - 5 \epsilon})(\frac{2}{1 - 4 \times \sqrt\epsilon}) + (\frac{4\epsilon}{1 - 4 \epsilon})(\frac{1 + 4 \times \sqrt\epsilon}{1 - 4 \times \sqrt\epsilon}))|\sum\limits_{k = 0}^{n - 1}f_k|
+      \end{equation*}
+      And we are done.
+
+      If $n - 1 > m + 4$, we may combine Equations \ref{eq:smrelsbound} and \ref{eq:smsrelsbound} with Equation 2.4 from () to obtain
+
+      \begin{equation*}
+        |\sum \limits_{k = 0}^{m + 4} f_k - \fl(\sum \limits_{k = 0}^{m + 4} f_k)| = |(S_{m - 1} + \sum \limits_{k = m}^{m + 4} f_k) - \fl(\overline{S_{m - 1}} + \sum \limits_{k = m}^{m + 4} f_k)|
+      \end{equation*}
+      \begin{equation*}
+        \leq (\frac{5\epsilon}{1 - 5 \epsilon})|S_{m - 1} + f_m| + (\frac{4\epsilon}{1 - 4 \epsilon})\sum\limits_{k = m + 1}^{m + 4}|f_k|
+      \end{equation*}
+      \begin{equation*}
+        \leq (\frac{5\epsilon}{1 - 5 \epsilon})|S_m| + (\frac{4\epsilon}{1 - 4 \epsilon})\sum\limits_{k = m + 1}^{m + 4}|f_k|
+      \end{equation*}
+      \begin{equation}
+ \leq ((\frac{5\epsilon}{1 - 5 \epsilon})(\frac{2}{1 - 4 \times \sqrt\epsilon}) + (\frac{4\epsilon}{1 - 4 \epsilon})(\frac{1 + 4 \times \sqrt\epsilon}{1 - 4 \times \sqrt\epsilon}))|\sum\limits_{k = 0}^{n - 1}f_k|
+        \label{eq:smfiveerror}
+      \end{equation}
+
+      Notice that
+        \begin{equation*}
+          \exp(f_m') \geq \exp(f_{m + 2}') + \ceil{\frac{p+ 1}{2}} \geq \exp(f_{m + 4}') + 2 \times \ceil{\frac{p+ 1}{2}} > \exp(f_{m + 5}')+ 2 \times \ceil{\frac{p+ 1}{2}}
+        \end{equation*}
+      Therefore,
+        \begin{equation}
+          \exp(f_m') \geq \exp(f_{m + 5}') + p + 2
+          \label{eq:fmfiveexp}
+        \end{equation}
+      Because $\exp(f_0') > ... > \exp(f_{n - 1}')$,
+        \begin{equation}
+          \sum\limits_{k = m + 5}^{n - 1} |f_k| < \sum\limits_{k = m + 5}^{n - 1} 2 \times 2^{\exp(f_m') - p - 2 - (k - (m + 5))} < \sum\limits_{k = 0}^{\infty} 2^{\exp(f_m') - p - 1 - k} = \epsilon \times 2^{\exp(f_m')}
+          \label{eq:boundfmfivesum}
+        \end{equation}
+      By Equations \ref{eq:sbound}, \ref{eq:boundfmfivesum}, and \ref{eq:smfiveerror}.
+        \begin{equation*}
+          |\overline{S_{m + 4}}| \geq |S_{m + 4}| - |S_{m + 4} - \overline{S_m + 4}| \geq (|\sum\limits_{k = 0}^{n - 1} f_k| - \sum\limits_{k = m + 5}^{n - 1}|f_k|) - |S_{m + 4} - \overline{S_m + 4}|
+        \end{equation*}
+        \begin{equation*}
+          \geq (1 - ((\frac{5\epsilon}{1 - 5 \epsilon})(\frac{2}{1 - 4 \times \sqrt\epsilon}) + (\frac{4\epsilon}{1 - 4 \epsilon})(\frac{1 + 4 \times \sqrt\epsilon}{1 - 4 \times \sqrt\epsilon})))|\sum\limits_{k = 0}^{n - 1}f_k| - \epsilon \times 2^{\exp(f_m')}
+        \end{equation*}
+        \begin{equation}
+          \geq (1 - (\frac{10\epsilon}{1 - 5 \epsilon}) - (\frac{4\epsilon}{1 - 4 \epsilon})(1 + 4 \times \sqrt\epsilon) - \epsilon)\times 2^{\exp(f_m')}
+          \label{eq:minsmfour}
+        \end{equation}
+        As we assume $\epsilon << 1$, equation \ref{eq:minsmfour} can be simplified to
+        \begin{equation}
+          |\overline{S_{m + 4}}| > 2^{\exp(f_m') - 1}
+          \label{eq:minsmfoursimple}
+        \end{equation}
+
+        Because $\exp(f_0') > ... > \exp(f_{n - 1}')$, we may combine equation \ref{eq:minsmfour} with \ref{eq:fmfiveexp} and have that for all $f_k$ with $k \in \{m + 5, ..., n - 1\}$,
+
+        \begin{equation*}
+          |f_k| < 2 \times 2^{\exp(f_k')} \leq 2 \times 2^{\exp(f_m) - p - 2} = \epsilon \times 2^{\exp(f_m') - 1}
+        \end{equation*}
+
+        And therefore,
+        \begin{equation}
+          $\overline{S_{m + 5}} = \overline{S_{n - 1}}$
+          \label{eq:smfivecontinues}
+        \end{equation}
+
+    \end{proof}
     Consider the indexed sum $Y$ of fold $fold$ of floating point numbers $x_0, ..., x_{n - 1}$. We denote the true sum $\sum \limits_{k = 0}^{n - 1} x_k$ by $T$, the true value of the indexed sum as obtained using Equation \ref{eq:indexedvalue} by $\mathcal{Y}$, and the floating point approximation of $\mathcal{Y}$ obtained using an appropriate algorithm from section \ref{sec:convert} by $\overline{\mathcal{Y}}$.
 
     \cite{repsum} discusses the absolute error $|T - \mathcal{Y}|$ but does not give a method to construct $\overline{\mathcal{Y}}$ and therefore no error bound ($|T - \overline{\mathcal{Y}}|$) on the final floating point answer was given. Here we extend the error bound of \cite{repsum} all the way to the final return value of the algorithm.
