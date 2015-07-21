@@ -37,11 +37,10 @@
 \tableofcontents
 \newpage
 \section{Introduction}
-
 \section{Notation and Background}
   Let $\R, \F, $ and $\Z$ denote the sets of real numbers, floating-point numbers, and integers respectively.
 
-  Assume that floating point arithmetic complies with the IEEE 754-2008 standard \cite{ieee754} in ``to nearest even'' rounding mode and that underflow occurs gradually, although the case of flush-to-zero will be considered in Section \ref{sec:underflow}.
+  Assume that floating point arithmetic complies with the IEEE 754-2008 standard \cite{ieee754} in ``to nearest even'' rounding mode and that underflow occurs gradually, although methods to handle abrupt underflow will be considered in Section \ref{sec:indexed_implementation_underflow}.
 
   Let $f = s \times 2^e \times m \in \F$ be a floating-point number represented in IEEE 754-2008 format \cite{ieee754} where $s = \pm 1$ is the \textbf{sign}, $e_{\max} \geq e \geq e_{\min}$ is the \textbf{exponent} ($\exp(f)$ is defined to be $e$), $p$ is the \textbf{precision}, and $m = m_0.m_1m_2...m_{p-1}$ where $m_0, ..., m_{p - 1} \in \{0, 1\}$ is the \textbf{significand} of $f$. $f$ is said to be \textbf{normalized} if $m_0 = 1$ and $e > e_{\min}$, \textbf{unnormalized} if $m_0 = 0$, and \textbf{denormalized} if $m_0 = 0$ and $e = e_{\min}$. $f = 0$ if all $m_k = 0$ and $e = e_{\min}$.
 
@@ -51,15 +50,15 @@
 
   The unit in the first place of $f \in F$, $\ufp(f)$, is the value of the first significant bit of $f$. If $f$ is normalized, $\ufp(f) = 2^{\exp(f)}$.
 
-  $\fl(\dot)$ denotes the evaluated result of an expression in floating point arithmetic.
+  $\fl(\cdot)$ denotes the evaluated result of an expression in floating point arithmetic.
 
   We define the function $\roundtonearestinfty(x, k), x \in R, k \in \Z$ as
 
   \begin{equation}
-  \roundtonearestinfty(x, k) = \begin{cases}\floor{x/2^k + 1/2} \times 2^k \text{ if } x \geq 0\\ \\ \ceil{x/2^k - 1/2}\times 2^k \text{ otherwise}\end{cases}
+    \roundtonearestinfty(x, k) = \begin{cases}\floor{x/2^k + 1/2} \times 2^k \text{ if } x \geq 0\\ \\ \ceil{x/2^k - 1/2}\times 2^k \text{ otherwise}\end{cases}
   \end{equation}
 
-  $\roundtonearestinfty(x, 2^k)$ rounds $x$ to the nearest multiple of $2^k$, breaking ties away from 0. A property of such rounding is shown in equation \ref{eq:round}
+  $\roundtonearestinfty(x, k)$ rounds $x$ to the nearest multiple of $2^k$, breaking ties away from 0. A property of such rounding is shown in Equation \ref{eq:round}
 
   \begin{equation}
     |x - \roundtonearestinfty(x, k)| \leq 2^{k - 1}
@@ -70,7 +69,12 @@
 
   All indices start at $0$ in correspondence with the actual ReproBLAS implementation.
 \section{The Indexed Type}
+  \subsection{Section Summary}
+    An indexed type is is composed of several accumulators, each accumulating input in certain ranges (more formally defined later as bins). We begin in Section \ref{sec:indexed_binning} with an original mathematical theory to support the binning scheme. Section \ref{sec:indexed_representation} serves as a summary of the indexed type defined in \cite{repsum}.
+    Section \ref{sec:indexed_implementation_datatypes} explains implementation details of \cite{repsum} of the indexed type. Section \ref{sec:indexed_implementation_primary_carry} elaborates on the indexed type by explaining the "1-Reduction Technique" of \cite{repsum} using the new binning theory.
+    Sections \ref{sec:indexed_implementation_overflow}, \ref{sec:indexed_implementation_underflow}, and \ref{sec:indexed_implementation_exceptions} contain original extensions of the indexed type and associated algorithms to a larger (more practical) range of inputs.
   \subsection{Binning}
+    \label{sec:indexed_binning}
     We start by dividing the exponent range $(e_{\min} - p, ..., e_{\max} + 1]$ into \textbf{bins} $(a_i, b_i]$ of \textbf{width} $W$ according to Equations \ref{eq:a} and \ref{eq:b}.
 
     \begin{equation}
@@ -83,18 +87,18 @@
       \label{eq:b}
     \end{equation}
 
-    We say the bin $(a_{i_0}, b_{i_0}]$ is \textbf{higher} than the bin $(a_{i_1}, b_{i_1}]$ if $a_{i_0} < a_{i_1}$ (which is equivalent to both $b_{i_0} > b_{i_1}$ and $i_0 < i_1$).
+    We say the bin $(a_{i_0}, b_{i_0}]$ is \textbf{greater} than the bin $(a_{i_1}, b_{i_1}]$ if $a_{i_0} < a_{i_1}$ (which is equivalent to both $b_{i_0} > b_{i_1}$ and $i_0 < i_1$).
 
-    We say the bin $(a_{i_0}, b_{i_0}]$ is \textbf{lower} than the bin $(a_{i_1}, b_{i_1}]$ if $a_{i_0} > a_{i_1}$ (which is equivalent to both $b_{i_0} < b_{i_1}$ and $i_0 > i_1$).
+    We say the bin $(a_{i_0}, b_{i_0}]$ is \textbf{lesser} than the bin $(a_{i_1}, b_{i_1}]$ if $a_{i_0} > a_{i_1}$ (which is equivalent to both $b_{i_0} < b_{i_1}$ and $i_0 > i_1$).
 
-    We use $i < (e_{\max} - e_{\min} + p - 1)/W$ to ensure that $a_i > e_{\min} - p + 1$ as discussed in Section \ref{sec:underflow}. This means that the highest bin is
+    We use $i < (e_{\max} - e_{\min} + p - 1)/W$ to ensure that $a_i > e_{\min} - p + 1$ as discussed in Section \ref{sec:indexed_implementation_underflow}. This means that the greatest bin is
 
     \begin{equation}
       (e_{\max} + 1 - W, e_{\max} + 1]
       \label{eq:binmax}
     \end{equation}
 
-    and the lowest bin is
+    and the least bin is
 
     \begin{equation}
       (e_{\min} - p + 2 + ((e_{\max} - e_{\min} + p - 1)\mod W),
@@ -102,7 +106,7 @@
       \label{eq:binmin}
     \end{equation}
 
-    Section \ref{sec:underflow} explains why the range
+    Section \ref{sec:indexed_implementation_underflow} explains why the range
 
     \begin{equation*}
     (e_{\min} - p, e_{\min} - p + 2 + ((e_{\max} - e_{\min} + p - 1) \mod W)]
@@ -110,7 +114,7 @@
 
     is ignored.
 
-    Throughout the text we will refer to the \textbf{slice} of some $x \in \F$ in the \textbf{bin} $(a_i, b_i]$. $x$ can be split into several slices, each slice corresponding to a bin $(a_i, b_i]$ and expressible as the (possibly negated) sum of a subset of $\{2^e, e \in (a_i, b_i]\}$, such that the sum of the slices provides a good approximation of $x$. Specifically, the slice of $x \in \F$ in the bin $(a_i, b_i]$ is defined as $d(x, i)$ in Equation \ref{eq:d}.
+    Throughout the text we will refer to the \textbf{slice} of some $x \in \F$ in the bin $(a_i, b_i]$. $x$ can be split into several slices, each slice corresponding to a bin $(a_i, b_i]$ and expressible as the (possibly negated) sum of a subset of $\{2^e, e \in (a_i, b_i]\}$, such that the sum of the slices provides a good approximation of $x$. Specifically, the slice of $x \in \F$ in the bin $(a_i, b_i]$ is defined as $d(x, i)$ in Equation \ref{eq:d}.
     \begin{equation}
       d(x, i) = \roundtonearestinfty(x - \sum\limits_{k=0}^{i - 1}d(x,k), a_i + 1)
       \label{eq:d}
@@ -126,7 +130,7 @@
 
       In the base case, $d(x, 0) = \roundtonearestinfty(x, a_0 + 1)$ and $d(x, 0)$ is well defined for all $x \in \F$.
 
-      In the inductive step, assume that $d(x, 0), ..., d(x, i)$ are well defined for all $x \in \F$. $d(x, i + 1)$ is expressed as a well defined expression of well defined terms.
+      In the inductive step, assume that $d(x, 0), ..., d(x, i)$ are well defined for all $x \in \F$. $d(x, i + 1)$ is an expression in well defined terms.
     \end{proof}
 
     \ref{thm:dzero} and \ref{thm:dmiddle} follow from the definition of $d(x, i)$
@@ -136,7 +140,7 @@
       \label{thm:dzero}
     \end{thm}
     \begin{proof}
-      We prove the theorem by induction on $i$.
+      We show the claim by induction on $i$.
 
       In the base case, we have $|x| < 2^{a_0}$ and $d(x, 0) = \roundtonearestinfty(x, a_0 + 1)$. By the triangle inequality and Equation \ref{eq:round},
       \begin{equation*}
@@ -174,7 +178,7 @@
       \end{equation*}
     \end{proof}
 
-    Theorem \ref{thm:dzero}, Theorem \ref{thm:dmiddle}, and Equation \ref{eq:d} can be combined to yield an alternate definition of $d(x, i)$ for all bins $(a_i, b_i]$ and $x \in \F$.
+    Theorem \ref{thm:dzero}, Theorem \ref{thm:dmiddle}, and Equation \ref{eq:d} can be combined to yield an equivalent definition of $d(x, i)$ for all bins $(a_i, b_i]$ and $x \in \F$.
 
     \begin{equation}
       d(x, i) = \begin{cases}0 \text{ if } |x| < 2^{a_i}\\ \roundtonearestinfty(x, a_i + 1) \text{ if } 2^{a_i} \leq |x| < 2^{b_i}\\\roundtonearestinfty(x - \sum\limits_{k=0}^{i - 1}d(x,k), a_i + 1) \text{ if } 2^{b_i} \leq |x| \end{cases}
@@ -199,22 +203,25 @@
     \end{proof}
 
   \subsection{Representation}
+    \label{sec:indexed_representation}
     The \textbf{indexed type} is used to represent the intermediate result of accumulation using Algorithms 6 and $7$ in \cite{repsum}.
     An indexed type $Y$ is a data structure composed of several accumulator data structures $Y_0, ..., Y_{fold - 1}$. The number of accumulators in an indexed type is referred to as its \textbf{fold}. Due to their low accuracy, indexed types of fold 1 are not considered.
 
     Let $Y$ be the indexed type corresponding to the reproducibly computed sum of $x_0, ..., x_{n - 1} \in \F$.
-    Each accumulator $Y_j$ is a data structure used to accumulate the slices of input in the bin $(a_{I + j}, b_{I + j}]$ where $I$ is the \textbf{index} of $Y$. The \textbf{width} of an indexed type is equal to the width of its bins, $W$. As discussed in \cite{repsum}, $W < p - 2$. As discussed in Section \ref{sec:overflow}, $2\times W > p + 1$.
+    Each accumulator $Y_j$ is a data structure used to accumulate the slices of input in the bin $(a_{I + j}, b_{I + j}]$ where $I$ is the \textbf{index} of $Y$. The \textbf{width} of an indexed type is equal to the width of its bins, $W$. As discussed in \cite{repsum}, $W < p - 2$. As discussed in Section \ref{sec:indexed_implementation_overflow}, $2\times W > p + 1$.
 
-    The accumulators in an indexed type correspond to contiguous bins in order of decreasing height. The index of $Y$ is defined as the least $I \in \Z$ such that $2^{b_I + 1} > \max(|x_0|, ..., |x_n|)$ (equivalently, the least $I \in \Z$ such that $b_I > \max(e_0, ..., e_n)$). If $Y$ has index $I$, then $Y_j, j \in \{0, ..., fold - 1\}$ accumulates slices of input in the bin $(a_{I + j}, b_{I + j}]$.
+    The accumulators in an indexed type correspond to contiguous bins in decreasing order. The index of $Y$ is defined as the least $I \in \Z$ such that $2^{b_I + 1} > \max(|x_0|, ..., |x_n|)$ (equivalently, the least $I \in \Z$ such that $b_I > \max(e_0, ..., e_n)$). If $Y$ has index $I$, then $Y_j, j \in \{0, ..., fold - 1\}$ accumulates slices of input in the bin $(a_{I + j}, b_{I + j}]$.
 
   \subsection{Implementation}
     \subsubsection{Data Types}
+      \label{sec:indexed_implementation_datatypes}
       As discussed in \cite{repsum}, indexed types are represented using floating point numbers to minimize traffic between floating point and integer arithmetic units. If an indexed type is used to sum \verb|doubles|, then it is composed entirely of \verb|doubles| and likewise for \verb|floats|. ReproBLAS supports complex types as pairs of real and imaginary components (stored contiguously in memory). If an indexed type is used to sum complex \verb|doubles| or \verb|floats|, then it is composed of pairs (real part, imaginary part) of \verb|doubles| or \verb|floats| respectively. The decision to keep the real and imaginary components together (as opposed to keeping separate indexed types for real and imaginary parts of the sum) was motivated by a desire to process accumulators simultaneously with vectorized (SIMD) instructions.
 
     \subsubsection{Primary and Carry}
+      \label{sec:indexed_implementation_primary_carry}
       The accumulators $Y_j$ of an indexed type $Y$ are each implemented using two underlying floating point fields. The \textbf{primary} field ${Y_j}_P$ is used during accumulation, while the \textbf{carry} field ${Y_j}_C$ holds overflow from the primary field. Because primary fields are frequently accessed sequentially, the primary fields and carry fields are each stored contiguously in separate arrays. The notation for the primary field ${Y_j}_P$ and carry field ${Y_j}_C$ corresponds to the ``$S_k$'' and ``$C_k$'' of Algorithm $6$ in \cite{repsum}.
 
-      The value ${\mathcal{Y}_j}_P$ represented by data stored in the primary field ${Y_j}_P$ is an offset from $1.5\times \epsilon^{-1} \times 2^{a_{I + j}}$ (corresponding to ``$M_{[i]}$'' at the beginning of Section IV.A. in \cite{repsum}).
+      The value ${\mathcal{Y}_j}_P$ represented by data stored in the primary field ${Y_j}_P$ is an offset from $1.5\times \epsilon^{-1} \times 2^{a_{I + j}}$ (corresponding to ``$M_{[i]}$'' at the beginning of Section IV.A. in \cite{repsum}), where $I$ is the index of $Y$, as shown in Equation \ref{eq:pri} below.
       \begin{equation}
         {\mathcal{Y}_j}_P = {Y_j}_P - 1.5\times\epsilon^{-1}\times2^{a_{I + j}}
         \label{eq:pri}
@@ -223,7 +230,7 @@
       \begin{alg}
         Extract slices of floating point $x \in \F, |x| < 2^{b_I}$ in bins $(a_I, b_I], ..., (a_{I + fold - 1}, b_{I + fold - 1}]$ and add to indexed $Y$. Here, $(r | 1)$ represents the result of setting the last bit of the mantissa ($m_{p - 1}$) of floating point number $r$ to 1. This is a restatement of lines 15-17 of Algorithm 6 in \cite{repsum}
         \begin{algorithmic}[1]
-          \Function{Deposit}{fold, x, Y}
+          \Function{DepositRestricted}{fold, x, Y}
             \State $r = x$ \label{alg:deposit:rgetsx}
             \For{$j = 0 \To (fold - 2)$} \label{alg:deposit:loop}
               \State $S = {Y_j}_P + (r | 1)$ \label{alg:deposit:split}
@@ -298,7 +305,7 @@
       It is worth noting here that because the primary field ${Y_0}_P$ is stored with an exponent of $a_I + p$, it is unnecessary to store the index of an indexed type explicitly. The index can be determined by simply examining the exponent of ${Y_0}_P$, as all $a_I$ are distinct and the mapping between the exponent of ${Y_0}_P$ and the index of $Y$ is bijective.
 
     \subsubsection{Overflow}
-      \label{sec:overflow}
+      \label{sec:indexed_implementation_overflow}
       If an indexed type $Y$ has index 0 and the width is $W$, then the value in the primary field ${Y_0}_P$ is stored as an offset from $1.5\times\epsilon^{-1}\times2^{e_{\max} + 1 - W}$. However, $1.5\times\epsilon^{-1}\times2^{e_{\max} + 1 - W} = 1.5 \times 2^{e_{\max} + 1 + (p - W)} > 2 \times 2^{e_{\max}}$ since $W < p - 2$ \cite{repsum}, so it is out of the range of the floating-point system and not representable. Before discussing the solution to this overflow problem, take note of Theorem \ref{thm:overflow}.
       \begin{thm}
         If $2\times W > p + 1$, then for any indexed type $Y$ of index $I$ and any ${Y_j}_P$ such that $I + j \geq 1$, $|{Y_j}_P| < 2^{e_{\max}}$.
@@ -320,21 +327,21 @@
       Of course, what remains to be seen is how we can extract and add (as in Algorithm \ref{alg:deposit}) the components of a floating point number to an indexed type $Y$ of index 0. Algorithm \ref{alg:deposit0} shows the adaptation of Algorithm $\ref{alg:deposit}$ for types of index 0. Note that all of the same assumptions must hold from \ref{alg:deposit} except that ${Y_0}_P$ must now be kept within the range $(2^{e_{\max}}, 2 \times 2^{e_{\max}})$.
       \begin{alg}
         Extract components of floating point $x$ in bins $(a_0, b_0], ..., (a_{fold - 1}, b_{fold - 1}]$ and add to indexed $Y$ of index 0. Here, $(r | 1)$ represents the result of setting the last bit of the mantissa ($m_{p - 1}$) of floating-point $r$ to 1.
-        \begin{algorithmic}
+        \begin{algorithmic}[1]
           \Function{Deposit0}{fold, x, Y}
-            \State $r \gets x / 2^{p - W + 1}$
-            \State $S \gets {Y_0}_P + (r | 1)$
-            \State $q \gets S - {Y_0}_P$
-            \State ${Y_0}_P \gets S$
-            \State $q \gets q \times 2^{p - W + 1}$
-            \State $r \gets x - q$
-            \For{$j = 1 \to (fold - 2)$}
-              \State $S \gets {Y_j}_P + (r | 1)$
-              \State $q \gets S - {Y_j}_P$
-              \State ${Y_j}_P \gets S$
-              \State $r \gets r - q$
+            \State $r = x / 2^{p - W + 1}$
+            \State $S = {Y_0}_P + (r | 1)$
+            \State $q = S - {Y_0}_P$
+            \State ${Y_0}_P = S$
+            \State $q = q \times 2^{p - W + 1}$
+            \State $r = x - q$
+            \For{$j = 1 \To (fold - 2)$}
+              \State $S = {Y_j}_P + (r | 1)$
+              \State $q = S - {Y_j}_P$
+              \State ${Y_j}_P = S$
+              \State $r = r - q$
             \EndFor
-            \State ${Y_{fold - 1}}_P \gets {Y_{fold - 1}}_P + (r | 1)$
+            \State ${Y_{fold - 1}}_P = {Y_{fold - 1}}_P + (r | 1)$
           \EndFunction
         \end{algorithmic}
         \label{alg:deposit0}
@@ -347,7 +354,7 @@
       Notice that after the first extraction, we cannot simply subtract $q$ from $r$ and then scale $r$ up and continue, as there may have been underflow when scaling $x$ down. We must scale $q$ up and subtract it from the original $x$.
 
     \subsubsection{Underflow}
-      \label{sec:underflow}
+      \label{sec:indexed_implementation_underflow}
       Here we consider the effects of underflow on algorithms described in \cite{repsum} and how they can be avoided. In Algorithm \ref{alg:deposit}, when the last bit of $r$ is set to 1, it is assumed that this last bit will only serve to fix the direction of the rounding mode. However, if ${Y_j}_P$ is denormalized, that last bit may very well be accumulated!
 
       For Algorithm \ref{alg:deposit} to work correctly when adding $r | 1$ to ${Y_j}_P$, $\ulp(r)$ must be less than half of the rounding error when adding a number to ${Y_j}_P$. Mathematically, $\ulp(r) < \frac{1}{2}\ulp({Y_j}_P)$.
@@ -381,6 +388,7 @@
       There are several ways to deposit the input in the denormalized range. One simple way the algorithm could be extended to denormalized inputs would be to scale the bottom bins up, as was done to handle overflow. Due to the relatively low priority for accumulating denormalized values, these methods were not implemented.
 
     \subsubsection{Exceptions}
+      \label{sec:indexed_implementation_exceptions}
       Indexed types are capable of representing exceptional cases such as \verb|NaN| (Not a Number) and \verb|Inf| (Infinity). An indexed type $Y$ stores it's exception status in it's first primary field ${Y_0}_P$.
 
       A value of $0$ in ${Y_0}_P$ indicates that nothing has been added to ${Y_0}_P$ yet. The lowest bin is
@@ -416,13 +424,13 @@
     As noted in Algorithm \ref{alg:deposit}, when adding $x \in \F$ to an indexed type $Y$ of index $I$ and fold $fold$, we make the assumption that $|x| < 2^{b_I}$. However, this is not always the case and sometimes it is necessary to adjust the index of $Y$. This adjustment is called an \textbf{update}. The process of updating $Y$ to have index $J > I$ is summarized succinctly in Algorithm \ref{alg:update}.
     \begin{alg}
       Update indexed $Y$ of index $I$ and fold $fold$ to have an index suitable to deposit $x$ where the bin $(a_{J}, b_{J}]$ satisfies $2^{b_{J}} > |x| \geq 2^{a_{J}}$.
-      \begin{algorithmic}
+      \begin{algorithmic}[1]
         \Function{Update}{fold, x, Y}
           \If{$J < I$}
-            \State $[{Y_{\min(I - J, fold)}}_P, ..., {Y_{fold - 1}}_P] \gets [{Y_0}_P, ..., {Y_{fold - 1 - \min(I - J, fold)}}_P]$
-            \State $[{Y_0}_P, ..., {Y_{\min(I - J, fold) - 1}}_P] \gets [1.5 \times \epsilon^{-1} \times a_{J}, ..., 1.5 \times \epsilon^{-1} \times a_{\min(I, fold + J) - 1}]$
-            \State $[{Y_{\min(I - J, fold)}}_C, ..., {Y_{fold - 1}}_C] \gets [{Y_0}_C, ..., {Y_{fold - 1 - \min(I - J, fold)}}_C]$
-            \State $[{Y_0}_C, ..., {Y_{\min(I - J, fold) - 1}}_C] \gets [0, ..., 0]$
+            \State $[{Y_{\min(I - J, fold)}}_P, ..., {Y_{fold - 1}}_P] = [{Y_0}_P, ..., {Y_{fold - 1 - \min(I - J, fold)}}_P]$
+            \State $[{Y_0}_P, ..., {Y_{\min(I - J, fold) - 1}}_P] = [1.5 \times \epsilon^{-1} \times a_{J}, ..., 1.5 \times \epsilon^{-1} \times a_{\min(I, fold + J) - 1}]$
+            \State $[{Y_{\min(I - J, fold)}}_C, ..., {Y_{fold - 1}}_C] = [{Y_0}_C, ..., {Y_{fold - 1 - \min(I - J, fold)}}_C]$
+            \State $[{Y_0}_C, ..., {Y_{\min(I - J, fold) - 1}}_C] = [0, ..., 0]$
           \EndIf
         \EndFunction
       \end{algorithmic}
@@ -444,16 +452,16 @@
     When depositing values into an indexed type $Y$ of index $I$, the assumption is made that ${Y_j}_P \in (\epsilon^{-1}\times 2^{a_{I + j}}, 2 \times \epsilon^{-1}\times 2^{a_{I + j}})$ throughout the routine. To enforce this condition, the indexed type must be renormalized every $2^{p - w - 2}$ deposit operations. The renormalization procedure is shown in Algorithm \ref{alg:renorm}.
     \begin{alg}
       For an indexed $Y$ with index $I$, assuming ${Y_j}_P \in [1.25 \times \epsilon^{-1}\times 2^{a_{I + j}}, 2 \times \epsilon^{-1}\times 2^{a_{I + j}})$, renormalize $Y$ such that ${Y_j}_P \in [1.5 \times \epsilon^{-1}\times 2^{a_{I + j}}, 1.75 \times \epsilon^{-1}\times 2^{a_{I + j}})$.
-      \begin{algorithmic}
+      \begin{algorithmic}[1]
         \Function{Renorm}{fold, Y}
-          \For{$j \in 0 \to fold - 1$}
+          \For{$j = 0 \To fold - 1$}
             \If{${Y_j}_P < 1.5 \times \ufp({Y_j}_P)$}
-              \State ${Y_j}_P \gets {Y_j}_P + 0.25 \times \ufp({Y_j}_P)$
-              \State ${Y_j}_C \gets {Y_j}_C - 1$
+              \State ${Y_j}_P = {Y_j}_P + 0.25 \times \ufp({Y_j}_P)$
+              \State ${Y_j}_C = {Y_j}_C - 1$
             \EndIf
             \If{${Y_j}_P \geq 1.75 \times \ufp({Y_j}_P)$}
-              \State ${Y_j}_P \gets {Y_j}_P - 0.25 \times \ufp({Y_j}_P)$
-              \State ${Y_j}_C \gets {Y_j}_C + 1$
+              \State ${Y_j}_P = {Y_j}_P - 0.25 \times \ufp({Y_j}_P)$
+              \State ${Y_j}_C = {Y_j}_C + 1$
             \EndIf
           \EndFor
         \EndFunction
@@ -502,16 +510,16 @@
     \begin{equation*}
       {Z_j}_P \in [1.5 \times \epsilon^{-1}\times 2^{a_{J + j}}, 1.75 \times \epsilon^{-1}\times 2^{a_{J + j}})
     \end{equation*}
-      \begin{algorithmic}
+      \begin{algorithmic}[1]
         \Function{Reduce}{fold, Y, Z}
           \If{$J > I$}
-            \State $R \gets Z$
+            \State $R = Z$
             \State \Call{Reduce}{fold, $R$, $Y$}
-            \State $Y \gets R$
+            \State $Y = R$
           \EndIf
-          \For{$j \in 0 \to J$}
-            \State ${Y_{j + I - J}}_P \gets {Y_{j + I - J}}_P + {Z_j}_P - 1.5 \times \epsilon^{-1} \times 2^{a_{I + j}}$
-            \State ${Y_{j + I - J}}_C \gets {Y_{j + I - J}}_C + {Z_j}_C$
+          \For{$j = 0 \To J$}
+            \State ${Y_{j + I - J}}_P = {Y_{j + I - J}}_P + {Z_j}_P - 1.5 \times \epsilon^{-1} \times 2^{a_{I + j}}$
+            \State ${Y_{j + I - J}}_C = {Y_{j + I - J}}_C + {Z_j}_C$
           \EndFor
           \State \Call{Renorm}{fold, $Y$}
         \EndFunction
@@ -527,9 +535,9 @@
     The procedure is very simply summarized by Algorithm \ref{alg:conv2indexed}
     \begin{alg}
       Convert floating point $x$ to indeed $Y$ with fold $fold$.
-      \begin{algorithmic}
+      \begin{algorithmic}[1]
         \Function{ConvertFloatToIndexed}{fold, x, Y}
-          \State $Y \gets 0$
+          \State $Y = 0$
           \State \Call{Update}{fold, x, Y}
           \State \Call{Deposit}{fold, x, Y}
           \State \Call{Renorm}{fold, Y}
@@ -633,15 +641,15 @@
 
     \begin{alg}
       Convert indexed $Y$ with index $I$ and fold $fold$ to floating point $x$. Here, $z$ is a floating point type with precision $P$ greater than $p + \ceil{\log_2(2 \times fold)}$ and maximum exponent $E_{\max}$ greater than $e_{\max} - W + p + p$
-      \begin{algorithmic}
+      \begin{algorithmic}[1]
         \Function{ConvertIndexedToFloat}{fold, x, Y}
-          \State $z \gets {\mathcal{Y}_0}_C$
-          \For{$j \in 1 \to fold - 1$}
-            \State $z \gets z + {\mathcal{Y}_j}_C$
-            \State $z \gets z + {\mathcal{Y}_{j - 1}}_P$
+          \State $z = {\mathcal{Y}_0}_C$
+          \For{$j = 1 \To fold - 1$}
+            \State $z = z + {\mathcal{Y}_j}_C$
+            \State $z = z + {\mathcal{Y}_{j - 1}}_P$
           \EndFor
-          \State $z \gets {\mathcal{Y}_{fold - 1}}_P$
-          \State $x \gets z$
+          \State $z = {\mathcal{Y}_{fold - 1}}_P$
+          \State $x = z$
         \EndFunction
       \end{algorithmic}
       \label{alg:conv2float}
@@ -661,19 +669,19 @@
 
     \begin{alg}
       Convert indexed $Y$ with index $I$ and fold $fold$ to floating point $x$. Here, $z$ is a floating point type with precision $P$ greater than $p + \ceil{\log_2(2 \times fold)}$.
-      \begin{algorithmic}
+      \begin{algorithmic}[1]
         \Function{ConvertIndexedToFloat}{fold, x, Y}
-          \State $j \gets 1$
+          \State $j = 1$
           \While{$j \leq 2 \times fold$ and $\exp(\gamma_j) \geq e_{\max} - P - 1$}
-            \State $z \gets z + (\gamma_j / 2^{p + p - W - 2})$
-            \State $j \gets j + 1$
+            \State $z = z + (\gamma_j / 2^{p + p - W - 2})$
+            \State $j = j + 1$
           \EndWhile
-          \State $z \gets z \times 2^{p + p - W - 2}$
+          \State $z = z \times 2^{p + p - W - 2}$
           \While{$j \leq 2 \times fold$}
-            \State $z \gets z + \gamma_j$
-            \State $j \gets j + 1$
+            \State $z = z + \gamma_j$
+            \State $j = j + 1$
           \EndWhile
-          \State $x \gets z$
+          \State $x = z$
         \EndFunction
       \end{algorithmic}
       \label{alg:conv2floatoverflow}
@@ -691,6 +699,10 @@
         \item $\exp(f'_k) \geq \exp(f'_{k + 2}) + \ceil{\frac{p + 1}{2}}$ for all $k \in \{0, ..., n - 3\}$
       \end{enumerate}
       \label{thm:mysortsum}
+      Then we have
+      \begin{equation*}
+        |\sum \limits_{k = 0}^{n - 1} f_k - \fl(\sum \limits_{k = 0}^{n - 1} f_k)| < 16\epsilon|\sum\limits_{k = 0}^{n - 1}f_k|
+      \end{equation*}
     \end{thm}
 
     \begin{proof}
@@ -702,7 +714,7 @@
 
       If such an $m$ exists, then because $\exp(f_0') > ... > \exp(f_m')$, $f_0, ..., f_m \in \ulp(f_m')\Z$. Thus, $S_m \in \ulp(f_m')\Z$.
 
-      Assume for contradiction that $|S_m| < 2 \times 2^{\exp(f_m')}$. Because $S_m \in \ulp(f_m')\Z$, this would imply that $S_m$ is representable as a floating point number with exponent $\exp(f_m')$, a contradiction as $\overline{S_m} \neq S_m$. Therefore, we have
+      Assume for contradiction that $|S_m| < 2 \times 2^{\exp(f_m')}$. Because $S_m \in \ulp(f_m')\Z$, this would imply that $S_m$ is representable as a floating point number, a contradiction as $\overline{S_m} \neq S_m$. Therefore, we have
       \begin{equation}
         |S_m| \geq 2 \times 2^{\exp(f_m')}
         \label{eq:smbound}
@@ -750,7 +762,7 @@
       And by Equations \ref{eq:sbound} and \ref{eq:smsrelsbound},
 
       \begin{equation}
-        |S_m| \leq \sum\limits_{k = 0}^{n - 1}|f_k| + |\sum\limits_{k = m + 1}^{n - 1} f_k| \leq (1 + (\frac{1 + 4 \times \sqrt\epsilon}{1 - 4 \times \sqrt\epsilon}))|\sum\limits_{k = 0}^{n - 1}f_k| \leq (\frac{2}{1 - 4 \times \sqrt\epsilon})|\sum\limits_{k = 0}^{n - 1}f_k|
+        |S_m| \leq |\sum\limits_{k = 0}^{n - 1}f_k| + |\sum\limits_{k = m + 1}^{n - 1} f_k| \leq (1 + (\frac{1 + 4 \times \sqrt\epsilon}{1 - 4 \times \sqrt\epsilon}))|\sum\limits_{k = 0}^{n - 1}f_k| \leq (\frac{2}{1 - 4 \times \sqrt\epsilon})|\sum\limits_{k = 0}^{n - 1}f_k|
         \label{eq:smrelsbound}
       \end{equation}
 
@@ -759,7 +771,7 @@
         |\sum \limits_{k = 0}^{n - 1} f_k - \fl(\sum \limits_{k = 0}^{n - 1} f_k)| = |(S_{m - 1} + \sum \limits_{k = m}^{n - 1} f_k) - \fl(\overline{S_{m - 1}} + \sum \limits_{k = m}^{n - 1} f_k)|
       \end{equation*}
 
-      If $n - 1 \leq m + 4$, we may combine Equations \ref{eq:smrelsbound} and \ref{eq:smsrelsbound} with Equation 2.4 from () to obtain
+      If $n - 1 \leq m + 4$, we may combine Equations \ref{eq:smrelsbound} and \ref{eq:smsrelsbound} with Equation 2.4 from \cite{higham} to obtain
 
       \begin{equation*}
         |\sum \limits_{k = 0}^{n - 1} f_k - \fl(\sum \limits_{k = 0}^{n - 1} f_k)| = |(S_{m - 1} + \sum \limits_{k = m}^{n - 1} f_k) - \fl(\overline{S_{m - 1}} + \sum \limits_{k = m}^{n - 1} f_k)|
@@ -773,9 +785,13 @@
       \begin{equation*}
  \leq ((\frac{5\epsilon}{1 - 5 \epsilon})(\frac{2}{1 - 4 \times \sqrt\epsilon}) + (\frac{4\epsilon}{1 - 4 \epsilon})(\frac{1 + 4 \times \sqrt\epsilon}{1 - 4 \times \sqrt\epsilon}))|\sum\limits_{k = 0}^{n - 1}f_k|
       \end{equation*}
+      And assuming $\epsilon << 1$,
+      \begin{equation*}
+        |\sum \limits_{k = 0}^{n - 1} f_k - \fl(\sum \limits_{k = 0}^{n - 1} f_k)| \leq 16\epsilon|\sum\limits_{k = 0}^{n - 1}f_k|
+      \end{equation*}
       And we are done.
 
-      If $n - 1 > m + 4$, we may combine Equations \ref{eq:smrelsbound} and \ref{eq:smsrelsbound} with Equation 2.4 from () to obtain
+      If $n - 1 > m + 4$, we may combine Equations \ref{eq:smrelsbound} and \ref{eq:smsrelsbound} with Equation 2.4 from \cite{higham} to obtain
 
       \begin{equation*}
         |\sum \limits_{k = 0}^{m + 4} f_k - \fl(\sum \limits_{k = 0}^{m + 4} f_k)| = |(S_{m - 1} + \sum \limits_{k = m}^{m + 4} f_k) - \fl(\overline{S_{m - 1}} + \sum \limits_{k = m}^{m + 4} f_k)|
@@ -805,7 +821,13 @@
           \sum\limits_{k = m + 5}^{n - 1} |f_k| < \sum\limits_{k = m + 5}^{n - 1} 2 \times 2^{\exp(f_m') - p - 2 - (k - (m + 5))} < \sum\limits_{k = 0}^{\infty} 2^{\exp(f_m') - p - 1 - k} = \epsilon \times 2^{\exp(f_m')}
           \label{eq:boundfmfivesum}
         \end{equation}
-      By Equations \ref{eq:sbound}, \ref{eq:boundfmfivesum}, and \ref{eq:smfiveerror}.
+      And using Equation \ref{eq:sbound},
+        \begin{equation}
+          \sum\limits_{k = m + 5}^{n - 1} |f_k| < (\frac{\epsilon}{1 - 4 \times \sqrt\epsilon})|\sum\limits_{k = 0}^{n - 1} f_k|
+          \label{eq:relsboundfmfivesum}
+        \end{equation}
+
+      By Equations \ref{eq:sbound}, \ref{eq:smfiveerror}, and \ref{eq:boundfmfivesum}.
         \begin{equation*}
           |\overline{S_{m + 4}}| \geq |S_{m + 4}| - |S_{m + 4} - \overline{S_m + 4}| \geq (|\sum\limits_{k = 0}^{n - 1} f_k| - \sum\limits_{k = m + 5}^{n - 1}|f_k|) - |S_{m + 4} - \overline{S_m + 4}|
         \end{equation*}
@@ -816,22 +838,39 @@
           \geq (1 - (\frac{10\epsilon}{1 - 5 \epsilon}) - (\frac{4\epsilon}{1 - 4 \epsilon})(1 + 4 \times \sqrt\epsilon) - \epsilon)\times 2^{\exp(f_m')}
           \label{eq:minsmfour}
         \end{equation}
-        As we assume $\epsilon << 1$, equation \ref{eq:minsmfour} can be simplified to
+        As we may assume $\epsilon << 1$, Equation \ref{eq:minsmfour} can be simplified to
         \begin{equation}
           |\overline{S_{m + 4}}| > 2^{\exp(f_m') - 1}
           \label{eq:minsmfoursimple}
         \end{equation}
 
-        Because $\exp(f_0') > ... > \exp(f_{n - 1}')$, we may combine equation \ref{eq:minsmfour} with \ref{eq:fmfiveexp} and have that for all $f_k$ with $k \in \{m + 5, ..., n - 1\}$,
+        Using Equation \ref{eq:fmfiveexp},
+
+        \begin{equation}
+          |f_k| < 2 \times 2^{\exp(f_k')} \leq 2 \times 2^{\exp(f_m) - p - 2} = \epsilon \times 2^{\exp(f_m') - 1}
+          \label{eq:maxfmfive}
+        \end{equation}
+
+        And by Equations \ref{eq:maxfmfive} and \ref{eq:minsmfour}, all additions after $f_{m + 4}$ have no effect and we have
+        \begin{equation}
+          \overline{S_{m + 4}} = \overline{S_{n - 1}}
+          \label{eq:smfourcontinues}
+        \end{equation}
+
+        With Equations \ref{eq:relsboundfmfivesum} and \ref{eq:smfiveerror}
 
         \begin{equation*}
-          |f_k| < 2 \times 2^{\exp(f_k')} \leq 2 \times 2^{\exp(f_m) - p - 2} = \epsilon \times 2^{\exp(f_m') - 1}
+          |\sum \limits_{k = 0}^{n - 1} f_k - \fl(\sum \limits_{k = 0}^{n - 1} f_k)| = |S_{n - 1} - \overline{S_{n - 1}}| = |S_{n - 1} - \overline{S_{m + 4}}| \leq |S_{m + 4} - \overline{S_{m + 4}}| + \sum\limits_{k = m + 5}^{n - 1}|f_k|
+        \end{equation*}
+        \begin{equation*}
+          \leq ((\frac{10\epsilon}{1 - 5 \epsilon}) + (\frac{4\epsilon}{1 - 4 \epsilon})(1 + 4 \times \sqrt\epsilon) + \epsilon)(\frac{1}{1 - 4 \times \sqrt\epsilon})|\sum\limits_{k = 0}^{n - 1}f_k|
         \end{equation*}
 
-        And therefore,
+        And assuming $\epsilon << 1$,
+
         \begin{equation}
-          $\overline{S_{m + 5}} = \overline{S_{n - 1}}$
-          \label{eq:smfivecontinues}
+          |\sum \limits_{k = 0}^{n - 1} f_k - \fl(\sum \limits_{k = 0}^{n - 1} f_k)| < 16\epsilon|\sum\limits_{k = 0}^{n - 1}f_k|
+          \label{eq:sortsum_finalbound}
         \end{equation}
     \end{proof}
     Consider the indexed sum $Y$ of fold $fold$ of floating point numbers $x_0, ..., x_{n - 1}$. We denote the true sum $\sum \limits_{k = 0}^{n - 1} x_k$ by $T$, the true value of the indexed sum as obtained using Equation \ref{eq:indexedvalue} by $\mathcal{Y}$, and the floating point approximation of $\mathcal{Y}$ obtained using an appropriate algorithm from section \ref{sec:convert} by $\overline{\mathcal{Y}}$.
@@ -1005,11 +1044,11 @@
     \label{sec:limits}
     As discussed previously, the minimum fold accepted by ReproBLAS is 2. The maximum useful fold is $\floor{(e_{\max} - e_{\min} + p - 1)/W}$, as this covers all of the bins.
 
-    As discussed in \cite{repsum}, $W < p - 2$. As discussed in section \ref{sec:overflow}, $2\times W > p + 1$.
+    As discussed in \cite{repsum}, $W < p - 2$. As discussed in section \ref{sec:indexed_implementation_overflow}, $2\times W > p + 1$.
 
     ReproBLAS uses the values $W = 40$ for indexed \verb|double| and $W = 13$ for indexed \verb|float|. $W$ is available as the \verb|XIWIDTH| macro.
 
-    As discussed in section \ref{sec:underflow}, only input corresponding to the bin $(e_{\min} - 1, e_{\max} + 1]$ is guaranteed to be accumulated.
+    As discussed in section \ref{sec:indexed_implementation_underflow}, only input corresponding to the bin $(e_{\min} - 1, e_{\max} + 1]$ is guaranteed to be accumulated.
 
     As absolute value of individual quantities added to ${Y_j}_P$ are not in excess of $2^{b_{I + j}}$, a maximum of $0.25\epsilon^{-1}2^{-W}$ elements may be deposited into ${Y_j}_P$ between renormalizations, as discussed in section \ref{sec:renormalize}. For indexed \verb|double| this number is $2^{11}$, whereas for indexed \verb|float| this number is $2^9$. This number is supplied programmatically using the \verb|XIENDURANCE| macro.
 
@@ -1056,6 +1095,8 @@
     IEEE Standard for Floating-Point Arithmetic, IEEE Std 754-2008 , vol., no., pp.1,70, Aug. 29 2008
   \bibitem{c89}
     ANSI/ISO 9899-1990 American National Standard for Programming Languages - C, section 6.1.2.5
+  \bibitem{higham}
+    Higham, Nicholas J. "The accuracy of floating point summation." SIAM Journal on Scientific Computing 14, no. 4 (1993): 783-799.
   \bibitem{sortsum}
     Demmel, James W., and Yozo Hida. Accurate floating point summation. Computer Science Division, University of California, 2002.
   \bibitem{doubledouble}
