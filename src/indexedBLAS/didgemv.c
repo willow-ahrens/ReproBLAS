@@ -9,7 +9,7 @@ void didgemv(const int fold, const char Order,
              const double alpha, const double *A, const int lda,
              const double *X, const int incX,
              double_indexed *Y, const int incY){
-  didgemv(fold, Order,
+  dmdgemv(fold, Order,
           TransA, M, N,
           alpha, A, lda,
           X, incX,

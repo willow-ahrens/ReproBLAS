@@ -38,7 +38,8 @@ libindexedblas.a_DEPS = $$(LIBINDEXED)                                 \
                         sissum.o sisasum.o sisssq.o sisdot.o           \
                         cicsum.o sicasum.o sicssq.o cicdotu.o cicdotc.o\
                         zizsum.o dizasum.o dizssq.o zizdotu.o zizdotc.o\
-                        dmdgemv.o
+                        dmdgemv.o                                      \
+                        didgemv.o
                         #TODO dIAccum.o zIAccum.o sIAccum.o cIAccum.o        \
 
 
@@ -69,3 +70,4 @@ dmzssq.c_DEPS = $$(GETTER) dmzssq.ccog
 zmzdotu.c_DEPS = $$(GETTER) zmzdotu.ccog
 zmzdotc.c_DEPS = $$(GETTER) zmzdotc.ccog
 dmdgemv.c_DEPS = $$(GETTER) dmdgemv.ccog
+didgemv.c_DEPS = $$(GETTER) didgemv.ccog
