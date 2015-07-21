@@ -698,7 +698,7 @@
 
       Let $m$ be the location of the first error such that $S_{m - 1} = \overline{S_{m - 1}}$ and $S_{m} \neq \overline{S_{m}}$.
 
-      If no such $m$ exists then because $S_0 = \overline{S_0}$ the computed sum is exact ($\fl(\sum \limits_{k = 0}^{n - 1} f_k) = \sum \limits_{k = 0}^{n - 1} f_k$) and we are done.
+      If no such $m$ exists then the computed sum is exact ($\fl(\sum \limits_{k = 0}^{n - 1} f_k) = \sum \limits_{k = 0}^{n - 1} f_k$) and we are done.
 
       If such an $m$ exists, then because $\exp(f_0') > ... > \exp(f_m')$, $f_0, ..., f_m \in \ulp(f_m')\Z$. Thus, $S_m \in \ulp(f_m')\Z$.
 
@@ -833,7 +833,6 @@
           $\overline{S_{m + 5}} = \overline{S_{n - 1}}$
           \label{eq:smfivecontinues}
         \end{equation}
-
     \end{proof}
     Consider the indexed sum $Y$ of fold $fold$ of floating point numbers $x_0, ..., x_{n - 1}$. We denote the true sum $\sum \limits_{k = 0}^{n - 1} x_k$ by $T$, the true value of the indexed sum as obtained using Equation \ref{eq:indexedvalue} by $\mathcal{Y}$, and the floating point approximation of $\mathcal{Y}$ obtained using an appropriate algorithm from section \ref{sec:convert} by $\overline{\mathcal{Y}}$.
 
@@ -1063,8 +1062,3 @@
     Hida, Yozo, Xiaoye S. Li, and David H. Bailey. Quad-double arithmetic: Algorithms, implementation, and application. 15th IEEE Symposium on Computer Arithmetic, 2000.
 \end{thebibliography}
 \end{document}
-    Given $x_0, ..., x_{n - 1} \in \R$, the slice of $x_0, ..., x_{n - 1}$ in the bin $(a_i, b_i]$ is defined as $\sum\limits_{k = 0}^{n - 1} d(x_k, i)$.
-    \begin{equation}
-      d(x, i) = \begin{cases}\roundtonearestinfty(x, a_i + 1) \text{ if } 2^{b_i} > |x| \\ \roundtonearestinfty(x - \sum\limits_{k=0}^{i - 1}d(x,k), a_i + 1) \text{ if } |x| \geq 2^{b_i} \end{cases}
-      \label{eq:d}
-    \end{equation}
