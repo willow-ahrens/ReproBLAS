@@ -532,6 +532,18 @@ for i in range(FLT_BIN_WIDTH + 2):
                            "++big",\
                            "+-big"]])
 
+check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
+                        ],\
+                       ["N", "fold", "incX", "RealScaleX", "f"],\
+                       [[1], folds, incs, [DBL_ONES * 2 **(DBL_MAX_EXP - 1)],\
+                        ["constant",]])
+
+check_suite.add_checks([checks.ValidateInternalRSSUMTest(),\
+                        ],\
+                       ["N", "fold", "incX", "RealScaleX", "f"],\
+                       [[1], folds, incs, [FLT_ONES * 2 **(FLT_MAX_EXP - 1)],\
+                        ["constant",]])
+
 #check_suite.add_checks([checks.VerifyRDGEMVTest()],\
 #                       ["O", "T", "N", "M", "lda", "incX", "incY", "f", "g", "j"],\
 #                       [["RowMajor", "ColMajor"], ["NoTrans", "Trans"], [1023], [1023], [1023, 1025], incs, incs,\
