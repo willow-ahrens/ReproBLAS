@@ -455,6 +455,7 @@
       It should be noted here that it is possible to achieve a final result of \verb|Inf| or \verb|-Inf| when ${Y_0}_P$ is finite. This is due to the fact that the indexed representation can express values outside of the range of the floating point numbers that it is composed with. More specifically, it is possible for the value $\mathcal{Y}$ represented by the indexed type $Y$ to satisfy $|\mathcal{Y}| \geq 2 \times 2^{e_{\max}}$. The condition that $\mathcal{Y}$ is not representable is discovered when calculating $\mathcal{Y}$ (converting $Y$ to a floating point number). The methods used to avoid overflow and correctly return the \verb|Inf| or \verb|-Inf| are discussed in Section \ref{sec:convert}.
 
 \section{Basic Operations}
+  \subsection{Section Summary}
   \subsection{Update}
     As noted in Algorithm \ref{alg:deposit}, when adding $x \in \F$ to an indexed type $Y$ of index $I$ and fold $fold$, we make the assumption that $|x| < 2^{b_I}$. However, this is not always the case and sometimes it is necessary to adjust the index of $Y$. This adjustment is called an \textbf{update}. The process of updating $Y$ to have index $J > I$ is summarized succinctly in Algorithm \ref{alg:update}.
     \begin{alg}
@@ -1092,12 +1093,13 @@
     The indexed types provided by ReproBLAS will, when used correctly, avoid intermediate overflow.
 
 \section{Interface}
+  \subsection{Section Summary}
   \subsection{Fold}
   \subsection{Complex Types}
   \subsection{Naming Conventions}
   \subsection{Build System}
 \section{indexed.h}
-  \subsection{Overview}
+  \subsection{Section Summary}
   \subsection{Types}
   \subsection{Functions}
     \subsubsection{xixadd}
@@ -1105,7 +1107,7 @@
     \subsubsection{xscale}
     \subsubsection{xixiaddsq}
 \section{idxdBLAS.h}
-  \subsection{Overview}
+  \subsection{Section Summary}
   \subsection{Functions}
     \subsubsection{xixdot}
     \subsubsection{xixnrm2}
@@ -1114,11 +1116,14 @@
   \subsection{Optimization}
     Due to the proportion of time spent in the deposit routine, optimization of the deposit routine was prioritized. In the event that multiple $x$ need to be added to $Y$, the deposit routine can be vectorized by accumulating the $x$ in multiple copies of $Y$. The number of copies of $Y$ to make, $c$, and the number of unrolled loop iterations, $u$ are tuning parameters.
 \section{repBLAS.h}
+  \subsection{Section Summary}
 \section{idxdMPI.h}
+  \subsection{Section Summary}
   \subsection{Types}
   \subsection{Functions}
     \subsubsection{XIXIREDUCE}
 \section{Applications}
+  \subsection{Section Summary}
   \subsection{Parallel Reproducible Dot Product}
   \subsection{Parallel Reproducible Vector Norm}
   \subsection{Parallel Reproducible Matrix-Vector Multiply}
