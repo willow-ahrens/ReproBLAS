@@ -40,7 +40,7 @@
 \section{Notation and Background}
   Let $\R, \F, $ and $\Z$ denote the sets of real numbers, floating-point numbers, and integers respectively.
 
-  Assume that floating point arithmetic complies with the IEEE 754-2008 standard \cite{ieee754} in ``to nearest even'' rounding mode and that underflow occurs gradually, although methods to handle abrupt underflow will be considered in Section \ref{sec:indexed_implementation_underflow_gradual}.
+  Assume that floating point arithmetic complies with the IEEE 754-2008 standard \cite{ieee754} in ``to nearest even'' rounding mode and that underflow occurs gradually, although methods to handle abrupt underflow will be considered in Section \ref{sec:indexed_implementation_underflow_abrupt}.
 
   Let $f = s \times 2^e \times m \in \F$ be a floating-point number represented in IEEE 754-2008 format \cite{ieee754} where $s = \pm 1$ is the \textbf{sign}, $e_{\max} \geq e \geq e_{\min}$ is the \textbf{exponent} ($\exp(f)$ is defined to be $e$), $p$ is the \textbf{precision}, and $m = m_0.m_1m_2...m_{p-1}$ where $m_0, ..., m_{p - 1} \in \{0, 1\}$ is the \textbf{significand} of $f$. $f$ is said to be \textbf{normalized} if $m_0 = 1$ and $e > e_{\min}$, \textbf{unnormalized} if $m_0 = 0$, and \textbf{denormalized} if $m_0 = 0$ and $e = e_{\min}$. $f = 0$ if all $m_k = 0$ and $e = e_{\min}$.
 
@@ -72,7 +72,7 @@
   \subsection{Section Summary}
     An indexed type is is composed of several accumulators, each accumulating input in certain ranges (more formally defined later as bins). We begin in Section \ref{sec:indexed_binning} with an original mathematical theory to support the binning scheme. Section \ref{sec:indexed_representation} serves as a summary of the indexed type defined in \cite{repsum}.
     Section \ref{sec:indexed_implementation_datatypes} explains implementation details of \cite{repsum} of the indexed type. Section \ref{sec:indexed_implementation_primary_carry} elaborates on the indexed type by explaining the ``1-Reduction Technique'' of \cite{repsum} using the new binning theory.
-    Sections \ref{sec:indexed_implementation_overflow}, \ref{sec:indexed_implementation_underflow_gradual}, and \ref{sec:indexed_implementation_exceptions} contain original extensions of the indexed type and associated algorithms to a larger (more practical) range of inputs.
+    Sections \ref{sec:indexed_implementation_overflow}, \ref{sec:indexed_implementation_underflow_gradual}, \label{sec:indexed_implementation_underflow_abrupt}, and \ref{sec:indexed_implementation_exceptions} contain original extensions of the indexed type and associated algorithms to a larger (more practical) range of inputs.
   \subsection{Binning}
     \label{sec:indexed_binning}
     We start by dividing the exponent range $(e_{\min} - p, ..., e_{\max} + 1]$ into \textbf{bins} $(a_i, b_i]$ of \textbf{width} $W$ according to Equations \ref{eq:a} and \ref{eq:b}.
@@ -342,8 +342,10 @@
               \State $S = {Y_0}_P + (r | 1)$
               \State $q = S - {Y_0}_P$
               \State ${Y_0}_P = S$
-              \State $q = q \times 2^{p - W + 1}$
-              \State $r = x - q$
+              \State $q = q \times 2^{p - W}$
+              \State $r = x \times 0.5$ \label{alg:deposit0:halfx}
+              \State $r = r - q$ \label{alg:deposit0:formr}
+              \State $r = r \times 2.0$ \label{alg:deposit0:formrtwice}
               \For{$j = 1 \To (fold - 2)$}
                 \State $S = {Y_j}_P + (r | 1)$
                 \State $q = S - {Y_j}_P$
@@ -363,12 +365,11 @@
         \label{alg:deposit0}
       \end{alg}
 
-      Algorithm \ref{alg:deposit0} has a few key features worth pointing out in the case that $Y$ has index 0. First, since $|x| < 2^{e_{\max} + 1}$, then the value of $r$ after it's first assignment satisfies $|r| < 2^{e_{\max} - p + W + 1}$. This shows both that the extraction of the top denormalized bin will work correctly and that the top bin is the greatest bin necessary to deposit any finite $x \in \F$.
+      Algorithm \ref{alg:deposit0} has a few key features worth pointing out in the case that $Y$ has index 0. First, since $|x| < 2^{e_{\max} + 1}$, then the value of $r$ after its first assignment satisfies $|r| < 2^{e_{\max} - p + W + 1}$. This shows both that the extraction of the top denormalized bin will work correctly and that the top bin is the greatest bin necessary to deposit any finite $x \in \F$.
       Furthermore, since $x$ is scaled by a power of two, the significand of $r$ is equal to that of $x$.
-      Therefore, the amount added to ${Y_0}_P$ is $\roundtonearestinfty(x/2^{p - W - 1}, a_0 - (p - W - 1) + 1) = d(x, 0)/2^{p - W - 1}$. We can therefore scale this slice by $2^{p - W + 1}$ to obtain the slice of $x$ belonging to bin $0$. As $x$ is representable, so is this component. We can then subtract this component from $x$ and continue as in Algorithm \ref{alg:deposit}.
+      Therefore, the amount added to ${Y_0}_P$ is $\roundtonearestinfty(x/2^{p - W + 1}, a_0 - (p - W + 1) + 1) = d(x, 0)/2^{p - W + 1}$. We can therefore scale this slice by $2^{p - W}$ to obtain half the value of the slice of $x$ belonging to bin $0$. As $x < 2 \times 2^{e_{\max}}$, $d(x, 0) \leq 2 \times 2^{e_{\max}}$. It is for this reason that $x$ is halved (to ensure that no overflow occurs) in line \ref{alg:deposit0:halfx} before half of $r$ is formed in line \ref{alg:deposit0:formr}. Because we know that the unscaled value of $r$ is representable, we can double the half of $r$ in line \ref{alg:deposit0:formrtwice}. We can then continue as in Algorithm \ref{alg:deposit}.
 
-      Notice that after the first extraction, we cannot simply subtract $q$ from $r$ and then scale $r$ up and continue, as there may have been underflow when scaling $x$ down. We must scale $q$ up and subtract it from the original $x$. Although it likely does not matter in practice, this detail ensures that proofs in Section \ref{sec:indexed_implementation_primary_carry} may extend to this overflow case.
-
+      Notice that after the first extraction, we cannot simply subtract $q$ from $r$ and then scale $r$ up and continue, as there may have been underflow when scaling $x$ down. We must scale $q$ up to half its true value and subtract it from half the original $x$. This will result (at worst) in underflow of the smallest representable bit, but this bit does not matter to the algorithm as shown in Section \ref{sec:indexed_implementation_underflow_gradual}. Although it likely does not matter in practice, this detail ensures that proofs in Section \ref{sec:indexed_implementation_primary_carry} may extend to this overflow case.
     \subsubsection{Gradual Underflow}
       \label{sec:indexed_implementation_underflow_gradual}
       Here we consider the effects of gradual underflow on algorithms described in \cite{repsum} and how they can be avoided. In Algorithm \ref{alg:deposit}, when the last bit of $r$ is set to 1, it is assumed that this last bit will only serve to fix the direction of the rounding mode. However, if ${Y_j}_P$ is denormalized, that last bit may very well be accumulated!
@@ -380,7 +381,7 @@
         \label{thm:underflowulp}
       \end{thm}
       \begin{proof}
-      The lowest bin is
+      The least bin is
 
       \begin{equation*}
       (e_{\min} - p + 2 + ((e_{\max} - e_{\min} + p - 1 ) \mod W), e_{\min} - p + 2 + W + ((e_{\max} - e_{\min} + p - 1)\mod W)]
@@ -399,22 +400,33 @@
       If $r$ is denormalized, $\ulp(r) = 2^{e_{\min} - p + 1}$ since the unit in the last place of a denormalized number is always equal to $2^{e_{\min} - p + 1}$. Therefore $\ulp(r) = 2^{e_{\min} - p + 1} < 2^{a_{I + j}} = \frac{1}{2}\ulp({Y_j}_P)$.
       \end{proof}
 
-      A consequence of Theorem \ref{thm:underflowulp} and Theorem \ref{thm:dround} is that for any $x \in \F$,
+      Since $W < p - 2$,
+
+      \begin{equation*}
+        a_{\floor{(e_{\max} - e_{\min} + p - 1)/W} - 1} = e_{\min} - p + 2 + ((e_{\max} - e_{\min} + p - 1 ) \mod W) \leq {e_{\min} - 1}
+      \end{equation*}
+
+      As a consequence, we can use Theorems \ref{thm:underflowulp} and \ref{thm:dround} to say that for any $x \in \F$,
       \begin{equation*}
         |x - \sum\limits_{i = 0}^{\floor{(e_{\max} - e_{\min} + p - 1)/W}} d(x, i)| \leq 2^{e_{\min} - 1}
       \end{equation*}
-      Equivalently, we can approximate $x$ using the sum of its slices to within $2^{e_{\min} - 1}$.
+      This means that we can approximate $x$ using the sum of its slices to within $2^{e_{\min} - 1}$.
 
       It is possible to deposit the input in the denormalized range. One simple way the algorithm could be extended to denormalized inputs would be to scale the least bins up, as was done to handle overflow. Due to the relatively low priority for accumulating denormalized values, this method was not implemented in ReproBLAS.
 
     \subsubsection{Abrupt Underflow}
-      If underflow is abrupt, several approaches may be taken to accumulate input in the denormalized range. To ensure that intermediate quantities are not lost, the least bins may be scaled up. This modification may add 
+      \label{sec:indexed_implementation_underflow_abrupt}
+      If underflow is abrupt, several approaches may be taken to adapt the algorithms in this paper.
+
+      The simplest approach would be to accumulate input in the denormalized range by scaling the smaller inputs up. This has the added advantage of increasing the accuracy of the algorithm. A major disadvantage to this approach is the additional branching cost incurred due to the conditional scaling.
+
+      A more efficient way to solve the problem would be to set the least bin to have $a_i = 2^{e_{\min} - 1}$. This could be accomplished either by keeping the current binning scheme and having the least bin be of a width not necessarily equal to $W$, or by shifting all other bins to be greater. The disadvantage of shifting the other bins is that it may cause multiple greatest bins to overflow, adding multiple scaling cases. Setting such a least bin would enforce the condition that no underflow occurs since all intermediate sums are either $0$ or greater than the underflow threshold. The denormal range would be discarded.
 
     \subsubsection{Exceptions}
       \label{sec:indexed_implementation_exceptions}
-      Indexed types are capable of representing exceptional cases such as \verb|NaN| (Not a Number) and \verb|Inf| (Infinity). An indexed type $Y$ stores it's exception status in it's first primary field ${Y_0}_P$.
+      Indexed types are capable of representing exceptional cases such as \verb|NaN| (Not a Number) and \verb|Inf| (Infinity). An indexed type $Y$ stores its exception status in its first primary field ${Y_0}_P$.
 
-      A value of $0$ in ${Y_0}_P$ indicates that nothing has been added to ${Y_0}_P$ yet. The lowest bin is
+      A value of $0$ in ${Y_0}_P$ indicates that nothing has been added to ${Y_0}_P$ yet (${Y_0}_P$ is initialized to $0$).
 
       The lowest bin is
 
@@ -428,19 +440,19 @@
       \epsilon^{-1} \times 2^{e_{\min} - p + 2 + ((e_{\max} - e_{\min} + p - 1)\mod W)} > 2^{e_{\min}}
       \end{equation*}
 
-      Therefore $0$ is a previously unused value in primary fields and is a valid sentinel value. (As the exponent of $0$ is distinct from the exponent of normalized values, the bijection between the index of an indexed type $Y$ and the exponent of ${Y_0}_P$ is preserved)
+      Therefore the value of $0$ in a primary field is unused in any previously specified context and may be used as a sentinel value. (As the exponent of $0$ is distinct from the exponent of normalized values, the bijection between the index of an indexed type $Y$ and the exponent of ${Y_0}_P$ is preserved)
 
       A value of \verb|Inf| or \verb|-Inf| in ${Y_0}_P$ indicates that one or more \verb|Inf| or \verb|-Inf| (and no other exceptional values) have been added to $Y$ respectively.
 
       A value of \verb|NaN| in ${Y_0}_P$ indicates that one or more \verb|NaN| have been added to $Y$ or one or more of both \verb|Inf| and \verb|-Inf| have been added to $Y$.
 
-      As the ${Y_j}_P$ are kept finite to store finite values, \verb|Inf|, \verb|-Inf|, and \verb|NaN| are previously unused in other contexts and are valid sentinel values. (As the exponent of \verb|Inf|, \verb|-Inf|, and \verb|NaN| is distinct from the exponent of finite values, the bijection between the index of an indexed type $Y$ and the exponent of ${Y_0}_P$ is preserved)
+      As the ${Y_j}_P$ are kept finite to store finite values, \verb|Inf|, \verb|-Inf|, and \verb|NaN| are unused in any previously specified context and are valid sentinel values. (As the exponent of \verb|Inf|, \verb|-Inf|, and \verb|NaN| is distinct from the exponent of finite values, the bijection between the index of an indexed type $Y$ and the exponent of ${Y_0}_P$ is preserved)
 
       This behavior follows the behavior for exceptional values in IEEE 754-2008 floating point arithmetic and is therefore easy to implement. At the beginning of \ref{alg:deposit}, we may simply check $x$ and ${Y_0}_P$ for the exceptional values \verb|Inf|, \verb|-Inf|, and \verb|NaN|. If any one of $x$ or ${Y_0}_P$ is indeed exceptional, we add $x$ to the (possibly finite) ${Y_0}_P$. Otherwise, we deposit the finite value normally.
 
       As \verb|Inf|, \verb|-Inf|, and \verb|NaN| add associatively, this behavior is reproducible.
 
-      It should be noted here that it is very much possible to achieve a final result of \verb|Inf| or \verb|-Inf| when ${Y_0}_P$ is finite. This is due to the fact that the indexed representation can express values outside of the range of the floating point numbers that it is composed with. More specifically, it is very much possible for the value $y$ represented by the indexed type $Y$ to satisfy $|y| \geq 2 \times 2^{e_{\max}}$.
+      It should be noted here that it is possible to achieve a final result of \verb|Inf| or \verb|-Inf| when ${Y_0}_P$ is finite. This is due to the fact that the indexed representation can express values outside of the range of the floating point numbers that it is composed with. More specifically, it is possible for the value $\mathcal{Y}$ represented by the indexed type $Y$ to satisfy $|\mathcal{Y}| \geq 2 \times 2^{e_{\max}}$. The condition that $\mathcal{Y}$ is not representable is discovered when calculating $\mathcal{Y}$ (converting $Y$ to a floating point number). The methods used to avoid overflow and correctly return the \verb|Inf| or \verb|-Inf| are discussed in Section \ref{sec:convert}.
 
 \section{Basic Operations}
   \subsection{Update}
