@@ -38,22 +38,22 @@ void smsdeposit(const int fold, const float X, float *priY, const int incpriY){
     q.i |= 1;
     q.f += M;
     priY[0] = q.f;
-    if (fold > 1) {
-      M -= q.f;
-      x += M * SMEXPANSION;
-      for (i = 1; i < fold - 1; i++) {
-        M = priY[i * incpriY];
-        q.f = x;
-        q.i |= 1;
-        q.f += M;
-        priY[i * incpriY] = q.f;
-        M -= q.f;
-        x += M;
-      }
+    M -= q.f;
+    x *= 0.5;
+    x += M * (SMEXPANSION * 0.5);
+    x *= 2.0;
+    for (i = 1; i < fold - 1; i++) {
+      M = priY[i * incpriY];
       q.f = x;
       q.i |= 1;
-      priY[i * incpriY] += q.f;
+      q.f += M;
+      priY[i * incpriY] = q.f;
+      M -= q.f;
+      x += M;
     }
+    q.f = x;
+    q.i |= 1;
+    priY[i * incpriY] += q.f;
   }else{
     for (i = 0; i < fold - 1; i++) {
       M = priY[i * incpriY];

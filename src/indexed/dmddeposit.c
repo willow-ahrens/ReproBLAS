@@ -38,22 +38,22 @@ void dmddeposit(const int fold, const double X, double *priY, const int incpriY)
     q.l |= 1;
     q.d += M;
     priY[0] = q.d;
-    if (fold > 1) {
-      M -= q.d;
-      x += M * DMEXPANSION;
-      for (i = 1; i < fold - 1; i++) {
-        M = priY[i * incpriY];
-        q.d = x;
-        q.l |= 1;
-        q.d += M;
-        priY[i * incpriY] = q.d;
-        M -= q.d;
-        x += M;
-      }
+    M -= q.d;
+    x *= 0.5;
+    x += M * (DMEXPANSION * 0.5);
+    x *= 2.0;
+    for (i = 1; i < fold - 1; i++) {
+      M = priY[i * incpriY];
       q.d = x;
       q.l |= 1;
-      priY[i * incpriY] += q.d;
+      q.d += M;
+      priY[i * incpriY] = q.d;
+      M -= q.d;
+      x += M;
     }
+    q.d = x;
+    q.l |= 1;
+    priY[i * incpriY] += q.d;
   }else{
     for (i = 0; i < fold - 1; i++) {
       M = priY[i * incpriY];
