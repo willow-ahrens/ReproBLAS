@@ -296,9 +296,9 @@
 
         Next, we show $S_j - {Y_j}_P = \roundtonearestinfty(r_j, a_{I + j} + 1)$. As Corollary 3 of \cite{repsum} applies for all $j$, then $S_j - {Y_j}_P \in 2^{a_{I + j} + 1}\Z$. By Theorem 3 of \cite{repsum}, $r_{j + 1} = r_j - (S_j - {Y_j}_P)$. Since $|r_{j + 1}| \leq 2^{a_{I + j}}$, we consider two cases.
 
-        If $|r_j - (S_j - {Y_j}_P)| < 2^{a_{I + j}}$, then ${S_j}_P - {Y_j}_P = \roundtonearestinfty(r_j, a_{I + j} + 1)$.
+        If $|r_j - (S_j - {Y_j}_P)| < 2^{a_{I + j}}$, then $S_j - {Y_j}_P = \roundtonearestinfty(r_j, a_{I + j} + 1)$.
 
-        If $|r_j - (S_j - {Y_j}_P)| = 2^{a_{I + j}}$, then $r_j \in 2^{a_{I + j}}\Z$ and because $\ulp(r_j) < 2^{a_{I + j}}$, $(r_j | 1) - r_j > 0$ and the rounding ``to nearest'' in line \ref{alg:depositrestricted:split} must have gone away from 0. $S_j - {Y_j}_P = \roundtonearestinfty(r_j, a_{I + j} + 1)$.
+        If $|r_j - (S_j - {Y_j}_P)| = 2^{a_{I + j}}$, then $r_j \in 2^{a_{I + j}}\Z$ and because $\ulp(r_j) < 2^{a_{I + j}}$, $|(r_j | 1) - r_j| > 0$ and the rounding ``to nearest'' in line \ref{alg:depositrestricted:split} must have gone away from 0. $S_j - {Y_j}_P = \roundtonearestinfty(r_j, a_{I + j} + 1)$.
 
         We can now show $r_{j + 1} = x - \sum\limits_{i = 0}^{I + j}d(x, i)$ and $S_j - {Y_j}_P = d(x, I + j)$ for all $j$ by induction on $j$.
 
@@ -380,7 +380,7 @@
               \EndFor
               \State ${Y_{fold - 1}}_P = {Y_{fold - 1}}_P + (r | 1)$
             \Else
-              \State\Call{DepositRestricted}{fold, x, Y}
+              \State\Call{DepositRestricted}{fold, x, Y} \label{alg:deposit:callrestricted}
             \EndIf
           \EndFunction
           \Ensure
@@ -407,17 +407,36 @@
       \begin{proof}
         We can break the proof into two cases based on the index $I$ of $Y$.
 
-        If $I \neq 0$, then by Equation \ref{eq:b}, $|x| < 2^{b_I} < 2^{e_{\max} + 1 - W}$. By Theorem \ref{thm:overflow}, all quantities are obviously well below the overflow threshold and Theorem \ref{thm:ddepositrestricted} applies and we are done.
+        If $I \neq 0$, then we execute line \ref{alg:deposit:callrestricted}. By Equation \ref{eq:b}, $|x| < 2^{b_I} < 2^{e_{\max} + 1 - W}$. By Theorem \ref{thm:overflow}, all quantities are obviously well below the overflow threshold and Theorem \ref{thm:ddepositrestricted} applies and we are done.
 
         If $I = 0$, more work is needed.
 
-        We begin by showing that the amount added to ${Y_0}_P$, ($S - {Y_0}_P$ in line \ref{alg:deposit:formS}) is equal to $d(x, 0)/2^{p - W + 1}$.
+        We begin by showing that the amount added to ${Y_0}_P$ ($S - {Y_0}_P$ in line \ref{alg:deposit:formS}) is equal to $\roundtonearestinfty(r, a_0 - p + W)$ in line \ref{alg:deposit:formS}.
+
+        As $|x| < 2^{b_0} = 2 \times 2^{e_{\max}}$ and we scale by a power of two, we have $|r| < 2^{b_0 - p + W - 1}$ in line \ref{alg:deposit:scaler}.
+
+        Since ${Y_0}_P, S \in (2^{e_{\max}}, 2 \times 2^{e_{\max}})$, we have $\ulp({Y_0}_P) = \ulp(S)$ in line \ref{alg:deposit:formS}. Because line \ref{alg:deposit:formS} corresponds to lines 1-2 of Algorithm 4 of \cite{repsum}, Corollary 3 of \cite{repsum} applies and we have that $S - {Y_0}_P \in \ulp({Y_0}_P)\Z = 2^{a_0 - p + W}\Z$ and $|r - (S - {Y_0}_P)| \leq \frac{1}{2} \times \ulp({Y_0}_P) = 2^{a_0 - p + W - 1}$ in line \ref{alg:deposit:formS}.
+
+        If $|r - (S - {Y_0}_P)| < 2^{a_{0} - p + W}$, then $S - {Y_j}_P = \roundtonearestinfty(r, a_{0} - p + W)$.
+
+        If $|r - (S - {Y_0}_P)| = 2^{a_{0} - p + W}$, then $r \in 2^{a_0 - p + W}\Z$ and because $\ulp(r) < 2^{a_{0} - p + W}$, $|(r | 1) - r| > 0$ and the rounding ``to nearest'' in line \ref{alg:deposit:formS} must have gone away from 0. $S - {Y_0}_P = \roundtonearestinfty(r, a_0 - p + W)$.
+
+        Next, we show that ${Y_0}_P - S = d(x, 0)/2^{p - W + 1}$.
 
         We divide into two cases based on the size of $x$.
 
-        If $|x| < 2^{a_0}$, then regardless of whether or not there is underflow when executing line \ref{alg:deposit:scaler} (as $2^{a_0} >> 2^{e_{\min}}$), we have $|r| < 2^{a_0 - p + W - 1}$. Therefore, since ${Y_0}_P, S \in (2^{e_{\max}}, 2 \times 2^{\e_{\max}})$ in line \ref{alg:deposit:formS}, we have $\ulp({Y_0}_P) = \ulp(S)$ and because lines \ref{alg:deposit:scaler}
+        If $|x| < 2^{a_0} = 2^{e_{\max} + 1 - W}$, then we have $|r| < 2^{a_0 - p + W - 1}$ in line \ref{alg:deposit:scaler} regardless of whether or not there is underflow in the division as we scale by a power of two.
+         Therefore, since $|r| < 2^{a_0 - p + W - 1}$, ${Y_0}_P - S = 0 = d(x, 0)/2^{p - W - 1}$ by Theorem \ref{thm:dzero}.
 
-        By $d(x, 0) \neq 0$, we must have $|x| < 
+        If $|x| \geq 2^{a_0}= 2^{e_{\max} + 1 - W}$, then there is no underflow in line \ref{alg:deposit:scaler} and $r = x / 2^{p - W + 1}$ exactly as we scale by a power of two. Therefore, ${Y_0}_P - S = \roundtonearestinfty(x/2^{p - W + 1}, a_0 - p + W) = d(x, 0)/2^{p - W + 1}$
+
+        At this point, all that remains to be shown is that $r = x - d(x, 0)$ in line \ref{alg:deposit:formragain}. In line \ref{alg:deposit:formq}, we know that $q = {Y_0}_P - S = d(x, 0)/2^{p - W + 1}$. By Theorem \ref{eq:dbound}, $d(x, 0) \leq 2 \times 2^{e_{\max}}$ and therefore there is no overflow in line \ref{alg:deposit:scaleq} and as we scale by a power of two, $q = d(x, 0)/2$ in line \ref{alg:deposit:scaleq}. Again we divide into two cases based on the size of $x$.
+       make it more clear above that q does not overflow.
+
+        If $|x| < 2^{a_0}$, we have $d(x, 0) = 0$ by Theorem \ref{thm:dzero} and therefore $r = x - d(x, 0) = x$ exactly in both line \ref{alg:deposit:formr} and line \ref{alg:deposit:formragain}.
+
+        If $|x| \geq 2^{a_0}$, we have $d(x, 0) = \roundtonearestinfty(x, a_0 + 1)$ by Theorem \ref{thm:dmiddle}, $|x - d(x, 0)| \leq 2^{a_0}$ by Theorem \ref{thm:dround}, and $d(x, 0) \leq 2^{b_0}$ by Theorem \ref{thm:dbound}.  Therefore, we have $|x| \geq |x - d(x, 0)|$ which implies $|x| \geq |x - d(x, 0)/2| \geq |x - d(x, 0)|$. As $|x - d(x, 0)/2| $
+        Show that all quantities are in ulp(x)Z and ur done
       \end{proof}
 
       Algorithm \ref{alg:deposit} has a few key features worth pointing out in the case that $Y$ has index 0. First, since $|x| < 2^{e_{\max} + 1}$, then the value of $r$ after its first assignment satisfies $|r| < 2^{e_{\max} - p + W + 1}$. This shows both that the extraction of the top denormalized bin will work correctly and that the top bin is the greatest bin necessary to deposit any finite $x \in \F$.
