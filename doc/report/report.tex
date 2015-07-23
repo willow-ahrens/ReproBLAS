@@ -24,7 +24,7 @@
 \providecommand{\fl}{\ensuremath{\text{fl}}}
 \providecommand{\To}{\ensuremath{\text{ to }}}
 \providecommand{\roundtonearestinfty}{\ensuremath{\mathcal{R}_\text{$\infty$}}}
-\theoremstyle{plain}
+\theoremstyle{definition}
 \newtheorem{thm}{Theorem}[section]
 \newtheorem{lem}[thm]{Lemma}
 \newtheorem{alg}{Algorithm}[section]
@@ -69,10 +69,11 @@
 
   All indices start at $0$ in correspondence with the actual ReproBLAS implementation.
 \section{The Indexed Type}
+  \label{sec:indexed}
   \subsection{Section Summary}
     An indexed type is is composed of several accumulators, each accumulating input in certain ranges (more formally defined later as bins). We begin in Section \ref{sec:indexed_binning} with an original mathematical theory to support the binning scheme. Section \ref{sec:indexed_representation} serves as a summary of the indexed type defined in \cite{repsum}.
     Section \ref{sec:indexed_implementation_datatypes} explains implementation details of \cite{repsum} of the indexed type. Section \ref{sec:indexed_implementation_primary_carry} elaborates on the indexed type by explaining the ``1-Reduction Technique'' of \cite{repsum} using the new binning theory.
-    Sections \ref{sec:indexed_implementation_overflow}, \ref{sec:indexed_implementation_underflow_gradual}, \label{sec:indexed_implementation_underflow_abrupt}, and \ref{sec:indexed_implementation_exceptions} contain original extensions of the indexed type and associated algorithms to a larger (more practical) range of inputs.
+    Sections \ref{sec:indexed_implementation_overflow}, \ref{sec:indexed_implementation_underflow_gradual}, \ref{sec:indexed_implementation_underflow_abrupt}, and \ref{sec:indexed_implementation_exceptions} contain original extensions of the indexed type and associated algorithms to a larger (more practical) range of inputs.
   \subsection{Binning}
     \label{sec:indexed_binning}
     We start by dividing the exponent range $(e_{\min} - p, ..., e_{\max} + 1]$ into \textbf{bins} $(a_i, b_i]$ of \textbf{width} $W$ according to Equations \ref{eq:a} and \ref{eq:b}.
@@ -202,6 +203,32 @@
       \end{equation*}
     \end{proof}
 
+    Theorem \ref{thm:dbound} shows a quick bound on $d(x, i)$
+
+    \begin{thm}
+      For all bins $(a_i, b_i]$ and $x \in \F$, $|d(x, i)| \leq 2^{b_i}$
+      \label{thm:dbound}
+    \end{thm}
+
+    \begin{proof}
+      First, we show that $|x - \sum\limits_{k=0}^{i - 1}d(x,k)| \leq 2^{b_i}$.
+
+      If $i = 0$, then we have
+      \begin{equation*}
+        |x - \sum\limits_{k=0}^{i - 1}d(x,k)| = |x| < 2 \times 2^{e_{\max}} < 2^{b_0}
+      \end{equation*}
+      Otherwise, we can apply Equations \ref{eq:a} and \ref{eq:b} to Theorem \ref{thm:dround} to get
+      \begin{equation*}
+        |x - \sum \limits_{k = 0}^{i - 1}d(x, k)| \leq 2^{a_{i - 1}} = 2^{b_i}
+      \end{equation*}
+
+      As $2^{b_i} \in 2^{a_i + 1}\Z$, Equation \ref{eq:d} can be used
+
+      \begin{equation*}
+        |d(x, i)| = |\roundtonearestinfty(x - \sum\limits_{k=0}^{i - 1}d(x,k), a_i + 1)| \leq 2^{b_i}
+      \end{equation*}
+    \end{proof}
+
   \subsection{Representation}
     \label{sec:indexed_representation}
     The \textbf{indexed type} is used to represent the intermediate result of accumulation using Algorithms 6 and $7$ in \cite{repsum}.
@@ -226,7 +253,7 @@
         {\mathcal{Y}_j}_P = {Y_j}_P - 1.5\times\epsilon^{-1}\times2^{a_{I + j}}
         \label{eq:pri}
       \end{equation}
-      This greatly simplifies the process of extracting the slices of input in bins $(a_{I + j}, b_{I + j}]$. It will be shown in Theorem \ref{thm:ddeposit} that if we represent each primary value ${\mathcal{Y}_j}_P$ as in (\ref{eq:pri}) and keep ${Y_j}_P$ within the range $(\epsilon^{-1} \times 2^{a_{I + j}}, 2 \times \epsilon^{-1} \times 2^{a_{I + j}})$, Algorithm \ref{alg:deposit} extracts the slices of $x$ in bins $(a_I, b_I], ..., (a_{I + fold - 1}, b_{I + fold - 1}]$ and adds them to ${Y_0}_P, ..., {Y_{fold - 1}}_P$ without error (and hence reproducibly) for all $x \in \F, |x| < 2^{b_I}$.
+      This greatly simplifies the process of extracting the slices of input in bins $(a_{I + j}, b_{I + j}]$. It will be shown in Theorem \ref{thm:ddepositrestricted} that if we represent each primary value ${\mathcal{Y}_j}_P$ as in (\ref{eq:pri}) and keep ${Y_j}_P$ within the range $(\epsilon^{-1} \times 2^{a_{I + j}}, 2 \times \epsilon^{-1} \times 2^{a_{I + j}})$, Algorithm \ref{alg:depositrestricted} extracts the slices of $x$ in bins $(a_I, b_I], ..., (a_{I + fold - 1}, b_{I + fold - 1}]$ and adds them to ${Y_0}_P, ..., {Y_{fold - 1}}_P$ without error (and hence reproducibly) for all $x \in \F, |x| < 2^{b_I}$.
       \begin{alg}
         Extract slices of floating point $x \in \F, |x| < 2^{b_I}$ in bins $(a_I, b_I], ..., (a_{I + fold - 1}, b_{I + fold - 1}]$ and add to indexed type $Y$. Here, $(r | 1)$ represents the result of setting the last bit of the mantissa ($m_{p - 1}$) of floating point number $r$ to 1. This is a restatement of lines 15-17 of Algorithm $6$ in \cite{repsum}
         \begin{algorithmic}[1]
@@ -236,42 +263,42 @@
           \Statex $|x| < 2^{b_I}$.
           \Statex ${Y_j}_P \in (\epsilon^{-1} \times 2^{a_{I + j}}, 2 \times \epsilon^{-1} \times 2^{a_{I + j}})$ at all times.
           \Function{DepositRestricted}{fold, x, Y}
-            \State $r = x$ \label{alg:deposit:rgetsx}
-            \For{$j = 0 \To (fold - 2)$} \label{alg:deposit:loop}
-              \State $S = {Y_j}_P + (r | 1)$ \label{alg:deposit:split}
+            \State $r = x$ \label{alg:depositrestricted:rgetsx}
+            \For{$j = 0 \To (fold - 2)$} \label{alg:depositrestricted:loop}
+              \State $S = {Y_j}_P + (r | 1)$ \label{alg:depositrestricted:split}
               \State $q = S - {Y_j}_P$
               \State ${Y_j}_P = S$
-              \State $r = r - q$\label{alg:deposit:endsplit}
+              \State $r = r - q$\label{alg:depositrestricted:endsplit}
             \EndFor
             \State ${Y_{fold - 1}}_P = {Y_{fold - 1}}_P + (r | 1)$
           \EndFunction
           \Ensure
           \Statex The amount added to ${Y_j}_P$ by this algorithm is exactly $d(x, I + j)$.
         \end{algorithmic}
-        \label{alg:deposit}
+        \label{alg:depositrestricted}
       \end{alg}
       The last bit of $r$ is set to break ties when rounding ``to nearest even'' such that the amount added to ${Y_j}_P$ does not depend on the size of ${Y_j}_P$ so far. The amount added to each ${Y_j}_P$ is exactly $d(x, I + j)$, a well-defined quantity that depends only on $x$ and $I + j$.
 
       \begin{thm}
-        Let $Y$ be an indexed type of index $I$ and fold $fold$. Assume that we run Algorithm \ref{alg:deposit} on $Y$ and some $x \in \F$, $|x| < 2^{b_I}$. For all $j \in \{0, ..., fold - 1\}$, if ${Y_j}_P \in (\epsilon^{-1} \times 2^{a_{I + j}}, 2 \times \epsilon^{-1} \times 2^{a_{I + j}})$ at all times, then the amount added to ${Y_j}_P$ is exactly $d(x, I + j)$
-        \label{thm:ddeposit}
+        Let $Y$ be an indexed type of index $I$ and fold $fold$. Assume that we run Algorithm \ref{alg:depositrestricted} on $Y$ and some $x \in \F$, $|x| < 2^{b_I}$. If all requirements of the algorithm are satisfied, then the amount added to ${Y_j}_P$ is exactly $d(x, I + j)$.
+        \label{thm:ddepositrestricted}
       \end{thm}
       \begin{proof}
-        Throughout the proof, assume that the phrase ``for all $j$'' means ``for all $j \in \{0, ..., fold - 1\}$.'' Assume also that $r_j$ and $S_j$ refer to the value of $r$ and $S$ after executing line \ref{alg:deposit:split} in the $j^{th}$ iteration of the loop. Finally, assume ${Y_j}_P$ to refers to the initial value of ${Y_j}_P$ and $S_j$ refers to the final value of ${Y_j}_P$. Therefore, $S_j - {Y_j}_P$ is the amount added to ${Y_j}_P$.
+        Throughout the proof, assume that the phrase ``for all $j$'' means ``for all $j \in \{0, ..., fold - 1\}$.'' Assume also that $r_j$ and $S_j$ refer to the value of $r$ and $S$ after executing line \ref{alg:depositrestricted:split} in the $j^{th}$ iteration of the loop. Finally, assume ${Y_j}_P$ to refers to the initial value of ${Y_j}_P$ and $S_j$ refers to the final value of ${Y_j}_P$. Therefore, $S_j - {Y_j}_P$ is the amount added to ${Y_j}_P$.
 
-        Note that lines \ref{alg:deposit:split}-\ref{alg:deposit:endsplit} correspond to Algorithm 4 of \cite{repsum}.
+        Note that lines \ref{alg:depositrestricted:split}-\ref{alg:depositrestricted:endsplit} correspond to Algorithm 4 of \cite{repsum}.
         Therefore, if $\ulp({Y_j}_P) = \ulp(S_j)$ and $\ulp(r_j) < \frac{1}{2}\ulp({Y_j}_P)$, Corollary 3 of \cite{repsum} applies and we have that $S_j - {Y_j}_P \in \ulp({Y_j})\Z \in 2^{a_{I + j} + 1}\Z$ and that $|r_{j + 1}| \leq \frac{1}{2}\ulp({Y_j}_P) = 2^{a_{I + j}}$.
 
         As ${Y_j}_P, S_j \in (\epsilon^{-1} \times 2^{a_{I + j}}, 2 \times \epsilon^{-1} \times 2^{a_{I + j}})$, we have $\ulp(S_j) = \ulp({Y_j}_P)$ for all $j$.
 
-        We show $|r_j| \leq 2^{b_{I + j}} = 2^{a_{I + j + 1}}$ for all $j$ inductively. As a base case, since $r_0 = x$ (from line \ref{alg:deposit:rgetsx}), $|r_0| = |x| < 2^{b_{I}}$.
+        We show $|r_j| \leq 2^{b_{I + j}} = 2^{a_{I + j + 1}}$ for all $j$ inductively. As a base case, since $r_0 = x$ (from line \ref{alg:depositrestricted:rgetsx}), $|r_0| = |x| < 2^{b_{I}}$.
         As an inductive step, if $|r_j| \leq 2^{b_{I + j}}$ then Theorem \ref{thm:underflowulp} (which will be shown in Section \ref{sec:indexed_implementation_underflow_gradual}) yields $\ulp(r_j) < \frac{1}{2}\ulp({Y_j}_P)$. Thus, Corollary 3 of \cite{repsum} applies and we have that $|r_{j + 1}| \leq \frac{1}{2}\ulp({Y_j}_P) = 2^{a_{I + j}}$.
 
         Next, we show $S_j - {Y_j}_P = \roundtonearestinfty(r_j, a_{I + j} + 1)$. As Corollary 3 of \cite{repsum} applies for all $j$, then $S_j - {Y_j}_P \in 2^{a_{I + j} + 1}\Z$. By Theorem 3 of \cite{repsum}, $r_{j + 1} = r_j - (S_j - {Y_j}_P)$. Since $|r_{j + 1}| \leq 2^{a_{I + j}}$, we consider two cases.
 
         If $|r_j - (S_j - {Y_j}_P)| < 2^{a_{I + j}}$, then ${S_j}_P - {Y_j}_P = \roundtonearestinfty(r_j, a_{I + j} + 1)$.
 
-        If $|r_j - (S_j - {Y_j}_P)| = 2^{a_{I + j}}$, then $r_j \in 2^{a_{I + j}}\Z$ and because $\ulp(r_j) < 2^{a_{I + j}}$, $(r_j | 1) - r_j > 0$ and the rounding ``to nearest'' in line \ref{alg:deposit:split} must have gone away from 0. $S_j - {Y_j}_P = \roundtonearestinfty(r_j, a_{I + j} + 1)$.
+        If $|r_j - (S_j - {Y_j}_P)| = 2^{a_{I + j}}$, then $r_j \in 2^{a_{I + j}}\Z$ and because $\ulp(r_j) < 2^{a_{I + j}}$, $(r_j | 1) - r_j > 0$ and the rounding ``to nearest'' in line \ref{alg:depositrestricted:split} must have gone away from 0. $S_j - {Y_j}_P = \roundtonearestinfty(r_j, a_{I + j} + 1)$.
 
         We can now show $r_{j + 1} = x - \sum\limits_{i = 0}^{I + j}d(x, i)$ and $S_j - {Y_j}_P = d(x, I + j)$ for all $j$ by induction on $j$.
 
@@ -330,22 +357,21 @@
         {\mathcal{Y}_0}_P = 2^{p - W + 1}\times({Y_0}_P - 1.5\times2^{e_{\max}})
         \label{eq:pri0}
       \end{equation}
-      Of course, what remains to be seen is how we can extract and add (as in Algorithm \ref{alg:deposit}) the components of a floating point number to an indexed type $Y$ of index 0. Algorithm \ref{alg:deposit0} shows the adaptation of Algorithm $\ref{alg:deposit}$ for types of index 0.
+      Of course, what remains to be seen is how we can extract and add (as in Algorithm \ref{alg:depositrestricted}) the components of a floating point number to an indexed type $Y$ of index 0. Algorithm \ref{alg:deposit} shows the adaptation of Algorithm $\ref{alg:depositrestricted}$ for types of index 0.
       \begin{alg}
         Extract components of floating point $x$ in bins $(a_0, b_0], ..., (a_{fold - 1}, b_{fold - 1}]$ and add to indexed type $Y$ of index 0. Here, $(r | 1)$ represents the result of setting the last bit of the mantissa ($m_{p - 1}$) of floating-point $r$ to 1.
         \begin{algorithmic}[1]
           \Require
-            \Statex All requirements (except for the abscence of overflow, which we will ensure) from Algorithm \ref{alg:deposit} except that ${Y_0}_P$ must now be kept within the range $(2^{e_{\max}}, 2 \times 2^{e_{\max}})$ if $Y$ has index 0.
+            \Statex All requirements (except for the abscence of overflow, which we will ensure) from Algorithm \ref{alg:depositrestricted} except that ${Y_0}_P$ must now be kept within the range $(2^{e_{\max}}, 2 \times 2^{e_{\max}})$ if $Y$ has index 0.
           \Function{Deposit}{fold, x, Y}
             \If{Y has index 0}
-              \State $r = x / 2^{p - W + 1}$
-              \State $S = {Y_0}_P + (r | 1)$
-              \State $q = S - {Y_0}_P$
+              \State $r = x / 2^{p - W + 1}$ \label{alg:deposit:scaler}
+              \State $S = {Y_0}_P + (r | 1)$ \label{alg:deposit:formS}
+              \State $q = S - {Y_0}_P$ \label{alg:deposit:formq}
               \State ${Y_0}_P = S$
-              \State $q = q \times 2^{p - W}$
-              \State $r = x \times 0.5$ \label{alg:deposit0:halfx}
-              \State $r = r - q$ \label{alg:deposit0:formr}
-              \State $r = r \times 2.0$ \label{alg:deposit0:formrtwice}
+              \State $q = q \times 2^{p - W}$ \label{alg:deposit:scaleq}
+              \State $r = x - q$ \label{alg:deposit:formr}
+              \State $r = r - q$ \label{alg:deposit:formragain}
               \For{$j = 1 \To (fold - 2)$}
                 \State $S = {Y_j}_P + (r | 1)$
                 \State $q = S - {Y_j}_P$
@@ -362,20 +388,49 @@
             \Statex The amount added to ${Y_j}_P$ is exactly $d(x, I + j)$ if $I + j \neq 0$.
             \Statex The amount added to ${Y_0}_P$ is exactly $d(x, 0)/2^{p - W + 1}$ if $I = 0$.
         \end{algorithmic}
-        \label{alg:deposit0}
+        \label{alg:deposit}
       \end{alg}
 
-      Algorithm \ref{alg:deposit0} has a few key features worth pointing out in the case that $Y$ has index 0. First, since $|x| < 2^{e_{\max} + 1}$, then the value of $r$ after its first assignment satisfies $|r| < 2^{e_{\max} - p + W + 1}$. This shows both that the extraction of the top denormalized bin will work correctly and that the top bin is the greatest bin necessary to deposit any finite $x \in \F$.
+      Theorem \ref{thm:ddeposit} shows that Algorithm \ref{alg:deposit} enjoys the necessary properties.
+      \begin{thm}
+        Let $Y$ be an indexed type of index $I$ and fold $fold$. Assume that we run Algorithm \ref{alg:deposit} on $Y$ and some $x \in \F$, $|x| < 2^{b_I}$. If all requirements of the algorithm are satisfied, then the following hold:
+        \begin{enumerate}
+          \item
+            No overflow occurs during the algorithm.
+          \item
+            The amount added to ${Y_j}_P$ is exactly $d(x, I + j)$.
+          \item
+            The amount added to ${Y_0}_P$ is exactly $d(x, 0)/2^{p - W + 1}$ if $I = 0$.
+        \end{enumerate}
+        \label{thm:ddeposit}
+      \end{thm}
+      \begin{proof}
+        We can break the proof into two cases based on the index $I$ of $Y$.
+
+        If $I \neq 0$, then by Equation \ref{eq:b}, $|x| < 2^{b_I} < 2^{e_{\max} + 1 - W}$. By Theorem \ref{thm:overflow}, all quantities are obviously well below the overflow threshold and Theorem \ref{thm:ddepositrestricted} applies and we are done.
+
+        If $I = 0$, more work is needed.
+
+        We begin by showing that the amount added to ${Y_0}_P$, ($S - {Y_0}_P$ in line \ref{alg:deposit:formS}) is equal to $d(x, 0)/2^{p - W + 1}$.
+
+        We divide into two cases based on the size of $x$.
+
+        If $|x| < 2^{a_0}$, then regardless of whether or not there is underflow when executing line \ref{alg:deposit:scaler} (as $2^{a_0} >> 2^{e_{\min}}$), we have $|r| < 2^{a_0 - p + W - 1}$. Therefore, since ${Y_0}_P, S \in (2^{e_{\max}}, 2 \times 2^{\e_{\max}})$ in line \ref{alg:deposit:formS}, we have $\ulp({Y_0}_P) = \ulp(S)$ and because lines \ref{alg:deposit:scaler}
+
+        By $d(x, 0) \neq 0$, we must have $|x| < 
+      \end{proof}
+
+      Algorithm \ref{alg:deposit} has a few key features worth pointing out in the case that $Y$ has index 0. First, since $|x| < 2^{e_{\max} + 1}$, then the value of $r$ after its first assignment satisfies $|r| < 2^{e_{\max} - p + W + 1}$. This shows both that the extraction of the top denormalized bin will work correctly and that the top bin is the greatest bin necessary to deposit any finite $x \in \F$.
       Furthermore, since $x$ is scaled by a power of two, the significand of $r$ is equal to that of $x$.
-      Therefore, the amount added to ${Y_0}_P$ is $\roundtonearestinfty(x/2^{p - W + 1}, a_0 - (p - W + 1) + 1) = d(x, 0)/2^{p - W + 1}$. We can therefore scale this slice by $2^{p - W}$ to obtain half the value of the slice of $x$ belonging to bin $0$. As $x < 2 \times 2^{e_{\max}}$, $d(x, 0) \leq 2 \times 2^{e_{\max}}$. It is for this reason that $x$ is halved (to ensure that no overflow occurs) in line \ref{alg:deposit0:halfx} before half of $r$ is formed in line \ref{alg:deposit0:formr}. Because we know that the unscaled value of $r$ is representable, we can double the half of $r$ in line \ref{alg:deposit0:formrtwice}. We can then continue as in Algorithm \ref{alg:deposit}.
+      Therefore, the amount added to ${Y_0}_P$ is $\roundtonearestinfty(x/2^{p - W + 1}, a_0 - (p - W + 1) + 1) = d(x, 0)/2^{p - W + 1}$. We can therefore scale this slice by $2^{p - W}$ to obtain half the value of the slice of $x$ belonging to bin $0$. As $x < 2 \times 2^{e_{\max}}$, $d(x, 0) \leq 2 \times 2^{e_{\max}}$. It is for this reason that $x$ is halved (to ensure that no overflow occurs) in line \ref{alg:deposit:halfx} before half of $r$ is formed in line \ref{alg:deposit:formr}. Because we know that the unscaled value of $r$ is representable, we can double the half of $r$ in line \ref{alg:deposit:formrtwice}. We can then continue as in Algorithm \ref{alg:depositrestricted}.
 
       Notice that after the first extraction, we cannot simply subtract $q$ from $r$ and then scale $r$ up and continue, as there may have been underflow when scaling $x$ down. We must scale $q$ up to half its true value and subtract it from half the original $x$. This will result (at worst) in underflow of the smallest representable bit, but this bit does not matter to the algorithm as shown in Section \ref{sec:indexed_implementation_underflow_gradual}. Although it likely does not matter in practice, this detail ensures that proofs in Section \ref{sec:indexed_implementation_primary_carry} may extend to this overflow case.
 
     \subsubsection{Gradual Underflow}
       \label{sec:indexed_implementation_underflow_gradual}
-      Here we consider the effects of gradual underflow on algorithms described in \cite{repsum} and how they can be avoided. In Algorithm \ref{alg:deposit0}, when the last bit of $r$ is set to 1, it is assumed that this last bit will only serve to fix the direction of the rounding mode. However, if ${Y_j}_P$ is denormalized, that last bit may very well be accumulated!
+      Here we consider the effects of gradual underflow on algorithms described in \cite{repsum} and how they can be avoided. In Algorithm \ref{alg:deposit}, when the last bit of $r$ is set to 1, it is assumed that this last bit will only serve to fix the direction of the rounding mode. However, if ${Y_j}_P$ is denormalized, that last bit may very well be accumulated!
 
-      For Algorithm \ref{alg:deposit0} to work correctly when adding $r | 1$ to ${Y_j}_P$, $\ulp(r)$ must be less than rounding error when adding a number to ${Y_j}_P$. Mathematically, $\ulp(r) < \frac{1}{2}\ulp({Y_j}_P)$.
+      For Algorithm \ref{alg:deposit} to work correctly when adding $r | 1$ to ${Y_j}_P$, $\ulp(r)$ must be less than rounding error when adding a number to ${Y_j}_P$. Mathematically, $\ulp(r) < \frac{1}{2}\ulp({Y_j}_P)$.
 
       \begin{thm}
         For any primary field ${Y_j}_P$ of an indexed type $Y$ of index $I$ and any $r \in \F$, $\ulp(r) < \frac{1}{2}\ulp({Y_j}_P)$ and $a_{I + j} > e_{\min} - p + 1$.
@@ -449,7 +504,7 @@
 
       As the ${Y_j}_P$ are kept finite to store finite values, \verb|Inf|, \verb|-Inf|, and \verb|NaN| are unused in any previously specified context and are valid sentinel values. (As the exponent of \verb|Inf|, \verb|-Inf|, and \verb|NaN| is distinct from the exponent of finite values, the bijection between the index of an indexed type $Y$ and the exponent of ${Y_0}_P$ is preserved)
 
-      This behavior follows the behavior for exceptional values in IEEE 754-2008 floating point arithmetic and is therefore easy to implement. At the beginning of \ref{alg:deposit0}, we may simply check $x$ and ${Y_0}_P$ for the exceptional values \verb|Inf|, \verb|-Inf|, and \verb|NaN|. If any one of $x$ or ${Y_0}_P$ is indeed exceptional, we add $x$ to the (possibly finite) ${Y_0}_P$. Otherwise, we deposit the finite value normally.
+      This behavior follows the behavior for exceptional values in IEEE 754-2008 floating point arithmetic and is therefore easy to implement. At the beginning of \ref{alg:deposit}, we may simply check $x$ and ${Y_0}_P$ for the exceptional values \verb|Inf|, \verb|-Inf|, and \verb|NaN|. If any one of $x$ or ${Y_0}_P$ is indeed exceptional, we add $x$ to the (possibly finite) ${Y_0}_P$. Otherwise, we deposit the finite value normally.
 
       As \verb|Inf|, \verb|-Inf|, and \verb|NaN| add associatively, this behavior is reproducible.
 
@@ -457,16 +512,20 @@
 
 \section{Basic Operations}
   \subsection{Section Summary}
-    Here we reorganize algorithms in \cite{repsum} into logical operations on an indexed type. Two simple original algorithms relating to the index of an indexed type are given in Section \ref{sec:basicops_index}. Theoretical summaries of algorithms (with some improvements) from \cite{repsum} are provided in Sections \ref{sec:basicops_update}, \ref{sec:basicops_deposit}, \ref{sec:basicops_renormalize}, \ref{sec:basicops_reduce}. Section \ref{sec:basicops_convert} provides an original algorithm to obtain the value represented by an indexed type. Sections \ref{sec:basicops_error} and \ref{sec:basicops_limits} extend and expand on analysis in \cite{repsum}.
+    Here we reorganize algorithms in \cite{repsum} into logical operations on an indexed type. Two simple original algorithms relating to the index of an indexed type are given in Section \ref{sec:basicops_index}. Theoretical summaries of algorithms (with some improvements) from \cite{repsum} are provided in Sections \ref{sec:basicops_update}, \ref{sec:basicops_deposit}, \ref{sec:basicops_renormalize}, \ref{sec:basicops_reduce}. Section \ref{sec:basicops_convert} provides an original algorithm to obtain the value represented by an indexed type. Sections \ref{sec:basicops_error} and \ref{sec:basicops_limits} extend analysis in \cite{repsum} to the new algorithms.
   \subsection{Index}
     \label{sec:basicops_index}
-    It is sometimes necessary in operations on indexed types to have methods to compute their index. Algorithm \ref{alg:iindex} simply yields the index of an indexed type in constant time.
+    When operating on indexed types it is sometimes necessary to compute their index. Algorithm \ref{alg:iindex} simply yields the index of an indexed type in constant time.
     \begin{alg}
       Given an indexed type $Y$, calculate its index $I$
       \begin{algorithmic}[1]
+        \Require
+          \Statex ${Y_0}_P \in (\epsilon^{-1} \times 2^{a_{I}}, 2 \times \epsilon^{-1} \times 2^{a_I})$
         \Function{IIndex}{Y, I}
           \State $I = \floor{(e_{\max} + p - \exp({Y_0}_P) - W + 1)/W}$
         \EndFunction
+        \Ensure
+          \Statex $I$ is the index of $Y$.
       \end{algorithmic}
       \label{alg:iindex}
     \end{alg}
@@ -478,16 +537,22 @@
         \Function{Index}{x, J}
           \State $J = \floor{(e_{\max} - \exp(x))/W}$
         \EndFunction
+        \Ensure
+          \Statex The bin $(a_{J}, b_{J}]$ satisfies $2^{b_{J}} > |x| \geq 2^{a_{J}}$.
       \end{algorithmic}
-      \label{alg:iindex}
+      \label{alg:index}
     \end{alg}
   \subsection{Update}
     \label{sec:basicops_update}
-    As noted in Algorithm \ref{alg:deposit0}, when adding $x \in \F$ to an indexed type $Y$ of index $I$ and fold $fold$, we make the assumption that $|x| < 2^{b_I}$. However, this is not always the case and sometimes it is necessary to adjust the index of $Y$. This adjustment is called an \textbf{update}. The process of updating $Y$ to have index $J > I$ is summarized succinctly in Algorithm \ref{alg:update}.
+    As noted in Algorithm \ref{alg:deposit}, when adding $x \in \F$ to an indexed type $Y$ of index $I$ and fold $fold$, we make the assumption that $|x| < 2^{b_I}$. However, this is not always the case and sometimes it is necessary to adjust the index of $Y$. This adjustment is called an \textbf{update}. The process of updating $Y$ to the necessary index is summarized succinctly in Algorithm \ref{alg:update}.
     \begin{alg}
-      Update indexed type $Y$ of index $I$ and fold $fold$ to have an index suitable to deposit $x$ where the bin $(a_{J}, b_{J}]$ satisfies $2^{b_{J}} > |x| \geq 2^{a_{J}}$.
+      Update indexed type $Y$ of index $I$ and fold $fold$ to have an index suitable to deposit $x$.
       \begin{algorithmic}[1]
+        \Require
+          \Statex ${Y_0}_P \in (\epsilon^{-1} \times 2^{a_{I}}, 2 \times \epsilon^{-1} \times 2^{a_I})$
         \Function{Update}{fold, x, Y}
+          \State \Call{IIndex}{Y, I}
+          \State \Call{Index}{x, J}
           \If{$J < I$}
             \State $[{Y_{\min(I - J, fold)}}_P, ..., {Y_{fold - 1}}_P] = [{Y_0}_P, ..., {Y_{fold - 1 - \min(I - J, fold)}}_P]$
             \State $[{Y_0}_P, ..., {Y_{\min(I - J, fold) - 1}}_P] = [1.5 \times \epsilon^{-1} \times a_{J}, ..., 1.5 \times \epsilon^{-1} \times a_{\min(I, fold + J) - 1}]$
@@ -495,10 +560,15 @@
             \State $[{Y_0}_C, ..., {Y_{\min(I - J, fold) - 1}}_C] = [0, ..., 0]$
           \EndIf
         \EndFunction
+        \Ensure
+          \Statex The bin $(a_{J}, b_{J}]$ satisfies $2^{b_{J}} > |x| \geq 2^{a_{J}}$.
+          \Statex The new index of $Y$, ($\min(I, J)$) is such that $2^{b_{\min(I, J)}} > |x|$.
+          \Statex Existing accumulators of $Y$ are shifted towards index $0$, losing the lesser bins.
+          \Statex New accumulators are shifted into $Y$ with value $0$ in ${Y_j}_C$ and $1.5 \times \epsilon^{-1} \times 2^{a_{\min(I, J) + j}}$ in ${Y_j}_P$.
       \end{algorithmic}
       \label{alg:update}
     \end{alg}
-    The update operation is described in the update section of Algorithm $6$ in \cite{repsum}.
+    The update operation is described in the ``Update'' Section (lines 7-14) of Algorithm $6$ in \cite{repsum}.
 
     It should be noted that if ${Y_0}_P$ is 0, then the update is performed as if $I + fold < J$. If ${Y_0}_P$ is \verb|Inf|, \verb|-Inf|, or \verb|NaN|, then $Y$ is not modified by an update.
 
@@ -506,16 +576,18 @@
 
   \subsection{Deposit}
     \label{sec:basicops_deposit}
-    The deposit operation (here referred to as Algorithm \ref{alg:deposit0}, a special case where $fold = 3$ is described in the extract $K$ first bins section of Algorithm $6$ in \cite{repsum}) lies firmly at the heart of ReproBLAS.
+    The deposit operation (here referred to as Algorithm \ref{alg:deposit}, a simpler version is described in the ``Extract $K$ first bins'' Section (lines 15-17) of Algorithm $6$ in \cite{repsum}) is described extensively in Section \ref{sec:indexed}.
 
-    The indexed type $Y$ that results from depositing the floating point values $x_0, ..., x_{n - 1}$ into an empty indexed type is referred to as the \textbf{indexed sum} of $x_0, ..., x_{n - 1}$
+    The indexed type $Y$ that results from depositing the floating point values $x_0, ..., x_{n - 1}$ into an empty indexed type is referred to as the \textbf{indexed sum} of $x_0, ..., x_{n - 1}$.
 
   \subsection{Renormalize}
     \label{sec:basicops_renormalize}
-    When depositing values into an indexed type $Y$ of index $I$, the assumption is made that ${Y_j}_P \in (\epsilon^{-1}\times 2^{a_{I + j}}, 2 \times \epsilon^{-1}\times 2^{a_{I + j}})$ throughout the routine. To enforce this condition, the indexed type must be renormalized every $2^{p - w - 2}$ deposit operations. The renormalization procedure is shown in Algorithm \ref{alg:renorm}.
+    When depositing values into an indexed type $Y$ of index $I$ and fold $fold$, the assumption is made that ${Y_j}_P \in (\epsilon^{-1}\times 2^{a_{I + j}}, 2 \times \epsilon^{-1}\times 2^{a_{I + j}})$ throughout the routine. To enforce this condition, the indexed type must be renormalized every $2^{p - w - 2}$ deposit operations. The renormalization procedure is shown in Algorithm \ref{alg:renorm}.
     \begin{alg}
-      For an indexed type $Y$ with index $I$, assuming ${Y_j}_P \in [1.25 \times \epsilon^{-1}\times 2^{a_{I + j}}, 2 \times \epsilon^{-1}\times 2^{a_{I + j}})$, renormalize $Y$ such that ${Y_j}_P \in [1.5 \times \epsilon^{-1}\times 2^{a_{I + j}}, 1.75 \times \epsilon^{-1}\times 2^{a_{I + j}})$.
+      For an indexed type $Y$ of index $I$ and fold $fold$, assuming ${Y_j}_P \in [1.25 \times \epsilon^{-1}\times 2^{a_{I + j}}, 2 \times \epsilon^{-1}\times 2^{a_{I + j}})$, renormalize $Y$ such that ${Y_j}_P \in [1.5 \times \epsilon^{-1}\times 2^{a_{I + j}}, 1.75 \times \epsilon^{-1}\times 2^{a_{I + j}})$.
       \begin{algorithmic}[1]
+        \Require
+          \Statex ${Y_j}_P \in [1.25 \times \epsilon^{-1}\times 2^{a_{I + j}}, 2 \times \epsilon^{-1}\times 2^{a_{I + j}})$
         \Function{Renorm}{fold, Y}
           \For{$j = 0 \To fold - 1$}
             \If{${Y_j}_P < 1.5 \times \ufp({Y_j}_P)$}
@@ -528,14 +600,17 @@
             \EndIf
           \EndFor
         \EndFunction
+        \Ensure
+          \Statex The values $\mathcal{Y}_j$ are unchanged.
+          \Statex ${Y_j}_P \in [1.5 \times \epsilon^{-1}\times 2^{a_{I + j}}, 1.75 \times \epsilon^{-1}\times 2^{a_{I + j}})$.
       \end{algorithmic}
       \label{alg:renorm}
     \end{alg}
-    The renormalization operation is described in the carry-bit propagation section of Algorithm $6$ in \cite{repsum}, although it has been slightly modified so as not to include an extraneous case.
+    The renormalization operation is described in the ``Carry-bit Propagation'' Section (lines 18-29) of Algorithm $6$ in \cite{repsum}, although it has been slightly modified so as not to include an extraneous case.
 
-    To show the reasoning behind the assumptions in Algorithm \ref{alg:renorm}, consider the case in which floating point $x_0, x_1, ...$ are successively deposited in an indexed type $Y$ which satisfies ${Y_j}_P \in [1.5 \times \epsilon^{-1}\times 2^{a_{I + j}}, 1.75 \times \epsilon^{-1}\times 2^{a_{I + j}})$. (Such a condition is satisfied upon initialization of an empty $Y$)
+    To show the reasoning behind the assumptions in Algorithm \ref{alg:renorm}, consider the case in which floating point numbers $x_0, x_1, ...$ are successively deposited in an indexed type $Y$ which satisfies ${Y_j}_P \in [1.5 \times \epsilon^{-1}\times 2^{a_{I + j}}, 1.75 \times \epsilon^{-1}\times 2^{a_{I + j}})$. (Such a condition is satisfied upon initialization of an empty $Y$)
 
-    First, note that $|d(x_k, a_{I + j}, b_{I + j})| \leq 2^{b_{I + j}}$, where $d(x_k, a_{I + j}, b_{I + j})$ is the amount added to ${Y_j}_P$ on iteration $j$. This is due to the definition of $d(x_k, a_{I+j}, b_{I + j})$ or to Corollary 3 of \cite{repsum}.
+    First, note that $|d(x_k, I + j)| \leq 2^{b_{I + j}}$, where $d(x_k, I + j)$ is the amount added to ${Y_j}_P$ on iteration $j$. This is due to the definition of $d(x_k, a_{I+j}, b_{I + j})$ or to Corollary 3 of \cite{repsum}.
 
     As the deposit operation extracts and adds the appropriate component of $x_k$ exactly (assuming ${Y_j}_P$ lies within the appropriate boundaries at each step, which will be shown),
 

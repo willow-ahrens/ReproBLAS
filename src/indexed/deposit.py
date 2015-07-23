@@ -118,12 +118,11 @@ class Deposit(Target):
     self.define_load_vars(code_block, max_reg_width * max_unroll_width)
     self.compression_vars = ["compression_" + str(i) for i in range(self.vec.suf_width)]
     self.expansion_vars = ["expansion_" + str(i) for i in range(self.vec.suf_width)]
-    self.half_vars = ["half_" + str(i) for i in range(self.vec.suf_width)]
-    self.twice_vars = ["twice_" + str(i) for i in range(self.vec.suf_width)]
     code_block.define_vars(self.vec.type_name, self.compression_vars)
     code_block.define_vars(self.vec.type_name, self.expansion_vars)
-    code_block.define_vars(self.vec.type_name, self.half_vars)
-    code_block.define_vars(self.vec.type_name, self.twice_vars)
+    if self.data_type.is_complex:
+      self.expansion_mask_vars = ["expansion_mask_" + str(i) for i in range(self.vec.suf_width)]
+      code_block.define_vars(self.vec.type_name, self.expansion_mask_vars)
     if fold == 0:
       #define q variables
       self.q_vars = ["q_" + str(i) for i in range(max_reg_width)]
@@ -223,15 +222,13 @@ class Deposit(Target):
       code_block.indent()
       code_block.set_equal(self.compression_vars, self.vec.set("{0}MCOMPRESSION".format(self.data_type.base_type.name_char.upper())))
       code_block.set_equal(self.expansion_vars, self.vec.set("{0}MEXPANSION * 0.5".format(self.data_type.base_type.name_char.upper())))
-      code_block.set_equal(self.half_vars, self.vec.set("0.5"))
-      code_block.set_equal(self.twice_vars, self.vec.set("2.0"))
+      code_block.set_equal(self.expansion_mask_vars, self.vec.set("{0}MEXPANSION * 0.5".format(self.data_type.base_type.name_char.upper())))
       code_block.dedent()
       code_block.write("}else{")
       code_block.indent()
       code_block.set_equal(self.compression_vars, self.vec.set_real_imag("{0}MCOMPRESSION".format(self.data_type.base_type.name_char.upper()), "1.0"))
       code_block.set_equal(self.expansion_vars, self.vec.set_real_imag("{0}MEXPANSION * 0.5".format(self.data_type.base_type.name_char.upper()), "1.0"))
-      code_block.set_equal(self.half_vars, self.vec.set_real_imag("0.5", "1.0"))
-      code_block.set_equal(self.twice_vars, self.vec.set_real_imag("2.0", "1.0"))
+      code_block.set_equal(self.expansion_mask_vars, self.vec.set_real_imag("{0}MEXPANSION * 0.5".format(self.data_type.base_type.name_char.upper()), "0.0"))
       code_block.dedent()
       code_block.write("}")
       code_block.dedent()
@@ -239,8 +236,7 @@ class Deposit(Target):
       code_block.indent()
       code_block.set_equal(self.compression_vars, self.vec.set_real_imag("1.0", "{0}MCOMPRESSION".format(self.data_type.base_type.name_char.upper())))
       code_block.set_equal(self.expansion_vars, self.vec.set_real_imag("1.0", "{0}MEXPANSION * 0.5".format(self.data_type.base_type.name_char.upper())))
-      code_block.set_equal(self.half_vars, self.vec.set_real_imag("1.0", "0.5"))
-      code_block.set_equal(self.twice_vars, self.vec.set_real_imag("1.0", "2.0"))
+      code_block.set_equal(self.expansion_mask_vars, self.vec.set_real_imag("0.0", "{0}MEXPANSION * 0.5".format(self.data_type.base_type.name_char.upper())))
       code_block.dedent()
       code_block.write("}")
       self.vec.iterate_unrolled("i", self.N_name, self.load_ptrs, incs, max_pipe_width * max_unroll_width, 1, body0)
@@ -255,8 +251,6 @@ class Deposit(Target):
       code_block.indent()
       code_block.set_equal(self.compression_vars, self.vec.set("{0}MCOMPRESSION".format(self.data_type.base_type.name_char.upper())))
       code_block.set_equal(self.expansion_vars, self.vec.set("{0}MEXPANSION * 0.5".format(self.data_type.base_type.name_char.upper())))
-      code_block.set_equal(self.half_vars, self.vec.set("0.5"))
-      code_block.set_equal(self.twice_vars, self.vec.set("2.0"))
       self.vec.iterate_unrolled("i", self.N_name, self.load_ptrs, incs, max_pipe_width * max_unroll_width, 1, body0)
       code_block.dedent()
       code_block.write("}else{")
@@ -299,8 +293,12 @@ class Deposit(Target):
         code_block.set_equal(self.s_vars[0], self.buffer0_vars[:reg_width])
         self.vec.add_blp_into(self.q_vars, self.s_vars[0], self.vec.mul(self.load_vars[0][i * reg_width:], itertools.cycle(self.compression_vars)), reg_width)
         code_block.set_equal(self.buffer0_vars, self.q_vars[:reg_width])
-        code_block.set_equal(self.q_vars, self.vec.sub(self.s_vars[0], self.q_vars[:reg_width]))
-        code_block.set_equal(self.load_vars[0][i * reg_width:], self.vec.mul(self.vec.add(self.vec.mul(self.load_vars[0][i * reg_width:], itertools.cycle(self.half_vars)), self.vec.mul(self.q_vars[:reg_width], itertools.cycle(self.expansion_vars))), itertools.cycle(self.twice_vars)))
+        if self.data_type.is_complex:
+          code_block.set_equal(self.q_vars, self.vec.sub(self.s_vars[0], self.q_vars[:reg_width]))
+          code_block.set_equal(self.load_vars[0][i * reg_width:], self.vec.add(self.vec.add(self.load_vars[0][i * reg_width:], self.vec.mul(self.q_vars, itertools.cycle(self.expansion_vars))), self.vec.mul(self.q_vars, itertools.cycle(self.expansion_mask_vars))))
+        else:
+          code_block.set_equal(self.q_vars, self.vec.mul(self.vec.sub(self.s_vars[0], self.q_vars[:reg_width]), itertools.cycle(self.expansion_vars)))
+          code_block.set_equal(self.load_vars[0][i * reg_width:], self.vec.add(self.vec.add(self.load_vars[0][i * reg_width:], self.q_vars[:reg_width]), self.q_vars[:reg_width]))
         code_block.write("for(j = 1; j < {} - 1; j++){{".format(self.fold_name))
         code_block.indent()
         code_block.set_equal(self.s_vars[0], self.buffer_vars[:reg_width])
@@ -315,8 +313,12 @@ class Deposit(Target):
       for i in range(max(unroll_width, 1)):
           code_block.set_equal(self.q_vars, self.s_vars[0][:reg_width])
           self.vec.add_blp_into(self.s_vars[0], self.s_vars[0], self.vec.mul(self.load_vars[0][i * reg_width:], itertools.cycle(self.compression_vars)), reg_width)
-          code_block.set_equal(self.q_vars, self.vec.sub(self.q_vars, self.s_vars[0][:reg_width]))
-          code_block.set_equal(self.load_vars[0][i * reg_width:], self.vec.mul(self.vec.add(self.vec.mul(self.load_vars[0][i * reg_width:], itertools.cycle(self.half_vars)), self.vec.mul(self.q_vars[:reg_width], itertools.cycle(self.expansion_vars))), itertools.cycle(self.twice_vars)))
+          if self.data_type.is_complex:
+            code_block.set_equal(self.q_vars, self.vec.sub(self.q_vars, self.s_vars[0][:reg_width]))
+            code_block.set_equal(self.load_vars[0][i * reg_width:], self.vec.add(self.vec.add(self.load_vars[0][i * reg_width:], self.vec.mul(self.q_vars[:reg_width], itertools.cycle(self.expansion_vars))), self.vec.mul(self.q_vars[:reg_width], itertools.cycle(self.expansion_mask_vars))))
+          else:
+            code_block.set_equal(self.q_vars, self.vec.mul(self.vec.sub(self.q_vars, self.s_vars[0][:reg_width]), itertools.cycle(self.expansion_vars)))
+            code_block.set_equal(self.load_vars[0][i * reg_width:], self.vec.add(self.vec.add(self.load_vars[0][i * reg_width:], self.q_vars[:reg_width]), self.q_vars[:reg_width]))
           for j in range(1, fold - 1):
             code_block.set_equal(self.q_vars, self.s_vars[j][:reg_width])
             self.vec.add_blp_into(self.s_vars[j], self.s_vars[j], self.load_vars[0][i * reg_width:], reg_width)

@@ -39,9 +39,9 @@ void smsdeposit(const int fold, const float X, float *priY, const int incpriY){
     q.f += M;
     priY[0] = q.f;
     M -= q.f;
-    x *= 0.5;
-    x += M * (SMEXPANSION * 0.5);
-    x *= 2.0;
+    M *= (SMEXPANSION * 0.5);
+    x += M;
+    x += M;
     for (i = 1; i < fold - 1; i++) {
       M = priY[i * incpriY];
       q.f = x;

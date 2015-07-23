@@ -39,9 +39,9 @@ void dmddeposit(const int fold, const double X, double *priY, const int incpriY)
     q.d += M;
     priY[0] = q.d;
     M -= q.d;
-    x *= 0.5;
-    x += M * (DMEXPANSION * 0.5);
-    x *= 2.0;
+    M *= DMEXPANSION * 0.5;
+    x += M;
+    x += M;
     for (i = 1; i < fold - 1; i++) {
       M = priY[i * incpriY];
       q.d = x;
