@@ -426,24 +426,32 @@
         We divide into two cases based on the size of $x$.
 
         If $|x| < 2^{a_0} = 2^{e_{\max} + 1 - W}$, then we have $|r| < 2^{a_0 - p + W - 1}$ in line \ref{alg:deposit:scaler} regardless of whether or not there is underflow in the division as we scale by a power of two.
-         Therefore, since $|r| < 2^{a_0 - p + W - 1}$, ${Y_0}_P - S = 0 = d(x, 0)/2^{p - W - 1}$ by Theorem \ref{thm:dzero}.
+         Therefore, since $|r| < 2^{a_0 - p + W - 1}$, ${Y_0}_P - S = \roundtonearestinfty(r, a_0 - p + W) = 0 = d(x, 0)/2^{p - W - 1}$ by Theorem \ref{thm:dzero}.
 
         If $|x| \geq 2^{a_0}= 2^{e_{\max} + 1 - W}$, then there is no underflow in line \ref{alg:deposit:scaler} and $r = x / 2^{p - W + 1}$ exactly as we scale by a power of two. Therefore, ${Y_0}_P - S = \roundtonearestinfty(x/2^{p - W + 1}, a_0 - p + W) = d(x, 0)/2^{p - W + 1}$
 
-        At this point, all that remains to be shown is that $r = x - d(x, 0)$ in line \ref{alg:deposit:formragain}. In line \ref{alg:deposit:formq}, we know that $q = {Y_0}_P - S = d(x, 0)/2^{p - W + 1}$. By Theorem \ref{eq:dbound}, $d(x, 0) \leq 2 \times 2^{e_{\max}}$ and therefore there is no overflow in line \ref{alg:deposit:scaleq} and as we scale by a power of two, $q = d(x, 0)/2$ in line \ref{alg:deposit:scaleq}. Again we divide into two cases based on the size of $x$.
-       make it more clear above that q does not overflow.
+        At this point, all that remains to be shown is that $r = x - d(x, 0)$ in line \ref{alg:deposit:formragain}. In line \ref{alg:deposit:formq}, we know that $q = {Y_0}_P - S = d(x, 0)/2^{p - W + 1}$. By Theorem \ref{thm:dbound}, $d(x, 0) \leq 2 \times 2^{e_{\max}}$. We then have that in line \ref{alg:deposit:scaleq}, since $q = (d(x, 0)/2^{p - W + 1})\times2^{p - W} \leq 2^{e_{\max}}$ there is no overflow and as we scale by a power of two, $q = d(x, 0)/2$ exactly. Again we divide into two cases based on the size of $x$.
 
         If $|x| < 2^{a_0}$, we have $d(x, 0) = 0$ by Theorem \ref{thm:dzero} and therefore $r = x - d(x, 0) = x$ exactly in both line \ref{alg:deposit:formr} and line \ref{alg:deposit:formragain}.
 
-        If $|x| \geq 2^{a_0}$, we have $d(x, 0) = \roundtonearestinfty(x, a_0 + 1)$ by Theorem \ref{thm:dmiddle}, $|x - d(x, 0)| \leq 2^{a_0}$ by Theorem \ref{thm:dround}, and $d(x, 0) \leq 2^{b_0}$ by Theorem \ref{thm:dbound}.  Therefore, we have $|x| \geq |x - d(x, 0)|$ which implies $|x| \geq |x - d(x, 0)/2| \geq |x - d(x, 0)|$. As $|x - d(x, 0)/2| $
-        Show that all quantities are in ulp(x)Z and ur done
+        If $|x| \geq 2^{a_0}$, we have $|x - d(x, 0)| \leq 2^{a_0}$ by Theorem \ref{thm:dround}. Therefore, we have $|x| \geq |x - d(x, 0)|$. 
+
+        If $x > 0$, we have
+        \begin{equation*}
+          x \geq x - d(x, 0)/2 \geq x - d(x, 0) \geq -x
+        \end{equation*}
+         If $x < 0$, we have
+        \begin{equation*}
+          -x \geq x - d(x, 0) \geq x - d(x, 0)/2 \geq x
+        \end{equation*}
+        In either case we have $|x - d(x, 0)/2| \leq |x|$.
+
+        Since $d(x, 0)/2 = \roundtonearestinfty(x, a_0 + 1)/2 \in 2^{a_0}\Z \in 2 \times \epsilon \times 2^{b_0}$ (As $W < p - 2$) and $x \leq 2^{b_0}$, $d(x, 0)/2 \in \ulp(x)\Z$ and therefore $x - d(x, 0)/2 \in \ulp(x)$. Combined with $|x - d(x, 0)/2| \leq |x|$ implies that $r = x - d(x, 0)/2$ exactly in line \ref{alg:deposit:formr}.
+
+        Again since $d(x, 0)/2 \in \ulp(x)\Z$, $x - d(x, 0) \in \ulp(x)\Z$ and since $|x - d(x, 0)| \leq |x|$, $r = x - d(x, 0)$ exactly in line \ref{alg:deposit:formragain}.
+
+        At this point, since $r = x - d(x, 0)$ and $|r| \leq 2^{a_0}$, no more overflow can occur in the algorithm and since the algorithm at this point is identical to Algorithm \ref{alg:depositrestricted}, the proof of Theorem \ref{thm:ddepositrestricted} applies.
       \end{proof}
-
-      Algorithm \ref{alg:deposit} has a few key features worth pointing out in the case that $Y$ has index 0. First, since $|x| < 2^{e_{\max} + 1}$, then the value of $r$ after its first assignment satisfies $|r| < 2^{e_{\max} - p + W + 1}$. This shows both that the extraction of the top denormalized bin will work correctly and that the top bin is the greatest bin necessary to deposit any finite $x \in \F$.
-      Furthermore, since $x$ is scaled by a power of two, the significand of $r$ is equal to that of $x$.
-      Therefore, the amount added to ${Y_0}_P$ is $\roundtonearestinfty(x/2^{p - W + 1}, a_0 - (p - W + 1) + 1) = d(x, 0)/2^{p - W + 1}$. We can therefore scale this slice by $2^{p - W}$ to obtain half the value of the slice of $x$ belonging to bin $0$. As $x < 2 \times 2^{e_{\max}}$, $d(x, 0) \leq 2 \times 2^{e_{\max}}$. It is for this reason that $x$ is halved (to ensure that no overflow occurs) in line \ref{alg:deposit:halfx} before half of $r$ is formed in line \ref{alg:deposit:formr}. Because we know that the unscaled value of $r$ is representable, we can double the half of $r$ in line \ref{alg:deposit:formrtwice}. We can then continue as in Algorithm \ref{alg:depositrestricted}.
-
-      Notice that after the first extraction, we cannot simply subtract $q$ from $r$ and then scale $r$ up and continue, as there may have been underflow when scaling $x$ down. We must scale $q$ up to half its true value and subtract it from half the original $x$. This will result (at worst) in underflow of the smallest representable bit, but this bit does not matter to the algorithm as shown in Section \ref{sec:indexed_implementation_underflow_gradual}. Although it likely does not matter in practice, this detail ensures that proofs in Section \ref{sec:indexed_implementation_primary_carry} may extend to this overflow case.
 
     \subsubsection{Gradual Underflow}
       \label{sec:indexed_implementation_underflow_gradual}
@@ -629,14 +637,14 @@
 
     To show the reasoning behind the assumptions in Algorithm \ref{alg:renorm}, consider the case in which floating point numbers $x_0, x_1, ...$ are successively deposited in an indexed type $Y$ which satisfies ${Y_j}_P \in [1.5 \times \epsilon^{-1}\times 2^{a_{I + j}}, 1.75 \times \epsilon^{-1}\times 2^{a_{I + j}})$. (Such a condition is satisfied upon initialization of an empty $Y$)
 
-    First, note that $|d(x_k, I + j)| \leq 2^{b_{I + j}}$, where $d(x_k, I + j)$ is the amount added to ${Y_j}_P$ on iteration $j$. This is due to the definition of $d(x_k, a_{I+j}, b_{I + j})$ or to Corollary 3 of \cite{repsum}.
+    First, note that $|d(x_k, I + j)| \leq 2^{b_{I + j}}$ by Theorem \ref{thm:dbound}, where $d(x_k, I + j)$ is the amount added to ${Y_j}_P$ on iteration $j$.
 
-    As the deposit operation extracts and adds the appropriate component of $x_k$ exactly (assuming ${Y_j}_P$ lies within the appropriate boundaries at each step, which will be shown),
+    As the deposit operation extracts and adds the slices of $x_k$ exactly (assuming ${Y_j}_P$ lies within the appropriate boundaries at each step, which will be shown),
 
     Therefore,
 
     \begin{equation*}
-    |\sum \limits_{n = 0}^{k - 1} d(x_k, a_{I + j}, b_{I + j})| \leq n \times 2^{b_{I + j}} = n \times 2^{W} \times 2^{a_{I + j}}
+    |\sum \limits_{n = 0}^{k - 1} d(x_k, I + j)| \leq n \times 2^{b_{I + j}} = n \times 2^{W} \times 2^{a_{I + j}}
     \end{equation*}
 
     and if $n <= 2^{p - W - 2}$, then after the $n^{th}$ deposit
@@ -657,30 +665,33 @@
 
   \subsection{Reduce}
     \label{sec:basicops_reduce}
-    An operation to produce the sum of two indexed types is necessary to perform a reduction. For completeness we include the algorithm here, although apart from the renormalization step, it is equivalent to Algorithm $7$ in \cite{repsum}.
+    An operation to produce the sum of two indexed types is necessary to perform a reduction. For completeness we include the algorithm here, although apart from the simplified renormalization algorithm, it is equivalent to Algorithm $7$ in \cite{repsum}.
     \begin{alg}
-      For an indexed type $Y$ (the indexed sum of some $x_0, ..., x_{n - 1} \in \F$) with index $I$ and indexed type $Z$ with index $J$ (the indexed sum of some $x_n, ..., x_{n + m - 1} \in \F$), add $Z$ to $Y$. That is, set $Y$ to the indexed sum of $x_0, ..., x_{n + m - 1}$. At the start and end of the algorithm, we may assume
-
-    \begin{equation*}
-      {Y_j}_P \in [1.5 \times \epsilon^{-1}\times 2^{a_{I + j}}, 1.75 \times \epsilon^{-1}\times 2^{a_{I + j}})
-    \end{equation*}
-    and
-    \begin{equation*}
-      {Z_j}_P \in [1.5 \times \epsilon^{-1}\times 2^{a_{J + j}}, 1.75 \times \epsilon^{-1}\times 2^{a_{J + j}})
-    \end{equation*}
+      For an indexed type $Y$ of index $I$ and fold $fold$ and indexed type $Z$ of index $J$ and fold $fold$, add $Z$ to $Y$.
       \begin{algorithmic}[1]
+        \Ensure
+          \Statex $Y$ is the indexed sum of some $x_0, ..., x_{n - 1} \in F$.
+          \Statex $Z$ is the indexed sum of some $x_n, ..., x_{n + m - 1} \in F$.
+          \Statex ${Y_j}_P, {Z_j}_P \in [1.5 \times \epsilon^{-1}\times 2^{a_{J + j}}, 1.75 \times \epsilon^{-1}\times 2^{a_{J + j}})$
         \Function{Reduce}{fold, Y, Z}
-          \If{$J > I$}
+          \State \Call{IIndex}{Y, I}
+          \State \Call{IIndex}{Z, J}
+          \If{$J < I$}
             \State $R = Z$
             \State \Call{Reduce}{fold, $R$, $Y$}
             \State $Y = R$
           \EndIf
-          \For{$j = 0 \To J$}
-            \State ${Y_{j + I - J}}_P = {Y_{j + I - J}}_P + {Z_j}_P - 1.5 \times \epsilon^{-1} \times 2^{a_{I + j}}$
-            \State ${Y_{j + I - J}}_C = {Y_{j + I - J}}_C + {Z_j}_C$
-          \EndFor
+          \State $j = J - I$
+          \While{$j < fold$}
+            \State ${Y_{j}}_P = {Y_{j}}_P + {Z_{j + I - J}}_P - 1.5 \times \epsilon^{-1} \times 2^{a_{I + j}}$
+            \State ${Y_{j}}_C = {Y_{j}}_C + {Z_{j + I - J}}_C$
+            \State $j = j + 1$
+          \EndWhile
           \State \Call{Renorm}{fold, $Y$}
         \EndFunction
+        \Ensure
+          \Statex $Y$ is set to the indexed sum of $x_0, ..., x_{n + m - 1}$.
+          \Statex ${Y_j}_P \in [1.5 \times \epsilon^{-1}\times 2^{a_{\min(I, J) + j}}, 1.75 \times \epsilon^{-1}\times 2^{a_{\min(I, J) + j}})$
       \end{algorithmic}
       \label{alg:reduce}
     \end{alg}
@@ -692,7 +703,7 @@
     Converting a floating point number to an indexed type should produce, for transparency and reproducibility, an indexed type equivalent to the indexed sum of the floating point number.
     The procedure is very simply summarized by Algorithm \ref{alg:conv2indexed}
     \begin{alg}
-      Convert floating point $x$ to indeed $Y$ with fold $fold$.
+      Convert floating point $x$ to indexed $Y$ with fold $fold$.
       \begin{algorithmic}[1]
         \Function{ConvertFloatToIndexed}{fold, x, Y}
           \State $Y = 0$
@@ -703,6 +714,8 @@
       \end{algorithmic}
       \label{alg:conv2indexed}
     \end{alg}
+
+    We must renormalize the indexed type because $d(x, i)$ could be negative, meaning ${Y_j}_P - .$
 
     Converting an indexed type to a floating point number is more difficult. However, because \cite{repsum} guarantees that all fields in the indexed type are reproducible, as long as the fields are operated upon deterministically, any method to evaluate Equation \ref{eq:indexedvalue} accurately and without unnecessary overflow is suitable. Following the methods in \cite{sortsum}, we add the floating point numbers in order of decreasing unnormalized exponent using a higher intermediate precision. As discussed in $\cite{sortsum}$, the intermediate precision must be greater than $p + \ceil{\log_2(2 \times fold)}$ as there are $2 \times fold$ elements to be summed.
 
