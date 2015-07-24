@@ -1195,14 +1195,14 @@
       \label{eq:error2approx}
     \end{equation}
 
-    We can compare Equation \ref{eq:errorapprox} to the error bound obtained if the accumulator fields were summed without extra precision. In this case, only the standard summation bound would apply and the absolute error would be bounded by
+    We can compare Equation \ref{eq:errorapprox} to the error bound obtained if the accumulator fields were summed without extra precision. In this case, only the standard summation bound from \cite{higham} would apply and the absolute error would be bounded by
 
     \begin{equation*}
-    n \times \max(2^{W \times (1 - fold) - 1} \times \max|x_k|, 2^{e_{\min} - 1}) + (2 \times fold - 1) \times \epsilon \times \sum\limits_0^{2 \times fold - 1}|\gamma_k|
+    n \times \max(2^{W \times (1 - fold) - 1} \times \max|x_k|, 2^{e_{\min} - 1}) + (\frac{(2 \times fold - 1) \times \epsilon}{1 - (2 \times fold - 1) \times \epsilon}) \times \sum\limits_0^{2 \times fold - 1}|\gamma_k|
     \end{equation*}
 
     \begin{equation*}
-    \leq n \times \max(2^{W \times (1 - fold) - 1} \times \max|x_k|, 2^{e_{\min} - 1}) + (2 \times fold - 1) \times \epsilon \times n \times \max|x_k|
+    \leq n \times \max(2^{W \times (1 - fold) - 1} \times \max|x_k|, 2^{e_{\min} - 1}) + (\frac{(2 \times fold - 1) \times \epsilon}{1 - (2 \times fold - 1) \times \epsilon}) \times n \times \max|x_k|
     \end{equation*}
 
     \begin{equation}
@@ -1275,7 +1275,7 @@
     Higham, Nicholas J. The accuracy of floating point summation. SIAM Journal on Scientific Computing 14, no. 4 (1993): 783-799.
   \bibitem{sortsum}
     Demmel, James W., and Yozo Hida. Accurate floating point summation. Computer Science Division, University of California, 2002.
-  \bibitem{doubledouble}
-    Hida, Yozo, Xiaoye S. Li, and David H. Bailey. Quad-double arithmetic: Algorithms, implementation, and application. 15th IEEE Symposium on Computer Arithmetic, 2000.
+  %\bibitem{doubledouble}
+  %  Hida, Yozo, Xiaoye S. Li, and David H. Bailey. Quad-double arithmetic: Algorithms, implementation, and application. 15th IEEE Symposium on Computer Arithmetic, 2000.
 \end{thebibliography}
 \end{document}
