@@ -134,7 +134,7 @@
       In the inductive step, assume that $d(x, 0), ..., d(x, i)$ are well defined for all $x \in \F$. $d(x, i + 1)$ is an expression in well defined terms.
     \end{proof}
 
-    \ref{thm:dzero} and \ref{thm:dmiddle} follow from the definition of $d(x, i)$
+    Theorems \ref{thm:dzero} and \ref{thm:dmiddle} follow from the definition of $d(x, i)$
 
     \begin{thm}
       For all bins $(a_i, b_i]$ and $x \in \F$ such that $|x| < 2^{a_i}$, $d(x, i) = 0$
@@ -446,9 +446,9 @@
         \end{equation*}
         In either case we have $|x - d(x, 0)/2| \leq |x|$.
 
-        Since $d(x, 0)/2 = \roundtonearestinfty(x, a_0 + 1)/2 \in 2^{a_0}\Z \in 2 \times \epsilon \times 2^{b_0}$ (As $W < p - 2$) and $x \leq 2^{b_0}$, $d(x, 0)/2 \in \ulp(x)\Z$ and therefore $x - d(x, 0)/2 \in \ulp(x)$. Combined with $|x - d(x, 0)/2| \leq |x|$ implies that $r = x - d(x, 0)/2$ exactly in line \ref{alg:deposit:formr}.
+        Since $d(x, 0)/2 = \roundtonearestinfty(x, a_0 + 1)/2 \in 2^{a_0}\Z \in 2 \times \epsilon \times 2^{b_0}$ (As $W < p - 2$) and $x \leq 2^{b_0}$, $d(x, 0)/2 \in \ulp(x)\Z$ and therefore $x - d(x, 0)/2 \in \ulp(x)\Z$. Combined with $|x - d(x, 0)/2| \leq |x|$ this implies that $r = x - d(x, 0)/2$ exactly in line \ref{alg:deposit:formr}.
 
-        Again since $d(x, 0)/2 \in \ulp(x)\Z$, $x - d(x, 0) \in \ulp(x)\Z$ and since $|x - d(x, 0)| \leq |x|$, $r = x - d(x, 0)$ exactly in line \ref{alg:deposit:formragain}.
+        Again since $d(x, 0)/2, x - d(x, 0)/2 \in \ulp(x)\Z$, $x - d(x, 0) \in \ulp(x)\Z$ and since $|x - d(x, 0)| \leq |x|$, $r = x - d(x, 0)$ exactly in line \ref{alg:deposit:formragain}.
 
         At this point, since $r = x - d(x, 0)$ and $|r| \leq 2^{a_0}$, no more overflow can occur in the algorithm and since the algorithm at this point is identical to Algorithm \ref{alg:depositrestricted}, the proof of Theorem \ref{thm:ddepositrestricted} applies.
       \end{proof}
