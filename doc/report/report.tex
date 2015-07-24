@@ -490,9 +490,10 @@
       \end{equation*}
 
       As a consequence, we can use Theorems \ref{thm:underflowulp} and \ref{thm:dround} to say that for any $x \in \F$,
-      \begin{equation*}
+      \begin{equation}
         |x - \sum\limits_{i = 0}^{\floor{(e_{\max} - e_{\min} + p - 1)/W}} d(x, i)| \leq 2^{e_{\min} - 1}
-      \end{equation*}
+        \label{eq:droundunderflow}
+      \end{equation}
       This means that we can approximate $x$ using the sum of its slices to within $2^{e_{\min} - 1}$.
 
       It is possible to deposit the input in the denormalized range. One simple way the algorithm could be extended to denormalized inputs would be to scale the least bins up, as was done to handle overflow. Due to the relatively low priority for accumulating denormalized values, this method was not implemented in ReproBLAS.
@@ -724,17 +725,15 @@
     Converting an indexed type to a floating point number is more difficult. There are two sources of error in the final floating point sum produced by ReproBLAS. The first is from the creation of the indexed sum (analysed in \cite{repsum}). The second is from the conversion from indexed sum to floating point number (evaluation of Equation \ref{eq:indexedvalue}).
     Because \cite{repsum} guarantees that all fields in the indexed type are reproducible, as long as the fields are operated upon deterministically, any method to evaluate Equation \ref{eq:indexedvalue} accurately and without unnecessary overflow is suitable.
 
-    Assume that $Y$ is the indexed sum of some $x_0, ..., x_{n - 1} \in \F$. If we simply evaluate equation \ref{eq:indexedvalue} and apply the standard summation error bound given by \cite{higham}, the error on the final answer (the computed floating point approximation of $\mathcal{Y}$) is only bounded by
+    Assume that $Y$ is the indexed sum of some $x_0, ..., x_{n - 1} \in \F$. If we simply evaluate equation \ref{eq:indexedvalue} and apply the standard summation error bound given by \cite{higham}, the error on the final answer (the computed floating point approximation of $\mathcal{Y}$) is only bounded by about (using Equation \ref{eq:baderrorapprox})
     \begin{equation*}
+      n \times \max|x_k|\times (2^{W \times (1 - fold) - 1} + (2 \times fold - 1) \times \epsilon)
     \end{equation*}
-    However, if we sum the fields in decreasing order, the error is bounded by
+    However, if we sum the fields in order of decreasing ``unnormalized'' exponent, the error is bounded by about (using Equation \ref{eq:errorapprox})
     \begin{equation*}
+      n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} + 15 \epsilon |\sum\limits_{k = 0}^{n - 1} x_k|
     \end{equation*}
-    There is little difference in computational cost between the two methods (they both require the same number of additions using the same precision), but showing that the fields have a certain ordering and that the stronger bound applies requires extensive analysis.
-
-     It is also an efficient summation method. If the indexed type is to be modified in such a way that the analysis presented here does not apply, methods discussed in $\cite{sortsum}$ provide a quick and accurate way to sum the numbers.
-
-    When adding the fields it is not necessary to examine the values in the fields or sort them explicitly. Their unnormalized exponent does not depend on their values, and their unnormalized exponents have a predetermined order.
+    When adding the fields it is not necessary to examine the values in the fields or sort them explicitly. Their ``unnormalized'' exponent does not depend on their values, and their ``unnormalized'' exponents have a predetermined order. There is little difference in computational cost between the two methods (they both require the same number of additions using the same precision), but showing that the fields have a certain ordering and that the stronger bound applies requires extensive analysis. If the indexed type is modified in such a way that the analysis presented here does not apply, methods discussed in $\cite{sortsum}$ provide a quick and accurate way to sum the numbers.
 
     Consider an indexed type $Y$ of index $I$ and fold $fold$.
     As each value ${\mathcal{Y}_j}_P$ in a primary field ${Y_j}_P$ is an offset from $1.5 \times \epsilon^{-1} \times 2^{a_{I + j}}$ and ${Y_j}_P \in (\epsilon^{-1} \times 2^{a_{I + j}}, 2 \times \epsilon^{-1} \times 2^{a_{I + j}})$, ${\mathcal{Y}_j}_P$ can be expressed exactly using an unnormalized floating point number ${\mathcal{Y}'_P}_j$ with an exponent of $a_{I + j} + p - 1$.
@@ -810,9 +809,24 @@
     \end{equation*}
 
     These unnormalized floating point numbers may, for convenience of notation, be referred to in decreasing order of unnormalized exponent as $\gamma'_0, ..., \gamma'_{2 \times fold - 1}$.
+
     $\gamma_k$ denotes the normalized representations of the $\gamma'_k$, and it should be noted that $\gamma_k = \gamma'_k$ as real numbers and that $\exp(\gamma_k) \leq \exp(\gamma'_k)$.
 
+    We have just shown that
+    \begin{equation}
+      \exp(\gamma_0') > ... > \exp(\gamma_{2 \times fold - 1}')
+      \label{eq:gammadecreases}
+    \end{equation}
+
+    It should be noted that if $\gamma_k$ is a primary field, then either $\gamma_{k + 1}$ or $\gamma_{k + 2}$ is a primary field. If $\gamma_k$ is a carry field, then either $\gamma_{k + 1}$ or $\gamma_{k + 2}$ is a carry field. Therefore, as $2 \times W > p + 1$,
+    \begin{equation}
+      \exp(\gamma_k') \geq \exp(\gamma_{k + 2}') + W \geq \exp(\gamma_{k + 2}') + \ceil{\frac{p + 1}{2}}
+      \label{eq:gammadecreasesfast}
+    \end{equation}
+
     It should be noted that the ${\mathcal{Y}'_j}_P$ and the ${\mathcal{Y}'_j}_C$ can be expressed exactly using floating point types of the same precision as ${Y_j}_P$ and ${Y_j}_C$ (except in the case of overflow, in which a scaled version may be obtained), and such exact floating point representations can be obtained using Equation \ref{eq:pri} and Equation \ref{eq:car}.
+
+    Now that we know how to obtain sorted, possibly scaled, fields in order of decreasing unnormalized exponent, we explain how to sum them while avoiding overflow.We will refer to the floating point type that we use to hold the sum during computation as the \textbf{intermediate} floating point type. Such a type must have at least as much precision and exponent range as the original floating point type.
 
     Notice that $|\gamma'_0| = |{\mathcal{Y}'_0}_C| < 2 \times 2^{\exp({\mathcal{Y}'_0}_C)} = 2 \times 2^{e_{\max} + 1 - W + p + p - 3}$ and $\exp(\gamma'_0) > ... > \exp(\gamma'_{2 \times fold - 1})$.  Therefore $|\gamma'_k| \leq 2^{e_{\max} - W + p + p - 1 - k}$. The absolute value represented by an indexed type can therefore be bounded by
 
@@ -821,12 +835,12 @@
       \sum\limits_{k = 0}^{2 \times fold - 1} |\gamma_k| < \sum\limits_{k = 0}^{2 \times fold - 1} 2^{e_{\max} - W + p + p - 1 - k} < \sum\limits_{k = 0}^{\infty} 2^{e_{\max} - W + p + p - 1 - k} = 2^{e_{\max} - W + p + p}
     \end{equation}
 
-    If the intermediate precision has a maximum exponent greater than or equal to $e_{\max} - W + p + p - 1$, then no special cases to guard against overflow are needed.
+    If the intermediate floating point type has a maximum exponent greater than or equal to $e_{\max} - W + p + p - 1$, then no special cases to guard against overflow are needed.
 
     Algorithm \ref{alg:conv2float} represents a conversion routine in such a case.
 
     \begin{alg}
-      Convert indexed type $Y$ of index $I$ and fold $fold$ to floating point $x$. Here, $z$ is a floating point type with precision $P$ greater than $p + \ceil{\log_2(2 \times fold)}$ and maximum exponent $E_{\max}$ greater than $e_{\max} - W + p + p$
+      Convert indexed type $Y$ of index $I$ and fold $fold$ to floating point $x$. Here, $z$ is a floating point type with at least the original precision and maximum exponent $E_{\max}$ greater than $e_{\max} - W + p + p$
       \begin{algorithmic}[1]
         \Function{ConvertIndexedToFloat}{fold, x, Y}
           \State $z = {\mathcal{Y}_0}_C$
@@ -835,30 +849,32 @@
             \State $z = z + {\mathcal{Y}_{j - 1}}_P$
           \EndFor
           \State $z = {\mathcal{Y}_{fold - 1}}_P$
-          \State $x = z$
+          \State $x = z$ \label{alg:conv2float:conv}
         \EndFunction
       \end{algorithmic}
       \label{alg:conv2float}
     \end{alg}
 
-    If an intermediate type with exponent greater than ore equal to $e_{\max} - W + p + p - 1$ is not available, the $\gamma_k$ must be scaled down by some factor during addition and the sum scaled back up when subsequent additions can no longer effect an overflow situation.
+    Note that an overflow situation in algorithm \ref{alg:conv2float} is reproducible as the fields in $Y$ are reproducible. $z$ is deterministically computed from the fields of $Y$, and the condition that $z$ overflows when being converted back to the original floating point type in line \ref{alg:conv2float:conv} is reproducible.
 
-    If the sum is to overflow, it will overflow regardless of the values of any ${\mathcal{Y}_j}_P$ or ${\mathcal{Y}_j}_C$ with $|{\mathcal{Y}_j}_P| < 0.5 \times 2^{-P} \times 2^{e_{\max}}$ or $|{\mathcal{Y}_j}_C| < 0.5 \times 2^{-P} \times 2^{e_{\max}}$. If the floating point sum of precision $P$ has exponent greater than or equal to $e_{\max}$ these numbers are not large enough to have any effect when added to the sum. If the sum has exponent less than $e_{\max}$, then additions of these numbers cannot cause the exponent of the sum to exceed $e_{\max}$ for similar reasons.
+    If an intermediate floating point type with exponent greater than or equal to $e_{\max} - W + p + p - 1$ is not available, the $\gamma_k$ must be scaled down by some factor during addition and the sum scaled back up when subsequent additions can no longer effect an overflow situation.
+
+    If the scaled sum is to overflow, then it's unscaled value will be greater than or equal to $2 \times 2^{e_{\max}}$ and it will overflow regardless of the values of any ${\mathcal{Y}_j}_P$ or ${\mathcal{Y}_j}_C$ with $|{\mathcal{Y}_j}_P| < 0.5 \times 2^{-\rho} \times 2^{e_{\max}}$ or $|{\mathcal{Y}_j}_C| < 0.5 \times 2^{-\rho} \times 2^{e_{\max}}$ (where $\rho$ is the intermediate floating point type's precision). If the floating point sum has exponent greater than or equal to $e_{\max}$ these numbers are not large enough to have any effect when added to the sum. If the sum has exponent less than $e_{\max}$, then additions of these numbers cannot cause the exponent of the sum to exceed $e_{\max}$ for similar reasons.
 
     As the maximum absolute value of the true sum is strictly smaller than $2^{e_{\max} - W + p + p}$, a sufficient scaling factor is $2^{p + p - W - 2}$, meaning that the maximum absolute value of the true scaled sum is strictly smaller $2 \times 2^{e_{\max} - 1}$ (and since it will be shown later that the computed sum is accurate to within a small factor of the true sum, the computed sum will stay strictly smaller than $2 \times 2^{e_{\max}}$ and will not overflow.)
 
-  When $\exp(\gamma'_k) < e_{\max} - P - 1$, the sum may be scaled back up and the remaining numbers added without scaling. Notice that no overflow can occur during addition in this algorithm. If an overflow is to occur, it will happen only when scaling back up.
+  When $\exp(\gamma'_k) < e_{\max} - \rho - 1$, the sum may be scaled back up and the remaining numbers added without scaling. Notice that no overflow can occur during addition in this algorithm. If an overflow is to occur, it will happen only when scaling back up.
 
     If the sum is not going to overflow, then the smaller $y'_k$ must be added as unscaled numbers to avoid underflow.
 
     Algorithm \ref{alg:conv2floatoverflow} represents a conversion routine in such a case.
 
     \begin{alg}
-      Convert an indexed type $Y$ of index $I$ and fold $fold$ to floating point $x$. Here, $z$ is a floating point type with precision $P$ greater than $p + \ceil{\log_2(2 \times fold)}$.
+      Convert an indexed type $Y$ of index $I$ and fold $fold$ to floating point $x$. Here, $z$ is a floating point type with precision $\rho > p$
       \begin{algorithmic}[1]
         \Function{ConvertIndexedToFloat}{fold, x, Y}
           \State $j = 1$
-          \While{$j \leq 2 \times fold$ and $\exp(\gamma_j) \geq e_{\max} - P - 1$}
+          \While{$j \leq 2 \times fold$ and $\exp(\gamma_j) \geq e_{\max} - \rho - 1$}
             \State $z = z + (\gamma_j / 2^{p + p - W - 2})$
             \State $j = j + 1$
           \EndWhile
@@ -874,10 +890,12 @@
     \end{alg}
 
     If an indexed type is composed of \verb|float|, then \verb|double| provides sufficient precision and exponent to use as an intermediate type and Algorithm \ref{alg:conv2float} may be used to convert to a floating point number.
-    However, if an indexed type is composed of \verb|double|, many machines may not have any higher precision available. To provide a conversion function that is identical across hardware, we use \verb|double-double| precision implemented in software to achieve sufficient intermediate precision \cite{doubledouble}. As this does not extend the exponent range we must use Algorithm \ref{alg:conv2floatoverflow} to convert to a floating point number.
+    However, if an indexed type is composed of \verb|double|, many machines may not have any higher precision available. We therefore perform the sum using \verb|double| as an intermediate type. As this does not extend the exponent range we must use Algorithm \ref{alg:conv2floatoverflow} for the conversion.
 
   \subsection{Error Bound}
     \label{sec:basicops_error}
+
+    We first state and prove Theorem \ref{thm:mysortsum}, as it is critical in the error analysis of the algorithm.
     \begin{thm}
       Given $n$ floating point numbers $f_0, ..., f_{n - 1}$ for which there exists (possibly unnormalized) floating point numbers $f'_0, ..., f'_{n - 1}$ such that
       \begin{enumerate}
@@ -888,8 +906,13 @@
       \label{thm:mysortsum}
       Then we have
       \begin{equation*}
-        |\sum \limits_{k = 0}^{n - 1} f_k - \fl(\sum \limits_{k = 0}^{n - 1} f_k)| < 16\epsilon|\sum\limits_{k = 0}^{n - 1}f_k|
+        |\sum \limits_{k = 0}^{n - 1} f_k - \fl(\sum \limits_{k = 0}^{n - 1} f_k)| < g(\epsilon) \times \epsilon \times |\sum\limits_{k = 0}^{n - 1}f_k|
       \end{equation*}
+      Where
+      \begin{equation}
+        g(\epsilon) = 10 \times (\frac{1}{(1 - 5 \epsilon)(1 - 4\sqrt\epsilon)}) + 4 \times (\frac{1 + 4 \sqrt\epsilon}{(1 - 4 \epsilon)(1 - 4 \sqrt\epsilon)}) + 1 \times (\frac{1}{1 - 4 \sqrt\epsilon}) \approx 15
+        \label{eq:g}
+      \end{equation}
     \end{thm}
 
     \begin{proof}
@@ -972,9 +995,11 @@
       \begin{equation*}
  \leq ((\frac{5\epsilon}{1 - 5 \epsilon})(\frac{2}{1 - 4 \times \sqrt\epsilon}) + (\frac{4\epsilon}{1 - 4 \epsilon})(\frac{1 + 4 \times \sqrt\epsilon}{1 - 4 \times \sqrt\epsilon}))|\sum\limits_{k = 0}^{n - 1}f_k|
       \end{equation*}
-      And assuming $\epsilon << 1$,
       \begin{equation*}
-        |\sum \limits_{k = 0}^{n - 1} f_k - \fl(\sum \limits_{k = 0}^{n - 1} f_k)| \leq 16\epsilon|\sum\limits_{k = 0}^{n - 1}f_k|
+ \leq (10 \times (\frac{1}{(1 - 5 \epsilon)(1 - 4 \sqrt\epsilon)}) + 4 \times (\frac{1 + 4 \sqrt \epsilon}{(1 - 4 \epsilon)(1 - 4 \sqrt\epsilon)}))\times \epsilon \times|\sum\limits_{k = 0}^{n - 1}f_k|
+      \end{equation*}
+      \begin{equation*}
+        \leq g(\epsilon)\times \epsilon\times |\sum\limits_{k = 0}^{n - 1}f_k|
       \end{equation*}
       And we are done.
 
@@ -1052,65 +1077,42 @@
         \begin{equation*}
           \leq ((\frac{10\epsilon}{1 - 5 \epsilon}) + (\frac{4\epsilon}{1 - 4 \epsilon})(1 + 4 \times \sqrt\epsilon) + \epsilon)(\frac{1}{1 - 4 \times \sqrt\epsilon})|\sum\limits_{k = 0}^{n - 1}f_k|
         \end{equation*}
-
-        And assuming $\epsilon << 1$,
-
-        \begin{equation}
-          |\sum \limits_{k = 0}^{n - 1} f_k - \fl(\sum \limits_{k = 0}^{n - 1} f_k)| < 16\epsilon|\sum\limits_{k = 0}^{n - 1}f_k|
-          \label{eq:sortsum_finalbound}
-        \end{equation}
+        \begin{equation*}
+          \leq (10 \times (\frac{1}{(1 - 5 \epsilon)(1 - 4 \sqrt\epsilon)}) + 4 \times (\frac{1 + 4 \sqrt \epsilon}{(1 - 4 \epsilon)(1 - 4 \sqrt\epsilon)}) + 1 \times (\frac{1}{1 - 4 \sqrt\epsilon}))\times \epsilon \times |\sum\limits_{k = 0}^{n - 1}f_k|
+        \end{equation*}
+        \begin{equation*}
+          \leq g(\epsilon)\times \epsilon\times |\sum\limits_{k = 0}^{n - 1}f_k|
+        \end{equation*}
     \end{proof}
+
     Consider the indexed sum $Y$ of fold $fold$ of floating point numbers $x_0, ..., x_{n - 1}$. We denote the true sum $\sum \limits_{k = 0}^{n - 1} x_k$ by $T$, the true value of the indexed sum as obtained using Equation \ref{eq:indexedvalue} by $\mathcal{Y}$, and the floating point approximation of $\mathcal{Y}$ obtained using an appropriate algorithm from section \ref{sec:basicops_convert} by $\overline{\mathcal{Y}}$.
 
     \cite{repsum} discusses the absolute error $|T - \mathcal{Y}|$ but does not give a method to construct $\overline{\mathcal{Y}}$ and therefore no error bound ($|T - \overline{\mathcal{Y}}|$) on the final floating point answer was given. Here we extend the error bound of \cite{repsum} all the way to the final return value of the algorithm.
 
-    Throughout this section we assume that all input falls within a bin and that $T$ and $\mathcal{Y}$ are larger than the largest denormalized floating point number.
-
-    To show an error bound for the conversion routine, we first state Theorem \ref{thm:sortsum}
-
-    \begin{thm}
-      This theorem is a restatement of statement 1 of Theorem $1$ in \cite{sortsum}.
-
-      Assume we have a floating point format of precision $p$ and an intermediate format of precision $P$. Assume that the following hold:
-      \begin{enumerate}
-        \item $p \geq 2$ (there are at least 2 bits of precision in the bins)
-        \item $P \geq p + 1$ (the intermediate precision is larger than the original)
-        \item the intermediate exponent range is at least as large as the original
-        \item rounding is in ``to nearest'' mode (breaking ties arbitrarily)
-        \item underflow is gradual
-        \item no overflow occurs
-      \end{enumerate}
-      Then, if we sum at most $1 + \floor{\frac{2^{P - p}}{(1 - 2^{-p})}}$ unnormalized numbers in order of decreasing exponent using the intermediate precision, the error is less than $(\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times \ulp(T)$, where $T$ is the true sum.
-      \label{thm:sortsum}
-    \end{thm}
-
     It has been shown in \cite{repsum} that
 
     \begin{equation}
-      \label{eq:repbound}
+      \label{eq:repboundnaive}
       |T - \mathcal{Y}| < n \times 2^{W \times (1 - fold) - 1} \times \max|x_k|
     \end{equation}
 
-    Because the intermediate precision $P$ used to sum the values stored in the various fields of $Y$ is assumed greater than $p + \ceil{\log_2(2 \times fold)}$, we sum at most $2^{P - p} < 1 + \floor{\frac{2^{P - p}}{1 - 2^{-p}}}$ values that may be considered as unnormalized values in order of decreasing unnormalized exponent (the same argument is made in the proof of Theorem 2 of \cite{sortsum}), and Theorem \ref{thm:sortsum} applies to yield
+    However, this bound does not consider underflow. By Equation \ref{eq:droundunderflow}, a small modification yields a bound that considers underflow
+
+    \begin{equation}
+      \label{eq:repbound}
+      |T - \mathcal{Y}| < n \times \max(2^{W \times (1 - fold) - 1} \times \max|x_k|, 2^{e_{\min} - 1})
+    \end{equation}
+
+    By Equations \ref{eq:gammadecreases} and \ref{eq:gammadecreasesfast}, Theorem \ref{thm:mysortsum} applies to yield
 
     \begin{equation*}
-      |\mathcal{Y} - \overline{\mathcal{Y}}| < (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times \ulp(\mathcal{Y})
+      |\mathcal{Y} - \overline{\mathcal{Y}}| < g(\epsilon)\times\epsilon\times|\mathcal{Y}|
     \end{equation*}
 
     By the triangle inequality
 
     \begin{equation*}
-      |\mathcal{Y}| \leq |T| + |T - \mathcal{Y}| < |T| + n \times 2^{W \times (1 - fold) - 1} \times \max|x_k|
-    \end{equation*}
-
-    and because $T$ is assumed to be in the normalized range,
-
-    \begin{equation*}
-      \ulp(\mathcal{Y}) \leq \ulp(|T| + n \times 2^{W \times (1 - fold) - 1} \times \max|x_k|)
-    \end{equation*}
-
-    \begin{equation*}
-    \leq (|T| + n \times 2^{W \times (1 - fold) - 1} \times \max|x_k|) \times 2 \times \epsilon
+      |\mathcal{Y}| \leq |T| + |T - \mathcal{Y}| < |T| +  n \times \max(2^{W \times (1 - fold) - 1} \times \max|x_k|, 2^{e_{\min} - 1})
     \end{equation*}
 
     The above results can be used to obtain Equation \ref{eq:error}, the absolute error of the floating point approximation of an indexed sum $|T - \overline{\mathcal{Y}}|$.
@@ -1120,26 +1122,26 @@
     \end{equation*}
 
     \begin{equation*}
-      < n \times 2^{W \times (1 - fold) - 1} \times \max|x_k| + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times \ulp(\mathcal{Y})
+      < n \times \max(2^{W \times (1 - fold) - 1} \times \max|x_k|, 2^{e_{\min} - 1}) + g(\epsilon)\times \epsilon\times |\mathcal{Y}|
     \end{equation*}
 
     \begin{equation*}
-      < n \times 2^{W \times (1 - fold) - 1} \times \max|x_k| + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times(|T| + n \times 2^{W \times (1 - fold) - 1} \times \max|x_k|) \times 2 \times \epsilon
+      < n \times \max(2^{W \times (1 - fold) - 1} \times \max|x_k|, 2^{e_{\min} - 1}) + g(\epsilon)\times \epsilon\times (|T| +  n \times \max(2^{W \times (1 - fold) - 1} \times \max|x_k|, 2^{e_{\min} - 1}))
     \end{equation*}
 
     \begin{equation}
-      < n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} \times(1 + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2}) \times 2 \times \epsilon) + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times |T| \times 2 \times \epsilon
+      < n \times \max(2^{W \times (1 - fold) - 1} \times \max|x_k|, 2^{e_{\min} - 1}) \times(1 + g(\epsilon)\times\epsilon) + g(\epsilon)\times\epsilon\times |T|
       \label{eq:error}
     \end{equation}
 
     Equation \ref{eq:error} can be approximated as Equation \ref{eq:errorapprox}.
 
     \begin{equation*}
-      |T - \overline{\mathcal{Y}}| < n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} \times(1 + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2}) \times 2 \times \epsilon) + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times |T| \times 2 \times \epsilon
+      |T - \overline{\mathcal{Y}}| < n \times \max(2^{W \times (1 - fold) - 1} \times \max|x_k|, 2^{e_{\min} - 1}) \times(1 + g(\epsilon)\times\epsilon) + g(\epsilon)\times\epsilon\times|T|
     \end{equation*}
 
     \begin{equation}
-    \approx n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} + 3 \times \epsilon \times |T|
+    \approx n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} + 15 \times \epsilon \times|T|
       \label{eq:errorapprox}
     \end{equation}
 
@@ -1152,29 +1154,13 @@
     Applying the bound on $|\mathcal{Y} - \overline{\mathcal{Y}}|$ yields
 
     \begin{equation*}
-      |\mathcal{Y}| < |\overline{\mathcal{Y}}| + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times \ulp(\mathcal{Y})
-    \end{equation*}
-
-    and because $\mathcal{Y}$ is assumed to be in the normalized range,
-
-    \begin{equation*}
-      |\mathcal{Y}| < |\overline{\mathcal{Y}}| + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times|\mathcal{Y}|\times 2 \times \epsilon
+      |\mathcal{Y}| < |\overline{\mathcal{Y}}| + g(\epsilon)\times\epsilon\times|\mathcal{Y}|
     \end{equation*}
 
     After simplification,
 
     \begin{equation*}
-      |\mathcal{Y}| < |\overline{\mathcal{Y}}|\times (1 - (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times 2 \times \epsilon)^{-1}
-    \end{equation*}
-
-    Again because $\mathcal{Y}$ is assumed to be in the normalized range,
-
-    \begin{equation*}
-      \ulp(\mathcal{Y}) \leq \ulp(|\overline{\mathcal{Y}}|\times (1 - (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times 2 \times \epsilon)^{-1})
-    \end{equation*}
-
-    \begin{equation*}
-      \leq |\overline{\mathcal{Y}}|\times (1 - (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times 2 \times \epsilon)^{-1} \times 2 \times \epsilon
+      |\mathcal{Y}| < |\overline{\mathcal{Y}}|\times (\frac{1}{1 - g(\epsilon)\times\epsilon})
     \end{equation*}
 
     The above results can be used to obtain Equation \ref{eq:error2}, the absolute error of the floating point approximation of an indexed sum $|T - \overline{\mathcal{Y}}|$.
@@ -1184,48 +1170,41 @@
     \end{equation*}
 
     \begin{equation*}
-      < n \times 2^{W \times (1 - fold) - 1} \times \max|x_k| + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times \ulp(\mathcal{Y})
+      < n \times \max(2^{W \times (1 - fold) - 1} \times \max|x_k|, 2^{e_{\min} - 1}) + g(\epsilon)\times\epsilon\times|\mathcal{Y}|
     \end{equation*}
 
     \begin{equation}
-      < n \times 2^{W \times (1 - fold) - 1} \times \max|x_k| + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times|\overline{\mathcal{Y}}|\times (1 - (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times 2 \times \epsilon)^{-1} \times 2 \times \epsilon
+      < n \times \max(2^{W \times (1 - fold) - 1} \times \max|x_k|, 2^{e_{\min} - 1}) + |\overline{\mathcal{Y}}| \times (\frac{g(\epsilon)\times\epsilon}{1 - g(\epsilon)\times\epsilon})
       \label{eq:error2}
     \end{equation}
 
     Equation \ref{eq:error2} can be approximated as Equation \ref{eq:error2approx}.
 
     \begin{equation*}
-      |T - \overline{\mathcal{Y}}| < n \times 2^{W \times (1 - fold) - 1} \times \max|x_k| + (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times|\overline{\mathcal{Y}}|\times (1 - (\frac{1}{1 - 2^{1 - p}} + \frac{1}{2})\times 2 \times \epsilon)^{-1} \times 2 \times \epsilon
+      |T - \overline{\mathcal{Y}}| < n \times \max(2^{W \times (1 - fold) - 1} \times \max|x_k|, 2^{e_{\min} - 1}) + |\overline{\mathcal{Y}}| \times (\frac{g(\epsilon)\times\epsilon}{1 - g(\epsilon)\times\epsilon})
     \end{equation*}
 
     \begin{equation}
-      \approx n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} + 3 \times \epsilon \times |\overline{\mathcal{Y}}|
+      \approx n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} + 15 \times \epsilon \times |\overline{\mathcal{Y}}|
       \label{eq:error2approx}
     \end{equation}
 
     We can compare Equation \ref{eq:errorapprox} to the error bound obtained if the accumulator fields were summed without extra precision. In this case, only the standard summation bound would apply and the absolute error would be bounded by
 
     \begin{equation*}
-    n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} + (2 \times fold - 1) \times \epsilon \times \sum\limits_0^{2 \times fold - 1}|\gamma_k|
+    n \times \max(2^{W \times (1 - fold) - 1} \times \max|x_k|, 2^{e_{\min} - 1}) + (2 \times fold - 1) \times \epsilon \times \sum\limits_0^{2 \times fold - 1}|\gamma_k|
     \end{equation*}
 
     \begin{equation*}
-    = n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} + (2 \times fold - 1) \times \epsilon \times n * \max|x_k| 
+    \leq n \times \max(2^{W \times (1 - fold) - 1} \times \max|x_k|, 2^{e_{\min} - 1}) + (2 \times fold - 1) \times \epsilon \times n \times \max|x_k|
     \end{equation*}
 
-    \begin{equation*}
-    < n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} + (2 \times fold - 1) \times \epsilon \times (|T| + n \times \max|x_k|\times 2^{W \times (1 - fold) - 1})
-    \end{equation*}
+    \begin{equation}
+    \approx n \times \max|x_k|\times (2^{W \times (1 - fold) - 1} + (2 \times fold - 1) \times \epsilon)
+    \label{eq:baderrorapprox}
+    \end{equation}
 
-    \begin{equation*}
-    = n \times \max|x_k|\times 2^{W \times (1 - fold) - 1}\times (1 + (2 \times fold - 1)\times \epsilon) + (2 \times fold - 1) \times \epsilon \times |T|
-    \end{equation*}
-
-    \begin{equation*}
-    \approx n \times \max|x_k|\times 2^{W \times (1 - fold) - 1} + (2 \times fold - 1) \times \epsilon \times |T|
-    \end{equation*}
-
-    Which is not as tight a bound as Equation $\ref{eq:errorapprox}$, and begins to grow linearly as the user increases the fold in an attempt to increase accuracy.
+    Which is not as tight a bound as Equation $\ref{eq:errorapprox}$, and grows linearly as the user increases the fold in an attempt to increase accuracy.
 
   \subsection{Limits}
     \label{sec:basicops_limits}
@@ -1235,7 +1214,7 @@
 
     ReproBLAS uses the values $W = 40$ for indexed \verb|double| and $W = 13$ for indexed \verb|float|. $W$ is available as the \verb|XIWIDTH| macro.
 
-    As discussed in section \ref{sec:indexed_implementation_underflow_gradual}, only input corresponding to the bin $(e_{\min} - 1, e_{\max} + 1]$ is guaranteed to be accumulated.
+    As discussed in section \ref{sec:indexed_implementation_underflow_gradual}, the input is rounded at best to the nearest $2^{e_{\min} - 1}$
 
     As absolute value of individual quantities added to ${Y_j}_P$ are not in excess of $2^{b_{I + j}}$, a maximum of $0.25\epsilon^{-1}2^{-W}$ elements may be deposited into ${Y_j}_P$ between renormalizations, as discussed in section \ref{sec:basicops_renormalize}. For indexed \verb|double| this number is $2^{11}$, whereas for indexed \verb|float| this number is $2^9$. This number is supplied programmatically using the \verb|XIENDURANCE| macro.
 
