@@ -270,7 +270,7 @@
         {\mathcal{Y}_j}_P = {Y_j}_P - 1.5\times\epsilon^{-1}\times2^{a_{I + j}}
         \label{eq:pri}
       \end{equation}
-      This simplifies the process of extracting the slices of input in bins $(a_{I + j}, b_{I + j}]$. It will be shown in Theorem \ref{thm:ddepositrestricted} that if we represent each primary value ${\mathcal{Y}_j}_P$ as in (\eqref{eq:pri}) and keep ${Y_j}_P$ within the range $(\epsilon^{-1} \times 2^{a_{I + j}}, 2 \times \epsilon^{-1} \times 2^{a_{I + j}})$, then Algorithm \ref{alg:depositrestricted} extracts the slices of $x$ in bins $(a_I, b_I], ..., (a_{I + K - 1}, b_{I + K - 1}]$ and adds them to ${Y_0}_P, ..., {Y_{K - 1}}_P$ without error (and hence reproducibly) for all $x \in \F$, where $|x| < 2^{b_I}$.
+      This simplifies the process of extracting the slices of input in bins $(a_{I + j}, b_{I + j}]$. It will be shown in Theorem \ref{thm:ddepositrestricted} that if we represent each primary value ${\mathcal{Y}_j}_P$ as in \eqref{eq:pri} and keep ${Y_j}_P$ within the range $(\epsilon^{-1} \times 2^{a_{I + j}}, 2 \times \epsilon^{-1} \times 2^{a_{I + j}})$, then Algorithm \ref{alg:depositrestricted} extracts the slices of $x$ in bins $(a_I, b_I], ..., (a_{I + K - 1}, b_{I + K - 1}]$ and adds them to ${Y_0}_P, ..., {Y_{K - 1}}_P$ without error (and hence reproducibly) for all $x \in \F$, where $|x| < 2^{b_I}$.
 
       \begin{samepage}
       \begin{alg}
@@ -591,7 +591,7 @@
     \end{alg}
     \end{samepage}
 
-    Note that the floor function is necessary in Algorithm \ref{alg:iindex} to account for the case of ${Y_0}_P$, which has exponent $2^{e_{\max}}$ as discussed in Section \ref{sec:indexed_implementation_overflow}.
+    Note that the floor function is necessary in Algorithm \ref{alg:iindex} to account for the case of $Y$ with index $0$, which has $\exp({Y_0}_P) = 2^{e_{\max}}$ as discussed in Section \ref{sec:indexed_implementation_overflow}.
 
     Another useful operation is, given some $x \in \F$, to find the unique bin $(a_J, b_J]$ such that $2^{b_J} > |x| \geq 2^{a_J}$. Algorithm \ref{alg:index} yields such a $J$ in constant time.
 
