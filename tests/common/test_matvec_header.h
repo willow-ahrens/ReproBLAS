@@ -77,14 +77,14 @@ static void matvec_options_initialize(void){
   incX._int.max               = INT_MAX;
   incX._int.value             = 1;
 
-  incX._int.header.type       = opt_int;
-  incX._int.header.short_name = 'y';
-  incX._int.header.long_name  = "incY";
-  incX._int.header.help       = "Y vector increment";
-  incX._int.required          = 0;
-  incX._int.min               = 1;
-  incX._int.max               = INT_MAX;
-  incX._int.value             = 1;
+  incY._int.header.type       = opt_int;
+  incY._int.header.short_name = 'y';
+  incY._int.header.long_name  = "incY";
+  incY._int.header.help       = "Y vector increment";
+  incY._int.required          = 0;
+  incY._int.min               = 1;
+  incY._int.max               = INT_MAX;
+  incY._int.value             = 1;
 }
 
 int show_help(void){
