@@ -11,7 +11,7 @@ def samples(low, high, n):
     yield low + i * ((low + high)/float(n))
 
 def indexed_careful_relerr(cond):
-  return 2.0**(W * (1.0 - K) - 1.0) * cond + 15 * eps
+  return 2.0**(W * (1.0 - K) - 1.0) * cond + 7 * eps
 
 def indexed_naive_relerr(cond):
   return (2.0**(W * (1.0 - K) - 1.0) + ((2.0 * K - 1.0) * eps)) * cond

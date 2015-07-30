@@ -9,7 +9,7 @@
 \usepackage{tikz}
 \usepackage{float}
 \pagestyle{myheadings}
-\widowpenalties 1 10000
+%\widowpenalties 1 10000
 
 \author{Peter Ahrens, Hong Diep Nguyen, James Demmel}
 \title{ReproBLAS: Much Summation! So Reproducible!}
@@ -49,7 +49,7 @@
 
   For all $r \in \R$, let $\ceil{r}$ be the maximum element $z \in \Z$ such that $z \leq r$.
 
-  We define the function $\roundtonearestinfty(r, z), r \in R, e \in \Z$ as
+  We define the function $\roundtonearestinfty(r, e), r \in R, e \in \Z$ as
 
   \begin{equation}
     \roundtonearestinfty(r, e) = \begin{cases}\floor{r/2^e + 1/2} \times 2^e \text{ if } r \geq 0\\ \\ \ceil{r/2^e - 1/2}\times 2^e \text{ otherwise}\end{cases}
@@ -64,11 +64,11 @@
 
   Assume that floating point arithmetic complies with the IEEE 754-2008 standard \cite{ieee754} in some ``to nearest'' rounding mode (no specific tie breaking behaviour is required) and that underflow occurs gradually, although methods to handle abrupt underflow will be considered in Section \ref{sec:indexed_underflow_abrupt}.
 
-  Let $f = s \times 2^e \times m \in \F$ be a floating-point number represented in IEEE 754-2008 format \cite{ieee754} where $s = \pm 1$ is the \textbf{sign}, $e_{\max} \geq e \geq e_{\min}$ is the \textbf{exponent} ($\exp(f)$ is defined to be $e$), $p$ is the \textbf{precision}, and $m = m_0.m_1m_2...m_{p-1}$ where $m_0, ..., m_{p - 1} \in \{0, 1\}$ is the \textbf{significand} of $f$. $f$ is said to be \textbf{normalized} if $m_0 = 1$ and $e > e_{\min}$, \textbf{unnormalized} if $m_0 = 0$, and \textbf{denormalized} if $m_0 = 0$ and $e = e_{\min}$. $f = 0$ if all $m_k = 0$ and $e = e_{\min}$.
+  Let $f = s \times 2^e \times m \in \F$ be a floating-point number represented in IEEE 754-2008 format \cite{ieee754} where $s = \pm 1$ is the \textbf{sign}, $e_{\max} \geq e \geq e_{\min}$ is the \textbf{exponent} ($\exp(f)$ is defined to be $e$), $p$ is the \textbf{precision}, and $m = m_0.m_1m_2...m_{p-1}$ where $m_0, ..., m_{p - 1} \in \{0, 1\}$ is the \textbf{significand} of $f$. $f$ is said to be \textbf{normalized} if $m_0 = 1$ and $e \geq e_{\min}$, \textbf{unnormalized} if $m_0 = 0$, and \textbf{denormalized} if $m_0 = 0$ and $e = e_{\min}$. $f = 0$ if all $m_k = 0$ and $e = e_{\min}$.
 
   $r \in \R$ is \textbf{representable} as a floating point number if there exists $f \in \F$ such that $r = f$ as real numbers.
 
-  For all $r \in \R$, $e \in \Z$ such that $e_{\min} - p < e$, $|r| < 2 \times 2^{e_{\max}}$ and $r \in 2^e\Z$, if $r \leq 2^{e + p}$ then $r$ is representable.
+  For all $r \in \R$, $e \in \Z$ such that $e_{\min} - p < e$ and $|r| < 2 \times 2^{e_{\max}}$, if $r \in 2^e\Z$ and $r \leq 2^{e + p}$ then $r$ is representable.
 
   $\fl(\cdot)$ denotes the evaluated result of an expression in floating point arithmetic. If the real result of the expression is representable, then $\fl(\cdot)$ equals the real result exactly.
 
@@ -83,7 +83,7 @@
   All indices start at $0$ in correspondence with the actual ReproBLAS implementation.
 \section{Binning}
   \label{sec:binning}
-    We achieve reproducible summation of floating point numbers through binning. Each number is split into several components corresponding to predefined ranges, then the components corresponding to each range are accumulated separately. We begin in Section \ref{sec:binning_bins} by explaining the particular set of ranges (bins) used. Section \ref{sec:binning_slices} develops original mathematical theory to describe the components (slices) corresponding to each range. We develop this theory to concisely describe and prove correctness of algorithms throughout the paper (especially Algorithms \ref{alg:depositrestricted} and \ref{alg:deposit}).
+    We achieve reproducible summation of floating point numbers through binning. Each number is split into several components corresponding to predefined ranges, then the components corresponding to each range are accumulated separately. We begin in Section \ref{sec:binning_bins} by explaining the particular set of ranges (referred to as bins) used. Section \ref{sec:binning_slices} develops original mathematical theory to describe the components (referred to as slices) corresponding to each range. We develop this theory to concisely describe and prove correctness of algorithms throughout the paper (especially Algorithms \ref{alg:depositrestricted} and \ref{alg:deposit}).
   \subsection{Bins}
     \label{sec:binning_bins}
     We start by dividing the exponent range $(e_{\min} - p, ..., e_{\max} + 1]$  into \textbf{bins} $(a_i, b_i]$ of \textbf{width} $W$ according to \eqref{eq:imax}, \eqref{eq:a}, and \eqref{eq:b}. Such a range is used so that the largest and smallest (denormalized) floating point numbers may be approximated.
@@ -107,7 +107,7 @@
 
     We say the bin $(a_{i_0}, b_{i_0}]$ is \textbf{lesser} than the bin $(a_{i_1}, b_{i_1}]$ if $a_{i_0} < a_{i_1}$ (which is equivalent to both $b_{i_0} < b_{i_1}$ and $i_0 > i_1$).
 
-    We use $i \leq i_{\max} = \floor{(e_{\max} - e_{\min} + p - 1)/W}$ to ensure that $a_i > e_{\min} - p + 1$ as discussed in Section \ref{sec:indexed_underflow_gradual}. This means that the greatest bin is
+    We use $i \leq i_{\max} = \floor{(e_{\max} - e_{\min} + p - 1)/W} - 1$ to ensure that $a_i > e_{\min} - p + 1$ as discussed in Section \ref{sec:indexed_underflow_gradual}. This means that the greatest bin is
 
     \begin{equation}
       (e_{\max} + 1 - W, e_{\max} + 1]
@@ -290,9 +290,9 @@
       \end{equation}
       This simplifies the process of extracting the slices of input in bins $(a_{I + j}, b_{I + j}]$. It will be shown in Theorem \ref{thm:ddepositrestricted} that if we represent each primary value ${\mathcal{Y}_j}_P$ as in \eqref{eq:pri} and keep ${Y_j}_P$ within the range $(\epsilon^{-1} \times 2^{a_{I + j}}, 2 \times \epsilon^{-1} \times 2^{a_{I + j}})$, then Algorithm \ref{alg:depositrestricted} extracts the slices of $x$ in bins $(a_I, b_I], ..., (a_{I + K - 1}, b_{I + K - 1}]$ and adds them to ${Y_0}_P, ..., {Y_{K - 1}}_P$ without error (and hence reproducibly) for all $x \in \F$, where $|x| < 2^{b_I}$.
 
-      Because $d(x, I + j) = 0$ for bins with $x < 2^{a_{I + j}}$, the top $K$ nonzero accumulator values can be computed reproducibly by computing the values in the top $K$ accumulators needed for the largest $x$ seen so far. Upon encountering an $x \geq 2^{b_I}$, the accumulators can then be shifted upwards (towards index $0$) as necessary. \cite{repsum} contains further discussions of the reproducibility of the algorithm.
+      Because $d(x, I + j) = 0$ for bins with $x < 2^{a_{I + j}}$, the values in the greatest $K$ nonzero accumulators can be computed reproducibly by computing the values in the greatest $K$ accumulators needed for the largest $x$ seen so far. Upon encountering an $x \geq 2^{b_I}$, the accumulators can then be shifted towards index $0$ as necessary. \cite{repsum} contains further discussions of the reproducibility of the algorithm.
 
-      In order to keep the primary fields in the necessary range during a deposit operation and to keep the representation of $Y_j$ unique, ${Y_j}_P$ is routinely renormalized to the range $[1.5 \times\epsilon^{-1} \times 2^{a_{I + j}}, 1.75 \times\epsilon^{-1} \times 2^{a_{I + j}})$. Section \ref{sec:primitiveops_renormalize} contains a discussion of how often such renormalizations are necessary.
+      In order to keep the primary fields in the necessary range while the slices are accumulated and to keep the representation of $Y_j$ unique, ${Y_j}_P$ is routinely renormalized to the range $[1.5 \times\epsilon^{-1} \times 2^{a_{I + j}}, 1.75 \times\epsilon^{-1} \times 2^{a_{I + j}})$. Section \ref{sec:primitiveops_renormalize} contains a discussion of how often such renormalizations are necessary.
       To renormalize, ${Y_j}_P$ is incremented or decremented by $0.25 \times\epsilon^{-1} \times 2^{a_{I + j}}$ when necessary, leaving the carry field ${Y_j}_C$ to record the number of such adjustments.
       The value ${\mathcal{Y}_j}_C$ stored in the carry field ${Y_j}_C$ of an indexed type $Y$ of index $I$ is expressed in \eqref{eq:car}
       \begin{equation}
@@ -463,7 +463,7 @@
 
   \subsection{Deposit}
     \label{sec:primitiveops_deposit}
-    The deposit operation (here referred to as Algorithm \ref{alg:deposit}, a simpler version is described in the ``Extract $K$ first bins'' Section (lines 15-17) of Algorithm $6$ in \cite{repsum}) is used to extract the slices of a floating point number and add them to the appropriate accumulators of an indexed type.
+    The deposit operation (here referred to as Algorithm \ref{alg:deposit}, a simpler version is described in the ``Extract $K$ first bins'' Section (lines 18-20) of Algorithm $6$ in \cite{repsum}) is used to extract the slices of a floating point number and add them to the appropriate accumulators of an indexed type.
 
     The indexed type $Y$ that results from depositing the floating point values $x_0, ..., x_{n - 1}$ into an empty indexed type is referred to as the \textbf{indexed sum} of $x_0, ..., x_{n - 1}$. Algorithm \ref{alg:depositrestricted} deposits floating point numbers in the case that there is no overflow (the indexed type has an index greater than 0).
 
@@ -839,7 +839,7 @@
     \end{equation}
     However, if we sum the fields in order of decreasing ``unnormalized'' exponent, the error is bounded by about (using  \eqref{eq:errorapprox})
     \begin{equation}
-      n \times \max|x_k|\times 2^{W \times (1 - K) - 1} + 15 \epsilon |\sum\limits_{k = 0}^{n - 1} x_k|
+      n \times \max|x_k|\times 2^{W \times (1 - K) - 1} + 7 \epsilon |\sum\limits_{k = 0}^{n - 1} x_k|
       \label{eq:errorapproxdup}
     \end{equation}
 
@@ -1010,7 +1010,7 @@
       \end{equation*}
       Where
       \begin{equation}
-        g(\epsilon) = (10 \times (\frac{1}{1 - 5 \epsilon}) + 4 \times (\frac{1 + 4 \sqrt\epsilon}{1 - 4 \epsilon}) + 1) \times (\frac{1}{1 - 4 \sqrt\epsilon}) \approx 15
+        g(\epsilon) = \frac{7 - 2\sqrt\epsilon}{(1 - 2\sqrt\epsilon)(1 - 4\sqrt\epsilon)} \approx 7
         \label{eq:g}
       \end{equation}
     \end{thm}
@@ -1018,25 +1018,27 @@
 
     \begin{proof}
 
+      Throughout the proof, let $f_k = 0$ if $k > n - 1$ so that $S_{\infty} = S_{n - 1}$ and $\overline{S_{\infty}} = \overline{S_{n - 1}}$.
+
       Let $m$ be the location of the first error such that $S_{m - 1} = \overline{S_{m - 1}}$ and $S_{m} \neq \overline{S_{m}}$.
 
       If no such $m$ exists then the computed sum is exact ($S_{n - 1} = \overline{S_{n - 1}}$) and we are done.
 
       If such an $m$ exists, then because $\exp(f_0') > ... > \exp(f_m')$, $f_0, ..., f_m \in \ulp(f_m')\Z$. Thus, $S_m \in \ulp(f_m')\Z$.
 
-      We now show $|S_m| \geq 2 \times 2^{\exp(f_m')}$. Assume for contradiction that $|S_m| < 2 \times 2^{\exp(f_m')}$. Because $S_m \in \ulp(f_m')\Z$, this would imply that $S_m$ is representable as a floating point number, a contradiction as $\overline{S_m} \neq S_m$. Therefore, we have
+      We now show $|S_m| > 2 \times 2^{\exp(f_m')}$. Assume for contradiction that $|S_m| \leq 2 \times 2^{\exp(f_m')}$. Because $S_m \in \ulp(f_m')\Z$, this would imply that $S_m$ is representable as a floating point number, a contradiction as $\overline{S_m} \neq S_m$. Therefore, we have
       \begin{equation}
-        |S_m| \geq 2 \times 2^{\exp(f_m')}
+        |S_m| > 2 \times 2^{\exp(f_m')}
         \label{eq:smbound}
       \end{equation}
 
-      If $n - 1 \geq m + 1$, then because $\exp(f_m') > \exp(f_{m + 1}')$,
+      Because $\exp(f_m') > \exp(f_{m + 1}')$,
       \begin{equation}
         |f_{m + 1}| < 2\times2^{\exp(f_m' - 1)} = 2^{\exp(f_m')}
         \label{eq:smpbound}
       \end{equation}
 
-      If $n - 1 \geq m + 2$, then because $\exp(f_m') \geq \exp(f_{m + 2}') + \ceil{\frac{p + 1}{2}}$ and $\exp(f_0') > ... > \exp(f_{n - 1}')$,
+      Because $\exp(f_m') \geq \exp(f_{m + 2}') + \ceil{\frac{p + 1}{2}}$ and $\exp(f_0') > ... > \exp(f_{n - 1}')$,
       \begin{equation*}
         |\sum \limits_{k = m + 2}^{n - 1} f_k| < \sum \limits_{k = m + 2}^{n - 1} |f_k| < \sum \limits_{k = m + 2}^{n - 1} 2 \times 2^{\exp(f_k')} \leq \sum \limits_{k = m + 2}^{n - 1} 2 \times 2^{\exp(f_m') - \ceil{\frac{p + 1}{2}} - (m + 2 - k)}
       \end{equation*}
@@ -1063,55 +1065,67 @@
         \label{eq:sbound}
       \end{equation}
 
+      By  \eqref{eq:sbound} and \eqref{eq:smppbound},
+      \begin{equation}
+        |\sum \limits_{k = m + 2}^{n - 1} f_k| < 4 \times \sqrt\epsilon \times 2^{\exp(f_m')} \leq (\frac{4 \times \sqrt\epsilon}{1 - 4 \times \sqrt\epsilon})|\sum\limits_{k = 0}^{n - 1}f_k|
+        \label{eq:smpprelsbound}
+      \end{equation}
+
       By  \eqref{eq:sbound} and \eqref{eq:smsbound},
       \begin{equation}
         |\sum\limits_{k = m + 1}^{n - 1}f_k| \leq \sum\limits_{k = m + 1}^{n - 1}|f_k| \leq (1 + 4 \times \sqrt\epsilon)\times2^{\exp(f_m')}\leq (\frac{1 + 4 \times \sqrt\epsilon}{1 - 4 \times \sqrt\epsilon})|\sum\limits_{k = 0}^{n - 1}f_k|
         \label{eq:smsrelsbound}
       \end{equation}
 
-      And by  \eqref{eq:sbound} and \eqref{eq:smsrelsbound},
+      And by \eqref{eq:sbound} and \eqref{eq:smsrelsbound},
 
       \begin{equation}
         |S_m| \leq |\sum\limits_{k = 0}^{n - 1}f_k| + |\sum\limits_{k = m + 1}^{n - 1} f_k| \leq (1 + (\frac{1 + 4 \times \sqrt\epsilon}{1 - 4 \times \sqrt\epsilon}))|\sum\limits_{k = 0}^{n - 1}f_k| \leq (\frac{2}{1 - 4 \times \sqrt\epsilon})|\sum\limits_{k = 0}^{n - 1}f_k|
         \label{eq:smrelsbound}
       \end{equation}
 
-      Let $T_0 = \overline{T_0} = S_{m - 1}$, $T_k = T_{k - 1} + f_{k + m - 1}$, and $\overline{T_k} = \fl(\overline{T_{k - 1}} + f_{k + m - 1})$ so that $T_{n - m} = \sum \limits_{k = 0}^{n - 1} f_k$.
+      Let $T_0 = \overline{T_0} = \overline{S_m}$, $T_k = T_{k - 1} + f_{k + m - 1}$, and $\overline{T_k} = \fl(\overline{T_{k - 1}} + f_{k + m - 1})$ so that $T_{n - 1 - m} = \overline{S_m} + \sum\limits_{k = m + 1}^{n - 1}f_k$ and $\overline{T_{n - 1 - m}} = \overline{S_{n - 1}}$.
 
-      Notice that since $S_{m - 1} = \overline{S_{m - 1}}$,
-      \begin{equation*}
-        |S_{n - 1} - \overline{S_{n - 1}}| = |T_{n - m} - \overline{T_{n - m}}|
-      \end{equation*}
-
-      We may combine  \eqref{eq:smrelsbound} and \eqref{eq:smsrelsbound} with Equation 2.4 from \cite{higham} to obtain
+      Using the Triangle Inequality we have
 
       \begin{equation*}
-        |S_{\min(n - 1, m + 4)} - \overline{S_{\min(n - 1, m + 4)}}| = |T_{\min(n - m, 5)} - \overline{T_{\min(n - m, 5)}}|
+        |S_{m + 4} - \overline{S_{m + 4}}| = |S_{m + 4} - \overline{T_{4}}| = |S_{m + 4} - S_m + S_m - \overline{S_m} + \overline{S_m} - \overline{T_4}|
       \end{equation*}
       \begin{equation*}
-        \leq (\frac{5\epsilon}{1 - 5 \epsilon})|S_{m - 1} + f_m| + (\frac{4\epsilon}{1 - 4 \epsilon})\sum\limits_{k = m + 1}^{\min(n - 1, m + 4)}|f_k|
+        = |\sum\limits_{k = m + 1}^{m + 4} f_k + S_m - \overline{S_m} + \overline{S_m} - \overline{T_4}| = |S_m - \overline{S_m} + \overline{S_m} + \sum\limits_{k = m + 1}^{m + 4} f_k - \overline{T_4}|
       \end{equation*}
       \begin{equation*}
-        = (\frac{5\epsilon}{1 - 5 \epsilon})|S_m| + (\frac{4\epsilon}{1 - 4 \epsilon})\sum\limits_{k = m + 1}^{\min(n - 1, m + 4)}|f_k|
+        = |S_m - \overline{S_m} + T_4 - \overline{T_4}| \leq |S_m - \overline{S_m}| + |T_4 - \overline{T_4}|
+      \end{equation*}
+       and by Equations 1.2 and 2.4 from \cite{higham},
+      \begin{equation*}
+        |S_{m + 4} - \overline{S_{m + 4}}| \leq |S_m - \overline{S_m}|  + (\frac{4\epsilon}{1 - 4 \epsilon})|T_0 + f_{m + 1}| + (\frac{3\epsilon}{1 - 3 \epsilon})\sum\limits_{k = m + 2}^{m + 4}|f_k|
       \end{equation*}
       \begin{equation*}
-        \leq ((\frac{5\epsilon}{1 - 5 \epsilon})(\frac{2}{1 - 4 \times \sqrt\epsilon}) + (\frac{4\epsilon}{1 - 4 \epsilon})(\frac{1 + 4 \times \sqrt\epsilon}{1 - 4 \times \sqrt\epsilon}))|\sum\limits_{k = 0}^{n - 1}f_k|
+        \leq |S_m - \overline{S_m}| + (\frac{4\epsilon}{1 - 4 \epsilon})|\overline{S_m} - S_m + S_m + f_{m + 1}| + (\frac{3\epsilon}{1 - 3 \epsilon})\sum\limits_{k = m + 2}^{m + 4}|f_k|
+      \end{equation*}
+      \begin{equation*}
+        \leq (\frac{1}{1 - 4\epsilon})|S_m - \overline{S_m}| + (\frac{4\epsilon}{1 - 4 \epsilon})|S_m + f_{m + 1}| + (\frac{3\epsilon}{1 - 3 \epsilon})\sum\limits_{k = m + 2}^{m + 4}|f_k|
+      \end{equation*}
+      \begin{equation*}
+        \leq (\frac{1}{1 - 4\epsilon})|S_m - \overline{S_m}| +(\frac{4\epsilon}{1 - 4 \epsilon})(|\sum\limits_{k = 0}^{n - 1}f_k| + |\sum\limits_{k = m + 2}^{n - 1}f_k|) + (\frac{3\epsilon}{1 - 4 \epsilon})\sum\limits_{k = m + 2}^{n - 1}|f_k|
+      \end{equation*}
+      \begin{equation*}
+        \leq (\frac{1}{1 - 4\epsilon})|S_m - \overline{S_m}| +(\frac{4\epsilon}{1 - 4 \epsilon})|\sum\limits_{k = 0}^{n - 1}f_k| + (\frac{7\epsilon}{1 - 4 \epsilon})\sum\limits_{k = m + 2}^{n - 1}|f_k|
+      \end{equation*}
+      \begin{equation*}
+        \leq (\frac{1}{1 - 4\epsilon})(\epsilon|S_m| + 4\epsilon|\sum\limits_{k = 0}^{n - 1}f_k| + 7\epsilon\sum\limits_{k = m + 2}^{n - 1}|f_k|)
+      \end{equation*}
+      and by \eqref{eq:smrelsbound} and \eqref{eq:smpprelsbound},
+      \begin{equation*}
+        |S_{m + 4} - \overline{S_{m + 4}}| \leq (\frac{1}{1 - 4\epsilon})(\frac{2\epsilon}{1 - 4\sqrt\epsilon}|\sum\limits_{k = 0}^{n - 1}f_k| + \frac{4\epsilon - 16\epsilon\sqrt\epsilon}{1 - 4\sqrt\epsilon}|\sum\limits_{k = 0}^{n - 1}f_k| + \frac{28\epsilon\sqrt\epsilon}{1 - 4\sqrt\epsilon}|\sum\limits_{k = 0}^{n - 1}f_k|)
       \end{equation*}
       \begin{equation}
-        \leq (10 \times (\frac{1}{1 - 5 \epsilon}) + 4 \times (\frac{1 + 4 \sqrt\epsilon}{1 - 4 \epsilon})) \times (\frac{1}{1 - 4 \sqrt\epsilon})\times \epsilon \times|\sum\limits_{k = 0}^{n - 1}f_k|
+        = \frac{6 + 12\sqrt\epsilon}{(1 - 4\epsilon)(1 - 4\sqrt\epsilon)}\epsilon|\sum\limits_{k = 0}^{n - 1}f_k| = \frac{6}{(1 - 2\sqrt\epsilon)(1 - 4\sqrt\epsilon)}\epsilon|\sum\limits_{k = 0}^{n - 1}f_k|
         \label{eq:smfiveerror}
       \end{equation}
 
-      If $n - 1 \leq m + 4$, \eqref{eq:smfiveerror} implies
-      \begin{equation*}
-        |S_{n - 1} - \overline{S_{n - 1}}| \leq (10 \times (\frac{1}{1 - 5 \epsilon}) + 4 \times (\frac{1 + 4 \sqrt\epsilon}{1 - 4 \epsilon})) \times (\frac{1}{1 - 4 \sqrt\epsilon})\times \epsilon \times|\sum\limits_{k = 0}^{n - 1}f_k|
-      \end{equation*}
-      \begin{equation*}
-        < g(\epsilon)\times \epsilon\times |\sum\limits_{k = 0}^{n - 1}f_k|
-      \end{equation*}
-      And we are done.
-
-      If $n - 1 > m + 4$, notice that
+      Notice that
         \begin{equation*}
           \exp(f_m') \geq \exp(f_{m + 2}') + \ceil{\frac{p+ 1}{2}} \geq \exp(f_{m + 4}') + 2 \times \ceil{\frac{p + 1}{2}} > \exp(f_{m + 5}')+ 2 \times \ceil{\frac{p+ 1}{2}}
         \end{equation*}
@@ -1120,41 +1134,42 @@
           \exp(f_m') \geq \exp(f_{m + 5}') + p + 2
           \label{eq:fmfiveexp}
         \end{equation}
-      Because $\exp(f_0') > ... > \exp(f_{n - 1}')$,
+
+      Because $\exp(f_0') > ... > \exp(f_{n - 1}')$, \eqref{eq:fmfiveexp} yields
         \begin{equation}
           |\sum\limits_{k = m + 5}^{n - 1} f_k| \leq \sum\limits_{k = m + 5}^{n - 1} |f_k| < \sum\limits_{k = m + 5}^{n - 1} 2 \times 2^{\exp(f_m') - p - 2 - (k - (m + 5))} < \sum\limits_{k = 0}^{\infty} 2^{\exp(f_m') - p - 1 - k} = \epsilon \times 2^{\exp(f_m')}
           \label{eq:boundfmfivesum}
         \end{equation}
-      And using  \eqref{eq:sbound},
+
+      Using  \eqref{eq:sbound} and \eqref{eq:boundfmfivesum},
         \begin{equation}
           |\sum\limits_{k = m + 5}^{n - 1} f_k| \leq \sum\limits_{k = m + 5}^{n - 1} |f_k| < (\frac{\epsilon}{1 - 4 \times \sqrt\epsilon})|\sum\limits_{k = 0}^{n - 1} f_k|
           \label{eq:relsboundfmfivesum}
         \end{equation}
 
-      By  \eqref{eq:sbound}, \eqref{eq:smfiveerror}, and \eqref{eq:boundfmfivesum}.
+      By  \eqref{eq:sbound}, \eqref{eq:smfiveerror}, and \eqref{eq:boundfmfivesum}
         \begin{equation*}
-          |\overline{S_{m + 4}}| \geq |S_{m + 4}| - |S_{m + 4} - \overline{S_m + 4}| \geq (|\sum\limits_{k = 0}^{n - 1} f_k| - \sum\limits_{k = m + 5}^{n - 1}|f_k|) - |S_{m + 4} - \overline{S_m + 4}|
+          |\overline{S_{m + 4}}| \geq |S_{m + 4}| - |S_{m + 4} - \overline{S_m + 4}| \geq (|\sum\limits_{k = 0}^{n - 1} f_k| - |\sum\limits_{k = m + 5}^{n - 1}f_k|) - |S_{m + 4} - \overline{S_m + 4}|
         \end{equation*}
         \begin{equation*}
-           = (|\sum\limits_{k = 0}^{n - 1} f_k| - |S_{m + 4} - \overline{S_m + 4}|) - \sum\limits_{k = m + 5}^{n - 1}|f_k|
+           = (|\sum\limits_{k = 0}^{n - 1} f_k| - |S_{m + 4} - \overline{S_m + 4}|) - |\sum\limits_{k = m + 5}^{n - 1}f_k|
         \end{equation*}
         \begin{equation*}
-           \geq (1 - (10 \times (\frac{1}{1 - 5 \epsilon}) + 4 \times (\frac{1 + 4 \sqrt\epsilon}{1 - 4 \epsilon})) \times (\frac{1}{1 - 4 \sqrt\epsilon}) \times \epsilon)\times |\sum\limits_{k = 0}^{n - 1} f_k| - \sum\limits_{k = m + 5}^{n - 1}|f_k|
+           \geq (1 - \frac{6}{(1 - 2\sqrt\epsilon)(1 - 4\sqrt\epsilon)}\epsilon)|\sum\limits_{k = 0}^{n - 1} f_k| - |\sum\limits_{k = m + 5}^{n - 1}f_k|
         \end{equation*}
         \begin{equation*}
-           \geq (1 - (10 \times (\frac{1}{1 - 5 \epsilon}) + 4 \times (\frac{1 + 4 \sqrt\epsilon}{1 - 4 \epsilon})) \times (\frac{1}{1 - 4 \sqrt\epsilon}) \times \epsilon)\times(1 - 4 \sqrt\epsilon)\times 2^{\exp(f_m')} - \epsilon \times 2^{\exp(f_m')}
+           > (1 - \frac{6}{(1 - 2\sqrt\epsilon)(1 - 4\sqrt\epsilon)}\epsilon)(1 - 4 \sqrt\epsilon)2^{\exp(f_m')} - \epsilon2^{\exp(f_m')}
         \end{equation*}
         \begin{equation}
-          = (1 - 4 \times \sqrt\epsilon - 10\epsilon \times (\frac{1}{1 - 5 \epsilon}) - 4\epsilon \times (\frac{1 + 4 \sqrt\epsilon}{1 - 4 \epsilon}) - \epsilon )\times 2^{\exp(f_m')}
-          \label{eq:minsmfour}
+          = (1 - 4\sqrt\epsilon - \frac{6}{1 - 2\sqrt\epsilon}\epsilon - \epsilon )\times 2^{\exp(f_m')}
         \end{equation}
-        As we may assume $\epsilon << 1$,  \eqref{eq:minsmfour} can be simplified to
+        which, assuming $\epsilon << 1$, can be simplified to
         \begin{equation}
           |\overline{S_{m + 4}}| > 2^{\exp(f_m') - 1}
           \label{eq:minsmfoursimple}
         \end{equation}
 
-        Using  \eqref{eq:fmfiveexp},
+        Using  \eqref{eq:fmfiveexp}, for all $k \geq m + 5$ we have
 
         \begin{equation}
           |f_k| < 2 \times 2^{\exp(f_k')} \leq 2 \times 2^{\exp(f_m) - p - 2} = \epsilon \times 2^{\exp(f_m') - 1}
@@ -1167,24 +1182,24 @@
           \label{eq:smfourcontinues}
         \end{equation}
 
-        With  \eqref{eq:smfourcontinues}. \eqref{eq:relsboundfmfivesum} and \eqref{eq:smfiveerror}
+        With  \eqref{eq:smfourcontinues}, \eqref{eq:relsboundfmfivesum} and \eqref{eq:smfiveerror}
 
         \begin{equation*}
           |S_{n - 1} - \overline{S_{n - 1}}| = |S_{n - 1} - \overline{S_{m + 4}}| \leq |S_{m + 4} - \overline{S_{m + 4}}| + |\sum\limits_{k = m + 5}^{n - 1}f_k|
         \end{equation*}
 
         \begin{equation*}
-          < (10 \times (\frac{1}{1 - 5 \epsilon}) + 4 \times (\frac{1 + 4 \sqrt\epsilon}{1 - 4 \epsilon})) \times (\frac{1}{1 - 4 \sqrt\epsilon})\times \epsilon \times|\sum\limits_{k = 0}^{n - 1}f_k| + (\frac{\epsilon}{1 - 4 \times \sqrt\epsilon})|\sum\limits_{k = 0}^{n - 1} f_k|
+          < \frac{6}{(1 - 2\sqrt\epsilon)(1 - 4\sqrt\epsilon)}\epsilon|\sum\limits_{k = 0}^{n - 1}f_k| + \frac{\epsilon}{1 - 4\sqrt\epsilon}|\sum\limits_{k = 0}^{n - 1} f_k|
         \end{equation*}
         \begin{equation*}
-          = (10 \times (\frac{1}{1 - 5 \epsilon}) + 4 \times (\frac{1 + 4 \sqrt\epsilon}{1 - 4 \epsilon}) + 1) \times (\frac{1}{1 - 4 \sqrt\epsilon})\times \epsilon \times|\sum\limits_{k = 0}^{n - 1}f_k|
+          = \frac{7 - 2\sqrt\epsilon}{(1 - 2\sqrt\epsilon)(1 - 4\sqrt\epsilon)}\epsilon|\sum\limits_{k = 0}^{n - 1}f_k|
         \end{equation*}
         \begin{equation*}
           = g(\epsilon)\times \epsilon\times |\sum\limits_{k = 0}^{n - 1}f_k|
         \end{equation*}
     \end{proof}
 
-    Consider the $K$-fold indexed sum $Y$ of floating point numbers $x_0, ..., x_{n - 1}$. We denote the true sum $\sum \limits_{k = 0}^{n - 1} x_k$ by $T$, the true value of the indexed sum as obtained using  \eqref{eq:indexedvalue} by $\mathcal{Y}$, and the floating point approximation of $\mathcal{Y}$ obtained using an appropriate algorithm from section \ref{sec:primitiveops_convert} by $\overline{\mathcal{Y}}$.
+    Consider the $K$-fold indexed sum $Y$ of floating point numbers $x_0, ..., x_{n - 1}$. We denote the true sum $\sum \limits_{k = 0}^{n - 1} x_k$ by $T$, the true value of the indexed sum as obtained using  \eqref{eq:indexedvalue} by $\mathcal{Y}$, and the floating point approximation of $\mathcal{Y}$ obtained using an appropriate algorithm from Section \ref{sec:primitiveops_convert} by $\overline{\mathcal{Y}}$.
 
     \cite{repsum} discusses the absolute error $|T - \mathcal{Y}|$ but does not give a method to construct $\overline{\mathcal{Y}}$ and therefore no error bound ($|T - \overline{\mathcal{Y}}|$) on the final floating point answer was given. Here we extend the error bound of \cite{repsum} all the way to the final return value of the algorithm.
 
@@ -1243,7 +1258,7 @@
     \end{equation*}
 
     \begin{equation}
-    \approx n \times \max|x_k|\times 2^{W \times (1 - K) - 1} + 15 \times \epsilon \times|T|
+    \approx n \times \max|x_k|\times 2^{W \times (1 - K) - 1} + 7 \times \epsilon \times|T|
       \label{eq:errorapprox}
     \end{equation}
 
@@ -1287,7 +1302,7 @@
     \end{equation*}
 
     \begin{equation}
-      \approx n \times \max|x_k|\times 2^{W \times (1 - K) - 1} + 15 \times \epsilon \times |\overline{\mathcal{Y}}|
+      \approx n \times \max|x_k|\times 2^{W \times (1 - K) - 1} + 7 \times \epsilon \times |\overline{\mathcal{Y}}|
       \label{eq:error2approx}
     \end{equation}
 
