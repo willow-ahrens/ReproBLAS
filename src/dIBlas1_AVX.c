@@ -99,10 +99,10 @@ void ddotI2_k3(int n, double* v, int incv, double* y, int incy, double* sum) {
 	
 #if (UNROLL_STEP_NR_k3 >= 16)
 	for (; i < n-15; i+=16, v+=16) {
-		mv0 = _mm256_load_pd(v + 0);
-		mv1 = _mm256_load_pd(v + 4);
-		mv2 = _mm256_load_pd(v + 8);
-		mv3 = _mm256_load_pd(v + 12);
+		mv0 = _mm256_loadu_pd(v + 0);
+		mv1 = _mm256_loadu_pd(v + 4);
+		mv2 = _mm256_loadu_pd(v + 8);
+		mv3 = _mm256_loadu_pd(v + 12);
 
 #if defined( DASUMI2 )
 		mv0 = _mm256_and_pd(mv0, mAbsMask);
@@ -207,8 +207,8 @@ void ddotI2_k3(int n, double* v, int incv, double* y, int incy, double* sum) {
 #else
 	for (; i < n-7; i+=8) {
 #endif
-		mv0 = _mm256_load_pd(v);
-		mv1 = _mm256_load_pd(v + 4);
+		mv0 = _mm256_loadu_pd(v);
+		mv1 = _mm256_loadu_pd(v + 4);
 
 #if defined( DASUMI2 )
 		mv0 = _mm256_and_pd(mv0, mAbsMask);
@@ -286,7 +286,7 @@ void ddotI2_k3(int n, double* v, int incv, double* y, int incy, double* sum) {
 #else
 	for (; i < n-3; i+=4) {
 #endif
-		mv0 = _mm256_load_pd(v);
+		mv0 = _mm256_loadu_pd(v);
 #if defined( DASUMI2 )
 		mv0 = _mm256_and_pd(mv0, mAbsMask);
 #elif defined( DNRM2I2 )
@@ -365,9 +365,9 @@ void ddotI2_k3(int n, double* v, int incv, double* y, int incy, double* sum) {
 	}
 	// TODO SSE3 horizontal add _mm256_hadd_pd
 	/*
-	mS2 = _mm256_load_sd(sum);
-	mL2 = _mm256_load_sd(sum + 1);
-	mT2 = _mm256_load_sd(sum + 2);
+	mS2 = _mm256_loadu_sd(sum);
+	mL2 = _mm256_loadu_sd(sum + 1);
+	mT2 = _mm256_loadu_sd(sum + 2);
 	
 	mS1 = _mm256_sub_pd(mS1, mS2);
 	mL1 = _mm256_sub_pd(mL1, mL2);
@@ -516,8 +516,8 @@ void ddotI2(int n, double* v, int incv, double* y, int incy, int fold, double* s
 
 #if (DSUMI2_UNROLL_STEP >= 8)
 	for (; i < n-7; i+=8, v += 8) {
-		mv0 = _mm256_load_pd(v);
-		mv1 = _mm256_load_pd(v + 4);
+		mv0 = _mm256_loadu_pd(v);
+		mv1 = _mm256_loadu_pd(v + 4);
 
 #if defined( DASUMI2 )
 		mv0 = _mm256_and_pd(mv0, mAbsMask);
@@ -560,7 +560,7 @@ void ddotI2(int n, double* v, int incv, double* y, int incy, int fold, double* s
 
 #if (DSUMI2_UNROLL_STEP >= 4)
 	for (; i < n-3; i+=4, v += 4) {
-		mv0 = _mm256_load_pd(v);
+		mv0 = _mm256_loadu_pd(v);
 #		if defined( DASUMI2 )
 		mv0 = _mm256_and_pd(mv0, mAbsMask);
 #		elif defined( DNRM2I2 )
