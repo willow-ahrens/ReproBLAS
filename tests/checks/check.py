@@ -32,7 +32,6 @@ DBL_ONES = 0
 for i in range(DBL_MANT_DIG):
   DBL_ONES += 2.0 ** -i
 
-"""
 check_suite.add_checks([checks.ValidateInternalDSCALETest(),\
                         checks.ValidateInternalSSCALETest()],\
                        ["N", "incX"],\
@@ -154,6 +153,7 @@ check_suite.add_checks([checks.ValidateInternalRZDOTUTest(),\
                        [[4095], folds, incs, [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0],\
                         [("constant", "sine"),\
                          ("sine", "constant")]])
+"""
 
 check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
                         checks.ValidateInternalRDASUMTest(),\
@@ -245,7 +245,6 @@ check_suite.add_checks([checks.ValidateInternalRZDOTUTest(),\
                          "+inf_nan",\
                          "++inf_nan",\
                          "+-inf_nan"]])
-"""
 
 #check_suite.add_checks([checks.VerifyRDGEMVTest()],\
 #                       ["O", "T", "N", "M", "lda", "incX", "incY", "f", "g", "j"],\
@@ -256,7 +255,6 @@ check_suite.add_checks([checks.ValidateInternalRZDOTUTest(),\
 #                         "small+grow*big"],\
 #                        ["rand",\
 #                         "small+grow*big"]])
-"""
 
 check_suite.add_checks([checks.VerifyRDSUMTest(),\
                         checks.VerifyRDASUMTest(),\
