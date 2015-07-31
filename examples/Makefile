@@ -9,7 +9,7 @@ mpi_examples =
 #OMP_FLAG = -fopenmp
 
 ifneq (,$(OMP_FLAG))
-omp_examples += example1_omp
+omp_examples += example1_omp example2_omp
 endif
 
 ifneq (,$(MPIC_COMPILER))
