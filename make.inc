@@ -1,8 +1,8 @@
 ###############################################
 # C COMPILER                                  #
 ###############################################
-C_COMPILER = clang
-# C_COMPILER    = gcc
+# C_COMPILER = clang
+C_COMPILER    = gcc
 # C_COMPILER    = icc
 # C_COMPILER    = CC
 

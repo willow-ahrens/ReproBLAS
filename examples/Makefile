@@ -35,7 +35,7 @@ $(examples): % :%.o
 
 $(omp_examples): 
 	$(C_COMPILER) $(CFLAGS) $(INCR) $(OMP_FLAG) -c $(patsubst %,%.c,$@)
-	$(LDC) $(OMP_FLAG) -o run-$@ $(patsubst %,%.o,$@) $(LDFLAGS) -lindexedfp
+	$(LDC) $(OMP_FLAG) -o run-$@ $(patsubst %,%.o,$@) $(LDFLAGS) -liblas -lindexedfp
 
 $(mpi_examples): 
 	$(MPIC_COMPILER) $(CFLAGS) $(INCR) -c $(patsubst %,%.c,$@)
