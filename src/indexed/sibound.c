@@ -9,13 +9,18 @@
  *
  * @param fold the fold of the indexed types
  * @param N the number of single precision floating point summands
- * @param X the maximum absolute value of the summands
+ * @param X the summand of maximum absolute value
+ * @param S the value of the sum computed using indexed types
  * @return error bound
+ *
+ * @author Peter Ahrens
+ * @date   31 Jul 2015
  *
  * @author Peter Ahrens
  * @author Hong Diep Nguyen
  * @date   21 May 2015
  */
-float sibound(const int fold, const int N, const float X) {
-  return X * ldexpf(0.5, (1 - fold)*(SIWIDTH - 1) + 1) * N;
+float sibound(const int fold, const int N, const float X, const float S) {
+  double g = ((7.0 - 2.0 * sqrt(FLT_EPSILON)) / ((1.0 - 2.0 * sqrt(FLT_EPSILON)) * (1.0 - 4.0 * sqrt(FLT_EPSILON)))) * FLT_EPSILON;
+  return (float)(MAX(fabs((double)X), ldexp(0.5, FLT_MIN_EXP - 1)) * ldexp(0.5, (1 - fold)*(SIWIDTH - 1) + 1) * N + (g / (1.0 - g)) * fabs((double)S));
 }

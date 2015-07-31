@@ -265,8 +265,8 @@ int zinum(const int fold);
 int sinum(const int fold);
 int cinum(const int fold);
 
-double dibound(const int fold, const int N, const double X);
-float sibound(const int fold, const int N, const float X);
+double dibound(const int fold, const int N, const double X, const double S);
+float sibound(const int fold, const int N, const float X, const float S);
 
 const double *dmbins(const int X);
 const float *smbins(const int X);
