@@ -14,8 +14,6 @@
 
 \author{Peter Ahrens, Hong Diep Nguyen, James Demmel}
 \title{ReproBLAS: Much Summation! So Reproducible!}
-\providecommand{\ceil}[1]{\left \lceil #1 \right \rceil }
-\providecommand{\floor}[1]{\left \lfloor #1 \right \rfloor }
 \providecommand{\R}{\ensuremath{\mathbb{R}}}
 \providecommand{\F}{\ensuremath{\mathbb{F}}}
 \providecommand{\Z}{\ensuremath{\mathbb{Z}}}
@@ -46,20 +44,20 @@
 
   For all $r \in \R$, let $r\Z$ denote the set of all multiples of $r$, $\{rz | z \in \Z\}$.
 
-  For all $r \in \R$, let $\floor{r}$ be the minimum element $z \in \Z$ such that $z \geq r$.
+  For all $r \in \R$, let $\lfloor r \rfloor$ be the minimum element $z \in \Z$ such that $z \geq r$.
 
-  For all $r \in \R$, let $\ceil{r}$ be the maximum element $z \in \Z$ such that $z \leq r$.
+  For all $r \in \R$, let $\lceil r \rceil$ be the maximum element $z \in \Z$ such that $z \leq r$.
 
   We define the function $\roundtonearestinfty(r, e), r \in R, e \in \Z$ as
 
   \begin{equation}
-    \roundtonearestinfty(r, e) = \begin{cases}\floor{r/2^e + 1/2} 2^e \text{ if } r \geq 0\\ \\ \ceil{r/2^e - 1/2} 2^e \text{ otherwise}\end{cases}
+    \roundtonearestinfty(r, e) = \begin{cases}\lfloor r/2^e + 1/2 \rfloor 2^e \text{ if } r \geq 0\\ \\ \lceil r/2^e - 1/2 \rceil 2^e \text{ otherwise}\end{cases}
   \end{equation}
 
   $\roundtonearestinfty(r, e)$ rounds $r$ to the nearest multiple of $2^e$, breaking ties away from 0. A property of such rounding is shown in  \eqref{eq:round}
 
   \begin{equation}
-    |r - \roundtonearestinfty(r, e)| \leq 2^{e - 1}
+    \bigl|r - \roundtonearestinfty(r, e)\bigr| \leq 2^{e - 1}
     \label{eq:round}
   \end{equation}
 
@@ -90,7 +88,7 @@
     We start by dividing the exponent range $(e_{\min} - p, ..., e_{\max} + 1]$  into \textbf{bins} $(a_i, b_i]$ of \textbf{width} $W$ according to \eqref{eq:imax}, \eqref{eq:a}, and \eqref{eq:b}. Such a range is used so that the largest and smallest (denormalized) floating point numbers may be approximated.
 
     \begin{equation}
-      i_{\max} = \floor{(e_{\max} - e_{\min} + p - 1)/W} - 1
+      i_{\max} = \bigl\lfloor(e_{\max} - e_{\min} + p - 1)/W\bigr\rfloor - 1
       \label{eq:imax}
     \end{equation}
 
@@ -108,17 +106,17 @@
 
     We say the bin $(a_{i_0}, b_{i_0}]$ is \textbf{lesser} than the bin $(a_{i_1}, b_{i_1}]$ if $a_{i_0} < a_{i_1}$ (which is equivalent to both $b_{i_0} < b_{i_1}$ and $i_0 > i_1$).
 
-    We use $i \leq i_{\max} = \floor{(e_{\max} - e_{\min} + p - 1)/W} - 1$ to ensure that $a_i > e_{\min} - p + 1$ as discussed in Section \ref{sec:indexed_underflow_gradual}. This means that the greatest bin is
+    We use $i \leq i_{\max} = \lfloor(e_{\max} - e_{\min} + p - 1)/W\rfloor - 1$ to ensure that $a_i > e_{\min} - p + 1$ as discussed in Section \ref{sec:indexed_underflow_gradual}. This means that the greatest bin, $(a_{0}, b_{0}]$, is
 
     \begin{equation}
-      (a_{0}, b_{0}] = (e_{\max} + 1 - W, e_{\max} + 1]
+      (e_{\max} + 1 - W, e_{\max} + 1]
       \label{eq:binmax}
     \end{equation}
 
-    and the least bin is
+    and the least bin, $(a_{i_{\max}}, b_{i_{\max}}]$, is
 
     \begin{equation}
-      (a_{i_{\max}}, b_{i_{\max}}] = \Bigl(e_{\min} - p + 2 + \bigl((e_{\max} - e_{\min} + p - 1)\mod W\bigr),
+      \Bigl(e_{\min} - p + 2 + \bigl((e_{\max} - e_{\min} + p - 1)\mod W\bigr),
       e_{\min} - p + 2 + W + \bigl((e_{\max} - e_{\min} + p - 1)\mod W\bigr)\Bigr]
       \label{eq:binmin}
     \end{equation}
@@ -126,7 +124,7 @@
     Section \ref{sec:indexed_underflow_gradual} explains why the range
 
     \begin{equation*}
-    (e_{\min} - p, e_{\min} - p + 2 + ((e_{\max} - e_{\min} + p - 1) \mod W)]
+    \Bigl(e_{\min} - p, e_{\min} - p + 2 + \bigl((e_{\max} - e_{\min} + p - 1) \mod W\bigr)\Bigr]
     \end{equation*}
 
     is ignored.
@@ -150,7 +148,7 @@
     \label{sec:binning_slices}
     Throughout the text we will refer to the \textbf{slice} of some $x \in \F$ in the bin $(a_i, b_i]$. $x$ can be split into several slices, each slice corresponding to a bin $(a_i, b_i]$ and expressible as the (possibly negated) sum of a subset of $\{2^e, e \in (a_i, b_i]\}$, such that the sum of the slices provides a good approximation of $x$. Specifically, the slice of $x \in \F$ in the bin $(a_i, b_i]$ is defined recursively as $d(x, i)$ in \eqref{eq:d}. We must define $d(x, i)$ recursively because it is not a simple bitwise extraction.
     \begin{equation}
-      d(x, i) = \roundtonearestinfty(x - \sum\limits_{k=0}^{i - 1}d(x,k), a_i + 1)
+      d(x, i) = \roundtonearestinfty\bigl(x - \sum\limits_{k=0}^{i - 1}d(x,k), a_i + 1\bigr)
       \label{eq:d}
     \end{equation}
 
@@ -174,7 +172,7 @@
 
       In the base case, we have $|x| < 2^{a_0}$ and $d(x, 0) = \roundtonearestinfty(x, a_0 + 1)$. By the triangle inequality and  \eqref{eq:round},
       \begin{equation*}
-        |\roundtonearestinfty(x, a_0 + 1)| \leq |x| + |x - \roundtonearestinfty(x, a_0 + 1)| < 2^{a_0 + 1}
+        \bigl|\roundtonearestinfty(x, a_0 + 1)\bigr| \leq |x| + \bigl|x - \roundtonearestinfty(x, a_0 + 1)\bigr| < 2^{a_0 + 1}
       \end{equation*}
       Since $\roundtonearestinfty(x, a_0 + 1) \in 2^{a_0 + 1}\Z$, we then have
       \begin{equation*}
@@ -183,11 +181,11 @@
 
       In the inductive step, we have $|x| < 2^{a_{i + 1}} \leq ... \leq 2^{a_0}$ by  \eqref{eq:a} and by induction $d(x, i)= ... = d(x, 0) = 0$. Thus,
       \begin{equation*}
-        d(x, i + 1) = \roundtonearestinfty(x - \sum\limits_{k = 0}^{i}d(x, k), a_{i + 1} + 1) = \roundtonearestinfty(x, a_{i+1} + 1)
+        d(x, i + 1) = \roundtonearestinfty\bigl(x - \sum\limits_{k = 0}^{i}d(x, k), a_{i + 1} + 1\bigr) = \roundtonearestinfty(x, a_{i+1} + 1)
       \end{equation*}
       Again by the triangle inequality and  \eqref{eq:round},
       \begin{equation*}
-        |\roundtonearestinfty(x, a_{i + 1} + 1)| \leq |x| + |x - \roundtonearestinfty(x, a_{i + 1} + 1)| < 2^{a_{i + 1} + 1}
+        \bigl|\roundtonearestinfty(x, a_{i + 1} + 1)\bigr| \leq |x| + \bigl|x - \roundtonearestinfty(x, a_{i + 1} + 1)\bigr| < 2^{a_{i + 1} + 1}
       \end{equation*}
       Since $\roundtonearestinfty(x, a_{i + 1} + 1) \in 2^{a_{i + 1} + 1}\Z$, we then have
       \begin{equation*}
@@ -206,14 +204,14 @@
       The claim is a simple consequence of Lemma \ref{lem:dzero}.
 
       By  \eqref{eq:a} and \eqref{eq:b}, $|x| < 2^{b_i} = 2^{a_{i - 1}} \leq  ... \leq 2^{a_0}$. Therefore Lemma \ref{lem:dzero} implies $d(x, 0) = ... = d(x, i - 1) = 0$ and we have \begin{equation*}
-        d(x, i) = \roundtonearestinfty(x - \sum\limits_{k = 0}^{i - 1}d(x, k), a_{i} + 1) = \roundtonearestinfty(x, a_{i} + 1)
+        d(x, i) = \roundtonearestinfty\bigl(x - \sum\limits_{k = 0}^{i - 1}d(x, k), a_{i} + 1\bigr) = \roundtonearestinfty(x, a_{i} + 1)
       \end{equation*}
     \end{proof}
 
     Lemma \ref{lem:dzero}, Lemma \ref{lem:dmiddle}, and \eqref{eq:d} can be combined to yield an equivalent definition of $d(x, i)$ for all $i \in \{0, ..., i_{\max}\}$ and $x \in \F$.
 
     \begin{equation}
-      d(x, i) = \begin{cases}0 \text{ if } |x| < 2^{a_i}\\ \roundtonearestinfty(x, a_i + 1) \text{ if } 2^{a_i} \leq |x| < 2^{b_i}\\\roundtonearestinfty(x - \sum\limits_{k=0}^{i - 1}d(x,k), a_i + 1) \text{ if } 2^{b_i} \leq |x| \end{cases}
+      d(x, i) = \begin{cases}0 \text{ if } |x| < 2^{a_i}\\ \roundtonearestinfty(x, a_i + 1) \text{ if } 2^{a_i} \leq |x| < 2^{b_i}\\\roundtonearestinfty\bigl(x - \sum\limits_{k=0}^{i - 1}d(x,k), a_i + 1\bigr) \text{ if } 2^{b_i} \leq |x| \end{cases}
       \label{eq:d2}
     \end{equation}
 
@@ -229,8 +227,8 @@
     \begin{proof}
       We apply  \eqref{eq:round} and \eqref{eq:d2}
       \begin{align*}
-        |x - \sum \limits_{k = 0}^{i}d(x, k)| & = |(x - \sum \limits_{k = 0}^{i - 1}d(x, k)) - d(x, i)| \\
-         & = |(x - \sum \limits_{k = 0}^{i - 1}d(x, k)) - \roundtonearestinfty(x - \sum \limits_{k = 0}^{i - 1}d(x, k), a_{i} + 1)| \leq 2^{a_{i}}
+        \bigl|x - \sum \limits_{k = 0}^{i}d(x, k)\bigr| & = \Bigl|\bigl(x - \sum \limits_{k = 0}^{i - 1}d(x, k)\bigr) - d(x, i)\Bigr| \\
+         & = \Bigl|\bigl(x - \sum \limits_{k = 0}^{i - 1}d(x, k)\bigr) - \roundtonearestinfty\bigl(x - \sum \limits_{k = 0}^{i - 1}d(x, k), a_{i} + 1\bigr)\Bigr| \leq 2^{a_{i}}
       \end{align*}
     \end{proof}
 
@@ -248,17 +246,17 @@
 
       If $i = 0$, then we have
       \begin{equation*}
-        |x - \sum\limits_{k=0}^{i - 1}d(x,k)| = |x| < 2 \cdot 2^{e_{\max}} < 2^{b_0}
+        \bigl|x - \sum\limits_{k=0}^{i - 1}d(x,k)\bigr| = |x| < 2 \cdot 2^{e_{\max}} < 2^{b_0}
       \end{equation*}
       Otherwise, we can apply  \eqref{eq:a} and \eqref{eq:b} to Theorem \ref{thm:dround} to get
       \begin{equation*}
-        |x - \sum \limits_{k = 0}^{i - 1}d(x, k)| \leq 2^{a_{i - 1}} = 2^{b_i}
+        \bigl|x - \sum \limits_{k = 0}^{i - 1}d(x, k)\bigr| \leq 2^{a_{i - 1}} = 2^{b_i}
       \end{equation*}
 
       As $2^{b_i} \in 2^{a_i + 1}\Z$,  \eqref{eq:d} can be used
 
       \begin{equation*}
-        |d(x, i)| = |\roundtonearestinfty(x - \sum\limits_{k=0}^{i - 1}d(x,k), a_i + 1)| \leq 2^{b_i}
+        \bigl|d(x, i)\bigr| = \Bigl|\roundtonearestinfty\bigl(x - \sum\limits_{k=0}^{i - 1}d(x,k), a_i + 1\bigr)\Bigr| \leq 2^{b_i}
       \end{equation*}
     \end{proof}
 
@@ -305,7 +303,7 @@
       \end{equation}
       Therefore, using  \eqref{eq:acc}, the numerical value $\mathcal{Y}$ represented by data stored in a $K$-fold indexed type $Y$ of index $I$ (the sum of $Y$'s accumulators) is
       \begin{equation}
-        \mathcal{Y} = \sum\limits_{j = 0}^{K - 1} \mathcal{Y}_j = \sum\limits_{j = 0}^{K - 1} (({Y_j}_P - 1.5 \epsilon^{-1}2^{a_{I + j}}) + (0.25\epsilon^{-1}2^{a_{I + j}}){Y_j}_C)
+        \mathcal{Y} = \sum\limits_{j = 0}^{K - 1} \mathcal{Y}_j = \sum\limits_{j = 0}^{K - 1} \bigl(({Y_j}_P - 1.5 \epsilon^{-1}2^{a_{I + j}}) + (0.25\epsilon^{-1}2^{a_{I + j}}){Y_j}_C\bigr)
         \label{eq:indexedvalue}
       \end{equation}
       It is worth noting here that because the primary field ${Y_0}_P$ is stored with an exponent of $a_I + p$, it is unnecessary to store the index of an indexed type explicitly. The index can be determined by simply examining the exponent of ${Y_0}_P$, as all $a_I$ are distinct and the mapping between the exponent of ${Y_0}_P$ and the index of $Y$ is bijective.
@@ -368,7 +366,7 @@
 
       As a consequence, we can use Theorem \ref{thm:dround} to say that for any $x \in \F$,
       \begin{equation}
-        |x - \sum\limits_{i = 0}^{i_{\max}} d(x, i)| \leq a_{i_{\max}} \leq 2^{e_{\min} - 1}
+        \bigl|x - \sum\limits_{i = 0}^{i_{\max}} d(x, i)\bigr| \leq a_{i_{\max}} \leq 2^{e_{\min} - 1}
         \label{eq:droundunderflow}
       \end{equation}
 
@@ -424,7 +422,7 @@
         \Require
           \Statex ${Y_0}_P \in (\epsilon^{-1}  2^{a_{I}}, 2  \epsilon^{-1}  2^{a_I})$
         \Function{IIndex}{Y, I}
-          \State $I = \floor{(e_{\max} + p - \exp({Y_0}_P) - W + 1)/W}$
+          \State $I = \lfloor(e_{\max} + p - \exp({Y_0}_P) - W + 1)/W\rfloor$
         \EndFunction
         \Ensure
           \Statex $I$ is the index of $Y$.
@@ -442,7 +440,7 @@
       Given $x \in \F$, calculate $J$ such that $2^{b_J} > |x| \geq 2^{a_J}$.
       \begin{algorithmic}[1]
         \Function{Index}{x, J}
-          \State $J = \floor{(e_{\max} - \exp(x))/W}$
+          \State $J = \lfloor(e_{\max} - \exp(x))/W\rfloor$
         \EndFunction
         \Ensure
           \Statex The bin $(a_{J}, b_{J}]$ satisfies $2^{b_{J}} > |x| \geq 2^{a_{J}}$.
@@ -505,7 +503,7 @@
 
         By Theorem \ref{thm:underflowufp} we have that ${Y_j}_P$ is normalized and therefore $\ulp({Y_j}_P) = 2^{a_{I + j} + 1}$.
         If $r_j$ is normalized, then because $\ulp(r_j) \leq 2^{1 - p}|r_j| \leq 2^{b_{I + j} - (p - 1)} = 2^{a_{I + j} + W - (p - 1)}$, and $W < p - 2$, we have $\ulp(r_j) \leq 2^{a_{I + j} - 3} < \frac{1}{2}\ulp({Y_j}_P)$. (This case is considered in \cite{repsum}).
-      If $r_j$ is denormalized, $\ulp(r_j) = 2^{e_{\min} - p + 1}$ since the unit in the last place of a denormalized number is always equal to $2^{e_{\min} - p + 1}$. Therefore $\ulp(r_j) = 2^{e_{\min} - p + 1} \leq 2^{e_{\min} - p + 1 + ((e_{\max} - e_{\min} + p - 1) \mod W)} = 2^{a_{i_{\max}} - 1} \leq 2^{a_{I + j} - 1} < \frac{1}{2}\ulp({Y_j}_P)$.
+      If $r_j$ is denormalized, $\ulp(r_j) = 2^{e_{\min} - p + 1}$ since the unit in the last place of a denormalized number is always equal to $2^{e_{\min} - p + 1}$. Using \eqref{eq:binmin}, $\ulp(r_j) = 2^{e_{\min} - p + 1} \leq 2^{e_{\min} - p + 1 + ((e_{\max} - e_{\min} + p - 1) \mod W)} = 2^{a_{i_{\max}} - 1} \leq 2^{a_{I + j} - 1} < \frac{1}{2}\ulp({Y_j}_P)$.
 
         Therefore we have $\ulp(r_j) < \frac{1}{2}\ulp({Y_j}_P)$. Thus, Corollary 3 of \cite{repsum} applies and we have that $|r_{j + 1}| \leq \frac{1}{2}\ulp({Y_j}_P) = 2^{a_{I + j}}$. This completes the induction.
 
@@ -525,12 +523,12 @@
         In the inductive step, assume $r_{j + 1} = x - \sum\limits_{i = 0}^{I + j}d(x, i)$. Then by definition,
 
         \begin{equation*}
-          S_{j + 1} - {Y_{j + 1}}_P = \roundtonearestinfty(r_{j + 1}, a_{I + j + 1} + 1) = \roundtonearestinfty(x - \sum\limits_{i = 0}^{I + j}d(x, i), a_{I + j + 1} + 1) = d(x, I + j + 1)
+          S_{j + 1} - {Y_{j + 1}}_P = \roundtonearestinfty(r_{j + 1}, a_{I + j + 1} + 1) = \roundtonearestinfty\bigl(x - \sum\limits_{i = 0}^{I + j}d(x, i), a_{I + j + 1} + 1\bigr) = d(x, I + j + 1)
         \end{equation*}
 
         And by Theorem 3 of \cite{repsum},
         \begin{equation*}
-          r_{j + 2} = r_{j + 1} - (S_{j + 1} - {Y_{j + 1}}_P) = (x - \sum\limits_{i = 0}^{I + j}d(x, i)) - d(x, I + j + 1) = x - \sum\limits_{i = 0}^{I + j + 1}d(x, i)
+          r_{j + 2} = r_{j + 1} - (S_{j + 1} - {Y_{j + 1}}_P) = \bigl(x - \sum\limits_{i = 0}^{I + j}d(x, i)\bigr) - d(x, I + j + 1) = x - \sum\limits_{i = 0}^{I + j + 1}d(x, i)
         \end{equation*}
       \end{proof}
 
@@ -691,13 +689,13 @@
     By Theorem \ref{thm:ddeposit}, the deposit operation extracts and adds the slices of $x_k$ exactly (assuming ${Y_j}_P \in (\epsilon^{-1} 2^{a_{I + j}}, 2  \epsilon^{-1} 2^{a_{I + j}})$ at each step, which will be shown),
 
     \begin{equation*}
-    |\sum \limits_{n = 0}^{k - 1} d(x_k, I + j)| \leq n  2^{b_{I + j}} = n  2^{W}  2^{a_{I + j}}
+    \bigl|\sum \limits_{n = 0}^{k - 1} d(x_k, I + j)\bigr| \leq n  2^{b_{I + j}} = n  2^{W}  2^{a_{I + j}}
     \end{equation*}
 
     If $n \leq 2^{p - W - 2}$, then after the $n^{th}$ deposit
 
     \begin{align*}
-    {Y_j}_P &\in [(1.5  \epsilon^{-1} - n  2^W) 2^{a_{I + j}}, (1.75  \epsilon^{-1} + n  2^W) 2^{a_{I + j}}) \\
+    {Y_j}_P &\in \bigl[(1.5  \epsilon^{-1} - n  2^W) 2^{a_{I + j}}, (1.75  \epsilon^{-1} + n  2^W) 2^{a_{I + j}}\bigr) \\
     &\in [1.25  \epsilon^{-1} 2^{a_{I + j}}, 2  \epsilon^{-1} 2^{a_{I + j}})
     \end{align*}
     \end{proof}
@@ -822,14 +820,14 @@
     Converting an indexed type to a single floating point number is more difficult. There are two sources of error in the final floating point sum produced by ReproBLAS. The first is from the creation of the indexed sum (analyzed in \cite{repsum}). The second is from the conversion from indexed sum to floating point number (evaluation of  \eqref{eq:indexedvalue}).
     Because \cite{repsum} guarantees that all fields in the indexed type are reproducible, as long as the fields are operated upon deterministically, any method to evaluate  \eqref{eq:indexedvalue} accurately and without unnecessary overflow is suitable.
 
-    Assume that $Y$ is the indexed sum of some $x_0, ..., x_{n - 1} \in \F$. If we simply evaluate equation \eqref{eq:indexedvalue} and apply the standard summation error bound given by \cite{higham}, the error in the final answer (the computed floating point approximation of $\mathcal{Y}$) is only bounded by about (using  \eqref{eq:baderrorapprox})
+    Assume that $Y$ is the indexed sum of some $x_0, ..., x_{n - 1} \in \F$. If we simply evaluate \eqref{eq:indexedvalue} and apply the standard summation error bound given by \cite{higham}, the error in the final answer (the computed floating point approximation of $\mathcal{Y}$) is only bounded by about (using  \eqref{eq:baderrorapprox})
     \begin{equation}
-      n (2^{W  (1 - K) - 1} + (2  K - 1)  \epsilon)\max|x_k|
+      n \bigl(2^{W  (1 - K) - 1} + (2  K - 1)  \epsilon\bigr)\max|x_k|
       \label{eq:baderrorapproxdup}
     \end{equation}
     However, if we sum the fields in order of decreasing ``unnormalized'' exponent, the error is bounded by about (using  \eqref{eq:errorapprox})
     \begin{equation}
-      n 2^{W  (1 - K) - 1}\max|x_k|  + 7 \epsilon |\sum\limits_{k = 0}^{n - 1} x_k|
+      n 2^{W  (1 - K) - 1}\max|x_k|  + 7 \epsilon \bigl|\sum\limits_{k = 0}^{n - 1} x_k\bigr|
       \label{eq:errorapproxdup}
     \end{equation}
 
@@ -880,15 +878,12 @@
 
     Combining the above inequalities, we see that the exponents of all the ${\mathcal{Y}'_j}_P$ and ${\mathcal{Y}'_j}_C$ are distinct and can be sorted as follows:
 
-    \begin{equation*}
-    \exp({\mathcal{Y}'_0}_C) > \exp({\mathcal{Y}'_1}_C) > \exp({\mathcal{Y}'_0}_P) > \exp({\mathcal{Y}'_2}_C) > \exp({\mathcal{Y}'_1}_P) > ...
-    \end{equation*}
-    \begin{equation*}
-    ...> \exp({\mathcal{Y}'_j}_C) > \exp({\mathcal{Y}'_{j - 1}}_P) > \exp({\mathcal{Y}'_{j + 1}}_C) > \exp({\mathcal{Y}'_j}_P) > ...
-    \end{equation*}
-    \begin{equation*}
-    ...> \exp({\mathcal{Y}'_{K - 2}}_C) > \exp({\mathcal{Y}'_{K - 3}}_P) > \exp({\mathcal{Y}'_{K - 1}}_C) > \exp({\mathcal{Y}'_{K - 2}}_P) > \exp({\mathcal{Y}'_{K - 1}}_P)
-    \end{equation*}
+    \begin{alignat*}{5}
+    \exp({\mathcal{Y}'_0}_C) &> \exp({\mathcal{Y}'_1}_C) &&> \exp({\mathcal{Y}'_0}_P) &&> \exp({\mathcal{Y}'_2}_C) &&> \exp({\mathcal{Y}'_1}_P) &&> ... \\
+    ... &> \exp({\mathcal{Y}'_j}_C) &&> \exp({\mathcal{Y}'_{j - 1}}_P) &&> \exp({\mathcal{Y}'_{j + 1}}_C) &&> \exp({\mathcal{Y}'_j}_P) &&> ... \\
+    ... &> \exp({\mathcal{Y}'_{K - 2}}_C) &&> \exp({\mathcal{Y}'_{K - 3}}_P) &&> \exp({\mathcal{Y}'_{K - 1}}_C) &&> \exp({\mathcal{Y}'_{K - 2}}_P) &&> \exp({\mathcal{Y}'_{K - 1}}_P)
+    \end{alignat*}
+
 
     These unnormalized floating point numbers may, for convenience of notation, be referred to in decreasing order of unnormalized exponent as $\gamma'_0, ..., \gamma'_{2  K - 1}$.
 
@@ -900,9 +895,9 @@
 
     $\gamma_k$ denotes the normalized representations of the $\gamma'_k$, and it should be noted that $\gamma_k = \gamma'_k$ as real numbers and that $\exp(\gamma_k) \leq \exp(\gamma'_k)$.
 
-    It should be noted that if $\gamma_k$ is a primary field, then either $\gamma_{k + 1}$ or $\gamma_{k + 2}$ is a primary field. If $\gamma_k$ is a carry field, then either $\gamma_{k + 1}$ or $\gamma_{k + 2}$ is a carry field (with the exception of $\gamma_{2  K - 3}$, but in this case we have $\exp(\gamma_{2  K - 3}) = a_{I + K - 1} + 2  p - 3 \geq a_{I + K - 1} + p + \ceil{\frac{p + 1}{2}} - 1 = \exp(\gamma_{2  K - 1}) + \ceil{\frac{p + 1}{2}}$). Therefore, as $2  W > p + 1$, for all $k \in \{0, ..., 2  K - 1\}$
+    It should be noted that if $\gamma_k$ is a primary field, then either $\gamma_{k + 1}$ or $\gamma_{k + 2}$ is a primary field. If $\gamma_k$ is a carry field, then either $\gamma_{k + 1}$ or $\gamma_{k + 2}$ is a carry field (with the exception of $\gamma_{2  K - 3}$, but in this case we have $\exp(\gamma_{2  K - 3}) = a_{I + K - 1} + 2  p - 3 \geq a_{I + K - 1} + p + \lceil\frac{p + 1}{2}\rceil - 1 = \exp(\gamma_{2  K - 1}) + \lceil\frac{p + 1}{2}\rceil$). Therefore, as $2  W > p + 1$, for all $k \in \{0, ..., 2  K - 1\}$
     \begin{equation}
-      \exp(\gamma_k') \geq \exp(\gamma_{k + 2}') + W \geq \exp(\gamma_{k + 2}') + \ceil{\frac{p + 1}{2}}
+      \exp(\gamma_k') \geq \exp(\gamma_{k + 2}') + W \geq \exp(\gamma_{k + 2}') + \left\lceil\frac{p + 1}{2}\right\rceil
       \label{eq:gammadecreasesfast}
     \end{equation}
 
@@ -990,13 +985,13 @@
       \begin{enumerate}
         \item $f_k = f'_k$ for all $k \in \{0, ..., n - 1\}$
         \item $\exp(f'_0) > ... > \exp(f'_{n - 1})$
-        \item $\exp(f'_k) \geq \exp(f'_{k + 2}) + \ceil{\frac{p + 1}{2}}$ for all $k \in \{0, ..., n - 3\}$
+        \item $\exp(f'_k) \geq \exp(f'_{k + 2}) + \lceil\frac{p + 1}{2}\rceil$ for all $k \in \{0, ..., n - 3\}$
       \end{enumerate}
       \label{thm:mysortsum}
       Let $S_0 = \overline{S_0} = f_0$, $S_k = S_{k - 1} + f_k$, and $\overline{S_k} = \fl(\overline{S_{k - 1}} + f_k)$ so that $S_{n - 1} = \sum \limits_{k = 0}^{n - 1} f_k$.
       Then we have
       \begin{equation*}
-        |S_{n - 1} - \overline{S_{n - 1}}| < \frac{7\epsilon}{1 - 6\sqrt\epsilon}|\sum\limits_{k = 0}^{n - 1}f_k| \approx 7 \epsilon |\sum\limits_{k = 0}^{n - 1}f_k|
+        \left|S_{n - 1} - \overline{S_{n - 1}}\right| < \frac{7\epsilon}{1 - 6\sqrt\epsilon}\bigl|\sum\limits_{k = 0}^{n - 1}f_k\bigr| \approx 7 \epsilon \bigl|\sum\limits_{k = 0}^{n - 1}f_k\bigr|
       \end{equation*}
     \end{thm}
     \end{samepage}
@@ -1023,46 +1018,44 @@
         \label{eq:smpbound}
       \end{equation}
 
-      Because $\exp(f_m') \geq \exp(f_{m + 2}') + \ceil{\frac{p + 1}{2}}$ and $\exp(f_0') > ... > \exp(f_{n - 1}')$,
-      \begin{equation*}
-        |\sum \limits_{k = m + 2}^{n - 1} f_k| \leq \sum \limits_{k = m + 2}^{n - 1} |f_k| < \sum \limits_{k = m + 2}^{n - 1} 2 \cdot 2^{\exp(f_k')} \leq \sum \limits_{k = m + 2}^{n - 1} 2 \cdot 2^{\exp(f_m') - \ceil{\frac{p + 1}{2}} - (m + 2 - k)}
-      \end{equation*}
-      \begin{equation}
-        < \sum \limits_{k = 0}^{\infty} (2 \sqrt{\epsilon})2^{\exp(f_m') - k} = (4\sqrt\epsilon)2^{\exp(f_m')}
+      Because $\exp(f_m') \geq \exp(f_{m + 2}') + \lceil\frac{p + 1}{2}\rceil$ and $\exp(f_0') > ... > \exp(f_{n - 1}')$,
+      \begin{align}
+        \bigl|\sum \limits_{k = m + 2}^{n - 1} f_k\bigr| &\leq \sum \limits_{k = m + 2}^{n - 1} |f_k| < \sum \limits_{k = m + 2}^{n - 1} 2 \cdot 2^{\exp(f_k')} \leq \sum \limits_{k = m + 2}^{n - 1} 2 \cdot 2^{\exp(f_m') - \left\lceil\frac{p + 1}{2}\right\rceil - (m + 2 - k)} \nonumber \\
+        &< \sum \limits_{k = 0}^{\infty} \left(2 \sqrt{\epsilon}\right)2^{\exp(f_m') - k} = \left(4\sqrt\epsilon\right)2^{\exp(f_m')}
         \label{eq:smppbound}
-      \end{equation}
+      \end{align}
 
       We can combine  \eqref{eq:smpbound} and \eqref{eq:smppbound} to obtain
 
       \begin{equation}
-        |\sum\limits_{k = m + 1}^{n - 1} f_k| \leq \sum\limits_{k = m + 1}^{n - 1} |f_k| < 2^{\exp{f_m'}} + (4 \sqrt{\epsilon}) 2^{\exp(f_m')} = (1 + 4 \sqrt\epsilon )2^{\exp(f_m')}
+        \bigl|\sum\limits_{k = m + 1}^{n - 1} f_k\bigr| \leq \sum\limits_{k = m + 1}^{n - 1} |f_k| < 2^{\exp{f_m'}} + \left(4 \sqrt{\epsilon}\right) 2^{\exp(f_m')} = \left(1 + 4 \sqrt\epsilon \right)2^{\exp(f_m')}
         \label{eq:smsbound}
       \end{equation}
 
       By  \eqref{eq:smbound} and \eqref{eq:smsbound},
 
       \begin{align}
-        |S_{n-1}| & = |\sum\limits_{k = 0}^{n - 1} f_k| \geq |\sum\limits_{k = 0}^{m} f_k| - |\sum\limits_{k = m + 1}^{n - 1} f_k| = |S_m| - |\sum\limits_{k = m + 1}^{n - 1} f_k| \nonumber \\
-        & \geq 2 \cdot 2^{\exp(f_{m}')} - (1 + 4 \sqrt\epsilon) 2^{\exp(f_m')} = (1 - 4 \sqrt\epsilon) 2^{\exp(f_m')}
+        |S_{n-1}| & = \bigl|\sum\limits_{k = 0}^{n - 1} f_k\bigr| \geq \bigl|\sum\limits_{k = 0}^{m} f_k\bigr| - \bigl|\sum\limits_{k = m + 1}^{n - 1} f_k\bigr| = |S_m| - \bigl|\sum\limits_{k = m + 1}^{n - 1} f_k\bigr| \nonumber \\
+        & \geq 2 \cdot 2^{\exp(f_{m}')} - \left(1 + 4 \sqrt\epsilon\right) 2^{\exp(f_m')} = \left(1 - 4 \sqrt\epsilon\right) 2^{\exp(f_m')}
         \label{eq:sbound}
       \end{align}
 
       By  \eqref{eq:sbound} and \eqref{eq:smppbound},
       \begin{equation}
-        |\sum \limits_{k = m + 2}^{n - 1} f_k| < (4 \sqrt{\epsilon}) 2^{\exp(f_m')} \leq \frac{4 \sqrt\epsilon}{1 - 4  \sqrt\epsilon}|\sum\limits_{k = 0}^{n - 1}f_k|
+        \bigl|\sum \limits_{k = m + 2}^{n - 1} f_k\bigr| < \left(4 \sqrt{\epsilon}\right) 2^{\exp(f_m')} \leq \frac{4 \sqrt\epsilon}{1 - 4  \sqrt\epsilon}\bigl|\sum\limits_{k = 0}^{n - 1}f_k\bigr|
         \label{eq:smpprelsbound}
       \end{equation}
 
       By  \eqref{eq:sbound} and \eqref{eq:smsbound},
       \begin{equation}
-        |\sum\limits_{k = m + 1}^{n - 1}f_k| \leq \sum\limits_{k = m + 1}^{n - 1}|f_k| \leq (1 + 4  \sqrt\epsilon)2^{\exp(f_m')}\leq \frac{1 + 4  \sqrt\epsilon}{1 - 4  \sqrt\epsilon}|\sum\limits_{k = 0}^{n - 1}f_k|
+        \bigl|\sum\limits_{k = m + 1}^{n - 1}f_k\bigr| \leq \sum\limits_{k = m + 1}^{n - 1}|f_k| \leq \left(1 + 4  \sqrt\epsilon\right)2^{\exp(f_m')}\leq \frac{1 + 4  \sqrt\epsilon}{1 - 4  \sqrt\epsilon}\bigl|\sum\limits_{k = 0}^{n - 1}f_k\bigr|
         \label{eq:smsrelsbound}
       \end{equation}
 
       And by \eqref{eq:sbound} and \eqref{eq:smsrelsbound},
 
       \begin{equation}
-        |S_m| \leq |\sum\limits_{k = 0}^{n - 1}f_k| + |\sum\limits_{k = m + 1}^{n - 1} f_k| \leq (1 + \frac{1 + 4  \sqrt\epsilon}{1 - 4  \sqrt\epsilon})|\sum\limits_{k = 0}^{n - 1}f_k| \leq \frac{2}{1 - 4  \sqrt\epsilon}|\sum\limits_{k = 0}^{n - 1}f_k|
+        |S_m| \leq \bigl|\sum\limits_{k = 0}^{n - 1}f_k\bigr| + \bigl|\sum\limits_{k = m + 1}^{n - 1} f_k\bigr| \leq \left(1 + \frac{1 + 4  \sqrt\epsilon}{1 - 4  \sqrt\epsilon}\right)\bigl|\sum\limits_{k = 0}^{n - 1}f_k\bigr| \leq \frac{2}{1 - 4  \sqrt\epsilon}\bigl|\sum\limits_{k = 0}^{n - 1}f_k\bigr|
         \label{eq:smrelsbound}
       \end{equation}
 
@@ -1071,41 +1064,41 @@
     $\overline{S_m}$, $f_{m+1}, \ldots, f_{m+4}$ using the standard recursive summation technique.
     According to \cite[Equation 1.2, 2.4]{higham}
     \begin{align*}
-        |\overline{S_m} + \sum_{k=m+1}^{m+4}f_k - \overline{S_{m+4}}|
-        & \leq \frac{4\epsilon}{1-4\epsilon} |\overline{S_m} + f_{m+1}| + \frac{3\epsilon}{1-3\epsilon} \sum_{k=m+2}^{m+4}|f_k| \\
-        & \leq \frac{4\epsilon}{1-4\epsilon} (|\overline{S_m} - S_m| + |S_m + f_{m+1}|)
+        \bigl|\overline{S_m} + \sum_{k=m+1}^{m+4}f_k - \overline{S_{m+4}}\bigr|
+        & \leq \frac{4\epsilon}{1-4\epsilon} \left|\overline{S_m} + f_{m+1}\right| + \frac{3\epsilon}{1-3\epsilon} \sum_{k=m+2}^{m+4}|f_k| \\
+        & \leq \frac{4\epsilon}{1-4\epsilon} \bigl(\left|\overline{S_m} - S_m\right| + |S_m + f_{m+1}|\bigr)
             + \frac{3\epsilon}{1-3\epsilon} \sum_{k=m+2}^{n-1}|f_k|.
     \end{align*}
 
     Since $S_{n-1} = S_m + f_{m+1} + \sum_{k=m+2}^{n-1} f_k$, we have
-    \[
+    \begin{equation*}
         |S_m + f_{m+1}|
-        = |S_{n-1} - \sum_{k=m+2}^{n-1}f_k|
-        \leq |S_{n-1}| + \sum_{k=m+2}^{n-1} |f_k| 
-    \]
+        = \bigl|S_{n-1} - \sum_{k=m+2}^{n-1}f_k\bigr|
+        \leq |S_{n-1}| + \sum_{k=m+2}^{n-1} |f_k|
+    \end{equation*}
     Therefore
-    \[
-        |\overline{S_m} + \sum_{k=m+1}^{m+4}f_k - \overline{S_{m+4}}|
-        \leq \frac{4\epsilon}{1-4\epsilon} |S_m - \overline{S_m}|
+    \begin{equation*}
+        \bigl|\overline{S_m} + \sum_{k=m+1}^{m+4}f_k - \overline{S_{m+4}}\bigr|
+        \leq \frac{4\epsilon}{1-4\epsilon} \left|S_m - \overline{S_m}\right|
         + \frac{4\epsilon}{1-4\epsilon} |S_{n-1}|
-        + \frac{7\epsilon}{1-4\epsilon} \sum_{k=m+2}^{n-1}|f_k|. 
-    \]
+        + \frac{7\epsilon}{1-4\epsilon} \sum_{k=m+2}^{n-1}|f_k|.
+    \end{equation*}
 
     Using the Triangle Inequality we have
     \begin{align*}
-    |S_{m+4} - \overline{S_{m+4}}| 
-        & = |S_m + \sum_{k=m+1}^{m+4}f_k - \overline{S_{m+4}}| 
-        \leq |S_m - \overline{S_m} | + |\overline{S_m} + \sum_{k=m+1}^{m+4}f_k - \overline{S_{m+4}} | \\
-        & \leq (1 + \frac{4\epsilon}{1-4\epsilon}) |S_m - \overline{S_m}| + \frac{4\epsilon}{1-4\epsilon} |S_{n-1}|
+    \left|S_{m+4} - \overline{S_{m+4}}\right|
+        & = \bigl|S_m + \sum_{k=m+1}^{m+4}f_k - \overline{S_{m+4}}\bigr|
+        \leq |S_m - \overline{S_m} | + \bigl|\overline{S_m} + \sum_{k=m+1}^{m+4}f_k - \overline{S_{m+4}} \bigr| \\
+        & \leq \left(1 + \frac{4\epsilon}{1-4\epsilon}\right) \left|S_m - \overline{S_m}\right| + \frac{4\epsilon}{1-4\epsilon} |S_{n-1}|
                 + \frac{7\epsilon}{1-4\epsilon} \sum_{k=m+2}^{n-1}|f_k| \\
         & \leq \frac{1}{1-4\epsilon} \epsilon |S_m| + \frac{4\epsilon}{1-4\epsilon} |S_{n-1}|
                 + \frac{7\epsilon}{1-4\epsilon} \sum_{k=m+2}^{n-1}|f_k| \\
         & \leq \frac{\epsilon}{1-4\epsilon} \left(|S_m| + 4 |S_{n-1}|
-                + 7 \sum_{k=m+2}^{n-1}|f_k|\right). 
+                + 7 \sum_{k=m+2}^{n-1}|f_k|\right).
     \end{align*}
     and by \eqref{eq:smrelsbound} and \eqref{eq:smpprelsbound},
     \begin{align}
-    |S_{m+4} - \overline{S_{m+4}}| 
+    \left|S_{m+4} - \overline{S_{m+4}}\right|
         & \leq \frac{\epsilon}{1-4\epsilon} 
             \left(
                 \frac{2}{1-4\sqrt{\epsilon}} |S_{n-1}|
@@ -1118,51 +1111,9 @@
         \label{eq:smfiveerror}
     \end{align}
 
-
-\begin{comment}
-      Let $T_0 = \overline{T_0} = \overline{S_m}$, $T_k = T_{k - 1} + f_{k + m - 1}$, and $\overline{T_k} = \fl(\overline{T_{k - 1}} + f_{k + m - 1})$ so that $T_{n - 1 - m} = \overline{S_m} + \sum\limits_{k = m + 1}^{n - 1}f_k$ and $\overline{T_{n - 1 - m}} = \overline{S_{n - 1}}$.
-
-      \begin{equation*}
-        |S_{m + 4} - \overline{S_{m + 4}}| = |S_{m + 4} - \overline{T_{4}}| = |S_{m + 4} - S_m + S_m - \overline{S_m} + \overline{S_m} - \overline{T_4}|
-      \end{equation*}
-      \begin{equation*}
-        = |\sum\limits_{k = m + 1}^{m + 4} f_k + S_m - \overline{S_m} + \overline{S_m} - \overline{T_4}| = |S_m - \overline{S_m} + \overline{S_m} + \sum\limits_{k = m + 1}^{m + 4} f_k - \overline{T_4}|
-      \end{equation*}
-      \begin{equation*}
-        = |S_m - \overline{S_m} + T_4 - \overline{T_4}| \leq |S_m - \overline{S_m}| + |T_4 - \overline{T_4}|
-      \end{equation*}
-       and by Equations 1.2 and 2.4 from \cite{higham},
-      \begin{equation*}
-        |S_{m + 4} - \overline{S_{m + 4}}| \leq |S_m - \overline{S_m}|  + (\frac{4\epsilon}{1 - 4 \epsilon})|T_0 + f_{m + 1}| + (\frac{3\epsilon}{1 - 3 \epsilon})\sum\limits_{k = m + 2}^{m + 4}|f_k|
-      \end{equation*}
-      \begin{equation*}
-        \leq |S_m - \overline{S_m}| + (\frac{4\epsilon}{1 - 4 \epsilon})|\overline{S_m} - S_m + S_m + f_{m + 1}| + (\frac{3\epsilon}{1 - 3 \epsilon})\sum\limits_{k = m + 2}^{m + 4}|f_k|
-      \end{equation*}
-      \begin{equation*}
-        \leq (\frac{1}{1 - 4\epsilon})|S_m - \overline{S_m}| + (\frac{4\epsilon}{1 - 4 \epsilon})|S_m + f_{m + 1}| + (\frac{3\epsilon}{1 - 3 \epsilon})\sum\limits_{k = m + 2}^{m + 4}|f_k|
-      \end{equation*}
-      \begin{equation*}
-        \leq (\frac{1}{1 - 4\epsilon})|S_m - \overline{S_m}| +(\frac{4\epsilon}{1 - 4 \epsilon})(|\sum\limits_{k = 0}^{n - 1}f_k| + |\sum\limits_{k = m + 2}^{n - 1}f_k|) + (\frac{3\epsilon}{1 - 4 \epsilon})\sum\limits_{k = m + 2}^{n - 1}|f_k|
-      \end{equation*}
-      \begin{equation*}
-        \leq (\frac{1}{1 - 4\epsilon})|S_m - \overline{S_m}| +(\frac{4\epsilon}{1 - 4 \epsilon})|\sum\limits_{k = 0}^{n - 1}f_k| + (\frac{7\epsilon}{1 - 4 \epsilon})\sum\limits_{k = m + 2}^{n - 1}|f_k|
-      \end{equation*}
-      \begin{equation*}
-        \leq (\frac{1}{1 - 4\epsilon})(\epsilon|S_m| + 4\epsilon|\sum\limits_{k = 0}^{n - 1}f_k| + 7\epsilon\sum\limits_{k = m + 2}^{n - 1}|f_k|)
-      \end{equation*}
-      and by \eqref{eq:smrelsbound} and \eqref{eq:smpprelsbound},
-      \begin{equation*}
-        |S_{m + 4} - \overline{S_{m + 4}}| \leq (\frac{1}{1 - 4\epsilon})(\frac{2\epsilon}{1 - 4\sqrt\epsilon}|\sum\limits_{k = 0}^{n - 1}f_k| + \frac{4\epsilon - 16\epsilon\sqrt\epsilon}{1 - 4\sqrt\epsilon}|\sum\limits_{k = 0}^{n - 1}f_k| + \frac{28\epsilon\sqrt\epsilon}{1 - 4\sqrt\epsilon}|\sum\limits_{k = 0}^{n - 1}f_k|)
-      \end{equation*}
-      \begin{equation}
-        = \frac{6 + 12\sqrt\epsilon}{(1 - 4\epsilon)(1 - 4\sqrt\epsilon)}\epsilon|\sum\limits_{k = 0}^{n - 1}f_k| = \frac{6}{(1 - 2\sqrt\epsilon)(1 - 4\sqrt\epsilon)}\epsilon|\sum\limits_{k = 0}^{n - 1}f_k|
-        \label{eq:smfiveerror}
-      \end{equation}
-\end{comment}
-
       Notice that
         \begin{equation*}
-          \exp(f_m') \geq \exp(f_{m + 2}') + \ceil{\frac{p+ 1}{2}} \geq \exp(f_{m + 4}') + 2  \ceil{\frac{p + 1}{2}} > \exp(f_{m + 5}')+ 2  \ceil{\frac{p+ 1}{2}}
+          \exp(f_m') \geq \exp(f_{m + 2}') + \left\lceil\frac{p+ 1}{2}\right\rceil \geq \exp(f_{m + 4}') + 2  \left\lceil\frac{p + 1}{2}\right\rceil > \exp(f_{m + 5}')+ 2  \left\lceil\frac{p+ 1}{2}\right\rceil
         \end{equation*}
       Therefore,
         \begin{equation}
@@ -1172,35 +1123,28 @@
 
       Because $\exp(f_0') > ... > \exp(f_{n - 1}')$, \eqref{eq:fmfiveexp} yields
         \begin{equation}
-          |\sum\limits_{k = m + 5}^{n - 1} f_k| \leq \sum\limits_{k = m + 5}^{n - 1} |f_k| < \sum\limits_{k = m + 5}^{n - 1} 2 \cdot 2^{\exp(f_m') - p - 2 - (k - (m + 5))} < \sum\limits_{k = 0}^{\infty} 2^{\exp(f_m') - p - 1 - k} = \epsilon 2^{\exp(f_m')}
+          \bigl|\sum\limits_{k = m + 5}^{n - 1} f_k\bigr| \leq \sum\limits_{k = m + 5}^{n - 1} |f_k| < \sum\limits_{k = m + 5}^{n - 1} 2 \cdot 2^{\exp(f_m') - p - 2 - (k - (m + 5))} < \sum\limits_{k = 0}^{\infty} 2^{\exp(f_m') - p - 1 - k} = \epsilon 2^{\exp(f_m')}
           \label{eq:boundfmfivesum}
         \end{equation}
 
       Using  \eqref{eq:sbound} and \eqref{eq:boundfmfivesum},
         \begin{equation}
-          |\sum\limits_{k = m + 5}^{n - 1} f_k| \leq \sum\limits_{k = m + 5}^{n - 1} |f_k| < \frac{\epsilon}{1 - 4  \sqrt\epsilon}|\sum\limits_{k = 0}^{n - 1} f_k|
+          \bigl|\sum\limits_{k = m + 5}^{n - 1} f_k\bigr| \leq \sum\limits_{k = m + 5}^{n - 1} |f_k| < \frac{\epsilon}{1 - 4  \sqrt\epsilon}\bigl|\sum\limits_{k = 0}^{n - 1} f_k\bigr|
           \label{eq:relsboundfmfivesum}
         \end{equation}
 
       By  \eqref{eq:sbound}, \eqref{eq:smfiveerror}, and \eqref{eq:boundfmfivesum}
-        \begin{equation*}
-          |\overline{S_{m + 4}}| \geq |S_{m + 4}| - |S_{m + 4} - \overline{S_m + 4}| \geq (|\sum\limits_{k = 0}^{n - 1} f_k| - |\sum\limits_{k = m + 5}^{n - 1}f_k|) - |S_{m + 4} - \overline{S_m + 4}|
-        \end{equation*}
-        \begin{equation*}
-           = (|\sum\limits_{k = 0}^{n - 1} f_k| - |S_{m + 4} - \overline{S_m + 4}|) - |\sum\limits_{k = m + 5}^{n - 1}f_k|
-        \end{equation*}
-        \begin{equation*}
-           > (1 - \frac{6\epsilon}{1 - 6\sqrt\epsilon})|\sum\limits_{k = 0}^{n - 1} f_k| - |\sum\limits_{k = m + 5}^{n - 1}f_k|
-        \end{equation*}
-        \begin{equation*}
-           > (1 - \frac{6\epsilon}{1 - 6\sqrt\epsilon})(1 - 4 \sqrt\epsilon)2^{\exp(f_m')} - \epsilon2^{\exp(f_m')}
-        \end{equation*}
-        \begin{equation}
-          = (1 - 4\sqrt\epsilon - \frac{6\epsilon(1 - 4\sqrt\epsilon)}{1 - 2\sqrt\epsilon} - \epsilon) 2^{\exp(f_m')}
-        \end{equation}
+        \begin{align*}
+          \left|\overline{S_{m + 4}}\right| &\geq |S_{m + 4}| - \left|S_{m + 4} - \overline{S_m + 4}\right| \nonumber \\
+          &\geq \Bigl(\bigl|\sum\limits_{k = 0}^{n - 1} f_k\bigr| - \bigl|\sum\limits_{k = m + 5}^{n - 1}f_k\bigr|\Bigr) - \left|S_{m + 4} - \overline{S_m + 4}\right| \nonumber \\
+          &= \Bigl(\bigl|\sum\limits_{k = 0}^{n - 1} f_k\bigr| - \left|S_{m + 4} - \overline{S_m + 4}\right|\Bigr) - \bigl|\sum\limits_{k = m + 5}^{n - 1}f_k\bigr| \nonumber \\
+          &> \left(1 - \frac{6\epsilon}{1 - 6\sqrt\epsilon}\right)\bigl|\sum\limits_{k = 0}^{n - 1} f_k\bigr| - \bigl|\sum\limits_{k = m + 5}^{n - 1}f_k\bigr| \nonumber \\
+          &> \left(1 - \frac{6\epsilon}{1 - 6\sqrt\epsilon}\right)\left(1 - 4 \sqrt\epsilon\right)2^{\exp(f_m')} - \epsilon2^{\exp(f_m')} \nonumber \\
+          &= \left(1 - 4\sqrt\epsilon - \frac{6\epsilon(1 - 4\sqrt\epsilon)}{1 - 2\sqrt\epsilon} - \epsilon\right) 2^{\exp(f_m')}
+        \end{align*}
         which, assuming $\epsilon << 1$, can be simplified to
         \begin{equation}
-          |\overline{S_{m + 4}}| > 2^{\exp(f_m') - 1}
+          \left|\overline{S_{m + 4}}\right| > 2^{\exp(f_m') - 1}
           \label{eq:minsmfoursimple}
         \end{equation}
 
@@ -1219,16 +1163,11 @@
 
         With  \eqref{eq:smfourcontinues}, \eqref{eq:relsboundfmfivesum} and \eqref{eq:smfiveerror}
 
-        \begin{equation*}
-          |S_{n - 1} - \overline{S_{n - 1}}| = |S_{n - 1} - \overline{S_{m + 4}}| \leq |S_{m + 4} - \overline{S_{m + 4}}| + |\sum\limits_{k = m + 5}^{n - 1}f_k|
-        \end{equation*}
-
-        \begin{equation*}
-          < \frac{6\epsilon}{1 - 6\sqrt\epsilon}|\sum\limits_{k = 0}^{n - 1}f_k| + \frac{\epsilon}{1 - 4\sqrt\epsilon}|\sum\limits_{k = 0}^{n - 1} f_k|
-        \end{equation*}
-        \begin{equation*}
-          < \frac{7\epsilon}{1 - 6\sqrt\epsilon}|\sum\limits_{k = 0}^{n - 1}f_k|
-        \end{equation*}
+        \begin{align*}
+          \left|S_{n - 1} - \overline{S_{n - 1}}\right| &= \left|S_{n - 1} - \overline{S_{m + 4}}\right| \leq \left|S_{m + 4} - \overline{S_{m + 4}}\right| + \bigl|\sum\limits_{k = m + 5}^{n - 1}f_k\bigr| \\
+          &< \frac{6\epsilon}{1 - 6\sqrt\epsilon}\bigl|\sum\limits_{k = 0}^{n - 1}f_k\bigr| + \frac{\epsilon}{1 - 4\sqrt\epsilon}\bigl|\sum\limits_{k = 0}^{n - 1} f_k\bigr| \\
+          &< \frac{7\epsilon}{1 - 6\sqrt\epsilon}\bigl|\sum\limits_{k = 0}^{n - 1}f_k\bigr|
+        \end{align*}
     \end{proof}
 
     Consider the $K$-fold indexed sum $Y$ of floating point numbers $x_0, ..., x_{n - 1}$. We denote the true sum $\sum \limits_{k = 0}^{n - 1} x_k$ by $T$, the true value of the indexed sum as obtained using  \eqref{eq:indexedvalue} by $\mathcal{Y}$, and the floating point approximation of $\mathcal{Y}$ obtained using an appropriate algorithm from Section \ref{sec:primitiveops_convert} by $\overline{\mathcal{Y}}$.
@@ -1246,118 +1185,85 @@
 
     \begin{equation}
       \label{eq:repbound}
-      |T - \mathcal{Y}| < n \cdot \max(2^{W  (1 - K) - 1} \max|x_k|, 2^{e_{\min} - 1})
+      |T - \mathcal{Y}| < n \cdot \max\bigl(2^{W  (1 - K) - 1} \max|x_k|, 2^{e_{\min} - 1}\bigr)
     \end{equation}
 
     By  \eqref{eq:gammadecreases} and \eqref{eq:gammadecreasesfast}, Theorem \ref{thm:mysortsum} applies to yield
 
     \begin{equation*}
-      |\mathcal{Y} - \overline{\mathcal{Y}}| < \frac{7\epsilon}{1 - 6\sqrt\epsilon}|\mathcal{Y}|
+      \left|\mathcal{Y} - \overline{\mathcal{Y}}\right| < \frac{7\epsilon}{1 - 6\sqrt\epsilon}|\mathcal{Y}|
     \end{equation*}
 
     By the triangle inequality
 
     \begin{equation*}
-      |\mathcal{Y}| \leq |T| + |T - \mathcal{Y}| < n \cdot \max(2^{W  (1 - K) - 1}  \max|x_k|, 2^{e_{\min} - 1}) + |T|
+      |\mathcal{Y}| \leq |T| + |T - \mathcal{Y}| < n \cdot \max\bigl(2^{W  (1 - K) - 1}  \max|x_k|, 2^{e_{\min} - 1}\bigr) + |T|
     \end{equation*}
 
     The above results can be used to obtain  \eqref{eq:error}, the absolute error of the floating point approximation of an indexed sum $|T - \overline{\mathcal{Y}}|$.
 
-    \begin{equation*}
-      |T - \overline{\mathcal{Y}}| \leq |T - \mathcal{Y}| + |\mathcal{Y} - \overline{\mathcal{Y}}|
-    \end{equation*}
-
-    \begin{equation*}
-      < n \cdot \max(2^{W  (1 - K) - 1}  \max|x_k|, 2^{e_{\min} - 1}) + \frac{7\epsilon}{1 - 6\sqrt\epsilon} |\mathcal{Y}|
-    \end{equation*}
-
-    \begin{equation*}
-      < n \cdot \max(2^{W  (1 - K) - 1}  \max|x_k|, 2^{e_{\min} - 1})
-    \end{equation*}
-    \begin{equation*}
-      + \frac{7\epsilon}{1 - 6\sqrt\epsilon} (n \cdot \max(2^{W  (1 - K) - 1}  \max|x_k|, 2^{e_{\min} - 1}) + |T|)
-    \end{equation*}
-
-    \begin{equation}
-      < (1 + \frac{7\epsilon}{1 - 6\sqrt\epsilon}) (n \cdot \max(2^{W (1 - K) - 1} \max|x_k|, 2^{e_{\min} - 1})) + \frac{7\epsilon}{1 - 6\sqrt\epsilon} |T|
+    \begin{align}
+      \left|T - \overline{\mathcal{Y}}\right| &\leq |T - \mathcal{Y}| + \left|\mathcal{Y} - \overline{\mathcal{Y}}\right| \nonumber \\
+      &< n \cdot \max\bigl(2^{W  (1 - K) - 1}  \max|x_k|, 2^{e_{\min} - 1}\bigr) + \frac{7\epsilon}{1 - 6\sqrt\epsilon} |\mathcal{Y}| \nonumber \\
+      &< n \cdot \max\bigl(2^{W  (1 - K) - 1}  \max|x_k|, 2^{e_{\min} - 1}\bigr) \nonumber \\
+      &+ \frac{7\epsilon}{1 - 6\sqrt\epsilon} \Bigl(n \cdot \max\bigl(2^{W  (1 - K) - 1}  \max|x_k|, 2^{e_{\min} - 1}\bigr) + |T|\Bigr) \nonumber \\
+      &< \left(1 + \frac{7\epsilon}{1 - 6\sqrt\epsilon}\right) \Bigl(n \cdot \max\bigl(2^{W (1 - K) - 1} \max|x_k|, 2^{e_{\min} - 1}\bigr)\Bigr) + \frac{7\epsilon}{1 - 6\sqrt\epsilon} |T|
       \label{eq:error}
-    \end{equation}
+    \end{align}
 
     Equation \eqref{eq:error} can be approximated as \eqref{eq:errorapprox}.
 
-    \begin{equation*}
-      |T - \overline{\mathcal{Y}}| < (1 + \frac{7\epsilon}{1 - 6\sqrt\epsilon}) (n \cdot \max(2^{W (1 - K) - 1} \max|x_k|, 2^{e_{\min} - 1})) + \frac{7\epsilon}{1 - 6\sqrt\epsilon}|T|
-    \end{equation*}
-
-    \begin{equation}
-    \approx n 2^{W  (1 - K) - 1} \max|x_k| + 7  \epsilon |T|
+    \begin{align}
+      \left|T - \overline{\mathcal{Y}}\right| &< \left(1 + \frac{7\epsilon}{1 - 6\sqrt\epsilon}\right) \Bigl(n \cdot \max\bigl(2^{W (1 - K) - 1} \max|x_k|, 2^{e_{\min} - 1}\bigr)\Bigr) + \frac{7\epsilon}{1 - 6\sqrt\epsilon} |T| \nonumber \\
+    &\approx n 2^{W  (1 - K) - 1} \max|x_k| + 7  \epsilon |T|
       \label{eq:errorapprox}
-    \end{equation}
+    \end{align}
 
     A perhaps more useful mathematical construction is the error expressed relative to the result $\overline{\mathcal{Y}}$, and not the theoretical sum $T$. Again by the triangle inequality,
 
     \begin{equation*}
-      |\mathcal{Y}| \leq |\overline{\mathcal{Y}}| + |\mathcal{Y} - \overline{\mathcal{Y}}|
+      |\mathcal{Y}| \leq \left|\overline{\mathcal{Y}}\right| + \left|\mathcal{Y} - \overline{\mathcal{Y}}\right|
     \end{equation*}
 
     Applying the bound on $|\mathcal{Y} - \overline{\mathcal{Y}}|$ yields
 
     \begin{equation*}
-      |\mathcal{Y}| < |\overline{\mathcal{Y}}| + \frac{7\epsilon}{1 - 6\sqrt\epsilon}|\mathcal{Y}|
+      |\mathcal{Y}| < \left|\overline{\mathcal{Y}}\right| + \frac{7\epsilon}{1 - 6\sqrt\epsilon}|\mathcal{Y}|
     \end{equation*}
 
     After simplification,
 
-    \begin{equation*}
-      |\mathcal{Y}| < (\frac{1}{1 - \frac{7\epsilon}{1 - 6\sqrt\epsilon}})  |\overline{\mathcal{Y}}|
-    \end{equation*}
-
-    \begin{equation*}
-      < \frac{1 - 6 \sqrt\epsilon}{1 - 6 \sqrt \epsilon - 7\epsilon}  |\overline{\mathcal{Y}}|
-    \end{equation*}
+    \begin{align*}
+      |\mathcal{Y}| &< \left(\frac{1}{1 - \frac{7\epsilon}{1 - 6\sqrt\epsilon}}\right)  \left|\overline{\mathcal{Y}}\right| \nonumber \\
+      &< \frac{1 - 6 \sqrt\epsilon}{1 - 6 \sqrt \epsilon - 7\epsilon}  \left|\overline{\mathcal{Y}}\right|
+    \end{align*}
 
     The above results can be used to obtain  \eqref{eq:error2}, the absolute error of the floating point approximation of an indexed sum $|T - \overline{\mathcal{Y}}|$.
 
-    \begin{equation*}
-      |T - \overline{\mathcal{Y}}| \leq |T - \mathcal{Y}| + |\mathcal{Y} - \overline{\mathcal{Y}}|
-    \end{equation*}
-
-    \begin{equation*}
-      < n \cdot \max(2^{W  (1 - K) - 1}  \max|x_k|, 2^{e_{\min} - 1}) + \frac{7\epsilon}{1 - 6\sqrt\epsilon}|\mathcal{Y}|
-    \end{equation*}
-
-    \begin{equation*}
-      < n \cdot \max(2^{W  (1 - K) - 1}  \max|x_k|, 2^{e_{\min} - 1}) + \frac{7\epsilon}{1 - 6\sqrt\epsilon}\frac{1 - 6 \sqrt\epsilon}{1 - 6 \sqrt \epsilon - 7\epsilon}|\overline{\mathcal{Y}}|
-    \end{equation*}
-
-    \begin{equation}
-      < n \cdot \max(2^{W  (1 - K) - 1}  \max|x_k|, 2^{e_{\min} - 1}) + \frac{7\epsilon}{1 - 6 \sqrt \epsilon - 7\epsilon}|\overline{\mathcal{Y}}|
+    \begin{align}
+      \left|T - \overline{\mathcal{Y}}\right| &\leq |T - \mathcal{Y}| + \left|\mathcal{Y} - \overline{\mathcal{Y}}\right| \nonumber \\
+      &< n \cdot \max\bigl(2^{W  (1 - K) - 1}  \max|x_k|, 2^{e_{\min} - 1}\bigr) + \frac{7\epsilon}{1 - 6\sqrt\epsilon}|\mathcal{Y}| \nonumber \\
+      &< n \cdot \max\bigl(2^{W  (1 - K) - 1}  \max|x_k|, 2^{e_{\min} - 1}\bigr) + \frac{7\epsilon}{1 - 6\sqrt\epsilon}\left(\frac{1 - 6 \sqrt\epsilon}{1 - 6 \sqrt \epsilon - 7\epsilon}\left|\overline{\mathcal{Y}}\right|\right) \nonumber \\
+      &< n \cdot \max\bigl(2^{W  (1 - K) - 1}  \max|x_k|, 2^{e_{\min} - 1}\bigr) + \frac{7\epsilon}{1 - 6 \sqrt \epsilon - 7\epsilon}\left|\overline{\mathcal{Y}}\right|
       \label{eq:error2}
-    \end{equation}
+    \end{align}
 
     Equation \eqref{eq:error2} can be approximated as  \eqref{eq:error2approx}.
 
-    \begin{equation*}
-      |T - \overline{\mathcal{Y}}| < n \cdot \max(2^{W  (1 - K) - 1}  \max|x_k|, 2^{e_{\min} - 1}) + \frac{7\epsilon}{1 - 6 \sqrt \epsilon - 7\epsilon}  |\overline{\mathcal{Y}}|
-    \end{equation*}
-
-    \begin{equation}
-      \approx n  2^{W  (1 - K) - 1} \max|x_k|+ 7  \epsilon  |\overline{\mathcal{Y}}|
+    \begin{align}
+      |T - \overline{\mathcal{Y}}| &< n \cdot \max\bigl(2^{W  (1 - K) - 1}  \max|x_k|, 2^{e_{\min} - 1}\bigr) + \frac{7\epsilon}{1 - 6 \sqrt \epsilon - 7\epsilon}  \left|\overline{\mathcal{Y}}\right| \nonumber \\
+      &\approx n  2^{W  (1 - K) - 1} \max|x_k|+ 7 \epsilon \left|\overline{\mathcal{Y}}\right|
       \label{eq:error2approx}
-    \end{equation}
+    \end{align}
 
     We can compare  \eqref{eq:errorapprox} to the error bound obtained if the accumulator fields were summed without extra precision. In this case, only the standard summation bound from \cite{higham} would apply and the absolute error would be bounded by
 
     \begin{equation*}
     n \cdot \max(2^{W  (1 - K) - 1}  \max|x_k|, 2^{e_{\min} - 1}) + (\frac{(2  K - 1)  \epsilon}{1 - (2  K - 1)  \epsilon})  \sum\limits_0^{2  K - 1}|\gamma_k|
     \end{equation*}
-
-    \begin{equation*}
-    \leq n \cdot \max(2^{W  (1 - K) - 1}  \max|x_k|, 2^{e_{\min} - 1}) + (\frac{(2  K - 1)  \epsilon}{1 - (2  K - 1)  \epsilon})  n \cdot \max|x_k|
-    \end{equation*}
-
+    which is approximately bounded by
     \begin{equation}
-    \approx n \cdot \max|x_k| (2^{W  (1 - K) - 1} + (2  K - 1)  \epsilon)
+    n \cdot \max|x_k| (2^{W  (1 - K) - 1} + (2  K - 1)  \epsilon)
     \label{eq:baderrorapprox}
     \end{equation}
 
@@ -1365,7 +1271,7 @@
 
   \subsection{Limits}
     \label{sec:primitiveops_limits}
-    As discussed previously, for a $K$-fold indexed type the minimum $K$ accepted by ReproBLAS is 2. The maximum useful $K$ is $\floor{(e_{\max} - e_{\min} + p - 1)/W}$, as this covers all of the bins.
+    As discussed previously, for a $K$-fold indexed type the minimum $K$ accepted by ReproBLAS is 2. The maximum useful $K$ is $\lfloor(e_{\max} - e_{\min} + p - 1)/W\rfloor$, as this covers all of the bins.
 
     As discussed in \cite{repsum}, $W < p - 2$. As discussed in section \ref{sec:indexed_overflow}, $2 W > p + 1$.
 
