@@ -71,13 +71,13 @@
 
   For all $r \in \R$, $e \in \Z$ such that $e_{\min} - p < e$ and $|r| < 2 \cdot 2^{e_{\max}}$, if $r \in 2^e\Z$ and $r \leq 2^{e + p}$ then $r$ is representable.
 
-  For all $f_0, f_1 \in \F$, $\fl(f_0 \text{ op } f_1)$ denotes the evaluated result of the expression $(f_0 \text{ op } f_1)$ in floating point arithmetic. If $(f_0 \text{ op } f_1)$ is representable, then $\fl(f_0 \text{ op } f_1) = (f_0 \text{ op } f_1)$.
-
   Machine epsilon, $\epsilon$, the difference between 1 and the greatest floating point number smaller than 1, is defined as $\epsilon = 2^{-p}$.
 
-  The unit in the last place of $f \in \F$, $\ulp(f)$, is the spacing between two consecutive floating point numbers of the same exponent as $f$. If $f$ is normalized, $\ulp(f) = 2^{\exp(f) - p + 1} = 2  \epsilon  2^{\exp(f)}$.
+  The unit in the last place of $f \in \F$, $\ulp(f)$, is the spacing between two consecutive floating point numbers of the same exponent as $f$. If $f$ is normalized, $\ulp(f) = 2^{\exp(f) - p + 1} = 2  \epsilon  2^{\exp(f)}$ and $\ulp(f) < 2^{p - 1}|f|$.
 
   The unit in the first place of $f \in F$, $\ufp(f)$, is the value of the first significant bit of $f$. If $f$ is normalized, $\ufp(f) = 2^{\exp(f)}$.
+
+  For all $f_0, f_1 \in \F$, $\fl(f_0 \text{ op } f_1)$ denotes the evaluated result of the expression $(f_0 \text{ op } f_1)$ in floating point arithmetic. If $(f_0 \text{ op } f_1)$ is representable, then $\fl(f_0 \text{ op } f_1) = (f_0 \text{ op } f_1)$. If rounding is ``to nearest,'' then we have that $|\fl(f_0 \text{ op } f_1) - (f_0 \text{ op } f_1)| \leq \frac{1}{2}\ulp(\fl(f_0 \text{ op } f_1))$.
 
   As ReproBLAS is written in C, \texttt{float} and \texttt{double} refer to the floating point types specified in the 1989 C standard \cite{c89} and we assume that they correspond to the \texttt{binary-32} and \texttt{binary-64} types in the IEEE 754-2008 floating point standard \cite{ieee754}.
 
@@ -111,15 +111,15 @@
     We use $i \leq i_{\max} = \floor{(e_{\max} - e_{\min} + p - 1)/W} - 1$ to ensure that $a_i > e_{\min} - p + 1$ as discussed in Section \ref{sec:indexed_underflow_gradual}. This means that the greatest bin is
 
     \begin{equation}
-      (e_{\max} + 1 - W, e_{\max} + 1]
+      (a_{0}, b_{0}] = (e_{\max} + 1 - W, e_{\max} + 1]
       \label{eq:binmax}
     \end{equation}
 
     and the least bin is
 
     \begin{equation}
-      (e_{\min} - p + 2 + ((e_{\max} - e_{\min} + p - 1)\mod W),
-      e_{\min} - p + 2 + W + ((e_{\max} - e_{\min} + p - 1)\mod W)]
+      (a_{i_{\max}}, b_{i_{\max}}] = \Bigl(e_{\min} - p + 2 + \bigl((e_{\max} - e_{\min} + p - 1)\mod W\bigr),
+      e_{\min} - p + 2 + W + \bigl((e_{\max} - e_{\min} + p - 1)\mod W\bigr)\Bigr]
       \label{eq:binmin}
     \end{equation}
 
@@ -228,12 +228,10 @@
 
     \begin{proof}
       We apply  \eqref{eq:round} and \eqref{eq:d2}
-      \begin{equation*}
-        |x - \sum \limits_{k = 0}^{i}d(x, k)| = |(x - \sum \limits_{k = 0}^{i - 1}d(x, k)) - d(x, i)|
-      \end{equation*}
-      \begin{equation*}
-         = |(x - \sum \limits_{k = 0}^{i - 1}d(x, k)) - \roundtonearestinfty(x - \sum \limits_{k = 0}^{i - 1}d(x, k), a_{i} + 1)| \leq 2^{a_{i}}
-      \end{equation*}
+      \begin{align*}
+        |x - \sum \limits_{k = 0}^{i}d(x, k)| & = |(x - \sum \limits_{k = 0}^{i - 1}d(x, k)) - d(x, i)| \\
+         & = |(x - \sum \limits_{k = 0}^{i - 1}d(x, k)) - \roundtonearestinfty(x - \sum \limits_{k = 0}^{i - 1}d(x, k), a_{i} + 1)| \leq 2^{a_{i}}
+      \end{align*}
     \end{proof}
 
     Theorem \ref{thm:dbound} shows a bound on $d(x, i)$.
@@ -350,31 +348,27 @@
       \end{samepage}
 
       \begin{proof}
-        The least bin is
+        By \eqref{eq:binmin},
         \begin{equation*}
-        (e_{\min} - p + 2 + ((e_{\max} - e_{\min} + p - 1 ) \mod W), e_{\min} - p + 2 + W + ((e_{\max} - e_{\min} + p - 1)\mod W)]
+        a_{I + j} \geq a_{i_{\max}} = e_{\min} - p + 2 + \bigl((e_{\max} - e_{\min} + p - 1) \mod W\bigr) \geq e_{\min} - p + 2
         \end{equation*}
 
-        Because ${Y_j}_P \in (\epsilon^{-1} 2^{a_{I + j}}, 2 \epsilon^{-1} 2^{a_{I + j}})$ and
-        \begin{equation*}
-        a_{I + j} \geq e_{\min} - p + 2 + ((e_{\max} - e_{\min} + p - 1) \mod W) \geq e_{\min} - p + 2
-        \end{equation*}
-        we have $\exp({Y_j}_P) = a_{I + j} + p > 2^{e_{\min} + 1}$ so ${Y_j}_P$ is normalized.
+        Because ${Y_j}_P \in (\epsilon^{-1} 2^{a_{I + j}}, 2 \epsilon^{-1} 2^{a_{I + j}})$ we have $\exp({Y_j}_P) = a_{I + j} + p > 2^{e_{\min} + 1}$ so ${Y_j}_P$ is normalized.
       \end{proof}
 
       Algorithm \ref{alg:deposit} relies on setting the last bit of intermediate results before adding them to ${Y_j}_P$ in order to fix the direction of the rounding mode. However, if $r$ is the quantity to be added to ${Y_j}_P$, $\ulp(r)$ must be less than rounding error when added to ${Y_j}_P$. Mathematically, $\ulp(r) < \frac{1}{2}\ulp({Y_j}_P)$. This is why we must enforce $a_{i_{\max}} \geq e_{\min} - p + 2$
 
-      Although the bins do not extend all the way to $e_{\min} - p$, it can still be shown that the sum of the slices of some $x \in \F$ offer a good approximation of $x$.
+      Although the bins do not extend all the way to $e_{\min} - p$, the sum of the slices of some $x \in \F$ still offers a good approximation of $x$.
 
-      Since $W < p - 2$,
+      Using $W < p - 2$ and \eqref{eq:binmin},
 
       \begin{equation*}
-        a_{i_{\max}} = e_{\min} - p + 2 + ((e_{\max} - e_{\min} + p - 1 ) \mod W) \leq {e_{\min} - 1}
+        a_{i_{\max}} = e_{\min} - p + 2 + \bigl((e_{\max} - e_{\min} + p - 1 ) \mod W\bigr) \leq {e_{\min} - 1}
       \end{equation*}
 
       As a consequence, we can use Theorem \ref{thm:dround} to say that for any $x \in \F$,
       \begin{equation}
-        |x - \sum\limits_{i = 0}^{i_{\max}} d(x, i)| \leq 2^{e_{\min} - 1}
+        |x - \sum\limits_{i = 0}^{i_{\max}} d(x, i)| \leq a_{i_{\max}} \leq 2^{e_{\min} - 1}
         \label{eq:droundunderflow}
       \end{equation}
 
@@ -398,15 +392,10 @@
 
       A value of $0$ in ${Y_0}_P$ indicates that nothing has been added to ${Y_0}_P$ yet (${Y_0}_P$ is initialized to $0$).
 
-      The least bin is
+      Since the ${Y_j}_P$ are kept within the range $(\epsilon^{-1}  2^{a_{I + j}}, 2  \epsilon^{-1}  2^{a_{I + j}})$ (where $I$ is the index) and are normalized (by Theorem \ref{thm:underflowufp}), we have
 
       \begin{equation*}
-      (e_{\min} - p + 2 + ((e_{\max} - e_{\min} + p - 1 ) \mod W), e_{\min} - p + 2 + W + ((e_{\max} - e_{\min} + p - 1)\mod W)]
-      \end{equation*}
-      and since the ${Y_j}_P$ are kept within the range $(\epsilon^{-1}  2^{a_{I + j}}, 2  \epsilon^{-1}  2^{a_{I + j}})$ (where $I$ is the index), the least possible ${Y_j}_P$ is
-
-      \begin{equation*}
-      \epsilon^{-1}  2^{e_{\min} - p + 2 + ((e_{\max} - e_{\min} + p - 1)\mod W)} > 2^{e_{\min}}
+        {Y_j}_P > 2^{e_{\min}}
       \end{equation*}
 
       Therefore the value of $0$ in a primary field is unused in any previously specified context and may be used as a sentinel value. (As the exponent of $0$ is distinct from the exponent of normalized values, the bijection between the index of an indexed type $Y$ and the exponent of ${Y_0}_P$ is preserved)
@@ -509,24 +498,25 @@
         Note that lines \ref{alg:depositrestricted:split}-\ref{alg:depositrestricted:endsplit} correspond to Algorithm 4 of \cite{repsum}.
         Therefore, if $\ulp({Y_j}_P) = \ulp(S_j)$ and $\ulp(r_j) < \frac{1}{2}\ulp({Y_j}_P)$, Corollary 3 of \cite{repsum} applies and we have that $S_j - {Y_j}_P \in \ulp({Y_j}_P)\Z \in 2^{a_{I + j} + 1}\Z$ and that $|r_{j + 1}| \leq \frac{1}{2}\ulp({Y_j}_P) = 2^{a_{I + j}}$.
 
-        As ${Y_j}_P, S_j \in (\epsilon^{-1}  2^{a_{I + j}}, 2  \epsilon^{-1}  2^{a_{I + j}})$, we have $\ulp(S_j) = \ulp({Y_j}_P)$ for all $j$.
+        As it is assumed ${Y_j}_P, S_j \in (\epsilon^{-1}  2^{a_{I + j}}, 2  \epsilon^{-1}  2^{a_{I + j}})$, we have $\ulp(S_j) = \ulp({Y_j}_P)$ for all $j$.
 
         We show $|r_j| \leq 2^{b_{I + j}} = 2^{a_{I + j - 1}}$ for all $j$ inductively. As a base case, $r_0 = x$ (from line \ref{alg:depositrestricted:rgetsx}) so $|r_0| = |x| < 2^{b_{I}}$.
-        As an inductive step, assume $|r_j| \leq 2^{b_{I + j}}$. By Theorem \ref{thm:underflowufp} we have that ${Y_j}_P$ is normalized and therefore $\ulp({Y_j}_P) = 2^{a_{I + j} + 1}$
-        If $r_j$ is normalized, then because $\ulp(r_j) \leq 2^{1 - p}|r_j| \leq 2^{b_{I + j} - (p - 1)} = 2^{a_{I + j} + W - (p - 1)}$, and $W < p - 2$, we have $\ulp(r_j) < \frac{1}{2}\ulp({Y_j}_P)$. (This case is considered in \cite{repsum}).
+        As an inductive step, assume $|r_j| \leq 2^{b_{I + j}}$. We must show $\ulp(r_j) < \frac{1}{2}\ulp({Y_j}_P)$.
 
-        If $r_j$ is denormalized, $\ulp(r_j) = 2^{e_{\min} - p + 1}$ since the unit in the last place of a denormalized number is always equal to $2^{e_{\min} - p + 1}$. Therefore $\ulp(r_j) = 2^{e_{\min} - p + 1} \leq 2^{e_{\min} - p + 1 + ((e_{\max} - e_{\min} + p - 1) \mod W)} = 2^{a_{i_{\max}} - 1} \leq 2^{a_{I + j} - 1} < \frac{1}{2}\ulp({Y_j}_P)$.
+        By Theorem \ref{thm:underflowufp} we have that ${Y_j}_P$ is normalized and therefore $\ulp({Y_j}_P) = 2^{a_{I + j} + 1}$.
+        If $r_j$ is normalized, then because $\ulp(r_j) \leq 2^{1 - p}|r_j| \leq 2^{b_{I + j} - (p - 1)} = 2^{a_{I + j} + W - (p - 1)}$, and $W < p - 2$, we have $\ulp(r_j) \leq 2^{a_{I + j} - 3} < \frac{1}{2}\ulp({Y_j}_P)$. (This case is considered in \cite{repsum}).
+      If $r_j$ is denormalized, $\ulp(r_j) = 2^{e_{\min} - p + 1}$ since the unit in the last place of a denormalized number is always equal to $2^{e_{\min} - p + 1}$. Therefore $\ulp(r_j) = 2^{e_{\min} - p + 1} \leq 2^{e_{\min} - p + 1 + ((e_{\max} - e_{\min} + p - 1) \mod W)} = 2^{a_{i_{\max}} - 1} \leq 2^{a_{I + j} - 1} < \frac{1}{2}\ulp({Y_j}_P)$.
 
-        Therefore we have $\ulp(r_j) < \frac{1}{2}\ulp({Y_j}_P)$. Thus, Corollary 3 of \cite{repsum} applies and we have that $|r_{j + 1}| \leq \frac{1}{2}\ulp({Y_j}_P) = 2^{a_{I + j}}$.
+        Therefore we have $\ulp(r_j) < \frac{1}{2}\ulp({Y_j}_P)$. Thus, Corollary 3 of \cite{repsum} applies and we have that $|r_{j + 1}| \leq \frac{1}{2}\ulp({Y_j}_P) = 2^{a_{I + j}}$. This completes the induction.
 
         Next, we show $S_j - {Y_j}_P = \roundtonearestinfty(r_j, a_{I + j} + 1)$. As Corollary 3 of \cite{repsum} applies for all $j$, then $S_j - {Y_j}_P \in 2^{a_{I + j} + 1}\Z$. By Theorem 3 of \cite{repsum}, $r_{j + 1} = r_j - (S_j - {Y_j}_P)$. Since $|r_{j + 1}| \leq 2^{a_{I + j}}$, we consider two cases.
 
         If $|r_j - (S_j - {Y_j}_P)| < 2^{a_{I + j}}$, then $S_j - {Y_j}_P = \roundtonearestinfty(r_j, a_{I + j} + 1)$.
 
         If $|r_j - (S_j - {Y_j}_P)| = 2^{a_{I + j}}$, then $S_j - {Y_j}_P \in \{r_j + 2^{a_{I + j}},  r_j - 2^{a_{I + j}}\}$.
-        As $S_j = \fl({Y_j}_P + (r_j|1))$, we have $|S_j - {Y_j}_P - (r_j|1)| \leq \frac{1}{2}\ulp(S_j) = 2^{a_{I + j}}$.  As $\ulp(S_j) = \ulp({Y_j}_P) = 2^{a_{I + j} + 1}$, we also have that $r_j \in 2^{a_{I + j}}\Z$  and because $\ulp(r_j) < 2^{a_{I + j}}$, $|(r_j|1) - r_j| > 0$ (with $(r_j|1) - r_j$ taking the same sign of $r_j$).
-        If $r_j > 0$, then $(S_j - {Y_j}_P) = r_j + 2^{a_{I + j}}$ (otherwise we will have $|S_j - {Y_j}_P - (r_j|1)| > |r_j - 2^{a_{I + j}} - (r_j|1)| > 2^{a_{I + j}}$).
-        If $r_j < 0$, then $(S_j - {Y_j}_P) = r_j - 2^{a_{I + j}}$ (otherwise we will have $|S_j - {Y_j}_P - (r_j|1)| > |r_j + 2^{a_{I + j}} - (r_j|1)| > 2^{a_{I + j}}$). Therefore, $S_j - {Y_j}_P = \roundtonearestinfty(r_j, a_{I + j} + 1)$.
+        As $S_j = \fl({Y_j}_P + (r_j|1))$, we have $|S_j - {Y_j}_P - (r_j|1)| \leq \frac{1}{2}\ulp(S_j) = 2^{a_{I + j}}$.  As $\ulp(S_j) = \ulp({Y_j}_P) = 2^{a_{I + j} + 1}$, we also have that $r_j \in 2^{a_{I + j}}\Z$  and because $\ulp(r_j) < 2^{a_{I + j}}$, $|(r_j|1) - r_j| > 0$ (with $(r_j|1) - r_j$ taking the same sign as $r_j$).
+        If $r_j > 0$, then $(S_j - {Y_j}_P) = r_j + 2^{a_{I + j}}$ (otherwise we will have $|S_j - {Y_j}_P - (r_j|1)| = |r_j - 2^{a_{I + j}} - (r_j|1)| > 2^{a_{I + j}}$).
+        If $r_j < 0$, then $(S_j - {Y_j}_P) = r_j - 2^{a_{I + j}}$ (otherwise we will have $|S_j - {Y_j}_P - (r_j|1)| = |r_j + 2^{a_{I + j}} - (r_j|1)| > 2^{a_{I + j}}$). Therefore, $S_j - {Y_j}_P = \roundtonearestinfty(r_j, a_{I + j} + 1)$.
 
         We can now show $r_{j + 1} = x - \sum\limits_{i = 0}^{I + j}d(x, i)$ and $S_j - {Y_j}_P = d(x, I + j)$ for all $j$ by induction on $j$.
 
@@ -601,16 +591,16 @@
 
         As $|x| < 2^{b_0} = 2 \cdot 2^{e_{\max}}$ and we scale by a power of two, we have $|r| < 2^{b_0 - p + W - 1} = 2^{e_{\max} - p + W}$ in line \ref{alg:deposit:scaler}.
 
-        Since ${Y_0}_P, S \in (2^{e_{\max}}, 2 \cdot 2^{e_{\max}})$, we have $\ulp({Y_0}_P) = \ulp(S)$ in line \ref{alg:deposit:formS}. As $|r| < 2^{e_{\max} - p + W}$ and $W < p - 2$, we have $\ulp(r) < \frac{1}{2}\ulp({Y_0}_P)$in line \ref{alg:deposit:formS}.
+        Since ${Y_0}_P, S \in (2^{e_{\max}}, 2 \cdot 2^{e_{\max}})$, we have $\ulp({Y_0}_P) = \ulp(S)$ in line \ref{alg:deposit:formS}. As $|r| < 2^{e_{\max} - p + W}$ and $W < p - 2$, we have $\ulp(r) \leq |r| 2^{1 - p} < 2^{e_{\max} + 1 - 2p + W} < \frac{1}{2}\ulp({Y_0}_P)$ in line \ref{alg:deposit:formS}.
 
         Because line \ref{alg:deposit:formS} corresponds to lines 1-2 of Algorithm 4 of \cite{repsum}, Corollary 3 of \cite{repsum} applies and we have that $S - {Y_0}_P \in \ulp({Y_0}_P)\Z = 2^{a_0 - p + W}\Z$ and $|r - (S - {Y_0}_P)| \leq \frac{1}{2}  \ulp({Y_0}_P) = 2^{a_0 - p + W - 1}$ in line \ref{alg:deposit:formS}.
 
         If $|r - (S - {Y_0}_P)| < 2^{a_{0} - p + W - 1}$, then $S - {Y_j}_P = \roundtonearestinfty(r, a_{0} - p + W)$.
 
         If $|r - (S - {Y_0}_P)| = 2^{a_{0} - p + W - 1}$, then $S - {Y_0}_P \in \{r + 2^{a_0 - p + W - 1},  r_j - 2^{a_{0} - p + W - 1}\}$.
-        As $S = \fl({Y_0}_P + (r|1))$, we have $|S - {Y_0}_P - (r|1)| \leq \frac{1}{2}\ulp(S) = 2^{a_{0} - p + W - 1}$.  As $\ulp(S) = \ulp({Y_0}_P) = 2^{a_{0} - p + W}$, we also have that $r \in 2^{a_{0} - p + W - 1}\Z$  and because $\ulp(r) < 2^{a_{0} - p + W - 1}$, $|(r|1) - r| > 0$ (with $(r|1) - r$ taking the same sign of $r$).
-        If $r > 0$, then $(S - {Y_0}_P) = r + 2^{a_{0} - p + W - 1}$ (otherwise we will have $|S - {Y_0}_P - (r|1)| > |r - 2^{a_{0} - p + W - 1} - (r|1)| > 2^{a_{0} - p + W - 1}$).
-        If $r < 0$, then $(S - {Y_0}_P) = r - 2^{a_{0} - p + W}$ (otherwise we will have $|S - {Y_0}_P - (r|1)| > |r + 2^{a_{0} - p + W - 1} - (r|1)| > 2^{a_{0} - p + W - 1}$). Therefore, $S - {Y_0}_P = \roundtonearestinfty(r, a_{0} - p + W)$.
+        As $S = \fl({Y_0}_P + (r|1))$, we have $|S - {Y_0}_P - (r|1)| \leq \frac{1}{2}\ulp(S) = 2^{a_{0} - p + W - 1}$.  As $\ulp(S) = \ulp({Y_0}_P) = 2^{a_{0} - p + W}$, we also have that $r \in 2^{a_{0} - p + W - 1}\Z$  and because $\ulp(r) < 2^{a_{0} - p + W - 1}$, $|(r|1) - r| > 0$ (with $(r|1) - r$ taking the same sign as $r$).
+        If $r > 0$, then $(S - {Y_0}_P) = r + 2^{a_{0} - p + W - 1}$ (otherwise we will have $|S - {Y_0}_P - (r|1)| = |r - 2^{a_{0} - p + W - 1} - (r|1)| > 2^{a_{0} - p + W - 1}$).
+        If $r < 0$, then $(S - {Y_0}_P) = r - 2^{a_{0} - p + W}$ (otherwise we will have $|S - {Y_0}_P - (r|1)| = |r + 2^{a_{0} - p + W - 1} - (r|1)| > 2^{a_{0} - p + W - 1}$). Therefore, $S - {Y_0}_P = \roundtonearestinfty(r, a_{0} - p + W)$.
 
         Next, we show that ${Y_0}_P - S = d(x, 0)/2^{p - W + 1}$.
 
@@ -631,10 +621,12 @@
         \begin{equation*}
           x \geq x - d(x, 0)/2 \geq x - d(x, 0) \geq -x
         \end{equation*}
+
          If $x < 0$, we have
         \begin{equation*}
           -x \geq x - d(x, 0) \geq x - d(x, 0)/2 \geq x
         \end{equation*}
+
         In either case we have $|x - d(x, 0)/2| \leq |x|$.
 
         Since $d(x, 0)/2 = \roundtonearestinfty(x, a_0 + 1)/2 \in 2^{a_0}\Z \in 2  \epsilon  2^{b_0}$ (As $W < p - 2$) and $x \leq 2^{b_0}$, $d(x, 0)/2 \in \ulp(x)\Z$ and therefore $x - d(x, 0)/2 \in \ulp(x)\Z$. Combined with $|x - d(x, 0)/2| \leq |x|$ this implies that $r = x - d(x, 0)/2$ exactly in line \ref{alg:deposit:formr}.
@@ -704,13 +696,10 @@
 
     If $n \leq 2^{p - W - 2}$, then after the $n^{th}$ deposit
 
-    \begin{equation*}
-    {Y_j}_P \in [(1.5  \epsilon^{-1} - n  2^W) 2^{a_{I + j}}, (1.75  \epsilon^{-1} + n  2^W) 2^{a_{I + j}})
-    \end{equation*}
-
-    \begin{equation*}
-    \in [1.25  \epsilon^{-1} 2^{a_{I + j}}, 2  \epsilon^{-1} 2^{a_{I + j}})
-    \end{equation*}
+    \begin{align*}
+    {Y_j}_P &\in [(1.5  \epsilon^{-1} - n  2^W) 2^{a_{I + j}}, (1.75  \epsilon^{-1} + n  2^W) 2^{a_{I + j}}) \\
+    &\in [1.25  \epsilon^{-1} 2^{a_{I + j}}, 2  \epsilon^{-1} 2^{a_{I + j}})
+    \end{align*}
     \end{proof}
 
     If an indexed type $Y$ initially satisfies ${Y_j}_P \in [1.5  \epsilon^{-1} 2^{a_{I + j}}, 1.75  \epsilon^{-1} 2^{a_{I + j}})$ (such a condition is satisfied upon initialization of an empty $Y$) and we deposit at most $2^{p - W - 2}$ floating point numbers into it, then Theorem \ref{thm:renormfreq} shows that after all of the deposits, ${Y_j}_P \in [1.25  \epsilon^{-1} 2^{a_{I + j}}, 2  \epsilon^{-1} 2^{a_{I + j}})$.
