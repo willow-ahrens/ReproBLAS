@@ -1006,12 +1006,8 @@
       \label{thm:mysortsum}
       Let $S_0 = \overline{S_0} = f_0$, $S_k = S_{k - 1} + f_k$, and $\overline{S_k} = \fl(\overline{S_{k - 1}} + f_k)$ so that $S_{n - 1} = \sum \limits_{k = 0}^{n - 1} f_k$.
       Then we have
-      \begin{equation*}
-        |S_{n - 1} - \overline{S_{n - 1}}| < g(\epsilon) \times \epsilon \times |\sum\limits_{k = 0}^{n - 1}f_k|
-      \end{equation*}
-      Where
       \begin{equation}
-        g(\epsilon) = \frac{7 - 2\sqrt\epsilon}{(1 - 2\sqrt\epsilon)(1 - 4\sqrt\epsilon)} \approx 7
+        |S_{n - 1} - \overline{S_{n - 1}}| < \frac{7}{1 - 6\sqrt\epsilon} |\sum\limits_{k = 0}^{n - 1}f_k|.
         \label{eq:g}
       \end{equation}
     \end{thm}
@@ -1192,12 +1188,31 @@
           \label{eq:boundfmfivesum}
         \end{equation}
 
-      Using  \eqref{eq:sbound} and \eqref{eq:boundfmfivesum},
+      Using \eqref{eq:sbound} and \eqref{eq:boundfmfivesum},
         \begin{equation}
-          |\sum\limits_{k = m + 5}^{n - 1} f_k| \leq \sum\limits_{k = m + 5}^{n - 1} |f_k| < (\frac{\epsilon}{1 - 4 \times \sqrt\epsilon})|\sum\limits_{k = 0}^{n - 1} f_k|
+          |\sum\limits_{k = m + 5}^{n - 1} f_k| \leq \sum\limits_{k = m + 5}^{n - 1} |f_k| < \frac{\epsilon}{1 - 4 \sqrt\epsilon}|S_{n-1}|.
           \label{eq:relsboundfmfivesum}
         \end{equation}
 
+    By \eqref{eq:smfiveerror} and \eqref{eq:relsboundfmfivesum}
+    \begin{align}
+    |S_{n-1} - \overline{S_{m+4}}|
+        & \leq |S_{n-1} - S_{m+4}| + |S_{m+4} - \overline{S_{m+4}}| \nonumber \\
+        & \leq |\sum_{k=m+4}^{n-1} f_k| + \frac{6\epsilon}{1-6\sqrt{\epsilon}} |S_{n-1}| \nonumber \\
+        & \leq \frac{\epsilon}{1 - 4 \sqrt\epsilon}|S_{n-1}| + \frac{6\epsilon}{1-6\sqrt{\epsilon}} |S_{n-1}| \nonumber \\
+        & <  \frac{7\epsilon}{1-6\sqrt{\epsilon}} |S_{n-1}|.
+        \label{eq:smfiveerror-1}
+    \end{align}
+
+    Combined with \eqref{eq:sbound} gives
+    \begin{align*}
+    |\overline{S_{m+4}}| 
+        & \geq (1-\frac{7 \epsilon}{1-6\sqrt{\epsilon}}) |S_{n-1}| \\
+        & > (1-\frac{7 \epsilon}{1-6\sqrt{\epsilon}}) (1-4\sqrt{\epsilon}) 2^{exp(f'_m} \\
+        & > (1-4\sqrt{\epsilon} - \frac{7 \epsilon (1-4\sqrt{\epsilon})}{1-6\sqrt{\epsilon}}) 2^{exp(f'_m} 
+    \end{align*}
+
+    \begin{comment}
       By  \eqref{eq:sbound}, \eqref{eq:smfiveerror}, and \eqref{eq:boundfmfivesum}
         \begin{equation*}
           |\overline{S_{m + 4}}| \geq |S_{m + 4}| - |S_{m + 4} - \overline{S_m + 4}| \geq (|\sum\limits_{k = 0}^{n - 1} f_k| - |\sum\limits_{k = m + 5}^{n - 1}f_k|) - |S_{m + 4} - \overline{S_m + 4}|
@@ -1214,6 +1229,8 @@
         \begin{equation}
           = (1 - 4\sqrt\epsilon - \frac{6}{1 - 2\sqrt\epsilon}\epsilon - \epsilon )\times 2^{\exp(f_m')}
         \end{equation}
+    \end{comment}
+
         which, assuming $\epsilon << 1$, can be simplified to
         \begin{equation}
           |\overline{S_{m + 4}}| > 2^{\exp(f_m') - 1}
@@ -1227,12 +1244,17 @@
           \label{eq:maxfmfive}
         \end{equation}
 
-        And by  \eqref{eq:maxfmfive} and \eqref{eq:minsmfoursimple}, all additions after $f_{m + 4}$ have no effect and we have
+    And by \eqref{eq:maxfmfive} and \eqref{eq:minsmfoursimple}, all additions after $f_{m + 4}$ have no effect and we have $\overline{S_{n-1}} = \overline{S_{m+4}}$.
+    From \eqref{eq:smfiveerror-1}, it also means that
+        \[
+         |S_{n-1} - \overline{S_{n-1}}| \leq \frac{7\epsilon}{1-6\sqrt{\epsilon}} |S_{n-1}|.
+        \]
+    The proof is complete.
+    \begin{comment}
         \begin{equation}
           \overline{S_{m + 4}} = \overline{S_{n - 1}}
           \label{eq:smfourcontinues}
         \end{equation}
-
         With  \eqref{eq:smfourcontinues}, \eqref{eq:relsboundfmfivesum} and \eqref{eq:smfiveerror}
 
         \begin{equation*}
@@ -1248,6 +1270,7 @@
         \begin{equation*}
           = g(\epsilon)\times \epsilon\times |\sum\limits_{k = 0}^{n - 1}f_k|
         \end{equation*}
+    \end{comment}
     \end{proof}
 
     Consider the $K$-fold indexed sum $Y$ of floating point numbers $x_0, ..., x_{n - 1}$. We denote the true sum $\sum \limits_{k = 0}^{n - 1} x_k$ by $T$, the true value of the indexed sum as obtained using  \eqref{eq:indexedvalue} by $\mathcal{Y}$, and the floating point approximation of $\mathcal{Y}$ obtained using an appropriate algorithm from Section \ref{sec:primitiveops_convert} by $\overline{\mathcal{Y}}$.
