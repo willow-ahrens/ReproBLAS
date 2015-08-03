@@ -1259,11 +1259,11 @@
     We can compare  \eqref{eq:errorapprox} to the error bound obtained if the accumulator fields were summed without extra precision. In this case, only the standard summation bound from \cite{higham} would apply and the absolute error would be bounded by
 
     \begin{equation*}
-    n \cdot \max(2^{W  (1 - K) - 1}  \max|x_k|, 2^{e_{\min} - 1}) + (\frac{(2  K - 1)  \epsilon}{1 - (2  K - 1)  \epsilon})  \sum\limits_0^{2  K - 1}|\gamma_k|
+    n \cdot \max\bigl(2^{W  (1 - K) - 1}  \max|x_k|, 2^{e_{\min} - 1}\bigr) + \left(\frac{(2  K - 1)  \epsilon}{1 - (2  K - 1)  \epsilon}\right)  \sum\limits_0^{2  K - 1}|\gamma_k|
     \end{equation*}
     which is approximately bounded by
     \begin{equation}
-    n \cdot \max|x_k| (2^{W  (1 - K) - 1} + (2  K - 1)  \epsilon)
+    n \cdot \max|x_k| \bigl(2^{W  (1 - K) - 1} + (2  K - 1)  \epsilon\bigr)
     \label{eq:baderrorapprox}
     \end{equation}
 
