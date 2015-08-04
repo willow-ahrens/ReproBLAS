@@ -991,7 +991,7 @@
       Let $S_0 = \overline{S_0} = f_0$, $S_k = S_{k - 1} + f_k$, and $\overline{S_k} = \fl(\overline{S_{k - 1}} + f_k)$ so that $S_{n - 1} = \sum \limits_{k = 0}^{n - 1} f_k$.
       Then we have
       \begin{equation*}
-        \left|S_{n - 1} - \overline{S_{n - 1}}\right| < \frac{7\epsilon}{1 - 6\sqrt\epsilon}\bigl|\sum\limits_{k = 0}^{n - 1}f_k\bigr| \approx 7 \epsilon \bigl|\sum\limits_{k = 0}^{n - 1}f_k\bigr|
+        \left|S_{n - 1} - \overline{S_{n - 1}}\right| < \frac{7\epsilon}{1 - 6\sqrt\epsilon}|S_{n - 1}| \approx 7 \epsilon |S_{n - 1}|
       \end{equation*}
     \end{thm}
     \end{samepage}
@@ -1026,14 +1026,12 @@
       \end{align}
 
       We can combine  \eqref{eq:smpbound} and \eqref{eq:smppbound} to obtain
-
       \begin{equation}
         \bigl|\sum\limits_{k = m + 1}^{n - 1} f_k\bigr| \leq \sum\limits_{k = m + 1}^{n - 1} |f_k| < 2^{\exp{f_m'}} + \left(4 \sqrt{\epsilon}\right) 2^{\exp(f_m')} = \left(1 + 4 \sqrt\epsilon \right)2^{\exp(f_m')}
         \label{eq:smsbound}
       \end{equation}
 
       By  \eqref{eq:smbound} and \eqref{eq:smsbound},
-
       \begin{align}
         |S_{n-1}| & = \bigl|\sum\limits_{k = 0}^{n - 1} f_k\bigr| \geq \bigl|\sum\limits_{k = 0}^{m} f_k\bigr| - \bigl|\sum\limits_{k = m + 1}^{n - 1} f_k\bigr| = |S_m| - \bigl|\sum\limits_{k = m + 1}^{n - 1} f_k\bigr| \nonumber \\
         & \geq 2 \cdot 2^{\exp(f_{m}')} - \left(1 + 4 \sqrt\epsilon\right) 2^{\exp(f_m')} = \left(1 - 4 \sqrt\epsilon\right) 2^{\exp(f_m')}
@@ -1053,12 +1051,10 @@
       \end{equation}
 
       And by \eqref{eq:sbound} and \eqref{eq:smsrelsbound},
-
       \begin{equation}
         |S_m| \leq \bigl|\sum\limits_{k = 0}^{n - 1}f_k\bigr| + \bigl|\sum\limits_{k = m + 1}^{n - 1} f_k\bigr| \leq \left(1 + \frac{1 + 4  \sqrt\epsilon}{1 - 4  \sqrt\epsilon}\right)\bigl|\sum\limits_{k = 0}^{n - 1}f_k\bigr| \leq \frac{2}{1 - 4  \sqrt\epsilon}\bigl|\sum\limits_{k = 0}^{n - 1}f_k\bigr|
         \label{eq:smrelsbound}
       \end{equation}
-
 % TRY TO SIMPLY THE PROOF
     By definition, $\overline{S_{m+4}}$ is the computed sum of
     $\overline{S_m}$, $f_{m+1}, \ldots, f_{m+4}$ using the standard recursive summation technique.
@@ -1069,7 +1065,6 @@
         & \leq \frac{4\epsilon}{1-4\epsilon} \bigl(\left|\overline{S_m} - S_m\right| + |S_m + f_{m+1}|\bigr)
             + \frac{3\epsilon}{1-3\epsilon} \sum_{k=m+2}^{n-1}|f_k|.
     \end{align*}
-
     Since $S_{n-1} = S_m + f_{m+1} + \sum_{k=m+2}^{n-1} f_k$, we have
     \begin{equation*}
         |S_m + f_{m+1}|
@@ -1083,7 +1078,6 @@
         + \frac{4\epsilon}{1-4\epsilon} |S_{n-1}|
         + \frac{7\epsilon}{1-4\epsilon} \sum_{k=m+2}^{n-1}|f_k|.
     \end{equation*}
-
     Using the Triangle Inequality we have
     \begin{align*}
     \left|S_{m+4} - \overline{S_{m+4}}\right|
@@ -1127,12 +1121,31 @@
           \label{eq:boundfmfivesum}
         \end{equation}
 
-      Using  \eqref{eq:sbound} and \eqref{eq:boundfmfivesum},
+      Using \eqref{eq:sbound} and \eqref{eq:boundfmfivesum},
         \begin{equation}
-          \bigl|\sum\limits_{k = m + 5}^{n - 1} f_k\bigr| \leq \sum\limits_{k = m + 5}^{n - 1} |f_k| < \frac{\epsilon}{1 - 4  \sqrt\epsilon}\bigl|\sum\limits_{k = 0}^{n - 1} f_k\bigr|
+          \bigl|\sum\limits_{k = m + 5}^{n - 1} f_k\bigr| \leq \sum\limits_{k = m + 5}^{n - 1} |f_k| < \frac{\epsilon}{1 - 4  \sqrt\epsilon}|S_{n - 1}|
           \label{eq:relsboundfmfivesum}
         \end{equation}
 
+    By \eqref{eq:smfiveerror} and \eqref{eq:relsboundfmfivesum}
+    \begin{align}
+    |S_{n-1} - \overline{S_{m+4}}|
+        & \leq |S_{n-1} - S_{m+4}| + |S_{m+4} - \overline{S_{m+4}}| \nonumber \\
+        & \leq |\sum_{k=m+4}^{n-1} f_k| + \frac{6\epsilon}{1-6\sqrt{\epsilon}} |S_{n-1}| \nonumber \\
+        & \leq \frac{\epsilon}{1 - 4 \sqrt\epsilon}|S_{n-1}| + \frac{6\epsilon}{1-6\sqrt{\epsilon}} |S_{n-1}| \nonumber \\
+        & <  \frac{7\epsilon}{1-6\sqrt{\epsilon}} |S_{n-1}|.
+        \label{eq:smfiveerror-1}
+    \end{align}
+
+    When combined with \eqref{eq:sbound} gives
+    \begin{align*}
+    |\overline{S_{m+4}}| 
+        & \geq (1-\frac{7 \epsilon}{1-6\sqrt{\epsilon}}) |S_{n-1}| \\
+        & > (1-\frac{7 \epsilon}{1-6\sqrt{\epsilon}}) (1-4\sqrt{\epsilon}) 2^{exp(f'_m)} \\
+        & > (1-4\sqrt{\epsilon} - \frac{7 \epsilon (1-4\sqrt{\epsilon})}{1-6\sqrt{\epsilon}}) 2^{exp(f'_m)}. 
+    \end{align*}
+
+    \begin{comment}
       By  \eqref{eq:sbound}, \eqref{eq:smfiveerror}, and \eqref{eq:boundfmfivesum}
         \begin{align*}
           \left|\overline{S_{m + 4}}\right| &\geq |S_{m + 4}| - \left|S_{m + 4} - \overline{S_m + 4}\right| \nonumber \\
@@ -1142,6 +1155,7 @@
           &> \left(1 - \frac{6\epsilon}{1 - 6\sqrt\epsilon}\right)\left(1 - 4 \sqrt\epsilon\right)2^{\exp(f_m')} - \epsilon2^{\exp(f_m')} \nonumber \\
           &= \left(1 - 4\sqrt\epsilon - \frac{6\epsilon(1 - 4\sqrt\epsilon)}{1 - 2\sqrt\epsilon} - \epsilon\right) 2^{\exp(f_m')}
         \end{align*}
+    \end{comment}
         which, assuming $\epsilon << 1$, can be simplified to
         \begin{equation}
           \left|\overline{S_{m + 4}}\right| > 2^{\exp(f_m') - 1}
@@ -1155,12 +1169,17 @@
           \label{eq:maxfmfive}
         \end{equation}
 
-        And by  \eqref{eq:maxfmfive} and \eqref{eq:minsmfoursimple}, all additions after $f_{m + 4}$ have no effect and we have
+    And by \eqref{eq:maxfmfive} and \eqref{eq:minsmfoursimple}, all additions after $f_{m + 4}$ have no effect and we have $\overline{S_{n-1}} = \overline{S_{m+4}}$.
+    From \eqref{eq:smfiveerror-1}, it also means that
+        \[
+         |S_{n-1} - \overline{S_{n-1}}| \leq \frac{7\epsilon}{1-6\sqrt{\epsilon}} |S_{n-1}|.
+        \]
+    The proof is complete.
+    \begin{comment}
         \begin{equation}
           \overline{S_{m + 4}} = \overline{S_{n - 1}}
           \label{eq:smfourcontinues}
         \end{equation}
-
         With  \eqref{eq:smfourcontinues}, \eqref{eq:relsboundfmfivesum} and \eqref{eq:smfiveerror}
 
         \begin{align*}
@@ -1168,6 +1187,7 @@
           &< \frac{6\epsilon}{1 - 6\sqrt\epsilon}\bigl|\sum\limits_{k = 0}^{n - 1}f_k\bigr| + \frac{\epsilon}{1 - 4\sqrt\epsilon}\bigl|\sum\limits_{k = 0}^{n - 1} f_k\bigr| \\
           &< \frac{7\epsilon}{1 - 6\sqrt\epsilon}\bigl|\sum\limits_{k = 0}^{n - 1}f_k\bigr|
         \end{align*}
+      \end{comment}
     \end{proof}
 
     Consider the $K$-fold indexed sum $Y$ of floating point numbers $x_0, ..., x_{n - 1}$. We denote the true sum $\sum \limits_{k = 0}^{n - 1} x_k$ by $T$, the true value of the indexed sum as obtained using  \eqref{eq:indexedvalue} by $\mathcal{Y}$, and the floating point approximation of $\mathcal{Y}$ obtained using an appropriate algorithm from Section \ref{sec:primitiveops_convert} by $\overline{\mathcal{Y}}$.
