@@ -75,7 +75,7 @@
 
   The unit in the first place of $f \in F$, $\ufp(f)$, is the value of the first significant bit of $f$. If $f$ is normalized, $\ufp(f) = 2^{\exp(f)}$.
 
-  For all $f_0, f_1 \in \F$, $\fl(f_0 \text{ op } f_1)$ denotes the evaluated result of the expression $(f_0 \text{ op } f_1)$ in floating point arithmetic. If $(f_0 \text{ op } f_1)$ is representable, then $\fl(f_0 \text{ op } f_1) = (f_0 \text{ op } f_1)$. If rounding is ``to nearest,'' then we have that $|\fl(f_0 \text{ op } f_1) - (f_0 \text{ op } f_1)| \leq \frac{1}{2}\ulp(\fl(f_0 \text{ op } f_1))$.
+  For all $f_0, f_1 \in \F$, $\fl(f_0 \text{ op } f_1)$ denotes the evaluated result of the expression $(f_0 \text{ op } f_1)$ in floating point arithmetic. If $(f_0 \text{ op } f_1)$ is representable, then $\fl(f_0 \text{ op } f_1) = (f_0 \text{ op } f_1)$. If rounding is ``to nearest,'' then we have that $|\fl(f_0 \text{ op } f_1) - (f_0 \text{ op } f_1)| \leq 0.5\ulp(\fl(f_0 \text{ op } f_1))$.
 
   As ReproBLAS is written in C, \texttt{float} and \texttt{double} refer to the floating point types specified in the 1989 C standard \cite{c89} and we assume that they correspond to the \texttt{binary-32} and \texttt{binary-64} types in the IEEE 754-2008 floating point standard \cite{ieee754}.
 
@@ -265,7 +265,8 @@
     The \textbf{indexed type} is used to represent the intermediate result of accumulation using Algorithms 6 and $7$ in \cite{repsum}.
     An indexed type $Y$ is a data structure composed of several accumulator data structures $Y_0, ..., Y_{K - 1}$. An indexed type with $K$ accumulators is referred to as a \textbf{$K$-fold} indexed type. Due to their low accuracy, 1-fold indexed types are not considered.
 
-    Let $Y$ be the indexed type corresponding to the reproducibly computed sum of $x_0, ..., x_{n - 1} \in \F$.
+    Let $Y$ be the indexed type corresponding to the reproducibly computed sum of $x_0, ..., x_{n - 1} \in \F$. $Y$ is referred to as the \textbf{indexed sum} of $x_0, ..., x_{n - 1}$.
+
     Each accumulator $Y_k$ is a data structure used to accumulate the slices of input in the bin $(a_{I + k}, b_{I + k}]$ where $I$ is the \textbf{index} of $Y$ and $k \geq 0$ as discussed below. The \textbf{width} of an indexed type is equal to the width of its bins, $W$. Recall the assumptions \eqref{eq:wupper} and \eqref{eq:wlower} made on the value of $W$.
 
     The accumulators in an indexed type correspond to contiguous bins in decreasing order. The index of $Y$ is defined as the least $I \in \Z$ such that $2^{b_I + 1} > \max(|x_0|, ..., |x_n|)$ (equivalently, the least $I \in \Z$ such that $b_I > \max(e_0, ..., e_n)$). If $Y$ has index $I$, then $Y_k, k \in \{0, ..., K - 1\}$ accumulates slices of input in the bin $(a_{I + k}, b_{I + k}]$. If $I$ is so large that $I + K > i_{\max}$, then the extra $I + K - i_{\min}$ accumulators are unused.
@@ -310,7 +311,7 @@
 
     \subsubsection{Overflow}
       \label{sec:indexed_overflow}
-      If an indexed type $Y$ has index 0 and the width is $W$, then the value in the primary field ${Y_0}_P$ is stored as an offset from $1.5\epsilon^{-1}2^{e_{\max} + 1 - W}$. However, $1.5\epsilon^{-1}2^{e_{\max} + 1 - W} > 2^{e_{\max} + 1 + (p - W)} > 2 \cdot 2^{e_{\max}}$ since $W < p - 2$ \cite{repsum}, so it is out of the range of the floating-point system and not representable. Before discussing the solution to this overflow problem, take note of Theorem \ref{thm:overflow}.
+      If an indexed type $Y$ has index 0 and the width is $W$, then the value in the primary field ${Y_0}_P$ is stored as an offset from $1.5\epsilon^{-1}2^{e_{\max} + 1 - W}$. However, $1.5\epsilon^{-1}2^{e_{\max} + 1 - W} > 2^{e_{\max} + 1 + (p - W)} > 2 \cdot 2^{e_{\max}}$ since $W < p - 2$, so it is out of the range of the floating-point system and not representable. Before discussing the solution to this overflow problem, take note of Theorem \ref{thm:overflow}.
 
       \begin{samepage}
       \begin{thm}
@@ -320,7 +321,7 @@
     \end{samepage}
 
       \begin{proof}
-        $a_1 = e_{\max} + 1 - 2 W$ by definition, therefore $a_1 < e_{\max} - p$ and since all quantities are integers, $a_1 \leq e_{\max} - p - 1$. As $a_0, a_1, ...$ is a positive decreasing sequence, $a_{I + k} \leq e_{\max} - p - 1$ since $I + k \geq 1$.
+        $a_1 = e_{\max} + 1 - 2 W$ by \eqref{eq:a}, therefore $a_1 < e_{\max} - p$ using $W < p - 2$ and since all quantities are integers, $a_1 \leq e_{\max} - p - 1$. If $I + k \geq 1$, $a_{I + k} \leq a_1 \leq e_{\max} - p - 1$ by \eqref{eq:a}.
 
         ${Y_k}_P$ is kept within the range $(\epsilon^{-1} 2^{a_{I + k}}, 2 \epsilon^{-1} 2^{a_{I + k}})$, therefore
         \begin{equation*}
@@ -354,7 +355,7 @@
         Because ${Y_k}_P \in (\epsilon^{-1} 2^{a_{I + k}}, 2 \epsilon^{-1} 2^{a_{I + k}})$ we have $\exp({Y_k}_P) = a_{I + k} + p > 2^{e_{\min} + 1}$ so ${Y_k}_P$ is normalized.
       \end{proof}
 
-      Algorithm \ref{alg:deposit} relies on setting the last bit of intermediate results before adding them to ${Y_k}_P$ in order to fix the direction of the rounding mode. However, if $r$ is the quantity to be added to ${Y_k}_P$, $\ulp(r)$ must be less than rounding error when added to ${Y_k}_P$. Mathematically, $\ulp(r) < \frac{1}{2}\ulp({Y_k}_P)$. This is why we must enforce $a_{i_{\max}} \geq e_{\min} - p + 2$
+      Algorithm \ref{alg:deposit} relies on setting the last bit of intermediate results before adding them to ${Y_k}_P$ in order to fix the direction of the rounding mode. However, if $r$ is the quantity to be added to ${Y_k}_P$, $\ulp(r)$ must be less than rounding error when added to ${Y_k}_P$. Mathematically, $\ulp(r) < 0.5\ulp({Y_k}_P)$. This is why we must enforce $a_{i_{\max}} \geq e_{\min} - p + 2$.
 
       Although the bins do not extend all the way to $e_{\min} - p$, the sum of the slices of some $x \in \F$ still offers a good approximation of $x$.
 
@@ -370,7 +371,7 @@
         \label{eq:droundunderflow}
       \end{equation}
 
-      This means that we can approximate $x$ using the sum of its slices to within $2^{e_{\min} - 1}$.
+      This means that we can approximate $x$ using the sum of its slices to the nearest multiple of $2^{e_{\min}}$.
 
       It is possible to sum the input in the denormalized range. One simple way the algorithm could be extended to denormalized inputs would be to scale the least bins up, analogously to the way we handled overflow. Due to the relatively low priority for accumulating denormalized values, this method was not implemented in ReproBLAS.
 
@@ -409,7 +410,6 @@
       It should be noted here that it is possible to achieve a final result of \texttt{Inf} or \texttt{-Inf} when ${Y_0}_P$ is finite. This is due to the fact that the indexed representation can express values outside of the range of the floating point numbers that it is composed with. More specifically, it is possible for the value $\mathcal{Y}$ represented by the indexed type $Y$ to satisfy $|\mathcal{Y}| \geq 2 \cdot 2^{e_{\max}}$. The condition that $\mathcal{Y}$ is not representable is discovered when calculating $\mathcal{Y}$ (converting $Y$ to a floating point number). The methods used to avoid overflow and correctly return the \texttt{Inf} or \texttt{-Inf} are discussed in Section \ref{sec:primitiveops_convert}.
 
 \section{Primitive Operations}
-  \subsection{Section Summary}
     Here we reorganize algorithms in \cite{repsum} into a user-friendly set of primitive operations on an indexed type. Two simple original algorithms relating to the index of an indexed type are given in Section \ref{sec:primitiveops_index}. Theoretical summaries of algorithms (with some improvements) from \cite{repsum} are provided in Sections \ref{sec:primitiveops_update}, \ref{sec:primitiveops_deposit}, \ref{sec:primitiveops_renormalize}, \ref{sec:primitiveops_reduce}. Section \ref{sec:primitiveops_convert} provides an original algorithm (with an improved error bound) to obtain the value represented by an indexed type. Sections \ref{sec:primitiveops_error} and \ref{sec:primitiveops_limits} extend analysis in \cite{repsum} to the new algorithms.
   \subsection{Index}
     \label{sec:primitiveops_index}
@@ -453,7 +453,7 @@
     \label{sec:primitiveops_deposit}
     The deposit operation (here referred to as Algorithm \ref{alg:deposit}, a simpler version is described in the ``Extract $K$ first bins'' Section (lines 18-20) of Algorithm $6$ in \cite{repsum}) is used to extract the slices of a floating point number and add them to the appropriate accumulators of an indexed type.
 
-    The indexed type $Y$ that results from depositing the floating point values $x_0, ..., x_{n - 1}$ into an empty indexed type is referred to as the \textbf{indexed sum} of $x_0, ..., x_{n - 1}$. Algorithm \ref{alg:depositrestricted} deposits floating point numbers in the case that there is no overflow (the indexed type has an index greater than 0).
+    Algorithm \ref{alg:depositrestricted} deposits floating point numbers in the case that there is no overflow (the indexed type has an index greater than 0).
 
       \begin{samepage}
       \begin{alg}
@@ -494,25 +494,25 @@
         Throughout the proof, assume that the phrase ``for all $k$'' means ``for all $k \in \{0, ..., K - 1\}$.'' Assume also that $r_k$ and $S_k$ refer to the value of $r$ and $S$ after executing line \ref{alg:depositrestricted:split} in the $k^{th}$ iteration of the loop. Finally, assume ${Y_k}_P$ to refers to the initial value of ${Y_k}_P$ and $S_k$ refers to the final value of ${Y_k}_P$. Therefore, $S_k - {Y_k}_P$ is the amount added to ${Y_k}_P$.
 
         Note that lines \ref{alg:depositrestricted:split}-\ref{alg:depositrestricted:endsplit} correspond to Algorithm 4 of \cite{repsum}.
-        Therefore, if $\ulp({Y_k}_P) = \ulp(S_k)$ and $\ulp(r_k) < \frac{1}{2}\ulp({Y_k}_P)$, Corollary 3 of \cite{repsum} applies and we have that $S_k - {Y_k}_P \in \ulp({Y_k}_P)\Z \in 2^{a_{I + k} + 1}\Z$ and that $|r_{k + 1}| \leq \frac{1}{2}\ulp({Y_k}_P) = 2^{a_{I + k}}$.
+        Therefore, if $\ulp({Y_k}_P) = \ulp(S_k)$ and $\ulp(r_k) < 0.5\ulp({Y_k}_P)$, Corollary 3 of \cite{repsum} applies and we have that $S_k - {Y_k}_P \in \ulp({Y_k}_P)\Z \in 2^{a_{I + k} + 1}\Z$ and that $|r_{k + 1}| \leq 0.5\ulp({Y_k}_P) = 2^{a_{I + k}}$.
 
         As it is assumed ${Y_k}_P, S_k \in (\epsilon^{-1}  2^{a_{I + k}}, 2  \epsilon^{-1}  2^{a_{I + k}})$, we have $\ulp(S_k) = \ulp({Y_k}_P)$ for all $k$.
 
         We show $|r_k| \leq 2^{b_{I + k}} = 2^{a_{I + k - 1}}$ for all $k$ inductively. As a base case, $r_0 = x$ (from line \ref{alg:depositrestricted:rgetsx}) so $|r_0| = |x| < 2^{b_{I}}$.
-        As an inductive step, assume $|r_k| \leq 2^{b_{I + k}}$. We must show $\ulp(r_k) < \frac{1}{2}\ulp({Y_k}_P)$.
+        As an inductive step, assume $|r_k| \leq 2^{b_{I + k}}$. We must show $\ulp(r_k) < 0.5\ulp({Y_k}_P)$.
 
         By Theorem \ref{thm:underflowufp} we have that ${Y_k}_P$ is normalized and therefore $\ulp({Y_k}_P) = 2^{a_{I + k} + 1}$.
-        If $r_k$ is normalized, then because $\ulp(r_k) \leq 2^{1 - p}|r_k| \leq 2^{b_{I + k} - (p - 1)} = 2^{a_{I + k} + W - (p - 1)}$, and $W < p - 2$, we have $\ulp(r_k) \leq 2^{a_{I + k} - 3} < \frac{1}{2}\ulp({Y_k}_P)$. (This case is considered in \cite{repsum}).
-      If $r_k$ is denormalized, $\ulp(r_k) = 2^{e_{\min} - p + 1}$ since the unit in the last place of a denormalized number is always equal to $2^{e_{\min} - p + 1}$. Using \eqref{eq:binmin}, $\ulp(r_k) = 2^{e_{\min} - p + 1} \leq 2^{e_{\min} - p + 1 + ((e_{\max} - e_{\min} + p - 1) \mod W)} = 2^{a_{i_{\max}} - 1} \leq 2^{a_{I + k} - 1} < \frac{1}{2}\ulp({Y_k}_P)$.
+        If $r_k$ is normalized, then because $\ulp(r_k) \leq 2^{1 - p}|r_k| \leq 2^{b_{I + k} - (p - 1)} = 2^{a_{I + k} + W - (p - 1)}$, and $W < p - 2$, we have $\ulp(r_k) \leq 2^{a_{I + k} - 3} < 0.5\ulp({Y_k}_P)$. (This case is considered in \cite{repsum}).
+      If $r_k$ is denormalized, $\ulp(r_k) = 2^{e_{\min} - p + 1}$ since the unit in the last place of a denormalized number is always equal to $2^{e_{\min} - p + 1}$. Using \eqref{eq:binmin}, $\ulp(r_k) = 2^{e_{\min} - p + 1} \leq 2^{e_{\min} - p + 1 + ((e_{\max} - e_{\min} + p - 1) \mod W)} = 2^{a_{i_{\max}} - 1} \leq 2^{a_{I + k} - 1} < 0.5\ulp({Y_k}_P)$.
 
-        Therefore we have $\ulp(r_k) < \frac{1}{2}\ulp({Y_k}_P)$. Thus, Corollary 3 of \cite{repsum} applies and we have that $|r_{k + 1}| \leq \frac{1}{2}\ulp({Y_k}_P) = 2^{a_{I + k}}$. This completes the induction.
+        Therefore we have $\ulp(r_k) < 0.5\ulp({Y_k}_P)$. Thus, Corollary 3 of \cite{repsum} applies and we have that $|r_{k + 1}| \leq 0.5\ulp({Y_k}_P) = 2^{a_{I + k}}$. This completes the induction.
 
         Next, we show $S_k - {Y_k}_P = \roundtonearestinfty(r_k, a_{I + k} + 1)$. As Corollary 3 of \cite{repsum} applies for all $k$, then $S_k - {Y_k}_P \in 2^{a_{I + k} + 1}\Z$. By Theorem 3 of \cite{repsum}, $r_{k + 1} = r_k - (S_k - {Y_k}_P)$. Since $|r_{k + 1}| \leq 2^{a_{I + k}}$, we consider two cases.
 
         If $|r_k - (S_k - {Y_k}_P)| < 2^{a_{I + k}}$, then $S_k - {Y_k}_P = \roundtonearestinfty(r_k, a_{I + k} + 1)$.
 
         If $|r_k - (S_k - {Y_k}_P)| = 2^{a_{I + k}}$, then $S_k - {Y_k}_P \in \{r_k + 2^{a_{I + k}},  r_k - 2^{a_{I + k}}\}$.
-        As $S_k = \fl({Y_k}_P + (r_k|1))$, we have $|S_k - {Y_k}_P - (r_k|1)| \leq \frac{1}{2}\ulp(S_k) = 2^{a_{I + k}}$.  As $\ulp(S_k) = \ulp({Y_k}_P) = 2^{a_{I + k} + 1}$, we also have that $r_k \in 2^{a_{I + k}}\Z$  and because $\ulp(r_k) < 2^{a_{I + k}}$, $|(r_k|1) - r_k| > 0$ (with $(r_k|1) - r_k$ taking the same sign as $r_k$).
+        As $S_k = \fl({Y_k}_P + (r_k|1))$, we have $|S_k - {Y_k}_P - (r_k|1)| \leq 0.5\ulp(S_k) = 2^{a_{I + k}}$.  As $\ulp(S_k) = \ulp({Y_k}_P) = 2^{a_{I + k} + 1}$, we also have that $r_k \in 2^{a_{I + k}}\Z$  and because $\ulp(r_k) < 2^{a_{I + k}}$, $|(r_k|1) - r_k| > 0$ (with $(r_k|1) - r_k$ taking the same sign as $r_k$).
         If $r_k > 0$, then $(S_k - {Y_k}_P) = r_k + 2^{a_{I + k}}$ (otherwise we will have $|S_k - {Y_k}_P - (r_k|1)| = |r_k - 2^{a_{I + k}} - (r_k|1)| > 2^{a_{I + k}}$).
         If $r_k < 0$, then $(S_k - {Y_k}_P) = r_k - 2^{a_{I + k}}$ (otherwise we will have $|S_k - {Y_k}_P - (r_k|1)| = |r_k + 2^{a_{I + k}} - (r_k|1)| > 2^{a_{I + k}}$). Therefore, $S_k - {Y_k}_P = \roundtonearestinfty(r_k, a_{I + k} + 1)$.
 
@@ -590,14 +590,14 @@
 
         As $|x| < 2^{b_0} = 2 \cdot 2^{e_{\max}}$ and we scale by a power of two, we have $|r| < 2^{b_0 - p + W - 1} = 2^{e_{\max} - p + W}$ in line \ref{alg:deposit:scaler}.
 
-        Since ${Y_0}_P, S \in (2^{e_{\max}}, 2 \cdot 2^{e_{\max}})$, we have $\ulp({Y_0}_P) = \ulp(S)$ in line \ref{alg:deposit:formS}. As $|r| < 2^{e_{\max} - p + W}$ and $W < p - 2$, we have $\ulp(r) \leq |r| 2^{1 - p} < 2^{e_{\max} + 1 - 2p + W} < \frac{1}{2}\ulp({Y_0}_P)$ in line \ref{alg:deposit:formS}.
+        Since ${Y_0}_P, S \in (2^{e_{\max}}, 2 \cdot 2^{e_{\max}})$, we have $\ulp({Y_0}_P) = \ulp(S)$ in line \ref{alg:deposit:formS}. As $|r| < 2^{e_{\max} - p + W}$ and $W < p - 2$, we have $\ulp(r) \leq |r| 2^{1 - p} < 2^{e_{\max} + 1 - 2p + W} < 0.5\ulp({Y_0}_P)$ in line \ref{alg:deposit:formS}.
 
-        Because line \ref{alg:deposit:formS} corresponds to lines 1-2 of Algorithm 4 of \cite{repsum}, Corollary 3 of \cite{repsum} applies and we have that $S - {Y_0}_P \in \ulp({Y_0}_P)\Z = 2^{a_0 - p + W}\Z$ and $|r - (S - {Y_0}_P)| \leq \frac{1}{2}  \ulp({Y_0}_P) = 2^{a_0 - p + W - 1}$ in line \ref{alg:deposit:formS}.
+        Because line \ref{alg:deposit:formS} corresponds to lines 1-2 of Algorithm 4 of \cite{repsum}, Corollary 3 of \cite{repsum} applies and we have that $S - {Y_0}_P \in \ulp({Y_0}_P)\Z = 2^{a_0 - p + W}\Z$ and $|r - (S - {Y_0}_P)| \leq 0.5  \ulp({Y_0}_P) = 2^{a_0 - p + W - 1}$ in line \ref{alg:deposit:formS}.
 
         If $|r - (S - {Y_0}_P)| < 2^{a_{0} - p + W - 1}$, then $S - {Y_k}_P = \roundtonearestinfty(r, a_{0} - p + W)$.
 
         If $|r - (S - {Y_0}_P)| = 2^{a_{0} - p + W - 1}$, then $S - {Y_0}_P \in \{r + 2^{a_0 - p + W - 1},  r_k - 2^{a_{0} - p + W - 1}\}$.
-        As $S = \fl({Y_0}_P + (r|1))$, we have $|S - {Y_0}_P - (r|1)| \leq \frac{1}{2}\ulp(S) = 2^{a_{0} - p + W - 1}$.  As $\ulp(S) = \ulp({Y_0}_P) = 2^{a_{0} - p + W}$, we also have that $r \in 2^{a_{0} - p + W - 1}\Z$  and because $\ulp(r) < 2^{a_{0} - p + W - 1}$, $|(r|1) - r| > 0$ (with $(r|1) - r$ taking the same sign as $r$).
+        As $S = \fl({Y_0}_P + (r|1))$, we have $|S - {Y_0}_P - (r|1)| \leq 0.5\ulp(S) = 2^{a_{0} - p + W - 1}$.  As $\ulp(S) = \ulp({Y_0}_P) = 2^{a_{0} - p + W}$, we also have that $r \in 2^{a_{0} - p + W - 1}\Z$  and because $\ulp(r) < 2^{a_{0} - p + W - 1}$, $|(r|1) - r| > 0$ (with $(r|1) - r$ taking the same sign as $r$).
         If $r > 0$, then $(S - {Y_0}_P) = r + 2^{a_{0} - p + W - 1}$ (otherwise we will have $|S - {Y_0}_P - (r|1)| = |r - 2^{a_{0} - p + W - 1} - (r|1)| > 2^{a_{0} - p + W - 1}$).
         If $r < 0$, then $(S - {Y_0}_P) = r - 2^{a_{0} - p + W}$ (otherwise we will have $|S - {Y_0}_P - (r|1)| = |r + 2^{a_{0} - p + W - 1} - (r|1)| > 2^{a_{0} - p + W - 1}$). Therefore, $S - {Y_0}_P = \roundtonearestinfty(r, a_{0} - p + W)$.
 
@@ -701,13 +701,7 @@
     \end{align*}
     \end{proof}
 
-    If an indexed type $Y$ initially satisfies ${Y_k}_P \in [1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}})$ (such a condition is satisfied upon initialization of an empty $Y$) and we deposit at most $2^{p - W - 2}$ floating point numbers into it, then Theorem \ref{thm:renormfreq} shows that after all of the deposits, ${Y_k}_P \in [1.25  \epsilon^{-1} 2^{a_{I + k}}, 2  \epsilon^{-1} 2^{a_{I + k}})$.
-
-    Therefore, after another renormalization, the primary fields would once again satisfy
-
-    \begin{equation*}
-    {Y_k}_P \in [1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}})
-    \end{equation*}
+    If an indexed type $Y$ initially satisfies ${Y_k}_P \in [1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}})$ (such a condition is satisfied upon initialization of an empty $Y$) and we deposit at most $2^{p - W - 2}$ floating point numbers into it, then Theorem \ref{thm:renormfreq} shows that after all of the deposits, ${Y_k}_P \in [1.25  \epsilon^{-1} 2^{a_{I + k}}, 2  \epsilon^{-1} 2^{a_{I + k}})$. Therefore, after another renormalization, the primary fields would once again satisfy ${Y_k}_P \in [1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}})$.
 
     As ${Y_k}_C$ must be able to record additions of absolute value 1 without error, ${Y_k}_C$ must stay in the range $(-\epsilon^{-1}, \epsilon^{-1})$. As each renormalization results in addition not in excess absolute value of 1 to ${Y_k}_C$, a maximum of $(\epsilon^{-1} - 1)$ renormalizations may be performed, meaning that an indexed type is capable of representing the sum of at least
     \begin{equation}
@@ -747,6 +741,13 @@
     \end{samepage}
 
     The update operation is described in the ``Update'' Section (lines 7-14) of Algorithm $6$ in \cite{repsum}.
+
+    If $Y$ is the $K$-fold indexed sum of some $x_0, ..., x_{n - 1}$ with index $I$, then the shift described by Algorithm \ref{alg:update} produces an indexed type of index $J < I$ with the value represented by accumulator $k$ satisfying
+    \begin{equation*}
+      \mathcal{Y}_k = \sum\limits_{j = 0}^{n - 1} d(x_j, J + k)
+    \end{equation*}
+
+    The new accumulators $Y_k$ with $0 \leq k < I - J$ must represent 0 because $x_j < 2^{a_{J + k}} \leq 2^{a_I}$ so $\sum\limits_{j = 0}^{n - 1} d(x_j, J + k) = 0$ by Lemma \ref{lem:dzero}.
 
     It should be noted that if ${Y_0}_P$ is 0, then the update is performed as if $I + K < J$. If ${Y_0}_P$ is \texttt{Inf}, \texttt{-Inf}, or \texttt{NaN}, then $Y$ is not modified by an update.
 
