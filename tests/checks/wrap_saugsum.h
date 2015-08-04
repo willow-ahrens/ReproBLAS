@@ -475,17 +475,18 @@ float wrap_saugsum_bound(int fold, int N, wrap_saugsum_func_t func, float *X, in
     case wrap_saugsum_SISADD:
     case wrap_saugsum_SISDEPOSIT:
     case wrap_saugsum_RSASUM:
-      return sibound(fold, N, samax(N, X, incX));
+      return sibound(fold, N, samax(N, X, incX), res);
     case wrap_saugsum_RSNRM2:
       {
         float amax = samax(N, X, incX);
+        float scale = sscale(amax);
         if (amax == 0.0){
           return 0.0;
         }
-        return sibound(fold, N, amax) * (amax / (res + ref));
+        return sibound(fold, N, (amax/scale) * (amax/scale), (res/scale) * (res/scale)) * (scale / (res + ref)) * scale;
       }
     case wrap_saugsum_RSDOT:
-      return sibound(fold, N, samaxm(N, X, incX, Y, incY));
+      return sibound(fold, N, samaxm(N, X, incX, Y, incY), res);
   }
   fprintf(stderr, "ReproBLAS error: unknown bound for %s\n", wrap_saugsum_func_descs[func]);
   exit(125);

@@ -2,6 +2,8 @@
 
 #include <indexed.h>
 
+#include "../common/common.h"
+
 /**
  * @brief Get indexed single precision summation error bound
  *
@@ -21,6 +23,5 @@
  * @date   21 May 2015
  */
 float sibound(const int fold, const int N, const float X, const float S) {
-  double g = ((7.0 - 2.0 * sqrt(FLT_EPSILON)) / ((1.0 - 2.0 * sqrt(FLT_EPSILON)) * (1.0 - 4.0 * sqrt(FLT_EPSILON)))) * FLT_EPSILON;
-  return (float)(MAX(fabs((double)X), ldexp(0.5, FLT_MIN_EXP - 1)) * ldexp(0.5, (1 - fold)*(SIWIDTH - 1) + 1) * N + (g / (1.0 - g)) * fabs((double)S));
+  return (float)(MAX(fabs((double)X), ldexp(0.5, FLT_MIN_EXP - 1)) * ldexp(0.5, (1 - fold)*(SIWIDTH - 1) + 1) * N + ((7.0 * FLT_EPSILON) / (1.0 - 6.0 * sqrt((double)FLT_EPSILON) - 7.0 * FLT_EPSILON)) * fabs((double)S));
 }

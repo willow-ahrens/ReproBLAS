@@ -19,6 +19,5 @@
  * @date   31 Jul 2015
  */
 double dibound(const int fold, const int N, const double X, const double S) {
-  double g = ((7.0 - 2.0 * sqrt(DBL_EPSILON)) / ((1.0 - 2.0 * sqrt(DBL_EPSILON)) * (1.0 - 4.0 * sqrt(DBL_EPSILON)))) * DBL_EPSILON;
-  return MAX(fabs(X), ldexp(0.5, DBL_MIN_EXP - 1)) * ldexp(0.5, (1 - fold)*(DIWIDTH - 1) + 1) * N + (g / (1.0 - g)) * fabs(S);
+  return MAX(fabs(X), ldexp(0.5, DBL_MIN_EXP - 1)) * ldexp(0.5, (1 - fold)*(DIWIDTH - 1) + 1) * N + ((7.0 * DBL_EPSILON) / (1.0 - 6.0 * sqrt(DBL_EPSILON) - 7.0 * DBL_EPSILON)) * fabs(S);
 }

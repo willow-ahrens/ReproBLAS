@@ -679,7 +679,7 @@ float complex wrap_caugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill
   }
 }
 
-float complex wrap_caugsum_bound(int fold, int N, wrap_caugsum_func_t func, float complex *X, int incX, float complex *Y, int incY, float res, float ref){
+float complex wrap_caugsum_bound(int fold, int N, wrap_caugsum_func_t func, float complex *X, int incX, float complex *Y, int incY, float complex res, float complex ref){
   switch(func){
     case wrap_caugsum_RCSUM:
     case wrap_caugsum_CICIADD:
@@ -690,8 +690,8 @@ float complex wrap_caugsum_bound(int fold, int N, wrap_caugsum_func_t func, floa
         float complex bound;
         float *bound_base = (float*)&bound;
         camax_sub(N, X, incX, &amax);
-        bound_base[0] = sibound(fold, N, crealf(amax));
-        bound_base[1] = sibound(fold, N, cimagf(amax));
+        bound_base[0] = sibound(fold, N, crealf(amax), crealf(res));
+        bound_base[1] = sibound(fold, N, cimagf(amax), cimagf(res));
         return bound;
       }
     case wrap_caugsum_RSCASUM:
@@ -700,18 +700,20 @@ float complex wrap_caugsum_bound(int fold, int N, wrap_caugsum_func_t func, floa
         float amax;
         camax_sub(N, X, incX, &amax2);
         amax = MAX(crealf(amax2), cimagf(amax2));
-        return sibound(fold, N, amax);
+        return sibound(fold, N, amax, crealf(res));
       }
     case wrap_caugsum_RSCNRM2:
       {
         float complex amax2;
         float amax;
+        float scale;
         camax_sub(N, X, incX, &amax2);
         amax = MAX(crealf(amax2), cimagf(amax2));
+        scale = sscale(amax);
         if (amax == 0.0){
           return 0.0;
         }
-        return sibound(fold, N, amax) * (amax / (res + ref));
+        return sibound(fold, N, (amax/scale) * (amax/scale), (crealf(res)/scale) * (crealf(res)/scale)) * (scale / (res + ref)) * scale;
       }
     case wrap_caugsum_RCDOTU:
     case wrap_caugsum_RCDOTC:
@@ -720,8 +722,8 @@ float complex wrap_caugsum_bound(int fold, int N, wrap_caugsum_func_t func, floa
         float complex bound;
         float *bound_base = (float*)&bound;
         camaxm_sub(N, X, incX, Y, incY, &amaxm);
-        bound_base[0] = sibound(fold, N, crealf(amaxm));
-        bound_base[1] = sibound(fold, N, cimagf(amaxm));
+        bound_base[0] = sibound(fold, N, crealf(amaxm), crealf(res));
+        bound_base[1] = sibound(fold, N, cimagf(amaxm), cimagf(res));
         return bound;
       }
   }

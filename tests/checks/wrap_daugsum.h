@@ -475,17 +475,18 @@ double wrap_daugsum_bound(int fold, int N, wrap_daugsum_func_t func, double *X, 
     case wrap_daugsum_DIDADD:
     case wrap_daugsum_DIDDEPOSIT:
     case wrap_daugsum_RDASUM:
-      return dibound(fold, N, damax(N, X, incX));
+      return dibound(fold, N, damax(N, X, incX), res);
     case wrap_daugsum_RDNRM2:
       {
         double amax = damax(N, X, incX);
+        double scale = dscale(amax);
         if (amax == 0.0){
           return 0.0;
         }
-        return dibound(fold, N, amax) * (amax / (res + ref));
+        return dibound(fold, N, (amax/scale) * (amax/scale), res) * (scale / (res + ref)) * scale;
       }
     case wrap_daugsum_RDDOT:
-      return dibound(fold, N, damaxm(N, X, incX, Y, incY));
+      return dibound(fold, N, damaxm(N, X, incX, Y, incY), res);
   }
   fprintf(stderr, "ReproBLAS error: unknown bound for %s\n", wrap_daugsum_func_descs[func]);
   exit(125);

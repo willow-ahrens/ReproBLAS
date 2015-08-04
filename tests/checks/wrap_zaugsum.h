@@ -679,7 +679,7 @@ double complex wrap_zaugsum_result(int N, wrap_zaugsum_func_t func, util_vec_fil
   }
 }
 
-double complex wrap_zaugsum_bound(int fold, int N, wrap_zaugsum_func_t func, double complex *X, int incX, double complex *Y, int incY, double res, double ref){
+double complex wrap_zaugsum_bound(int fold, int N, wrap_zaugsum_func_t func, double complex *X, int incX, double complex *Y, int incY, double complex res, double complex ref){
   switch(func){
     case wrap_zaugsum_RZSUM:
     case wrap_zaugsum_ZIZIADD:
@@ -690,8 +690,8 @@ double complex wrap_zaugsum_bound(int fold, int N, wrap_zaugsum_func_t func, dou
         double complex bound;
         double *bound_base = (double*)&bound;
         zamax_sub(N, X, incX, &amax);
-        bound_base[0] = dibound(fold, N, creal(amax));
-        bound_base[1] = dibound(fold, N, cimag(amax));
+        bound_base[0] = dibound(fold, N, creal(amax), creal(res));
+        bound_base[1] = dibound(fold, N, cimag(amax), cimag(res));
         return bound;
       }
     case wrap_zaugsum_RDZASUM:
@@ -700,18 +700,20 @@ double complex wrap_zaugsum_bound(int fold, int N, wrap_zaugsum_func_t func, dou
         double amax;
         zamax_sub(N, X, incX, &amax2);
         amax = MAX(creal(amax2), cimag(amax2));
-        return dibound(fold, N, amax);
+        return dibound(fold, N, amax, creal(res));
       }
     case wrap_zaugsum_RDZNRM2:
       {
         double complex amax2;
         double amax;
+        double scale;
         zamax_sub(N, X, incX, &amax2);
         amax = MAX(creal(amax2), cimag(amax2));
+        scale = dscale(amax);
         if (amax == 0.0){
           return 0.0;
         }
-        return dibound(fold, N, amax) * (amax / (res + ref));
+        return dibound(fold, N, (amax/scale) * (amax/scale), (creal(res)/scale) * (creal(res)/scale)) * (scale / (res + ref)) * scale;
       }
     case wrap_zaugsum_RZDOTU:
     case wrap_zaugsum_RZDOTC:
@@ -720,8 +722,8 @@ double complex wrap_zaugsum_bound(int fold, int N, wrap_zaugsum_func_t func, dou
         double complex bound;
         double *bound_base = (double*)&bound;
         zamaxm_sub(N, X, incX, Y, incY, &amaxm);
-        bound_base[0] = dibound(fold, N, creal(amaxm));
-        bound_base[1] = dibound(fold, N, cimag(amaxm));
+        bound_base[0] = dibound(fold, N, creal(amaxm), creal(res));
+        bound_base[1] = dibound(fold, N, cimag(amaxm), cimag(res));
         return bound;
       }
   }
