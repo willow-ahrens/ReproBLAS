@@ -713,7 +713,7 @@ double complex wrap_zaugsum_bound(int fold, int N, wrap_zaugsum_func_t func, dou
         if (amax == 0.0){
           return 0.0;
         }
-        return dibound(fold, N, (amax/scale) * (amax/scale), (creal(res)/scale) * (creal(res)/scale)) * (scale / (res + ref)) * scale;
+        return dibound(fold, N, (amax/scale) * (amax/scale), (creal(res)/scale) * (creal(res)/scale)) * (scale / (creal(res) + creal(ref))) * scale;
       }
     case wrap_zaugsum_RZDOTU:
     case wrap_zaugsum_RZDOTC:

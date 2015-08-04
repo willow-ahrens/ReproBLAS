@@ -713,7 +713,7 @@ float complex wrap_caugsum_bound(int fold, int N, wrap_caugsum_func_t func, floa
         if (amax == 0.0){
           return 0.0;
         }
-        return sibound(fold, N, (amax/scale) * (amax/scale), (crealf(res)/scale) * (crealf(res)/scale)) * (scale / (res + ref)) * scale;
+        return sibound(fold, N, (amax/scale) * (amax/scale), (crealf(res)/scale) * (crealf(res)/scale)) * (scale / (crealf(res) + crealf(ref))) * scale;
       }
     case wrap_caugsum_RCDOTU:
     case wrap_caugsum_RCDOTC:
