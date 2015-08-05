@@ -12,28 +12,35 @@ void rzgemv(const char Order,
             const void *beta, void *Y, const int incY){
   double_complex_indexed *YI;
   double betaY[2];
-  int NY;
   int i;
 
   switch(TransA){
     case 'n':
     case 'N':
-      NY = M;
+      YI = (double_complex_indexed*)malloc(zisize(DIDEFAULTFOLD)*M);
+      for(i = 0; i < M; i++){
+        betaY[0] = ((double*)Y)[2 * i * incY] * ((double*)beta)[0] - ((double*)Y)[2 * i * incY + 1] * ((double*)beta)[1];
+        betaY[1] = ((double*)Y)[2 * i * incY] * ((double*)beta)[1] + ((double*)Y)[2 * i * incY + 1] * ((double*)beta)[0];
+        zizconv(DIDEFAULTFOLD, betaY, YI + i * zinum(DIDEFAULTFOLD));
+      }
+      zizgemv(DIDEFAULTFOLD, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
+      for(i = 0; i < M; i++){
+        zziconv_sub(DIDEFAULTFOLD, YI + i * zinum(DIDEFAULTFOLD), ((double*)Y) + 2 * i * incY);
+      }
       break;
     default:
-      NY = N;
+      YI = (double_complex_indexed*)malloc(zisize(DIDEFAULTFOLD)*N);
+      for(i = 0; i < N; i++){
+        betaY[0] = ((double*)Y)[2 * i * incY] * ((double*)beta)[0] - ((double*)Y)[2 * i * incY + 1] * ((double*)beta)[1];
+        betaY[1] = ((double*)Y)[2 * i * incY] * ((double*)beta)[1] + ((double*)Y)[2 * i * incY + 1] * ((double*)beta)[0];
+        zizconv(DIDEFAULTFOLD, betaY, YI + i * zinum(DIDEFAULTFOLD));
+      }
+      zizgemv(DIDEFAULTFOLD, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
+      for(i = 0; i < N; i++){
+        zziconv_sub(DIDEFAULTFOLD, YI + i * zinum(DIDEFAULTFOLD), ((double*)Y) + 2 * i * incY);
+      }
       break;
   }
 
-  YI = (double_complex_indexed*)malloc(zisize(DIDEFAULTFOLD)*NY);
-  for(i = 0; i < NY; i++){
-    betaY[0] = ((double*)Y)[2 * i * incY] * ((double*)beta)[0] - ((double*)Y)[2 * i * incY + 1] * ((double*)beta)[1];
-    betaY[1] = ((double*)Y)[2 * i * incY] * ((double*)beta)[1] + ((double*)Y)[2 * i * incY + 1] * ((double*)beta)[0];
-    zizconv(DIDEFAULTFOLD, betaY, YI + i*zinum(DIDEFAULTFOLD));
-  }
-  zizgemv(DIDEFAULTFOLD, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
-  for(i = 0; i < NY; i++){
-    zziconv_sub(DIDEFAULTFOLD, YI + i*zinum(DIDEFAULTFOLD), ((double*)Y) + 2 * i * incY);
-  }
   free(YI);
 }

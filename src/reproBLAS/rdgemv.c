@@ -11,26 +11,30 @@ void rdgemv(const char Order,
             const double *X, const int incX,
             const double beta, double *Y, const int incY){
   double_indexed *YI;
-  int NY;
   int i;
 
   switch(TransA){
     case 'n':
     case 'N':
-      NY = M;
+      YI = (double_indexed*)malloc(disize(DIDEFAULTFOLD)*M);
+      for(i = 0; i < M; i++){
+        didconv(DIDEFAULTFOLD, Y[i * incY] * beta, YI + i * dinum(DIDEFAULTFOLD));
+      }
+      didgemv(DIDEFAULTFOLD, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
+      for(i = 0; i < M; i++){
+        Y[i * incY] = ddiconv(DIDEFAULTFOLD, YI + i * dinum(DIDEFAULTFOLD));
+      }
       break;
     default:
-      NY = N;
+      YI = (double_indexed*)malloc(disize(DIDEFAULTFOLD)*N);
+      for(i = 0; i < N; i++){
+        didconv(DIDEFAULTFOLD, Y[i * incY] * beta, YI + i * dinum(DIDEFAULTFOLD));
+      }
+      didgemv(DIDEFAULTFOLD, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
+      for(i = 0; i < N; i++){
+        Y[i * incY] = ddiconv(DIDEFAULTFOLD, YI + i * dinum(DIDEFAULTFOLD));
+      }
       break;
-  }
-
-  YI = (double_indexed*)malloc(disize(DIDEFAULTFOLD)*NY);
-  for(i = 0; i < NY; i++){
-    didconv(DIDEFAULTFOLD, Y[i * incY] * beta, YI + i*dinum(DIDEFAULTFOLD));
-  }
-  didgemv(DIDEFAULTFOLD, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
-  for(i = 0; i < NY; i++){
-    Y[i * incY] = ddiconv(DIDEFAULTFOLD, YI + i*dinum(DIDEFAULTFOLD));
   }
   free(YI);
 }
