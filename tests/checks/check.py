@@ -8,10 +8,9 @@ check_dir = os.path.dirname(os.path.abspath(__file__))
 
 check_suite = checks.CheckSuite()
 
-#folds = [2, 3, 4]
-folds = [2]
+folds = [2, 3, 4]
 inf_folds = [2, 3, 4]
-incs = [1]
+incs = [1, 3]
 
 FLT_BIN_WIDTH=13
 FLT_MAX_EXP=128
@@ -33,9 +32,10 @@ DBL_ONES = 0
 for i in range(DBL_MANT_DIG):
   DBL_ONES += 2.0 ** -i
 
-check_suite.add_checks([checks.VerifyRDGEMVTest()],\
-                       ["O", "T", ("N", "lda"), "M", "incX", "incY", "f", "g", "j", "fold"],\
-                       [["RowMajor"], ["Trans", "NoTrans"], [(1023, 1023), (1023, 1024), (1024, 1024)], [1023, 1024], incs, incs,\
+check_suite.add_checks([checks.VerifyRDGEMVTest(),\
+                        checks.VerifyRZGEMVTest()],\
+                       ["B", "O", "T", ("N", "lda"), "M", "incX", "incY", "f", "g", "j", "fold"],\
+                       [["16"], ["RowMajor"], ["Trans", "NoTrans"], [(255, 256), (2048, 2048)], [255, 2048], incs, incs,\
                         ["rand",\
                          "small+grow*big"],\
                         ["rand",\
@@ -43,9 +43,10 @@ check_suite.add_checks([checks.VerifyRDGEMVTest()],\
                         ["rand",\
                          "small+grow*big"],\
                         folds])
-check_suite.add_checks([checks.VerifyRDGEMVTest()],\
-                       ["O", "T", ("M", "lda"), "N", "incX", "incY", "f", "g", "j", "fold"],\
-                       [["ColMajor"], ["Trans", "NoTrans"], [(1023, 1023), (1023, 1024), (1024, 1024)], [1023, 1024], incs, incs,\
+check_suite.add_checks([checks.VerifyRDGEMVTest(),\
+                        checks.VerifyRZGEMVTest()],\
+                       ["B", "O", "T", ("M", "lda"), "N", "incX", "incY", "f", "g", "j", "fold"],\
+                       [["16"], ["ColMajor"], ["Trans", "NoTrans"], [(255, 256), (2048, 2048)], [255, 2048], incs, incs,\
                         ["rand",\
                          "small+grow*big"],\
                         ["rand",\

@@ -50,9 +50,9 @@ int verify_dgemv_reproducibility(int fold, char Order, char TransA, int M, int N
     //compute with unpermuted data
     memcpy(res, Y, NY * incY * sizeof(double));
     memcpy(Ires, YI, NY * incY * disize(fold));
-    if (num_blocks == 1)
+    if (num_blocks == 1){
       wrap_rdgemv(fold, Order, TransA, M, N, alpha, A, lda, X, incX, beta, res, incY);
-    else {
+    }else {
       switch(TransA){
         case 'n':
         case 'N':
@@ -93,18 +93,18 @@ int verify_dgemv_reproducibility(int fold, char Order, char TransA, int M, int N
       for(i = 0; i < NY; i++){
         res[i * incY] = ddiconv(fold, Ires + i * incY * dinum(fold));
       }
-      for(i = 0; i < NY; i++){
-        if(res[i * incY] != ref[i * incY]){
-          printf("rdgemv(A, X, Y)[num_blocks=%d,block_N=%d] = %g != %g\n", num_blocks, block_N, res[i * incY], ref[i * incY]);
-          if (num_blocks != 1) {
-            printf("Ref I_double:\n");
-            diprint(fold, Iref + i * incY * dinum(fold));
-            printf("\nRes I_double:\n");
-            diprint(fold, Ires + i * incY * dinum(fold));
-            printf("\n");
-          }
-          return 1;
+    }
+    for(i = 0; i < NY; i++){
+      if(res[i * incY] != ref[i * incY]){
+        printf("rdgemv(A, X, Y)[num_blocks=%d,block_N=%d] = %g != %g\n", num_blocks, block_N, res[i * incY], ref[i * incY]);
+        if (num_blocks != 1) {
+          printf("Ref I_double:\n");
+          diprint(fold, Iref + i * incY * dinum(fold));
+          printf("\nRes I_double:\n");
+          diprint(fold, Ires + i * incY * dinum(fold));
+          printf("\n");
         }
+        return 1;
       }
     }
     num_blocks *= 2;
@@ -116,6 +116,7 @@ int matvec_fill_show_help(void){
   verify_rdgemv_options_initialize();
 
   opt_show_option(fold);
+  opt_show_option(max_blocks);
   return 0;
 }
 

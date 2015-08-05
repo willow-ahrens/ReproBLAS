@@ -636,5 +636,7 @@
   "zdepositSum_max_unroll_width_SSE_fold_4": 1,
   "zmzdotc_block_size_N_block_MAX": 2048,
   "zmzdotu_block_size_N_block_MAX": 2048,
-  "zmzsum_block_size_N_block_MAX": 2048
+  "zmzsum_block_size_N_block_MAX": 2048,
+  "zmzsum_block_size_X_BLOCK": 8192,
+  "zmzsum_block_size_Y_BLOCK": 128
 }

@@ -27,5 +27,6 @@ void wrap_rdgemv(int fold, const char Order, const char TransA, const int M, con
     for(i = 0; i < NY; i++){
       Y[i * incY] = ddiconv(fold, YI + i * incY * dinum(fold));
     }
+    free(YI);
   }
 }

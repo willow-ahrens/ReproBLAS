@@ -53,6 +53,17 @@ double didssq(const int fold, const int N, const double *X, const int incX, cons
 double dmdssq(const int fold, const int N, const double *X, const int incX, const double scaleY, double *priY, const int incpriY, double *carY, const int inccarY);
 void diddot(const int fold, const int N, const double *X, const int incX, const double *Y, const int incY, double_indexed *Z);
 void dmddot(const int fold, const int N, const double *X, const int incX, const double *Y, const int incY, double *manZ, const int incmanZ, double *carZ, const int inccarZ);
+void didgemv(const int fold, const char Order, const char TransA,
+             const int M, const int N,
+             const double alpha, const double *A, const int lda,
+             const double *X, const int incX,
+             double_indexed *Y, const int incY);
+void dmdgemv(const int fold, const char Order, const char TransA,
+             const int M, const int N,
+             const double alpha, const double *A, const int lda,
+             const double *X, const int incX,
+             double *priY, const int incpriY, const int incincpriY,
+             double *carY, const int inccarY, const int incinccarY);
 
 void zizsum(const int fold, const int N, const void *X, const int incX, double_indexed *Y);
 void zmzsum(const int fold, const int N, const void *X, const int incX, double *priY, const int incpriY, double *carY, const int inccarY);
@@ -64,6 +75,17 @@ void zizdotu(const int fold, const int N, const void *X, const int incX, const v
 void zmzdotu(const int fold, const int N, const void *X, const int incX, const void *Y, const int incY, double *manZ, const int incmanZ, double *carZ, const int inccarZ);
 void zizdotc(const int fold, const int N, const void *X, const int incX, const void *Y, const int incY, double_indexed *Z);
 void zmzdotc(const int fold, const int N, const void *X, const int incX, const void *Y, const int incY, double *manZ, const int incmanZ, double *carZ, const int inccarZ);
+void zizgemv(const int fold, const char Order, const char TransA,
+             const int M, const int N,
+             const void *alpha, const void *A, const int lda,
+             const void *X, const int incX,
+             double_complex_indexed *Y, const int incY);
+void zmzgemv(const int fold, const char Order, const char TransA,
+             const int M, const int N,
+             const void *alpha, const void *A, const int lda,
+             const void *X, const int incX,
+             double *priY, const int incpriY, const int incincpriY,
+             double *carY, const int inccarY, const int incinccarY);
 
 void sissum(const int fold, const int N, const float *X, const int incX, float_indexed *Y);
 void smssum(const int fold, const int N, const float *X, const int incX, float *priY, const int incpriY, float *carY, const int inccarY);
@@ -150,18 +172,5 @@ extern void cIAccumulate(cIAccum *acc, float complex x);
 extern void cIAccumulates(cIAccum *acc, int n, float complex* x, int inc);
 extern float complex cIAccExtract(cIAccum *acc);
 */
-
-void didgemv(const int fold, const char Order, const char TransA,
-             const int M, const int N,
-             const double alpha, const double *A, const int lda,
-             const double *X, const int incX,
-             double_indexed *Y, const int incY);
-
-void dmdgemv(const int fold, const char Order, const char TransA,
-             const int M, const int N,
-             const double alpha, const double *A, const int lda,
-             const double *X, const int incX,
-             double *priY, const int incpriY, const int incincpriY,
-             double *carY, const int inccarY, const int incinccarY);
 
 #endif

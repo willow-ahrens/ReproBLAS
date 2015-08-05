@@ -120,6 +120,7 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
               __m256d y_0;
               __m256d compression_0;
               __m256d expansion_0;
+              __m256d expansion_mask_0;
               __m256d q_0, q_1;
               __m256d s_0_0, s_0_1;
               __m256d s_1_0, s_1_1;
@@ -135,14 +136,17 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                     if(dmindex0(manZ)){
                       if(dmindex0(manZ + 1)){
                         compression_0 = _mm256_set1_pd(DMCOMPRESSION);
-                        expansion_0 = _mm256_set1_pd(DMEXPANSION);
+                        expansion_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
                       }else{
                         compression_0 = _mm256_set_pd(1.0, DMCOMPRESSION, 1.0, DMCOMPRESSION);
-                        expansion_0 = _mm256_set_pd(1.0, DMEXPANSION, 1.0, DMEXPANSION);
+                        expansion_0 = _mm256_set_pd(1.0, DMEXPANSION * 0.5, 1.0, DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set_pd(0.0, DMEXPANSION * 0.5, 0.0, DMEXPANSION * 0.5);
                       }
                     }else{
                       compression_0 = _mm256_set_pd(DMCOMPRESSION, 1.0, DMCOMPRESSION, 1.0);
-                      expansion_0 = _mm256_set_pd(DMEXPANSION, 1.0, DMEXPANSION, 1.0);
+                      expansion_0 = _mm256_set_pd(DMEXPANSION * 0.5, 1.0, DMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm256_set_pd(DMEXPANSION * 0.5, 0.0, DMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 2 <= N_block; i += 2, x += 4, y += 4){
                       x_0 = _mm256_loadu_pd(((double*)x));
@@ -156,8 +160,8 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       s_0_1 = _mm256_add_pd(s_0_1, _mm256_or_pd(_mm256_mul_pd(x_1, compression_0), blp_mask_tmp));
                       q_0 = _mm256_sub_pd(q_0, s_0_0);
                       q_1 = _mm256_sub_pd(q_1, s_0_1);
-                      x_0 = _mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0));
-                      x_1 = _mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0));
+                      x_0 = _mm256_add_pd(_mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0)), _mm256_mul_pd(q_0, expansion_mask_0));
+                      x_1 = _mm256_add_pd(_mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0)), _mm256_mul_pd(q_1, expansion_mask_0));
                       q_0 = s_1_0;
                       q_1 = s_1_1;
                       s_1_0 = _mm256_add_pd(s_1_0, _mm256_or_pd(x_0, blp_mask_tmp));
@@ -181,8 +185,8 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       s_0_1 = _mm256_add_pd(s_0_1, _mm256_or_pd(_mm256_mul_pd(x_1, compression_0), blp_mask_tmp));
                       q_0 = _mm256_sub_pd(q_0, s_0_0);
                       q_1 = _mm256_sub_pd(q_1, s_0_1);
-                      x_0 = _mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0));
-                      x_1 = _mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0));
+                      x_0 = _mm256_add_pd(_mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0)), _mm256_mul_pd(q_0, expansion_mask_0));
+                      x_1 = _mm256_add_pd(_mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0)), _mm256_mul_pd(q_1, expansion_mask_0));
                       q_0 = s_1_0;
                       q_1 = s_1_1;
                       s_1_0 = _mm256_add_pd(s_1_0, _mm256_or_pd(x_0, blp_mask_tmp));
@@ -253,14 +257,17 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                     if(dmindex0(manZ)){
                       if(dmindex0(manZ + 1)){
                         compression_0 = _mm256_set1_pd(DMCOMPRESSION);
-                        expansion_0 = _mm256_set1_pd(DMEXPANSION);
+                        expansion_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
                       }else{
                         compression_0 = _mm256_set_pd(1.0, DMCOMPRESSION, 1.0, DMCOMPRESSION);
-                        expansion_0 = _mm256_set_pd(1.0, DMEXPANSION, 1.0, DMEXPANSION);
+                        expansion_0 = _mm256_set_pd(1.0, DMEXPANSION * 0.5, 1.0, DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set_pd(0.0, DMEXPANSION * 0.5, 0.0, DMEXPANSION * 0.5);
                       }
                     }else{
                       compression_0 = _mm256_set_pd(DMCOMPRESSION, 1.0, DMCOMPRESSION, 1.0);
-                      expansion_0 = _mm256_set_pd(DMEXPANSION, 1.0, DMEXPANSION, 1.0);
+                      expansion_0 = _mm256_set_pd(DMEXPANSION * 0.5, 1.0, DMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm256_set_pd(DMEXPANSION * 0.5, 0.0, DMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 2 <= N_block; i += 2, x += 4, y += (incY * 4)){
                       x_0 = _mm256_loadu_pd(((double*)x));
@@ -274,8 +281,8 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       s_0_1 = _mm256_add_pd(s_0_1, _mm256_or_pd(_mm256_mul_pd(x_1, compression_0), blp_mask_tmp));
                       q_0 = _mm256_sub_pd(q_0, s_0_0);
                       q_1 = _mm256_sub_pd(q_1, s_0_1);
-                      x_0 = _mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0));
-                      x_1 = _mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0));
+                      x_0 = _mm256_add_pd(_mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0)), _mm256_mul_pd(q_0, expansion_mask_0));
+                      x_1 = _mm256_add_pd(_mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0)), _mm256_mul_pd(q_1, expansion_mask_0));
                       q_0 = s_1_0;
                       q_1 = s_1_1;
                       s_1_0 = _mm256_add_pd(s_1_0, _mm256_or_pd(x_0, blp_mask_tmp));
@@ -299,8 +306,8 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       s_0_1 = _mm256_add_pd(s_0_1, _mm256_or_pd(_mm256_mul_pd(x_1, compression_0), blp_mask_tmp));
                       q_0 = _mm256_sub_pd(q_0, s_0_0);
                       q_1 = _mm256_sub_pd(q_1, s_0_1);
-                      x_0 = _mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0));
-                      x_1 = _mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0));
+                      x_0 = _mm256_add_pd(_mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0)), _mm256_mul_pd(q_0, expansion_mask_0));
+                      x_1 = _mm256_add_pd(_mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0)), _mm256_mul_pd(q_1, expansion_mask_0));
                       q_0 = s_1_0;
                       q_1 = s_1_1;
                       s_1_0 = _mm256_add_pd(s_1_0, _mm256_or_pd(x_0, blp_mask_tmp));
@@ -373,14 +380,17 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                     if(dmindex0(manZ)){
                       if(dmindex0(manZ + 1)){
                         compression_0 = _mm256_set1_pd(DMCOMPRESSION);
-                        expansion_0 = _mm256_set1_pd(DMEXPANSION);
+                        expansion_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
                       }else{
                         compression_0 = _mm256_set_pd(1.0, DMCOMPRESSION, 1.0, DMCOMPRESSION);
-                        expansion_0 = _mm256_set_pd(1.0, DMEXPANSION, 1.0, DMEXPANSION);
+                        expansion_0 = _mm256_set_pd(1.0, DMEXPANSION * 0.5, 1.0, DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set_pd(0.0, DMEXPANSION * 0.5, 0.0, DMEXPANSION * 0.5);
                       }
                     }else{
                       compression_0 = _mm256_set_pd(DMCOMPRESSION, 1.0, DMCOMPRESSION, 1.0);
-                      expansion_0 = _mm256_set_pd(DMEXPANSION, 1.0, DMEXPANSION, 1.0);
+                      expansion_0 = _mm256_set_pd(DMEXPANSION * 0.5, 1.0, DMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm256_set_pd(DMEXPANSION * 0.5, 0.0, DMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 2 <= N_block; i += 2, x += (incX * 4), y += 4){
                       x_0 = _mm256_set_pd(((double*)x)[((incX * 2) + 1)], ((double*)x)[(incX * 2)], ((double*)x)[1], ((double*)x)[0]);
@@ -394,8 +404,8 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       s_0_1 = _mm256_add_pd(s_0_1, _mm256_or_pd(_mm256_mul_pd(x_1, compression_0), blp_mask_tmp));
                       q_0 = _mm256_sub_pd(q_0, s_0_0);
                       q_1 = _mm256_sub_pd(q_1, s_0_1);
-                      x_0 = _mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0));
-                      x_1 = _mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0));
+                      x_0 = _mm256_add_pd(_mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0)), _mm256_mul_pd(q_0, expansion_mask_0));
+                      x_1 = _mm256_add_pd(_mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0)), _mm256_mul_pd(q_1, expansion_mask_0));
                       q_0 = s_1_0;
                       q_1 = s_1_1;
                       s_1_0 = _mm256_add_pd(s_1_0, _mm256_or_pd(x_0, blp_mask_tmp));
@@ -419,8 +429,8 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       s_0_1 = _mm256_add_pd(s_0_1, _mm256_or_pd(_mm256_mul_pd(x_1, compression_0), blp_mask_tmp));
                       q_0 = _mm256_sub_pd(q_0, s_0_0);
                       q_1 = _mm256_sub_pd(q_1, s_0_1);
-                      x_0 = _mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0));
-                      x_1 = _mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0));
+                      x_0 = _mm256_add_pd(_mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0)), _mm256_mul_pd(q_0, expansion_mask_0));
+                      x_1 = _mm256_add_pd(_mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0)), _mm256_mul_pd(q_1, expansion_mask_0));
                       q_0 = s_1_0;
                       q_1 = s_1_1;
                       s_1_0 = _mm256_add_pd(s_1_0, _mm256_or_pd(x_0, blp_mask_tmp));
@@ -491,14 +501,17 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                     if(dmindex0(manZ)){
                       if(dmindex0(manZ + 1)){
                         compression_0 = _mm256_set1_pd(DMCOMPRESSION);
-                        expansion_0 = _mm256_set1_pd(DMEXPANSION);
+                        expansion_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
                       }else{
                         compression_0 = _mm256_set_pd(1.0, DMCOMPRESSION, 1.0, DMCOMPRESSION);
-                        expansion_0 = _mm256_set_pd(1.0, DMEXPANSION, 1.0, DMEXPANSION);
+                        expansion_0 = _mm256_set_pd(1.0, DMEXPANSION * 0.5, 1.0, DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set_pd(0.0, DMEXPANSION * 0.5, 0.0, DMEXPANSION * 0.5);
                       }
                     }else{
                       compression_0 = _mm256_set_pd(DMCOMPRESSION, 1.0, DMCOMPRESSION, 1.0);
-                      expansion_0 = _mm256_set_pd(DMEXPANSION, 1.0, DMEXPANSION, 1.0);
+                      expansion_0 = _mm256_set_pd(DMEXPANSION * 0.5, 1.0, DMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm256_set_pd(DMEXPANSION * 0.5, 0.0, DMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 2 <= N_block; i += 2, x += (incX * 4), y += (incY * 4)){
                       x_0 = _mm256_set_pd(((double*)x)[((incX * 2) + 1)], ((double*)x)[(incX * 2)], ((double*)x)[1], ((double*)x)[0]);
@@ -512,8 +525,8 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       s_0_1 = _mm256_add_pd(s_0_1, _mm256_or_pd(_mm256_mul_pd(x_1, compression_0), blp_mask_tmp));
                       q_0 = _mm256_sub_pd(q_0, s_0_0);
                       q_1 = _mm256_sub_pd(q_1, s_0_1);
-                      x_0 = _mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0));
-                      x_1 = _mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0));
+                      x_0 = _mm256_add_pd(_mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0)), _mm256_mul_pd(q_0, expansion_mask_0));
+                      x_1 = _mm256_add_pd(_mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0)), _mm256_mul_pd(q_1, expansion_mask_0));
                       q_0 = s_1_0;
                       q_1 = s_1_1;
                       s_1_0 = _mm256_add_pd(s_1_0, _mm256_or_pd(x_0, blp_mask_tmp));
@@ -537,8 +550,8 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       s_0_1 = _mm256_add_pd(s_0_1, _mm256_or_pd(_mm256_mul_pd(x_1, compression_0), blp_mask_tmp));
                       q_0 = _mm256_sub_pd(q_0, s_0_0);
                       q_1 = _mm256_sub_pd(q_1, s_0_1);
-                      x_0 = _mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0));
-                      x_1 = _mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0));
+                      x_0 = _mm256_add_pd(_mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0)), _mm256_mul_pd(q_0, expansion_mask_0));
+                      x_1 = _mm256_add_pd(_mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0)), _mm256_mul_pd(q_1, expansion_mask_0));
                       q_0 = s_1_0;
                       q_1 = s_1_1;
                       s_1_0 = _mm256_add_pd(s_1_0, _mm256_or_pd(x_0, blp_mask_tmp));
@@ -638,6 +651,7 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
               __m256d y_0;
               __m256d compression_0;
               __m256d expansion_0;
+              __m256d expansion_mask_0;
               __m256d q_0, q_1;
               __m256d s_0, s_1;
               __m256d s_buffer[(DIMAXFOLD * 2)];
@@ -652,14 +666,17 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                     if(dmindex0(manZ)){
                       if(dmindex0(manZ + 1)){
                         compression_0 = _mm256_set1_pd(DMCOMPRESSION);
-                        expansion_0 = _mm256_set1_pd(DMEXPANSION);
+                        expansion_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
                       }else{
                         compression_0 = _mm256_set_pd(1.0, DMCOMPRESSION, 1.0, DMCOMPRESSION);
-                        expansion_0 = _mm256_set_pd(1.0, DMEXPANSION, 1.0, DMEXPANSION);
+                        expansion_0 = _mm256_set_pd(1.0, DMEXPANSION * 0.5, 1.0, DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set_pd(0.0, DMEXPANSION * 0.5, 0.0, DMEXPANSION * 0.5);
                       }
                     }else{
                       compression_0 = _mm256_set_pd(DMCOMPRESSION, 1.0, DMCOMPRESSION, 1.0);
-                      expansion_0 = _mm256_set_pd(DMEXPANSION, 1.0, DMEXPANSION, 1.0);
+                      expansion_0 = _mm256_set_pd(DMEXPANSION * 0.5, 1.0, DMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm256_set_pd(DMEXPANSION * 0.5, 0.0, DMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 2 <= N_block; i += 2, x += 4, y += 4){
                       x_0 = _mm256_loadu_pd(((double*)x));
@@ -675,8 +692,8 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       s_buffer[1] = q_1;
                       q_0 = _mm256_sub_pd(s_0, q_0);
                       q_1 = _mm256_sub_pd(s_1, q_1);
-                      x_0 = _mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0));
-                      x_1 = _mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0));
+                      x_0 = _mm256_add_pd(_mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0)), _mm256_mul_pd(q_0, expansion_mask_0));
+                      x_1 = _mm256_add_pd(_mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0)), _mm256_mul_pd(q_1, expansion_mask_0));
                       for(j = 1; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
                         s_1 = s_buffer[((j * 2) + 1)];
@@ -706,8 +723,8 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       s_buffer[1] = q_1;
                       q_0 = _mm256_sub_pd(s_0, q_0);
                       q_1 = _mm256_sub_pd(s_1, q_1);
-                      x_0 = _mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0));
-                      x_1 = _mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0));
+                      x_0 = _mm256_add_pd(_mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0)), _mm256_mul_pd(q_0, expansion_mask_0));
+                      x_1 = _mm256_add_pd(_mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0)), _mm256_mul_pd(q_1, expansion_mask_0));
                       for(j = 1; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
                         s_1 = s_buffer[((j * 2) + 1)];
@@ -774,14 +791,17 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                     if(dmindex0(manZ)){
                       if(dmindex0(manZ + 1)){
                         compression_0 = _mm256_set1_pd(DMCOMPRESSION);
-                        expansion_0 = _mm256_set1_pd(DMEXPANSION);
+                        expansion_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
                       }else{
                         compression_0 = _mm256_set_pd(1.0, DMCOMPRESSION, 1.0, DMCOMPRESSION);
-                        expansion_0 = _mm256_set_pd(1.0, DMEXPANSION, 1.0, DMEXPANSION);
+                        expansion_0 = _mm256_set_pd(1.0, DMEXPANSION * 0.5, 1.0, DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set_pd(0.0, DMEXPANSION * 0.5, 0.0, DMEXPANSION * 0.5);
                       }
                     }else{
                       compression_0 = _mm256_set_pd(DMCOMPRESSION, 1.0, DMCOMPRESSION, 1.0);
-                      expansion_0 = _mm256_set_pd(DMEXPANSION, 1.0, DMEXPANSION, 1.0);
+                      expansion_0 = _mm256_set_pd(DMEXPANSION * 0.5, 1.0, DMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm256_set_pd(DMEXPANSION * 0.5, 0.0, DMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 2 <= N_block; i += 2, x += 4, y += (incY * 4)){
                       x_0 = _mm256_loadu_pd(((double*)x));
@@ -797,8 +817,8 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       s_buffer[1] = q_1;
                       q_0 = _mm256_sub_pd(s_0, q_0);
                       q_1 = _mm256_sub_pd(s_1, q_1);
-                      x_0 = _mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0));
-                      x_1 = _mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0));
+                      x_0 = _mm256_add_pd(_mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0)), _mm256_mul_pd(q_0, expansion_mask_0));
+                      x_1 = _mm256_add_pd(_mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0)), _mm256_mul_pd(q_1, expansion_mask_0));
                       for(j = 1; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
                         s_1 = s_buffer[((j * 2) + 1)];
@@ -828,8 +848,8 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       s_buffer[1] = q_1;
                       q_0 = _mm256_sub_pd(s_0, q_0);
                       q_1 = _mm256_sub_pd(s_1, q_1);
-                      x_0 = _mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0));
-                      x_1 = _mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0));
+                      x_0 = _mm256_add_pd(_mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0)), _mm256_mul_pd(q_0, expansion_mask_0));
+                      x_1 = _mm256_add_pd(_mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0)), _mm256_mul_pd(q_1, expansion_mask_0));
                       for(j = 1; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
                         s_1 = s_buffer[((j * 2) + 1)];
@@ -898,14 +918,17 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                     if(dmindex0(manZ)){
                       if(dmindex0(manZ + 1)){
                         compression_0 = _mm256_set1_pd(DMCOMPRESSION);
-                        expansion_0 = _mm256_set1_pd(DMEXPANSION);
+                        expansion_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
                       }else{
                         compression_0 = _mm256_set_pd(1.0, DMCOMPRESSION, 1.0, DMCOMPRESSION);
-                        expansion_0 = _mm256_set_pd(1.0, DMEXPANSION, 1.0, DMEXPANSION);
+                        expansion_0 = _mm256_set_pd(1.0, DMEXPANSION * 0.5, 1.0, DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set_pd(0.0, DMEXPANSION * 0.5, 0.0, DMEXPANSION * 0.5);
                       }
                     }else{
                       compression_0 = _mm256_set_pd(DMCOMPRESSION, 1.0, DMCOMPRESSION, 1.0);
-                      expansion_0 = _mm256_set_pd(DMEXPANSION, 1.0, DMEXPANSION, 1.0);
+                      expansion_0 = _mm256_set_pd(DMEXPANSION * 0.5, 1.0, DMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm256_set_pd(DMEXPANSION * 0.5, 0.0, DMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 2 <= N_block; i += 2, x += (incX * 4), y += 4){
                       x_0 = _mm256_set_pd(((double*)x)[((incX * 2) + 1)], ((double*)x)[(incX * 2)], ((double*)x)[1], ((double*)x)[0]);
@@ -921,8 +944,8 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       s_buffer[1] = q_1;
                       q_0 = _mm256_sub_pd(s_0, q_0);
                       q_1 = _mm256_sub_pd(s_1, q_1);
-                      x_0 = _mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0));
-                      x_1 = _mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0));
+                      x_0 = _mm256_add_pd(_mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0)), _mm256_mul_pd(q_0, expansion_mask_0));
+                      x_1 = _mm256_add_pd(_mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0)), _mm256_mul_pd(q_1, expansion_mask_0));
                       for(j = 1; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
                         s_1 = s_buffer[((j * 2) + 1)];
@@ -952,8 +975,8 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       s_buffer[1] = q_1;
                       q_0 = _mm256_sub_pd(s_0, q_0);
                       q_1 = _mm256_sub_pd(s_1, q_1);
-                      x_0 = _mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0));
-                      x_1 = _mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0));
+                      x_0 = _mm256_add_pd(_mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0)), _mm256_mul_pd(q_0, expansion_mask_0));
+                      x_1 = _mm256_add_pd(_mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0)), _mm256_mul_pd(q_1, expansion_mask_0));
                       for(j = 1; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
                         s_1 = s_buffer[((j * 2) + 1)];
@@ -1020,14 +1043,17 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                     if(dmindex0(manZ)){
                       if(dmindex0(manZ + 1)){
                         compression_0 = _mm256_set1_pd(DMCOMPRESSION);
-                        expansion_0 = _mm256_set1_pd(DMEXPANSION);
+                        expansion_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
                       }else{
                         compression_0 = _mm256_set_pd(1.0, DMCOMPRESSION, 1.0, DMCOMPRESSION);
-                        expansion_0 = _mm256_set_pd(1.0, DMEXPANSION, 1.0, DMEXPANSION);
+                        expansion_0 = _mm256_set_pd(1.0, DMEXPANSION * 0.5, 1.0, DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set_pd(0.0, DMEXPANSION * 0.5, 0.0, DMEXPANSION * 0.5);
                       }
                     }else{
                       compression_0 = _mm256_set_pd(DMCOMPRESSION, 1.0, DMCOMPRESSION, 1.0);
-                      expansion_0 = _mm256_set_pd(DMEXPANSION, 1.0, DMEXPANSION, 1.0);
+                      expansion_0 = _mm256_set_pd(DMEXPANSION * 0.5, 1.0, DMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm256_set_pd(DMEXPANSION * 0.5, 0.0, DMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 2 <= N_block; i += 2, x += (incX * 4), y += (incY * 4)){
                       x_0 = _mm256_set_pd(((double*)x)[((incX * 2) + 1)], ((double*)x)[(incX * 2)], ((double*)x)[1], ((double*)x)[0]);
@@ -1043,8 +1069,8 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       s_buffer[1] = q_1;
                       q_0 = _mm256_sub_pd(s_0, q_0);
                       q_1 = _mm256_sub_pd(s_1, q_1);
-                      x_0 = _mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0));
-                      x_1 = _mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0));
+                      x_0 = _mm256_add_pd(_mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0)), _mm256_mul_pd(q_0, expansion_mask_0));
+                      x_1 = _mm256_add_pd(_mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0)), _mm256_mul_pd(q_1, expansion_mask_0));
                       for(j = 1; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
                         s_1 = s_buffer[((j * 2) + 1)];
@@ -1074,8 +1100,8 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       s_buffer[1] = q_1;
                       q_0 = _mm256_sub_pd(s_0, q_0);
                       q_1 = _mm256_sub_pd(s_1, q_1);
-                      x_0 = _mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0));
-                      x_1 = _mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0));
+                      x_0 = _mm256_add_pd(_mm256_add_pd(x_0, _mm256_mul_pd(q_0, expansion_0)), _mm256_mul_pd(q_0, expansion_mask_0));
+                      x_1 = _mm256_add_pd(_mm256_add_pd(x_1, _mm256_mul_pd(q_1, expansion_0)), _mm256_mul_pd(q_1, expansion_mask_0));
                       for(j = 1; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
                         s_1 = s_buffer[((j * 2) + 1)];
@@ -1185,6 +1211,7 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
               __m128d y_0;
               __m128d compression_0;
               __m128d expansion_0;
+              __m128d expansion_mask_0;
               __m128d q_0, q_1;
               __m128d s_0_0, s_0_1;
               __m128d s_1_0, s_1_1;
@@ -1200,14 +1227,17 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                     if(dmindex0(manZ)){
                       if(dmindex0(manZ + 1)){
                         compression_0 = _mm_set1_pd(DMCOMPRESSION);
-                        expansion_0 = _mm_set1_pd(DMEXPANSION);
+                        expansion_0 = _mm_set1_pd(DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set1_pd(DMEXPANSION * 0.5);
                       }else{
                         compression_0 = _mm_set_pd(1.0, DMCOMPRESSION);
-                        expansion_0 = _mm_set_pd(1.0, DMEXPANSION);
+                        expansion_0 = _mm_set_pd(1.0, DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set_pd(0.0, DMEXPANSION * 0.5);
                       }
                     }else{
                       compression_0 = _mm_set_pd(DMCOMPRESSION, 1.0);
-                      expansion_0 = _mm_set_pd(DMEXPANSION, 1.0);
+                      expansion_0 = _mm_set_pd(DMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm_set_pd(DMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 1 <= N_block; i += 1, x += 2, y += 2){
                       x_0 = _mm_loadu_pd(((double*)x));
@@ -1221,8 +1251,8 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       s_0_1 = _mm_add_pd(s_0_1, _mm_or_pd(_mm_mul_pd(x_1, compression_0), blp_mask_tmp));
                       q_0 = _mm_sub_pd(q_0, s_0_0);
                       q_1 = _mm_sub_pd(q_1, s_0_1);
-                      x_0 = _mm_add_pd(x_0, _mm_mul_pd(q_0, expansion_0));
-                      x_1 = _mm_add_pd(x_1, _mm_mul_pd(q_1, expansion_0));
+                      x_0 = _mm_add_pd(_mm_add_pd(x_0, _mm_mul_pd(q_0, expansion_0)), _mm_mul_pd(q_0, expansion_mask_0));
+                      x_1 = _mm_add_pd(_mm_add_pd(x_1, _mm_mul_pd(q_1, expansion_0)), _mm_mul_pd(q_1, expansion_mask_0));
                       q_0 = s_1_0;
                       q_1 = s_1_1;
                       s_1_0 = _mm_add_pd(s_1_0, _mm_or_pd(x_0, blp_mask_tmp));
@@ -1266,14 +1296,17 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                     if(dmindex0(manZ)){
                       if(dmindex0(manZ + 1)){
                         compression_0 = _mm_set1_pd(DMCOMPRESSION);
-                        expansion_0 = _mm_set1_pd(DMEXPANSION);
+                        expansion_0 = _mm_set1_pd(DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set1_pd(DMEXPANSION * 0.5);
                       }else{
                         compression_0 = _mm_set_pd(1.0, DMCOMPRESSION);
-                        expansion_0 = _mm_set_pd(1.0, DMEXPANSION);
+                        expansion_0 = _mm_set_pd(1.0, DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set_pd(0.0, DMEXPANSION * 0.5);
                       }
                     }else{
                       compression_0 = _mm_set_pd(DMCOMPRESSION, 1.0);
-                      expansion_0 = _mm_set_pd(DMEXPANSION, 1.0);
+                      expansion_0 = _mm_set_pd(DMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm_set_pd(DMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 1 <= N_block; i += 1, x += 2, y += (incY * 2)){
                       x_0 = _mm_loadu_pd(((double*)x));
@@ -1287,8 +1320,8 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       s_0_1 = _mm_add_pd(s_0_1, _mm_or_pd(_mm_mul_pd(x_1, compression_0), blp_mask_tmp));
                       q_0 = _mm_sub_pd(q_0, s_0_0);
                       q_1 = _mm_sub_pd(q_1, s_0_1);
-                      x_0 = _mm_add_pd(x_0, _mm_mul_pd(q_0, expansion_0));
-                      x_1 = _mm_add_pd(x_1, _mm_mul_pd(q_1, expansion_0));
+                      x_0 = _mm_add_pd(_mm_add_pd(x_0, _mm_mul_pd(q_0, expansion_0)), _mm_mul_pd(q_0, expansion_mask_0));
+                      x_1 = _mm_add_pd(_mm_add_pd(x_1, _mm_mul_pd(q_1, expansion_0)), _mm_mul_pd(q_1, expansion_mask_0));
                       q_0 = s_1_0;
                       q_1 = s_1_1;
                       s_1_0 = _mm_add_pd(s_1_0, _mm_or_pd(x_0, blp_mask_tmp));
@@ -1334,14 +1367,17 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                     if(dmindex0(manZ)){
                       if(dmindex0(manZ + 1)){
                         compression_0 = _mm_set1_pd(DMCOMPRESSION);
-                        expansion_0 = _mm_set1_pd(DMEXPANSION);
+                        expansion_0 = _mm_set1_pd(DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set1_pd(DMEXPANSION * 0.5);
                       }else{
                         compression_0 = _mm_set_pd(1.0, DMCOMPRESSION);
-                        expansion_0 = _mm_set_pd(1.0, DMEXPANSION);
+                        expansion_0 = _mm_set_pd(1.0, DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set_pd(0.0, DMEXPANSION * 0.5);
                       }
                     }else{
                       compression_0 = _mm_set_pd(DMCOMPRESSION, 1.0);
-                      expansion_0 = _mm_set_pd(DMEXPANSION, 1.0);
+                      expansion_0 = _mm_set_pd(DMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm_set_pd(DMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 1 <= N_block; i += 1, x += (incX * 2), y += 2){
                       x_0 = _mm_loadu_pd(((double*)x));
@@ -1355,8 +1391,8 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       s_0_1 = _mm_add_pd(s_0_1, _mm_or_pd(_mm_mul_pd(x_1, compression_0), blp_mask_tmp));
                       q_0 = _mm_sub_pd(q_0, s_0_0);
                       q_1 = _mm_sub_pd(q_1, s_0_1);
-                      x_0 = _mm_add_pd(x_0, _mm_mul_pd(q_0, expansion_0));
-                      x_1 = _mm_add_pd(x_1, _mm_mul_pd(q_1, expansion_0));
+                      x_0 = _mm_add_pd(_mm_add_pd(x_0, _mm_mul_pd(q_0, expansion_0)), _mm_mul_pd(q_0, expansion_mask_0));
+                      x_1 = _mm_add_pd(_mm_add_pd(x_1, _mm_mul_pd(q_1, expansion_0)), _mm_mul_pd(q_1, expansion_mask_0));
                       q_0 = s_1_0;
                       q_1 = s_1_1;
                       s_1_0 = _mm_add_pd(s_1_0, _mm_or_pd(x_0, blp_mask_tmp));
@@ -1400,14 +1436,17 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                     if(dmindex0(manZ)){
                       if(dmindex0(manZ + 1)){
                         compression_0 = _mm_set1_pd(DMCOMPRESSION);
-                        expansion_0 = _mm_set1_pd(DMEXPANSION);
+                        expansion_0 = _mm_set1_pd(DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set1_pd(DMEXPANSION * 0.5);
                       }else{
                         compression_0 = _mm_set_pd(1.0, DMCOMPRESSION);
-                        expansion_0 = _mm_set_pd(1.0, DMEXPANSION);
+                        expansion_0 = _mm_set_pd(1.0, DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set_pd(0.0, DMEXPANSION * 0.5);
                       }
                     }else{
                       compression_0 = _mm_set_pd(DMCOMPRESSION, 1.0);
-                      expansion_0 = _mm_set_pd(DMEXPANSION, 1.0);
+                      expansion_0 = _mm_set_pd(DMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm_set_pd(DMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 1 <= N_block; i += 1, x += (incX * 2), y += (incY * 2)){
                       x_0 = _mm_loadu_pd(((double*)x));
@@ -1421,8 +1460,8 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       s_0_1 = _mm_add_pd(s_0_1, _mm_or_pd(_mm_mul_pd(x_1, compression_0), blp_mask_tmp));
                       q_0 = _mm_sub_pd(q_0, s_0_0);
                       q_1 = _mm_sub_pd(q_1, s_0_1);
-                      x_0 = _mm_add_pd(x_0, _mm_mul_pd(q_0, expansion_0));
-                      x_1 = _mm_add_pd(x_1, _mm_mul_pd(q_1, expansion_0));
+                      x_0 = _mm_add_pd(_mm_add_pd(x_0, _mm_mul_pd(q_0, expansion_0)), _mm_mul_pd(q_0, expansion_mask_0));
+                      x_1 = _mm_add_pd(_mm_add_pd(x_1, _mm_mul_pd(q_1, expansion_0)), _mm_mul_pd(q_1, expansion_mask_0));
                       q_0 = s_1_0;
                       q_1 = s_1_1;
                       s_1_0 = _mm_add_pd(s_1_0, _mm_or_pd(x_0, blp_mask_tmp));
@@ -1492,6 +1531,7 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
               __m128d y_0;
               __m128d compression_0;
               __m128d expansion_0;
+              __m128d expansion_mask_0;
               __m128d q_0, q_1;
               __m128d s_0, s_1;
               __m128d s_buffer[(DIMAXFOLD * 2)];
@@ -1506,14 +1546,17 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                     if(dmindex0(manZ)){
                       if(dmindex0(manZ + 1)){
                         compression_0 = _mm_set1_pd(DMCOMPRESSION);
-                        expansion_0 = _mm_set1_pd(DMEXPANSION);
+                        expansion_0 = _mm_set1_pd(DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set1_pd(DMEXPANSION * 0.5);
                       }else{
                         compression_0 = _mm_set_pd(1.0, DMCOMPRESSION);
-                        expansion_0 = _mm_set_pd(1.0, DMEXPANSION);
+                        expansion_0 = _mm_set_pd(1.0, DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set_pd(0.0, DMEXPANSION * 0.5);
                       }
                     }else{
                       compression_0 = _mm_set_pd(DMCOMPRESSION, 1.0);
-                      expansion_0 = _mm_set_pd(DMEXPANSION, 1.0);
+                      expansion_0 = _mm_set_pd(DMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm_set_pd(DMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 1 <= N_block; i += 1, x += 2, y += 2){
                       x_0 = _mm_loadu_pd(((double*)x));
@@ -1529,8 +1572,8 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       s_buffer[1] = q_1;
                       q_0 = _mm_sub_pd(s_0, q_0);
                       q_1 = _mm_sub_pd(s_1, q_1);
-                      x_0 = _mm_add_pd(x_0, _mm_mul_pd(q_0, expansion_0));
-                      x_1 = _mm_add_pd(x_1, _mm_mul_pd(q_1, expansion_0));
+                      x_0 = _mm_add_pd(_mm_add_pd(x_0, _mm_mul_pd(q_0, expansion_0)), _mm_mul_pd(q_0, expansion_mask_0));
+                      x_1 = _mm_add_pd(_mm_add_pd(x_1, _mm_mul_pd(q_1, expansion_0)), _mm_mul_pd(q_1, expansion_mask_0));
                       for(j = 1; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
                         s_1 = s_buffer[((j * 2) + 1)];
@@ -1574,14 +1617,17 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                     if(dmindex0(manZ)){
                       if(dmindex0(manZ + 1)){
                         compression_0 = _mm_set1_pd(DMCOMPRESSION);
-                        expansion_0 = _mm_set1_pd(DMEXPANSION);
+                        expansion_0 = _mm_set1_pd(DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set1_pd(DMEXPANSION * 0.5);
                       }else{
                         compression_0 = _mm_set_pd(1.0, DMCOMPRESSION);
-                        expansion_0 = _mm_set_pd(1.0, DMEXPANSION);
+                        expansion_0 = _mm_set_pd(1.0, DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set_pd(0.0, DMEXPANSION * 0.5);
                       }
                     }else{
                       compression_0 = _mm_set_pd(DMCOMPRESSION, 1.0);
-                      expansion_0 = _mm_set_pd(DMEXPANSION, 1.0);
+                      expansion_0 = _mm_set_pd(DMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm_set_pd(DMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 1 <= N_block; i += 1, x += 2, y += (incY * 2)){
                       x_0 = _mm_loadu_pd(((double*)x));
@@ -1597,8 +1643,8 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       s_buffer[1] = q_1;
                       q_0 = _mm_sub_pd(s_0, q_0);
                       q_1 = _mm_sub_pd(s_1, q_1);
-                      x_0 = _mm_add_pd(x_0, _mm_mul_pd(q_0, expansion_0));
-                      x_1 = _mm_add_pd(x_1, _mm_mul_pd(q_1, expansion_0));
+                      x_0 = _mm_add_pd(_mm_add_pd(x_0, _mm_mul_pd(q_0, expansion_0)), _mm_mul_pd(q_0, expansion_mask_0));
+                      x_1 = _mm_add_pd(_mm_add_pd(x_1, _mm_mul_pd(q_1, expansion_0)), _mm_mul_pd(q_1, expansion_mask_0));
                       for(j = 1; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
                         s_1 = s_buffer[((j * 2) + 1)];
@@ -1644,14 +1690,17 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                     if(dmindex0(manZ)){
                       if(dmindex0(manZ + 1)){
                         compression_0 = _mm_set1_pd(DMCOMPRESSION);
-                        expansion_0 = _mm_set1_pd(DMEXPANSION);
+                        expansion_0 = _mm_set1_pd(DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set1_pd(DMEXPANSION * 0.5);
                       }else{
                         compression_0 = _mm_set_pd(1.0, DMCOMPRESSION);
-                        expansion_0 = _mm_set_pd(1.0, DMEXPANSION);
+                        expansion_0 = _mm_set_pd(1.0, DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set_pd(0.0, DMEXPANSION * 0.5);
                       }
                     }else{
                       compression_0 = _mm_set_pd(DMCOMPRESSION, 1.0);
-                      expansion_0 = _mm_set_pd(DMEXPANSION, 1.0);
+                      expansion_0 = _mm_set_pd(DMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm_set_pd(DMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 1 <= N_block; i += 1, x += (incX * 2), y += 2){
                       x_0 = _mm_loadu_pd(((double*)x));
@@ -1667,8 +1716,8 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       s_buffer[1] = q_1;
                       q_0 = _mm_sub_pd(s_0, q_0);
                       q_1 = _mm_sub_pd(s_1, q_1);
-                      x_0 = _mm_add_pd(x_0, _mm_mul_pd(q_0, expansion_0));
-                      x_1 = _mm_add_pd(x_1, _mm_mul_pd(q_1, expansion_0));
+                      x_0 = _mm_add_pd(_mm_add_pd(x_0, _mm_mul_pd(q_0, expansion_0)), _mm_mul_pd(q_0, expansion_mask_0));
+                      x_1 = _mm_add_pd(_mm_add_pd(x_1, _mm_mul_pd(q_1, expansion_0)), _mm_mul_pd(q_1, expansion_mask_0));
                       for(j = 1; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
                         s_1 = s_buffer[((j * 2) + 1)];
@@ -1712,14 +1761,17 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                     if(dmindex0(manZ)){
                       if(dmindex0(manZ + 1)){
                         compression_0 = _mm_set1_pd(DMCOMPRESSION);
-                        expansion_0 = _mm_set1_pd(DMEXPANSION);
+                        expansion_0 = _mm_set1_pd(DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set1_pd(DMEXPANSION * 0.5);
                       }else{
                         compression_0 = _mm_set_pd(1.0, DMCOMPRESSION);
-                        expansion_0 = _mm_set_pd(1.0, DMEXPANSION);
+                        expansion_0 = _mm_set_pd(1.0, DMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set_pd(0.0, DMEXPANSION * 0.5);
                       }
                     }else{
                       compression_0 = _mm_set_pd(DMCOMPRESSION, 1.0);
-                      expansion_0 = _mm_set_pd(DMEXPANSION, 1.0);
+                      expansion_0 = _mm_set_pd(DMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm_set_pd(DMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 1 <= N_block; i += 1, x += (incX * 2), y += (incY * 2)){
                       x_0 = _mm_loadu_pd(((double*)x));
@@ -1735,8 +1787,8 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       s_buffer[1] = q_1;
                       q_0 = _mm_sub_pd(s_0, q_0);
                       q_1 = _mm_sub_pd(s_1, q_1);
-                      x_0 = _mm_add_pd(x_0, _mm_mul_pd(q_0, expansion_0));
-                      x_1 = _mm_add_pd(x_1, _mm_mul_pd(q_1, expansion_0));
+                      x_0 = _mm_add_pd(_mm_add_pd(x_0, _mm_mul_pd(q_0, expansion_0)), _mm_mul_pd(q_0, expansion_mask_0));
+                      x_1 = _mm_add_pd(_mm_add_pd(x_1, _mm_mul_pd(q_1, expansion_0)), _mm_mul_pd(q_1, expansion_mask_0));
                       for(j = 1; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 2)];
                         s_1 = s_buffer[((j * 2) + 1)];
@@ -1806,6 +1858,7 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
               double y_0, y_1;
               double compression_0, compression_1;
               double expansion_0, expansion_1;
+              double expansion_mask_0, expansion_mask_1;
               double q_0, q_1, q_2, q_3;
               double s_0_0, s_0_1, s_0_2, s_0_3;
               double s_1_0, s_1_1, s_1_2, s_1_3;
@@ -1824,18 +1877,23 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                     if(dmindex0(manZ)){
                       if(dmindex0(manZ + 1)){
                         compression_0 = DMCOMPRESSION;
-                        expansion_0 = DMEXPANSION;
+                        expansion_0 = DMEXPANSION * 0.5;
+                        expansion_mask_0 = DMEXPANSION * 0.5;
                       }else{
                         compression_0 = DMCOMPRESSION;
                         compression_1 = 1.0;
-                        expansion_0 = DMEXPANSION;
+                        expansion_0 = DMEXPANSION * 0.5;
                         expansion_1 = 1.0;
+                        expansion_mask_0 = DMEXPANSION * 0.5;
+                        expansion_mask_1 = 0.0;
                       }
                     }else{
                       compression_0 = 1.0;
                       compression_1 = DMCOMPRESSION;
                       expansion_0 = 1.0;
-                      expansion_1 = DMEXPANSION;
+                      expansion_1 = DMEXPANSION * 0.5;
+                      expansion_mask_0 = 0.0;
+                      expansion_mask_1 = DMEXPANSION * 0.5;
                     }
                     for(i = 0; i + 1 <= N_block; i += 1, x += 2, y += 2){
                       x_0 = ((double*)x)[0];
@@ -1867,10 +1925,10 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       q_1 = q_1 - s_0_1;
                       q_2 = q_2 - s_0_2;
                       q_3 = q_3 - s_0_3;
-                      x_0 = x_0 + q_0 * expansion_0;
-                      x_1 = x_1 + q_1 * expansion_1;
-                      x_2 = x_2 + q_2 * expansion_0;
-                      x_3 = x_3 + q_3 * expansion_1;
+                      x_0 = x_0 + q_0 * expansion_0 + q_0 * expansion_mask_0;
+                      x_1 = x_1 + q_1 * expansion_1 + q_1 * expansion_mask_1;
+                      x_2 = x_2 + q_2 * expansion_0 + q_2 * expansion_mask_0;
+                      x_3 = x_3 + q_3 * expansion_1 + q_3 * expansion_mask_1;
                       q_0 = s_1_0;
                       q_1 = s_1_1;
                       q_2 = s_1_2;
@@ -1986,18 +2044,23 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                     if(dmindex0(manZ)){
                       if(dmindex0(manZ + 1)){
                         compression_0 = DMCOMPRESSION;
-                        expansion_0 = DMEXPANSION;
+                        expansion_0 = DMEXPANSION * 0.5;
+                        expansion_mask_0 = DMEXPANSION * 0.5;
                       }else{
                         compression_0 = DMCOMPRESSION;
                         compression_1 = 1.0;
-                        expansion_0 = DMEXPANSION;
+                        expansion_0 = DMEXPANSION * 0.5;
                         expansion_1 = 1.0;
+                        expansion_mask_0 = DMEXPANSION * 0.5;
+                        expansion_mask_1 = 0.0;
                       }
                     }else{
                       compression_0 = 1.0;
                       compression_1 = DMCOMPRESSION;
                       expansion_0 = 1.0;
-                      expansion_1 = DMEXPANSION;
+                      expansion_1 = DMEXPANSION * 0.5;
+                      expansion_mask_0 = 0.0;
+                      expansion_mask_1 = DMEXPANSION * 0.5;
                     }
                     for(i = 0; i + 1 <= N_block; i += 1, x += 2, y += (incY * 2)){
                       x_0 = ((double*)x)[0];
@@ -2029,10 +2092,10 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       q_1 = q_1 - s_0_1;
                       q_2 = q_2 - s_0_2;
                       q_3 = q_3 - s_0_3;
-                      x_0 = x_0 + q_0 * expansion_0;
-                      x_1 = x_1 + q_1 * expansion_1;
-                      x_2 = x_2 + q_2 * expansion_0;
-                      x_3 = x_3 + q_3 * expansion_1;
+                      x_0 = x_0 + q_0 * expansion_0 + q_0 * expansion_mask_0;
+                      x_1 = x_1 + q_1 * expansion_1 + q_1 * expansion_mask_1;
+                      x_2 = x_2 + q_2 * expansion_0 + q_2 * expansion_mask_0;
+                      x_3 = x_3 + q_3 * expansion_1 + q_3 * expansion_mask_1;
                       q_0 = s_1_0;
                       q_1 = s_1_1;
                       q_2 = s_1_2;
@@ -2150,18 +2213,23 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                     if(dmindex0(manZ)){
                       if(dmindex0(manZ + 1)){
                         compression_0 = DMCOMPRESSION;
-                        expansion_0 = DMEXPANSION;
+                        expansion_0 = DMEXPANSION * 0.5;
+                        expansion_mask_0 = DMEXPANSION * 0.5;
                       }else{
                         compression_0 = DMCOMPRESSION;
                         compression_1 = 1.0;
-                        expansion_0 = DMEXPANSION;
+                        expansion_0 = DMEXPANSION * 0.5;
                         expansion_1 = 1.0;
+                        expansion_mask_0 = DMEXPANSION * 0.5;
+                        expansion_mask_1 = 0.0;
                       }
                     }else{
                       compression_0 = 1.0;
                       compression_1 = DMCOMPRESSION;
                       expansion_0 = 1.0;
-                      expansion_1 = DMEXPANSION;
+                      expansion_1 = DMEXPANSION * 0.5;
+                      expansion_mask_0 = 0.0;
+                      expansion_mask_1 = DMEXPANSION * 0.5;
                     }
                     for(i = 0; i + 1 <= N_block; i += 1, x += (incX * 2), y += 2){
                       x_0 = ((double*)x)[0];
@@ -2193,10 +2261,10 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       q_1 = q_1 - s_0_1;
                       q_2 = q_2 - s_0_2;
                       q_3 = q_3 - s_0_3;
-                      x_0 = x_0 + q_0 * expansion_0;
-                      x_1 = x_1 + q_1 * expansion_1;
-                      x_2 = x_2 + q_2 * expansion_0;
-                      x_3 = x_3 + q_3 * expansion_1;
+                      x_0 = x_0 + q_0 * expansion_0 + q_0 * expansion_mask_0;
+                      x_1 = x_1 + q_1 * expansion_1 + q_1 * expansion_mask_1;
+                      x_2 = x_2 + q_2 * expansion_0 + q_2 * expansion_mask_0;
+                      x_3 = x_3 + q_3 * expansion_1 + q_3 * expansion_mask_1;
                       q_0 = s_1_0;
                       q_1 = s_1_1;
                       q_2 = s_1_2;
@@ -2312,18 +2380,23 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                     if(dmindex0(manZ)){
                       if(dmindex0(manZ + 1)){
                         compression_0 = DMCOMPRESSION;
-                        expansion_0 = DMEXPANSION;
+                        expansion_0 = DMEXPANSION * 0.5;
+                        expansion_mask_0 = DMEXPANSION * 0.5;
                       }else{
                         compression_0 = DMCOMPRESSION;
                         compression_1 = 1.0;
-                        expansion_0 = DMEXPANSION;
+                        expansion_0 = DMEXPANSION * 0.5;
                         expansion_1 = 1.0;
+                        expansion_mask_0 = DMEXPANSION * 0.5;
+                        expansion_mask_1 = 0.0;
                       }
                     }else{
                       compression_0 = 1.0;
                       compression_1 = DMCOMPRESSION;
                       expansion_0 = 1.0;
-                      expansion_1 = DMEXPANSION;
+                      expansion_1 = DMEXPANSION * 0.5;
+                      expansion_mask_0 = 0.0;
+                      expansion_mask_1 = DMEXPANSION * 0.5;
                     }
                     for(i = 0; i + 1 <= N_block; i += 1, x += (incX * 2), y += (incY * 2)){
                       x_0 = ((double*)x)[0];
@@ -2355,10 +2428,10 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       q_1 = q_1 - s_0_1;
                       q_2 = q_2 - s_0_2;
                       q_3 = q_3 - s_0_3;
-                      x_0 = x_0 + q_0 * expansion_0;
-                      x_1 = x_1 + q_1 * expansion_1;
-                      x_2 = x_2 + q_2 * expansion_0;
-                      x_3 = x_3 + q_3 * expansion_1;
+                      x_0 = x_0 + q_0 * expansion_0 + q_0 * expansion_mask_0;
+                      x_1 = x_1 + q_1 * expansion_1 + q_1 * expansion_mask_1;
+                      x_2 = x_2 + q_2 * expansion_0 + q_2 * expansion_mask_0;
+                      x_3 = x_3 + q_3 * expansion_1 + q_3 * expansion_mask_1;
                       q_0 = s_1_0;
                       q_1 = s_1_1;
                       q_2 = s_1_2;
@@ -2500,6 +2573,7 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
               double y_0, y_1;
               double compression_0, compression_1;
               double expansion_0, expansion_1;
+              double expansion_mask_0, expansion_mask_1;
               double q_0, q_1, q_2, q_3;
               double s_0, s_1, s_2, s_3;
               double s_buffer[(DIMAXFOLD * 4)];
@@ -2515,18 +2589,23 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                     if(dmindex0(manZ)){
                       if(dmindex0(manZ + 1)){
                         compression_0 = DMCOMPRESSION;
-                        expansion_0 = DMEXPANSION;
+                        expansion_0 = DMEXPANSION * 0.5;
+                        expansion_mask_0 = DMEXPANSION * 0.5;
                       }else{
                         compression_0 = DMCOMPRESSION;
                         compression_1 = 1.0;
-                        expansion_0 = DMEXPANSION;
+                        expansion_0 = DMEXPANSION * 0.5;
                         expansion_1 = 1.0;
+                        expansion_mask_0 = DMEXPANSION * 0.5;
+                        expansion_mask_1 = 0.0;
                       }
                     }else{
                       compression_0 = 1.0;
                       compression_1 = DMCOMPRESSION;
                       expansion_0 = 1.0;
-                      expansion_1 = DMEXPANSION;
+                      expansion_1 = DMEXPANSION * 0.5;
+                      expansion_mask_0 = 0.0;
+                      expansion_mask_1 = DMEXPANSION * 0.5;
                     }
                     for(i = 0; i + 1 <= N_block; i += 1, x += 2, y += 2){
                       x_0 = ((double*)x)[0];
@@ -2562,10 +2641,10 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       q_1 = s_1 - q_1;
                       q_2 = s_2 - q_2;
                       q_3 = s_3 - q_3;
-                      x_0 = x_0 + q_0 * expansion_0;
-                      x_1 = x_1 + q_1 * expansion_1;
-                      x_2 = x_2 + q_2 * expansion_0;
-                      x_3 = x_3 + q_3 * expansion_1;
+                      x_0 = x_0 + q_0 * expansion_0 + q_0 * expansion_mask_0;
+                      x_1 = x_1 + q_1 * expansion_1 + q_1 * expansion_mask_1;
+                      x_2 = x_2 + q_2 * expansion_0 + q_2 * expansion_mask_0;
+                      x_3 = x_3 + q_3 * expansion_1 + q_3 * expansion_mask_1;
                       for(j = 1; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 4)];
                         s_1 = s_buffer[((j * 4) + 1)];
@@ -2669,18 +2748,23 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                     if(dmindex0(manZ)){
                       if(dmindex0(manZ + 1)){
                         compression_0 = DMCOMPRESSION;
-                        expansion_0 = DMEXPANSION;
+                        expansion_0 = DMEXPANSION * 0.5;
+                        expansion_mask_0 = DMEXPANSION * 0.5;
                       }else{
                         compression_0 = DMCOMPRESSION;
                         compression_1 = 1.0;
-                        expansion_0 = DMEXPANSION;
+                        expansion_0 = DMEXPANSION * 0.5;
                         expansion_1 = 1.0;
+                        expansion_mask_0 = DMEXPANSION * 0.5;
+                        expansion_mask_1 = 0.0;
                       }
                     }else{
                       compression_0 = 1.0;
                       compression_1 = DMCOMPRESSION;
                       expansion_0 = 1.0;
-                      expansion_1 = DMEXPANSION;
+                      expansion_1 = DMEXPANSION * 0.5;
+                      expansion_mask_0 = 0.0;
+                      expansion_mask_1 = DMEXPANSION * 0.5;
                     }
                     for(i = 0; i + 1 <= N_block; i += 1, x += 2, y += (incY * 2)){
                       x_0 = ((double*)x)[0];
@@ -2716,10 +2800,10 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       q_1 = s_1 - q_1;
                       q_2 = s_2 - q_2;
                       q_3 = s_3 - q_3;
-                      x_0 = x_0 + q_0 * expansion_0;
-                      x_1 = x_1 + q_1 * expansion_1;
-                      x_2 = x_2 + q_2 * expansion_0;
-                      x_3 = x_3 + q_3 * expansion_1;
+                      x_0 = x_0 + q_0 * expansion_0 + q_0 * expansion_mask_0;
+                      x_1 = x_1 + q_1 * expansion_1 + q_1 * expansion_mask_1;
+                      x_2 = x_2 + q_2 * expansion_0 + q_2 * expansion_mask_0;
+                      x_3 = x_3 + q_3 * expansion_1 + q_3 * expansion_mask_1;
                       for(j = 1; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 4)];
                         s_1 = s_buffer[((j * 4) + 1)];
@@ -2825,18 +2909,23 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                     if(dmindex0(manZ)){
                       if(dmindex0(manZ + 1)){
                         compression_0 = DMCOMPRESSION;
-                        expansion_0 = DMEXPANSION;
+                        expansion_0 = DMEXPANSION * 0.5;
+                        expansion_mask_0 = DMEXPANSION * 0.5;
                       }else{
                         compression_0 = DMCOMPRESSION;
                         compression_1 = 1.0;
-                        expansion_0 = DMEXPANSION;
+                        expansion_0 = DMEXPANSION * 0.5;
                         expansion_1 = 1.0;
+                        expansion_mask_0 = DMEXPANSION * 0.5;
+                        expansion_mask_1 = 0.0;
                       }
                     }else{
                       compression_0 = 1.0;
                       compression_1 = DMCOMPRESSION;
                       expansion_0 = 1.0;
-                      expansion_1 = DMEXPANSION;
+                      expansion_1 = DMEXPANSION * 0.5;
+                      expansion_mask_0 = 0.0;
+                      expansion_mask_1 = DMEXPANSION * 0.5;
                     }
                     for(i = 0; i + 1 <= N_block; i += 1, x += (incX * 2), y += 2){
                       x_0 = ((double*)x)[0];
@@ -2872,10 +2961,10 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       q_1 = s_1 - q_1;
                       q_2 = s_2 - q_2;
                       q_3 = s_3 - q_3;
-                      x_0 = x_0 + q_0 * expansion_0;
-                      x_1 = x_1 + q_1 * expansion_1;
-                      x_2 = x_2 + q_2 * expansion_0;
-                      x_3 = x_3 + q_3 * expansion_1;
+                      x_0 = x_0 + q_0 * expansion_0 + q_0 * expansion_mask_0;
+                      x_1 = x_1 + q_1 * expansion_1 + q_1 * expansion_mask_1;
+                      x_2 = x_2 + q_2 * expansion_0 + q_2 * expansion_mask_0;
+                      x_3 = x_3 + q_3 * expansion_1 + q_3 * expansion_mask_1;
                       for(j = 1; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 4)];
                         s_1 = s_buffer[((j * 4) + 1)];
@@ -2979,18 +3068,23 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                     if(dmindex0(manZ)){
                       if(dmindex0(manZ + 1)){
                         compression_0 = DMCOMPRESSION;
-                        expansion_0 = DMEXPANSION;
+                        expansion_0 = DMEXPANSION * 0.5;
+                        expansion_mask_0 = DMEXPANSION * 0.5;
                       }else{
                         compression_0 = DMCOMPRESSION;
                         compression_1 = 1.0;
-                        expansion_0 = DMEXPANSION;
+                        expansion_0 = DMEXPANSION * 0.5;
                         expansion_1 = 1.0;
+                        expansion_mask_0 = DMEXPANSION * 0.5;
+                        expansion_mask_1 = 0.0;
                       }
                     }else{
                       compression_0 = 1.0;
                       compression_1 = DMCOMPRESSION;
                       expansion_0 = 1.0;
-                      expansion_1 = DMEXPANSION;
+                      expansion_1 = DMEXPANSION * 0.5;
+                      expansion_mask_0 = 0.0;
+                      expansion_mask_1 = DMEXPANSION * 0.5;
                     }
                     for(i = 0; i + 1 <= N_block; i += 1, x += (incX * 2), y += (incY * 2)){
                       x_0 = ((double*)x)[0];
@@ -3026,10 +3120,10 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
                       q_1 = s_1 - q_1;
                       q_2 = s_2 - q_2;
                       q_3 = s_3 - q_3;
-                      x_0 = x_0 + q_0 * expansion_0;
-                      x_1 = x_1 + q_1 * expansion_1;
-                      x_2 = x_2 + q_2 * expansion_0;
-                      x_3 = x_3 + q_3 * expansion_1;
+                      x_0 = x_0 + q_0 * expansion_0 + q_0 * expansion_mask_0;
+                      x_1 = x_1 + q_1 * expansion_1 + q_1 * expansion_mask_1;
+                      x_2 = x_2 + q_2 * expansion_0 + q_2 * expansion_mask_0;
+                      x_3 = x_3 + q_3 * expansion_1 + q_3 * expansion_mask_1;
                       for(j = 1; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 4)];
                         s_1 = s_buffer[((j * 4) + 1)];

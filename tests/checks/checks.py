@@ -395,6 +395,21 @@ class ValidateExternalRCDOTCTest(CheckTest):
   executable = "tests/checks/validate_external_rcblas1"
   name = "validate_external_rcdotc"
 
+class VerifyDIDIADDTest(CheckTest):
+  base_flags = "-w didiadd"
+  executable = "tests/checks/verify_daugsum"
+  name = "verify_didiadd"
+
+class VerifyDIDADDTest(CheckTest):
+  base_flags = "-w didadd"
+  executable = "tests/checks/verify_daugsum"
+  name = "verify_didadd"
+
+class VerifyDIDDEPOSITTest(CheckTest):
+  base_flags = "-w diddeposit"
+  executable = "tests/checks/verify_daugsum"
+  name = "verify_diddeposit"
+
 class VerifyRDSUMTest(CheckTest):
   base_flags = "-w rdsum"
   executable = "tests/checks/verify_daugsum"
@@ -415,20 +430,20 @@ class VerifyRDDOTTest(CheckTest):
   executable = "tests/checks/verify_daugsum"
   name = "verify_rddot"
 
-class VerifyDIDIADDTest(CheckTest):
-  base_flags = "-w didiadd"
-  executable = "tests/checks/verify_daugsum"
-  name = "verify_didiadd"
+class VerifyZIZIADDTest(CheckTest):
+  base_flags = "-w ziziadd"
+  executable = "tests/checks/verify_zaugsum"
+  name = "verify_ziziadd"
 
-class VerifyDIDADDTest(CheckTest):
-  base_flags = "-w didadd"
-  executable = "tests/checks/verify_daugsum"
-  name = "verify_didadd"
+class VerifyZIZADDTest(CheckTest):
+  base_flags = "-w zizadd"
+  executable = "tests/checks/verify_zaugsum"
+  name = "verify_zizadd"
 
-class VerifyDIDDEPOSITTest(CheckTest):
-  base_flags = "-w diddeposit"
-  executable = "tests/checks/verify_daugsum"
-  name = "verify_diddeposit"
+class VerifyZIZDEPOSITTest(CheckTest):
+  base_flags = "-w zizdeposit"
+  executable = "tests/checks/verify_zaugsum"
+  name = "verify_zizdeposit"
 
 class VerifyRZSUMTest(CheckTest):
   base_flags = "-w rzsum"
@@ -455,20 +470,20 @@ class VerifyRZDOTCTest(CheckTest):
   executable = "tests/checks/verify_zaugsum"
   name = "verify_rzdotc"
 
-class VerifyZIZIADDTest(CheckTest):
-  base_flags = "-w ziziadd"
-  executable = "tests/checks/verify_zaugsum"
-  name = "verify_ziziadd"
+class VerifySISIADDTest(CheckTest):
+  base_flags = "-w sisiadd"
+  executable = "tests/checks/verify_saugsum"
+  name = "verify_sisiadd"
 
-class VerifyZIZADDTest(CheckTest):
-  base_flags = "-w zizadd"
-  executable = "tests/checks/verify_zaugsum"
-  name = "verify_zizadd"
+class VerifySISADDTest(CheckTest):
+  base_flags = "-w sisadd"
+  executable = "tests/checks/verify_saugsum"
+  name = "verify_sisadd"
 
-class VerifyZIZDEPOSITTest(CheckTest):
-  base_flags = "-w zizdeposit"
-  executable = "tests/checks/verify_zaugsum"
-  name = "verify_zizdeposit"
+class VerifySISDEPOSITTest(CheckTest):
+  base_flags = "-w sisdeposit"
+  executable = "tests/checks/verify_saugsum"
+  name = "verify_sisdeposit"
 
 class VerifyRSSUMTest(CheckTest):
   base_flags = "-w rssum"
@@ -490,20 +505,20 @@ class VerifyRSDOTTest(CheckTest):
   executable = "tests/checks/verify_saugsum"
   name = "verify_rsdot"
 
-class VerifySISIADDTest(CheckTest):
-  base_flags = "-w sisiadd"
-  executable = "tests/checks/verify_saugsum"
-  name = "verify_sisiadd"
+class VerifyCICIADDTest(CheckTest):
+  base_flags = "-w ciciadd"
+  executable = "tests/checks/verify_caugsum"
+  name = "verify_ciciadd"
 
-class VerifySISADDTest(CheckTest):
-  base_flags = "-w sisadd"
-  executable = "tests/checks/verify_saugsum"
-  name = "verify_sisadd"
+class VerifyCICADDTest(CheckTest):
+  base_flags = "-w cicadd"
+  executable = "tests/checks/verify_caugsum"
+  name = "verify_cicadd"
 
-class VerifySISDEPOSITTest(CheckTest):
-  base_flags = "-w sisdeposit"
-  executable = "tests/checks/verify_saugsum"
-  name = "verify_sisdeposit"
+class VerifyCICDEPOSITTest(CheckTest):
+  base_flags = "-w cicdeposit"
+  executable = "tests/checks/verify_caugsum"
+  name = "verify_cicdeposit"
 
 class VerifyRCSUMTest(CheckTest):
   base_flags = "-w rcsum"
@@ -530,21 +545,6 @@ class VerifyRCDOTCTest(CheckTest):
   executable = "tests/checks/verify_caugsum"
   name = "verify_rcdotc"
 
-class VerifyCICIADDTest(CheckTest):
-  base_flags = "-w ciciadd"
-  executable = "tests/checks/verify_caugsum"
-  name = "verify_ciciadd"
-
-class VerifyCICADDTest(CheckTest):
-  base_flags = "-w cicadd"
-  executable = "tests/checks/verify_caugsum"
-  name = "verify_cicadd"
-
-class VerifyCICDEPOSITTest(CheckTest):
-  base_flags = "-w cicdeposit"
-  executable = "tests/checks/verify_caugsum"
-  name = "verify_cicdeposit"
-
 class VerifyDIDSSQTest(CheckTest):
   executable = "tests/checks/verify_didssq"
   name = "verify_didssq"
@@ -560,6 +560,16 @@ class VerifySISSSQTest(CheckTest):
 class VerifySICSSQTest(CheckTest):
   executable = "tests/checks/verify_sicssq"
   name = "verify_sicssq"
+
+class VerifyRDGEMVTest(CheckTest):
+  base_flags = ""
+  executable = "tests/checks/verify_rdgemv"
+  name = "verify_rdgemv"
+
+class VerifyRZGEMVTest(CheckTest):
+  base_flags = ""
+  executable = "tests/checks/verify_rzgemv"
+  name = "verify_rzgemv"
 
 class ValidateInternalDSCALETest(CheckTest):
   base_flags = ""
@@ -590,11 +600,6 @@ class ValidateInternalSMINDEXTest(CheckTest):
   base_flags = ""
   executable = "tests/checks/validate_internal_smindex"
   name = "validate_internal_smindex"
-
-class VerifyRDGEMVTest(CheckTest):
-  base_flags = ""
-  executable = "tests/checks/verify_rdgemv"
-  name = "verify_rdgemv"
 
 all_checks = {"validate_internal_ufp": ValidateInternalUFPTest,\
               "validate_internal_ufpf": ValidateInternalUFPFTest,\
@@ -654,7 +659,6 @@ all_checks = {"validate_internal_ufp": ValidateInternalUFPTest,\
               "verify_rdasum": VerifyRDASUMTest,\
               "verify_rdnrm2": VerifyRDNRM2Test,\
               "verify_rddot": VerifyRDDOTTest,\
-              "verify_rdgemv": VerifyRDGEMVTest,\
               "verify_didiadd": VerifyDIDIADDTest,\
               "verify_didadd": VerifyDIDADDTest,\
               "verify_diddeposit": VerifyDIDDEPOSITTest,\
@@ -685,6 +689,8 @@ all_checks = {"validate_internal_ufp": ValidateInternalUFPTest,\
               "verify_dizssq": VerifyDIZSSQTest,\
               "verify_sisssq": VerifySISSSQTest,\
               "verify_sicssq": VerifySICSSQTest,\
+              "verify_rdgemv": VerifyRDGEMVTest,\
+              "verify_rzgemv": VerifyRZGEMVTest,\
               "validate_internal_dscale": ValidateInternalDSCALETest,\
               "validate_internal_dscale": ValidateInternalDSCALETest,\
               "validate_internal_sscale": ValidateInternalSSCALETest,\
