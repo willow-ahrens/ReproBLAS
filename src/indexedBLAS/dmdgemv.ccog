@@ -49,7 +49,7 @@ void dmdgemv(const int fold, const char Order,
           for(i = 0; i < M; i += Y_BLOCK){
             for(j = 0; j < N; j += X_BLOCK){
               for(ii = i; ii < M && ii < i + Y_BLOCK; ii++){
-                dmddot(fold, MIN(X_BLOCK, N - j), alphaX + j * incalphaX, incalphaX, A + ii * lda + j, 1, priY + ii*incpriY*incincpriY*dinum(fold), incpriY, priY + ii*inccarY*incinccarY*dinum(fold), inccarY);
+                dmddot(fold, MIN(X_BLOCK, N - j), alphaX + j * incalphaX, incalphaX, A + ii * lda + j, 1, priY + ii*incpriY*incincpriY*fold, incpriY, carY + ii*inccarY*incinccarY*fold, inccarY);
               }
             }
           }
@@ -71,7 +71,7 @@ void dmdgemv(const int fold, const char Order,
           for(i = 0; i < N; i += Y_BLOCK){
             for(j = 0; j < M; j += X_BLOCK){
               for(ii = i; ii < N && ii < i + Y_BLOCK; ii++){
-                dmddot(fold, MIN(X_BLOCK, M - j), alphaX + j * incalphaX, incalphaX, A + j * lda + ii, 1, priY + ii*incpriY*incincpriY*dinum(fold), incpriY, priY + ii*inccarY*incinccarY*dinum(fold), inccarY);
+                dmddot(fold, MIN(X_BLOCK, M - j), alphaX + j * incalphaX, incalphaX, A + j * lda + ii, lda, priY + ii*incpriY*incincpriY*fold, incpriY, carY + ii*inccarY*incinccarY*fold, inccarY);
               }
             }
           }

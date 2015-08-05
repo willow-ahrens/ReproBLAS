@@ -8,7 +8,8 @@ check_dir = os.path.dirname(os.path.abspath(__file__))
 
 check_suite = checks.CheckSuite()
 
-folds = [2, 3, 4]
+#folds = [2, 3, 4]
+folds = [2]
 inf_folds = [2, 3, 4]
 incs = [1]
 
@@ -33,8 +34,18 @@ for i in range(DBL_MANT_DIG):
   DBL_ONES += 2.0 ** -i
 
 check_suite.add_checks([checks.VerifyRDGEMVTest()],\
-                       [("O", "T"), ("M", "lda"), "N", "incX", "incY", "f", "g", "j", "fold"],\
-                       [[("RowMajor", "Trans"), ("ColMajor", "NoTrans")], [(1, 1), (1, 1023), (1023, 1023), (1023, 1024), (1024, 1024)], [1, 1023, 1024], incs, incs,\
+                       ["O", "T", ("N", "lda"), "M", "incX", "incY", "f", "g", "j", "fold"],\
+                       [["RowMajor"], ["Trans", "NoTrans"], [(1023, 1023), (1023, 1024), (1024, 1024)], [1023, 1024], incs, incs,\
+                        ["rand",\
+                         "small+grow*big"],\
+                        ["rand",\
+                         "small+grow*big"],\
+                        ["rand",\
+                         "small+grow*big"],\
+                        folds])
+check_suite.add_checks([checks.VerifyRDGEMVTest()],\
+                       ["O", "T", ("M", "lda"), "N", "incX", "incY", "f", "g", "j", "fold"],\
+                       [["ColMajor"], ["Trans", "NoTrans"], [(1023, 1023), (1023, 1024), (1024, 1024)], [1023, 1024], incs, incs,\
                         ["rand",\
                          "small+grow*big"],\
                         ["rand",\

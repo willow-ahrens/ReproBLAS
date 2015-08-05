@@ -66,7 +66,7 @@ int verify_dgemv_reproducibility(int fold, char Order, char TransA, int M, int N
                   didgemv(fold, Order, TransA, M, block_N, alpha, A + i, lda, X + i * incX, incX, Ires, incY);
                   break;
                 default:
-                  didgemv(fold, Order, TransA, M, block_N, alpha, A + lda * i, lda, X + i * incX, incX, Ires, incY);
+                  didgemv(fold, Order, TransA, M, block_N, alpha, A + i * lda, lda, X + i * incX, incX, Ires, incY);
                   break;
               }
             }
@@ -95,7 +95,7 @@ int verify_dgemv_reproducibility(int fold, char Order, char TransA, int M, int N
       }
       for(i = 0; i < NY; i++){
         if(res[i * incY] != ref[i * incY]){
-          printf("dgemv(A, X, Y)[num_blocks=%d,block_N=%d] = %g != %g\n", num_blocks, block_N, res[i * incY], ref[i * incY]);
+          printf("rdgemv(A, X, Y)[num_blocks=%d,block_N=%d] = %g != %g\n", num_blocks, block_N, res[i * incY], ref[i * incY]);
           if (num_blocks != 1) {
             printf("Ref I_double:\n");
             diprint(fold, Iref + i * incY * dinum(fold));
@@ -127,7 +127,7 @@ const char* matvec_fill_name(int argc, char** argv){
   opt_eval_option(argc, argv, &fold);
   opt_eval_option(argc, argv, &max_blocks);
 
-  snprintf(name_buffer, MAX_LINE * sizeof(char), "Verify dgemv reproducibility fold=%d", fold._int.value);
+  snprintf(name_buffer, MAX_LINE * sizeof(char), "Verify rdgemv reproducibility fold=%d", fold._int.value);
   return name_buffer;
 }
 

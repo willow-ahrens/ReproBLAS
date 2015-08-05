@@ -591,10 +591,10 @@ class ValidateInternalSMINDEXTest(CheckTest):
   executable = "tests/checks/validate_internal_smindex"
   name = "validate_internal_smindex"
 
-#class VerifyRDGEMVTest(CheckTest):
-#  base_flags = ""
-#  executable = "tests/checks/verify_rdgemv"
-#  name = "verify_rdgemv"
+class VerifyRDGEMVTest(CheckTest):
+  base_flags = ""
+  executable = "tests/checks/verify_rdgemv"
+  name = "verify_rdgemv"
 
 all_checks = {"validate_internal_ufp": ValidateInternalUFPTest,\
               "validate_internal_ufpf": ValidateInternalUFPFTest,\
@@ -654,6 +654,7 @@ all_checks = {"validate_internal_ufp": ValidateInternalUFPTest,\
               "verify_rdasum": VerifyRDASUMTest,\
               "verify_rdnrm2": VerifyRDNRM2Test,\
               "verify_rddot": VerifyRDDOTTest,\
+              "verify_rdgemv": VerifyRDGEMVTest,\
               "verify_didiadd": VerifyDIDIADDTest,\
               "verify_didadd": VerifyDIDADDTest,\
               "verify_diddeposit": VerifyDIDDEPOSITTest,\
