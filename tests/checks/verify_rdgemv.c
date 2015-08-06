@@ -37,7 +37,6 @@ static void verify_rdgemv_options_initialize(void){
 
 int verify_dgemv_reproducibility(int fold, char Order, char TransA, int M, int N, int NX, int NY, double alpha, double *A, int lda, double* X, int incX, double beta, double *Y, double_indexed *YI, int incY, double *ref, double_indexed *Iref, int max_num_blocks) {
 
-  // GENERATE DATA
   int i;
   int num_blocks = 1;
   int block_N;
@@ -47,7 +46,6 @@ int verify_dgemv_reproducibility(int fold, char Order, char TransA, int M, int N
 
   num_blocks = 1;
   while (num_blocks < N && num_blocks <= max_num_blocks) {
-    //compute with unpermuted data
     memcpy(res, Y, NY * incY * sizeof(double));
     memcpy(Ires, YI, NY * incY * disize(fold));
     if (num_blocks == 1){
@@ -132,7 +130,9 @@ const char* matvec_fill_name(int argc, char** argv){
   return name_buffer;
 }
 
-int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int N, double complex alpha, int FillA, double RealScaleA, double ImagScaleA, int lda, int FillX, double RealScaleX, double ImagScaleX, int incX, double complex beta, int FillY, double RealScaleY, double ImagScaleY, int incY){
+int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int N, double RealAlpha, double ImagAlpha, int FillA, double RealScaleA, double ImagScaleA, int lda, int FillX, double RealScaleX, double ImagScaleX, int incX, double RealBeta, double ImagBeta, int FillY, double RealScaleY, double ImagScaleY, int incY){
+  (void)ImagAlpha;
+  (void)ImagBeta;
   int rc = 0;
   int i;
 
@@ -170,7 +170,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   util_dvec_fill(NX, X, incX, FillX, RealScaleX, ImagScaleX);
   util_dvec_fill(NY, Y, incY, FillY, RealScaleY, ImagScaleY);
   for(i = 0; i < NY; i++){
-    didconv(fold._int.value, Y[i * incY] * ((double*)&beta)[0], YI + i * incY * dinum(fold._int.value));
+    didconv(fold._int.value, Y[i * incY] * RealBeta, YI + i * incY * dinum(fold._int.value));
   }
   double *ref  = (double*)malloc(NY * incY * sizeof(double));
   double_indexed *Iref = (double_indexed*)malloc(NY * incY * disize(fold._int.value));
@@ -179,15 +179,15 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   memcpy(ref, Y, NY * incY * sizeof(double));
   memcpy(Iref, YI, NY * incY * disize(fold._int.value));
 
-  wrap_rdgemv(fold._int.value, Order, TransA, M, N, alpha, A, lda, X, incX, beta, ref, incY);
-  didgemv(fold._int.value, Order, TransA, M, N, alpha, A, lda, X, incX, Iref, incY);
+  wrap_rdgemv(fold._int.value, Order, TransA, M, N, RealAlpha, A, lda, X, incX, RealBeta, ref, incY);
+  didgemv(fold._int.value, Order, TransA, M, N, RealAlpha, A, lda, X, incX, Iref, incY);
 
   P = util_identity_permutation(NX);
   util_dvec_reverse(NX, X, incX, P, 1);
   util_dmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
   free(P);
 
-  rc = verify_dgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, alpha, A, lda, X, incX, beta, Y, YI, incY, ref, Iref, max_blocks._int.value);
+  rc = verify_dgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, RealAlpha, A, lda, X, incX, RealBeta, Y, YI, incY, ref, Iref, max_blocks._int.value);
   if(rc != 0){
     return rc;
   }
@@ -197,7 +197,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   util_dmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
   free(P);
 
-  rc = verify_dgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, alpha, A, lda, X, incX, beta, Y, YI, incY, ref, Iref, max_blocks._int.value);
+  rc = verify_dgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, RealAlpha, A, lda, X, incX, RealBeta, Y, YI, incY, ref, Iref, max_blocks._int.value);
   if(rc != 0){
     return rc;
   }
@@ -207,7 +207,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   util_dmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
   free(P);
 
-  rc = verify_dgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, alpha, A, lda, X, incX, beta, Y, YI, incY, ref, Iref, max_blocks._int.value);
+  rc = verify_dgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, RealAlpha, A, lda, X, incX, RealBeta, Y, YI, incY, ref, Iref, max_blocks._int.value);
   if(rc != 0){
     return rc;
   }
@@ -217,7 +217,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   util_dmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
   free(P);
 
-  rc = verify_dgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, alpha, A, lda, X, incX, beta, Y, YI, incY, ref, Iref, max_blocks._int.value);
+  rc = verify_dgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, RealAlpha, A, lda, X, incX, RealBeta, Y, YI, incY, ref, Iref, max_blocks._int.value);
   if(rc != 0){
     return rc;
   }
@@ -227,7 +227,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   util_dmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
   free(P);
 
-  rc = verify_dgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, alpha, A, lda, X, incX, beta, Y, YI, incY, ref, Iref, max_blocks._int.value);
+  rc = verify_dgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, RealAlpha, A, lda, X, incX, RealBeta, Y, YI, incY, ref, Iref, max_blocks._int.value);
   if(rc != 0){
     return rc;
   }
@@ -237,7 +237,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   util_dmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
   free(P);
 
-  rc = verify_dgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, alpha, A, lda, X, incX, beta, Y, YI, incY, ref, Iref, max_blocks._int.value);
+  rc = verify_dgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, RealAlpha, A, lda, X, incX, RealBeta, Y, YI, incY, ref, Iref, max_blocks._int.value);
   if(rc != 0){
     return rc;
   }
@@ -247,7 +247,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   util_dmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
   free(P);
 
-  rc = verify_dgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, alpha, A, lda, X, incX, beta, Y, YI, incY, ref, Iref, max_blocks._int.value);
+  rc = verify_dgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, RealAlpha, A, lda, X, incX, RealBeta, Y, YI, incY, ref, Iref, max_blocks._int.value);
   if(rc != 0){
     return rc;
   }
@@ -257,7 +257,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   util_dmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
   free(P);
 
-  rc = verify_dgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, alpha, A, lda, X, incX, beta, Y, YI, incY, ref, Iref, max_blocks._int.value);
+  rc = verify_dgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, RealAlpha, A, lda, X, incX, RealBeta, Y, YI, incY, ref, Iref, max_blocks._int.value);
   if(rc != 0){
     return rc;
   }
@@ -267,7 +267,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   util_dmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
   free(P);
 
-  rc = verify_dgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, alpha, A, lda, X, incX, beta, Y, YI, incY, ref, Iref, max_blocks._int.value);
+  rc = verify_dgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, RealAlpha, A, lda, X, incX, RealBeta, Y, YI, incY, ref, Iref, max_blocks._int.value);
   if(rc != 0){
     return rc;
   }

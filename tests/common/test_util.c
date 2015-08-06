@@ -6,7 +6,7 @@
 
 #include "test_util.h"
 
-const int util_vec_fill_n_names  = 24;
+const int util_vec_fill_n_names  = 27;
 const char *util_vec_fill_names[] = {"constant",
                                      "+inf",
                                      "++inf",
@@ -62,7 +62,7 @@ const char *util_vec_fill_descs[] = {"Constant",
                                      "Normal[drop]",
                                      "Sine(2pi*(i/n))[drop]"};
 
-const int  util_mat_fill_n_names  = 25;
+const int  util_mat_fill_n_names  = 28;
 const char *util_mat_fill_names[] = {"constant",
                                      "+inf",
                                      "++inf",

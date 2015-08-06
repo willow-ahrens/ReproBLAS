@@ -5,7 +5,7 @@
 
 int matvec_fill_show_help(void);
 const char *matvec_fill_name(int argc, char** argv);
-int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int N, double complex alpha, int FillA, double RealScaleA, double ImagScaleA, int lda, int FillX, double RealScaleX, double ImagScaleX, int incX, double complex beta, int FillY, double RealScaleY, double ImagScaleY, int incY);
+int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int N, double RealAlpha, double ImagAlpha, int FillA, double RealScaleA, double ImagScaleA, int lda, int FillX, double RealScaleX, double ImagScaleX, int incX, double RealBeta, double ImagBeta, int FillY, double RealScaleY, double ImagScaleY, int incY);
 
 static opt_option FillA;
 static opt_option RealScaleA;
@@ -72,7 +72,7 @@ static void matvec_fill_options_initialize(void){
   ImagScaleX._double.header.type       = opt_double;
   ImagScaleX._double.header.short_name = 'd';
   ImagScaleX._double.header.long_name  = "ImagScaleX";
-  ImagScaleX._double.header.help       = "X scale (imag)";
+  ImagScaleX._double.header.help       = "X scale (imaginary)";
   ImagScaleX._double.required          = 0;
   ImagScaleX._double.min               = -1 * DBL_MAX;
   ImagScaleX._double.max               = DBL_MAX;
@@ -91,20 +91,20 @@ static void matvec_fill_options_initialize(void){
   RealScaleY._double.header.type       = opt_double;
   RealScaleY._double.header.short_name = 'v';
   RealScaleY._double.header.long_name  = "RealScaleY";
-  RealScaleY._double.header.help       = "Y scale";
+  RealScaleY._double.header.help       = "Y scale (real)";
   RealScaleY._double.required          = 0;
-  RealScaleY._double.min               = 0;
+  RealScaleY._double.min               = -1*DBL_MAX;
   RealScaleY._double.max               = DBL_MAX;
   RealScaleY._double.value             = 1.0;
 
   ImagScaleY._double.header.type       = opt_double;
   ImagScaleY._double.header.short_name = 'e';
   ImagScaleY._double.header.long_name  = "ImagScaleY";
-  ImagScaleY._double.header.help       = "Y condition number";
+  ImagScaleY._double.header.help       = "Y scale (imaginary)";
   ImagScaleY._double.required          = 0;
-  ImagScaleY._double.min               = 1.0;
+  ImagScaleY._double.min               = -1*DBL_MAX;
   ImagScaleY._double.max               = DBL_MAX;
-  ImagScaleY._double.value             = 1e3;
+  ImagScaleY._double.value             = 0;
 
   RealAlpha._double.header.type       = opt_double;
   RealAlpha._double.header.short_name = 'l';
@@ -186,8 +186,6 @@ const char* matvec_name(int argc, char** argv){
 
 int matvec_test(int argc, char** argv, char Order, char TransA, int M, int N, int lda, int incX, int incY){
   int rc;
-  double alpha[2];
-  double beta[2];
 
   matvec_fill_options_initialize();
 
@@ -204,10 +202,6 @@ int matvec_test(int argc, char** argv, char Order, char TransA, int M, int N, in
   opt_eval_option(argc, argv, &ImagAlpha);
   opt_eval_option(argc, argv, &RealBeta);
   opt_eval_option(argc, argv, &ImagBeta);
-  alpha[0] = RealAlpha._double.value;
-  alpha[1] = RealAlpha._double.value;
-  beta[0] = RealBeta._double.value;
-  beta[1] = RealBeta._double.value;
-  rc = matvec_fill_test(argc, argv, Order, TransA, M, N, *((double complex*)alpha), FillA._named.value, RealScaleA._double.value, ImagScaleA._double.value, lda, FillX._named.value, RealScaleX._double.value, ImagScaleX._double.value, incX, *((double complex*)beta), FillY._named.value, RealScaleY._double.value, ImagScaleY._double.value, incY);
+  rc = matvec_fill_test(argc, argv, Order, TransA, M, N, RealAlpha._double.value, ImagAlpha._double.value, FillA._named.value, RealScaleA._double.value, ImagScaleA._double.value, lda, FillX._named.value, RealScaleX._double.value, ImagScaleX._double.value, incX, RealBeta._double.value, ImagBeta._double.value, FillY._named.value, RealScaleY._double.value, ImagScaleY._double.value, incY);
   return rc;
 }

@@ -35,9 +35,7 @@ static void verify_rzgemv_options_initialize(void){
   fold._int.value             = DIDEFAULTFOLD;
 }
 
-int verify_zgemv_reproducibility(int fold, char Order, char TransA, int M, int N, int NX, int NY, double complex alpha, double complex *A, int lda, double complex *X, int incX, double complex beta, double complex *Y, double_complex_indexed *YI, int incY, double complex *ref, double_complex_indexed *Iref, int max_num_blocks) {
-
-  // GENERATE DATA
+int verify_zgemv_reproducibility(int fold, char Order, char TransA, int M, int N, int NX, int NY, double complex *alpha, double complex *A, int lda, double complex *X, int incX, double complex *beta, double complex *Y, double_complex_indexed *YI, int incY, double complex *ref, double_complex_indexed *Iref, int max_num_blocks) {
   int i;
   int num_blocks = 1;
   int block_N;
@@ -47,13 +45,10 @@ int verify_zgemv_reproducibility(int fold, char Order, char TransA, int M, int N
 
   num_blocks = 1;
   while (num_blocks < N && num_blocks <= max_num_blocks) {
-    //compute with unpermuted data
     memcpy(res, Y, NY * incY * sizeof(double complex));
     memcpy(Ires, YI, NY * incY * zisize(fold));
-    printf("st p1 %g\n", Ires[3]);
-    printf("st c1 %g\n", Ires[7]);
     if (num_blocks == 1){
-      wrap_rzgemv(fold, Order, TransA, M, N, &alpha, A, lda, X, incX, &beta, res, incY);
+      wrap_rzgemv(fold, Order, TransA, M, N, alpha, A, lda, X, incX, beta, res, incY);
     }else {
       switch(TransA){
         case 'n':
@@ -65,11 +60,11 @@ int verify_zgemv_reproducibility(int fold, char Order, char TransA, int M, int N
               switch(Order){
                 case 'r':
                 case 'R':
-                  zizgemv(fold, Order, TransA, M, block_N, (void*)&alpha, (void*)(A + i), lda, (void*)(X + i * incX), incX, Ires, incY);
+                  zizgemv(fold, Order, TransA, M, block_N, (void*)alpha, (void*)(A + i), lda, (void*)(X + i * incX), incX, Ires, incY);
                   printf("i %d p1 %g\n", i, Ires[3]);
                   break;
                 default:
-                  zizgemv(fold, Order, TransA, M, block_N, (void*)&alpha, (void*)(A + i * lda), lda, (void*)(X + i * incX), incX, Ires, incY);
+                  zizgemv(fold, Order, TransA, M, block_N, (void*)alpha, (void*)(A + i * lda), lda, (void*)(X + i * incX), incX, Ires, incY);
                   break;
               }
             }
@@ -83,10 +78,10 @@ int verify_zgemv_reproducibility(int fold, char Order, char TransA, int M, int N
               switch(Order){
                 case 'r':
                 case 'R':
-                  zizgemv(fold, Order, TransA, block_N, N, (void*)&alpha, (void*)(A + i * lda), lda, (void*)(X + i * incX), incX, Ires, incY);
+                  zizgemv(fold, Order, TransA, block_N, N, (void*)alpha, (void*)(A + i * lda), lda, (void*)(X + i * incX), incX, Ires, incY);
                   break;
                 default:
-                  zizgemv(fold, Order, TransA, block_N, N, (void*)&alpha, (void*)(A + i), lda, (void*)(X + i * incX), incX, Ires, incY);
+                  zizgemv(fold, Order, TransA, block_N, N, (void*)alpha, (void*)(A + i), lda, (void*)(X + i * incX), incX, Ires, incY);
                   break;
               }
             }
@@ -135,7 +130,7 @@ const char* matvec_fill_name(int argc, char** argv){
   return name_buffer;
 }
 
-int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int N, double complex alpha, int FillA, double RealScaleA, double ImagScaleA, int lda, int FillX, double RealScaleX, double ImagScaleX, int incX, double complex beta, int FillY, double RealScaleY, double ImagScaleY, int incY){
+int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int N, double RealAlpha, double ImagAlpha, int FillA, double RealScaleA, double ImagScaleA, int lda, int FillX, double RealScaleX, double ImagScaleX, int incX, double RealBeta, double ImagBeta, int FillY, double RealScaleY, double ImagScaleY, int incY){
   int rc = 0;
   int i;
 
@@ -165,6 +160,8 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   double complex *A = util_zmat_alloc(Order, M, N, lda);
   double complex *X = util_zvec_alloc(NX, incX);
   double complex *Y = util_zvec_alloc(NY, incY);
+  double complex alpha = RealAlpha + I * ImagAlpha;
+  double complex beta = RealBeta + I * ImagBeta;
   double complex betaY;
   double_complex_indexed *YI = (double_complex_indexed*)malloc(NY * incY * zisize(fold._int.value));
 
@@ -192,7 +189,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   util_zmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
   free(P);
 
-  rc = verify_zgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, alpha, A, lda, X, incX, beta, Y, YI, incY, ref, Iref, max_blocks._int.value);
+  rc = verify_zgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, &alpha, A, lda, X, incX, &beta, Y, YI, incY, ref, Iref, max_blocks._int.value);
   if(rc != 0){
     return rc;
   }
@@ -202,7 +199,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   util_zmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
   free(P);
 
-  rc = verify_zgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, alpha, A, lda, X, incX, beta, Y, YI, incY, ref, Iref, max_blocks._int.value);
+  rc = verify_zgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, &alpha, A, lda, X, incX, &beta, Y, YI, incY, ref, Iref, max_blocks._int.value);
   if(rc != 0){
     return rc;
   }
@@ -212,7 +209,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   util_zmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
   free(P);
 
-  rc = verify_zgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, alpha, A, lda, X, incX, beta, Y, YI, incY, ref, Iref, max_blocks._int.value);
+  rc = verify_zgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, &alpha, A, lda, X, incX, &beta, Y, YI, incY, ref, Iref, max_blocks._int.value);
   if(rc != 0){
     return rc;
   }
@@ -222,7 +219,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   util_zmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
   free(P);
 
-  rc = verify_zgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, alpha, A, lda, X, incX, beta, Y, YI, incY, ref, Iref, max_blocks._int.value);
+  rc = verify_zgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, &alpha, A, lda, X, incX, &beta, Y, YI, incY, ref, Iref, max_blocks._int.value);
   if(rc != 0){
     return rc;
   }
@@ -232,7 +229,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   util_zmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
   free(P);
 
-  rc = verify_zgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, alpha, A, lda, X, incX, beta, Y, YI, incY, ref, Iref, max_blocks._int.value);
+  rc = verify_zgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, &alpha, A, lda, X, incX, &beta, Y, YI, incY, ref, Iref, max_blocks._int.value);
   if(rc != 0){
     return rc;
   }
@@ -242,7 +239,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   util_zmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
   free(P);
 
-  rc = verify_zgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, alpha, A, lda, X, incX, beta, Y, YI, incY, ref, Iref, max_blocks._int.value);
+  rc = verify_zgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, &alpha, A, lda, X, incX, &beta, Y, YI, incY, ref, Iref, max_blocks._int.value);
   if(rc != 0){
     return rc;
   }
@@ -252,7 +249,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   util_zmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
   free(P);
 
-  rc = verify_zgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, alpha, A, lda, X, incX, beta, Y, YI, incY, ref, Iref, max_blocks._int.value);
+  rc = verify_zgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, &alpha, A, lda, X, incX, &beta, Y, YI, incY, ref, Iref, max_blocks._int.value);
   if(rc != 0){
     return rc;
   }
@@ -262,7 +259,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   util_zmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
   free(P);
 
-  rc = verify_zgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, alpha, A, lda, X, incX, beta, Y, YI, incY, ref, Iref, max_blocks._int.value);
+  rc = verify_zgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, &alpha, A, lda, X, incX, &beta, Y, YI, incY, ref, Iref, max_blocks._int.value);
   if(rc != 0){
     return rc;
   }
@@ -272,7 +269,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   util_zmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
   free(P);
 
-  rc = verify_zgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, alpha, A, lda, X, incX, beta, Y, YI, incY, ref, Iref, max_blocks._int.value);
+  rc = verify_zgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, &alpha, A, lda, X, incX, &beta, Y, YI, incY, ref, Iref, max_blocks._int.value);
   if(rc != 0){
     return rc;
   }

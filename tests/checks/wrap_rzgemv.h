@@ -3,13 +3,13 @@
 #include <reproBLAS.h>
 #include "../../config.h"
 
-void wrap_rzgemv(int fold, const char Order, const char TransA, const int M, const int N, const double complex *alpha, const double complex *A, const int lda, const double complex *X, const int incX, const double complex *beta, double complex *Y, const int incY){
+void wrap_rzgemv(int fold, char Order, char TransA, int M, int N, double complex *alpha, double complex *A, int lda, double complex *X, int incX, double complex *beta, double complex *Y, int incY){
   double_indexed *YI;
   double complex betaY;
   int NY;
   int i;
   if(fold == DIDEFAULTFOLD){
-    rzgemv(Order, TransA, M, N, (const void*)alpha, (const void*)A, lda, (const void*)X, incX, (const void*)beta, (void*)Y, incY);
+    rzgemv(Order, TransA, M, N, (void*)alpha, (void*)A, lda, (void*)X, incX, (void*)beta, (void*)Y, incY);
   }else{
     switch(TransA){
       case 'n':
