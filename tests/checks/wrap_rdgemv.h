@@ -144,10 +144,10 @@ double wrap_rdgemv_bound(int fold, char Order, char TransA, int M, int N, double
       switch(Order){
         case 'r':
         case 'R':
-          bound = dibound(fold, N + 1, MAX(Y[i * incY] * beta, damaxm(N, A + i * lda, 1, alphaX, 1)), res[i * incY]);
+          bound = dibound(fold, N + 1, MAX(fabs(Y[i * incY] * beta), damaxm(N, A + i * lda, 1, alphaX, 1)), res[i * incY]);
           break;
         default:
-          bound = dibound(fold, N + 1, MAX(Y[i * incY] * beta, damaxm(N, A + i, lda, alphaX, 1)), res[i * incY]);
+          bound = dibound(fold, N + 1, MAX(fabs(Y[i * incY] * beta), damaxm(N, A + i, lda, alphaX, 1)), res[i * incY]);
           break;
       }
       break;
@@ -159,10 +159,10 @@ double wrap_rdgemv_bound(int fold, char Order, char TransA, int M, int N, double
       switch(Order){
         case 'r':
         case 'R':
-          bound = dibound(fold, M + 1, MAX(Y[i * incY] * beta, damaxm(M, A + i, lda, alphaX, 1)), res[i * incY]);
+          bound = dibound(fold, M + 1, MAX(fabs(Y[i * incY] * beta), damaxm(M, A + i, lda, alphaX, 1)), res[i * incY]);
           break;
         default:
-          bound = dibound(fold, M + 1, MAX(Y[i * incY] * beta, damaxm(M, A + i * lda, 1, alphaX, 1)), res[i * incY]);
+          bound = dibound(fold, M + 1, MAX(fabs(Y[i * incY] * beta), damaxm(M, A + i * lda, 1, alphaX, 1)), res[i * incY]);
           break;
       }
       break;
