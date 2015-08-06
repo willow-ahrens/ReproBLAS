@@ -44,9 +44,9 @@
 
   For all $r \in \R$, let $r\Z$ denote the set of all multiples of $r$, $\{rz | z \in \Z\}$.
 
-  For all $r \in \R$, let $\lfloor r \rfloor$ be the minimum element $z \in \Z$ such that $z \geq r$.
+  For all $r \in \R$, let $\lceil r \rceil$ be the minimum element $z \in \Z$ such that $z \geq r$.
 
-  For all $r \in \R$, let $\lceil r \rceil$ be the maximum element $z \in \Z$ such that $z \leq r$.
+  For all $r \in \R$, let $\lfloor r \rfloor$ be the maximum element $z \in \Z$ such that $z \leq r$.
 
   We define the function $\roundtonearestinfty(r, e), r \in R, e \in \Z$ as
 
@@ -67,11 +67,11 @@
 
   $r \in \R$ is \textbf{representable} as a floating point number if there exists $f \in \F$ such that $r = f$ as real numbers.
 
-  For all $r \in \R$, $e \in \Z$ such that $e_{\min} - p < e$ and $|r| < 2 \cdot 2^{e_{\max}}$, if $r \in 2^e\Z$ and $r \leq 2^{e + p}$ then $r$ is representable.
+  For all $r \in \R$, $e \in \Z$ such that $e_{\min} - p < e$ and $|r| < 2 \cdot 2^{e_{\max}}$, if $r \in 2^e\Z$ and $|r| \leq 2^{e + p}$ then $r$ is representable.
 
   Machine epsilon, $\epsilon$, the difference between 1 and the greatest floating point number smaller than 1, is defined as $\epsilon = 2^{-p}$.
 
-  The unit in the last place of $f \in \F$, $\ulp(f)$, is the spacing between two consecutive floating point numbers of the same exponent as $f$. If $f$ is normalized, $\ulp(f) = 2^{\exp(f) - p + 1} = 2  \epsilon  2^{\exp(f)}$ and $\ulp(f) < 2^{p - 1}|f|$.
+  The unit in the last place of $f \in \F$, $\ulp(f)$, is the spacing between two consecutive floating point numbers of the same exponent as $f$. If $f$ is normalized, $\ulp(f) = 2^{\exp(f) - p + 1} = 2  \epsilon  2^{\exp(f)}$ and $\ulp(f) \leq 2^{p - 1}|f|$.
 
   The unit in the first place of $f \in F$, $\ufp(f)$, is the value of the first significant bit of $f$. If $f$ is normalized, $\ufp(f) = 2^{\exp(f)}$.
 
@@ -82,7 +82,7 @@
   All indices start at $0$ in correspondence with the actual ReproBLAS implementation.
 \section{Binning}
   \label{sec:binning}
-    We achieve reproducible summation of floating point numbers through binning. Each number is split into several components corresponding to predefined ranges, then the components corresponding to each range are accumulated separately. We begin in Section \ref{sec:binning_bins} by explaining the particular set of ranges (referred to as bins) used. Section \ref{sec:binning_slices} develops original mathematical theory to describe the components (referred to as slices) corresponding to each range. We develop this theory to concisely describe and prove correctness of algorithms throughout the paper (especially Algorithms \ref{alg:depositrestricted} and \ref{alg:deposit}).
+    We achieve reproducible summation of floating point numbers through binning. Each number is split into several components corresponding to predefined exponent ranges, then the components corresponding to each range are accumulated separately. We begin in Section \ref{sec:binning_bins} by explaining the particular set of ranges (referred to as bins) used. Section \ref{sec:binning_slices} develops mathematical theory to describe the components (referred to as slices) corresponding to each bin. We develop this theory to concisely describe and prove correctness of algorithms throughout the paper (especially Algorithms \ref{alg:depositrestricted} and \ref{alg:deposit}).
   \subsection{Bins}
     \label{sec:binning_bins}
     We start by dividing the exponent range $(e_{\min} - p, ..., e_{\max} + 1]$  into \textbf{bins} $(a_i, b_i]$ of \textbf{width} $W$ according to \eqref{eq:imax}, \eqref{eq:a}, and \eqref{eq:b}. Such a range is used so that the largest and smallest (denormalized) floating point numbers may be approximated.
@@ -93,7 +93,7 @@
     \end{equation}
 
     \begin{equation}
-      a_i = e_{\max} + 1 - (i + 1)W,\; 0 \leq i \leq i_{\max}
+      a_i = e_{\max} + 1 - (i + 1)W \text{ for } 0 \leq i \leq i_{\max}
       \label{eq:a}
     \end{equation}
 
@@ -104,7 +104,7 @@
 
     We say the bin $(a_{i_0}, b_{i_0}]$ is \textbf{greater} than the bin $(a_{i_1}, b_{i_1}]$ if $a_{i_0} > a_{i_1}$ (which is equivalent to both $b_{i_0} > b_{i_1}$ and $i_0 < i_1$).
 
-    We say the bin $(a_{i_0}, b_{i_0}]$ is \textbf{lesser} than the bin $(a_{i_1}, b_{i_1}]$ if $a_{i_0} < a_{i_1}$ (which is equivalent to both $b_{i_0} < b_{i_1}$ and $i_0 > i_1$).
+    We say the bin $(a_{i_0}, b_{i_0}]$ is \textbf{less} than the bin $(a_{i_1}, b_{i_1}]$ if $a_{i_0} < a_{i_1}$ (which is equivalent to both $b_{i_0} < b_{i_1}$ and $i_0 > i_1$).
 
     We use $i \leq i_{\max} = \lfloor(e_{\max} - e_{\min} + p - 1)/W\rfloor - 1$ to ensure that $a_i > e_{\min} - p + 1$ as discussed in Section \ref{sec:indexed_underflow_gradual}. This means that the greatest bin, $(a_{0}, b_{0}]$, is
 
@@ -121,7 +121,7 @@
       \label{eq:binmin}
     \end{equation}
 
-    Section \ref{sec:indexed_underflow_gradual} explains why the range
+    Section \ref{sec:indexed_underflow_gradual} explains why the bottom of the exponent range
 
     \begin{equation*}
     \Bigl(e_{\min} - p, e_{\min} - p + 2 + \bigl((e_{\max} - e_{\min} + p - 1) \mod W\bigr)\Bigr]
@@ -148,7 +148,10 @@
     \label{sec:binning_slices}
     Throughout the text we will refer to the \textbf{slice} of some $x \in \F$ in the bin $(a_i, b_i]$. $x$ can be split into several slices, each slice corresponding to a bin $(a_i, b_i]$ and expressible as the (possibly negated) sum of a subset of $\{2^e, e \in (a_i, b_i]\}$, such that the sum of the slices provides a good approximation of $x$. Specifically, the slice of $x \in \F$ in the bin $(a_i, b_i]$ is defined recursively as $d(x, i)$ in \eqref{eq:d}. We must define $d(x, i)$ recursively because it is not a simple bitwise extraction.
     \begin{equation}
-      d(x, i) = \roundtonearestinfty\bigl(x - \sum\limits_{j=0}^{i - 1}d(x,j), a_i + 1\bigr)
+      \begin{aligned}
+      d(x,0) & = \roundtonearestinfty(x, a_0+1) \\
+      d(x, i) & = \roundtonearestinfty\bigl(x - \sum\limits_{j=0}^{i - 1}d(x,j), a_i + 1\bigr) \text{ for } i > 0.
+      \end{aligned}
       \label{eq:d}
     \end{equation}
 
@@ -162,7 +165,7 @@
 
     \begin{samepage}
     \begin{lem}
-      For all $i \in \{0, ..., i_{\max}\}$ and $x \in \F$ such that $|x| < 2^{a_i}$, $d(x, i) = 0$
+      For all $i \in \{0, ..., i_{\max}\}$ and $x \in \F$ such that $|x| < 2^{a_i}$, $d(x, i) = 0.$
       \label{lem:dzero}
     \end{lem}
     \end{samepage}
@@ -179,7 +182,7 @@
         d(x, 0) = \roundtonearestinfty(x, a_0 + 1) = 0
       \end{equation*}
 
-      In the inductive step, we have $|x| < 2^{a_{i + 1}} \leq ... \leq 2^{a_0}$ by  \eqref{eq:a} and by induction $d(x, i)= ... = d(x, 0) = 0$. Thus,
+      In the inductive step, we have $|x| < 2^{a_{i + 1}} < \ldots < 2^{a_0}$ by \eqref{eq:a} and by induction $d(x, i)= ... = d(x, 0) = 0$. Thus,
       \begin{equation*}
         d(x, i + 1) = \roundtonearestinfty\bigl(x - \sum\limits_{j = 0}^{i}d(x, j), a_{i + 1} + 1\bigr) = \roundtonearestinfty(x, a_{i+1} + 1)
       \end{equation*}
@@ -203,7 +206,7 @@
     \begin{proof}
       The claim is a simple consequence of Lemma \ref{lem:dzero}.
 
-      By  \eqref{eq:a} and \eqref{eq:b}, $|x| < 2^{b_i} = 2^{a_{i - 1}} \leq  ... \leq 2^{a_0}$. Therefore Lemma \ref{lem:dzero} implies $d(x, 0) = ... = d(x, i - 1) = 0$ and we have \begin{equation*}
+      By  \eqref{eq:a} and \eqref{eq:b}, $|x| < 2^{b_i} = 2^{a_{i - 1}} < \ldots <2^{a_0}$. Therefore Lemma \ref{lem:dzero} implies $d(x, 0) = ... = d(x, i - 1) = 0$ and we have \begin{equation*}
         d(x, i) = \roundtonearestinfty\bigl(x - \sum\limits_{j = 0}^{i - 1}d(x, j), a_{i} + 1\bigr) = \roundtonearestinfty(x, a_{i} + 1)
       \end{equation*}
     \end{proof}
@@ -269,9 +272,9 @@
 
     Each accumulator $Y_k$ is a data structure used to accumulate the slices of input in the bin $(a_{I + k}, b_{I + k}]$ where $I$ is the \textbf{index} of $Y$ and $k \geq 0$ as discussed below. The \textbf{width} of an indexed type is equal to the width of its bins, $W$. Recall the assumptions \eqref{eq:wupper} and \eqref{eq:wlower} made on the value of $W$.
 
-    The accumulators in an indexed type correspond to contiguous bins in decreasing order. The index of $Y$ is defined as the least $I \in \Z$ such that $2^{b_I + 1} > \max(|x_0|, ..., |x_n|)$ (equivalently, the least $I \in \Z$ such that $b_I > \max(e_0, ..., e_n)$). If $Y$ has index $I$, then $Y_k, k \in \{0, ..., K - 1\}$ accumulates slices of input in the bin $(a_{I + k}, b_{I + k}]$. If $I$ is so large that $I + K > i_{\max}$, then the extra $I + K - i_{\min}$ accumulators are unused.
+    The accumulators in an indexed type correspond to contiguous bins in decreasing order. The index of $Y$ is defined as the least $I \in \Z$ such that $2^{b_I + 1} > \max(|x_0|, ..., |x_n|)$ (equivalently, the least $I \in \Z$ such that $b_I > \max(e_0, ..., e_n)$ where $e_i=\exp(x_i)$). If $Y$ has index $I$, then $Y_k, k \in \{0, ..., K - 1\}$ accumulates slices of input in the bin $(a_{I + k}, b_{I + k}]$. If $I$ is so large that $I + K > i_{\max}$, then the extra $I + K - i_{\min}$ accumulators are unused.
 
-    Section \ref{sec:indexed_primary_carry} elaborates on the specific fields that make up the indexed type and the values they represent. Sections \ref{sec:indexed_overflow}, \ref{sec:indexed_underflow_gradual}, \ref{sec:indexed_underflow_abrupt}, and \ref{sec:indexed_exceptions} contain original extensions of the indexed type to handle overflow, underflow, and exceptional values.
+    Section \ref{sec:indexed_primary_carry} elaborates on the specific fields that make up the indexed type and the values they represent. Sections \ref{sec:indexed_overflow}, \ref{sec:indexed_underflow_gradual}, \ref{sec:indexed_underflow_abrupt}, and \ref{sec:indexed_exceptions} contain extensions of the indexed type to handle overflow, underflow, and exceptional values.
 
     \subsection{Primary and Carry}
       \label{sec:indexed_primary_carry}
@@ -286,11 +289,20 @@
         {\mathcal{Y}_k}_P = {Y_k}_P - 1.5\epsilon^{-1}2^{a_{I + k}}
         \label{eq:pri}
       \end{equation}
-      This simplifies the process of extracting the slices of input in bins $(a_{I + k}, b_{I + k}]$. It will be shown in Theorem \ref{thm:ddepositrestricted} that if we represent each primary value ${\mathcal{Y}_k}_P$ as in \eqref{eq:pri} and keep ${Y_k}_P$ within the range $(\epsilon^{-1} 2^{a_{I + k}}, 2 \epsilon^{-1} 2^{a_{I + k}})$, then Algorithm \ref{alg:depositrestricted} extracts the slices of $x$ in bins $(a_I, b_I], ..., (a_{I + K - 1}, b_{I + K - 1}]$ and adds them to ${Y_0}_P, ..., {Y_{K - 1}}_P$ without error (and hence reproducibly) for all $x \in \F$, where $|x| < 2^{b_I}$.
+      This simplifies the process of extracting the slices of input in bins $(a_{I + k}, b_{I + k}]$. It will be shown in Theorem \ref{thm:ddepositrestricted} in Section~\ref{sec:primitiveops_deposit}
+ that if we represent each primary value ${\mathcal{Y}_k}_P$ as in \eqref{eq:pri} and keep ${Y_k}_P$ within the range $(\epsilon^{-1} 2^{a_{I + k}}, 2 \epsilon^{-1} 2^{a_{I + k}})$, then Algorithm \ref{alg:depositrestricted} in Section~\ref{sec:primitiveops_deposit} extracts the slices of $x$ in bins $(a_I, b_I], ..., (a_{I + K - 1}, b_{I + K - 1}]$ and adds them to ${Y_0}_P, ..., {Y_{K - 1}}_P$ without error (and hence reproducibly) for all $x \in \F$, where $|x| < 2^{b_I}$.
 
-      Because $d(x, I + k) = 0$ for bins with $x < 2^{a_{I + k}}$, the values in the greatest $K$ nonzero accumulators can be computed reproducibly by computing the values in the greatest $K$ accumulators needed for the largest $x$ seen so far. Upon encountering an $x \geq 2^{b_I}$, the accumulators can then be shifted towards index $0$ as necessary. \cite{repsum} contains further discussions of the reproducibility of the algorithm.
+      Because $d(x, I + k) = 0$ for bins with $|x| < 2^{a_{I + k}}$, the values in the greatest $K$ nonzero accumulators can be computed reproducibly by computing the values in the greatest $K$ accumulators needed for the largest $x$ seen so far. Upon encountering an $x \geq 2^{b_I}$, the accumulators can then be shifted towards index $0$ as necessary.
+      Since the maximum absolute value operation is always reproducible,
+      so is the index of the greatest accumulator.
+      %\cite{repsum} contains further discussions of the reproducibility of the algorithm.
 
-      In order to keep the primary fields in the necessary range while the slices are accumulated and to keep the representation of $Y_k$ unique, ${Y_k}_P$ is routinely renormalized to the range $[1.5 \epsilon^{-1} 2^{a_{I + k}}, 1.75 \epsilon^{-1} 2^{a_{I + k}})$. Section \ref{sec:primitiveops_renormalize} contains a discussion of how often such renormalizations are necessary.
+      In order to keep the primary fields in the necessary range while the slices are accumulated and to keep the representation of $Y_k$ unique, ${Y_k}_P$ is routinely renormalized to the range $[1.5 \epsilon^{-1} 2^{a_{I + k}}, 1.75 \epsilon^{-1} 2^{a_{I + k}})$.
+      As will be shown in Section~\ref{sec:primitiveops_renormalize},
+      that renormalization is required every $2^{p-W-2}$ iterations,
+      so $2^{11}$ in double and $2^9$ in single.
+      Which means the renormalization introduces a very low overhead to the overall running time.
+      %Section \ref{sec:primitiveops_renormalize} contains a discussion of how often such renormalizations are necessary.
       To renormalize, ${Y_k}_P$ is incremented or decremented by $0.25 \epsilon^{-1} 2^{a_{I + k}}$ when necessary, leaving the carry field ${Y_k}_C$ to record the number of such adjustments.
       The numerical value ${\mathcal{Y}_k}_C$ represented by data stored in the carry field ${Y_k}_C$ of an indexed type $Y$ of index $I$ is expressed in \eqref{eq:car}
       \begin{equation}
@@ -307,7 +319,8 @@
         \mathcal{Y} = \sum\limits_{k = 0}^{K - 1} \mathcal{Y}_k = \sum\limits_{k = 0}^{K - 1} \bigl(({Y_k}_P - 1.5 \epsilon^{-1}2^{a_{I + k}}) + (0.25\epsilon^{-1}2^{a_{I + k}}){Y_k}_C\bigr)
         \label{eq:indexedvalue}
       \end{equation}
-      It is worth noting here that because the primary field ${Y_0}_P$ is stored with an exponent of $a_I + p$, it is unnecessary to store the index of an indexed type explicitly. The index can be determined by simply examining the exponent of ${Y_0}_P$, as all $a_I$ are distinct and the mapping between the exponent of ${Y_0}_P$ and the index of $Y$ is bijective.
+      It is worth noting here that because the primary field ${Y_0}_P$ is stored with an exponent of $a_I + p$, it is unnecessary to store the index of an indexed type explicitly. 
+      As will be explained in Section~\ref{sec:primitiveops_index}, the index can be determined by simply examining the exponent of ${Y_0}_P$, as all $a_I$ are distinct and the mapping between the exponent of ${Y_0}_P$ and the index of $Y$ is bijective.
 
     \subsubsection{Overflow}
       \label{sec:indexed_overflow}
@@ -337,7 +350,8 @@
       \label{sec:indexed_underflow_gradual}
       Here we consider the effects of gradual underflow on algorithms described in \cite{repsum} and how the indexed type allows these algorithms to work correctly.
 
-      Algorithms \ref{alg:deposit} and \ref{alg:renorm} require that the primary fields ${Y_k}_P$ are normalized to work correctly. Theorem \ref{thm:underflowufp} shows that the primary fields should always be normalized.
+    \label{sec:primitiveops_deposit}
+      Algorithms \ref{alg:deposit} for adding a floating point input to an indexed type in Section~\ref{sec:primitiveops_deposit} and Algorithm~\ref{alg:renorm} for renormalizing an indexed type in Section~\ref{sec:primitiveops_renormalize} require that the primary fields ${Y_k}_P$ are normalized to work correctly. Theorem \ref{thm:underflowufp} shows that the primary fields should always be normalized.
 
       \begin{samepage}
       \begin{thm}
@@ -352,26 +366,36 @@
         a_{I + k} \geq a_{i_{\max}} = e_{\min} - p + 2 + \bigl((e_{\max} - e_{\min} + p - 1) \mod W\bigr) \geq e_{\min} - p + 2
         \end{equation*}
 
-        Because ${Y_k}_P \in (\epsilon^{-1} 2^{a_{I + k}}, 2 \epsilon^{-1} 2^{a_{I + k}})$ we have $\exp({Y_k}_P) = a_{I + k} + p > 2^{e_{\min} + 1}$ so ${Y_k}_P$ is normalized.
+        Because ${Y_k}_P \in (\epsilon^{-1} 2^{a_{I + k}}, 2 \epsilon^{-1} 2^{a_{I + k}})$ we have $\exp({Y_k}_P) = a_{I + k} + p > e_{\min} + 1$ so ${Y_k}_P$ is normalized.
       \end{proof}
 
-      Algorithm \ref{alg:deposit} relies on setting the last bit of intermediate results before adding them to ${Y_k}_P$ in order to fix the direction of the rounding mode. However, if $r$ is the quantity to be added to ${Y_k}_P$, $\ulp(r)$ must be less than rounding error when added to ${Y_k}_P$. Mathematically, $\ulp(r) < 0.5\ulp({Y_k}_P)$. This is why we must enforce $a_{i_{\max}} \geq e_{\min} - p + 2$.
+      Algorithm \ref{alg:deposit} relies on setting the last bit of intermediate results before adding them to ${Y_k}_P$ in order to fix the direction of the rounding mode. However, if $r$ is the quantity to be added to ${Y_k}_P$, $\ulp(r)$ must be less than rounding error when added to ${Y_k}_P$.
+      Mathematically, we will require $\ulp(r) < 0.5\ulp({Y_k}_P)$ in order to prove
+      Theorem~\ref{thm:ddeposit} about the correctness of Algorithm~\ref{alg:deposit}.
+      This is why we must enforce $a_{i_{\max}} \geq e_{\min} - p + 2$
+      so that the least significant bit of the least bin is larger than twice the smallest denormalized number.
 
       Although the bins do not extend all the way to $e_{\min} - p$, the sum of the slices of some $x \in \F$ still offers a good approximation of $x$.
 
       Using $W < p - 2$ and \eqref{eq:binmin},
+      \begin{align*}
+        a_{i_{\max}} & = e_{\min} - p + 2 + \bigl((e_{\max} - e_{\min} + p - 1 ) \mod W \bigr) \\
+            & \leq e_{\min} - p + 2 + (W - 1) \\
+            & < e_{\min} - p + 2 + (p - 2 - 1) =  e_{\min} - 1 
+      \end{align*}
 
-      \begin{equation*}
-        a_{i_{\max}} = e_{\min} - p + 2 + \bigl((e_{\max} - e_{\min} + p - 1 ) \mod W\bigr) \leq {e_{\min} - 1}
-      \end{equation*}
+      Hence,
+      \[
+        a_{i_{\max}} \leq e_{\min} - 2
+      \]
 
       As a consequence, we can use Theorem \ref{thm:dround} to say that for any $x \in \F$,
       \begin{equation}
-        \bigl|x - \sum\limits_{i = 0}^{i_{\max}} d(x, i)\bigr| \leq a_{i_{\max}} \leq 2^{e_{\min} - 1}
+        \bigl|x - \sum\limits_{i = 0}^{i_{\max}} d(x, i)\bigr| \leq 2^{a_{i_{\max}}} \leq 2^{e_{\min} - 2}
         \label{eq:droundunderflow}
       \end{equation}
 
-      This means that we can approximate $x$ using the sum of its slices to the nearest multiple of $2^{e_{\min}}$.
+      This means that we can approximate $x$ using the sum of its slices to the nearest multiple of $2^{e_{\min}-1}$.
 
       It is possible to sum the input in the denormalized range. One simple way the algorithm could be extended to denormalized inputs would be to scale the least bins up, analogously to the way we handled overflow. Due to the relatively low priority for accumulating denormalized values, this method was not implemented in ReproBLAS.
 
@@ -379,7 +403,7 @@
       \label{sec:indexed_underflow_abrupt}
       If underflow is abrupt, several approaches may be taken to modify the given algorithms to ensure reproducibility.
 
-      The simplest approach would be to accumulate input in the denormalized range by scaling the smaller inputs up. This has the added advantage of increasing the accuracy of the algorithm. A major disadvantage to this approach is the additional branching cost incurred due to the conditional scaling.
+      The most straightforward approach would be to accumulate input in the denormalized range by scaling the smaller inputs up. This has the added advantage of increasing the accuracy of the algorithm. A major disadvantage to this approach is the additional branching cost incurred due to the conditional scaling.
 
       A more efficient way to solve the problem would be to set the least bin to have $a_{i_{\max}} = 2^{e_{\min}}$. This could be accomplished either by keeping the current binning scheme and having the least bin be of a width not necessarily equal to $W$, or by shifting all other bins to be greater. The disadvantage of shifting the other bins is that it may cause multiple greatest bins to overflow, adding multiple scaling cases. Setting such a least bin would enforce the condition that no underflow occurs since all intermediate sums are either $0$ or greater than the underflow threshold. The denormal range would be discarded.
 
@@ -401,7 +425,7 @@
 
       A value of \texttt{Inf} or \texttt{-Inf} in ${Y_0}_P$ indicates that one or more \texttt{Inf} or \texttt{-Inf} (and no other exceptional values) have been added to $Y$ respectively.
 
-      A value of \texttt{NaN} in ${Y_0}_P$ indicates that one or more \texttt{NaN} have been added to $Y$ or one or more of both \texttt{Inf} and \texttt{-Inf} have been added to $Y$.
+      A value of \texttt{NaN} in ${Y_0}_P$ indicates that one or more \texttt{NaN}s have been added to $Y$ or one or more of both \texttt{Inf} and \texttt{-Inf} have been added to $Y$.
 
       As the ${Y_k}_P$ are kept finite to store finite values, \texttt{Inf}, \texttt{-Inf}, and \texttt{NaN} are unused in any previously specified context and are valid sentinel values. (As the exponent of \texttt{Inf}, \texttt{-Inf}, and \texttt{NaN} is distinct from the exponent of finite values, the bijection between the index of an indexed type $Y$ and the exponent of ${Y_0}_P$ is preserved)
 
@@ -421,17 +445,18 @@
       \begin{algorithmic}[1]
         \Require
           \Statex ${Y_0}_P \in (\epsilon^{-1}  2^{a_{I}}, 2  \epsilon^{-1}  2^{a_I})$
-        \Function{IIndex}{Y, I}
-          \State $I = \lfloor(e_{\max} + p - \exp({Y_0}_P) - W + 1)/W\rfloor$
+        \Function{IIndex}{Y}
+          \State \Return $\lfloor(e_{\max} + p - \exp({Y_0}_P) - W + 1)/W\rfloor$
         \EndFunction
         \Ensure
-          \Statex $I$ is the index of $Y$.
+          \Statex Returned result $I$ is the index of $Y$.
       \end{algorithmic}
       \label{alg:iindex}
     \end{alg}
     \end{samepage}
 
     Note that the floor function is necessary in Algorithm \ref{alg:iindex} to account for the case of $Y$ with index $0$, which has $\exp({Y_0}_P) = 2^{e_{\max}}$ as discussed in Section \ref{sec:indexed_overflow}.
+    This uses the assumption that $\frac{p+1}{2} < W < p-2$, so $3 < p - W + 1 < W.$
 
     Another useful operation is, given some $x \in \F$, to find the unique bin $(a_J, b_J]$ such that $2^{b_J} > |x| \geq 2^{a_J}$. Algorithm \ref{alg:index} yields such a $J$ in constant time.
 
@@ -439,8 +464,8 @@
     \begin{alg}
       Given $x \in \F$, calculate $J$ such that $2^{b_J} > |x| \geq 2^{a_J}$.
       \begin{algorithmic}[1]
-        \Function{Index}{x, J}
-          \State $J = \lfloor(e_{\max} - \exp(x))/W\rfloor$
+        \Function{Index}{x}
+          \State \Return $\lfloor(e_{\max} - \exp(x))/W\rfloor$
         \EndFunction
         \Ensure
           \Statex The bin $(a_{J}, b_{J}]$ satisfies $2^{b_{J}} > |x| \geq 2^{a_{J}}$.
@@ -451,7 +476,7 @@
 
   \subsection{Deposit}
     \label{sec:primitiveops_deposit}
-    The deposit operation (here referred to as Algorithm \ref{alg:deposit}, a simpler version is described in the ``Extract $K$ first bins'' Section (lines 18-20) of Algorithm $6$ in \cite{repsum}) is used to extract the slices of a floating point number and add them to the appropriate accumulators of an indexed type.
+    The deposit operation (here referred to as Algorithm \ref{alg:deposit}, a simple version is described in the ``Extract $K$ first bins'' Section (lines 18-20) of Algorithm $6$ in \cite{repsum}) is used to extract the slices of a floating point number and add them to the appropriate accumulators of an indexed type.
 
     Algorithm \ref{alg:depositrestricted} deposits floating point numbers in the case that there is no overflow (the indexed type has an index greater than 0).
 
@@ -491,7 +516,7 @@
     \end{samepage}
 
       \begin{proof}
-        Throughout the proof, assume that the phrase ``for all $k$'' means ``for all $k \in \{0, ..., K - 1\}$.'' Assume also that $r_k$ and $S_k$ refer to the value of $r$ and $S$ after executing line \ref{alg:depositrestricted:split} in the $k^{th}$ iteration of the loop. Finally, assume ${Y_k}_P$ to refers to the initial value of ${Y_k}_P$ and $S_k$ refers to the final value of ${Y_k}_P$. Therefore, $S_k - {Y_k}_P$ is the amount added to ${Y_k}_P$.
+        Throughout the proof, assume that the phrase ``for all $k$'' means ``for all $k \in \{0, ..., K - 1\}$.'' Assume also that $r_k$ and $S_k$ refer to the value of $r$ and $S$ after executing line \ref{alg:depositrestricted:split} in the $k^{th}$ iteration of the loop. Finally, assume ${Y_k}_P$ refers to the initial value of ${Y_k}_P$ and $S_k$ refers to the final value of ${Y_k}_P$. Therefore, $S_k - {Y_k}_P$ is the amount added to ${Y_k}_P$.
 
         Note that lines \ref{alg:depositrestricted:split}-\ref{alg:depositrestricted:endsplit} correspond to Algorithm 4 of \cite{repsum}.
         Therefore, if $\ulp({Y_k}_P) = \ulp(S_k)$ and $\ulp(r_k) < 0.5\ulp({Y_k}_P)$, Corollary 3 of \cite{repsum} applies and we have that $S_k - {Y_k}_P \in \ulp({Y_k}_P)\Z \in 2^{a_{I + k} + 1}\Z$ and that $|r_{k + 1}| \leq 0.5\ulp({Y_k}_P) = 2^{a_{I + k}}$.
@@ -518,7 +543,7 @@
 
         We can now show $r_{k + 1} = x - \sum\limits_{i = 0}^{I + k}d(x, i)$ and $S_k - {Y_k}_P = d(x, I + k)$ for all $k$ by induction on $k$.
 
-        In the base case, $S_0 - {Y_0}_P = \roundtonearestinfty(r_0, a_I + 1) = \roundtonearestinfty(x, a_I + 1)$. As $|x| < b_I$, Lemma \ref{lem:dmiddle} implies $S_0 - {Y_0}_P = d(x, I)$. By Theorem 3 of \cite{repsum}, $r_1 = r_0 - (S_0 - {Y_0}_P) = x - d(x,I)$. By assumption and  \eqref{eq:a} and \eqref{eq:b}, $|x| < b_I \leq a_{i}$ for all $i \in \{0, ..., I - 1\}$, and therefore by Lemma \ref{lem:dzero}, $r_1 = x - \sum\limits_{i = 0}^Id(x, i)$.
+        In the base case, $S_0 - {Y_0}_P = \roundtonearestinfty(r_0, a_I + 1) = \roundtonearestinfty(x, a_I + 1)$. As $|x| < 2^{b_I}$, Lemma \ref{lem:dmiddle} implies $S_0 - {Y_0}_P = d(x, I)$. By Theorem 3 of \cite{repsum}, $r_1 = r_0 - (S_0 - {Y_0}_P) = x - d(x,I)$. By assumption and  \eqref{eq:a} and \eqref{eq:b}, $|x| < 2^{b_I} \leq 2^{a_{i}}$ for all $i \in \{0, ..., I - 1\}$, and therefore by Lemma \ref{lem:dzero}, $r_1 = x - \sum\limits_{i = 0}^Id(x, i)$.
 
         In the inductive step, assume $r_{k + 1} = x - \sum\limits_{i = 0}^{I + k}d(x, i)$. Then by definition,
 
@@ -532,7 +557,7 @@
         \end{equation*}
       \end{proof}
 
-      Of course, what remains to be seen is how we can extract and add the components of a floating point number to an indexed type $Y$ of index 0. Algorithm \ref{alg:deposit} shows the adaptation of Algorithm $\ref{alg:depositrestricted}$ for indexed types of index 0.
+      Of course, what remains to be seen is how we can extract and add the components of a floating point number to an indexed type $Y$ of index 0, i.e. when overflow is an issue. Algorithm \ref{alg:deposit} shows the adaptation of Algorithm $\ref{alg:depositrestricted}$ for indexed types of index 0.
 
       \begin{samepage}
       \begin{alg}
@@ -541,7 +566,7 @@
           \Require
             \Statex All requirements (except for the absence of overflow, which we will ensure) from Algorithm \ref{alg:depositrestricted} except that ${Y_0}_P$ must now be kept within the range $(2^{e_{\max}}, 2 \cdot 2^{e_{\max}})$ if $Y$ has index 0.
           \Function{Deposit}{K, x, Y}
-            \State \Call{IIndex}{Y, I}
+            \State $I$ = \Call{IIndex}{Y}
             \If{I = 0}
               \State $r = x / 2^{p - W + 1}$ \label{alg:deposit:scaler}
               \State $S = {Y_0}_P + (r | 1)$ \label{alg:deposit:formS}
@@ -601,16 +626,16 @@
         If $r > 0$, then $(S - {Y_0}_P) = r + 2^{a_{0} - p + W - 1}$ (otherwise we will have $|S - {Y_0}_P - (r|1)| = |r - 2^{a_{0} - p + W - 1} - (r|1)| > 2^{a_{0} - p + W - 1}$).
         If $r < 0$, then $(S - {Y_0}_P) = r - 2^{a_{0} - p + W}$ (otherwise we will have $|S - {Y_0}_P - (r|1)| = |r + 2^{a_{0} - p + W - 1} - (r|1)| > 2^{a_{0} - p + W - 1}$). Therefore, $S - {Y_0}_P = \roundtonearestinfty(r, a_{0} - p + W)$.
 
-        Next, we show that ${Y_0}_P - S = d(x, 0)/2^{p - W + 1}$.
+        Next, we show that $S - {Y_0}_P = d(x, 0)/2^{p - W + 1}$.
 
         We divide into two cases based on the size of $x$.
 
         If $|x| < 2^{a_0} = 2^{e_{\max} + 1 - W}$, then we have $|r| < 2^{a_0 - p + W - 1}$ in line \ref{alg:deposit:scaler} regardless of whether or not there is underflow in the division as we scale by a power of two.
-         Therefore, since $|r| < 2^{a_0 - p + W - 1}$, ${Y_0}_P - S = \roundtonearestinfty(r, a_0 - p + W) = 0 = d(x, 0)/2^{p - W - 1}$ by Lemma \ref{lem:dzero}.
+         Therefore, since $|r| < 2^{a_0 - p + W - 1}$, $S - {Y_0}_P = \roundtonearestinfty(r, a_0 - p + W) = 0 = d(x, 0)/2^{p - W - 1}$ by Lemma \ref{lem:dzero}.
 
-        If $|x| \geq 2^{a_0}= 2^{e_{\max} + 1 - W}$, then there is no underflow in line \ref{alg:deposit:scaler} and $r = x / 2^{p - W + 1}$ exactly as we scale by a power of two. Therefore, ${Y_0}_P - S = \roundtonearestinfty(x/2^{p - W + 1}, a_0 - p + W) = d(x, 0)/2^{p - W + 1}$
+        If $|x| \geq 2^{a_0}= 2^{e_{\max} + 1 - W}$, then there is no underflow in line \ref{alg:deposit:scaler} and $r = x / 2^{p - W + 1}$ exactly as we scale by a power of two. Therefore, $S - {Y_0}_P = \roundtonearestinfty(x/2^{p - W + 1}, a_0 - p + W) = d(x, 0)/2^{p - W + 1}$
 
-        At this point, all that remains to be shown is that $r = x - d(x, 0)$ in line \ref{alg:deposit:formragain}. In line \ref{alg:deposit:formq}, we have that $q = {Y_0}_P - S = d(x, 0)/2^{p - W + 1}$. By Theorem \ref{thm:dbound}, $d(x, 0) \leq 2 \cdot 2^{e_{\max}}$. We then have that in line \ref{alg:deposit:scaleq}, since $q = (d(x, 0)/2^{p - W + 1})2^{p - W} \leq 2^{e_{\max}}$ there is no overflow and as we scale by a power of two, $q = d(x, 0)/2$ exactly. Again we divide into two cases based on the size of $x$.
+        At this point, all that remains to be shown is that $r = x - d(x, 0)$ in line \ref{alg:deposit:formragain}. In line \ref{alg:deposit:formq}, we have that $q = S - {Y_0}_P = d(x, 0)/2^{p - W + 1}$. By Theorem \ref{thm:dbound}, $d(x, 0) \leq 2 \cdot 2^{e_{\max}}$. We then have that in line \ref{alg:deposit:scaleq}, since $q = (d(x, 0)/2^{p - W + 1})2^{p - W} \leq 2^{e_{\max}}$ there is no overflow and as we scale by a power of two, $q = d(x, 0)/2$ exactly. Again we divide into two cases based on the size of $x$.
 
         If $|x| < 2^{a_0}$, we have $d(x, 0) = 0$ by Lemma \ref{lem:dzero} and therefore $r = x - d(x, 0) = x$ exactly in both line \ref{alg:deposit:formr} and line \ref{alg:deposit:formragain}.
 
@@ -643,7 +668,7 @@
 
   \subsection{Renormalize}
     \label{sec:primitiveops_renormalize}
-    When depositing values into a $K$-fold indexed type $Y$ of index $I$, the assumption is made that ${Y_k}_P \in (\epsilon^{-1} 2^{a_{I + k}}, 2  \epsilon^{-1} 2^{a_{I + k}})$ throughout the routine. To enforce this condition, the indexed type must be renormalized at least every $2^{p - w - 2}$ deposit operations, as will be shown in Theorem \ref{thm:renormfreq}. The renormalization procedure is shown in Algorithm \ref{alg:renorm}.
+    When depositing values into a $K$-fold indexed type $Y$ of index $I$, the assumption is made that ${Y_k}_P \in (\epsilon^{-1} 2^{a_{I + k}}, 2  \epsilon^{-1} 2^{a_{I + k}})$ throughout the routine. To enforce this condition, the indexed type must be renormalized at least every $2^{p - W - 2}$ deposit operations, as will be shown in Theorem \ref{thm:renormfreq}. The renormalization procedure is shown in Algorithm \ref{alg:renorm}.
 
     \begin{samepage}
     \begin{alg}
@@ -721,8 +746,8 @@
         \Require
           \Statex ${Y_0}_P \in (\epsilon^{-1}  2^{a_{I}}, 2  \epsilon^{-1}  2^{a_I})$
         \Function{Update}{K, x, Y}
-          \State \Call{IIndex}{Y, I}
-          \State \Call{Index}{x, J}
+          \State $I$ = \Call{IIndex}{Y}
+          \State $J$ = \Call{Index}{x}
           \If{$J < I$}
             \State $[{Y_{\min(I - J, K)}}_P, ..., {Y_{K - 1}}_P] = [{Y_0}_P, ..., {Y_{K - 1 - \min(I - J, K)}}_P]$
             \State $[{Y_0}_P, ..., {Y_{\min(I - J, K) - 1}}_P] = [1.5  \epsilon^{-1}  a_{J}, ..., 1.5  \epsilon^{-1}  a_{\min(I, K + J) - 1}]$
@@ -768,8 +793,8 @@
           \Statex $Z$ is the indexed sum of some $x_n, ..., x_{n + m - 1} \in F$.
           \Statex ${Y_k}_P, {Z_k}_P \in [1.5  \epsilon^{-1} 2^{a_{J + k}}, 1.75  \epsilon^{-1} 2^{a_{J + k}})$
         \Function{Reduce}{K, Y, Z}
-          \State \Call{IIndex}{Y, I}
-          \State \Call{IIndex}{Z, J}
+          \State $I$ = \Call{IIndex}{Y}
+          \State $J$ = \Call{IIndex}{Z}
           \If{$J < I$}
             \State $R = Z$
             \State \Call{Reduce}{K, $R$, $Y$}
@@ -822,14 +847,14 @@
     Converting an indexed type to a single floating point number is more difficult. There are two sources of error in the final floating point sum produced by ReproBLAS. The first is from the creation of the indexed sum (analyzed in \cite{repsum}). The second is from the conversion from indexed sum to floating point number (evaluation of  \eqref{eq:indexedvalue}).
     Because \cite{repsum} guarantees that all fields in the indexed type are reproducible, as long as the fields are operated upon deterministically, any method to evaluate  \eqref{eq:indexedvalue} accurately and without unnecessary overflow is suitable.
 
-    Assume that $Y$ is the indexed sum of some $x_0, ..., x_{n - 1} \in \F$. If we simply evaluate \eqref{eq:indexedvalue} and apply the standard summation error bound given by \cite{higham}, the error in the final answer (the computed floating point approximation of $\mathcal{Y}$) is only bounded by about (using  \eqref{eq:baderrorapprox})
+    Assume that $Y$ is the indexed sum of some $x_0, ..., x_{n - 1} \in \F$. If we simply evaluate \eqref{eq:indexedvalue} and apply the standard summation error bound given by \cite{higham}, the error in the final answer (the computed floating point approximation of $\mathcal{Y}$) is only bounded by (using  \eqref{eq:baderrorapprox})
     \begin{equation}
-      n \bigl(2^{W  (1 - K) - 1} + (2  K - 1)  \epsilon\bigr)\max|x_j|
+      |\overline{\mathcal{Y}} - \sum_{j=0}^{n-1}x_j| \leq n \bigl(2^{W  (1 - K) - 1} + (2  K - 1)  \epsilon\bigr)\max|x_j|
       \label{eq:baderrorapproxdup}
     \end{equation}
-    However, if we sum the fields in order of decreasing ``unnormalized'' exponent, the error is bounded by about (using  \eqref{eq:errorapprox})
+    However, if we sum the fields in order of decreasing ``unnormalized'' exponent, the error is bounded by (using  \eqref{eq:errorapprox})
     \begin{equation}
-      n 2^{W  (1 - K) - 1}\max|x_j|  + 7 \epsilon \bigl|\sum\limits_{j = 0}^{n - 1} x_j\bigr|
+      |\overline{\mathcal{Y}} - \sum_{j=0}^{n-1}x_j| \leq n 2^{W  (1 - K) - 1}\max|x_j|  + 7 \epsilon \bigl|\sum\limits_{j = 0}^{n - 1} x_j\bigr|
       \label{eq:errorapproxdup}
     \end{equation}
 
@@ -837,7 +862,7 @@
 
     To further motivate the new conversion algorithm, we compare both the above error bounds for indexed summation to an approximated standard error bound obtained through standard (recursive) summation of $x_0, ..., x_{n - 1}$ in some arbitrary order (given by \cite{higham})
     \begin{equation}
-      n  \epsilon  \sum\limits_{j = 0}^{n - 1}|x_j| \leq n^2  \epsilon  \max|x_j|
+      |S_n - \sum_{j=0}^{n-1}x_j| \leq n \epsilon  \sum\limits_{j = 0}^{n - 1}|x_j| \leq n^2  \epsilon  \max|x_j|
       \label{eq:naiveerrorapproxdup}
     \end{equation}
 
@@ -846,7 +871,7 @@
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=\textwidth]{plots/errorcomparison.pdf}
-\caption{Relative error bounds in calculating $|\sum \limits_{j = 0}^{n - 1} x_j|$ for different condition numbers (which we define as $\frac{n \cdot \max |x_j)}{|\sum \limits_{j = 0}^{n - 1} x_j|}$) of the sum. It is assumed that we sum using \texttt{double}, $K = 3$, and $W = 40$. ``Indexed Summation (Careful)'' corresponds to \eqref{eq:errorapproxdup}. ``Indexed Summation (Naive)'' corresponds to \eqref{eq:baderrorapproxdup}. ``Standard Summation'' corresponds to \eqref{eq:naiveerrorapproxdup} and due to a dependence on $n$ multiple error bounds are shown.}
+\caption{Relative error bounds in calculating $|\sum \limits_{j = 0}^{n - 1} x_j|$ for different condition numbers (which we define as $\frac{n \cdot \max |x_j|)}{|\sum \limits_{j = 0}^{n - 1} x_j|}$) of the sum. It is assumed that we sum using \texttt{double}, $K = 3$, and $W = 40$. ``Indexed Summation (Careful)'' corresponds to \eqref{eq:errorapproxdup}. ``Indexed Summation (Naive)'' corresponds to \eqref{eq:baderrorapproxdup}. ``Standard Summation'' corresponds to \eqref{eq:naiveerrorapproxdup} and due to a dependence on $n$ multiple error bounds are shown.}
 \label{fig:conversionmotivation}
 \end{center}
 \end{figure}
