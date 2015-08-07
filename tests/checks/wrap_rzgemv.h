@@ -86,10 +86,18 @@ double complex* wrap_rzgemv_result(char Order, char TransA, int M, int N, double
               switch(Order){
                 case 'r':
                 case 'R':
-                  res[i] += A[i] * wrap_zaugsum_result(M, wrap_zaugsum_RZSUM, FillX, RealScaleX*RealAlpha - ImagScaleX*ImagAlpha, ImagScaleX * RealAlpha + RealScaleX * ImagAlpha, 0, 0.0, 0.0);
+                  if(TransA == 'c' || TransA == 'C'){
+                    res[i] += conj(A[i]) * wrap_zaugsum_result(M, wrap_zaugsum_RZSUM, FillX, RealScaleX*RealAlpha - ImagScaleX*ImagAlpha, ImagScaleX * RealAlpha + RealScaleX * ImagAlpha, 0, 0.0, 0.0);
+                  }else{
+                    res[i] += A[i] * wrap_zaugsum_result(M, wrap_zaugsum_RZSUM, FillX, RealScaleX*RealAlpha - ImagScaleX*ImagAlpha, ImagScaleX * RealAlpha + RealScaleX * ImagAlpha, 0, 0.0, 0.0);
+                  }
                   break;
                 default:
-                  res[i] += A[i * lda] * wrap_zaugsum_result(M, wrap_zaugsum_RZSUM, FillX, RealScaleX*RealAlpha - ImagScaleX * ImagAlpha, ImagScaleX * RealAlpha + RealScaleX * ImagAlpha, 0, 0.0, 0.0);
+                  if(TransA == 'c' || TransA == 'C'){
+                    res[i] += conj(A[i * lda]) * wrap_zaugsum_result(M, wrap_zaugsum_RZSUM, FillX, RealScaleX*RealAlpha - ImagScaleX * ImagAlpha, ImagScaleX * RealAlpha + RealScaleX * ImagAlpha, 0, 0.0, 0.0);
+                  }else{
+                    res[i] += A[i * lda] * wrap_zaugsum_result(M, wrap_zaugsum_RZSUM, FillX, RealScaleX*RealAlpha - ImagScaleX * ImagAlpha, ImagScaleX * RealAlpha + RealScaleX * ImagAlpha, 0, 0.0, 0.0);
+                  }
                   break;
               }
               break;
@@ -104,15 +112,15 @@ double complex* wrap_rzgemv_result(char Order, char TransA, int M, int N, double
                 switch(Order){
                   case 'r':
                   case 'R':
-                    if(j == i){
-                      res[i] += ((RealAlpha + I * ImagAlpha) * X[j * incX]) * A[i];
+                    if(TransA == 'c' || TransA == 'C'){
+                      res[i] += ((RealAlpha + I * ImagAlpha) * X[j * incX]) * conj(A[i]);
                     }else{
                       res[i] += ((RealAlpha + I * ImagAlpha) * X[j * incX]) * A[i];
                     }
                     break;
                   default:
-                    if(j == i){
-                      res[i] += ((RealAlpha + I * ImagAlpha) * X[j * incX]) * A[i * lda];
+                    if(TransA == 'c' || TransA == 'C'){
+                      res[i] += ((RealAlpha + I * ImagAlpha) * X[j * incX]) * conj(A[i * lda]);
                     }else{
                       res[i] += ((RealAlpha + I * ImagAlpha) * X[j * incX]) * A[i * lda];
                     }

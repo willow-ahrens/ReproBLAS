@@ -11,8 +11,8 @@ int matvec_test(int argc, char** argv, char Order, char TransA, int M, int N, in
 static const char *Order_names[] = {"RowMajor", "ColMajor"};
 static const char *Order_descs[] = {"Row Major", "Column Major"};
 static opt_option Order;
-static const char *TransA_names[] = {"NoTrans", "Trans"};
-static const char *TransA_descs[] = {"Don't Transpose", "Transpose"};
+static const char *TransA_names[] = {"NoTrans", "Trans", "ConjTrans"};
+static const char *TransA_descs[] = {"Don't Transpose", "Transpose", "Conjugate Transpose"};
 static opt_option TransA;
 static opt_option M;
 static opt_option N;
@@ -36,7 +36,7 @@ static void matvec_options_initialize(void){
   TransA._named.header.long_name  = "TransA";
   TransA._named.header.help       = "transpose A?";
   TransA._named.required          = 0;
-  TransA._named.n_names           = 2;
+  TransA._named.n_names           = 3;
   TransA._named.names             = (char**)TransA_names;
   TransA._named.descs             = (char**)TransA_descs;
   TransA._named.value             = 0;

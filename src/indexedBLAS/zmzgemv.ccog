@@ -58,7 +58,8 @@ void zmzgemv(const int fold, const char Order,
             free(alphaX);
           }
           break;
-        default:
+        case 't':
+        case 'T':
           if(((double*)alpha)[0] == 1.0 && ((double*)alpha)[1] == 0.0){
             alphaX = (double*)X;
             incalphaX = incX;
@@ -81,6 +82,29 @@ void zmzgemv(const int fold, const char Order,
             free(alphaX);
           }
           break;
+        default:
+          if(((double*)alpha)[0] == 1.0 && ((double*)alpha)[1] == 0.0){
+            alphaX = (double*)X;
+            incalphaX = incX;
+          }else{
+            alphaX = (double*)malloc(M * 2 * sizeof(double));
+            for(j = 0; j < M; j++){
+              alphaX[2 * j] = ((double*)X)[2 * j * incX] * ((double*)alpha)[0] - ((double*)X)[2 * j * incX + 1] * ((double*)alpha)[1];
+              alphaX[2 * j + 1] = ((double*)X)[2 * j * incX] * ((double*)alpha)[1] + ((double*)X)[2 * j * incX + 1] * ((double*)alpha)[0];
+            }
+            incalphaX = 1;
+          }
+          for(i = 0; i < N; i += Y_BLOCK){
+            for(j = 0; j < M; j += X_BLOCK){
+              for(ii = i; ii < N && ii < i + Y_BLOCK; ii++){
+                zmzdotc(fold, MIN(X_BLOCK, M - j), alphaX + 2 * j * incalphaX, incalphaX, (double*)A + 2 * (j * lda + ii), lda, priY + 2 * ii * incpriY * incincpriY * fold, incpriY, carY + 2 * ii * inccarY * incinccarY * fold, inccarY);
+              }
+            }
+          }
+          if(((double*)alpha)[0] != 1.0 || ((double*)alpha)[1] != 0.0){
+            free(alphaX);
+          }
+          break;
       }
       break;
     default:
@@ -89,8 +113,32 @@ void zmzgemv(const int fold, const char Order,
         case 'N':
           zmzgemv(fold, 'r', 't', N, M, alpha, A, lda, X, incX, priY, incpriY, incincpriY, carY, inccarY, incinccarY);
           break;
-        default:
+        case 't':
+        case 'T':
           zmzgemv(fold, 'r', 'n', N, M, alpha, A, lda, X, incX, priY, incpriY, incincpriY, carY, inccarY, incinccarY);
+          break;
+        default:
+          if(((double*)alpha)[0] == 1.0 && ((double*)alpha)[1] == 0.0){
+            alphaX = (double*)X;
+            incalphaX = incX;
+          }else{
+            alphaX = (double*)malloc(M * 2 * sizeof(double));
+            for(j = 0; j < M; j++){
+              alphaX[2 * j] = ((double*)X)[2 * j * incX] * ((double*)alpha)[0] - ((double*)X)[2 * j * incX + 1] * ((double*)alpha)[1];
+              alphaX[2 * j + 1] = ((double*)X)[2 * j * incX] * ((double*)alpha)[1] + ((double*)X)[2 * j * incX + 1] * ((double*)alpha)[0];
+            }
+            incalphaX = 1;
+          }
+          for(i = 0; i < N; i += Y_BLOCK){
+            for(j = 0; j < M; j += X_BLOCK){
+              for(ii = i; ii < N && ii < i + Y_BLOCK; ii++){
+                zmzdotc(fold, MIN(X_BLOCK, M - j), alphaX + 2 * j * incalphaX, incalphaX, (double*)A + 2 * (ii * lda + j), 1, priY + 2 * ii * incpriY * incincpriY * fold, incpriY, carY + 2 * ii * inccarY * incinccarY * fold, inccarY);
+              }
+            }
+          }
+          if(((double*)alpha)[0] != 1.0 || ((double*)alpha)[1] != 0.0){
+            free(alphaX);
+          }
           break;
       }
       break;
