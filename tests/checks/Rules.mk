@@ -8,7 +8,7 @@ TARGETS := validate_external_rdblas1$(EXE) validate_external_rzblas1$(EXE) valid
            verify_daugsum$(EXE) verify_zaugsum$(EXE) verify_saugsum$(EXE) verify_caugsum$(EXE) \
            verify_didssq$(EXE) verify_dizssq$(EXE) verify_sisssq$(EXE) verify_sicssq$(EXE) \
            verify_rdgemv$(EXE) verify_rzgemv$(EXE) \
-           validate_internal_rdgemv$(EXE) \
+           validate_internal_rdgemv$(EXE) validate_internal_rzgemv$(EXE) \
            validate_internal_daugsum$(EXE) validate_internal_zaugsum$(EXE) validate_internal_saugsum$(EXE) validate_internal_caugsum$(EXE)
 
 SUBDIRS :=
@@ -51,5 +51,6 @@ validate_internal_caugsum$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) validate_int
 verify_rdgemv$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) verify_rdgemv.o
 verify_rzgemv$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) verify_rzgemv.o
 validate_internal_rdgemv$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) validate_internal_rdgemv.o
+validate_internal_rzgemv$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) validate_internal_rzgemv.o
 
 #verify_prdgemv$(EXE)_DEPS = $$(LIBTEST) $$(LIBMPIREPROBLAS) verify_prdgemv.o

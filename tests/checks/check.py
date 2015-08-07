@@ -8,9 +8,11 @@ check_dir = os.path.dirname(os.path.abspath(__file__))
 
 check_suite = checks.CheckSuite()
 
-folds = [2, 3, 4]
+#folds = [2, 3, 4]
+folds = [2]
 inf_folds = [2, 3, 4]
-incs = [1, 3]
+#incs = [1, 3]
+incs = [1]
 
 FLT_BIN_WIDTH=13
 FLT_MAX_EXP=128
@@ -33,6 +35,7 @@ for i in range(DBL_MANT_DIG):
   DBL_ONES += 2.0 ** -i
 
 check_suite.add_checks([checks.ValidateInternalRDGEMVTest(),\
+                        checks.ValidateInternalRZGEMVTest(),\
                         ],\
                        ["O", "T", ("N", "lda"), "M", ("incX", "incY"), "f", "g", "j", ("RealAlpha", "RealBeta"), "fold"],\
                        [["RowMajor"], ["Trans", "NoTrans"], [(255, 256), (2048, 2048)], [255, 2048], list(zip(incs, incs)),\
@@ -50,6 +53,7 @@ check_suite.add_checks([checks.ValidateInternalRDGEMVTest(),\
                         folds])
 
 check_suite.add_checks([checks.ValidateInternalRDGEMVTest(),\
+                        checks.ValidateInternalRZGEMVTest(),\
                         ],\
                        ["O", "T", ("M", "lda"), "N", ("incX", "incY"), "f", "g", "j", ("RealAlpha", "RealBeta"), "fold"],\
                        [["ColMajor"], ["Trans", "NoTrans"], [(255, 256), (2048, 2048)], [255, 2048], list(zip(incs, incs)),\

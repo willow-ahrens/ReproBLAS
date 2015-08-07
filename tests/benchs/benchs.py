@@ -281,24 +281,28 @@ all_benchs = {"bench_camax": (BenchCAMAXTest, ""),\
               "bench_ziziadd": (BenchZIZIADDTest, ""),\
               "bench_zziconv": (BenchZZICONVTest, ""),\
               "bench_dgemv": (BenchDGEMVTest, ""),\
-              "bench_rdgemv": (BenchRDGEMVTest, "")}
+             }
 
-for i in range(terminal.get_max_fold() + 1):
+for i in range(terminal.get_simaxfold() + 1):
   all_benchs.update({"bench_rcdotc_fold_{}".format(i): (BenchRCDOTCTest, "--fold {}".format(i)),\
                      "bench_rcdotu_fold_{}".format(i): (BenchRCDOTUTest, "--fold {}".format(i)),\
                      "bench_rcsum_fold_{}".format(i): (BenchRCSUMTest, "--fold {}".format(i)),\
-                     "bench_rdasum_fold_{}".format(i): (BenchRDASUMTest, "--fold {}".format(i)),\
-                     "bench_rddot_fold_{}".format(i): (BenchRDDOTTest, "--fold {}".format(i)),\
-                     "bench_rdnrm2_fold_{}".format(i): (BenchRDNRM2Test, "--fold {}".format(i)),\
-                     "bench_rdsum_fold_{}".format(i): (BenchRDSUMTest, "--fold {}".format(i)),\
-                     "bench_rdzasum_fold_{}".format(i): (BenchRDZASUMTest, "--fold {}".format(i)),\
-                     "bench_rdznrm2_fold_{}".format(i): (BenchRDZNRM2Test, "--fold {}".format(i)),\
                      "bench_rsasum_fold_{}".format(i): (BenchRSASUMTest, "--fold {}".format(i)),\
                      "bench_rscasum_fold_{}".format(i): (BenchRSCASUMTest, "--fold {}".format(i)),\
                      "bench_rscnrm2_fold_{}".format(i): (BenchRSCNRM2Test, "--fold {}".format(i)),\
                      "bench_rsdot_fold_{}".format(i): (BenchRSDOTTest, "--fold {}".format(i)),\
                      "bench_rsnrm2_fold_{}".format(i): (BenchRSNRM2Test, "--fold {}".format(i)),\
                      "bench_rssum_fold_{}".format(i): (BenchRSSUMTest, "--fold {}".format(i)),\
+                    })
+for i in range(terminal.get_dimaxfold() + 1):
+  all_benchs.update({"bench_rdasum_fold_{}".format(i): (BenchRDASUMTest, "--fold {}".format(i)),\
+                     "bench_rddot_fold_{}".format(i): (BenchRDDOTTest, "--fold {}".format(i)),\
+                     "bench_rdnrm2_fold_{}".format(i): (BenchRDNRM2Test, "--fold {}".format(i)),\
+                     "bench_rdsum_fold_{}".format(i): (BenchRDSUMTest, "--fold {}".format(i)),\
+                     "bench_rdgemv_fold_{}".format(i): (BenchRDGEMVTest, "--fold {}".format(i)),\
+                     "bench_rdzasum_fold_{}".format(i): (BenchRDZASUMTest, "--fold {}".format(i)),\
+                     "bench_rdznrm2_fold_{}".format(i): (BenchRDZNRM2Test, "--fold {}".format(i)),\
                      "bench_rzdotc_fold_{}".format(i): (BenchRZDOTCTest, "--fold {}".format(i)),\
                      "bench_rzdotu_fold_{}".format(i): (BenchRZDOTUTest, "--fold {}".format(i)),\
-                     "bench_rzsum_fold_{}".format(i): (BenchRZSUMTest, "--fold {}".format(i))})
+                     "bench_rzsum_fold_{}".format(i): (BenchRZSUMTest, "--fold {}".format(i))
+                    })
