@@ -50,7 +50,7 @@ void zmzgemv(const int fold, const char Order,
           for(i = 0; i < M; i += Y_BLOCK){
             for(j = 0; j < N; j += X_BLOCK){
               for(ii = i; ii < M && ii < i + Y_BLOCK; ii++){
-                zmzdotu(fold, MIN(X_BLOCK, N - j), alphaX + 2 * j * incalphaX, incalphaX, (double*)A + 2 * (ii * lda + j), 1, priY + 2 * ii * incpriY * incincpriY * fold, incpriY, carY + 2 * ii * inccarY * incinccarY * fold, inccarY);
+                zmzdotu(fold, MIN(X_BLOCK, N - j), (double*)A + 2 * (ii * lda + j), 1, alphaX + 2 * j * incalphaX, incalphaX, priY + 2 * ii * incpriY * incincpriY * fold, incpriY, carY + 2 * ii * inccarY * incinccarY * fold, inccarY);
               }
             }
           }
@@ -74,7 +74,7 @@ void zmzgemv(const int fold, const char Order,
           for(i = 0; i < N; i += Y_BLOCK){
             for(j = 0; j < M; j += X_BLOCK){
               for(ii = i; ii < N && ii < i + Y_BLOCK; ii++){
-                zmzdotu(fold, MIN(X_BLOCK, M - j), alphaX + 2 * j * incalphaX, incalphaX, (double*)A + 2 * (j * lda + ii), lda, priY + 2 * ii * incpriY * incincpriY * fold, incpriY, carY + 2 * ii * inccarY * incinccarY * fold, inccarY);
+                zmzdotu(fold, MIN(X_BLOCK, M - j), (double*)A + 2 * (j * lda + ii), lda, alphaX + 2 * j * incalphaX, incalphaX, priY + 2 * ii * incpriY * incincpriY * fold, incpriY, carY + 2 * ii * inccarY * incinccarY * fold, inccarY);
               }
             }
           }
@@ -97,7 +97,7 @@ void zmzgemv(const int fold, const char Order,
           for(i = 0; i < N; i += Y_BLOCK){
             for(j = 0; j < M; j += X_BLOCK){
               for(ii = i; ii < N && ii < i + Y_BLOCK; ii++){
-                zmzdotc(fold, MIN(X_BLOCK, M - j), alphaX + 2 * j * incalphaX, incalphaX, (double*)A + 2 * (j * lda + ii), lda, priY + 2 * ii * incpriY * incincpriY * fold, incpriY, carY + 2 * ii * inccarY * incinccarY * fold, inccarY);
+                zmzdotc(fold, MIN(X_BLOCK, M - j), (double*)A + 2 * (j * lda + ii), lda, alphaX + 2 * j * incalphaX, incalphaX, priY + 2 * ii * incpriY * incincpriY * fold, incpriY, carY + 2 * ii * inccarY * incinccarY * fold, inccarY);
               }
             }
           }
@@ -132,7 +132,7 @@ void zmzgemv(const int fold, const char Order,
           for(i = 0; i < N; i += Y_BLOCK){
             for(j = 0; j < M; j += X_BLOCK){
               for(ii = i; ii < N && ii < i + Y_BLOCK; ii++){
-                zmzdotc(fold, MIN(X_BLOCK, M - j), alphaX + 2 * j * incalphaX, incalphaX, (double*)A + 2 * (ii * lda + j), 1, priY + 2 * ii * incpriY * incincpriY * fold, incpriY, carY + 2 * ii * inccarY * incinccarY * fold, inccarY);
+                zmzdotc(fold, MIN(X_BLOCK, M - j), (double*)A + 2 * (ii * lda + j), 1, alphaX + 2 * j * incalphaX, incalphaX, priY + 2 * ii * incpriY * incincpriY * fold, incpriY, carY + 2 * ii * inccarY * incinccarY * fold, inccarY);
               }
             }
           }

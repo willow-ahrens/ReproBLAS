@@ -194,6 +194,10 @@ class BenchZDOTUTest(BenchTest):
   name = "ZDOTU"
   executable = "tests/benchs/bench_zdotu"
 
+class BenchZGEMVTest(BenchTest):
+  name = "ZGEMV"
+  executable = "tests/benchs/bench_zgemv"
+
 class BenchDDICONVTest(BenchTest):
   name = "DDICONV"
   executable = "tests/benchs/bench_ddiconv"
@@ -234,17 +238,9 @@ class BenchDGEMVTest(BenchTest):
   name = "DGEMV"
   executable = "tests/benchs/bench_dgemv"
 
-class BenchPRDGEMVTest(BenchTest):
-  name = "PRDGEMV"
-  executable = "tests/benchs/bench_prdgemv"
-
-class BenchPRBDGEMVTest(BenchTest):
-  name = "PRBDGEMV"
-  executable = "tests/benchs/bench_prbdgemv"
-
-class BenchPDGEMVTest(BenchTest):
-  name = "PDGEMV"
-  executable = "tests/benchs/bench_pdgemv"
+class BenchRZGEMVTest(BenchTest):
+  name = "RZGEMV"
+  executable = "tests/benchs/bench_rzgemv"
 
 all_benchs = {"bench_camax": (BenchCAMAXTest, ""),\
               "bench_camaxm": (BenchCAMAXMTest, ""),\
@@ -281,6 +277,7 @@ all_benchs = {"bench_camax": (BenchCAMAXTest, ""),\
               "bench_ziziadd": (BenchZIZIADDTest, ""),\
               "bench_zziconv": (BenchZZICONVTest, ""),\
               "bench_dgemv": (BenchDGEMVTest, ""),\
+              "bench_zgemv": (BenchZGEMVTest, ""),\
              }
 
 for i in range(terminal.get_simaxfold() + 1):
@@ -294,6 +291,7 @@ for i in range(terminal.get_simaxfold() + 1):
                      "bench_rsnrm2_fold_{}".format(i): (BenchRSNRM2Test, "--fold {}".format(i)),\
                      "bench_rssum_fold_{}".format(i): (BenchRSSUMTest, "--fold {}".format(i)),\
                     })
+
 for i in range(terminal.get_dimaxfold() + 1):
   all_benchs.update({"bench_rdasum_fold_{}".format(i): (BenchRDASUMTest, "--fold {}".format(i)),\
                      "bench_rddot_fold_{}".format(i): (BenchRDDOTTest, "--fold {}".format(i)),\
@@ -304,5 +302,6 @@ for i in range(terminal.get_dimaxfold() + 1):
                      "bench_rdznrm2_fold_{}".format(i): (BenchRDZNRM2Test, "--fold {}".format(i)),\
                      "bench_rzdotc_fold_{}".format(i): (BenchRZDOTCTest, "--fold {}".format(i)),\
                      "bench_rzdotu_fold_{}".format(i): (BenchRZDOTUTest, "--fold {}".format(i)),\
-                     "bench_rzsum_fold_{}".format(i): (BenchRZSUMTest, "--fold {}".format(i))
+                     "bench_rzsum_fold_{}".format(i): (BenchRZSUMTest, "--fold {}".format(i)),\
+                     "bench_rzgemv_fold_{}".format(i): (BenchRZGEMVTest, "--fold {}".format(i)),\
                     })

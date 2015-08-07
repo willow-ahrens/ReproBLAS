@@ -57,7 +57,6 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
   util_dvec_fill(NX, X, incX, FillX, RealScaleX, ImagScaleX);
   util_dvec_fill(NY, Y, incY, FillY, RealScaleY, ImagScaleY);
   double *res  = (double*)malloc(NY * incY * sizeof(double));
-  double *ref  = (double*)malloc(NY * incY * sizeof(double));
 
   for(i = 0; i < trials; i++){
     memcpy(res, Y, NY * incY * sizeof(double));
@@ -76,6 +75,5 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
   free(X);
   free(Y);
   free(res);
-  free(ref);
   return rc;
 }
