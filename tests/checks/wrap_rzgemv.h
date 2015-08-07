@@ -146,7 +146,7 @@ double complex wrap_rzgemv_bound(int fold, char Order, char TransA, int M, int N
   double complex betaY;
   double complex bound;
   double complex amaxm;
-  double complex *bound_base = &bound;
+  double *bound_base = &bound;
   switch(TransA){
     case 'n':
     case 'N':
@@ -184,7 +184,6 @@ double complex wrap_rzgemv_bound(int fold, char Order, char TransA, int M, int N
       betaY = Y[i * incY] * (*beta);
       bound_base[0] = dibound(fold, M + 1, MAX(fabs(creal(betaY)), creal(amaxm)), creal(res[i * incY]));
       bound_base[1] = dibound(fold, M + 1, MAX(fabs(cimag(betaY)), cimag(amaxm)), cimag(res[i * incY]));
-      printf("cimag(betaY), %g, cimag(amaxm), %g, cimag(res[i * incY]), %g, bound %g\n", cimag(betaY), cimag(amaxm), cimag(res[i * incY]), bound_base[1]);
       break;
   }
   free(alphaX);

@@ -38,14 +38,14 @@ check_suite.add_checks([checks.ValidateInternalRZGEMVTest(),\
                         ],\
                        ["O", "T", ("N", "lda"), "M", ("incX", "incY"), "f", "g", "j", ("RealAlpha", "ImagAlpha", "RealBeta", "ImagBeta"), "fold"],\
                        [["RowMajor"], ["ConjTrans"], [(255, 256), (2048, 2048)], [255, 2048], list(zip(incs, incs)),\
-                        [
-                         
+                        ["constant",\
+                         "identity",\
                          "+big",\
                          "++big",\
                          "+-big"],\
-                        [
-                         
-                         
+                        ["constant",\
+                         "+big",\
+                         "++big",\
                          "+-big"],\
                         ["constant"],\
                         [(2.0, 2.0, -1.0, -1.0), (-1.0, -1.0, 2.0, 2.0)],\
