@@ -84,10 +84,10 @@ double* wrap_rdgemv_result(char Order, char TransA, int M, int N, double RealAlp
               switch(Order){
                 case 'r':
                 case 'R':
-                  res[i] += A[i] * wrap_daugsum_result(M, wrap_daugsum_RDSUM, FillX, RealScaleX*RealAlpha, ImagScaleX, 0, 0.0, 0.0);
+                  res[i] += wrap_daugsum_result(M, wrap_daugsum_RDSUM, FillX, A[i] * (RealScaleX*RealAlpha), ImagScaleX, 0, 0.0, 0.0);
                   break;
                 default:
-                  res[i] += A[i * lda] * wrap_daugsum_result(M, wrap_daugsum_RDSUM, FillX, RealScaleX*RealAlpha, ImagScaleX, 0, 0.0, 0.0);
+                  res[i] += wrap_daugsum_result(M, wrap_daugsum_RDSUM, FillX, A[i * lda] * (RealScaleX*RealAlpha), ImagScaleX, 0, 0.0, 0.0);
                   break;
               }
               break;

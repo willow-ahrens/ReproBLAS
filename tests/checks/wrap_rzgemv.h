@@ -40,6 +40,7 @@ double complex* wrap_rzgemv_result(char Order, char TransA, int M, int N, double
   int i;
   int j;
   double complex *res;
+  double complex alphaXA;
   switch(TransA){
     case 'n':
     case 'N':
@@ -83,23 +84,25 @@ double complex* wrap_rzgemv_result(char Order, char TransA, int M, int N, double
             case util_Mat_Row_N_Cond:
             case util_Mat_Row_Constant_Drop:
             case util_Mat_Row_Sine_Drop:
+              alphaXA = (RealScaleX + I * ImagScaleX) * (RealAlpha + I * ImagAlpha);
               switch(Order){
                 case 'r':
                 case 'R':
                   if(TransA == 'c' || TransA == 'C'){
-                    res[i] += conj(A[i]) * wrap_zaugsum_result(M, wrap_zaugsum_RZSUM, FillX, RealScaleX*RealAlpha - ImagScaleX*ImagAlpha, ImagScaleX * RealAlpha + RealScaleX * ImagAlpha, 0, 0.0, 0.0);
+                    alphaXA *= conj(A[i]);
                   }else{
-                    res[i] += A[i] * wrap_zaugsum_result(M, wrap_zaugsum_RZSUM, FillX, RealScaleX*RealAlpha - ImagScaleX*ImagAlpha, ImagScaleX * RealAlpha + RealScaleX * ImagAlpha, 0, 0.0, 0.0);
+                    alphaXA *= A[i];
                   }
                   break;
                 default:
                   if(TransA == 'c' || TransA == 'C'){
-                    res[i] += conj(A[i * lda]) * wrap_zaugsum_result(M, wrap_zaugsum_RZSUM, FillX, RealScaleX*RealAlpha - ImagScaleX * ImagAlpha, ImagScaleX * RealAlpha + RealScaleX * ImagAlpha, 0, 0.0, 0.0);
+                    alphaXA *= conj(A[i * lda]);
                   }else{
-                    res[i] += A[i * lda] * wrap_zaugsum_result(M, wrap_zaugsum_RZSUM, FillX, RealScaleX*RealAlpha - ImagScaleX * ImagAlpha, ImagScaleX * RealAlpha + RealScaleX * ImagAlpha, 0, 0.0, 0.0);
+                    alphaXA *= A[i * lda];
                   }
                   break;
               }
+              res[i] += wrap_zaugsum_result(M, wrap_zaugsum_RZSUM, FillX, creal(alphaXA), cimag(alphaXA), 0, 0.0, 0.0);
               break;
             case util_Mat_Row_Pos_Inf:
             case util_Mat_Row_Pos_Pos_Inf:

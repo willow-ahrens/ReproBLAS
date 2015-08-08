@@ -12,12 +12,15 @@ import dataTypes
 from src.common import blockSize
 from scripts import terminal
 
-cog.out(generate.generate(blockSize.BlockSize("dmdsum", "Y_BLOCK", 1, 128, 128, ["bench_rdgemv_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
-cog.out(generate.generate(blockSize.BlockSize("dmdsum", "X_BLOCK", 1, 4 * terminal.get_diendurance(), 4 * terminal.get_diendurance(), ["bench_rdgemv_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+#cog.out(generate.generate(blockSize.BlockSize("dmdsum", "Y_BLOCK", 1, 128, 128, ["bench_rdgemv_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+#cog.out(generate.generate(blockSize.BlockSize("dmdsum", "X_BLOCK", 1, 4 * terminal.get_diendurance(), 4 * terminal.get_diendurance(), ["bench_rdgemv_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
 ]]]*/
 #define Y_BLOCK 128
 #define X_BLOCK 8192
 //[[[end]]]
+#define Y_BLOCK 64
+#define X_BLOCK 2048
+#define T_BLOCK 8
 
 void dmdgemv(const int fold, const char Order,
              const char TransA, const int M, const int N,
@@ -27,9 +30,16 @@ void dmdgemv(const int fold, const char Order,
              double *carY, const int inccarY, const int incinccarY){
   int i;
   int ii;
+  int iii;
   int j;
+  int jj;
+  int jjj;
   double *alphaX;
   int incalphaX;
+  double *bufA;
+  double *tmpA;
+  int tmpX_BLOCK;
+  int tmpY_BLOCK;
   switch(Order){
     case 'r':
     case 'R':
@@ -68,13 +78,54 @@ void dmdgemv(const int fold, const char Order,
             }
             incalphaX = 1;
           }
+          bufA = (double*)malloc(X_BLOCK * Y_BLOCK * sizeof(double));
           for(i = 0; i < N; i += Y_BLOCK){
             for(j = 0; j < M; j += X_BLOCK){
+              #if 0
+                tmpA = A + j * lda + i;
+                tmpX_BLOCK = MIN(X_BLOCK, M - j);
+                tmpY_BLOCK = MIN(Y_BLOCK, N - i);
+                for(jj = 0; jj < tmpX_BLOCK; jj++){
+                  for(ii = 0; ii < tmpY_BLOCK; ii++){
+                    bufA[ii * X_BLOCK + jj] = tmpA[jj * lda + ii];
+                  }
+                }
+              #elif 0
+                tmpA = A + j * lda + i;
+                tmpX_BLOCK = MIN(X_BLOCK, M - j);
+                tmpY_BLOCK = MIN(Y_BLOCK, N - i);
+                for(jj = 0; jj < tmpX_BLOCK; jj += T_BLOCK){
+                  for(ii = 0; ii < tmpY_BLOCK; ii += T_BLOCK){
+                    for(jjj = jj; jjj < tmpX_BLOCK && jjj < jj + T_BLOCK; jjj++){
+                      for(iii = ii; iii < tmpY_BLOCK && iii < ii + T_BLOCK; iii++){
+                        bufA[iii * X_BLOCK + jjj] = tmpA[jjj * lda + iii];
+                      }
+                    }
+                  }
+                }
+              #elif 0
+                for(jj = j; jj < M && jj < j + X_BLOCK; jj += T_BLOCK){
+                  for(ii = i; ii < N && ii < i + Y_BLOCK; ii+= T_BLOCK){
+                    for(jjj = jj; jjj < M && jjj < jj + T_BLOCK; jjj++){
+                      for(iii = ii; iii < N && iii < ii + T_BLOCK; iii++){
+                        bufA[(iii - i) * X_BLOCK + (jjj - j)] = A[jjj * lda + iii];
+                      }
+                    }
+                  }
+                }
+              #else
+                for(jj = j; jj < M && jj < j + X_BLOCK; jj++){
+                  for(ii = i; ii < N && ii < i + Y_BLOCK; ii++){
+                    bufA[(ii - i) * X_BLOCK + (jj - j)] = A[jj * lda + ii];
+                  }
+                }
+              #endif
               for(ii = i; ii < N && ii < i + Y_BLOCK; ii++){
-                dmddot(fold, MIN(X_BLOCK, M - j), A + j * lda + ii, lda, alphaX + j * incalphaX, incalphaX, priY + ii * incpriY * incincpriY * fold, incpriY, carY + ii * inccarY * incinccarY * fold, inccarY);
+                dmddot(fold, MIN(X_BLOCK, M - j), bufA + (ii - i) * X_BLOCK, 1, alphaX + j * incalphaX, incalphaX, priY + ii * incpriY * incincpriY * fold, incpriY, carY + ii * inccarY * incinccarY * fold, inccarY);
               }
             }
           }
+          free(bufA);
           if(alpha != 1.0){
             free(alphaX);
           }
