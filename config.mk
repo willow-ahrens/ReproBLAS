@@ -10,7 +10,7 @@ CC = cc
 CFLAGS += -Wall
 
 # add CPPFLAGS
-CPPFLAGS += 
+CPPFLAGS +=
 
 # add LDFLAGS
 LDFLAGS +=
@@ -48,7 +48,7 @@ LDFLAGS +=
 #AVX2 := false
 
 # select optimization flags (comment for auto)
-#OPTFLAGS := -O2
+OPTFLAGS := -O3 -funroll-loops
 
 # select endianness (by default we are running on the same architecture we are
 # building - if you're cross compiling then you should set this manually)

@@ -1,0 +1,109 @@
+#include <stdlib.h>
+
+#include <indexedBLAS.h>
+#include <indexed.h>
+
+#include "../common/common.h"
+
+/*[[[cog
+import cog
+import generate
+import dataTypes
+from src.common import blockSize
+from scripts import terminal
+
+cog.out(generate.generate(blockSize.BlockSize("dmdgemv", "Y_BLOCK", 1, 128, 128, ["bench_rdgemv_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("dmdgemv", "X_BLOCK", 1, 4 * terminal.get_diendurance(), 4 * terminal.get_diendurance(), ["bench_rdgemv_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("dmdgemv", "YT_BLOCK", 1, 128, 128, ["bench_rdgemv_fold_{}_trans".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("dmdgemv", "XT_BLOCK", 1, 4 * terminal.get_diendurance(), 4 * terminal.get_diendurance(), ["bench_rdgemv_fold_{}_trans".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("dmdgemv", "T_BLOCK", 1, 32, 32, ["bench_rdgemv_fold_{}_trans".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+]]]*/
+#define Y_BLOCK 128
+#define X_BLOCK 8192
+#define YT_BLOCK 128
+#define XT_BLOCK 8192
+#define T_BLOCK 32
+//[[[end]]]
+
+void didgemm(const int fold, const char Order,
+             const char TransA, const char TransB,
+             const int M, const int N, const int K,
+             const double alpha, const double *A, const int lda,
+             const double *B, const int ldb,
+             double_indexed *C, const int ldc){
+  int i;
+  int ii;
+  int iii;
+  int j;
+  int jj;
+  int jjj;
+  double *bufA;
+  double *bufB;
+  int ldbufa;
+  switch(Order){
+    case 'r':
+    case 'R': //Row Major
+
+      switch(TransA){
+        case 'n':
+        case 'N': //A Not Transposed
+
+          if(alpha == 1.0){
+            bufA = A;
+            ldbufa = lda;
+          }else{
+            bufA = (double*)malloc(M * K * sizeof(double));
+            for(i = 0; i < M; i++){
+              for(k = 0; k < K; k++){
+                bufA[i * K + k] = A[i * lda + k] * alpha;
+              }
+            }
+            ldbufa = K;
+          }
+          switch(TransB){
+            case 'n':
+            case 'N': //A Not Transposed B Not Transposed
+
+              bufB = (double*)malloc(XT_BLOCK * YT_BLOCK * sizeof(double));
+              for(i = 0; i < M; i += YT_BLOCK){
+                for(j = 0; j < N; j += YT_BLOCK){
+                  for(k = 0; k < K; k += XT_BLOCK){
+                    for(kk = k; kk < K && kk < k + XT_BLOCK; kk++){
+                      for(jj = j; jj < N && jj < j + YT_BLOCK; jj++){
+                        bufB[(jj - j) * XT_BLOCK + (kk - k)] = B[kk * ldb + jj];
+                      }
+                    }
+                    for(ii = i; ii < M && ii < i + YT_BLOCK; ii++){
+                      for(jj = j; jj < N && jj < j + YT_BLOCK; jj++){
+                        diddot(fold, MIN(XT_BLOCK, K - k), bufA + ii * ldbufa + kk, 1, bufB + (jj - j) * XT_BLOCK, 1, C + jj * ldc + ii);
+                      }
+                    }
+                  }
+                }
+              }
+              free(bufB);
+              break;
+
+            default: //A Not Transposed B Transposed
+              for(i = 0; i < M; i += YT_BLOCK){
+                for(j = 0; j < N; j += YT_BLOCK){
+                  for(k = 0; k < K; k += XT_BLOCK){
+                    for(ii = i; ii < M && ii < i + YT_BLOCK; ii++){
+                      for(jj = j; jj < N && jj < j + YT_BLOCK; jj++){
+                        diddot(fold, MIN(XT_BLOCK, K - k), bufA + ii * ldbufa + kk, 1, B + (jj - j) * ldb + kk, 1, C + jj * ldc + ii);
+                      }
+                    }
+                  }
+                }
+              }
+              break;
+
+          }
+          free(bufA);
+          break;
+
+        default: //A Transposed
+          
+      }
+  }
+}

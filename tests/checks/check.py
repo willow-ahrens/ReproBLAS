@@ -36,7 +36,18 @@ for i in range(DBL_MANT_DIG):
 
 check_suite.add_checks([checks.ValidateInternalRZGEMVTest(),\
                         ],\
-                       ["O", "T", ("N", "lda"), "M", ("incX", "incY"), "f", "g", "j", ("RealAlpha", "ImagAlpha", "RealBeta", "ImagBeta"), "fold"],\
+                       ["O", "T", "N", "M", ("incX", "incY"), "RealAlpha", "RealBeta", "ImagAlpha", "ImagBeta", "f", "g", "j", "fold"],\
+                       [["RowMajor", "ColMajor"], ["Trans", "NoTrans"], [256], [256], list(zip(incs, incs)), [1.0, -1.0], [1.0, -1.0], [1.0, -1.0], [1.0, -1.0], \
+                        ["constant",\
+                         ],\
+                        ["constant",\
+                         ],\
+                        ["constant"],\
+                        folds])
+
+check_suite.add_checks([checks.ValidateInternalRZGEMVTest(),\
+                        ],\
+                       ["O", "T", ("N", "lda"), "M", ("incX", "incY"), "f", "g", "j", "fold"],\
                        [["RowMajor"], ["ConjTrans"], [(255, 256), (2048, 2048)], [255, 2048], list(zip(incs, incs)),\
                         ["constant",\
                          "identity",\
@@ -48,12 +59,11 @@ check_suite.add_checks([checks.ValidateInternalRZGEMVTest(),\
                          "++big",\
                          "+-big"],\
                         ["constant"],\
-                        [(2.0, 2.0, 1.0, 1.0), (-1.0, -1.0, -2.0, -2.0)],\
                         folds])
 
 check_suite.add_checks([checks.ValidateInternalRZGEMVTest(),\
                         ],\
-                       ["O", "T", ("M", "lda"), "N", ("incX", "incY"), "f", "g", "j", ("RealAlpha", "ImagAlpha", "RealBeta", "ImagBeta"), "fold"],\
+                       ["O", "T", ("M", "lda"), "N", ("incX", "incY"), "f", "g", "j", "fold"],\
                        [["ColMajor"], ["ConjTrans"], [(255, 256), (2048, 2048)], [255, 2048], list(zip(incs, incs)),\
                         ["constant",\
                          "identity",\
@@ -65,12 +75,11 @@ check_suite.add_checks([checks.ValidateInternalRZGEMVTest(),\
                          "++big",\
                          "+-big"],\
                         ["constant"],\
-                        [(2.0, 2.0, 1.0, 1.0), (-1.0, -1.0, -2.0, -2.0)],\
                         folds])
 
 check_suite.add_checks([checks.ValidateInternalRZGEMVTest(),\
                         ],\
-                       ["O", "T", ("N", "lda"), "M", ("incX", "incY"), "f", "g", "j", ("RealAlpha", "ImagAlpha", "RealBeta", "ImagBeta"), "fold"],\
+                       ["O", "T", ("N", "lda"), "M", ("incX", "incY"), "f", "g", "j", "fold"],\
                        [["RowMajor"], ["Trans", "NoTrans"], [(255, 256), (2048, 2048)], [255, 2048], list(zip(incs, incs)),\
                         ["constant",\
                          "identity",\
@@ -82,12 +91,11 @@ check_suite.add_checks([checks.ValidateInternalRZGEMVTest(),\
                          "++big",\
                          "+-big"],\
                         ["constant"],\
-                        [(2.0, 2.0, -1.0, -1.0), (-1.0, -1.0, 2.0, 2.0)],\
                         folds])
 
 check_suite.add_checks([checks.ValidateInternalRZGEMVTest(),\
                         ],\
-                       ["O", "T", ("M", "lda"), "N", ("incX", "incY"), "f", "g", "j", ("RealAlpha", "ImagAlpha", "RealBeta", "ImagBeta"), "fold"],\
+                       ["O", "T", ("M", "lda"), "N", ("incX", "incY"), "f", "g", "j", "fold"],\
                        [["ColMajor"], ["Trans", "NoTrans"], [(255, 256), (2048, 2048)], [255, 2048], list(zip(incs, incs)),\
                         ["constant",\
                          "identity",\
@@ -99,7 +107,6 @@ check_suite.add_checks([checks.ValidateInternalRZGEMVTest(),\
                          "++big",\
                          "+-big"],\
                         ["constant"],\
-                        [(2.0, 2.0, -1.0, -1.0), (-1.0, -1.0, 2.0, 2.0)],\
                         folds])
 
 check_suite.add_checks([checks.VerifyRZGEMVTest()],\
@@ -126,7 +133,18 @@ check_suite.add_checks([checks.VerifyRZGEMVTest()],\
 
 check_suite.add_checks([checks.ValidateInternalRDGEMVTest(),\
                         ],\
-                       ["O", "T", ("N", "lda"), "M", ("incX", "incY"), "f", "g", "j", ("RealAlpha", "RealBeta"), "fold"],\
+                       ["O", "T", "N", "M", ("incX", "incY"), "RealAlpha", "RealBeta", "f", "g", "j", "fold"],\
+                       [["RowMajor", "ColMajor"], ["Trans", "NoTrans"], [256], [256], list(zip(incs, incs)), [1.0, -1.0], [1.0, -1.0], \
+                        ["constant",\
+                         ],\
+                        ["constant",\
+                         ],\
+                        ["constant"],\
+                        folds])
+
+check_suite.add_checks([checks.ValidateInternalRDGEMVTest(),\
+                        ],\
+                       ["O", "T", ("N", "lda"), "M", ("incX", "incY"), "f", "g", "j", "fold"],\
                        [["RowMajor"], ["Trans", "NoTrans"], [(255, 256), (2048, 2048)], [255, 2048], list(zip(incs, incs)),\
                         ["constant",\
                          "identity",\
@@ -138,12 +156,11 @@ check_suite.add_checks([checks.ValidateInternalRDGEMVTest(),\
                          "++big",\
                          "+-big"],\
                         ["constant"],\
-                        [(2.0, -1.0), (-1.0, 2.0)],\
                         folds])
 
 check_suite.add_checks([checks.ValidateInternalRDGEMVTest(),\
                         ],\
-                       ["O", "T", ("M", "lda"), "N", ("incX", "incY"), "f", "g", "j", ("RealAlpha", "RealBeta"), "fold"],\
+                       ["O", "T", ("M", "lda"), "N", ("incX", "incY"), "f", "g", "j", "fold"],\
                        [["ColMajor"], ["Trans", "NoTrans" ], [(255, 256), (2048, 2048)], [255, 2048], list(zip(incs, incs)),\
                         ["constant",\
                          "identity",\
@@ -155,7 +172,6 @@ check_suite.add_checks([checks.ValidateInternalRDGEMVTest(),\
                          "++big",\
                          "+-big"],\
                         ["constant"],\
-                        [(2.0, -1.0), (-1.0, 2.0)],\
                         folds])
 
 check_suite.add_checks([checks.VerifyRDGEMVTest(),\

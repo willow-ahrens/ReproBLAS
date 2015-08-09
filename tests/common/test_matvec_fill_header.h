@@ -131,7 +131,7 @@ static void matvec_fill_options_initialize(void){
   RealBeta._double.required          = 0;
   RealBeta._double.min               = -DBL_MAX;
   RealBeta._double.max               = DBL_MAX;
-  RealBeta._double.value             = 1.0;
+  RealBeta._double.value             = 0.0;
 
   ImagBeta._double.header.type       = opt_double;
   ImagBeta._double.header.short_name = 'l';

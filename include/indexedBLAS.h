@@ -65,6 +65,13 @@ void dmdgemv(const int fold, const char Order, const char TransA,
              double *priY, const int incpriY, const int incincpriY,
              double *carY, const int inccarY, const int incinccarY);
 
+void didgemm(const int fold, const char Order,
+             const char TransA, const char TransB,
+             const int M, const int N, const int K,
+             const double alpha, const double *A, const int lda,
+             const double *B, const int ldb,
+             double_indexed *C, const int ldc);
+
 void zizsum(const int fold, const int N, const void *X, const int incX, double_indexed *Y);
 void zmzsum(const int fold, const int N, const void *X, const int incX, double *priY, const int incpriY, double *carY, const int inccarY);
 void dizasum(const int fold, const int N, const void *X, const int incX, double_indexed *Y);

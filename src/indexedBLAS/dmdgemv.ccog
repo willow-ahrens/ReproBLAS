@@ -12,15 +12,18 @@ import dataTypes
 from src.common import blockSize
 from scripts import terminal
 
-#cog.out(generate.generate(blockSize.BlockSize("dmdsum", "Y_BLOCK", 1, 128, 128, ["bench_rdgemv_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
-#cog.out(generate.generate(blockSize.BlockSize("dmdsum", "X_BLOCK", 1, 4 * terminal.get_diendurance(), 4 * terminal.get_diendurance(), ["bench_rdgemv_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("dmdgemv", "Y_BLOCK", 1, 128, 128, ["bench_rdgemv_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("dmdgemv", "X_BLOCK", 1, 4 * terminal.get_diendurance(), 4 * terminal.get_diendurance(), ["bench_rdgemv_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("dmdgemv", "YT_BLOCK", 1, 128, 128, ["bench_rdgemv_fold_{}_trans".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("dmdgemv", "XT_BLOCK", 1, 4 * terminal.get_diendurance(), 4 * terminal.get_diendurance(), ["bench_rdgemv_fold_{}_trans".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("dmdgemv", "T_BLOCK", 1, 32, 32, ["bench_rdgemv_fold_{}_trans".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
 ]]]*/
 #define Y_BLOCK 128
 #define X_BLOCK 8192
+#define YT_BLOCK 128
+#define XT_BLOCK 8192
+#define T_BLOCK 32
 //[[[end]]]
-#define Y_BLOCK 64
-#define X_BLOCK 2048
-#define T_BLOCK 8
 
 void dmdgemv(const int fold, const char Order,
              const char TransA, const int M, const int N,
@@ -31,15 +34,15 @@ void dmdgemv(const int fold, const char Order,
   int i;
   int ii;
   int iii;
+  int III;
   int j;
   int jj;
   int jjj;
+  int JJJ;
   double *alphaX;
   int incalphaX;
   double *bufA;
-  double *tmpA;
-  int tmpX_BLOCK;
-  int tmpY_BLOCK;
+  const double *tmpA;
   switch(Order){
     case 'r':
     case 'R':
@@ -78,50 +81,23 @@ void dmdgemv(const int fold, const char Order,
             }
             incalphaX = 1;
           }
-          bufA = (double*)malloc(X_BLOCK * Y_BLOCK * sizeof(double));
-          for(i = 0; i < N; i += Y_BLOCK){
-            for(j = 0; j < M; j += X_BLOCK){
-              #if 0
-                tmpA = A + j * lda + i;
-                tmpX_BLOCK = MIN(X_BLOCK, M - j);
-                tmpY_BLOCK = MIN(Y_BLOCK, N - i);
-                for(jj = 0; jj < tmpX_BLOCK; jj++){
-                  for(ii = 0; ii < tmpY_BLOCK; ii++){
-                    bufA[ii * X_BLOCK + jj] = tmpA[jj * lda + ii];
-                  }
-                }
-              #elif 0
-                tmpA = A + j * lda + i;
-                tmpX_BLOCK = MIN(X_BLOCK, M - j);
-                tmpY_BLOCK = MIN(Y_BLOCK, N - i);
-                for(jj = 0; jj < tmpX_BLOCK; jj += T_BLOCK){
-                  for(ii = 0; ii < tmpY_BLOCK; ii += T_BLOCK){
-                    for(jjj = jj; jjj < tmpX_BLOCK && jjj < jj + T_BLOCK; jjj++){
-                      for(iii = ii; iii < tmpY_BLOCK && iii < ii + T_BLOCK; iii++){
-                        bufA[iii * X_BLOCK + jjj] = tmpA[jjj * lda + iii];
-                      }
+          bufA = (double*)malloc(XT_BLOCK * YT_BLOCK * sizeof(double));
+          for(i = 0; i < N; i += YT_BLOCK){
+            for(j = 0; j < M; j += XT_BLOCK){
+              for(jj = j; jj < M && jj < j + XT_BLOCK; jj += T_BLOCK){
+                for(ii = i; ii < N && ii < i + YT_BLOCK; ii+= T_BLOCK){
+                  tmpA = A + jj * lda + ii;
+                  JJJ = MIN(M - jj, MIN(XT_BLOCK, T_BLOCK));
+                  for(jjj = 0; jjj < JJJ; jjj++){
+                    III = MIN(N - ii, MIN(YT_BLOCK, T_BLOCK));
+                    for(iii = 0; iii < III; iii++){
+                      bufA[iii * XT_BLOCK + jjj] = tmpA[jjj * lda + iii];
                     }
                   }
                 }
-              #elif 0
-                for(jj = j; jj < M && jj < j + X_BLOCK; jj += T_BLOCK){
-                  for(ii = i; ii < N && ii < i + Y_BLOCK; ii+= T_BLOCK){
-                    for(jjj = jj; jjj < M && jjj < jj + T_BLOCK; jjj++){
-                      for(iii = ii; iii < N && iii < ii + T_BLOCK; iii++){
-                        bufA[(iii - i) * X_BLOCK + (jjj - j)] = A[jjj * lda + iii];
-                      }
-                    }
-                  }
-                }
-              #else
-                for(jj = j; jj < M && jj < j + X_BLOCK; jj++){
-                  for(ii = i; ii < N && ii < i + Y_BLOCK; ii++){
-                    bufA[(ii - i) * X_BLOCK + (jj - j)] = A[jj * lda + ii];
-                  }
-                }
-              #endif
-              for(ii = i; ii < N && ii < i + Y_BLOCK; ii++){
-                dmddot(fold, MIN(X_BLOCK, M - j), bufA + (ii - i) * X_BLOCK, 1, alphaX + j * incalphaX, incalphaX, priY + ii * incpriY * incincpriY * fold, incpriY, carY + ii * inccarY * incinccarY * fold, inccarY);
+              }
+              for(ii = i; ii < N && ii < i + YT_BLOCK; ii++){
+                dmddot(fold, MIN(XT_BLOCK, M - j), bufA + (ii - i) * XT_BLOCK, 1, alphaX + j * incalphaX, incalphaX, priY + ii * incpriY * incincpriY * fold, incpriY, carY + ii * inccarY * incinccarY * fold, inccarY);
               }
             }
           }

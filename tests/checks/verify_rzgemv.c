@@ -61,7 +61,6 @@ int verify_zgemv_reproducibility(int fold, char Order, char TransA, int M, int N
                 case 'r':
                 case 'R':
                   zizgemv(fold, Order, TransA, M, block_N, (void*)alpha, (void*)(A + i), lda, (void*)(X + i * incX), incX, Ires, incY);
-                  printf("i %d p1 %g\n", i, Ires[3]);
                   break;
                 default:
                   zizgemv(fold, Order, TransA, M, block_N, (void*)alpha, (void*)(A + i * lda), lda, (void*)(X + i * incX), incX, Ires, incY);

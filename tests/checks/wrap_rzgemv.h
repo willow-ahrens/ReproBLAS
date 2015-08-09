@@ -149,7 +149,7 @@ double complex wrap_rzgemv_bound(int fold, char Order, char TransA, int M, int N
   double complex betaY;
   double complex bound;
   double complex amaxm;
-  double *bound_base = &bound;
+  double *bound_base = (double*)&bound;
   switch(TransA){
     case 'n':
     case 'N':
