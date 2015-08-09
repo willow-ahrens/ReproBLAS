@@ -86,12 +86,9 @@ void dmdgemv(const int fold, const char Order,
             for(j = 0; j < M; j += XT_BLOCK){
               for(jj = j; jj < M && jj < j + XT_BLOCK; jj += T_BLOCK){
                 for(ii = i; ii < N && ii < i + YT_BLOCK; ii+= T_BLOCK){
-                  tmpA = A + jj * lda + ii;
-                  JJJ = MIN(M - jj, MIN(XT_BLOCK, T_BLOCK));
-                  for(jjj = 0; jjj < JJJ; jjj++){
-                    III = MIN(N - ii, MIN(YT_BLOCK, T_BLOCK));
-                    for(iii = 0; iii < III; iii++){
-                      bufA[iii * XT_BLOCK + jjj] = tmpA[jjj * lda + iii];
+                  for(jjj = jj; jjj < M && jjj < jj + MIN(T_BLOCK, XT_BLOCK); jjj++){
+                    for(iii = ii; iii < N && iii < ii + MIN(T_BLOCK, YT_BLOCK); iii++){
+                      bufA[(iii - i) * XT_BLOCK + (jjj - j)] = A[jjj * lda + iii];
                     }
                   }
                 }

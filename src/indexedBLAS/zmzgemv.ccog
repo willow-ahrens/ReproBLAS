@@ -87,8 +87,8 @@ void zmzgemv(const int fold, const char Order,
             for(j = 0; j < M; j += XT_BLOCK){
               for(jj = j; jj < M && jj < j + XT_BLOCK; jj += T_BLOCK){
                 for(ii = i; ii < N && ii < i + YT_BLOCK; ii+= T_BLOCK){
-                  for(jjj = jj; jjj < M && jjj < jj + T_BLOCK; jjj++){
-                    for(iii = ii; iii < N && iii < ii + T_BLOCK; iii++){
+                  for(jjj = jj; jjj < M && jjj < jj + MIN(T_BLOCK, XT_BLOCK); jjj++){
+                    for(iii = ii; iii < N && iii < ii + MIN(T_BLOCK, YT_BLOCK); iii++){
                       bufA[2 * ((iii - i) * XT_BLOCK + (jjj - j))] = ((double*)A)[2 * (jjj * lda + iii)];
                       bufA[2 * ((iii - i) * XT_BLOCK + (jjj - j)) + 1] = ((double*)A)[2 * (jjj * lda + iii) + 1];
                     }
@@ -122,8 +122,8 @@ void zmzgemv(const int fold, const char Order,
             for(j = 0; j < M; j += XT_BLOCK){
               for(jj = j; jj < M && jj < j + XT_BLOCK; jj += T_BLOCK){
                 for(ii = i; ii < N && ii < i + YT_BLOCK; ii+= T_BLOCK){
-                  for(jjj = jj; jjj < M && jjj < jj + T_BLOCK; jjj++){
-                    for(iii = ii; iii < N && iii < ii + T_BLOCK; iii++){
+                  for(jjj = jj; jjj < M && jjj < jj + MIN(T_BLOCK, XT_BLOCK); jjj++){
+                    for(iii = ii; iii < N && iii < ii + MIN(T_BLOCK, YT_BLOCK); iii++){
                       bufA[2 * ((iii - i) * XT_BLOCK + (jjj - j))] = ((double*)A)[2 * (jjj * lda + iii)];
                       bufA[2 * ((iii - i) * XT_BLOCK + (jjj - j)) + 1] = ((double*)A)[2 * (jjj * lda + iii) + 1];
                     }
