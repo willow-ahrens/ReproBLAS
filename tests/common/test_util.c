@@ -902,6 +902,42 @@ void util_cvec_permute(int N, float complex* V, int incV, int *Q, int incQ, int 
   permute(N, Q, incQ, &vec_swap, &swap_data);
 }
 
+void util_divec_permute(int num, int N, double* V, int incV, int *Q, int incQ, int *P, int incP) {
+  vec_swap_data_t swap_data = {.V         = V,
+                               .incV      = incV,
+                               .elem_size = num * sizeof(double),
+                               .P         = P,
+                               .incP      = incP};
+  permute(N, Q, incQ, &vec_swap, &swap_data);
+}
+
+void util_sivec_permute(int num, int N, float* V, int incV, int *Q, int incQ, int *P, int incP) {
+  vec_swap_data_t swap_data = {.V         = V,
+                               .incV      = incV,
+                               .elem_size = num * sizeof(float),
+                               .P         = P,
+                               .incP      = incP};
+  permute(N, Q, incQ, &vec_swap, &swap_data);
+}
+
+void util_zivec_permute(int num, int N, double complex* V, int incV, int *Q, int incQ, int *P, int incP) {
+  vec_swap_data_t swap_data = {.V         = V,
+                               .incV      = incV,
+                               .elem_size = num * sizeof(double complex),
+                               .P         = P,
+                               .incP      = incP};
+  permute(N, Q, incQ, &vec_swap, &swap_data);
+}
+
+void util_civec_permute(int num, int N, float complex* V, int incV, int *Q, int incQ, int *P, int incP) {
+  vec_swap_data_t swap_data = {.V         = V,
+                               .incV      = incV,
+                               .elem_size = num * sizeof(float complex),
+                               .P         = P,
+                               .incP      = incP};
+  permute(N, Q, incQ, &vec_swap, &swap_data);
+}
+
 void util_dmat_row_permute(char Order, char TransA, int M, int N, double *A, int lda, int *Q, int incQ, int *P, int incP){
   mat_row_swap_data_t swap_data = {.Order     = Order,
                                    .TransA    = TransA,
@@ -949,6 +985,58 @@ void util_cmat_row_permute(char Order, char TransA, int M, int N, float complex 
                                    .A         = A,
                                    .lda       = lda,
                                    .elem_size = sizeof(float complex),
+                                   .P         = P,
+                                   .incP      = incP};
+  permute(mat_row_permute_size(Order, TransA, M, N), Q, incQ, &mat_row_swap, &swap_data);
+}
+
+void util_dimat_row_permute(int num, char Order, char TransA, int M, int N, double *A, int lda, int *Q, int incQ, int *P, int incP){
+  mat_row_swap_data_t swap_data = {.Order     = Order,
+                                   .TransA    = TransA,
+                                   .M         = M,
+                                   .N         = N,
+                                   .A         = A,
+                                   .lda       = lda,
+                                   .elem_size = num * sizeof(double),
+                                   .P         = P,
+                                   .incP      = incP};
+  permute(mat_row_permute_size(Order, TransA, M, N), Q, incQ, &mat_row_swap, &swap_data);
+}
+
+void util_simat_row_permute(int num, char Order, char TransA, int M, int N, float *A, int lda, int *Q, int incQ, int *P, int incP){
+  mat_row_swap_data_t swap_data = {.Order     = Order,
+                                   .TransA    = TransA,
+                                   .M         = M,
+                                   .N         = N,
+                                   .A         = A,
+                                   .lda       = lda,
+                                   .elem_size = num * sizeof(float),
+                                   .P         = P,
+                                   .incP      = incP};
+  permute(mat_row_permute_size(Order, TransA, M, N), Q, incQ, &mat_row_swap, &swap_data);
+}
+
+void util_zimat_row_permute(int num, char Order, char TransA, int M, int N, double complex *A, int lda, int *Q, int incQ, int *P, int incP){
+  mat_row_swap_data_t swap_data = {.Order     = Order,
+                                   .TransA    = TransA,
+                                   .M         = M,
+                                   .N         = N,
+                                   .A         = A,
+                                   .lda       = lda,
+                                   .elem_size = num * sizeof(complex double),
+                                   .P         = P,
+                                   .incP      = incP};
+  permute(mat_row_permute_size(Order, TransA, M, N), Q, incQ, &mat_row_swap, &swap_data);
+}
+
+void util_cimat_row_permute(int num, char Order, char TransA, int M, int N, float complex *A, int lda, int *Q, int incQ, int *P, int incP){
+  mat_row_swap_data_t swap_data = {.Order     = Order,
+                                   .TransA    = TransA,
+                                   .M         = M,
+                                   .N         = N,
+                                   .A         = A,
+                                   .lda       = lda,
+                                   .elem_size = num * sizeof(complex float),
                                    .P         = P,
                                    .incP      = incP};
   permute(mat_row_permute_size(Order, TransA, M, N), Q, incQ, &mat_row_swap, &swap_data);
@@ -1869,6 +1957,7 @@ void util_smat_fill(char Order, char TransA, int M, int N, float* A, int lda, ut
 
 void util_zmat_fill(char Order, char TransA, int M, int N, double complex* A, int lda, util_mat_fill_t Fill, double RealScale, double ImagScale) {
   int i;
+  int j;
   util_vec_fill_t row_fill;
   switch(Fill){
     case util_Mat_Identity:
@@ -1974,6 +2063,11 @@ void util_zmat_fill(char Order, char TransA, int M, int N, double complex* A, in
         default:
           for(i = 0; i < N; i++){
             util_zvec_fill(M, A + i, lda, row_fill, RealScale, ImagScale);
+            if(TransA == 'c' || TransA == 'C'){
+              for(j = 0; j < M; j++){
+                ((double*)A)[2 * (i + j * lda) + 1] = ((double*)A)[2 * (i + j * lda) + 1] * -1;
+              }
+            }
           }
           break;
       }
@@ -1989,15 +2083,21 @@ void util_zmat_fill(char Order, char TransA, int M, int N, double complex* A, in
         default:
           for(i = 0; i < N; i++){
             util_zvec_fill(M, A + i * lda, 1, row_fill, RealScale, ImagScale);
+            if(TransA == 'c' || TransA == 'C'){
+              for(j = 0; j < M; j++){
+                ((double*)A)[2 * (i * lda + j) + 1] = ((double*)A)[2 * (i * lda + j) + 1] * -1;
+              }
+            }
           }
           break;
       }
-    break;
+      break;
   }
 }
 
 void util_cmat_fill(char Order, char TransA, int M, int N, float complex* A, int lda, util_mat_fill_t Fill, float RealScale, float ImagScale) {
   int i;
+  int j;
   util_vec_fill_t row_fill;
   switch(Fill){
     case util_Mat_Identity:
@@ -2103,6 +2203,11 @@ void util_cmat_fill(char Order, char TransA, int M, int N, float complex* A, int
         default:
           for(i = 0; i < N; i++){
             util_cvec_fill(M, A + i, lda, row_fill, RealScale, ImagScale);
+            if(TransA == 'c' || TransA == 'C'){
+              for(j = 0; j < M; j++){
+                ((float*)A)[2 * (i + j * lda) + 1] = ((float*)A)[2 * (i + j * lda) + 1] * -1;
+              }
+            }
           }
           break;
       }
@@ -2118,9 +2223,14 @@ void util_cmat_fill(char Order, char TransA, int M, int N, float complex* A, int
         default:
           for(i = 0; i < N; i++){
             util_cvec_fill(M, A + i * lda, 1, row_fill, RealScale, ImagScale);
+            if(TransA == 'c' || TransA == 'C'){
+              for(j = 0; j < M; j++){
+                ((float*)A)[2 * (i * lda + j) + 1] = ((float*)A)[2 * (i * lda + j) + 1] * -1;
+              }
+            }
           }
           break;
       }
-    break;
+      break;
   }
 }

@@ -40,7 +40,6 @@ double complex* wrap_rzgemv_result(char Order, char TransA, int M, int N, double
   int i;
   int j;
   double complex *res;
-  double complex alphaXA;
   switch(TransA){
     case 'n':
     case 'N':
@@ -73,69 +72,7 @@ double complex* wrap_rzgemv_result(char Order, char TransA, int M, int N, double
             }
           }
         }else{
-          switch(FillA){
-            case util_Mat_Row_Constant:
-            case util_Mat_Row_Pos_Big:
-            case util_Mat_Row_Pos_Pos_Big:
-            case util_Mat_Row_Pos_Neg_Big:
-            case util_Mat_Row_Sine:
-            case util_Mat_Row_Small_Plus_Increasing_Big:
-            case util_Mat_Row_Small_Plus_Rand_Big:
-            case util_Mat_Row_N_Cond:
-            case util_Mat_Row_Constant_Drop:
-            case util_Mat_Row_Sine_Drop:
-              alphaXA = (RealScaleX + I * ImagScaleX) * (RealAlpha + I * ImagAlpha);
-              switch(Order){
-                case 'r':
-                case 'R':
-                  if(TransA == 'c' || TransA == 'C'){
-                    alphaXA *= conj(A[i]);
-                  }else{
-                    alphaXA *= A[i];
-                  }
-                  break;
-                default:
-                  if(TransA == 'c' || TransA == 'C'){
-                    alphaXA *= conj(A[i * lda]);
-                  }else{
-                    alphaXA *= A[i * lda];
-                  }
-                  break;
-              }
-              res[i] += wrap_zaugsum_result(M, wrap_zaugsum_RZSUM, FillX, creal(alphaXA), cimag(alphaXA), 0, 0.0, 0.0);
-              break;
-            case util_Mat_Row_Pos_Inf:
-            case util_Mat_Row_Pos_Pos_Inf:
-            case util_Mat_Row_Pos_Neg_Inf:
-            case util_Mat_Row_NaN:
-            case util_Mat_Row_Pos_Inf_NaN:
-            case util_Mat_Row_Pos_Pos_Inf_NaN:
-            case util_Mat_Row_Pos_Neg_Inf_NaN:
-              for(j = 0; j < M; j++){
-                switch(Order){
-                  case 'r':
-                  case 'R':
-                    if(TransA == 'c' || TransA == 'C'){
-                      res[i] += ((RealAlpha + I * ImagAlpha) * X[j * incX]) * conj(A[i]);
-                    }else{
-                      res[i] += ((RealAlpha + I * ImagAlpha) * X[j * incX]) * A[i];
-                    }
-                    break;
-                  default:
-                    if(TransA == 'c' || TransA == 'C'){
-                      res[i] += ((RealAlpha + I * ImagAlpha) * X[j * incX]) * conj(A[i * lda]);
-                    }else{
-                      res[i] += ((RealAlpha + I * ImagAlpha) * X[j * incX]) * A[i * lda];
-                    }
-                    break;
-                }
-              }
-              break;
-            default:
-              fprintf(stderr, "ReproBLAS error: unknown result for rzgemv(Transpose, A=%s, X=%s)\n", util_mat_fill_descs[FillA], util_vec_fill_descs[FillX]);
-              exit(125);
-              break;
-          }
+          res[i] += wrap_zaugsum_result(M, wrap_zaugsum_RZDOTU, FillX, RealScaleX * RealAlpha - ImagScaleX * ImagAlpha, ImagScaleX * RealAlpha + RealScaleX * ImagAlpha, (util_vec_fill_t)FillA, RealScaleA, ImagScaleA);
         }
       }
       break;

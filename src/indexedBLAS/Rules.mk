@@ -7,7 +7,7 @@ COGGED = damax.ccog damaxm.ccog                                        \
          zamax_sub.ccog zamaxm_sub.ccog                                \
          samax.ccog samaxm.ccog                                        \
          camax_sub.ccog camaxm_sub.ccog                                \
-         dmdsum.ccog dmdasum.ccog dmdssq.ccog dmddot.ccog dmdgemv.ccog \
+         dmdsum.ccog dmdasum.ccog dmdssq.ccog dmddot.ccog dmdgemv.ccog didgemm.ccog \
          smssum.ccog smsasum.ccog smsssq.ccog smsdot.ccog              \
          cmcsum.ccog smcasum.ccog smcssq.ccog cmcdotu.ccog cmcdotc.ccog\
          zmzsum.ccog dmzasum.ccog dmzssq.ccog zmzdotu.ccog zmzdotc.ccog zmzgemv.ccog
@@ -16,7 +16,7 @@ PRECIOUS = damax.c damaxm.c                               \
            zamax_sub.c zamaxm_sub.c                       \
            samax.c samaxm.c                               \
            camax_sub.c camaxm_sub.c                       \
-           dmdsum.c dmdasum.c dmdssq.c dmddot.c dmdgemv.c \
+           dmdsum.c dmdasum.c dmdssq.c dmddot.c dmdgemv.c didgemm.c\
            smssum.c smsasum.c smsssq.c smsdot.c           \
            zmzsum.c dmzasum.c dmzssq.c zmzdotu.c zmzdotc.c zmzgemv.c\
            cmcsum.c smcasum.c smcssq.c cmcdotu.c cmcdotc.c\
@@ -28,7 +28,7 @@ libindexedblas.a_DEPS = $$(LIBINDEXED)                                 \
                         zamax_sub.o zamaxm_sub.o                       \
                         samax.o samaxm.o                               \
                         camax_sub.o camaxm_sub.o                       \
-                        dmdsum.o dmdasum.o dmdssq.o dmddot.o dmdgemv.o \
+                        dmdsum.o dmdasum.o dmdssq.o dmddot.o dmdgemv.o didgemm.o \
                         smssum.o smsasum.o smsssq.o smsdot.o           \
                         cmcsum.o smcasum.o smcssq.o cmcdotu.o cmcdotc.o\
                         zmzsum.o dmzasum.o dmzssq.o zmzdotu.o zmzdotc.o zmzgemv.o\
@@ -50,6 +50,7 @@ dmdasum.c_DEPS = $$(GETTER) dmdasum.ccog
 dmdssq.c_DEPS = $$(GETTER) dmdssq.ccog
 dmddot.c_DEPS = $$(GETTER) dmddot.ccog
 dmdgemv.c_DEPS = $$(GETTER) dmdgemv.ccog
+didgemm.c_DEPS = $$(GETTER) didgemm.ccog
 smssum.c_DEPS = $$(GETTER) smssum.ccog
 smsasum.c_DEPS = $$(GETTER) smsasum.ccog
 smsssq.c_DEPS = $$(GETTER) smsssq.ccog

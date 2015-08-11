@@ -97,7 +97,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
 
   int *P;
 
-  util_zmat_fill(Order, 'n', M, N, A, lda, FillA, RealScaleA, ImagScaleA);
+  util_zmat_fill(Order, TransA, M, N, A, lda, FillA, RealScaleA, ImagScaleA);
   util_zvec_fill(NX, X, incX, FillX, RealScaleX, ImagScaleX);
   util_zvec_fill(NY, Y, incY, FillY, RealScaleY, ImagScaleY);
   double complex *ref = wrap_rzgemv_result(Order, TransA, M, N, RealAlpha, ImagAlpha, FillA, RealScaleA, ImagScaleA, A, lda, FillX, RealScaleX, ImagScaleX, X, incX, RealBeta, ImagBeta, Y, incY);

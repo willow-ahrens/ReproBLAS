@@ -34,15 +34,12 @@ void dmdgemv(const int fold, const char Order,
   int i;
   int ii;
   int iii;
-  int III;
   int j;
   int jj;
   int jjj;
-  int JJJ;
   double *alphaX;
   int incalphaX;
   double *bufA;
-  const double *tmpA;
   switch(Order){
     case 'r':
     case 'R':

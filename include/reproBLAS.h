@@ -11,6 +11,11 @@ void rdgemv(const char Order, const char TransA,
             const double alpha, const double *A, const int lda,
             const double *X, const int incX,
             const double beta, double *Y, const int incY);
+void rdgemm(const char Order, const char TransA, const char TransB,
+            const int M, const int N, const int K,
+            const double alpha, const double *A, const int lda,
+            const double *B, const int ldb,
+            const double beta, double *C, const int ldc);
 
 float rsdot(const int N, const float* X, const int incX, const float* Y, const int incY);
 float rsasum(const int N, const float* X, const int incX);

@@ -12,11 +12,11 @@ import dataTypes
 from src.common import blockSize
 from scripts import terminal
 
-cog.out(generate.generate(blockSize.BlockSize("dmdgemv", "Y_BLOCK", 1, 128, 128, ["bench_rdgemv_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
-cog.out(generate.generate(blockSize.BlockSize("dmdgemv", "X_BLOCK", 1, 4 * terminal.get_diendurance(), 4 * terminal.get_diendurance(), ["bench_rdgemv_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
-cog.out(generate.generate(blockSize.BlockSize("dmdgemv", "YT_BLOCK", 1, 128, 128, ["bench_rdgemv_fold_{}_trans".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
-cog.out(generate.generate(blockSize.BlockSize("dmdgemv", "XT_BLOCK", 1, 4 * terminal.get_diendurance(), 4 * terminal.get_diendurance(), ["bench_rdgemv_fold_{}_trans".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
-cog.out(generate.generate(blockSize.BlockSize("dmdgemv", "T_BLOCK", 1, 32, 32, ["bench_rdgemv_fold_{}_trans".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("dmdgemm", "Y_BLOCK", 1, 128, 128, ["bench_rdgemm_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("dmdgemm", "X_BLOCK", 1, 4 * terminal.get_diendurance(), 4 * terminal.get_diendurance(), ["bench_rdgemm_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("dmdgemm", "YT_BLOCK", 1, 128, 128, ["bench_rdgemm_fold_{}_trans".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("dmdgemm", "XT_BLOCK", 1, 4 * terminal.get_diendurance(), 4 * terminal.get_diendurance(), ["bench_rdgemm_fold_{}_trans".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("dmdgemm", "T_BLOCK", 1, 32, 32, ["bench_rdgemm_fold_{}_trans".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
 ]]]*/
 #define Y_BLOCK 128
 #define X_BLOCK 8192
@@ -34,12 +34,16 @@ void didgemm(const int fold, const char Order,
   int i;
   int ii;
   int iii;
+  int k;
+  int kk;
+  int kkk;
   int j;
   int jj;
   int jjj;
   double *bufA;
-  double *bufB;
   int ldbufa;
+  double *bufB;
+  int ldbufb;
   switch(Order){
     case 'r':
     case 'R': //Row Major
@@ -49,7 +53,7 @@ void didgemm(const int fold, const char Order,
         case 'N': //A Not Transposed
 
           if(alpha == 1.0){
-            bufA = A;
+            bufA = (double*)A;
             ldbufa = lda;
           }else{
             bufA = (double*)malloc(M * K * sizeof(double));
@@ -75,7 +79,7 @@ void didgemm(const int fold, const char Order,
                     }
                     for(ii = i; ii < M && ii < i + YT_BLOCK; ii++){
                       for(jj = j; jj < N && jj < j + YT_BLOCK; jj++){
-                        diddot(fold, MIN(XT_BLOCK, K - k), bufA + ii * ldbufa + kk, 1, bufB + (jj - j) * XT_BLOCK, 1, C + jj * ldc + ii);
+                        diddot(fold, MIN(XT_BLOCK, K - k), bufA + ii * ldbufa + k, 1, bufB + (jj - j) * XT_BLOCK, 1, C + jj * ldc + ii);
                       }
                     }
                   }
@@ -90,7 +94,7 @@ void didgemm(const int fold, const char Order,
                   for(k = 0; k < K; k += XT_BLOCK){
                     for(ii = i; ii < M && ii < i + YT_BLOCK; ii++){
                       for(jj = j; jj < N && jj < j + YT_BLOCK; jj++){
-                        diddot(fold, MIN(XT_BLOCK, K - k), bufA + ii * ldbufa + kk, 1, B + (jj - j) * ldb + kk, 1, C + jj * ldc + ii);
+                        diddot(fold, MIN(XT_BLOCK, K - k), bufA + ii * ldbufa + k, 1, B + (jj - j) * ldb + k, 1, C + jj * ldc + ii);
                       }
                     }
                   }
@@ -103,7 +107,7 @@ void didgemm(const int fold, const char Order,
           break;
 
         default: //A Transposed
-          
+          break;
       }
   }
 }

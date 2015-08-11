@@ -1,11 +1,13 @@
+#include <float.h>
 #include <stdio.h>
+
 #include "test_opt.h"
 
 #include "test_matmat_header.h"
 
 int matmat_fill_show_help(void);
 const char *matmat_fill_name(int argc, char** argv);
-int matmat_test(int argc, char** argv, char Order, char TransA, char TransB, int M, int N, int K, double RealAlpha, double ImagAlpha, int FillA, double RealScaleA, double ImagScaleA, int lda, int FillB, double RealScaleB, double ImagScaleB, int ldb, double RealBeta, double ImagBeta, int ldc);
+int matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB, int M, int N, int K, double RealAlpha, double ImagAlpha, int FillA, double RealScaleA, double ImagScaleA, int lda, int FillB, double RealScaleB, double ImagScaleB, int ldb, double RealBeta, double ImagBeta, int FillC, double RealScaleC, double ImagScaleC, int ldc);
 
 static opt_option FillA;
 static opt_option RealScaleA;
@@ -65,8 +67,8 @@ static void matmat_fill_options_initialize(void){
   RealScaleB._double.header.long_name  = "RealScaleB";
   RealScaleB._double.header.help       = "B scale (real)";
   RealScaleB._double.required          = 0;
-  RealScaleB._double.min               = -1 * DBL_MBX;
-  RealScaleB._double.max               = DBL_MBX;
+  RealScaleB._double.min               = -1 * DBL_MAX;
+  RealScaleB._double.max               = DBL_MAX;
   RealScaleB._double.value             = 1.0;
 
   ImagScaleB._double.header.type       = opt_double;
@@ -74,8 +76,8 @@ static void matmat_fill_options_initialize(void){
   ImagScaleB._double.header.long_name  = "ImagScaleB";
   ImagScaleB._double.header.help       = "B scale (imaginary)";
   ImagScaleB._double.required          = 0;
-  ImagScaleB._double.min               = -1 * DBL_MBX;
-  ImagScaleB._double.max               = DBL_MBX;
+  ImagScaleB._double.min               = -1 * DBL_MAX;
+  ImagScaleB._double.max               = DBL_MAX;
   ImagScaleB._double.value             = 0.0;
 
   FillC._named.header.type       = opt_named;
@@ -93,8 +95,8 @@ static void matmat_fill_options_initialize(void){
   RealScaleC._double.header.long_name  = "RealScaleC";
   RealScaleC._double.header.help       = "C scale (real)";
   RealScaleC._double.required          = 0;
-  RealScaleC._double.min               = -1 * DBL_MCX;
-  RealScaleC._double.max               = DBL_MCX;
+  RealScaleC._double.min               = -1 * DBL_MAX;
+  RealScaleC._double.max               = DBL_MAX;
   RealScaleC._double.value             = 1.0;
 
   ImagScaleC._double.header.type       = opt_double;
@@ -102,8 +104,8 @@ static void matmat_fill_options_initialize(void){
   ImagScaleC._double.header.long_name  = "ImagScaleC";
   ImagScaleC._double.header.help       = "C scale (imaginary)";
   ImagScaleC._double.required          = 0;
-  ImagScaleC._double.min               = -1 * DBL_MCX;
-  ImagScaleC._double.max               = DBL_MCX;
+  ImagScaleC._double.min               = -1 * DBL_MAX;
+  ImagScaleC._double.max               = DBL_MAX;
   ImagScaleC._double.value             = 0.0;
 
   RealAlpha._double.header.type       = opt_double;
@@ -203,6 +205,6 @@ int matmat_test(int argc, char** argv, char Order, char TransA, char TransB, int
   opt_eval_option(argc, argv, &RealBeta);
   opt_eval_option(argc, argv, &ImagBeta);
 
-  rc = matmat_fill_test(argc, argv, Order, TransA, M, N, RealAlpha._double.value, ImagAlpha._double.value, FillA._named.value, RealScaleA._double.value, ImagScaleA._double.value, lda, FillB._named.value, RealScaleB._double.value, ImagScaleB._double.value, ldb, RealBeta._double.value, ImagBeta._double.value, FillC._named.value, RealScaleC._double.value, ImagScaleC._double.value, ldc);
+  rc = matmat_fill_test(argc, argv, Order, TransA, TransB, M, N, K, RealAlpha._double.value, ImagAlpha._double.value, FillA._named.value, RealScaleA._double.value, ImagScaleA._double.value, lda, FillB._named.value, RealScaleB._double.value, ImagScaleB._double.value, ldb, RealBeta._double.value, ImagBeta._double.value, FillC._named.value, RealScaleC._double.value, ImagScaleC._double.value, ldc);
   return rc;
 }
