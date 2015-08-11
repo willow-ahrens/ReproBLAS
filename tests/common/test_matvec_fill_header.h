@@ -23,7 +23,7 @@ static opt_option ImagBeta;
 
 static void matvec_fill_options_initialize(void){
   FillA._named.header.type       = opt_named;
-  FillA._named.header.short_name = 'f';
+  FillA._named.header.short_name = '\0';
   FillA._named.header.long_name  = "FillA";
   FillA._named.header.help       = "A fill type";
   FillA._named.required          = 0;
@@ -33,7 +33,7 @@ static void matvec_fill_options_initialize(void){
   FillA._named.value             = 0;
 
   RealScaleA._double.header.type       = opt_double;
-  RealScaleA._double.header.short_name = 's';
+  RealScaleA._double.header.short_name = '\0';
   RealScaleA._double.header.long_name  = "RealScaleA";
   RealScaleA._double.header.help       = "A scale (real)";
   RealScaleA._double.required          = 0;
@@ -42,7 +42,7 @@ static void matvec_fill_options_initialize(void){
   RealScaleA._double.value             = 1.0;
 
   ImagScaleA._double.header.type       = opt_double;
-  ImagScaleA._double.header.short_name = 'c';
+  ImagScaleA._double.header.short_name = '\0';
   ImagScaleA._double.header.long_name  = "ImagScaleA";
   ImagScaleA._double.header.help       = "A scale (imaginary)";
   ImagScaleA._double.required          = 0;
@@ -51,7 +51,7 @@ static void matvec_fill_options_initialize(void){
   ImagScaleA._double.value             = 0.0;
 
   FillX._named.header.type       = opt_named;
-  FillX._named.header.short_name = 'g';
+  FillX._named.header.short_name = '\0';
   FillX._named.header.long_name  = "FillX";
   FillX._named.header.help       = "X fill type";
   FillX._named.required          = 0;
@@ -61,7 +61,7 @@ static void matvec_fill_options_initialize(void){
   FillX._named.value             = 0;
 
   RealScaleX._double.header.type       = opt_double;
-  RealScaleX._double.header.short_name = 't';
+  RealScaleX._double.header.short_name = '\0';
   RealScaleX._double.header.long_name  = "RealScaleX";
   RealScaleX._double.header.help       = "X scale (real)";
   RealScaleX._double.required          = 0;
@@ -70,7 +70,7 @@ static void matvec_fill_options_initialize(void){
   RealScaleX._double.value             = 1.0;
 
   ImagScaleX._double.header.type       = opt_double;
-  ImagScaleX._double.header.short_name = 'd';
+  ImagScaleX._double.header.short_name = '\0';
   ImagScaleX._double.header.long_name  = "ImagScaleX";
   ImagScaleX._double.header.help       = "X scale (imaginary)";
   ImagScaleX._double.required          = 0;
@@ -79,7 +79,7 @@ static void matvec_fill_options_initialize(void){
   ImagScaleX._double.value             = 0.0;
 
   FillY._named.header.type       = opt_named;
-  FillY._named.header.short_name = 'j';
+  FillY._named.header.short_name = '\0';
   FillY._named.header.long_name  = "FillY";
   FillY._named.header.help       = "Y fill type";
   FillY._named.required          = 0;
@@ -89,7 +89,7 @@ static void matvec_fill_options_initialize(void){
   FillY._named.value             = 0;
 
   RealScaleY._double.header.type       = opt_double;
-  RealScaleY._double.header.short_name = 'v';
+  RealScaleY._double.header.short_name = '\0';
   RealScaleY._double.header.long_name  = "RealScaleY";
   RealScaleY._double.header.help       = "Y scale (real)";
   RealScaleY._double.required          = 0;
@@ -98,7 +98,7 @@ static void matvec_fill_options_initialize(void){
   RealScaleY._double.value             = 1.0;
 
   ImagScaleY._double.header.type       = opt_double;
-  ImagScaleY._double.header.short_name = 'e';
+  ImagScaleY._double.header.short_name = '\0';
   ImagScaleY._double.header.long_name  = "ImagScaleY";
   ImagScaleY._double.header.help       = "Y scale (imaginary)";
   ImagScaleY._double.required          = 0;
@@ -107,7 +107,7 @@ static void matvec_fill_options_initialize(void){
   ImagScaleY._double.value             = 0;
 
   RealAlpha._double.header.type       = opt_double;
-  RealAlpha._double.header.short_name = 'l';
+  RealAlpha._double.header.short_name = '\0';
   RealAlpha._double.header.long_name  = "RealAlpha";
   RealAlpha._double.header.help       = "alpha (real)";
   RealAlpha._double.required          = 0;
@@ -116,7 +116,7 @@ static void matvec_fill_options_initialize(void){
   RealAlpha._double.value             = 1.0;
 
   ImagAlpha._double.header.type       = opt_double;
-  ImagAlpha._double.header.short_name = 'l';
+  ImagAlpha._double.header.short_name = '\0';
   ImagAlpha._double.header.long_name  = "ImagAlpha";
   ImagAlpha._double.header.help       = "alpha (imaginary)";
   ImagAlpha._double.required          = 0;
@@ -125,7 +125,7 @@ static void matvec_fill_options_initialize(void){
   ImagAlpha._double.value             = 0.0;
 
   RealBeta._double.header.type       = opt_double;
-  RealBeta._double.header.short_name = 'l';
+  RealBeta._double.header.short_name = '\0';
   RealBeta._double.header.long_name  = "RealBeta";
   RealBeta._double.header.help       = "beta (real)";
   RealBeta._double.required          = 0;
@@ -134,7 +134,7 @@ static void matvec_fill_options_initialize(void){
   RealBeta._double.value             = 0.0;
 
   ImagBeta._double.header.type       = opt_double;
-  ImagBeta._double.header.short_name = 'l';
+  ImagBeta._double.header.short_name = '\0';
   ImagBeta._double.header.long_name  = "ImagBeta";
   ImagBeta._double.header.help       = "beta (imaginary)";
   ImagBeta._double.required          = 0;

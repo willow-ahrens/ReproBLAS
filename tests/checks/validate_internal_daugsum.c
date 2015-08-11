@@ -151,46 +151,6 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX,
     return rc;
   }
 
-  P = util_identity_permutation(N);
-  util_dvec_shuffle(N, X, incX, P, 1);
-  util_dvec_permute(N, Y, incY, P, 1, NULL, 1);
-  free(P);
-
-  rc = validate_internal_daugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
-  if(rc != 0){
-    return rc;
-  }
-
-  P = util_identity_permutation(N);
-  util_dvec_shuffle(N, X, incX, P, 1);
-  util_dvec_permute(N, Y, incY, P, 1, NULL, 1);
-  free(P);
-
-  rc = validate_internal_daugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
-  if(rc != 0){
-    return rc;
-  }
-
-  P = util_identity_permutation(N);
-  util_dvec_shuffle(N, X, incX, P, 1);
-  util_dvec_permute(N, Y, incY, P, 1, NULL, 1);
-  free(P);
-
-  rc = validate_internal_daugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
-  if(rc != 0){
-    return rc;
-  }
-
-  P = util_identity_permutation(N);
-  util_dvec_shuffle(N, X, incX, P, 1);
-  util_dvec_permute(N, Y, incY, P, 1, NULL, 1);
-  free(P);
-
-  rc = validate_internal_daugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
-  if(rc != 0){
-    return rc;
-  }
-
   free(X);
   free(Y);
 

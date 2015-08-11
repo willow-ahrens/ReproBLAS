@@ -571,6 +571,11 @@ class VerifyRZGEMVTest(CheckTest):
   executable = "tests/checks/verify_rzgemv"
   name = "verify_rzgemv"
 
+class VerifyRDGEMMTest(CheckTest):
+  base_flags = ""
+  executable = "tests/checks/verify_rdgemm"
+  name = "verify_rdgemm"
+
 class ValidateInternalRDGEMVTest(CheckTest):
   base_flags = ""
   executable = "tests/checks/validate_internal_rdgemv"
@@ -701,6 +706,7 @@ all_checks = {"validate_internal_ufp": ValidateInternalUFPTest,\
               "verify_sicssq": VerifySICSSQTest,\
               "verify_rdgemv": VerifyRDGEMVTest,\
               "verify_rzgemv": VerifyRZGEMVTest,\
+              "verify_rdgemm": VerifyRDGEMMTest,\
               "validate_internal_rdgemv": ValidateInternalRDGEMVTest,\
               "validate_internal_rzgemv": ValidateInternalRZGEMVTest,\
               "validate_internal_dscale": ValidateInternalDSCALETest,\

@@ -25,7 +25,7 @@ static opt_option ImagBeta;
 
 static void matmat_fill_options_initialize(void){
   FillA._named.header.type       = opt_named;
-  FillA._named.header.short_name = 'f';
+  FillA._named.header.short_name = '\0';
   FillA._named.header.long_name  = "FillA";
   FillA._named.header.help       = "A fill type";
   FillA._named.required          = 0;
@@ -35,7 +35,7 @@ static void matmat_fill_options_initialize(void){
   FillA._named.value             = 0;
 
   RealScaleA._double.header.type       = opt_double;
-  RealScaleA._double.header.short_name = 's';
+  RealScaleA._double.header.short_name = '\0';
   RealScaleA._double.header.long_name  = "RealScaleA";
   RealScaleA._double.header.help       = "A scale (real)";
   RealScaleA._double.required          = 0;
@@ -44,7 +44,7 @@ static void matmat_fill_options_initialize(void){
   RealScaleA._double.value             = 1.0;
 
   ImagScaleA._double.header.type       = opt_double;
-  ImagScaleA._double.header.short_name = 'c';
+  ImagScaleA._double.header.short_name = '\0';
   ImagScaleA._double.header.long_name  = "ImagScaleA";
   ImagScaleA._double.header.help       = "A scale (imaginary)";
   ImagScaleA._double.required          = 0;
@@ -53,7 +53,7 @@ static void matmat_fill_options_initialize(void){
   ImagScaleA._double.value             = 0.0;
 
   FillB._named.header.type       = opt_named;
-  FillB._named.header.short_name = 'f';
+  FillB._named.header.short_name = '\0';
   FillB._named.header.long_name  = "FillB";
   FillB._named.header.help       = "B fill type";
   FillB._named.required          = 0;
@@ -63,7 +63,7 @@ static void matmat_fill_options_initialize(void){
   FillB._named.value             = 0;
 
   RealScaleB._double.header.type       = opt_double;
-  RealScaleB._double.header.short_name = 's';
+  RealScaleB._double.header.short_name = '\0';
   RealScaleB._double.header.long_name  = "RealScaleB";
   RealScaleB._double.header.help       = "B scale (real)";
   RealScaleB._double.required          = 0;
@@ -72,7 +72,7 @@ static void matmat_fill_options_initialize(void){
   RealScaleB._double.value             = 1.0;
 
   ImagScaleB._double.header.type       = opt_double;
-  ImagScaleB._double.header.short_name = 'c';
+  ImagScaleB._double.header.short_name = '\0';
   ImagScaleB._double.header.long_name  = "ImagScaleB";
   ImagScaleB._double.header.help       = "B scale (imaginary)";
   ImagScaleB._double.required          = 0;
@@ -81,7 +81,7 @@ static void matmat_fill_options_initialize(void){
   ImagScaleB._double.value             = 0.0;
 
   FillC._named.header.type       = opt_named;
-  FillC._named.header.short_name = 'f';
+  FillC._named.header.short_name = '\0';
   FillC._named.header.long_name  = "FillC";
   FillC._named.header.help       = "C fill type";
   FillC._named.required          = 0;
@@ -91,7 +91,7 @@ static void matmat_fill_options_initialize(void){
   FillC._named.value             = 0;
 
   RealScaleC._double.header.type       = opt_double;
-  RealScaleC._double.header.short_name = 's';
+  RealScaleC._double.header.short_name = '\0';
   RealScaleC._double.header.long_name  = "RealScaleC";
   RealScaleC._double.header.help       = "C scale (real)";
   RealScaleC._double.required          = 0;
@@ -100,7 +100,7 @@ static void matmat_fill_options_initialize(void){
   RealScaleC._double.value             = 1.0;
 
   ImagScaleC._double.header.type       = opt_double;
-  ImagScaleC._double.header.short_name = 'c';
+  ImagScaleC._double.header.short_name = '\0';
   ImagScaleC._double.header.long_name  = "ImagScaleC";
   ImagScaleC._double.header.help       = "C scale (imaginary)";
   ImagScaleC._double.required          = 0;
@@ -109,7 +109,7 @@ static void matmat_fill_options_initialize(void){
   ImagScaleC._double.value             = 0.0;
 
   RealAlpha._double.header.type       = opt_double;
-  RealAlpha._double.header.short_name = 'l';
+  RealAlpha._double.header.short_name = '\0';
   RealAlpha._double.header.long_name  = "RealAlpha";
   RealAlpha._double.header.help       = "alpha (real)";
   RealAlpha._double.required          = 0;
@@ -118,7 +118,7 @@ static void matmat_fill_options_initialize(void){
   RealAlpha._double.value             = 1.0;
 
   ImagAlpha._double.header.type       = opt_double;
-  ImagAlpha._double.header.short_name = 'l';
+  ImagAlpha._double.header.short_name = '\0';
   ImagAlpha._double.header.long_name  = "ImagAlpha";
   ImagAlpha._double.header.help       = "alpha (imaginary)";
   ImagAlpha._double.required          = 0;
@@ -127,7 +127,7 @@ static void matmat_fill_options_initialize(void){
   ImagAlpha._double.value             = 0.0;
 
   RealBeta._double.header.type       = opt_double;
-  RealBeta._double.header.short_name = 'l';
+  RealBeta._double.header.short_name = '\0';
   RealBeta._double.header.long_name  = "RealBeta";
   RealBeta._double.header.help       = "beta (real)";
   RealBeta._double.required          = 0;
@@ -136,7 +136,7 @@ static void matmat_fill_options_initialize(void){
   RealBeta._double.value             = 0.0;
 
   ImagBeta._double.header.type       = opt_double;
-  ImagBeta._double.header.short_name = 'l';
+  ImagBeta._double.header.short_name = '\0';
   ImagBeta._double.header.long_name  = "ImagBeta";
   ImagBeta._double.header.help       = "beta (imaginary)";
   ImagBeta._double.required          = 0;

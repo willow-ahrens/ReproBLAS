@@ -79,7 +79,7 @@ void didgemm(const int fold, const char Order,
                     }
                     for(ii = i; ii < M && ii < i + YT_BLOCK; ii++){
                       for(jj = j; jj < N && jj < j + YT_BLOCK; jj++){
-                        diddot(fold, MIN(XT_BLOCK, K - k), bufA + ii * ldbufa + k, 1, bufB + (jj - j) * XT_BLOCK, 1, C + jj * ldc + ii);
+                        diddot(fold, MIN(XT_BLOCK, K - k), bufA + ii * ldbufa + k, 1, bufB + (jj - j) * XT_BLOCK, 1, C + (jj * ldc + ii) * dinum(fold));
                       }
                     }
                   }
@@ -94,7 +94,7 @@ void didgemm(const int fold, const char Order,
                   for(k = 0; k < K; k += XT_BLOCK){
                     for(ii = i; ii < M && ii < i + YT_BLOCK; ii++){
                       for(jj = j; jj < N && jj < j + YT_BLOCK; jj++){
-                        diddot(fold, MIN(XT_BLOCK, K - k), bufA + ii * ldbufa + k, 1, B + (jj - j) * ldb + k, 1, C + jj * ldc + ii);
+                        diddot(fold, MIN(XT_BLOCK, K - k), bufA + ii * ldbufa + k, 1, B + (jj - j) * ldb + k, 1, C + (jj * ldc + ii) * dinum(fold));
                       }
                     }
                   }
@@ -103,7 +103,9 @@ void didgemm(const int fold, const char Order,
               break;
 
           }
-          free(bufA);
+          if(alpha != 1.0){
+            free(bufA);
+          }
           break;
 
         default: //A Transposed

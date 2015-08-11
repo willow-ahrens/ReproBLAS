@@ -23,7 +23,7 @@ static void vecvec_options_initialize(void){
   N._int.value             = 2048;
 
   incX._int.header.type       = opt_int;
-  incX._int.header.short_name = 'x';
+  incX._int.header.short_name = '\0';
   incX._int.header.long_name  = "incX";
   incX._int.header.help       = "X vector increment";
   incX._int.required          = 0;
@@ -32,7 +32,7 @@ static void vecvec_options_initialize(void){
   incX._int.value             = 1;
 
   incY._int.header.type       = opt_int;
-  incY._int.header.short_name = 'y';
+  incY._int.header.short_name = '\0';
   incY._int.header.long_name  = "incY";
   incY._int.header.help       = "Y vector increment";
   incY._int.required          = 0;

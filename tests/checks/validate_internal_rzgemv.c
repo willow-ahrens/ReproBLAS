@@ -157,46 +157,6 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
     return rc;
   }
 
-  P = util_identity_permutation(NX);
-  util_zvec_shuffle(NX, X, incX, P, 1);
-  util_zmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
-  free(P);
-
-  rc = validate_internal_zgemv(fold._int.value, Order, TransA, M, N, NX, NY, &alpha, A, lda, X, incX, &beta, Y, incY, ref);
-  if(rc != 0){
-    return rc;
-  }
-
-  P = util_identity_permutation(NX);
-  util_zvec_shuffle(NX, X, incX, P, 1);
-  util_zmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
-  free(P);
-
-  rc = validate_internal_zgemv(fold._int.value, Order, TransA, M, N, NX, NY, &alpha, A, lda, X, incX, &beta, Y, incY, ref);
-  if(rc != 0){
-    return rc;
-  }
-
-  P = util_identity_permutation(NX);
-  util_zvec_shuffle(NX, X, incX, P, 1);
-  util_zmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
-  free(P);
-
-  rc = validate_internal_zgemv(fold._int.value, Order, TransA, M, N, NX, NY, &alpha, A, lda, X, incX, &beta, Y, incY, ref);
-  if(rc != 0){
-    return rc;
-  }
-
-  P = util_identity_permutation(NX);
-  util_zvec_shuffle(NX, X, incX, P, 1);
-  util_zmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
-  free(P);
-
-  rc = validate_internal_zgemv(fold._int.value, Order, TransA, M, N, NX, NY, &alpha, A, lda, X, incX, &beta, Y, incY, ref);
-  if(rc != 0){
-    return rc;
-  }
-
   free(A);
   free(X);
   free(Y);

@@ -417,7 +417,7 @@ typedef struct vec_compare_data{
   int               incV;
   size_t            elem_size;
   elem_compare_func elem_compare;
-  int               comp;
+  util_comp_t       comp;
 } vec_compare_data_t;
 
 typedef struct mat_row_compare_data{
@@ -429,7 +429,7 @@ typedef struct mat_row_compare_data{
   int               lda;
   size_t            elem_size;
   elem_compare_func elem_compare;
-  int               comp;
+  util_comp_t       comp;
   int               col;
 } mat_row_compare_data_t;
 
@@ -446,18 +446,18 @@ static int mat_row_compare(int a, int b, void *data){
       switch(d->TransA){
         case 'n':
         case 'N':
-          return d->elem_compare(d->A + (a * d->lda + d->col) * d->elem_size, d->A + (b * d->lda + d->col) * d->elem_size, d->elem_size);
+          return d->elem_compare(d->A + (a * d->lda + d->col) * d->elem_size, d->A + (b * d->lda + d->col) * d->elem_size, d->comp);
         default:
-          return d->elem_compare(d->A + (a + d->lda * d->col) * d->elem_size, d->A + (b + d->lda * d->col) * d->elem_size, d->elem_size);
+          return d->elem_compare(d->A + (a + d->lda * d->col) * d->elem_size, d->A + (b + d->lda * d->col) * d->elem_size, d->comp);
       }
       break;
     default:
       switch(d->TransA){
         case 'n':
         case 'N':
-          return d->elem_compare(d->A + (a + d->lda * d->col) * d->elem_size, d->A + (b + d->lda * d->col) * d->elem_size, d->elem_size);
+          return d->elem_compare(d->A + (a + d->lda * d->col) * d->elem_size, d->A + (b + d->lda * d->col) * d->elem_size, d->comp);
         default:
-          return d->elem_compare(d->A + (a * d->lda + d->col) * d->elem_size, d->A + (b * d->lda + d->col) * d->elem_size, d->elem_size);
+          return d->elem_compare(d->A + (a * d->lda + d->col) * d->elem_size, d->A + (b * d->lda + d->col) * d->elem_size, d->comp);
       }
       break;
   }

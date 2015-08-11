@@ -13,6 +13,7 @@
 #include "wrap_rdgemv.h"
 
 static opt_option max_blocks;
+static opt_option shuffles;
 static opt_option fold;
 
 static void verify_rdgemv_options_initialize(void){
@@ -24,6 +25,15 @@ static void verify_rdgemv_options_initialize(void){
   max_blocks._int.min               = 1;
   max_blocks._int.max               = INT_MAX;
   max_blocks._int.value             = 1024;
+
+  shuffles._int.header.type       = opt_int;
+  shuffles._int.header.short_name = 'S';
+  shuffles._int.header.long_name  = "shuffles";
+  shuffles._int.header.help       = "number of times to shuffle";
+  shuffles._int.required          = 0;
+  shuffles._int.min               = 0;
+  shuffles._int.max               = INT_MAX;
+  shuffles._int.value             = 5;
 
   fold._int.header.type       = opt_int;
   fold._int.header.short_name = 'k';
@@ -115,6 +125,7 @@ int matvec_fill_show_help(void){
 
   opt_show_option(fold);
   opt_show_option(max_blocks);
+  opt_show_option(shuffles);
   return 0;
 }
 
@@ -140,6 +151,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
 
   opt_eval_option(argc, argv, &fold);
   opt_eval_option(argc, argv, &max_blocks);
+  opt_eval_option(argc, argv, &shuffles);
 
   util_random_seed();
   int NX;
@@ -232,44 +244,16 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
     return rc;
   }
 
-  P = util_identity_permutation(NX);
-  util_dvec_shuffle(NX, X, incX, P, 1);
-  util_dmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
-  free(P);
+  for(i = 0; i < shuffles._int.value; i++){
+    P = util_identity_permutation(NX);
+    util_dvec_shuffle(NX, X, incX, P, 1);
+    util_dmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
+    free(P);
 
-  rc = verify_dgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, RealAlpha, A, lda, X, incX, RealBeta, Y, YI, incY, ref, Iref, max_blocks._int.value);
-  if(rc != 0){
-    return rc;
-  }
-
-  P = util_identity_permutation(NX);
-  util_dvec_shuffle(NX, X, incX, P, 1);
-  util_dmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
-  free(P);
-
-  rc = verify_dgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, RealAlpha, A, lda, X, incX, RealBeta, Y, YI, incY, ref, Iref, max_blocks._int.value);
-  if(rc != 0){
-    return rc;
-  }
-
-  P = util_identity_permutation(NX);
-  util_dvec_shuffle(NX, X, incX, P, 1);
-  util_dmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
-  free(P);
-
-  rc = verify_dgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, RealAlpha, A, lda, X, incX, RealBeta, Y, YI, incY, ref, Iref, max_blocks._int.value);
-  if(rc != 0){
-    return rc;
-  }
-
-  P = util_identity_permutation(NX);
-  util_dvec_shuffle(NX, X, incX, P, 1);
-  util_dmat_row_permute(Order, NTransA, M, N, A, lda, P, 1, NULL, 1);
-  free(P);
-
-  rc = verify_dgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, RealAlpha, A, lda, X, incX, RealBeta, Y, YI, incY, ref, Iref, max_blocks._int.value);
-  if(rc != 0){
-    return rc;
+    rc = verify_dgemv_reproducibility(fold._int.value, Order, TransA, M, N, NX, NY, RealAlpha, A, lda, X, incX, RealBeta, Y, YI, incY, ref, Iref, max_blocks._int.value);
+    if(rc != 0){
+      return rc;
+    }
   }
 
   free(A);

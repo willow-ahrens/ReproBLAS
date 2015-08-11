@@ -73,17 +73,17 @@ static void matmat_options_initialize(void){
   N._int.max               = INT_MAX;
   N._int.value             = 2048;
 
-  N._int.header.type       = opt_int;
-  N._int.header.short_name = 'K';
-  N._int.header.long_name  = "K_dim";
-  N._int.header.help       = "K dimension size";
-  N._int.required          = 0;
-  N._int.min               = 0;
-  N._int.max               = INT_MAX;
-  N._int.value             = 2048;
+  K._int.header.type       = opt_int;
+  K._int.header.short_name = 'K';
+  K._int.header.long_name  = "K_dim";
+  K._int.header.help       = "K dimension size";
+  K._int.required          = 0;
+  K._int.min               = 0;
+  K._int.max               = INT_MAX;
+  K._int.value             = 2048;
 
   lda._int.header.type       = opt_int;
-  lda._int.header.short_name = 'A';
+  lda._int.header.short_name = '\0';
   lda._int.header.long_name  = "lda";
   lda._int.header.help       = "leading A size (0 for auto)";
   lda._int.required          = 0;
@@ -92,7 +92,7 @@ static void matmat_options_initialize(void){
   lda._int.value             = 0;
 
   ldb._int.header.type       = opt_int;
-  ldb._int.header.short_name = 'B';
+  ldb._int.header.short_name = '\0';
   ldb._int.header.long_name  = "ldb";
   ldb._int.header.help       = "leading B size (0 for auto)";
   ldb._int.required          = 0;
@@ -101,7 +101,7 @@ static void matmat_options_initialize(void){
   ldb._int.value             = 0;
 
   ldc._int.header.type       = opt_int;
-  ldc._int.header.short_name = 'C';
+  ldc._int.header.short_name = '\0';
   ldc._int.header.long_name  = "ldc";
   ldc._int.header.help       = "leading c size (0 for auto)";
   ldc._int.required          = 0;
@@ -165,7 +165,7 @@ int test(int argc, char** argv){
       if(lda._int.value == 0){
         lda._int.value = K._int.value;
       }
-      if(K._int.value > ldc._int.value){
+      if(K._int.value > lda._int.value){
         fprintf(stderr, "ReproBLAS error: row major matrix arguments inconsistent K=%d, lda=%d\n", K._int.value, lda._int.value);
         return 125;
       }
@@ -188,7 +188,7 @@ int test(int argc, char** argv){
       if(lda._int.value == 0){
         lda._int.value = M._int.value;
       }
-      if(M._int.value > ldc._int.value){
+      if(M._int.value > lda._int.value){
         fprintf(stderr, "ReproBLAS error: row major matrix arguments inconsistent M=%d, lda=%d\n", M._int.value, lda._int.value);
         return 125;
       }

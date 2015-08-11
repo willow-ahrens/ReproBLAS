@@ -10,6 +10,7 @@
 #include "../common/test_vecvec_fill_header.h"
 
 static opt_option max_blocks;
+static opt_option shuffles;
 static opt_option fold;
 
 static void verify_sisssq_options_initialize(void){
@@ -21,6 +22,15 @@ static void verify_sisssq_options_initialize(void){
   max_blocks._int.min               = 1;
   max_blocks._int.max               = INT_MAX;
   max_blocks._int.value             = 1024;
+
+  shuffles._int.header.type       = opt_int;
+  shuffles._int.header.short_name = 'S';
+  shuffles._int.header.long_name  = "shuffles";
+  shuffles._int.header.help       = "number of times to shuffle";
+  shuffles._int.required          = 0;
+  shuffles._int.min               = 0;
+  shuffles._int.max               = INT_MAX;
+  shuffles._int.value             = 5;
 
   fold._int.header.type       = opt_int;
   fold._int.header.short_name = 'k';
@@ -74,6 +84,7 @@ int vecvec_fill_show_help(void){
   verify_sisssq_options_initialize();
 
   opt_show_option(max_blocks);
+  opt_show_option(shuffles);
   opt_show_option(fold);
   return 0;
 }
@@ -90,6 +101,7 @@ const char* vecvec_fill_name(int argc, char** argv){
 
 int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX, double ImagScaleX, int incX, int FillY, double RealScaleY, double ImagScaleY, int incY){
   int rc = 0;
+  int i;
   float refscl = 0.0;
   float refssq;
   float_indexed *iref;
@@ -100,6 +112,7 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX,
   util_random_seed();
 
   opt_eval_option(argc, argv, &max_blocks);
+  opt_eval_option(argc, argv, &shuffles);
   opt_eval_option(argc, argv, &fold);
 
   iref = sialloc(fold._int.value);
@@ -170,44 +183,16 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX,
     return rc;
   }
 
-  P = util_identity_permutation(N);
-  util_svec_shuffle(N, X, incX, P, 1);
-  util_svec_permute(N, Y, incY, P, 1, NULL, 1);
-  free(P);
+  for(i = 0; i < shuffles._int.value; i++){
+    P = util_identity_permutation(N);
+    util_svec_shuffle(N, X, incX, P, 1);
+    util_svec_permute(N, Y, incY, P, 1, NULL, 1);
+    free(P);
 
-  rc = verify_sisssq_reproducibility(fold._int.value, N, X, incX, refscl, refssq, iref, max_num_blocks);
-  if(rc != 0){
-    return rc;
-  }
-
-  P = util_identity_permutation(N);
-  util_svec_shuffle(N, X, incX, P, 1);
-  util_svec_permute(N, Y, incY, P, 1, NULL, 1);
-  free(P);
-
-  rc = verify_sisssq_reproducibility(fold._int.value, N, X, incX, refscl, refssq, iref, max_num_blocks);
-  if(rc != 0){
-    return rc;
-  }
-
-  P = util_identity_permutation(N);
-  util_svec_shuffle(N, X, incX, P, 1);
-  util_svec_permute(N, Y, incY, P, 1, NULL, 1);
-  free(P);
-
-  rc = verify_sisssq_reproducibility(fold._int.value, N, X, incX, refscl, refssq, iref, max_num_blocks);
-  if(rc != 0){
-    return rc;
-  }
-
-  P = util_identity_permutation(N);
-  util_svec_shuffle(N, X, incX, P, 1);
-  util_svec_permute(N, Y, incY, P, 1, NULL, 1);
-  free(P);
-
-  rc = verify_sisssq_reproducibility(fold._int.value, N, X, incX, refscl, refssq, iref, max_num_blocks);
-  if(rc != 0){
-    return rc;
+    rc = verify_sisssq_reproducibility(fold._int.value, N, X, incX, refscl, refssq, iref, max_num_blocks);
+    if(rc != 0){
+      return rc;
+    }
   }
 
   free(iref);
