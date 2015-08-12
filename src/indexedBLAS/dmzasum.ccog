@@ -74,7 +74,7 @@ void dmzasum(const int fold, const int N, const void *X, const int incX, double 
       continue;
     }
 
-    if (deposits + N_block > DIENDURANCE) {
+    if (deposits + N_block > idxd_DIENDURANCE) {
       zirenorm(fold, asum);
       deposits = 0;
     }
@@ -129,18 +129,18 @@ void dmzasum(const int fold, const int N, const void *X, const int incX, double 
                 if(dmindex0(asum) || dmindex0(asum + 1)){
                   if(dmindex0(asum)){
                     if(dmindex0(asum + 1)){
-                      compression_0 = _mm256_set1_pd(DMCOMPRESSION);
-                      expansion_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
-                      expansion_mask_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
+                      compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
+                      expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
+                      expansion_mask_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                     }else{
-                      compression_0 = _mm256_set_pd(1.0, DMCOMPRESSION, 1.0, DMCOMPRESSION);
-                      expansion_0 = _mm256_set_pd(1.0, DMEXPANSION * 0.5, 1.0, DMEXPANSION * 0.5);
-                      expansion_mask_0 = _mm256_set_pd(0.0, DMEXPANSION * 0.5, 0.0, DMEXPANSION * 0.5);
+                      compression_0 = _mm256_set_pd(1.0, idxd_DMCOMPRESSION, 1.0, idxd_DMCOMPRESSION);
+                      expansion_0 = _mm256_set_pd(1.0, idxd_DMEXPANSION * 0.5, 1.0, idxd_DMEXPANSION * 0.5);
+                      expansion_mask_0 = _mm256_set_pd(0.0, idxd_DMEXPANSION * 0.5, 0.0, idxd_DMEXPANSION * 0.5);
                     }
                   }else{
-                    compression_0 = _mm256_set_pd(DMCOMPRESSION, 1.0, DMCOMPRESSION, 1.0);
-                    expansion_0 = _mm256_set_pd(DMEXPANSION * 0.5, 1.0, DMEXPANSION * 0.5, 1.0);
-                    expansion_mask_0 = _mm256_set_pd(DMEXPANSION * 0.5, 0.0, DMEXPANSION * 0.5, 0.0);
+                    compression_0 = _mm256_set_pd(idxd_DMCOMPRESSION, 1.0, idxd_DMCOMPRESSION, 1.0);
+                    expansion_0 = _mm256_set_pd(idxd_DMEXPANSION * 0.5, 1.0, idxd_DMEXPANSION * 0.5, 1.0);
+                    expansion_mask_0 = _mm256_set_pd(idxd_DMEXPANSION * 0.5, 0.0, idxd_DMEXPANSION * 0.5, 0.0);
                   }
                   for(i = 0; i + 2 <= N_block; i += 2, x += 4){
                     x_0 = _mm256_and_pd(_mm256_loadu_pd(((double*)x)), abs_mask_tmp);
@@ -202,18 +202,18 @@ void dmzasum(const int fold, const int N, const void *X, const int incX, double 
                 if(dmindex0(asum) || dmindex0(asum + 1)){
                   if(dmindex0(asum)){
                     if(dmindex0(asum + 1)){
-                      compression_0 = _mm256_set1_pd(DMCOMPRESSION);
-                      expansion_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
-                      expansion_mask_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
+                      compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
+                      expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
+                      expansion_mask_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                     }else{
-                      compression_0 = _mm256_set_pd(1.0, DMCOMPRESSION, 1.0, DMCOMPRESSION);
-                      expansion_0 = _mm256_set_pd(1.0, DMEXPANSION * 0.5, 1.0, DMEXPANSION * 0.5);
-                      expansion_mask_0 = _mm256_set_pd(0.0, DMEXPANSION * 0.5, 0.0, DMEXPANSION * 0.5);
+                      compression_0 = _mm256_set_pd(1.0, idxd_DMCOMPRESSION, 1.0, idxd_DMCOMPRESSION);
+                      expansion_0 = _mm256_set_pd(1.0, idxd_DMEXPANSION * 0.5, 1.0, idxd_DMEXPANSION * 0.5);
+                      expansion_mask_0 = _mm256_set_pd(0.0, idxd_DMEXPANSION * 0.5, 0.0, idxd_DMEXPANSION * 0.5);
                     }
                   }else{
-                    compression_0 = _mm256_set_pd(DMCOMPRESSION, 1.0, DMCOMPRESSION, 1.0);
-                    expansion_0 = _mm256_set_pd(DMEXPANSION * 0.5, 1.0, DMEXPANSION * 0.5, 1.0);
-                    expansion_mask_0 = _mm256_set_pd(DMEXPANSION * 0.5, 0.0, DMEXPANSION * 0.5, 0.0);
+                    compression_0 = _mm256_set_pd(idxd_DMCOMPRESSION, 1.0, idxd_DMCOMPRESSION, 1.0);
+                    expansion_0 = _mm256_set_pd(idxd_DMEXPANSION * 0.5, 1.0, idxd_DMEXPANSION * 0.5, 1.0);
+                    expansion_mask_0 = _mm256_set_pd(idxd_DMEXPANSION * 0.5, 0.0, idxd_DMEXPANSION * 0.5, 0.0);
                   }
                   for(i = 0; i + 2 <= N_block; i += 2, x += (incX * 4)){
                     x_0 = _mm256_and_pd(_mm256_set_pd(((double*)x)[((incX * 2) + 1)], ((double*)x)[(incX * 2)], ((double*)x)[1], ((double*)x)[0]), abs_mask_tmp);
@@ -310,18 +310,18 @@ void dmzasum(const int fold, const int N, const void *X, const int incX, double 
                 if(dmindex0(asum) || dmindex0(asum + 1)){
                   if(dmindex0(asum)){
                     if(dmindex0(asum + 1)){
-                      compression_0 = _mm256_set1_pd(DMCOMPRESSION);
-                      expansion_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
-                      expansion_mask_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
+                      compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
+                      expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
+                      expansion_mask_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                     }else{
-                      compression_0 = _mm256_set_pd(1.0, DMCOMPRESSION, 1.0, DMCOMPRESSION);
-                      expansion_0 = _mm256_set_pd(1.0, DMEXPANSION * 0.5, 1.0, DMEXPANSION * 0.5);
-                      expansion_mask_0 = _mm256_set_pd(0.0, DMEXPANSION * 0.5, 0.0, DMEXPANSION * 0.5);
+                      compression_0 = _mm256_set_pd(1.0, idxd_DMCOMPRESSION, 1.0, idxd_DMCOMPRESSION);
+                      expansion_0 = _mm256_set_pd(1.0, idxd_DMEXPANSION * 0.5, 1.0, idxd_DMEXPANSION * 0.5);
+                      expansion_mask_0 = _mm256_set_pd(0.0, idxd_DMEXPANSION * 0.5, 0.0, idxd_DMEXPANSION * 0.5);
                     }
                   }else{
-                    compression_0 = _mm256_set_pd(DMCOMPRESSION, 1.0, DMCOMPRESSION, 1.0);
-                    expansion_0 = _mm256_set_pd(DMEXPANSION * 0.5, 1.0, DMEXPANSION * 0.5, 1.0);
-                    expansion_mask_0 = _mm256_set_pd(DMEXPANSION * 0.5, 0.0, DMEXPANSION * 0.5, 0.0);
+                    compression_0 = _mm256_set_pd(idxd_DMCOMPRESSION, 1.0, idxd_DMCOMPRESSION, 1.0);
+                    expansion_0 = _mm256_set_pd(idxd_DMEXPANSION * 0.5, 1.0, idxd_DMEXPANSION * 0.5, 1.0);
+                    expansion_mask_0 = _mm256_set_pd(idxd_DMEXPANSION * 0.5, 0.0, idxd_DMEXPANSION * 0.5, 0.0);
                   }
                   for(i = 0; i + 2 <= N_block; i += 2, x += 4){
                     x_0 = _mm256_and_pd(_mm256_loadu_pd(((double*)x)), abs_mask_tmp);
@@ -389,18 +389,18 @@ void dmzasum(const int fold, const int N, const void *X, const int incX, double 
                 if(dmindex0(asum) || dmindex0(asum + 1)){
                   if(dmindex0(asum)){
                     if(dmindex0(asum + 1)){
-                      compression_0 = _mm256_set1_pd(DMCOMPRESSION);
-                      expansion_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
-                      expansion_mask_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
+                      compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
+                      expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
+                      expansion_mask_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                     }else{
-                      compression_0 = _mm256_set_pd(1.0, DMCOMPRESSION, 1.0, DMCOMPRESSION);
-                      expansion_0 = _mm256_set_pd(1.0, DMEXPANSION * 0.5, 1.0, DMEXPANSION * 0.5);
-                      expansion_mask_0 = _mm256_set_pd(0.0, DMEXPANSION * 0.5, 0.0, DMEXPANSION * 0.5);
+                      compression_0 = _mm256_set_pd(1.0, idxd_DMCOMPRESSION, 1.0, idxd_DMCOMPRESSION);
+                      expansion_0 = _mm256_set_pd(1.0, idxd_DMEXPANSION * 0.5, 1.0, idxd_DMEXPANSION * 0.5);
+                      expansion_mask_0 = _mm256_set_pd(0.0, idxd_DMEXPANSION * 0.5, 0.0, idxd_DMEXPANSION * 0.5);
                     }
                   }else{
-                    compression_0 = _mm256_set_pd(DMCOMPRESSION, 1.0, DMCOMPRESSION, 1.0);
-                    expansion_0 = _mm256_set_pd(DMEXPANSION * 0.5, 1.0, DMEXPANSION * 0.5, 1.0);
-                    expansion_mask_0 = _mm256_set_pd(DMEXPANSION * 0.5, 0.0, DMEXPANSION * 0.5, 0.0);
+                    compression_0 = _mm256_set_pd(idxd_DMCOMPRESSION, 1.0, idxd_DMCOMPRESSION, 1.0);
+                    expansion_0 = _mm256_set_pd(idxd_DMEXPANSION * 0.5, 1.0, idxd_DMEXPANSION * 0.5, 1.0);
+                    expansion_mask_0 = _mm256_set_pd(idxd_DMEXPANSION * 0.5, 0.0, idxd_DMEXPANSION * 0.5, 0.0);
                   }
                   for(i = 0; i + 2 <= N_block; i += 2, x += (incX * 4)){
                     x_0 = _mm256_and_pd(_mm256_set_pd(((double*)x)[((incX * 2) + 1)], ((double*)x)[(incX * 2)], ((double*)x)[1], ((double*)x)[0]), abs_mask_tmp);
@@ -524,18 +524,18 @@ void dmzasum(const int fold, const int N, const void *X, const int incX, double 
                 if(dmindex0(asum) || dmindex0(asum + 1)){
                   if(dmindex0(asum)){
                     if(dmindex0(asum + 1)){
-                      compression_0 = _mm_set1_pd(DMCOMPRESSION);
-                      expansion_0 = _mm_set1_pd(DMEXPANSION * 0.5);
-                      expansion_mask_0 = _mm_set1_pd(DMEXPANSION * 0.5);
+                      compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
+                      expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
+                      expansion_mask_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                     }else{
-                      compression_0 = _mm_set_pd(1.0, DMCOMPRESSION);
-                      expansion_0 = _mm_set_pd(1.0, DMEXPANSION * 0.5);
-                      expansion_mask_0 = _mm_set_pd(0.0, DMEXPANSION * 0.5);
+                      compression_0 = _mm_set_pd(1.0, idxd_DMCOMPRESSION);
+                      expansion_0 = _mm_set_pd(1.0, idxd_DMEXPANSION * 0.5);
+                      expansion_mask_0 = _mm_set_pd(0.0, idxd_DMEXPANSION * 0.5);
                     }
                   }else{
-                    compression_0 = _mm_set_pd(DMCOMPRESSION, 1.0);
-                    expansion_0 = _mm_set_pd(DMEXPANSION * 0.5, 1.0);
-                    expansion_mask_0 = _mm_set_pd(DMEXPANSION * 0.5, 0.0);
+                    compression_0 = _mm_set_pd(idxd_DMCOMPRESSION, 1.0);
+                    expansion_0 = _mm_set_pd(idxd_DMEXPANSION * 0.5, 1.0);
+                    expansion_mask_0 = _mm_set_pd(idxd_DMEXPANSION * 0.5, 0.0);
                   }
                   for(i = 0; i + 1 <= N_block; i += 1, x += 2){
                     x_0 = _mm_and_pd(_mm_loadu_pd(((double*)x)), abs_mask_tmp);
@@ -569,18 +569,18 @@ void dmzasum(const int fold, const int N, const void *X, const int incX, double 
                 if(dmindex0(asum) || dmindex0(asum + 1)){
                   if(dmindex0(asum)){
                     if(dmindex0(asum + 1)){
-                      compression_0 = _mm_set1_pd(DMCOMPRESSION);
-                      expansion_0 = _mm_set1_pd(DMEXPANSION * 0.5);
-                      expansion_mask_0 = _mm_set1_pd(DMEXPANSION * 0.5);
+                      compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
+                      expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
+                      expansion_mask_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                     }else{
-                      compression_0 = _mm_set_pd(1.0, DMCOMPRESSION);
-                      expansion_0 = _mm_set_pd(1.0, DMEXPANSION * 0.5);
-                      expansion_mask_0 = _mm_set_pd(0.0, DMEXPANSION * 0.5);
+                      compression_0 = _mm_set_pd(1.0, idxd_DMCOMPRESSION);
+                      expansion_0 = _mm_set_pd(1.0, idxd_DMEXPANSION * 0.5);
+                      expansion_mask_0 = _mm_set_pd(0.0, idxd_DMEXPANSION * 0.5);
                     }
                   }else{
-                    compression_0 = _mm_set_pd(DMCOMPRESSION, 1.0);
-                    expansion_0 = _mm_set_pd(DMEXPANSION * 0.5, 1.0);
-                    expansion_mask_0 = _mm_set_pd(DMEXPANSION * 0.5, 0.0);
+                    compression_0 = _mm_set_pd(idxd_DMCOMPRESSION, 1.0);
+                    expansion_0 = _mm_set_pd(idxd_DMEXPANSION * 0.5, 1.0);
+                    expansion_mask_0 = _mm_set_pd(idxd_DMEXPANSION * 0.5, 0.0);
                   }
                   for(i = 0; i + 1 <= N_block; i += 1, x += (incX * 2)){
                     x_0 = _mm_and_pd(_mm_loadu_pd(((double*)x)), abs_mask_tmp);
@@ -646,18 +646,18 @@ void dmzasum(const int fold, const int N, const void *X, const int incX, double 
                 if(dmindex0(asum) || dmindex0(asum + 1)){
                   if(dmindex0(asum)){
                     if(dmindex0(asum + 1)){
-                      compression_0 = _mm_set1_pd(DMCOMPRESSION);
-                      expansion_0 = _mm_set1_pd(DMEXPANSION * 0.5);
-                      expansion_mask_0 = _mm_set1_pd(DMEXPANSION * 0.5);
+                      compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
+                      expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
+                      expansion_mask_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                     }else{
-                      compression_0 = _mm_set_pd(1.0, DMCOMPRESSION);
-                      expansion_0 = _mm_set_pd(1.0, DMEXPANSION * 0.5);
-                      expansion_mask_0 = _mm_set_pd(0.0, DMEXPANSION * 0.5);
+                      compression_0 = _mm_set_pd(1.0, idxd_DMCOMPRESSION);
+                      expansion_0 = _mm_set_pd(1.0, idxd_DMEXPANSION * 0.5);
+                      expansion_mask_0 = _mm_set_pd(0.0, idxd_DMEXPANSION * 0.5);
                     }
                   }else{
-                    compression_0 = _mm_set_pd(DMCOMPRESSION, 1.0);
-                    expansion_0 = _mm_set_pd(DMEXPANSION * 0.5, 1.0);
-                    expansion_mask_0 = _mm_set_pd(DMEXPANSION * 0.5, 0.0);
+                    compression_0 = _mm_set_pd(idxd_DMCOMPRESSION, 1.0);
+                    expansion_0 = _mm_set_pd(idxd_DMEXPANSION * 0.5, 1.0);
+                    expansion_mask_0 = _mm_set_pd(idxd_DMEXPANSION * 0.5, 0.0);
                   }
                   for(i = 0; i + 1 <= N_block; i += 1, x += 2){
                     x_0 = _mm_and_pd(_mm_loadu_pd(((double*)x)), abs_mask_tmp);
@@ -694,18 +694,18 @@ void dmzasum(const int fold, const int N, const void *X, const int incX, double 
                 if(dmindex0(asum) || dmindex0(asum + 1)){
                   if(dmindex0(asum)){
                     if(dmindex0(asum + 1)){
-                      compression_0 = _mm_set1_pd(DMCOMPRESSION);
-                      expansion_0 = _mm_set1_pd(DMEXPANSION * 0.5);
-                      expansion_mask_0 = _mm_set1_pd(DMEXPANSION * 0.5);
+                      compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
+                      expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
+                      expansion_mask_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                     }else{
-                      compression_0 = _mm_set_pd(1.0, DMCOMPRESSION);
-                      expansion_0 = _mm_set_pd(1.0, DMEXPANSION * 0.5);
-                      expansion_mask_0 = _mm_set_pd(0.0, DMEXPANSION * 0.5);
+                      compression_0 = _mm_set_pd(1.0, idxd_DMCOMPRESSION);
+                      expansion_0 = _mm_set_pd(1.0, idxd_DMEXPANSION * 0.5);
+                      expansion_mask_0 = _mm_set_pd(0.0, idxd_DMEXPANSION * 0.5);
                     }
                   }else{
-                    compression_0 = _mm_set_pd(DMCOMPRESSION, 1.0);
-                    expansion_0 = _mm_set_pd(DMEXPANSION * 0.5, 1.0);
-                    expansion_mask_0 = _mm_set_pd(DMEXPANSION * 0.5, 0.0);
+                    compression_0 = _mm_set_pd(idxd_DMCOMPRESSION, 1.0);
+                    expansion_0 = _mm_set_pd(idxd_DMEXPANSION * 0.5, 1.0);
+                    expansion_mask_0 = _mm_set_pd(idxd_DMEXPANSION * 0.5, 0.0);
                   }
                   for(i = 0; i + 1 <= N_block; i += 1, x += (incX * 2)){
                     x_0 = _mm_and_pd(_mm_loadu_pd(((double*)x)), abs_mask_tmp);
@@ -782,24 +782,24 @@ void dmzasum(const int fold, const int N, const void *X, const int incX, double 
                 if(dmindex0(asum) || dmindex0(asum + 1)){
                   if(dmindex0(asum)){
                     if(dmindex0(asum + 1)){
-                      compression_0 = DMCOMPRESSION;
-                      expansion_0 = DMEXPANSION * 0.5;
-                      expansion_mask_0 = DMEXPANSION * 0.5;
+                      compression_0 = idxd_DMCOMPRESSION;
+                      expansion_0 = idxd_DMEXPANSION * 0.5;
+                      expansion_mask_0 = idxd_DMEXPANSION * 0.5;
                     }else{
-                      compression_0 = DMCOMPRESSION;
+                      compression_0 = idxd_DMCOMPRESSION;
                       compression_1 = 1.0;
-                      expansion_0 = DMEXPANSION * 0.5;
+                      expansion_0 = idxd_DMEXPANSION * 0.5;
                       expansion_1 = 1.0;
-                      expansion_mask_0 = DMEXPANSION * 0.5;
+                      expansion_mask_0 = idxd_DMEXPANSION * 0.5;
                       expansion_mask_1 = 0.0;
                     }
                   }else{
                     compression_0 = 1.0;
-                    compression_1 = DMCOMPRESSION;
+                    compression_1 = idxd_DMCOMPRESSION;
                     expansion_0 = 1.0;
-                    expansion_1 = DMEXPANSION * 0.5;
+                    expansion_1 = idxd_DMEXPANSION * 0.5;
                     expansion_mask_0 = 0.0;
-                    expansion_mask_1 = DMEXPANSION * 0.5;
+                    expansion_mask_1 = idxd_DMEXPANSION * 0.5;
                   }
                   for(i = 0; i + 1 <= N_block; i += 1, x += 2){
                     x_0 = fabs(((double*)x)[0]);
@@ -877,24 +877,24 @@ void dmzasum(const int fold, const int N, const void *X, const int incX, double 
                 if(dmindex0(asum) || dmindex0(asum + 1)){
                   if(dmindex0(asum)){
                     if(dmindex0(asum + 1)){
-                      compression_0 = DMCOMPRESSION;
-                      expansion_0 = DMEXPANSION * 0.5;
-                      expansion_mask_0 = DMEXPANSION * 0.5;
+                      compression_0 = idxd_DMCOMPRESSION;
+                      expansion_0 = idxd_DMEXPANSION * 0.5;
+                      expansion_mask_0 = idxd_DMEXPANSION * 0.5;
                     }else{
-                      compression_0 = DMCOMPRESSION;
+                      compression_0 = idxd_DMCOMPRESSION;
                       compression_1 = 1.0;
-                      expansion_0 = DMEXPANSION * 0.5;
+                      expansion_0 = idxd_DMEXPANSION * 0.5;
                       expansion_1 = 1.0;
-                      expansion_mask_0 = DMEXPANSION * 0.5;
+                      expansion_mask_0 = idxd_DMEXPANSION * 0.5;
                       expansion_mask_1 = 0.0;
                     }
                   }else{
                     compression_0 = 1.0;
-                    compression_1 = DMCOMPRESSION;
+                    compression_1 = idxd_DMCOMPRESSION;
                     expansion_0 = 1.0;
-                    expansion_1 = DMEXPANSION * 0.5;
+                    expansion_1 = idxd_DMEXPANSION * 0.5;
                     expansion_mask_0 = 0.0;
-                    expansion_mask_1 = DMEXPANSION * 0.5;
+                    expansion_mask_1 = idxd_DMEXPANSION * 0.5;
                   }
                   for(i = 0; i + 1 <= N_block; i += 1, x += (incX * 2)){
                     x_0 = fabs(((double*)x)[0]);
@@ -999,24 +999,24 @@ void dmzasum(const int fold, const int N, const void *X, const int incX, double 
                 if(dmindex0(asum) || dmindex0(asum + 1)){
                   if(dmindex0(asum)){
                     if(dmindex0(asum + 1)){
-                      compression_0 = DMCOMPRESSION;
-                      expansion_0 = DMEXPANSION * 0.5;
-                      expansion_mask_0 = DMEXPANSION * 0.5;
+                      compression_0 = idxd_DMCOMPRESSION;
+                      expansion_0 = idxd_DMEXPANSION * 0.5;
+                      expansion_mask_0 = idxd_DMEXPANSION * 0.5;
                     }else{
-                      compression_0 = DMCOMPRESSION;
+                      compression_0 = idxd_DMCOMPRESSION;
                       compression_1 = 1.0;
-                      expansion_0 = DMEXPANSION * 0.5;
+                      expansion_0 = idxd_DMEXPANSION * 0.5;
                       expansion_1 = 1.0;
-                      expansion_mask_0 = DMEXPANSION * 0.5;
+                      expansion_mask_0 = idxd_DMEXPANSION * 0.5;
                       expansion_mask_1 = 0.0;
                     }
                   }else{
                     compression_0 = 1.0;
-                    compression_1 = DMCOMPRESSION;
+                    compression_1 = idxd_DMCOMPRESSION;
                     expansion_0 = 1.0;
-                    expansion_1 = DMEXPANSION * 0.5;
+                    expansion_1 = idxd_DMEXPANSION * 0.5;
                     expansion_mask_0 = 0.0;
-                    expansion_mask_1 = DMEXPANSION * 0.5;
+                    expansion_mask_1 = idxd_DMEXPANSION * 0.5;
                   }
                   for(i = 0; i + 1 <= N_block; i += 1, x += 2){
                     x_0 = fabs(((double*)x)[0]);
@@ -1092,24 +1092,24 @@ void dmzasum(const int fold, const int N, const void *X, const int incX, double 
                 if(dmindex0(asum) || dmindex0(asum + 1)){
                   if(dmindex0(asum)){
                     if(dmindex0(asum + 1)){
-                      compression_0 = DMCOMPRESSION;
-                      expansion_0 = DMEXPANSION * 0.5;
-                      expansion_mask_0 = DMEXPANSION * 0.5;
+                      compression_0 = idxd_DMCOMPRESSION;
+                      expansion_0 = idxd_DMEXPANSION * 0.5;
+                      expansion_mask_0 = idxd_DMEXPANSION * 0.5;
                     }else{
-                      compression_0 = DMCOMPRESSION;
+                      compression_0 = idxd_DMCOMPRESSION;
                       compression_1 = 1.0;
-                      expansion_0 = DMEXPANSION * 0.5;
+                      expansion_0 = idxd_DMEXPANSION * 0.5;
                       expansion_1 = 1.0;
-                      expansion_mask_0 = DMEXPANSION * 0.5;
+                      expansion_mask_0 = idxd_DMEXPANSION * 0.5;
                       expansion_mask_1 = 0.0;
                     }
                   }else{
                     compression_0 = 1.0;
-                    compression_1 = DMCOMPRESSION;
+                    compression_1 = idxd_DMCOMPRESSION;
                     expansion_0 = 1.0;
-                    expansion_1 = DMEXPANSION * 0.5;
+                    expansion_1 = idxd_DMEXPANSION * 0.5;
                     expansion_mask_0 = 0.0;
-                    expansion_mask_1 = DMEXPANSION * 0.5;
+                    expansion_mask_1 = idxd_DMEXPANSION * 0.5;
                   }
                   for(i = 0; i + 1 <= N_block; i += 1, x += (incX * 2)){
                     x_0 = fabs(((double*)x)[0]);

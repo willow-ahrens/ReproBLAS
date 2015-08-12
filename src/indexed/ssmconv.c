@@ -39,9 +39,9 @@ float ssmconv(const int fold, const float* priX, const int incpriX, const float*
   X_index = smindex(priX);
   bins = smbins(X_index);
   if(X_index == 0){
-    Y += (double)carX[0] * (double)(bins[0]/6.0) * (double)SMEXPANSION;
+    Y += (double)carX[0] * (double)(bins[0]/6.0) * (double)idxd_SMEXPANSION;
     Y += (double)carX[inccarX] * (double)(bins[1]/6.0);
-    Y += (double)(priX[0] - bins[0]) * (double)SMEXPANSION;
+    Y += (double)(priX[0] - bins[0]) * (double)idxd_SMEXPANSION;
     i = 2;
   }else{
     Y += (double)carX[0] * (double)(bins[0]/6.0);

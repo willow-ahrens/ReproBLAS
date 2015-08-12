@@ -103,7 +103,7 @@ typedef float float_complex_indexed;
  * @author Peter Ahrens
  * @date   24 Jun 2015
  */
-#define DIMAXINDEX (((DBL_MAX_EXP - DBL_MIN_EXP + DBL_MANT_DIG - 1)/DIWIDTH) - 1)
+#define idxd_DIMAXINDEX (((DBL_MAX_EXP - DBL_MIN_EXP + DBL_MANT_DIG - 1)/DIWIDTH) - 1)
 
 /**
  * @brief Indexed single precision maximum index
@@ -113,7 +113,7 @@ typedef float float_complex_indexed;
  * @author Peter Ahrens
  * @date   24 Jun 2015
  */
-#define SIMAXINDEX (((FLT_MAX_EXP - FLT_MIN_EXP + FLT_MANT_DIG - 1)/SIWIDTH) - 1)
+#define idxd_SIMAXINDEX (((FLT_MAX_EXP - FLT_MIN_EXP + FLT_MANT_DIG - 1)/SIWIDTH) - 1)
 
 /**
  * @brief Indexed double precision deposit endurance
@@ -124,7 +124,7 @@ typedef float float_complex_indexed;
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-#define DIENDURANCE (1 << (DBL_MANT_DIG - DIWIDTH - 2))
+#define idxd_DIENDURANCE (1 << (DBL_MANT_DIG - DIWIDTH - 2))
 
 /**
  * @brief Indexed single precision deposit endurance
@@ -135,7 +135,7 @@ typedef float float_complex_indexed;
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-#define SIENDURANCE (1 << (FLT_MANT_DIG - SIWIDTH - 2))
+#define idxd_SIENDURANCE (1 << (FLT_MANT_DIG - SIWIDTH - 2))
 
 /**
  * @brief Indexed double precision capacity
@@ -145,7 +145,7 @@ typedef float float_complex_indexed;
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-#define DICAPACITY (DIENDURANCE*(1.0/DBL_EPSILON - 1.0))
+#define idxd_DICAPACITY (idxd_DIENDURANCE*(1.0/DBL_EPSILON - 1.0))
 
 /**
  * @brief Indexed single precision capacity
@@ -155,7 +155,7 @@ typedef float float_complex_indexed;
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-#define SICAPACITY (SIENDURANCE*(1.0/FLT_EPSILON - 1.0))
+#define idxd_SICAPACITY (idxd_SIENDURANCE*(1.0/FLT_EPSILON - 1.0))
 
 /**
  * @internal
@@ -166,7 +166,7 @@ typedef float float_complex_indexed;
  * @author Peter Ahrens
  * @date   19 May 2015
  */
-#define DMCOMPRESSION (1.0/(1 << (DBL_MANT_DIG - DIWIDTH + 1)))
+#define idxd_DMCOMPRESSION (1.0/(1 << (DBL_MANT_DIG - DIWIDTH + 1)))
 
 /**
  * @internal
@@ -177,7 +177,7 @@ typedef float float_complex_indexed;
  * @author Peter Ahrens
  * @date   19 May 2015
  */
-#define SMCOMPRESSION (1.0/(1 << (FLT_MANT_DIG - SIWIDTH + 1)))
+#define idxd_SMCOMPRESSION (1.0/(1 << (FLT_MANT_DIG - SIWIDTH + 1)))
 
 /**
  * @internal
@@ -188,7 +188,7 @@ typedef float float_complex_indexed;
  * @author Peter Ahrens
  * @date   19 May 2015
  */
-#define DMEXPANSION (1.0*(1 << (DBL_MANT_DIG - DIWIDTH + 1)))
+#define idxd_DMEXPANSION (1.0*(1 << (DBL_MANT_DIG - DIWIDTH + 1)))
 
 /**
  * @internal
@@ -199,7 +199,7 @@ typedef float float_complex_indexed;
  * @author Peter Ahrens
  * @date   19 May 2015
  */
-#define SMEXPANSION (1.0*(1 << (FLT_MANT_DIG - SIWIDTH + 1)))
+#define idxd_SMEXPANSION (1.0*(1 << (FLT_MANT_DIG - SIWIDTH + 1)))
 
 /**
  * @internal

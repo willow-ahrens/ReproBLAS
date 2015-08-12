@@ -30,10 +30,10 @@ int dindex(const double X){
   int exp = EXP(X);
   if(exp == 0){
     if(X == 0.0){
-      return DIMAXINDEX;
+      return idxd_DIMAXINDEX;
     }else{
       frexp(X, &exp);
-      return MIN((DBL_MAX_EXP - exp)/DIWIDTH, DIMAXINDEX);
+      return MIN((DBL_MAX_EXP - exp)/DIWIDTH, idxd_DIMAXINDEX);
     }
   }
   return ((DBL_MAX_EXP + EXP_BIAS) - exp)/DIWIDTH;

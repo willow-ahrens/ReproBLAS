@@ -80,7 +80,7 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
       amaxm[1] = manZ[1];
     }
 
-    if (deposits + N_block > SIENDURANCE/2) {
+    if (deposits + N_block > idxd_SIENDURANCE/2) {
       cmrenorm(fold, manZ, incmanZ, carZ, inccarZ);
       deposits = 0;
     }
@@ -135,18 +135,18 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                   if(smindex0(manZ) || smindex0(manZ + 1)){
                     if(smindex0(manZ)){
                       if(smindex0(manZ + 1)){
-                        compression_0 = _mm256_set1_ps(SMCOMPRESSION);
-                        expansion_0 = _mm256_set1_ps(SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm256_set1_ps(SMEXPANSION * 0.5);
+                        compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
+                        expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                       }else{
-                        compression_0 = _mm256_set_ps(1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION);
-                        expansion_0 = _mm256_set_ps(1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm256_set_ps(0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5);
+                        compression_0 = _mm256_set_ps(1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION);
+                        expansion_0 = _mm256_set_ps(1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set_ps(0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5);
                       }
                     }else{
-                      compression_0 = _mm256_set_ps(SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0);
-                      expansion_0 = _mm256_set_ps(SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0);
-                      expansion_mask_0 = _mm256_set_ps(SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0);
+                      compression_0 = _mm256_set_ps(idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0);
+                      expansion_0 = _mm256_set_ps(idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm256_set_ps(idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 4 <= N_block; i += 4, x += 8, y += 8){
                       x_0 = _mm256_loadu_ps(((float*)x));
@@ -256,18 +256,18 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                   if(smindex0(manZ) || smindex0(manZ + 1)){
                     if(smindex0(manZ)){
                       if(smindex0(manZ + 1)){
-                        compression_0 = _mm256_set1_ps(SMCOMPRESSION);
-                        expansion_0 = _mm256_set1_ps(SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm256_set1_ps(SMEXPANSION * 0.5);
+                        compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
+                        expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                       }else{
-                        compression_0 = _mm256_set_ps(1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION);
-                        expansion_0 = _mm256_set_ps(1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm256_set_ps(0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5);
+                        compression_0 = _mm256_set_ps(1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION);
+                        expansion_0 = _mm256_set_ps(1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set_ps(0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5);
                       }
                     }else{
-                      compression_0 = _mm256_set_ps(SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0);
-                      expansion_0 = _mm256_set_ps(SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0);
-                      expansion_mask_0 = _mm256_set_ps(SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0);
+                      compression_0 = _mm256_set_ps(idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0);
+                      expansion_0 = _mm256_set_ps(idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm256_set_ps(idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 4 <= N_block; i += 4, x += 8, y += (incY * 8)){
                       x_0 = _mm256_loadu_ps(((float*)x));
@@ -379,18 +379,18 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                   if(smindex0(manZ) || smindex0(manZ + 1)){
                     if(smindex0(manZ)){
                       if(smindex0(manZ + 1)){
-                        compression_0 = _mm256_set1_ps(SMCOMPRESSION);
-                        expansion_0 = _mm256_set1_ps(SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm256_set1_ps(SMEXPANSION * 0.5);
+                        compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
+                        expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                       }else{
-                        compression_0 = _mm256_set_ps(1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION);
-                        expansion_0 = _mm256_set_ps(1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm256_set_ps(0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5);
+                        compression_0 = _mm256_set_ps(1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION);
+                        expansion_0 = _mm256_set_ps(1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set_ps(0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5);
                       }
                     }else{
-                      compression_0 = _mm256_set_ps(SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0);
-                      expansion_0 = _mm256_set_ps(SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0);
-                      expansion_mask_0 = _mm256_set_ps(SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0);
+                      compression_0 = _mm256_set_ps(idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0);
+                      expansion_0 = _mm256_set_ps(idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm256_set_ps(idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 4 <= N_block; i += 4, x += (incX * 8), y += 8){
                       x_0 = _mm256_set_ps(((float*)x)[((incX * 6) + 1)], ((float*)x)[(incX * 6)], ((float*)x)[((incX * 4) + 1)], ((float*)x)[(incX * 4)], ((float*)x)[((incX * 2) + 1)], ((float*)x)[(incX * 2)], ((float*)x)[1], ((float*)x)[0]);
@@ -500,18 +500,18 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                   if(smindex0(manZ) || smindex0(manZ + 1)){
                     if(smindex0(manZ)){
                       if(smindex0(manZ + 1)){
-                        compression_0 = _mm256_set1_ps(SMCOMPRESSION);
-                        expansion_0 = _mm256_set1_ps(SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm256_set1_ps(SMEXPANSION * 0.5);
+                        compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
+                        expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                       }else{
-                        compression_0 = _mm256_set_ps(1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION);
-                        expansion_0 = _mm256_set_ps(1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm256_set_ps(0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5);
+                        compression_0 = _mm256_set_ps(1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION);
+                        expansion_0 = _mm256_set_ps(1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set_ps(0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5);
                       }
                     }else{
-                      compression_0 = _mm256_set_ps(SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0);
-                      expansion_0 = _mm256_set_ps(SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0);
-                      expansion_mask_0 = _mm256_set_ps(SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0);
+                      compression_0 = _mm256_set_ps(idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0);
+                      expansion_0 = _mm256_set_ps(idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm256_set_ps(idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 4 <= N_block; i += 4, x += (incX * 8), y += (incY * 8)){
                       x_0 = _mm256_set_ps(((float*)x)[((incX * 6) + 1)], ((float*)x)[(incX * 6)], ((float*)x)[((incX * 4) + 1)], ((float*)x)[(incX * 4)], ((float*)x)[((incX * 2) + 1)], ((float*)x)[(incX * 2)], ((float*)x)[1], ((float*)x)[0]);
@@ -665,18 +665,18 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                   if(smindex0(manZ) || smindex0(manZ + 1)){
                     if(smindex0(manZ)){
                       if(smindex0(manZ + 1)){
-                        compression_0 = _mm256_set1_ps(SMCOMPRESSION);
-                        expansion_0 = _mm256_set1_ps(SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm256_set1_ps(SMEXPANSION * 0.5);
+                        compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
+                        expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                       }else{
-                        compression_0 = _mm256_set_ps(1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION);
-                        expansion_0 = _mm256_set_ps(1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm256_set_ps(0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5);
+                        compression_0 = _mm256_set_ps(1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION);
+                        expansion_0 = _mm256_set_ps(1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set_ps(0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5);
                       }
                     }else{
-                      compression_0 = _mm256_set_ps(SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0);
-                      expansion_0 = _mm256_set_ps(SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0);
-                      expansion_mask_0 = _mm256_set_ps(SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0);
+                      compression_0 = _mm256_set_ps(idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0);
+                      expansion_0 = _mm256_set_ps(idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm256_set_ps(idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 4 <= N_block; i += 4, x += 8, y += 8){
                       x_0 = _mm256_loadu_ps(((float*)x));
@@ -790,18 +790,18 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                   if(smindex0(manZ) || smindex0(manZ + 1)){
                     if(smindex0(manZ)){
                       if(smindex0(manZ + 1)){
-                        compression_0 = _mm256_set1_ps(SMCOMPRESSION);
-                        expansion_0 = _mm256_set1_ps(SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm256_set1_ps(SMEXPANSION * 0.5);
+                        compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
+                        expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                       }else{
-                        compression_0 = _mm256_set_ps(1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION);
-                        expansion_0 = _mm256_set_ps(1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm256_set_ps(0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5);
+                        compression_0 = _mm256_set_ps(1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION);
+                        expansion_0 = _mm256_set_ps(1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set_ps(0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5);
                       }
                     }else{
-                      compression_0 = _mm256_set_ps(SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0);
-                      expansion_0 = _mm256_set_ps(SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0);
-                      expansion_mask_0 = _mm256_set_ps(SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0);
+                      compression_0 = _mm256_set_ps(idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0);
+                      expansion_0 = _mm256_set_ps(idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm256_set_ps(idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 4 <= N_block; i += 4, x += 8, y += (incY * 8)){
                       x_0 = _mm256_loadu_ps(((float*)x));
@@ -917,18 +917,18 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                   if(smindex0(manZ) || smindex0(manZ + 1)){
                     if(smindex0(manZ)){
                       if(smindex0(manZ + 1)){
-                        compression_0 = _mm256_set1_ps(SMCOMPRESSION);
-                        expansion_0 = _mm256_set1_ps(SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm256_set1_ps(SMEXPANSION * 0.5);
+                        compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
+                        expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                       }else{
-                        compression_0 = _mm256_set_ps(1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION);
-                        expansion_0 = _mm256_set_ps(1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm256_set_ps(0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5);
+                        compression_0 = _mm256_set_ps(1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION);
+                        expansion_0 = _mm256_set_ps(1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set_ps(0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5);
                       }
                     }else{
-                      compression_0 = _mm256_set_ps(SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0);
-                      expansion_0 = _mm256_set_ps(SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0);
-                      expansion_mask_0 = _mm256_set_ps(SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0);
+                      compression_0 = _mm256_set_ps(idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0);
+                      expansion_0 = _mm256_set_ps(idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm256_set_ps(idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 4 <= N_block; i += 4, x += (incX * 8), y += 8){
                       x_0 = _mm256_set_ps(((float*)x)[((incX * 6) + 1)], ((float*)x)[(incX * 6)], ((float*)x)[((incX * 4) + 1)], ((float*)x)[(incX * 4)], ((float*)x)[((incX * 2) + 1)], ((float*)x)[(incX * 2)], ((float*)x)[1], ((float*)x)[0]);
@@ -1042,18 +1042,18 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                   if(smindex0(manZ) || smindex0(manZ + 1)){
                     if(smindex0(manZ)){
                       if(smindex0(manZ + 1)){
-                        compression_0 = _mm256_set1_ps(SMCOMPRESSION);
-                        expansion_0 = _mm256_set1_ps(SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm256_set1_ps(SMEXPANSION * 0.5);
+                        compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
+                        expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                       }else{
-                        compression_0 = _mm256_set_ps(1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION);
-                        expansion_0 = _mm256_set_ps(1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm256_set_ps(0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5);
+                        compression_0 = _mm256_set_ps(1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION);
+                        expansion_0 = _mm256_set_ps(1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm256_set_ps(0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5);
                       }
                     }else{
-                      compression_0 = _mm256_set_ps(SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0);
-                      expansion_0 = _mm256_set_ps(SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0);
-                      expansion_mask_0 = _mm256_set_ps(SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0);
+                      compression_0 = _mm256_set_ps(idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0);
+                      expansion_0 = _mm256_set_ps(idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm256_set_ps(idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 4 <= N_block; i += 4, x += (incX * 8), y += (incY * 8)){
                       x_0 = _mm256_set_ps(((float*)x)[((incX * 6) + 1)], ((float*)x)[(incX * 6)], ((float*)x)[((incX * 4) + 1)], ((float*)x)[(incX * 4)], ((float*)x)[((incX * 2) + 1)], ((float*)x)[(incX * 2)], ((float*)x)[1], ((float*)x)[0]);
@@ -1226,18 +1226,18 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                   if(smindex0(manZ) || smindex0(manZ + 1)){
                     if(smindex0(manZ)){
                       if(smindex0(manZ + 1)){
-                        compression_0 = _mm_set1_ps(SMCOMPRESSION);
-                        expansion_0 = _mm_set1_ps(SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm_set1_ps(SMEXPANSION * 0.5);
+                        compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
+                        expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                       }else{
-                        compression_0 = _mm_set_ps(1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION);
-                        expansion_0 = _mm_set_ps(1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm_set_ps(0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5);
+                        compression_0 = _mm_set_ps(1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION);
+                        expansion_0 = _mm_set_ps(1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set_ps(0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5);
                       }
                     }else{
-                      compression_0 = _mm_set_ps(SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0);
-                      expansion_0 = _mm_set_ps(SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0);
-                      expansion_mask_0 = _mm_set_ps(SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0);
+                      compression_0 = _mm_set_ps(idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0);
+                      expansion_0 = _mm_set_ps(idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm_set_ps(idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 2 <= N_block; i += 2, x += 4, y += 4){
                       x_0 = _mm_loadu_ps(((float*)x));
@@ -1347,18 +1347,18 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                   if(smindex0(manZ) || smindex0(manZ + 1)){
                     if(smindex0(manZ)){
                       if(smindex0(manZ + 1)){
-                        compression_0 = _mm_set1_ps(SMCOMPRESSION);
-                        expansion_0 = _mm_set1_ps(SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm_set1_ps(SMEXPANSION * 0.5);
+                        compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
+                        expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                       }else{
-                        compression_0 = _mm_set_ps(1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION);
-                        expansion_0 = _mm_set_ps(1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm_set_ps(0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5);
+                        compression_0 = _mm_set_ps(1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION);
+                        expansion_0 = _mm_set_ps(1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set_ps(0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5);
                       }
                     }else{
-                      compression_0 = _mm_set_ps(SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0);
-                      expansion_0 = _mm_set_ps(SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0);
-                      expansion_mask_0 = _mm_set_ps(SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0);
+                      compression_0 = _mm_set_ps(idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0);
+                      expansion_0 = _mm_set_ps(idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm_set_ps(idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 2 <= N_block; i += 2, x += 4, y += (incY * 4)){
                       x_0 = _mm_loadu_ps(((float*)x));
@@ -1470,18 +1470,18 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                   if(smindex0(manZ) || smindex0(manZ + 1)){
                     if(smindex0(manZ)){
                       if(smindex0(manZ + 1)){
-                        compression_0 = _mm_set1_ps(SMCOMPRESSION);
-                        expansion_0 = _mm_set1_ps(SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm_set1_ps(SMEXPANSION * 0.5);
+                        compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
+                        expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                       }else{
-                        compression_0 = _mm_set_ps(1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION);
-                        expansion_0 = _mm_set_ps(1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm_set_ps(0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5);
+                        compression_0 = _mm_set_ps(1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION);
+                        expansion_0 = _mm_set_ps(1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set_ps(0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5);
                       }
                     }else{
-                      compression_0 = _mm_set_ps(SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0);
-                      expansion_0 = _mm_set_ps(SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0);
-                      expansion_mask_0 = _mm_set_ps(SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0);
+                      compression_0 = _mm_set_ps(idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0);
+                      expansion_0 = _mm_set_ps(idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm_set_ps(idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 2 <= N_block; i += 2, x += (incX * 4), y += 4){
                       x_0 = _mm_set_ps(((float*)x)[((incX * 2) + 1)], ((float*)x)[(incX * 2)], ((float*)x)[1], ((float*)x)[0]);
@@ -1591,18 +1591,18 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                   if(smindex0(manZ) || smindex0(manZ + 1)){
                     if(smindex0(manZ)){
                       if(smindex0(manZ + 1)){
-                        compression_0 = _mm_set1_ps(SMCOMPRESSION);
-                        expansion_0 = _mm_set1_ps(SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm_set1_ps(SMEXPANSION * 0.5);
+                        compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
+                        expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                       }else{
-                        compression_0 = _mm_set_ps(1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION);
-                        expansion_0 = _mm_set_ps(1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm_set_ps(0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5);
+                        compression_0 = _mm_set_ps(1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION);
+                        expansion_0 = _mm_set_ps(1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set_ps(0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5);
                       }
                     }else{
-                      compression_0 = _mm_set_ps(SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0);
-                      expansion_0 = _mm_set_ps(SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0);
-                      expansion_mask_0 = _mm_set_ps(SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0);
+                      compression_0 = _mm_set_ps(idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0);
+                      expansion_0 = _mm_set_ps(idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm_set_ps(idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 2 <= N_block; i += 2, x += (incX * 4), y += (incY * 4)){
                       x_0 = _mm_set_ps(((float*)x)[((incX * 2) + 1)], ((float*)x)[(incX * 2)], ((float*)x)[1], ((float*)x)[0]);
@@ -1756,18 +1756,18 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                   if(smindex0(manZ) || smindex0(manZ + 1)){
                     if(smindex0(manZ)){
                       if(smindex0(manZ + 1)){
-                        compression_0 = _mm_set1_ps(SMCOMPRESSION);
-                        expansion_0 = _mm_set1_ps(SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm_set1_ps(SMEXPANSION * 0.5);
+                        compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
+                        expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                       }else{
-                        compression_0 = _mm_set_ps(1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION);
-                        expansion_0 = _mm_set_ps(1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm_set_ps(0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5);
+                        compression_0 = _mm_set_ps(1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION);
+                        expansion_0 = _mm_set_ps(1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set_ps(0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5);
                       }
                     }else{
-                      compression_0 = _mm_set_ps(SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0);
-                      expansion_0 = _mm_set_ps(SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0);
-                      expansion_mask_0 = _mm_set_ps(SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0);
+                      compression_0 = _mm_set_ps(idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0);
+                      expansion_0 = _mm_set_ps(idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm_set_ps(idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 2 <= N_block; i += 2, x += 4, y += 4){
                       x_0 = _mm_loadu_ps(((float*)x));
@@ -1881,18 +1881,18 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                   if(smindex0(manZ) || smindex0(manZ + 1)){
                     if(smindex0(manZ)){
                       if(smindex0(manZ + 1)){
-                        compression_0 = _mm_set1_ps(SMCOMPRESSION);
-                        expansion_0 = _mm_set1_ps(SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm_set1_ps(SMEXPANSION * 0.5);
+                        compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
+                        expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                       }else{
-                        compression_0 = _mm_set_ps(1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION);
-                        expansion_0 = _mm_set_ps(1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm_set_ps(0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5);
+                        compression_0 = _mm_set_ps(1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION);
+                        expansion_0 = _mm_set_ps(1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set_ps(0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5);
                       }
                     }else{
-                      compression_0 = _mm_set_ps(SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0);
-                      expansion_0 = _mm_set_ps(SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0);
-                      expansion_mask_0 = _mm_set_ps(SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0);
+                      compression_0 = _mm_set_ps(idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0);
+                      expansion_0 = _mm_set_ps(idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm_set_ps(idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 2 <= N_block; i += 2, x += 4, y += (incY * 4)){
                       x_0 = _mm_loadu_ps(((float*)x));
@@ -2008,18 +2008,18 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                   if(smindex0(manZ) || smindex0(manZ + 1)){
                     if(smindex0(manZ)){
                       if(smindex0(manZ + 1)){
-                        compression_0 = _mm_set1_ps(SMCOMPRESSION);
-                        expansion_0 = _mm_set1_ps(SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm_set1_ps(SMEXPANSION * 0.5);
+                        compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
+                        expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                       }else{
-                        compression_0 = _mm_set_ps(1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION);
-                        expansion_0 = _mm_set_ps(1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm_set_ps(0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5);
+                        compression_0 = _mm_set_ps(1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION);
+                        expansion_0 = _mm_set_ps(1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set_ps(0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5);
                       }
                     }else{
-                      compression_0 = _mm_set_ps(SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0);
-                      expansion_0 = _mm_set_ps(SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0);
-                      expansion_mask_0 = _mm_set_ps(SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0);
+                      compression_0 = _mm_set_ps(idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0);
+                      expansion_0 = _mm_set_ps(idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm_set_ps(idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 2 <= N_block; i += 2, x += (incX * 4), y += 4){
                       x_0 = _mm_set_ps(((float*)x)[((incX * 2) + 1)], ((float*)x)[(incX * 2)], ((float*)x)[1], ((float*)x)[0]);
@@ -2133,18 +2133,18 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                   if(smindex0(manZ) || smindex0(manZ + 1)){
                     if(smindex0(manZ)){
                       if(smindex0(manZ + 1)){
-                        compression_0 = _mm_set1_ps(SMCOMPRESSION);
-                        expansion_0 = _mm_set1_ps(SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm_set1_ps(SMEXPANSION * 0.5);
+                        compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
+                        expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                       }else{
-                        compression_0 = _mm_set_ps(1.0, SMCOMPRESSION, 1.0, SMCOMPRESSION);
-                        expansion_0 = _mm_set_ps(1.0, SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5);
-                        expansion_mask_0 = _mm_set_ps(0.0, SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5);
+                        compression_0 = _mm_set_ps(1.0, idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION);
+                        expansion_0 = _mm_set_ps(1.0, idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5);
+                        expansion_mask_0 = _mm_set_ps(0.0, idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5);
                       }
                     }else{
-                      compression_0 = _mm_set_ps(SMCOMPRESSION, 1.0, SMCOMPRESSION, 1.0);
-                      expansion_0 = _mm_set_ps(SMEXPANSION * 0.5, 1.0, SMEXPANSION * 0.5, 1.0);
-                      expansion_mask_0 = _mm_set_ps(SMEXPANSION * 0.5, 0.0, SMEXPANSION * 0.5, 0.0);
+                      compression_0 = _mm_set_ps(idxd_SMCOMPRESSION, 1.0, idxd_SMCOMPRESSION, 1.0);
+                      expansion_0 = _mm_set_ps(idxd_SMEXPANSION * 0.5, 1.0, idxd_SMEXPANSION * 0.5, 1.0);
+                      expansion_mask_0 = _mm_set_ps(idxd_SMEXPANSION * 0.5, 0.0, idxd_SMEXPANSION * 0.5, 0.0);
                     }
                     for(i = 0; i + 2 <= N_block; i += 2, x += (incX * 4), y += (incY * 4)){
                       x_0 = _mm_set_ps(((float*)x)[((incX * 2) + 1)], ((float*)x)[(incX * 2)], ((float*)x)[1], ((float*)x)[0]);
@@ -2304,24 +2304,24 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                   if(smindex0(manZ) || smindex0(manZ + 1)){
                     if(smindex0(manZ)){
                       if(smindex0(manZ + 1)){
-                        compression_0 = SMCOMPRESSION;
-                        expansion_0 = SMEXPANSION * 0.5;
-                        expansion_mask_0 = SMEXPANSION * 0.5;
+                        compression_0 = idxd_SMCOMPRESSION;
+                        expansion_0 = idxd_SMEXPANSION * 0.5;
+                        expansion_mask_0 = idxd_SMEXPANSION * 0.5;
                       }else{
-                        compression_0 = SMCOMPRESSION;
+                        compression_0 = idxd_SMCOMPRESSION;
                         compression_1 = 1.0;
-                        expansion_0 = SMEXPANSION * 0.5;
+                        expansion_0 = idxd_SMEXPANSION * 0.5;
                         expansion_1 = 1.0;
-                        expansion_mask_0 = SMEXPANSION * 0.5;
+                        expansion_mask_0 = idxd_SMEXPANSION * 0.5;
                         expansion_mask_1 = 0.0;
                       }
                     }else{
                       compression_0 = 1.0;
-                      compression_1 = SMCOMPRESSION;
+                      compression_1 = idxd_SMCOMPRESSION;
                       expansion_0 = 1.0;
-                      expansion_1 = SMEXPANSION * 0.5;
+                      expansion_1 = idxd_SMEXPANSION * 0.5;
                       expansion_mask_0 = 0.0;
-                      expansion_mask_1 = SMEXPANSION * 0.5;
+                      expansion_mask_1 = idxd_SMEXPANSION * 0.5;
                     }
                     for(i = 0; i + 1 <= N_block; i += 1, x += 2, y += 2){
                       x_0 = ((float*)x)[0];
@@ -2471,24 +2471,24 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                   if(smindex0(manZ) || smindex0(manZ + 1)){
                     if(smindex0(manZ)){
                       if(smindex0(manZ + 1)){
-                        compression_0 = SMCOMPRESSION;
-                        expansion_0 = SMEXPANSION * 0.5;
-                        expansion_mask_0 = SMEXPANSION * 0.5;
+                        compression_0 = idxd_SMCOMPRESSION;
+                        expansion_0 = idxd_SMEXPANSION * 0.5;
+                        expansion_mask_0 = idxd_SMEXPANSION * 0.5;
                       }else{
-                        compression_0 = SMCOMPRESSION;
+                        compression_0 = idxd_SMCOMPRESSION;
                         compression_1 = 1.0;
-                        expansion_0 = SMEXPANSION * 0.5;
+                        expansion_0 = idxd_SMEXPANSION * 0.5;
                         expansion_1 = 1.0;
-                        expansion_mask_0 = SMEXPANSION * 0.5;
+                        expansion_mask_0 = idxd_SMEXPANSION * 0.5;
                         expansion_mask_1 = 0.0;
                       }
                     }else{
                       compression_0 = 1.0;
-                      compression_1 = SMCOMPRESSION;
+                      compression_1 = idxd_SMCOMPRESSION;
                       expansion_0 = 1.0;
-                      expansion_1 = SMEXPANSION * 0.5;
+                      expansion_1 = idxd_SMEXPANSION * 0.5;
                       expansion_mask_0 = 0.0;
-                      expansion_mask_1 = SMEXPANSION * 0.5;
+                      expansion_mask_1 = idxd_SMEXPANSION * 0.5;
                     }
                     for(i = 0; i + 1 <= N_block; i += 1, x += 2, y += (incY * 2)){
                       x_0 = ((float*)x)[0];
@@ -2640,24 +2640,24 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                   if(smindex0(manZ) || smindex0(manZ + 1)){
                     if(smindex0(manZ)){
                       if(smindex0(manZ + 1)){
-                        compression_0 = SMCOMPRESSION;
-                        expansion_0 = SMEXPANSION * 0.5;
-                        expansion_mask_0 = SMEXPANSION * 0.5;
+                        compression_0 = idxd_SMCOMPRESSION;
+                        expansion_0 = idxd_SMEXPANSION * 0.5;
+                        expansion_mask_0 = idxd_SMEXPANSION * 0.5;
                       }else{
-                        compression_0 = SMCOMPRESSION;
+                        compression_0 = idxd_SMCOMPRESSION;
                         compression_1 = 1.0;
-                        expansion_0 = SMEXPANSION * 0.5;
+                        expansion_0 = idxd_SMEXPANSION * 0.5;
                         expansion_1 = 1.0;
-                        expansion_mask_0 = SMEXPANSION * 0.5;
+                        expansion_mask_0 = idxd_SMEXPANSION * 0.5;
                         expansion_mask_1 = 0.0;
                       }
                     }else{
                       compression_0 = 1.0;
-                      compression_1 = SMCOMPRESSION;
+                      compression_1 = idxd_SMCOMPRESSION;
                       expansion_0 = 1.0;
-                      expansion_1 = SMEXPANSION * 0.5;
+                      expansion_1 = idxd_SMEXPANSION * 0.5;
                       expansion_mask_0 = 0.0;
-                      expansion_mask_1 = SMEXPANSION * 0.5;
+                      expansion_mask_1 = idxd_SMEXPANSION * 0.5;
                     }
                     for(i = 0; i + 1 <= N_block; i += 1, x += (incX * 2), y += 2){
                       x_0 = ((float*)x)[0];
@@ -2807,24 +2807,24 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                   if(smindex0(manZ) || smindex0(manZ + 1)){
                     if(smindex0(manZ)){
                       if(smindex0(manZ + 1)){
-                        compression_0 = SMCOMPRESSION;
-                        expansion_0 = SMEXPANSION * 0.5;
-                        expansion_mask_0 = SMEXPANSION * 0.5;
+                        compression_0 = idxd_SMCOMPRESSION;
+                        expansion_0 = idxd_SMEXPANSION * 0.5;
+                        expansion_mask_0 = idxd_SMEXPANSION * 0.5;
                       }else{
-                        compression_0 = SMCOMPRESSION;
+                        compression_0 = idxd_SMCOMPRESSION;
                         compression_1 = 1.0;
-                        expansion_0 = SMEXPANSION * 0.5;
+                        expansion_0 = idxd_SMEXPANSION * 0.5;
                         expansion_1 = 1.0;
-                        expansion_mask_0 = SMEXPANSION * 0.5;
+                        expansion_mask_0 = idxd_SMEXPANSION * 0.5;
                         expansion_mask_1 = 0.0;
                       }
                     }else{
                       compression_0 = 1.0;
-                      compression_1 = SMCOMPRESSION;
+                      compression_1 = idxd_SMCOMPRESSION;
                       expansion_0 = 1.0;
-                      expansion_1 = SMEXPANSION * 0.5;
+                      expansion_1 = idxd_SMEXPANSION * 0.5;
                       expansion_mask_0 = 0.0;
-                      expansion_mask_1 = SMEXPANSION * 0.5;
+                      expansion_mask_1 = idxd_SMEXPANSION * 0.5;
                     }
                     for(i = 0; i + 1 <= N_block; i += 1, x += (incX * 2), y += (incY * 2)){
                       x_0 = ((float*)x)[0];
@@ -3016,24 +3016,24 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                   if(smindex0(manZ) || smindex0(manZ + 1)){
                     if(smindex0(manZ)){
                       if(smindex0(manZ + 1)){
-                        compression_0 = SMCOMPRESSION;
-                        expansion_0 = SMEXPANSION * 0.5;
-                        expansion_mask_0 = SMEXPANSION * 0.5;
+                        compression_0 = idxd_SMCOMPRESSION;
+                        expansion_0 = idxd_SMEXPANSION * 0.5;
+                        expansion_mask_0 = idxd_SMEXPANSION * 0.5;
                       }else{
-                        compression_0 = SMCOMPRESSION;
+                        compression_0 = idxd_SMCOMPRESSION;
                         compression_1 = 1.0;
-                        expansion_0 = SMEXPANSION * 0.5;
+                        expansion_0 = idxd_SMEXPANSION * 0.5;
                         expansion_1 = 1.0;
-                        expansion_mask_0 = SMEXPANSION * 0.5;
+                        expansion_mask_0 = idxd_SMEXPANSION * 0.5;
                         expansion_mask_1 = 0.0;
                       }
                     }else{
                       compression_0 = 1.0;
-                      compression_1 = SMCOMPRESSION;
+                      compression_1 = idxd_SMCOMPRESSION;
                       expansion_0 = 1.0;
-                      expansion_1 = SMEXPANSION * 0.5;
+                      expansion_1 = idxd_SMEXPANSION * 0.5;
                       expansion_mask_0 = 0.0;
-                      expansion_mask_1 = SMEXPANSION * 0.5;
+                      expansion_mask_1 = idxd_SMEXPANSION * 0.5;
                     }
                     for(i = 0; i + 1 <= N_block; i += 1, x += 2, y += 2){
                       x_0 = ((float*)x)[0];
@@ -3175,24 +3175,24 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                   if(smindex0(manZ) || smindex0(manZ + 1)){
                     if(smindex0(manZ)){
                       if(smindex0(manZ + 1)){
-                        compression_0 = SMCOMPRESSION;
-                        expansion_0 = SMEXPANSION * 0.5;
-                        expansion_mask_0 = SMEXPANSION * 0.5;
+                        compression_0 = idxd_SMCOMPRESSION;
+                        expansion_0 = idxd_SMEXPANSION * 0.5;
+                        expansion_mask_0 = idxd_SMEXPANSION * 0.5;
                       }else{
-                        compression_0 = SMCOMPRESSION;
+                        compression_0 = idxd_SMCOMPRESSION;
                         compression_1 = 1.0;
-                        expansion_0 = SMEXPANSION * 0.5;
+                        expansion_0 = idxd_SMEXPANSION * 0.5;
                         expansion_1 = 1.0;
-                        expansion_mask_0 = SMEXPANSION * 0.5;
+                        expansion_mask_0 = idxd_SMEXPANSION * 0.5;
                         expansion_mask_1 = 0.0;
                       }
                     }else{
                       compression_0 = 1.0;
-                      compression_1 = SMCOMPRESSION;
+                      compression_1 = idxd_SMCOMPRESSION;
                       expansion_0 = 1.0;
-                      expansion_1 = SMEXPANSION * 0.5;
+                      expansion_1 = idxd_SMEXPANSION * 0.5;
                       expansion_mask_0 = 0.0;
-                      expansion_mask_1 = SMEXPANSION * 0.5;
+                      expansion_mask_1 = idxd_SMEXPANSION * 0.5;
                     }
                     for(i = 0; i + 1 <= N_block; i += 1, x += 2, y += (incY * 2)){
                       x_0 = ((float*)x)[0];
@@ -3336,24 +3336,24 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                   if(smindex0(manZ) || smindex0(manZ + 1)){
                     if(smindex0(manZ)){
                       if(smindex0(manZ + 1)){
-                        compression_0 = SMCOMPRESSION;
-                        expansion_0 = SMEXPANSION * 0.5;
-                        expansion_mask_0 = SMEXPANSION * 0.5;
+                        compression_0 = idxd_SMCOMPRESSION;
+                        expansion_0 = idxd_SMEXPANSION * 0.5;
+                        expansion_mask_0 = idxd_SMEXPANSION * 0.5;
                       }else{
-                        compression_0 = SMCOMPRESSION;
+                        compression_0 = idxd_SMCOMPRESSION;
                         compression_1 = 1.0;
-                        expansion_0 = SMEXPANSION * 0.5;
+                        expansion_0 = idxd_SMEXPANSION * 0.5;
                         expansion_1 = 1.0;
-                        expansion_mask_0 = SMEXPANSION * 0.5;
+                        expansion_mask_0 = idxd_SMEXPANSION * 0.5;
                         expansion_mask_1 = 0.0;
                       }
                     }else{
                       compression_0 = 1.0;
-                      compression_1 = SMCOMPRESSION;
+                      compression_1 = idxd_SMCOMPRESSION;
                       expansion_0 = 1.0;
-                      expansion_1 = SMEXPANSION * 0.5;
+                      expansion_1 = idxd_SMEXPANSION * 0.5;
                       expansion_mask_0 = 0.0;
-                      expansion_mask_1 = SMEXPANSION * 0.5;
+                      expansion_mask_1 = idxd_SMEXPANSION * 0.5;
                     }
                     for(i = 0; i + 1 <= N_block; i += 1, x += (incX * 2), y += 2){
                       x_0 = ((float*)x)[0];
@@ -3495,24 +3495,24 @@ void cmcdotc(const int fold, const int N, const void *X, const int incX, const v
                   if(smindex0(manZ) || smindex0(manZ + 1)){
                     if(smindex0(manZ)){
                       if(smindex0(manZ + 1)){
-                        compression_0 = SMCOMPRESSION;
-                        expansion_0 = SMEXPANSION * 0.5;
-                        expansion_mask_0 = SMEXPANSION * 0.5;
+                        compression_0 = idxd_SMCOMPRESSION;
+                        expansion_0 = idxd_SMEXPANSION * 0.5;
+                        expansion_mask_0 = idxd_SMEXPANSION * 0.5;
                       }else{
-                        compression_0 = SMCOMPRESSION;
+                        compression_0 = idxd_SMCOMPRESSION;
                         compression_1 = 1.0;
-                        expansion_0 = SMEXPANSION * 0.5;
+                        expansion_0 = idxd_SMEXPANSION * 0.5;
                         expansion_1 = 1.0;
-                        expansion_mask_0 = SMEXPANSION * 0.5;
+                        expansion_mask_0 = idxd_SMEXPANSION * 0.5;
                         expansion_mask_1 = 0.0;
                       }
                     }else{
                       compression_0 = 1.0;
-                      compression_1 = SMCOMPRESSION;
+                      compression_1 = idxd_SMCOMPRESSION;
                       expansion_0 = 1.0;
-                      expansion_1 = SMEXPANSION * 0.5;
+                      expansion_1 = idxd_SMEXPANSION * 0.5;
                       expansion_mask_0 = 0.0;
-                      expansion_mask_1 = SMEXPANSION * 0.5;
+                      expansion_mask_1 = idxd_SMEXPANSION * 0.5;
                     }
                     for(i = 0; i + 1 <= N_block; i += 1, x += (incX * 2), y += (incY * 2)){
                       x_0 = ((float*)x)[0];

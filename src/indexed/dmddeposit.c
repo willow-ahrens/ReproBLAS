@@ -10,7 +10,7 @@
  *
  * Performs the operation Y += X on an indexed type Y where the index of Y is larger than the index of X
  *
- * @note This routine was provided as a means of allowing the you to optimize your code. After you have called #dmdupdate() on Y with the maximum absolute value of all future elements you wish to deposit in Y, you can call #dmddeposit() to deposit a maximum of #DIENDURANCE elements into Y before renormalizing Y with #dmrenorm(). After any number of successive calls of #dmddeposit() on Y, you must renormalize Y with #dmrenorm() before using any other function on Y.
+ * @note This routine was provided as a means of allowing the you to optimize your code. After you have called #dmdupdate() on Y with the maximum absolute value of all future elements you wish to deposit in Y, you can call #dmddeposit() to deposit a maximum of #idxd_DIENDURANCE elements into Y before renormalizing Y with #dmrenorm(). After any number of successive calls of #dmddeposit() on Y, you must renormalize Y with #dmrenorm() before using any other function on Y.
  *
  * @param fold the fold of the indexed types
  * @param X scalar X
@@ -34,12 +34,12 @@ void dmddeposit(const int fold, const double X, double *priY, const int incpriY)
 
   if(dmindex0(priY)){
     M = priY[0];
-    q.d = x * DMCOMPRESSION;
+    q.d = x * idxd_DMCOMPRESSION;
     q.l |= 1;
     q.d += M;
     priY[0] = q.d;
     M -= q.d;
-    M *= DMEXPANSION * 0.5;
+    M *= idxd_DMEXPANSION * 0.5;
     x += M;
     x += M;
     for (i = 1; i < fold - 1; i++) {

@@ -65,7 +65,7 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
       continue;
     }
 
-    if (deposits + N_block > SIENDURANCE) {
+    if (deposits + N_block > idxd_SIENDURANCE) {
       smrenorm(fold, manY, incmanY, carY, inccarY);
       deposits = 0;
     }
@@ -117,8 +117,8 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
 
               if(incX == 1){
                 if(smindex0(manY)){
-                  compression_0 = _mm256_set1_ps(SMCOMPRESSION);
-                  expansion_0 = _mm256_set1_ps(SMEXPANSION * 0.5);
+                  compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
+                  expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 8 <= N_block; i += 8, X += 8){
                     X_0 = _mm256_and_ps(_mm256_loadu_ps(X), abs_mask_tmp);
 
@@ -177,8 +177,8 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
                 }
               }else{
                 if(smindex0(manY)){
-                  compression_0 = _mm256_set1_ps(SMCOMPRESSION);
-                  expansion_0 = _mm256_set1_ps(SMEXPANSION * 0.5);
+                  compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
+                  expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 8 <= N_block; i += 8, X += (incX * 8)){
                     X_0 = _mm256_and_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), abs_mask_tmp);
 
@@ -268,8 +268,8 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
 
               if(incX == 1){
                 if(smindex0(manY)){
-                  compression_0 = _mm256_set1_ps(SMCOMPRESSION);
-                  expansion_0 = _mm256_set1_ps(SMEXPANSION * 0.5);
+                  compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
+                  expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 8 <= N_block; i += 8, X += 8){
                     X_0 = _mm256_and_ps(_mm256_loadu_ps(X), abs_mask_tmp);
 
@@ -334,8 +334,8 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
                 }
               }else{
                 if(smindex0(manY)){
-                  compression_0 = _mm256_set1_ps(SMCOMPRESSION);
-                  expansion_0 = _mm256_set1_ps(SMEXPANSION * 0.5);
+                  compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
+                  expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 8 <= N_block; i += 8, X += (incX * 8)){
                     X_0 = _mm256_and_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), abs_mask_tmp);
 
@@ -454,8 +454,8 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
 
               if(incX == 1){
                 if(smindex0(manY)){
-                  compression_0 = _mm_set1_ps(SMCOMPRESSION);
-                  expansion_0 = _mm_set1_ps(SMEXPANSION * 0.5);
+                  compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
+                  expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 4 <= N_block; i += 4, X += 4){
                     X_0 = _mm_and_ps(_mm_loadu_ps(X), abs_mask_tmp);
 
@@ -514,8 +514,8 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
                 }
               }else{
                 if(smindex0(manY)){
-                  compression_0 = _mm_set1_ps(SMCOMPRESSION);
-                  expansion_0 = _mm_set1_ps(SMEXPANSION * 0.5);
+                  compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
+                  expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 4 <= N_block; i += 4, X += (incX * 4)){
                     X_0 = _mm_and_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), abs_mask_tmp);
 
@@ -605,8 +605,8 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
 
               if(incX == 1){
                 if(smindex0(manY)){
-                  compression_0 = _mm_set1_ps(SMCOMPRESSION);
-                  expansion_0 = _mm_set1_ps(SMEXPANSION * 0.5);
+                  compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
+                  expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 4 <= N_block; i += 4, X += 4){
                     X_0 = _mm_and_ps(_mm_loadu_ps(X), abs_mask_tmp);
 
@@ -671,8 +671,8 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
                 }
               }else{
                 if(smindex0(manY)){
-                  compression_0 = _mm_set1_ps(SMCOMPRESSION);
-                  expansion_0 = _mm_set1_ps(SMEXPANSION * 0.5);
+                  compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
+                  expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 4 <= N_block; i += 4, X += (incX * 4)){
                     X_0 = _mm_and_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), abs_mask_tmp);
 
@@ -773,8 +773,8 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
 
               if(incX == 1){
                 if(smindex0(manY)){
-                  compression_0 = SMCOMPRESSION;
-                  expansion_0 = SMEXPANSION * 0.5;
+                  compression_0 = idxd_SMCOMPRESSION;
+                  expansion_0 = idxd_SMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += 1){
                     X_0 = fabsf(X[0]);
 
@@ -817,8 +817,8 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
                 }
               }else{
                 if(smindex0(manY)){
-                  compression_0 = SMCOMPRESSION;
-                  expansion_0 = SMEXPANSION * 0.5;
+                  compression_0 = idxd_SMCOMPRESSION;
+                  expansion_0 = idxd_SMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += incX){
                     X_0 = fabsf(X[0]);
 
@@ -883,8 +883,8 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
 
               if(incX == 1){
                 if(smindex0(manY)){
-                  compression_0 = SMCOMPRESSION;
-                  expansion_0 = SMEXPANSION * 0.5;
+                  compression_0 = idxd_SMCOMPRESSION;
+                  expansion_0 = idxd_SMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += 1){
                     X_0 = fabsf(X[0]);
 
@@ -928,8 +928,8 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
                 }
               }else{
                 if(smindex0(manY)){
-                  compression_0 = SMCOMPRESSION;
-                  expansion_0 = SMEXPANSION * 0.5;
+                  compression_0 = idxd_SMCOMPRESSION;
+                  expansion_0 = idxd_SMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += incX){
                     X_0 = fabsf(X[0]);
 

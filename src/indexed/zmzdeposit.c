@@ -10,7 +10,7 @@
  *
  * Performs the operation Y += X on an indexed type Y where the index of Y is larger than the index of X
  *
- * @note This routine was provided as a means of allowing the you to optimize your code. After you have called #zmzupdate() on Y with the maximum absolute value of all future elements you wish to deposit in Y, you can call #zmzdeposit() to deposit a maximum of #DIENDURANCE elements into Y before renormalizing Y with #zmrenorm(). After any number of successive calls of #zmzdeposit() on Y, you must renormalize Y with #zmrenorm() before using any other function on Y.
+ * @note This routine was provided as a means of allowing the you to optimize your code. After you have called #zmzupdate() on Y with the maximum absolute value of all future elements you wish to deposit in Y, you can call #zmzdeposit() to deposit a maximum of #idxd_DIENDURANCE elements into Y before renormalizing Y with #zmrenorm(). After any number of successive calls of #zmzdeposit() on Y, you must renormalize Y with #zmrenorm() before using any other function on Y.
  *
  * @param fold the fold of the indexed types
  * @param X scalar X

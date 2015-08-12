@@ -178,7 +178,7 @@ float wrap_rsisdeposit(int fold, int N, float *x, int incx, float *y, int incy) 
   int i;
   int j = 0;
   for(i = 0; i < N; i++){
-    if(j >= SIENDURANCE){
+    if(j >= idxd_SIENDURANCE){
       sirenorm(fold, ires);
       j = 0;
     }
@@ -199,7 +199,7 @@ void wrap_sisdeposit(int fold, int N, float *x, int incx, float *y, int incy, fl
   int i;
   int j = 0;
   for(i = 0; i < N; i++){
-    if(j >= SIENDURANCE){
+    if(j >= idxd_SIENDURANCE){
       sirenorm(fold, z);
       j = 0;
     }

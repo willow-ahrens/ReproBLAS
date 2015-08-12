@@ -65,7 +65,7 @@ void dmdsum(const int fold, const int N, const double *X, const int incX, double
       continue;
     }
 
-    if (deposits + N_block > DIENDURANCE) {
+    if (deposits + N_block > idxd_DIENDURANCE) {
       dmrenorm(fold, manY, incmanY, carY, inccarY);
       deposits = 0;
     }
@@ -108,8 +108,8 @@ void dmdsum(const int fold, const int N, const double *X, const int incX, double
 
               if(incX == 1){
                 if(dmindex0(manY)){
-                  compression_0 = _mm256_set1_pd(DMCOMPRESSION);
-                  expansion_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
+                  compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
+                  expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                   for(i = 0; i + 4 <= N_block; i += 4, X += 4){
                     X_0 = _mm256_loadu_pd(X);
 
@@ -168,8 +168,8 @@ void dmdsum(const int fold, const int N, const double *X, const int incX, double
                 }
               }else{
                 if(dmindex0(manY)){
-                  compression_0 = _mm256_set1_pd(DMCOMPRESSION);
-                  expansion_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
+                  compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
+                  expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                   for(i = 0; i + 4 <= N_block; i += 4, X += (incX * 4)){
                     X_0 = _mm256_set_pd(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]);
 
@@ -259,8 +259,8 @@ void dmdsum(const int fold, const int N, const double *X, const int incX, double
 
               if(incX == 1){
                 if(dmindex0(manY)){
-                  compression_0 = _mm256_set1_pd(DMCOMPRESSION);
-                  expansion_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
+                  compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
+                  expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                   for(i = 0; i + 4 <= N_block; i += 4, X += 4){
                     X_0 = _mm256_loadu_pd(X);
 
@@ -325,8 +325,8 @@ void dmdsum(const int fold, const int N, const double *X, const int incX, double
                 }
               }else{
                 if(dmindex0(manY)){
-                  compression_0 = _mm256_set1_pd(DMCOMPRESSION);
-                  expansion_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
+                  compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
+                  expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                   for(i = 0; i + 4 <= N_block; i += 4, X += (incX * 4)){
                     X_0 = _mm256_set_pd(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]);
 
@@ -436,8 +436,8 @@ void dmdsum(const int fold, const int N, const double *X, const int incX, double
 
               if(incX == 1){
                 if(dmindex0(manY)){
-                  compression_0 = _mm_set1_pd(DMCOMPRESSION);
-                  expansion_0 = _mm_set1_pd(DMEXPANSION * 0.5);
+                  compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
+                  expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                   for(i = 0; i + 2 <= N_block; i += 2, X += 2){
                     X_0 = _mm_loadu_pd(X);
 
@@ -496,8 +496,8 @@ void dmdsum(const int fold, const int N, const double *X, const int incX, double
                 }
               }else{
                 if(dmindex0(manY)){
-                  compression_0 = _mm_set1_pd(DMCOMPRESSION);
-                  expansion_0 = _mm_set1_pd(DMEXPANSION * 0.5);
+                  compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
+                  expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                   for(i = 0; i + 2 <= N_block; i += 2, X += (incX * 2)){
                     X_0 = _mm_set_pd(X[incX], X[0]);
 
@@ -587,8 +587,8 @@ void dmdsum(const int fold, const int N, const double *X, const int incX, double
 
               if(incX == 1){
                 if(dmindex0(manY)){
-                  compression_0 = _mm_set1_pd(DMCOMPRESSION);
-                  expansion_0 = _mm_set1_pd(DMEXPANSION * 0.5);
+                  compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
+                  expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                   for(i = 0; i + 2 <= N_block; i += 2, X += 2){
                     X_0 = _mm_loadu_pd(X);
 
@@ -653,8 +653,8 @@ void dmdsum(const int fold, const int N, const double *X, const int incX, double
                 }
               }else{
                 if(dmindex0(manY)){
-                  compression_0 = _mm_set1_pd(DMCOMPRESSION);
-                  expansion_0 = _mm_set1_pd(DMEXPANSION * 0.5);
+                  compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
+                  expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                   for(i = 0; i + 2 <= N_block; i += 2, X += (incX * 2)){
                     X_0 = _mm_set_pd(X[incX], X[0]);
 
@@ -755,8 +755,8 @@ void dmdsum(const int fold, const int N, const double *X, const int incX, double
 
               if(incX == 1){
                 if(dmindex0(manY)){
-                  compression_0 = DMCOMPRESSION;
-                  expansion_0 = DMEXPANSION * 0.5;
+                  compression_0 = idxd_DMCOMPRESSION;
+                  expansion_0 = idxd_DMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += 1){
                     X_0 = X[0];
 
@@ -799,8 +799,8 @@ void dmdsum(const int fold, const int N, const double *X, const int incX, double
                 }
               }else{
                 if(dmindex0(manY)){
-                  compression_0 = DMCOMPRESSION;
-                  expansion_0 = DMEXPANSION * 0.5;
+                  compression_0 = idxd_DMCOMPRESSION;
+                  expansion_0 = idxd_DMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += incX){
                     X_0 = X[0];
 
@@ -865,8 +865,8 @@ void dmdsum(const int fold, const int N, const double *X, const int incX, double
 
               if(incX == 1){
                 if(dmindex0(manY)){
-                  compression_0 = DMCOMPRESSION;
-                  expansion_0 = DMEXPANSION * 0.5;
+                  compression_0 = idxd_DMCOMPRESSION;
+                  expansion_0 = idxd_DMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += 1){
                     X_0 = X[0];
 
@@ -910,8 +910,8 @@ void dmdsum(const int fold, const int N, const double *X, const int incX, double
                 }
               }else{
                 if(dmindex0(manY)){
-                  compression_0 = DMCOMPRESSION;
-                  expansion_0 = DMEXPANSION * 0.5;
+                  compression_0 = idxd_DMCOMPRESSION;
+                  expansion_0 = idxd_DMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += incX){
                     X_0 = X[0];
 

@@ -39,7 +39,7 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   for (i = 0; i < N * (DBL_MAX_EXP - DBL_MIN_EXP) + 1; i++) {
     index = dindex(X[i * incX]);
     if (index == 0){
-      X[i * incX] *= DMCOMPRESSION;
+      X[i * incX] *= idxd_DMCOMPRESSION;
     }
     if (X[i * incX] != 0.0 && *dmbins(index) / ldexp(0.75, DBL_MANT_DIG) > 2 * fabs(X[i * incX])){
       printf("2 * |X| !>= 2^(i * W)\n");

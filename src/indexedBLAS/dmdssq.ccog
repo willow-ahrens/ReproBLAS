@@ -67,7 +67,7 @@ double dmdssq(const int fold, const int N, const double *X, const int incX, cons
       continue;
     }
 
-    if (deposits + N_block > DIENDURANCE) {
+    if (deposits + N_block > idxd_DIENDURANCE) {
       dmrenorm(fold, manY, incmanY, carY, inccarY);
       deposits = 0;
     }
@@ -122,8 +122,8 @@ double dmdssq(const int fold, const int N, const double *X, const int incX, cons
 
               if(incX == 1){
                 if(dmindex0(manY)){
-                  compression_0 = _mm256_set1_pd(DMCOMPRESSION);
-                  expansion_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
+                  compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
+                  expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                   for(i = 0; i + 4 <= N_block; i += 4, X += 4){
                     X_0 = _mm256_div_pd(_mm256_loadu_pd(X), scale_mask);
                     X_0 = _mm256_mul_pd(X_0, X_0);
@@ -186,8 +186,8 @@ double dmdssq(const int fold, const int N, const double *X, const int incX, cons
                 }
               }else{
                 if(dmindex0(manY)){
-                  compression_0 = _mm256_set1_pd(DMCOMPRESSION);
-                  expansion_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
+                  compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
+                  expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                   for(i = 0; i + 4 <= N_block; i += 4, X += (incX * 4)){
                     X_0 = _mm256_div_pd(_mm256_set_pd(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
                     X_0 = _mm256_mul_pd(X_0, X_0);
@@ -281,8 +281,8 @@ double dmdssq(const int fold, const int N, const double *X, const int incX, cons
 
               if(incX == 1){
                 if(dmindex0(manY)){
-                  compression_0 = _mm256_set1_pd(DMCOMPRESSION);
-                  expansion_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
+                  compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
+                  expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                   for(i = 0; i + 4 <= N_block; i += 4, X += 4){
                     X_0 = _mm256_div_pd(_mm256_loadu_pd(X), scale_mask);
                     X_0 = _mm256_mul_pd(X_0, X_0);
@@ -351,8 +351,8 @@ double dmdssq(const int fold, const int N, const double *X, const int incX, cons
                 }
               }else{
                 if(dmindex0(manY)){
-                  compression_0 = _mm256_set1_pd(DMCOMPRESSION);
-                  expansion_0 = _mm256_set1_pd(DMEXPANSION * 0.5);
+                  compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
+                  expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                   for(i = 0; i + 4 <= N_block; i += 4, X += (incX * 4)){
                     X_0 = _mm256_div_pd(_mm256_set_pd(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
                     X_0 = _mm256_mul_pd(X_0, X_0);
@@ -467,8 +467,8 @@ double dmdssq(const int fold, const int N, const double *X, const int incX, cons
 
               if(incX == 1){
                 if(dmindex0(manY)){
-                  compression_0 = _mm_set1_pd(DMCOMPRESSION);
-                  expansion_0 = _mm_set1_pd(DMEXPANSION * 0.5);
+                  compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
+                  expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                   for(i = 0; i + 2 <= N_block; i += 2, X += 2){
                     X_0 = _mm_div_pd(_mm_loadu_pd(X), scale_mask);
                     X_0 = _mm_mul_pd(X_0, X_0);
@@ -531,8 +531,8 @@ double dmdssq(const int fold, const int N, const double *X, const int incX, cons
                 }
               }else{
                 if(dmindex0(manY)){
-                  compression_0 = _mm_set1_pd(DMCOMPRESSION);
-                  expansion_0 = _mm_set1_pd(DMEXPANSION * 0.5);
+                  compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
+                  expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                   for(i = 0; i + 2 <= N_block; i += 2, X += (incX * 2)){
                     X_0 = _mm_div_pd(_mm_set_pd(X[incX], X[0]), scale_mask);
                     X_0 = _mm_mul_pd(X_0, X_0);
@@ -626,8 +626,8 @@ double dmdssq(const int fold, const int N, const double *X, const int incX, cons
 
               if(incX == 1){
                 if(dmindex0(manY)){
-                  compression_0 = _mm_set1_pd(DMCOMPRESSION);
-                  expansion_0 = _mm_set1_pd(DMEXPANSION * 0.5);
+                  compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
+                  expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                   for(i = 0; i + 2 <= N_block; i += 2, X += 2){
                     X_0 = _mm_div_pd(_mm_loadu_pd(X), scale_mask);
                     X_0 = _mm_mul_pd(X_0, X_0);
@@ -696,8 +696,8 @@ double dmdssq(const int fold, const int N, const double *X, const int incX, cons
                 }
               }else{
                 if(dmindex0(manY)){
-                  compression_0 = _mm_set1_pd(DMCOMPRESSION);
-                  expansion_0 = _mm_set1_pd(DMEXPANSION * 0.5);
+                  compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
+                  expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                   for(i = 0; i + 2 <= N_block; i += 2, X += (incX * 2)){
                     X_0 = _mm_div_pd(_mm_set_pd(X[incX], X[0]), scale_mask);
                     X_0 = _mm_mul_pd(X_0, X_0);
@@ -803,8 +803,8 @@ double dmdssq(const int fold, const int N, const double *X, const int incX, cons
 
               if(incX == 1){
                 if(dmindex0(manY)){
-                  compression_0 = DMCOMPRESSION;
-                  expansion_0 = DMEXPANSION * 0.5;
+                  compression_0 = idxd_DMCOMPRESSION;
+                  expansion_0 = idxd_DMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += 1){
                     X_0 = X[0] / scale_mask;
                     X_0 = X_0 * X_0;
@@ -849,8 +849,8 @@ double dmdssq(const int fold, const int N, const double *X, const int incX, cons
                 }
               }else{
                 if(dmindex0(manY)){
-                  compression_0 = DMCOMPRESSION;
-                  expansion_0 = DMEXPANSION * 0.5;
+                  compression_0 = idxd_DMCOMPRESSION;
+                  expansion_0 = idxd_DMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += incX){
                     X_0 = X[0] / scale_mask;
                     X_0 = X_0 * X_0;
@@ -917,8 +917,8 @@ double dmdssq(const int fold, const int N, const double *X, const int incX, cons
 
               if(incX == 1){
                 if(dmindex0(manY)){
-                  compression_0 = DMCOMPRESSION;
-                  expansion_0 = DMEXPANSION * 0.5;
+                  compression_0 = idxd_DMCOMPRESSION;
+                  expansion_0 = idxd_DMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += 1){
                     X_0 = X[0] / scale_mask;
                     X_0 = X_0 * X_0;
@@ -964,8 +964,8 @@ double dmdssq(const int fold, const int N, const double *X, const int incX, cons
                 }
               }else{
                 if(dmindex0(manY)){
-                  compression_0 = DMCOMPRESSION;
-                  expansion_0 = DMEXPANSION * 0.5;
+                  compression_0 = idxd_DMCOMPRESSION;
+                  expansion_0 = idxd_DMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += incX){
                     X_0 = X[0] / scale_mask;
                     X_0 = X_0 * X_0;

@@ -30,10 +30,10 @@ int sindex(const float X){
   int exp = EXPF(X);
   if(exp == 0){
     if(X == 0.0){
-      return SIMAXINDEX;
+      return idxd_SIMAXINDEX;
     }else{
       frexpf(X, &exp);
-      return MIN((FLT_MAX_EXP - exp)/SIWIDTH, SIMAXINDEX);
+      return MIN((FLT_MAX_EXP - exp)/SIWIDTH, idxd_SIMAXINDEX);
     }
   }
   return ((FLT_MAX_EXP + EXPF_BIAS) - exp)/SIWIDTH;

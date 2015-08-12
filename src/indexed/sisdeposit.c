@@ -5,7 +5,7 @@
  *
  * Performs the operation Y += X on an indexed type Y where the index of Y is larger than the index of X
  *
- * @note This routine was provided as a means of allowing the you to optimize your code. After you have called #sisupdate() on Y with the maximum absolute value of all future elements you wish to deposit in Y, you can call #sisdeposit() to deposit a maximum of #SIENDURANCE elements into Y before renormalizing Y with #sirenorm(). After any number of successive calls of #sisdeposit() on Y, you must renormalize Y with #sirenorm() before using any other function on Y.
+ * @note This routine was provided as a means of allowing the you to optimize your code. After you have called #sisupdate() on Y with the maximum absolute value of all future elements you wish to deposit in Y, you can call #sisdeposit() to deposit a maximum of #idxd_SIENDURANCE elements into Y before renormalizing Y with #sirenorm(). After any number of successive calls of #sisdeposit() on Y, you must renormalize Y with #sirenorm() before using any other function on Y.
  *
  * @param fold the fold of the indexed types
  * @param X scalar X
