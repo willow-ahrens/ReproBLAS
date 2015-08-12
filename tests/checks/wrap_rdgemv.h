@@ -8,7 +8,7 @@
 
 void wrap_rdgemv(int fold, char Order, char TransA, int M, int N, double alpha, double *A, int lda, double *X, int incX, double beta, double *Y, int incY){
   double_indexed *YI;
-  int NY;
+  int opM;
   int i;
   if(fold == DIDEFAULTFOLD){
     rdgemv(Order, TransA, M, N, alpha, A, lda, X, incX, beta, Y, incY);
@@ -16,22 +16,58 @@ void wrap_rdgemv(int fold, char Order, char TransA, int M, int N, double alpha, 
     switch(TransA){
       case 'n':
       case 'N':
-        NY = M;
+        opM = M;
       break;
       default:
-        NY = N;
+        opM = N;
       break;
     }
-    YI = (double_indexed*)malloc(NY * incY * disize(fold));
-    for(i = 0; i < NY; i++){
+    YI = (double_indexed*)malloc(opM * incY * disize(fold));
+    for(i = 0; i < opM; i++){
       didconv(fold, Y[i * incY] * beta, YI + i * incY * dinum(fold));
     }
     didgemv(fold, Order, TransA, M, N, alpha, A, lda, X, incX, YI, incY);
-    for(i = 0; i < NY; i++){
+    for(i = 0; i < opM; i++){
       Y[i * incY] = ddiconv(fold, YI + i * incY * dinum(fold));
     }
     free(YI);
   }
+}
+
+void wrap_ref_rdgemv(int fold, char Order, char TransA, int M, int N, double alpha, double *A, int lda, double *X, int incX, double beta, double *Y, int incY){
+  int opM;
+  int opN;
+  double *opA;
+  double_indexed *YI;
+  int i;
+  switch(TransA){
+    case 'n':
+    case 'N':
+      opM = M;
+      opN = N;
+      break;
+    default:
+      opM = N;
+      opN = M;
+      break;
+  }
+  opA = util_dmat_op(Order, TransA, opM, opN, A, lda);
+  YI = dialloc(fold);
+  for(i = 0; i < opM; i++){
+    didconv(fold, Y[i * incY] * beta, YI);
+    switch(Order){
+      case 'r':
+      case 'R':
+        diddot(fold, opN, opA + i * opN, 1, X, incX, YI);
+        break;
+      default:
+        diddot(fold, opN, opA + i, opN, X, incX, YI);
+        break;
+    }
+    Y[i * incY] = ddiconv(fold, YI);
+  }
+  free(YI);
+  free(opA);
 }
 
 double* wrap_rdgemv_result(char Order, char TransA, int M, int N, double RealAlpha, double ImagAlpha, int FillA, double RealScaleA, double ImagScaleA, double *A, int lda, int FillX, double RealScaleX, double ImagScaleX, double *X, int incX, double RealBeta, double ImagBeta, double *Y, int incY){

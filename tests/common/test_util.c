@@ -2234,3 +2234,116 @@ void util_cmat_fill(char Order, char TransA, int M, int N, float complex* A, int
       break;
   }
 }
+
+double *util_dmat_op(char Order, char TransA, int opM, int opN, double *A, int lda){
+  int i;
+  int j;
+  double *opA = (double*)malloc(opM * opN * sizeof(double));
+  switch(Order){
+    case 'r':
+    case 'R':
+      switch(TransA){
+        case 'n':
+        case 'N':
+          for(i = 0; i < opM; i++){
+            for(j = 0; j < opN; j++){
+              opA[i * opN + j] = A[i * lda + j];
+            }
+          }
+          break;
+        default:
+          for(i = 0; i < opM; i++){
+            for(j = 0; j < opN; j++){
+              opA[i * opN + j] = A[j * lda + i];
+            }
+          }
+          break;
+      }
+      break;
+    default:
+      switch(TransA){
+        case 'n':
+        case 'N':
+          for(i = 0; i < opM; i++){
+            for(j = 0; j < opN; j++){
+              opA[j * opN + i] = A[j * lda + i];
+            }
+          }
+          break;
+        default:
+          for(i = 0; i < opM; i++){
+            for(j = 0; j < opN; j++){
+              opA[j * opN + i] = A[i * lda + j];
+            }
+          }
+          break;
+      }
+      break;
+  }
+  return opA;
+}
+
+
+double complex *util_zmat_op(char Order, char TransA, int opM, int opN, double complex *A, int lda){
+  int i;
+  int j;
+  double complex *opA = (double complex*)malloc(opM * opN * sizeof(double complex));
+  switch(Order){
+    case 'r':
+    case 'R':
+      switch(TransA){
+        case 'n':
+        case 'N':
+          for(i = 0; i < opM; i++){
+            for(j = 0; j < opN; j++){
+              opA[i * opN + j] = A[i * lda + j];
+            }
+          }
+          break;
+        case 't':
+        case 'T':
+          for(i = 0; i < opM; i++){
+            for(j = 0; j < opN; j++){
+              opA[i * opN + j] = A[j * lda + i];
+            }
+          }
+          break;
+        default:
+          for(i = 0; i < opM; i++){
+            for(j = 0; j < opN; j++){
+              opA[i * opN + j] = conj(A[j * lda + i]);
+            }
+          }
+          break;
+      }
+      break;
+    default:
+      switch(TransA){
+        case 'n':
+        case 'N':
+          for(i = 0; i < opM; i++){
+            for(j = 0; j < opN; j++){
+              opA[j * opN + i] = A[j * lda + i];
+            }
+          }
+          break;
+        case 't':
+        case 'T':
+          for(i = 0; i < opM; i++){
+            for(j = 0; j < opN; j++){
+              opA[j * opN + i] = A[i * lda + j];
+            }
+          }
+          break;
+        default:
+          for(i = 0; i < opM; i++){
+            for(j = 0; j < opN; j++){
+              opA[j * opN + i] = conj(A[i * lda + j]);
+            }
+          }
+          break;
+      }
+      break;
+  }
+  return opA;
+}

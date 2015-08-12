@@ -34,18 +34,21 @@ DBL_ONES = 0
 for i in range(DBL_MANT_DIG):
   DBL_ONES += 2.0 ** -i
 
-check_suite.add_checks([checks.VerifyRDGEMMTest(),\
+check_suite.add_checks([checks.VerifyValidateInternalRDGEMVTest(),\
                         ],\
-                       ["B", "O", "T", "M", "N", "K", "FillA", "FillB", "FillC", "fold"],\
-                       [["16"], ["ColMajor", "RowMajor"], ["Trans", "NoTrans"], [4], [4], [4],\
-                        ["rand",\
-                         "small+grow*big"],\
-                        ["rand",\
-                         "small+grow*big"],\
-                        ["rand",\
-                         "small+grow*big"],\
+                       ["O", "T", ("N", "lda"), "M", ("incX", "incY"), "FillA", "FillX", "FillY", "fold"],\
+                       [["RowMajor"], ["Trans", "NoTrans"], [(255, 256)], [255], list(zip(incs, incs)),\
+                        ["constant",\
+                         "identity",\
+                         "+big",\
+                         "++big",\
+                         "+-big"],\
+                        ["constant",\
+                         "+big",\
+                         "++big",\
+                         "+-big"],\
+                        ["constant"],\
                         folds])
-
 
 """
 check_suite.add_checks([checks.ValidateInternalRZGEMVTest(),\

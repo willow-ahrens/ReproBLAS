@@ -165,4 +165,7 @@ void util_simat_row_permute(int num, char Order, char TransA, int M, int N, floa
 void util_zimat_row_permute(int num, char Order, char TransA, int M, int N, double complex *A, int lda, int *Q, int incQ, int *P, int incP);
 void util_cimat_row_permute(int num, char Order, char TransA, int M, int N, float complex *A, int lda, int *Q, int incQ, int *P, int incP);
 
+double *util_dmat_op(char Order, char TransA, int opM, int opN, double *A, int lda);
+double complex *util_zmat_op(char Order, char TransA, int opM, int opN, double complex *A, int lda);
+
 #endif
