@@ -31,7 +31,7 @@
  */
 #ifndef _INDEXED_BLAS__H_
 #define _INDEXED_BLAS__H_
-#include "indexed.h"
+#include "idxd.h"
 #include "reproBLAS.h"
 #include <complex.h>
 

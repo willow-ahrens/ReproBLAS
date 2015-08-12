@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
 #include <indexedBLAS.h>
-#include <indexed.h>
+#include <idxd.h>
 
 
 void didgemv(const int fold, const char Order,

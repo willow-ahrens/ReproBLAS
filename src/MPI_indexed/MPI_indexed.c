@@ -2,10 +2,10 @@
  *  Created   13/10/25   H.D. Nguyen
  */
 
-#include "MPI_indexed.h"
+#include "MPI_idxd.h"
 #include "MPI_dIndexed.h"
 #include "MPI_sIndexed.h"
-#include "indexed.h"
+#include "idxd.h"
 #include "../../config.h"
 #include <stdio.h>
 #include <complex.h>

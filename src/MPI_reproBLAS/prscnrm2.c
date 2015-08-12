@@ -7,8 +7,8 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "MPI_indexed.h"
-#include "../MPI_indexed/MPI_sindexed.h"
+#include "MPI_idxd.h"
+#include "../MPI_indexed/MPI_sidxd.h"
 #include "MPI_reproBLAS.h"
 #include "indexedBLAS.h"
 

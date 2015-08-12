@@ -3,7 +3,7 @@
 
 #include <reproBLAS.h>
 #include <indexedBLAS.h>
-#include <indexed.h>
+#include <idxd.h>
 #include "../../config.h"
 
 #define wrap_RCSUM  0

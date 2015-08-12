@@ -1,7 +1,7 @@
 #include <mpi.h>
 #include <stdio.h>
 
-#include <indexed.h>
+#include <idxd.h>
 
 #include "../../config.h"
 

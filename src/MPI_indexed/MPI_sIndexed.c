@@ -2,7 +2,7 @@
  *  Created   13/10/25   H.D. Nguyen
  */
 
-#include "indexed.h"
+#include "idxd.h"
 #include "MPI_sIndexed.h"
 #include <stdio.h>
 #include "../../config.h"

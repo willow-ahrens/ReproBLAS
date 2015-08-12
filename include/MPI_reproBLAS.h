@@ -1,6 +1,6 @@
 #ifndef _REPRODUCIBLE_PAR_BLAS__H_
 #define _REPRODUCIBLE_PAR_BLAS__H_
-#include "indexed.h"
+#include "idxd.h"
 #include "indexedBLAS.h"
 #include <mpi.h>
 

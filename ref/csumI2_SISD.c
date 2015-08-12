@@ -10,7 +10,7 @@
 #include "../config.h"
 #include "../common/common.h"
 #include "cIBlas1.h"
-//#include "../indexedFP/sindexed.h"
+//#include "../indexedFP/sidxd.h"
 #include "../rblas1.h"
 
 #define MANUAL_UNROLL

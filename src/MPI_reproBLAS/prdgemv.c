@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "MPI_indexed.h"
+#include "MPI_idxd.h"
 #include "../MPI_indexed/MPI_dIndexed.h"
 #include "MPI_reproBLAS.h"
 #include "indexedBLAS.h"

@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <math.h>
 #include <mpi.h>
-#include <indexed.h>
-#include <MPI_indexed.h>
+#include <idxd.h>
+#include <MPI_idxd.h>
 #include "../common/test_opt.h"
 #include "../common/test_time.h"
 #include "../common/test_metric.h"

@@ -3,7 +3,7 @@
 #include <math.h>
 #include <string.h>
 
-#include <indexed.h>
+#include <idxd.h>
 #include <indexedBLAS.h>
 #include <reproBLAS.h>
 

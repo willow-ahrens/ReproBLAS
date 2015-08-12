@@ -6,7 +6,7 @@
 #define _REPRODUCIBLE_MPI_FLOAT__H_
 
 #include <mpi.h>
-#include "indexed.h"
+#include "idxd.h"
 
 extern MPI_Datatype MPI_IDOUBLE;
 extern MPI_Datatype MPI_IFLOAT;

@@ -4,7 +4,7 @@ from utils import *
 from dataTypes import *
 from vectorizations import *
 from generate import *
-from src.indexed import deposit
+from src.idxd import deposit
 
 class DepositM(deposit.Deposit):
   def __init__(self, data_type_class, fold_name, N_name, X_name, incX_name, manY_name, incmanY_name, Z_name, incZ_name):
