@@ -44,14 +44,22 @@ void didgemm(const int fold, const char Order,
   int ldbufa;
   double *bufB;
   int ldbufb;
+
+  //early returns
+  if(M == 0 || N == 0 || K == 0 || alpha == 0.0){
+    return;
+  }
+
   switch(Order){
+
+    //row major
     case 'r':
-    case 'R': //Row Major
-
+    case 'R':
       switch(TransA){
-        case 'n':
-        case 'N': //A Not Transposed
 
+        //row major A not transposed
+        case 'n':
+        case 'N':
           if(alpha == 1.0){
             bufA = (double*)A;
             ldbufa = lda;
@@ -65,11 +73,12 @@ void didgemm(const int fold, const char Order,
             ldbufa = K;
           }
           switch(TransB){
-            case 'n':
-            case 'N': //A Not Transposed B Not Transposed
 
+            //row major A not transposed B not transposed
+            case 'n':
+            case 'N':
               bufB = (double*)malloc(XT_BLOCK * YT_BLOCK * sizeof(double));
-              for(i = 0; i < M; i += YT_BLOCK){
+              for(i = 0; i < M; i += Y_BLOCK){
                 for(j = 0; j < N; j += YT_BLOCK){
                   for(k = 0; k < K; k += XT_BLOCK){
                     for(kk = k; kk < K && kk < k + XT_BLOCK; kk++){
@@ -77,9 +86,9 @@ void didgemm(const int fold, const char Order,
                         bufB[(jj - j) * XT_BLOCK + (kk - k)] = B[kk * ldb + jj];
                       }
                     }
-                    for(ii = i; ii < M && ii < i + YT_BLOCK; ii++){
+                    for(ii = i; ii < M && ii < i + Y_BLOCK; ii++){
                       for(jj = j; jj < N && jj < j + YT_BLOCK; jj++){
-                        diddot(fold, MIN(XT_BLOCK, K - k), bufA + ii * ldbufa + k, 1, bufB + (jj - j) * XT_BLOCK, 1, C + (jj * ldc + ii) * dinum(fold));
+                        diddot(fold, MIN(XT_BLOCK, K - k), bufA + ii * ldbufa + k, 1, bufB + (jj - j) * XT_BLOCK, 1, C + (ii * ldc + jj) * dinum(fold));
                       }
                     }
                   }
@@ -88,13 +97,14 @@ void didgemm(const int fold, const char Order,
               free(bufB);
               break;
 
-            default: //A Not Transposed B Transposed
-              for(i = 0; i < M; i += YT_BLOCK){
-                for(j = 0; j < N; j += YT_BLOCK){
-                  for(k = 0; k < K; k += XT_BLOCK){
-                    for(ii = i; ii < M && ii < i + YT_BLOCK; ii++){
-                      for(jj = j; jj < N && jj < j + YT_BLOCK; jj++){
-                        diddot(fold, MIN(XT_BLOCK, K - k), bufA + ii * ldbufa + k, 1, B + (jj - j) * ldb + k, 1, C + (jj * ldc + ii) * dinum(fold));
+            //row major A not transposed B transposed
+            default:
+              for(i = 0; i < M; i += Y_BLOCK){
+                for(j = 0; j < N; j += Y_BLOCK){
+                  for(k = 0; k < K; k += X_BLOCK){
+                    for(ii = i; ii < M && ii < i + Y_BLOCK; ii++){
+                      for(jj = j; jj < N && jj < j + Y_BLOCK; jj++){
+                        diddot(fold, MIN(X_BLOCK, K - k), bufA + ii * ldbufa + k, 1, B + jj * ldb + k, 1, C + (ii * ldc + jj) * dinum(fold));
                       }
                     }
                   }
@@ -108,8 +118,143 @@ void didgemm(const int fold, const char Order,
           }
           break;
 
-        default: //A Transposed
+        //row major A transposed
+        default:
+          switch(TransB){
+
+            //row major A transposed B not transposed
+            case 'n':
+            case 'N':
+              bufA = (double*)malloc(XT_BLOCK * YT_BLOCK * sizeof(double));
+              bufB = (double*)malloc(XT_BLOCK * YT_BLOCK * sizeof(double));
+              if(alpha == 1.0){
+                for(i = 0; i < M; i += YT_BLOCK){
+                  for(j = 0; j < N; j += YT_BLOCK){
+                    for(k = 0; k < K; k += XT_BLOCK){
+                      for(kk = k; kk < K && kk < k + XT_BLOCK; kk++){
+                        for(ii = i; ii < M && ii < i + YT_BLOCK; ii++){
+                          bufA[(ii - i) * XT_BLOCK + (kk - k)] = A[kk * lda + ii];
+                        }
+                      }
+                      for(kk = k; kk < K && kk < k + XT_BLOCK; kk++){
+                        for(jj = j; jj < N && jj < j + YT_BLOCK; jj++){
+                          bufB[(jj - j) * XT_BLOCK + (kk - k)] = B[kk * ldb + jj];
+                        }
+                      }
+                      for(ii = i; ii < M && ii < i + YT_BLOCK; ii++){
+                        for(jj = j; jj < N && jj < j + YT_BLOCK; jj++){
+                          diddot(fold, MIN(XT_BLOCK, K - k), bufA + (ii - i) * XT_BLOCK, 1, bufB + (jj - j) * XT_BLOCK, 1, C + (ii * ldc + jj) * dinum(fold));
+                        }
+                      }
+                    }
+                  }
+                }
+              }else{
+                for(i = 0; i < M; i += YT_BLOCK){
+                  for(j = 0; j < N; j += YT_BLOCK){
+                    for(k = 0; k < K; k += XT_BLOCK){
+                      for(kk = k; kk < K && kk < k + XT_BLOCK; kk++){
+                        for(ii = i; ii < M && ii < i + YT_BLOCK; ii++){
+                          bufA[(ii - i) * XT_BLOCK + (kk - k)] = A[kk * lda + ii] * alpha;
+                        }
+                      }
+                      for(kk = k; kk < K && kk < k + XT_BLOCK; kk++){
+                        for(jj = j; jj < N && jj < j + YT_BLOCK; jj++){
+                          bufB[(jj - j) * XT_BLOCK + (kk - k)] = B[kk * ldb + jj];
+                        }
+                      }
+                      for(ii = i; ii < M && ii < i + YT_BLOCK; ii++){
+                        for(jj = j; jj < N && jj < j + YT_BLOCK; jj++){
+                          diddot(fold, MIN(XT_BLOCK, K - k), bufA + (ii - i) * XT_BLOCK, 1, bufB + (jj - j) * XT_BLOCK, 1, C + (ii * ldc + jj) * dinum(fold));
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              free(bufA);
+              free(bufB);
+              break;
+
+            //row major A transposed B transposed
+            default:
+              bufA = (double*)malloc(XT_BLOCK * YT_BLOCK * sizeof(double));
+              if(alpha == 1.0){
+                for(i = 0; i < M; i += YT_BLOCK){
+                  for(j = 0; j < N; j += Y_BLOCK){
+                    for(k = 0; k < K; k += XT_BLOCK){
+                      for(kk = k; kk < K && kk < k + XT_BLOCK; kk++){
+                        for(ii = i; ii < M && ii < i + YT_BLOCK; ii++){
+                          bufA[(ii - i) * XT_BLOCK + (kk - k)] = A[kk * lda + ii];
+                        }
+                      }
+                      for(ii = i; ii < M && ii < i + YT_BLOCK; ii++){
+                        for(jj = j; jj < N && jj < j + Y_BLOCK; jj++){
+                          diddot(fold, MIN(XT_BLOCK, K - k), bufA + (ii - i) * XT_BLOCK, 1, B + jj * ldb + k, 1, C + (ii * ldc + jj) * dinum(fold));
+                        }
+                      }
+                    }
+                  }
+                }
+              }else{
+                for(i = 0; i < M; i += YT_BLOCK){
+                  for(j = 0; j < N; j += Y_BLOCK){
+                    for(k = 0; k < K; k += XT_BLOCK){
+                      for(kk = k; kk < K && kk < k + XT_BLOCK; kk++){
+                        for(ii = i; ii < M && ii < i + YT_BLOCK; ii++){
+                          bufA[(ii - i) * XT_BLOCK + (kk - k)] = A[kk * lda + ii] * alpha;
+                        }
+                      }
+                      for(ii = i; ii < M && ii < i + YT_BLOCK; ii++){
+                        for(jj = j; jj < N && jj < j + Y_BLOCK; jj++){
+                          diddot(fold, MIN(XT_BLOCK, K - k), bufA + (ii - i) * XT_BLOCK, 1, B + jj * ldb + k, 1, C + (ii * ldc + jj) * dinum(fold));
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              free(bufA);
+              break;
+          }
           break;
       }
+
+    //column major
+    default:
+      switch(TransA){
+
+        //column major A not transposed
+        case 'n':
+        case 'N':
+          switch(TransB){
+
+            //column major A not transposed B not transposed
+            case 'n':
+            case 'N':
+              break;
+
+            //column major A not transposed B transposed
+            default:
+              break;
+          }
+          break;
+
+        //column major A transposed
+        default:
+          switch(TransB){
+
+            //column major A transposed B not transposed
+            case 'n':
+            case 'N':
+              break;
+
+            //column major A transposed B transposed
+            default:
+              break;
+          }
+          break;
+      }
+      break;
   }
 }

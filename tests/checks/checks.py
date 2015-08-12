@@ -561,35 +561,15 @@ class VerifySICSSQTest(CheckTest):
   executable = "tests/checks/verify_sicssq"
   name = "verify_sicssq"
 
-class VerifyRDGEMVTest(CheckTest):
+class CorroborateRDGEMVTest(CheckTest):
   base_flags = ""
-  executable = "tests/checks/verify_rdgemv"
-  name = "verify_rdgemv"
+  executable = "tests/checks/corroborate_rdgemv"
+  name = "corroborate_rdgemv"
 
-class VerifyValidateInternalRDGEMVTest(CheckTest):
+class CorroborateRDGEMMTest(CheckTest):
   base_flags = ""
-  executable = "tests/checks/verify_validate_internal_rdgemv"
-  name = "verify_validate_internal_rdgemv"
-
-class VerifyRZGEMVTest(CheckTest):
-  base_flags = ""
-  executable = "tests/checks/verify_rzgemv"
-  name = "verify_rzgemv"
-
-class VerifyRDGEMMTest(CheckTest):
-  base_flags = ""
-  executable = "tests/checks/verify_rdgemm"
-  name = "verify_rdgemm"
-
-class ValidateInternalRDGEMVTest(CheckTest):
-  base_flags = ""
-  executable = "tests/checks/validate_internal_rdgemv"
-  name = "validate_internal_rdgemv"
-
-class ValidateInternalRZGEMVTest(CheckTest):
-  base_flags = ""
-  executable = "tests/checks/validate_internal_rzgemv"
-  name = "validate_internal_rzgemv"
+  executable = "tests/checks/corroborate_rdgemm"
+  name = "corroborate_rdgemm"
 
 class ValidateInternalDSCALETest(CheckTest):
   base_flags = ""
@@ -709,12 +689,8 @@ all_checks = {"validate_internal_ufp": ValidateInternalUFPTest,\
               "verify_dizssq": VerifyDIZSSQTest,\
               "verify_sisssq": VerifySISSSQTest,\
               "verify_sicssq": VerifySICSSQTest,\
-              "verify_rdgemv": VerifyRDGEMVTest,\
-              "verify_validate_internal_rdgemv": VerifyValidateInternalRDGEMVTest,\
-              "verify_rzgemv": VerifyRZGEMVTest,\
-              "verify_rdgemm": VerifyRDGEMMTest,\
-              "validate_internal_rdgemv": ValidateInternalRDGEMVTest,\
-              "validate_internal_rzgemv": ValidateInternalRZGEMVTest,\
+              "corroborate_rdgemv": CorroborateRDGEMVTest,\
+              "corroborate_rdgemm": CorroborateRDGEMMTest,\
               "validate_internal_dscale": ValidateInternalDSCALETest,\
               "validate_internal_dscale": ValidateInternalDSCALETest,\
               "validate_internal_sscale": ValidateInternalSSCALETest,\

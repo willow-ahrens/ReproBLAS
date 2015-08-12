@@ -14,32 +14,56 @@ void rdgemm(const char Order, const char TransA, const char TransB,
   int i;
   int j;
 
-  CI = (double_indexed*)malloc(N * M * disize(DIDEFAULTFOLD));
+  if(M == 0 || N == 0){
+    return;
+  }
+
+  CI = (double_indexed*)malloc(M * N * disize(DIDEFAULTFOLD));
   switch(Order){
     case 'r':
     case 'R':
-      for(i = 0; i < M; i++){
-        for(j = 0; j < N; j++){
-          didconv(DIDEFAULTFOLD, C[i * lda + j] * beta, CI + (i * lda + j) * dinum(DIDEFAULTFOLD));
+      if(beta == 1.0){
+        for(i = 0; i < M; i++){
+          for(j = 0; j < N; j++){
+            didconv(DIDEFAULTFOLD, C[i * ldc + j], CI + (i * N + j) * dinum(DIDEFAULTFOLD));
+          }
+        }
+      }else if(beta == 0.0){
+        memset(CI, 0.0, M * N * disize(DIDEFAULTFOLD));
+      }else{
+        for(i = 0; i < M; i++){
+          for(j = 0; j < N; j++){
+            didconv(DIDEFAULTFOLD, C[i * ldc + j] * beta, CI + (i * N + j) * dinum(DIDEFAULTFOLD));
+          }
         }
       }
       didgemm(DIDEFAULTFOLD, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, CI, N);
       for(i = 0; i < M; i++){
         for(j = 0; j < N; j++){
-          C[i * lda + j] = ddiconv(DIDEFAULTFOLD, CI + (i * lda + j) * dinum(DIDEFAULTFOLD));
+          C[i * ldc + j] = ddiconv(DIDEFAULTFOLD, CI + (i * N + j) * dinum(DIDEFAULTFOLD));
         }
       }
       break;
     default:
-      for(j = 0; j < N; j++){
-        for(i = 0; i < M; i++){
-          didconv(DIDEFAULTFOLD, C[j * lda + i] * beta, CI + (j * lda + i) * dinum(DIDEFAULTFOLD));
+      if(beta == 1.0){
+        for(j = 0; j < N; j++){
+          for(i = 0; i < M; i++){
+            didconv(DIDEFAULTFOLD, C[j * ldc + i], CI + (j * M + i) * dinum(DIDEFAULTFOLD));
+          }
+        }
+      }else if(beta == 0.0){
+        memset(CI, 0.0, M * N * disize(DIDEFAULTFOLD));
+      }else{
+        for(j = 0; j < N; j++){
+          for(i = 0; i < M; i++){
+            didconv(DIDEFAULTFOLD, C[j * ldc + i] * beta, CI + (j * M + i) * dinum(DIDEFAULTFOLD));
+          }
         }
       }
       didgemm(DIDEFAULTFOLD, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, CI, M);
       for(j = 0; j < N; j++){
         for(i = 0; i < M; i++){
-          C[j * lda + i] = ddiconv(DIDEFAULTFOLD, CI + (j * lda + i) * dinum(DIDEFAULTFOLD));
+          C[j * ldc + i] = ddiconv(DIDEFAULTFOLD, CI + (j * M + i) * dinum(DIDEFAULTFOLD));
         }
       }
       break;

@@ -48,8 +48,9 @@ const char* bench_matvec_fill_name(int argc, char** argv){
 
 int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int N, double RealAlpha, double ImagAlpha, int FillA, double RealScaleA, double ImagScaleA, int lda, int FillX, double RealScaleX, double ImagScaleX, int incX, double RealBeta, double ImagBeta, int FillY, double RealScaleY, double ImagScaleY, int incY, int trials){
   int rc = 0;
-  int i = 0;
-  int j = 0;
+  int t;
+  int i;
+  int j;
 
   bench_rdgemv_options_initialize();
 
@@ -83,14 +84,14 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
   double *res  = (double*)malloc(NY * incY * sizeof(double));
 
   if(fold._int.value == DIDEFAULTFOLD){
-    for(i = 0; i < trials; i++){
+    for(t = 0; t < trials; t++){
       memcpy(res, Y, NY * incY * sizeof(double));
       time_tic();
       rdgemv(Order, TransA, M, N, alpha, A, lda, X, incX, beta, res, incY);
       time_toc();
     }
   }else{
-    for(i = 0; i < trials; i++){
+    for(t = 0; t < trials; t++){
       memcpy(res, Y, NY * incY * sizeof(double));
       time_tic();
       if(beta == 1.0){

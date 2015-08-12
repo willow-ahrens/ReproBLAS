@@ -34,7 +34,8 @@ DBL_ONES = 0
 for i in range(DBL_MANT_DIG):
   DBL_ONES += 2.0 ** -i
 
-check_suite.add_checks([checks.VerifyValidateInternalRDGEMVTest(),\
+"""
+check_suite.add_checks([checks.CorroborateRDGEMVTest(),\
                         ],\
                        ["O", "T", ("N", "lda"), "M", ("incX", "incY"), "FillA", "FillX", "FillY", "fold"],\
                        [["RowMajor"], ["Trans", "NoTrans"], [(255, 256)], [255], list(zip(incs, incs)),\
@@ -48,6 +49,18 @@ check_suite.add_checks([checks.VerifyValidateInternalRDGEMVTest(),\
                          "++big",\
                          "+-big"],\
                         ["constant"],\
+                        folds])
+"""
+check_suite.add_checks([checks.CorroborateRDGEMMTest(),\
+                        ],\
+                       ["O", "TransA", "TransB", "N", "M", "K", "FillA", "FillB", "FillC", "RealAlpha", "fold"],\
+                       [["RowMajor"], ["Trans", "NoTrans"], ["Trans", "NoTrans"], [256], [256], [256],\
+                        ["rand",\
+                         ],\
+                        ["rand",\
+                         ],\
+                        ["rand"],\
+                        [1.0, 2.0],\
                         folds])
 
 """
