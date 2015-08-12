@@ -234,6 +234,14 @@ class BenchRDGEMVTest(BenchTest):
   name = "RDGEMV"
   executable = "tests/benchs/bench_rdgemv"
 
+class BenchRDGEMMTest(BenchTest):
+  name = "RDGEMM"
+  executable = "tests/benchs/bench_rdgemm"
+
+class BenchDGEMMTest(BenchTest):
+  name = "DGEMM"
+  executable = "tests/benchs/bench_dgemm"
+
 class BenchDGEMVTest(BenchTest):
   name = "DGEMV"
   executable = "tests/benchs/bench_dgemv"

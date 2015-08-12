@@ -50,6 +50,7 @@
   }
 
   extern void cblas_dgemv (char, char,int,int,double,double*,int,double*,int,double,double*,int);
+  extern void cblas_dgemm (char, char,char,int,int,int,double,double*,int,double*,int,double,double*,int);
   extern void cblas_zgemv (char, char,int,int,double complex*,double complex*,int,double complex*,int,double complex*,double complex*,int);
 
 #	define CALL_IDAMAX(R, N, V, INC) R = cblas_idamax(N, V, INC)
@@ -78,8 +79,8 @@
   cblas_dgemv(cblasorder(ORDER), cblastrans(TRANS),M,N,ALPHA,A,LDA,X,INCX,BETA,Y,INCY);
 #	define CALL_ZGEMV(ORDER, TRANS,M,N,ALPHA,A,LDA,X,INCX,BETA,Y,INCY) \
   cblas_zgemv(cblasorder(ORDER), cblastrans(TRANS),M,N,ALPHA,A,LDA,X,INCX,BETA,Y,INCY);
-#	define CALL_DGEMM(TRANSA,TRANSB,M,N,K,ALPHA,A,LDA,B,LDB,BETA,C,LDC) \
-  cblas_dgemm(cblasorder(ORDER), cblastrans(TRANSA), cblastrans(TRANSB),M,N,KALPHA,A,LDA,B,LDB,BETA,C,LDC);
+#	define CALL_DGEMM(ORDER, TRANSA,TRANSB,M,N,K,ALPHA,A,LDA,B,LDB,BETA,C,LDC) \
+  cblas_dgemm(cblasorder(ORDER), cblastrans(TRANSA), cblastrans(TRANSB),M,N,K,ALPHA,A,LDA,B,LDB,BETA,C,LDC);
 
 #elif defined (BLAS)
 

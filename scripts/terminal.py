@@ -187,6 +187,7 @@ def get_peak_time(output, verbose="false"):
   data["d_orb"] = 0;
   data["vec"] = get_vectorization(verbose=verbose);
   data["freq"] = get_cpu_freq(verbose=verbose);
+  data["fma"] = get_fma(verbose=verbose);
   for key in data:
     if key in output:
       data[key] = output[key]

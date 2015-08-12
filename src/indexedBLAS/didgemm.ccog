@@ -24,6 +24,11 @@ cog.out(generate.generate(blockSize.BlockSize("dmdgemm", "T_BLOCK", 1, 32, 32, [
 #define XT_BLOCK 8192
 #define T_BLOCK 32
 //[[[end]]]
+#define Y_BLOCK 32
+#define X_BLOCK 1024
+#define YT_BLOCK 32
+#define XT_BLOCK 1024
+#define T_BLOCK 32
 
 void didgemm(const int fold, const char Order,
              const char TransA, const char TransB,
