@@ -81,7 +81,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
       ires = idxd_sialloc(j);
       idxd_sisetzero(j, ires);
       for(i = 0; i < trials; i++){
-        sisasum(j, N, X, incX, ires);
+        idxdBLAS_sisasum(j, N, X, incX, ires);
       }
       res = idxd_ssiconv(j, ires);
       free(ires);
@@ -92,7 +92,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
     ires = idxd_sialloc(fold._int.value);
     idxd_sisetzero(fold._int.value, ires);
     for(i = 0; i < trials; i++){
-      sisasum(fold._int.value, N, X, incX, ires);
+      idxdBLAS_sisasum(fold._int.value, N, X, incX, ires);
     }
     res = idxd_ssiconv(fold._int.value, ires);
     free(ires);

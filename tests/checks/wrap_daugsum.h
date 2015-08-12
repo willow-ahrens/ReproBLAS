@@ -44,7 +44,7 @@ double wrap_rdsum(int fold, int N, double *x, int incx, double *y, int incy) {
   }else{
     double_indexed *ires = idxd_dialloc(fold);
     idxd_disetzero(fold, ires);
-    didsum(fold, N, x, incx, ires);
+    idxdBLAS_didsum(fold, N, x, incx, ires);
     double res = idxd_ddiconv(fold, ires);
     free(ires);
     return res;
@@ -54,7 +54,7 @@ double wrap_rdsum(int fold, int N, double *x, int incx, double *y, int incy) {
 void wrap_didsum(int fold, int N, double *x, int incx, double *y, int incy, double_indexed *z) {
   (void)y;
   (void)incy;
-  didsum(fold, N, x, incx, z);
+  idxdBLAS_didsum(fold, N, x, incx, z);
 }
 
 double wrap_rdasum(int fold, int N, double *x, int incx, double *y, int incy) {
@@ -65,7 +65,7 @@ double wrap_rdasum(int fold, int N, double *x, int incx, double *y, int incy) {
   }else{
     double_indexed *ires = idxd_dialloc(fold);
     idxd_disetzero(fold, ires);
-    didasum(fold, N, x, incx, ires);
+    idxdBLAS_didasum(fold, N, x, incx, ires);
     double res = idxd_ddiconv(fold, ires);
     free(ires);
     return res;
@@ -75,7 +75,7 @@ double wrap_rdasum(int fold, int N, double *x, int incx, double *y, int incy) {
 void wrap_didasum(int fold, int N, double *x, int incx, double *y, int incy, double_indexed *z) {
   (void)y;
   (void)incy;
-  didasum(fold, N, x, incx, z);
+  idxdBLAS_didasum(fold, N, x, incx, z);
 }
 
 double wrap_rdnrm2(int fold, int N, double *x, int incx, double *y, int incy) {
@@ -86,7 +86,7 @@ double wrap_rdnrm2(int fold, int N, double *x, int incx, double *y, int incy) {
   }else{
     double_indexed *ires = idxd_dialloc(fold);
     idxd_disetzero(fold, ires);
-    double scale = didssq(fold, N, x, incx, 0.0, ires);
+    double scale = idxdBLAS_didssq(fold, N, x, incx, 0.0, ires);
     double res = idxd_ddiconv(fold, ires);
     free(ires);
     return scale * sqrt(res);
@@ -96,7 +96,7 @@ double wrap_rdnrm2(int fold, int N, double *x, int incx, double *y, int incy) {
 void wrap_didssq(int fold, int N, double *x, int incx, double *y, int incy, double_indexed *z) {
   (void)y;
   (void)incy;
-  didssq(fold, N, x, incx, 0.0, z);
+  idxdBLAS_didssq(fold, N, x, incx, 0.0, z);
 }
 
 double wrap_rddot(int fold, int N, double *x, int incx, double *y, int incy) {
@@ -105,7 +105,7 @@ double wrap_rddot(int fold, int N, double *x, int incx, double *y, int incy) {
   }else{
     double_indexed *ires = idxd_dialloc(fold);
     idxd_disetzero(fold, ires);
-    diddot(fold, N, x, incx, y, incy, ires);
+    idxdBLAS_diddot(fold, N, x, incx, y, incy, ires);
     double res = idxd_ddiconv(fold, ires);
     free(ires);
     return res;
@@ -113,7 +113,7 @@ double wrap_rddot(int fold, int N, double *x, int incx, double *y, int incy) {
 }
 
 void wrap_diddot(int fold, int N, double *x, int incx, double *y, int incy, double_indexed *z) {
-  diddot(fold, N, x, incx, y, incy, z);
+  idxdBLAS_diddot(fold, N, x, incx, y, incy, z);
 }
 
 double wrap_rdidiadd(int fold, int N, double *x, int incx, double *y, int incy) {
@@ -173,7 +173,7 @@ double wrap_rdiddeposit(int fold, int N, double *x, int incx, double *y, int inc
   (void)incy;
   double_indexed *ires = idxd_dialloc(fold);
   idxd_disetzero(fold, ires);
-  double amax = damax(N, x, incx);
+  double amax = idxdBLAS_damax(N, x, incx);
   idxd_didupdate(fold, amax, ires);
   int i;
   int j = 0;
@@ -194,7 +194,7 @@ double wrap_rdiddeposit(int fold, int N, double *x, int incx, double *y, int inc
 void wrap_diddeposit(int fold, int N, double *x, int incx, double *y, int incy, double_indexed *z) {
   (void)y;
   (void)incy;
-  double amax = damax(N, x, incx);
+  double amax = idxdBLAS_damax(N, x, incx);
   idxd_didupdate(fold, amax, z);
   int i;
   int j = 0;
@@ -475,10 +475,10 @@ double wrap_daugsum_bound(int fold, int N, wrap_daugsum_func_t func, double *X, 
     case wrap_daugsum_DIDADD:
     case wrap_daugsum_DIDDEPOSIT:
     case wrap_daugsum_RDASUM:
-      return idxd_dibound(fold, N, damax(N, X, incX), res);
+      return idxd_dibound(fold, N, idxdBLAS_damax(N, X, incX), res);
     case wrap_daugsum_RDNRM2:
       {
-        double amax = damax(N, X, incX);
+        double amax = idxdBLAS_damax(N, X, incX);
         double scale = idxd_dscale(amax);
         if (amax == 0.0){
           return 0.0;
@@ -486,7 +486,7 @@ double wrap_daugsum_bound(int fold, int N, wrap_daugsum_func_t func, double *X, 
         return idxd_dibound(fold, N, (amax/scale) * (amax/scale), res) * (scale / (res + ref)) * scale;
       }
     case wrap_daugsum_RDDOT:
-      return idxd_dibound(fold, N, damaxm(N, X, incX, Y, incY), res);
+      return idxd_dibound(fold, N, idxdBLAS_damaxm(N, X, incX, Y, incY), res);
   }
   fprintf(stderr, "ReproBLAS error: unknown bound for %s\n", wrap_daugsum_func_descs[func]);
   exit(125);

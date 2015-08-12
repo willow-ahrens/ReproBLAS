@@ -4,12 +4,12 @@
 #include <idxd.h>
 
 
-void zizgemv(const int fold, const char Order,
+void idxdBLAS_zizgemv(const int fold, const char Order,
              const char TransA, const int M, const int N,
              const void *alpha, const void *A, const int lda,
              const void *X, const int incX,
              double_complex_indexed *Y, const int incY){
-  zmzgemv(fold, Order,
+  idxdBLAS_zmzgemv(fold, Order,
           TransA, M, N,
           alpha, A, lda,
           X, incX,

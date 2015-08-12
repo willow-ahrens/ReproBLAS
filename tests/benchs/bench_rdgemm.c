@@ -117,7 +117,7 @@ int bench_matmat_fill_test(int argc, char** argv, char Order, char TransA, char 
               }
             }
           }
-          didgemm(fold._int.value, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, CI, N);
+          idxdBLAS_didgemm(fold._int.value, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, CI, N);
           for(i = 0; i < M; i++){
             for(j = 0; j < N; j++){
               res[i * ldc + j] = idxd_ddiconv(fold._int.value, CI + (i * N + j) * idxd_dinum(fold._int.value));
@@ -140,7 +140,7 @@ int bench_matmat_fill_test(int argc, char** argv, char Order, char TransA, char 
               }
             }
           }
-          didgemm(fold._int.value, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, CI, M);
+          idxdBLAS_didgemm(fold._int.value, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, CI, M);
           for(j = 0; j < N; j++){
             for(i = 0; i < M; i++){
               res[j * ldc + i] = idxd_ddiconv(fold._int.value, CI + (j * M + i) * idxd_dinum(fold._int.value));

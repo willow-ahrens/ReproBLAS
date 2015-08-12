@@ -30,7 +30,7 @@ cog.out(str(code_block))
 #endif
 //[[[end]]]
 
-void zamax_sub(const int N, const void *X, const int incX, void *amax){
+void idxdBLAS_zamax_sub(const int N, const void *X, const int incX, void *amax){
   const double *x = (const double*)X;
   /*[[[cog
   cog.out(generate.generate(amax.AMax(dataTypes.DoubleComplex, "N", "x", "incX", "amax"), cog.inFile, args, params, mode))

@@ -40,7 +40,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
 
   time_tic();
   for(i = 0; i < trials; i++){
-    res = samax(N, X, incX);
+    res = idxdBLAS_samax(N, X, incX);
   }
   time_toc();
 

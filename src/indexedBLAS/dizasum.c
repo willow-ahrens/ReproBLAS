@@ -4,6 +4,6 @@
 
 #include "indexedBLAS.h"
 
-void dizasum(const int fold, const int N, const void *X, const int incX, double_indexed *Y){
-  dmzasum(fold, N, X, incX, Y, 1, Y + fold, 1);
+void idxdBLAS_dizasum(const int fold, const int N, const void *X, const int incX, double_indexed *Y){
+  idxdBLAS_dmzasum(fold, N, X, incX, Y, 1, Y + fold, 1);
 }

@@ -9,7 +9,7 @@ float rscasum(const int N, const void* X, const int incX) {
 
   idxd_sisetzero(SIDEFAULTFOLD, asumi);
 
-  sicasum(SIDEFAULTFOLD, N, X, incX, asumi);
+  idxdBLAS_sicasum(SIDEFAULTFOLD, N, X, incX, asumi);
 
   asum = idxd_ssiconv(SIDEFAULTFOLD, asumi);
   free(asumi);

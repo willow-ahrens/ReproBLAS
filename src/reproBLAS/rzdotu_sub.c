@@ -8,7 +8,7 @@ void rzdotu_sub(const int N, const void* X, const int incX, const void *Y, const
 
   idxd_zisetzero(DIDEFAULTFOLD, dotui);
 
-  zizdotu(DIDEFAULTFOLD, N, X, incX, Y, incY, dotui);
+  idxdBLAS_zizdotu(DIDEFAULTFOLD, N, X, incX, Y, incY, dotui);
 
   idxd_zziconv_sub(DIDEFAULTFOLD, dotui, dotu);
   free(dotui);

@@ -8,7 +8,7 @@ void rcdotu_sub(const int N, const void* X, const int incX, const void *Y, const
 
   idxd_cisetzero(SIDEFAULTFOLD, dotui);
 
-  cicdotu(SIDEFAULTFOLD, N, X, incX, Y, incY, dotui);
+  idxdBLAS_cicdotu(SIDEFAULTFOLD, N, X, incX, Y, incY, dotui);
 
   idxd_cciconv_sub(SIDEFAULTFOLD, dotui, dotu);
   free(dotui);

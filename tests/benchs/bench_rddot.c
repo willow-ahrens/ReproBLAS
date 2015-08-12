@@ -79,7 +79,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
       ires = idxd_dialloc(j);
       idxd_disetzero(j, ires);
       for(i = 0; i < trials; i++){
-        diddot(j, N, X, incX, Y, incY, ires);
+        idxdBLAS_diddot(j, N, X, incX, Y, incY, ires);
       }
       res = idxd_ddiconv(j, ires);
       free(ires);
@@ -90,7 +90,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
     ires = idxd_dialloc(fold._int.value);
     idxd_disetzero(fold._int.value, ires);
     for(i = 0; i < trials; i++){
-      diddot(fold._int.value, N, X, incX, Y, incY, ires);
+      idxdBLAS_diddot(fold._int.value, N, X, incX, Y, incY, ires);
     }
     res = idxd_ddiconv(fold._int.value, ires);
     free(ires);

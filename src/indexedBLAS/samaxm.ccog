@@ -29,7 +29,7 @@ cog.out(str(code_block))
 #endif
 //[[[end]]]
 
-float samaxm(const int N, const float *X, const int incX, const float *Y, const int incY){
+float idxdBLAS_samaxm(const int N, const float *X, const int incX, const float *Y, const int incY){
   float amaxm;
   /*[[[cog
   cog.out(generate.generate(amaxm.AMaxM(dataTypes.Float, "N", "X", "incX", "Y", "incY", "(&amaxm)"), cog.inFile, args, params, mode))

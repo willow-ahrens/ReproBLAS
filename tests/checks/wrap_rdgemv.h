@@ -26,7 +26,7 @@ void wrap_rdgemv(int fold, char Order, char TransA, int M, int N, double alpha, 
     for(i = 0; i < opM; i++){
       idxd_didconv(fold, Y[i * incY] * beta, YI + i * incY * idxd_dinum(fold));
     }
-    didgemv(fold, Order, TransA, M, N, alpha, A, lda, X, incX, YI, incY);
+    idxdBLAS_didgemv(fold, Order, TransA, M, N, alpha, A, lda, X, incX, YI, incY);
     for(i = 0; i < opM; i++){
       Y[i * incY] = idxd_ddiconv(fold, YI + i * incY * idxd_dinum(fold));
     }
@@ -68,10 +68,10 @@ void wrap_ref_rdgemv(int fold, char Order, char TransA, int M, int N, double alp
       switch(Order){
         case 'r':
         case 'R':
-          diddot(fold, opN, opA + i * opN, 1, opX, 1, YI);
+          idxdBLAS_diddot(fold, opN, opA + i * opN, 1, opX, 1, YI);
           break;
         default:
-          diddot(fold, opN, opA + i, opN, opX, 1, YI);
+          idxdBLAS_diddot(fold, opN, opA + i, opN, opX, 1, YI);
           break;
       }
     }
@@ -139,10 +139,10 @@ double wrap_rdgemv_bound(int fold, char Order, char TransA, int M, int N, double
       switch(Order){
         case 'r':
         case 'R':
-          bound = idxd_dibound(fold, N + 1, MAX(fabs(Y[i * incY] * beta), damaxm(N, A + i * lda, 1, alphaX, 1)), res[i * incY]);
+          bound = idxd_dibound(fold, N + 1, MAX(fabs(Y[i * incY] * beta), idxdBLAS_damaxm(N, A + i * lda, 1, alphaX, 1)), res[i * incY]);
           break;
         default:
-          bound = idxd_dibound(fold, N + 1, MAX(fabs(Y[i * incY] * beta), damaxm(N, A + i, lda, alphaX, 1)), res[i * incY]);
+          bound = idxd_dibound(fold, N + 1, MAX(fabs(Y[i * incY] * beta), idxdBLAS_damaxm(N, A + i, lda, alphaX, 1)), res[i * incY]);
           break;
       }
       break;
@@ -154,10 +154,10 @@ double wrap_rdgemv_bound(int fold, char Order, char TransA, int M, int N, double
       switch(Order){
         case 'r':
         case 'R':
-          bound = idxd_dibound(fold, M + 1, MAX(fabs(Y[i * incY] * beta), damaxm(M, A + i, lda, alphaX, 1)), res[i * incY]);
+          bound = idxd_dibound(fold, M + 1, MAX(fabs(Y[i * incY] * beta), idxdBLAS_damaxm(M, A + i, lda, alphaX, 1)), res[i * incY]);
           break;
         default:
-          bound = idxd_dibound(fold, M + 1, MAX(fabs(Y[i * incY] * beta), damaxm(M, A + i * lda, 1, alphaX, 1)), res[i * incY]);
+          bound = idxd_dibound(fold, M + 1, MAX(fabs(Y[i * incY] * beta), idxdBLAS_damaxm(M, A + i * lda, 1, alphaX, 1)), res[i * incY]);
           break;
       }
       break;

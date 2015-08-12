@@ -71,7 +71,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   if(fold._int.value == 0){
     ires = idxd_dialloc(DIMAXFOLD);
     idxd_disetzero(DIMAXFOLD, ires);
-    didsum(DIMAXFOLD, N, X, incX, ires);
+    idxdBLAS_didsum(DIMAXFOLD, N, X, incX, ires);
     time_tic();
     for(j = 1; j <= DIMAXFOLD; j++){
       for(i = 0; i < trials; i++){
@@ -83,7 +83,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   }else{
     ires = idxd_dialloc(fold._int.value);
     idxd_disetzero(fold._int.value, ires);
-    didsum(fold._int.value, N, X, incX, ires);
+    idxdBLAS_didsum(fold._int.value, N, X, incX, ires);
     time_tic();
     for(i = 0; i < trials; i++){
       res = idxd_ddiconv(fold._int.value, ires);

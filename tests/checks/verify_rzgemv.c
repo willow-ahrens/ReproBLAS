@@ -70,10 +70,10 @@ int verify_zgemv_reproducibility(int fold, char Order, char TransA, int M, int N
               switch(Order){
                 case 'r':
                 case 'R':
-                  zizgemv(fold, Order, TransA, M, block_N, (void*)alpha, (void*)(A + i), lda, (void*)(X + i * incX), incX, Ires, incY);
+                  idxdBLAS_zizgemv(fold, Order, TransA, M, block_N, (void*)alpha, (void*)(A + i), lda, (void*)(X + i * incX), incX, Ires, incY);
                   break;
                 default:
-                  zizgemv(fold, Order, TransA, M, block_N, (void*)alpha, (void*)(A + i * lda), lda, (void*)(X + i * incX), incX, Ires, incY);
+                  idxdBLAS_zizgemv(fold, Order, TransA, M, block_N, (void*)alpha, (void*)(A + i * lda), lda, (void*)(X + i * incX), incX, Ires, incY);
                   break;
               }
             }
@@ -87,10 +87,10 @@ int verify_zgemv_reproducibility(int fold, char Order, char TransA, int M, int N
               switch(Order){
                 case 'r':
                 case 'R':
-                  zizgemv(fold, Order, TransA, block_N, N, (void*)alpha, (void*)(A + i * lda), lda, (void*)(X + i * incX), incX, Ires, incY);
+                  idxdBLAS_zizgemv(fold, Order, TransA, block_N, N, (void*)alpha, (void*)(A + i * lda), lda, (void*)(X + i * incX), incX, Ires, incY);
                   break;
                 default:
-                  zizgemv(fold, Order, TransA, block_N, N, (void*)alpha, (void*)(A + i), lda, (void*)(X + i * incX), incX, Ires, incY);
+                  idxdBLAS_zizgemv(fold, Order, TransA, block_N, N, (void*)alpha, (void*)(A + i), lda, (void*)(X + i * incX), incX, Ires, incY);
                   break;
               }
             }
@@ -193,7 +193,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   memcpy(Iref, YI, NY * incY * idxd_zisize(fold._int.value));
 
   wrap_rzgemv(fold._int.value, Order, TransA, M, N, &alpha, A, lda, X, incX, &beta, ref, incY);
-  zizgemv(fold._int.value, Order, TransA, M, N, &alpha, A, lda, X, incX, Iref, incY);
+  idxdBLAS_zizgemv(fold._int.value, Order, TransA, M, N, &alpha, A, lda, X, incX, Iref, incY);
 
   P = util_identity_permutation(NX);
   util_zvec_reverse(NX, X, incX, P, 1);

@@ -9,7 +9,7 @@ double rdsum(const int N, const double* X, const int incX) {
 
   idxd_disetzero(DIDEFAULTFOLD, sumi);
 
-  didsum(DIDEFAULTFOLD, N, X, incX, sumi);
+  idxdBLAS_didsum(DIDEFAULTFOLD, N, X, incX, sumi);
 
   sum = idxd_ddiconv(DIDEFAULTFOLD, sumi);
   free(sumi);

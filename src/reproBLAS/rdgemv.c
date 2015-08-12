@@ -32,7 +32,7 @@ void rdgemv(const char Order,
           idxd_didconv(DIDEFAULTFOLD, Y[i * incY] * beta, YI + i * idxd_dinum(DIDEFAULTFOLD));
         }
       }
-      didgemv(DIDEFAULTFOLD, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
+      idxdBLAS_didgemv(DIDEFAULTFOLD, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
       for(i = 0; i < M; i++){
         Y[i * incY] = idxd_ddiconv(DIDEFAULTFOLD, YI + i * idxd_dinum(DIDEFAULTFOLD));
       }
@@ -50,7 +50,7 @@ void rdgemv(const char Order,
           idxd_didconv(DIDEFAULTFOLD, Y[i * incY] * beta, YI + i * idxd_dinum(DIDEFAULTFOLD));
         }
       }
-      didgemv(DIDEFAULTFOLD, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
+      idxdBLAS_didgemv(DIDEFAULTFOLD, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
       for(i = 0; i < N; i++){
         Y[i * incY] = idxd_ddiconv(DIDEFAULTFOLD, YI + i * idxd_dinum(DIDEFAULTFOLD));
       }

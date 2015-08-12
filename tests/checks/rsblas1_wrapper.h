@@ -32,7 +32,7 @@ float wrap_rssum(int N, float *x, int incx, float *y, int incy) {
 void wrap_sissum(int N, float *x, int incx, float *y, int incy, float_indexed *z) {
   (void)y;
   (void)incy;
-  sissum(SIDEFAULTFOLD, N, x, incx, z);
+  idxdBLAS_sissum(SIDEFAULTFOLD, N, x, incx, z);
 }
 
 float wrap_rsasum(int N, float *x, int incx, float *y, int incy) {
@@ -44,7 +44,7 @@ float wrap_rsasum(int N, float *x, int incx, float *y, int incy) {
 void wrap_sisasum(int N, float *x, int incx, float *y, int incy, float_indexed *z) {
   (void)y;
   (void)incy;
-  sisasum(SIDEFAULTFOLD, N, x, incx, z);
+  idxdBLAS_sisasum(SIDEFAULTFOLD, N, x, incx, z);
 }
 
 float wrap_rsdot(int N, float *x, int incx, float *y, int incy) {
@@ -52,7 +52,7 @@ float wrap_rsdot(int N, float *x, int incx, float *y, int incy) {
 }
 
 void wrap_sisdot(int N, float *x, int incx, float *y, int incy, float_indexed *z) {
-  sisdot(SIDEFAULTFOLD, N, x, incx, y, incy, z);
+  idxdBLAS_sisdot(SIDEFAULTFOLD, N, x, incx, y, incy, z);
 }
 
 float wrap_rsnrm2(int N, float *x, int incx, float *y, int incy) {
@@ -64,7 +64,7 @@ float wrap_rsnrm2(int N, float *x, int incx, float *y, int incy) {
 void wrap_sisnrm(int N, float *x, int incx, float *y, int incy, float_indexed *z) {
   (void)y;
   (void)incy;
-  sisssq(SIDEFAULTFOLD, N, x, incx, 0.0, z);
+  idxdBLAS_sisssq(SIDEFAULTFOLD, N, x, incx, 0.0, z);
 }
 
 wrap_rsblas1 wrap_rsblas1_func(int func) {

@@ -86,7 +86,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
       X = (float_complex_indexed*)util_cvec_alloc(N * idxd_cinum(j), 1);
       for(i = 0; i < N; i++){
         idxd_cisetzero(j, X + idxd_cinum(j));
-        cicsum(j, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_cinum(j));
+        idxdBLAS_cicsum(j, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_cinum(j));
       }
       ires = idxd_cialloc(j);
       time_tic();
@@ -104,7 +104,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   }else{
     X = (float_complex_indexed*)util_cvec_alloc(N * idxd_cinum(fold._int.value), 1);
     for(i = 0; i < N; i++){
-      cicsum(fold._int.value, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_cinum(fold._int.value));
+      idxdBLAS_cicsum(fold._int.value, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_cinum(fold._int.value));
     }
     ires = idxd_cialloc(fold._int.value);
     time_tic();

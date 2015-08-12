@@ -37,7 +37,7 @@ double complex wrap_rzsum(int N, double complex *x, int incx, double complex *y,
 void wrap_zizsum(int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {
   (void)y;
   (void)incy;
-  zizsum(DIDEFAULTFOLD, N, x, incx, z);
+  idxdBLAS_zizsum(DIDEFAULTFOLD, N, x, incx, z);
 }
 
 double complex wrap_rdzasum(int N, double complex *x, int incx, double complex *y, int incy) {
@@ -49,7 +49,7 @@ double complex wrap_rdzasum(int N, double complex *x, int incx, double complex *
 void wrap_dizasum(int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {
   (void)y;
   (void)incy;
-  dmzasum(DIDEFAULTFOLD, N, x, incx, z, 2, z + 2 * DIDEFAULTFOLD, 2);
+  idxdBLAS_dmzasum(DIDEFAULTFOLD, N, x, incx, z, 2, z + 2 * DIDEFAULTFOLD, 2);
 }
 
 double complex wrap_rzdotu(int N, double complex *x, int incx, double complex *y, int incy) {
@@ -59,7 +59,7 @@ double complex wrap_rzdotu(int N, double complex *x, int incx, double complex *y
 }
 
 void wrap_zizdotu(int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {
-  zizdotu(DIDEFAULTFOLD, N, x, incx, y, incy, z);
+  idxdBLAS_zizdotu(DIDEFAULTFOLD, N, x, incx, y, incy, z);
 }
 
 double complex wrap_rzdotc(int N, double complex *x, int incx, double complex *y, int incy) {
@@ -69,7 +69,7 @@ double complex wrap_rzdotc(int N, double complex *x, int incx, double complex *y
 }
 
 void wrap_zizdotc(int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {
-  zizdotc(DIDEFAULTFOLD, N, x, incx, y, incy, z);
+  idxdBLAS_zizdotc(DIDEFAULTFOLD, N, x, incx, y, incy, z);
 }
 
 double complex wrap_rdznrm2(int N, double complex *x, int incx, double complex *y, int incy) {
@@ -81,7 +81,7 @@ double complex wrap_rdznrm2(int N, double complex *x, int incx, double complex *
 void wrap_diznrm(int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {
   (void)y;
   (void)incy;
-  dmzssq(DIDEFAULTFOLD, N, x, incx, 0.0, z, 2, z + 2 * DIDEFAULTFOLD, 2);
+  idxdBLAS_dmzssq(DIDEFAULTFOLD, N, x, incx, 0.0, z, 2, z + 2 * DIDEFAULTFOLD, 2);
 }
 
 wrap_rzblas1 wrap_rzblas1_func(int func) {

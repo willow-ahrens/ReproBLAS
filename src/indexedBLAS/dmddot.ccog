@@ -42,7 +42,7 @@ cog.out(generate.generate(blockSize.BlockSize("dmddot", "N_block_MAX", 32, termi
 #define N_block_MAX 2048
 //[[[end]]]
 
-void dmddot(const int fold, const int N, const double *X, const int incX, const double *Y, const int incY, double *manZ, const int incmanZ, double *carZ, const int inccarZ){
+void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int incX, const double *Y, const int incY, double *manZ, const int incmanZ, double *carZ, const int inccarZ){
   double amaxm;
   int i, j;
   int N_block = N_block_MAX;
@@ -51,7 +51,7 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
   for (i = 0; i < N; i += N_block) {
     N_block = MIN((N - i), N_block);
 
-    amaxm = damaxm(N_block, X, incX, Y, incY);
+    amaxm = idxdBLAS_damaxm(N_block, X, incX, Y, incY);
 
     if (isinf(amaxm) || isinf(manZ[0])){
       for (j = 0; j < N_block; j++){

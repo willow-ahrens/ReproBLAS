@@ -28,7 +28,7 @@ void wrap_rzgemv(int fold, char Order, char TransA, int M, int N, double complex
       betaY = Y[i * incY] * (*beta);
       idxd_zizconv(fold, &betaY, YI + i * incY * idxd_zinum(fold));
     }
-    zizgemv(fold, Order, TransA, M, N, alpha, A, lda, X, incX, YI, incY);
+    idxdBLAS_zizgemv(fold, Order, TransA, M, N, alpha, A, lda, X, incX, YI, incY);
     for(i = 0; i < NY; i++){
       idxd_zziconv_sub(fold, YI + i * incY * idxd_zinum(fold), Y + i * incY);
     }
@@ -97,10 +97,10 @@ double complex wrap_rzgemv_bound(int fold, char Order, char TransA, int M, int N
       switch(Order){
         case 'r':
         case 'R':
-          zamaxm_sub(N, A + i * lda, 1, alphaX, 1, &amaxm);
+          idxdBLAS_zamaxm_sub(N, A + i * lda, 1, alphaX, 1, &amaxm);
           break;
         default:
-          zamaxm_sub(N, A + i, lda, alphaX, 1, &amaxm);
+          idxdBLAS_zamaxm_sub(N, A + i, lda, alphaX, 1, &amaxm);
           break;
       }
       betaY = Y[i * incY] * (*beta);
@@ -115,10 +115,10 @@ double complex wrap_rzgemv_bound(int fold, char Order, char TransA, int M, int N
       switch(Order){
         case 'r':
         case 'R':
-          zamaxm_sub(M, A + i, lda, alphaX, 1, &amaxm);
+          idxdBLAS_zamaxm_sub(M, A + i, lda, alphaX, 1, &amaxm);
           break;
         default:
-          zamaxm_sub(M, A + i * lda, 1, alphaX, 1, &amaxm);
+          idxdBLAS_zamaxm_sub(M, A + i * lda, 1, alphaX, 1, &amaxm);
           break;
       }
       betaY = Y[i * incY] * (*beta);

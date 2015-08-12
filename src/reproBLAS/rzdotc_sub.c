@@ -8,7 +8,7 @@ void rzdotc_sub(const int N, const void* X, const int incX, const void *Y, const
 
   idxd_zisetzero(DIDEFAULTFOLD, dotci);
 
-  zizdotc(DIDEFAULTFOLD, N, X, incX, Y, incY, dotci);
+  idxdBLAS_zizdotc(DIDEFAULTFOLD, N, X, incX, Y, incY, dotci);
 
   idxd_zziconv_sub(DIDEFAULTFOLD, dotci, dotc);
   free(dotci);

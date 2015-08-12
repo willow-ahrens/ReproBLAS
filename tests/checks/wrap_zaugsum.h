@@ -49,7 +49,7 @@ double complex wrap_rzsum(int fold, int N, double complex *x, int incx, double c
   }else{
     double_complex_indexed *ires = idxd_zialloc(fold);
     idxd_zisetzero(fold, ires);
-    zizsum(fold, N, x, incx, ires);
+    idxdBLAS_zizsum(fold, N, x, incx, ires);
     double complex res;
     idxd_zziconv_sub(fold, ires, &res);
     free(ires);
@@ -60,7 +60,7 @@ double complex wrap_rzsum(int fold, int N, double complex *x, int incx, double c
 void wrap_zizsum(int fold, int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {
   (void)y;
   (void)incy;
-  zizsum(fold, N, x, incx, z);
+  idxdBLAS_zizsum(fold, N, x, incx, z);
 }
 
 double complex wrap_rdzasum(int fold, int N, double complex *x, int incx, double complex *y, int incy) {
@@ -71,7 +71,7 @@ double complex wrap_rdzasum(int fold, int N, double complex *x, int incx, double
   }else{
     double_indexed *ires = idxd_dialloc(fold);
     idxd_disetzero(fold, ires);
-    dizasum(fold, N, x, incx, ires);
+    idxdBLAS_dizasum(fold, N, x, incx, ires);
     double res = idxd_ddiconv(fold, ires);
     free(ires);
     return (double complex)res;
@@ -81,7 +81,7 @@ double complex wrap_rdzasum(int fold, int N, double complex *x, int incx, double
 void wrap_dizasum(int fold, int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {
   (void)y;
   (void)incy;
-  dmzasum(fold, N, x, incx, z, 2, z + 2 * fold, 2);
+  idxdBLAS_dmzasum(fold, N, x, incx, z, 2, z + 2 * fold, 2);
 }
 
 double complex wrap_rdznrm2(int fold, int N, double complex *x, int incx, double complex *y, int incy) {
@@ -92,7 +92,7 @@ double complex wrap_rdznrm2(int fold, int N, double complex *x, int incx, double
   }else{
     double_indexed *ires = idxd_dialloc(fold);
     idxd_disetzero(fold, ires);
-    double scale = dizssq(fold, N, x, incx, 0.0, ires);
+    double scale = idxdBLAS_dizssq(fold, N, x, incx, 0.0, ires);
     double res = idxd_ddiconv(fold, ires);
     free(ires);
     return (double complex)(scale * sqrt(res));
@@ -102,7 +102,7 @@ double complex wrap_rdznrm2(int fold, int N, double complex *x, int incx, double
 void wrap_dizssq(int fold, int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {
   (void)y;
   (void)incy;
-  dmzssq(fold, N, x, incx, 0.0, z, 2, z + 2 * fold, 2);
+  idxdBLAS_dmzssq(fold, N, x, incx, 0.0, z, 2, z + 2 * fold, 2);
 }
 
 double complex wrap_rzdotu(int fold, int N, double complex *x, int incx, double complex *y, int incy) {
@@ -113,7 +113,7 @@ double complex wrap_rzdotu(int fold, int N, double complex *x, int incx, double 
   }else{
     double_complex_indexed *ires = idxd_zialloc(fold);
     idxd_zisetzero(fold, ires);
-    zizdotu(fold, N, x, incx, y, incy, ires);
+    idxdBLAS_zizdotu(fold, N, x, incx, y, incy, ires);
     double complex res;
     idxd_zziconv_sub(fold, ires, &res);
     free(ires);
@@ -122,7 +122,7 @@ double complex wrap_rzdotu(int fold, int N, double complex *x, int incx, double 
 }
 
 void wrap_zizdotu(int fold, int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {
-  zizdotu(fold, N, x, incx, y, incy, z);
+  idxdBLAS_zizdotu(fold, N, x, incx, y, incy, z);
 }
 
 double complex wrap_rzdotc(int fold, int N, double complex *x, int incx, double complex *y, int incy) {
@@ -133,7 +133,7 @@ double complex wrap_rzdotc(int fold, int N, double complex *x, int incx, double 
   }else{
     double_complex_indexed *ires = idxd_zialloc(fold);
     idxd_zisetzero(fold, ires);
-    zizdotc(fold, N, x, incx, y, incy, ires);
+    idxdBLAS_zizdotc(fold, N, x, incx, y, incy, ires);
     double complex res;
     idxd_zziconv_sub(fold, ires, &res);
     free(ires);
@@ -142,7 +142,7 @@ double complex wrap_rzdotc(int fold, int N, double complex *x, int incx, double 
 }
 
 void wrap_zizdotc(int fold, int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {
-  zizdotc(fold, N, x, incx, y, incy, z);
+  idxdBLAS_zizdotc(fold, N, x, incx, y, incy, z);
 }
 
 double complex wrap_rziziadd(int fold, int N, double complex *x, int incx, double complex *y, int incy) {
@@ -205,7 +205,7 @@ double complex wrap_rzizdeposit(int fold, int N, double complex *x, int incx, do
   double_complex_indexed *ires = idxd_zialloc(fold);
   idxd_zisetzero(fold, ires);
   double complex amax;
-  zamax_sub(N, x, incx, &amax);
+  idxdBLAS_zamax_sub(N, x, incx, &amax);
   idxd_zizupdate(fold, &amax, ires);
   int i;
   int j = 0;
@@ -228,7 +228,7 @@ void wrap_zizdeposit(int fold, int N, double complex *x, int incx, double comple
   (void)y;
   (void)incy;
   double complex amax;
-  zamax_sub(N, x, incx, &amax);
+  idxdBLAS_zamax_sub(N, x, incx, &amax);
   idxd_zizupdate(fold, &amax, z);
   int i;
   int j = 0;
@@ -689,7 +689,7 @@ double complex wrap_zaugsum_bound(int fold, int N, wrap_zaugsum_func_t func, dou
         double complex amax;
         double complex bound;
         double *bound_base = (double*)&bound;
-        zamax_sub(N, X, incX, &amax);
+        idxdBLAS_zamax_sub(N, X, incX, &amax);
         bound_base[0] = idxd_dibound(fold, N, creal(amax), creal(res));
         bound_base[1] = idxd_dibound(fold, N, cimag(amax), cimag(res));
         return bound;
@@ -698,7 +698,7 @@ double complex wrap_zaugsum_bound(int fold, int N, wrap_zaugsum_func_t func, dou
       {
         double complex amax2;
         double amax;
-        zamax_sub(N, X, incX, &amax2);
+        idxdBLAS_zamax_sub(N, X, incX, &amax2);
         amax = MAX(creal(amax2), cimag(amax2));
         return idxd_dibound(fold, N, amax, creal(res));
       }
@@ -707,7 +707,7 @@ double complex wrap_zaugsum_bound(int fold, int N, wrap_zaugsum_func_t func, dou
         double complex amax2;
         double amax;
         double scale;
-        zamax_sub(N, X, incX, &amax2);
+        idxdBLAS_zamax_sub(N, X, incX, &amax2);
         amax = MAX(creal(amax2), cimag(amax2));
         scale = idxd_dscale(amax);
         if (amax == 0.0){
@@ -721,7 +721,7 @@ double complex wrap_zaugsum_bound(int fold, int N, wrap_zaugsum_func_t func, dou
         double complex amaxm;
         double complex bound;
         double *bound_base = (double*)&bound;
-        zamaxm_sub(N, X, incX, Y, incY, &amaxm);
+        idxdBLAS_zamaxm_sub(N, X, incX, Y, incY, &amaxm);
         bound_base[0] = idxd_dibound(fold, N, creal(amaxm), creal(res));
         bound_base[1] = idxd_dibound(fold, N, cimag(amaxm), cimag(res));
         return bound;

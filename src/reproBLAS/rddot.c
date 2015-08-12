@@ -9,7 +9,7 @@ double rddot(const int N, const double* X, const int incX, const double *Y, cons
 
   idxd_disetzero(DIDEFAULTFOLD, doti);
 
-  diddot(DIDEFAULTFOLD, N, X, incX, Y, incY, doti);
+  idxdBLAS_diddot(DIDEFAULTFOLD, N, X, incX, Y, incY, doti);
 
   dot = idxd_ddiconv(DIDEFAULTFOLD, doti);
   free(doti);

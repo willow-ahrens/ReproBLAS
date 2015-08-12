@@ -42,7 +42,7 @@ cog.out(generate.generate(blockSize.BlockSize("smcssq", "N_block_MAX", 32, termi
 #define N_block_MAX 256
 //[[[end]]]
 
-float smcssq(const int fold, const int N, const void *X, const int incX, const float scaleY, float *manY, const int incmanY, float *carY, const int inccarY){
+float idxdBLAS_smcssq(const int fold, const int N, const void *X, const int incX, const float scaleY, float *manY, const int incmanY, float *carY, const int inccarY){
   float amax_tmp[2];
   float amax;
   float scl = 0.0;
@@ -59,7 +59,7 @@ float smcssq(const int fold, const int N, const void *X, const int incX, const f
   for (i = 0; i < N; i += N_block) {
     N_block = MIN((N - i), N_block);
 
-    camax_sub(N_block, x, incX, amax_tmp);
+    idxdBLAS_camax_sub(N_block, x, incX, amax_tmp);
     amax = MAX(amax_tmp[0], amax_tmp[1]);
 
     if (isinf(amax) || isinf(manY[0])){

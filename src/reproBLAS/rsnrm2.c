@@ -12,7 +12,7 @@ float rsnrm2(const int N, const float* X, const int incX) {
 
   idxd_sisetzero(SIDEFAULTFOLD, ssq);
 
-  scl = sisssq(SIDEFAULTFOLD, N, X, incX, 0.0, ssq);
+  scl = idxdBLAS_sisssq(SIDEFAULTFOLD, N, X, incX, 0.0, ssq);
 
   nrm2 = scl * sqrt(idxd_ssiconv(SIDEFAULTFOLD, ssq));
   free(ssq);

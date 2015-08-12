@@ -4,6 +4,6 @@
 
 #include "indexedBLAS.h"
 
-float sisssq(const int fold, const int N, const float *X, const int incX, const float scaleY, float_indexed *Y){
-  return smsssq(fold, N, X, incX, scaleY, Y, 1, Y + fold, 1);
+float idxdBLAS_sisssq(const int fold, const int N, const float *X, const int incX, const float scaleY, float_indexed *Y){
+  return idxdBLAS_smsssq(fold, N, X, incX, scaleY, Y, 1, Y + fold, 1);
 }

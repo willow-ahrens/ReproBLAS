@@ -4,6 +4,6 @@
 
 #include "indexedBLAS.h"
 
-void zizsum(const int fold, const int N, const void *X, const int incX, double_complex_indexed *Y){
-  zmzsum(fold, N, X, incX, Y, 1, Y + 2 * fold, 1);
+void idxdBLAS_zizsum(const int fold, const int N, const void *X, const int incX, double_complex_indexed *Y){
+  idxdBLAS_zmzsum(fold, N, X, incX, Y, 1, Y + 2 * fold, 1);
 }

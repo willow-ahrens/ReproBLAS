@@ -30,7 +30,7 @@ cog.out(str(code_block))
 #endif
 //[[[end]]]
 
-void zamaxm_sub(const int N, const void *X, const int incX, const void *Y, const int incY, void *amaxm){
+void idxdBLAS_zamaxm_sub(const int N, const void *X, const int incX, const void *Y, const int incY, void *amaxm){
   const double *x = (const double*)X;
   const double *y = (const double*)Y;
   /*[[[cog

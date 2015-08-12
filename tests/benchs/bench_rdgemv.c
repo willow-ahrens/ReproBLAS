@@ -103,7 +103,7 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
           idxd_didconv(fold._int.value, res[j * incY] * beta, YI + j * idxd_disize(fold._int.value));
         }
       }
-      didgemv(fold._int.value, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
+      idxdBLAS_didgemv(fold._int.value, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
       for(j = 0; j < NY; j++){
         res[j * incY] = idxd_ddiconv(fold._int.value, YI + j * idxd_disize(fold._int.value));
       }

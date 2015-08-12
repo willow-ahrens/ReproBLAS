@@ -42,7 +42,7 @@ cog.out(generate.generate(blockSize.BlockSize("smsdot", "N_block_MAX", 32, termi
 #define N_block_MAX 512
 //[[[end]]]
 
-void smsdot(const int fold, const int N, const float *X, const int incX, const float *Y, const int incY, float *manZ, const int incmanZ, float *carZ, const int inccarZ){
+void idxdBLAS_smsdot(const int fold, const int N, const float *X, const int incX, const float *Y, const int incY, float *manZ, const int incmanZ, float *carZ, const int inccarZ){
   float amaxm;
   int i, j;
   int N_block = N_block_MAX;
@@ -51,7 +51,7 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
   for (i = 0; i < N; i += N_block) {
     N_block = MIN((N - i), N_block);
 
-    amaxm = samaxm(N_block, X, incX, Y, incY);
+    amaxm = idxdBLAS_samaxm(N_block, X, incX, Y, incY);
 
     if (isinf(amaxm) || isinf(manZ[0])){
       for (j = 0; j < N_block; j++){

@@ -23,7 +23,7 @@ void rzgemv(const char Order,
         betaY[1] = ((double*)Y)[2 * i * incY] * ((double*)beta)[1] + ((double*)Y)[2 * i * incY + 1] * ((double*)beta)[0];
         idxd_zizconv(DIDEFAULTFOLD, betaY, YI + i * idxd_zinum(DIDEFAULTFOLD));
       }
-      zizgemv(DIDEFAULTFOLD, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
+      idxdBLAS_zizgemv(DIDEFAULTFOLD, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
       for(i = 0; i < M; i++){
         idxd_zziconv_sub(DIDEFAULTFOLD, YI + i * idxd_zinum(DIDEFAULTFOLD), ((double*)Y) + 2 * i * incY);
       }
@@ -35,7 +35,7 @@ void rzgemv(const char Order,
         betaY[1] = ((double*)Y)[2 * i * incY] * ((double*)beta)[1] + ((double*)Y)[2 * i * incY + 1] * ((double*)beta)[0];
         idxd_zizconv(DIDEFAULTFOLD, betaY, YI + i * idxd_zinum(DIDEFAULTFOLD));
       }
-      zizgemv(DIDEFAULTFOLD, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
+      idxdBLAS_zizgemv(DIDEFAULTFOLD, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
       for(i = 0; i < N; i++){
         idxd_zziconv_sub(DIDEFAULTFOLD, YI + i * idxd_zinum(DIDEFAULTFOLD), ((double*)Y) + 2 * i * incY);
       }

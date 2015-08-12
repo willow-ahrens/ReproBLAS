@@ -37,7 +37,7 @@ void rdgemm(const char Order, const char TransA, const char TransB,
           }
         }
       }
-      didgemm(DIDEFAULTFOLD, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, CI, N);
+      idxdBLAS_didgemm(DIDEFAULTFOLD, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, CI, N);
       for(i = 0; i < M; i++){
         for(j = 0; j < N; j++){
           C[i * ldc + j] = idxd_ddiconv(DIDEFAULTFOLD, CI + (i * N + j) * idxd_dinum(DIDEFAULTFOLD));
@@ -60,7 +60,7 @@ void rdgemm(const char Order, const char TransA, const char TransB,
           }
         }
       }
-      didgemm(DIDEFAULTFOLD, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, CI, M);
+      idxdBLAS_didgemm(DIDEFAULTFOLD, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, CI, M);
       for(j = 0; j < N; j++){
         for(i = 0; i < M; i++){
           C[j * ldc + i] = idxd_ddiconv(DIDEFAULTFOLD, CI + (j * M + i) * idxd_dinum(DIDEFAULTFOLD));

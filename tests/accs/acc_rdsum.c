@@ -73,7 +73,7 @@ int acc_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealSca
     util_dvec_fill(N, X, incX, FillX, RealScaleX, ImagScaleX);
     ires = idxd_dialloc(fold._int.value);
     idxd_disetzero(fold._int.value, ires);
-    didsum(fold._int.value, N, X, incX, ires);
+    idxdBLAS_didsum(fold._int.value, N, X, incX, ires);
     res = idxd_ddiconv(fold._int.value, ires);
     free(ires);
 

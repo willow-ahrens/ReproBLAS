@@ -8,7 +8,7 @@ void rzsum_sub(const int N, const void* X, const int incX, void *sum) {
 
   idxd_zisetzero(DIDEFAULTFOLD, sumi);
 
-  zizsum(DIDEFAULTFOLD, N, X, incX, sumi);
+  idxdBLAS_zizsum(DIDEFAULTFOLD, N, X, incX, sumi);
 
   idxd_zziconv_sub(DIDEFAULTFOLD, sumi, sum);
   free(sumi);

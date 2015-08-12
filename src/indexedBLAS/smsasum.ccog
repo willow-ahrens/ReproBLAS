@@ -42,7 +42,7 @@ cog.out(generate.generate(blockSize.BlockSize("smsasum", "N_block_MAX", 32, term
 #define N_block_MAX 512
 //[[[end]]]
 
-void smsasum(const int fold, const int N, const float *X, const int incX, float *manY, const int incmanY, float *carY, const int inccarY){
+void idxdBLAS_smsasum(const int fold, const int N, const float *X, const int incX, float *manY, const int incmanY, float *carY, const int inccarY){
   float amax;
   int i, j;
   int N_block = N_block_MAX;
@@ -51,7 +51,7 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
   for (i = 0; i < N; i += N_block) {
     N_block = MIN((N - i), N_block);
 
-    amax = samax(N_block, X, incX);
+    amax = idxdBLAS_samax(N_block, X, incX);
 
     if (isinf(amax) || isinf(manY[0])){
       for (j = 0; j < N_block; j++){

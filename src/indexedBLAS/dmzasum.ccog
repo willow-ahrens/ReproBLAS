@@ -42,7 +42,7 @@ cog.out(generate.generate(blockSize.BlockSize("dmzasum", "N_block_MAX", 32, term
 #define N_block_MAX 1024
 //[[[end]]]
 
-void dmzasum(const int fold, const int N, const void *X, const int incX, double *manY, const int incmanY, double *carY, const int inccarY){
+void idxdBLAS_dmzasum(const int fold, const int N, const void *X, const int incX, double *manY, const int incmanY, double *carY, const int inccarY){
   double amax_tmp[2];
   double amax;
   int i, j;
@@ -56,7 +56,7 @@ void dmzasum(const int fold, const int N, const void *X, const int incX, double 
   for (i = 0; i < N; i += N_block) {
     N_block = MIN((N - i), N_block);
 
-    zamax_sub(N_block, x, incX, amax_tmp);
+    idxdBLAS_zamax_sub(N_block, x, incX, amax_tmp);
     amax = MAX(amax_tmp[0], amax_tmp[1]);
 
     if (isinf(amax) || isinf(manY[0])){

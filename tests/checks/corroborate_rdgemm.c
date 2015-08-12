@@ -124,7 +124,7 @@ int corroborate_rdgemm(int fold, char Order, char TransA, char TransB, int M, in
             }
             break;
         }
-        didgemm(fold, Order, TransA, TransB, M, N, block_K, alpha, tmpA, lda, tmpB, ldb, Ires, ldc);
+        idxdBLAS_didgemm(fold, Order, TransA, TransB, M, N, block_K, alpha, tmpA, lda, tmpB, ldb, Ires, ldc);
       }
       for(i = 0; i < M; i++){
         for(j = 0; j < N; j++){

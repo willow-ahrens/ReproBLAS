@@ -86,7 +86,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
       X = (double_indexed*)util_dvec_alloc(N * idxd_dinum(j), 1);
       for(i = 0; i < N; i++){
         idxd_disetzero(j, X + idxd_dinum(j));
-        didsum(j, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_dinum(j));
+        idxdBLAS_didsum(j, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_dinum(j));
       }
       ires = idxd_dialloc(j);
       time_tic();
@@ -104,7 +104,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   }else{
     X = (double_indexed*)util_dvec_alloc(N * idxd_dinum(fold._int.value), 1);
     for(i = 0; i < N; i++){
-      didsum(fold._int.value, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_dinum(fold._int.value));
+      idxdBLAS_didsum(fold._int.value, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_dinum(fold._int.value));
     }
     ires = idxd_dialloc(fold._int.value);
     time_tic();

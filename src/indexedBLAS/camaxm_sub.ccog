@@ -30,7 +30,7 @@ cog.out(str(code_block))
 #endif
 //[[[end]]]
 
-void camaxm_sub(const int N, const void *X, const int incX, const void *Y, const int incY, void *amaxm){
+void idxdBLAS_camaxm_sub(const int N, const void *X, const int incX, const void *Y, const int incY, void *amaxm){
   const float *x = (const float*)X;
   const float *y = (const float*)Y;
   /*[[[cog

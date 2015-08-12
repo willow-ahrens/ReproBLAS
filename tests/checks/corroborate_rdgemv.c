@@ -84,10 +84,10 @@ int corroborate_rdgemv(int fold, char Order, char TransA, int M, int N, double a
               switch(Order){
                 case 'r':
                 case 'R':
-                  didgemv(fold, Order, TransA, M, block_opN, alpha, A + i, lda, X + i * incX, incX, Ires, incY);
+                  idxdBLAS_didgemv(fold, Order, TransA, M, block_opN, alpha, A + i, lda, X + i * incX, incX, Ires, incY);
                   break;
                 default:
-                  didgemv(fold, Order, TransA, M, block_opN, alpha, A + i * lda, lda, X + i * incX, incX, Ires, incY);
+                  idxdBLAS_didgemv(fold, Order, TransA, M, block_opN, alpha, A + i * lda, lda, X + i * incX, incX, Ires, incY);
                   break;
               }
             }
@@ -101,10 +101,10 @@ int corroborate_rdgemv(int fold, char Order, char TransA, int M, int N, double a
               switch(Order){
                 case 'r':
                 case 'R':
-                  didgemv(fold, Order, TransA, block_opN, N, alpha, A + i * lda, lda, X + i * incX, incX, Ires, incY);
+                  idxdBLAS_didgemv(fold, Order, TransA, block_opN, N, alpha, A + i * lda, lda, X + i * incX, incX, Ires, incY);
                   break;
                 default:
-                  didgemv(fold, Order, TransA, block_opN, N, alpha, A + i, lda, X + i * incX, incX, Ires, incY);
+                  idxdBLAS_didgemv(fold, Order, TransA, block_opN, N, alpha, A + i, lda, X + i * incX, incX, Ires, incY);
                   break;
               }
             }

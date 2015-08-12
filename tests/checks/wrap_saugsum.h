@@ -44,7 +44,7 @@ float wrap_rssum(int fold, int N, float *x, int incx, float *y, int incy) {
   }else{
     float_indexed *ires = idxd_sialloc(fold);
     idxd_sisetzero(fold, ires);
-    sissum(fold, N, x, incx, ires);
+    idxdBLAS_sissum(fold, N, x, incx, ires);
     float res = idxd_ssiconv(fold, ires);
     free(ires);
     return res;
@@ -54,7 +54,7 @@ float wrap_rssum(int fold, int N, float *x, int incx, float *y, int incy) {
 void wrap_sissum(int fold, int N, float *x, int incx, float *y, int incy, float_indexed *z) {
   (void)y;
   (void)incy;
-  sissum(fold, N, x, incx, z);
+  idxdBLAS_sissum(fold, N, x, incx, z);
 }
 
 float wrap_rsasum(int fold, int N, float *x, int incx, float *y, int incy) {
@@ -65,7 +65,7 @@ float wrap_rsasum(int fold, int N, float *x, int incx, float *y, int incy) {
   }else{
     float_indexed *ires = idxd_sialloc(fold);
     idxd_sisetzero(fold, ires);
-    sisasum(fold, N, x, incx, ires);
+    idxdBLAS_sisasum(fold, N, x, incx, ires);
     float res = idxd_ssiconv(fold, ires);
     free(ires);
     return res;
@@ -75,7 +75,7 @@ float wrap_rsasum(int fold, int N, float *x, int incx, float *y, int incy) {
 void wrap_sisasum(int fold, int N, float *x, int incx, float *y, int incy, float_indexed *z) {
   (void)y;
   (void)incy;
-  sisasum(fold, N, x, incx, z);
+  idxdBLAS_sisasum(fold, N, x, incx, z);
 }
 
 float wrap_rsnrm2(int fold, int N, float *x, int incx, float *y, int incy) {
@@ -86,7 +86,7 @@ float wrap_rsnrm2(int fold, int N, float *x, int incx, float *y, int incy) {
   }else{
     float_indexed *ires = idxd_sialloc(fold);
     idxd_sisetzero(fold, ires);
-    float scale = sisssq(fold, N, x, incx, 0.0, ires);
+    float scale = idxdBLAS_sisssq(fold, N, x, incx, 0.0, ires);
     float res = idxd_ssiconv(fold, ires);
     free(ires);
     return scale * sqrt(res);
@@ -96,7 +96,7 @@ float wrap_rsnrm2(int fold, int N, float *x, int incx, float *y, int incy) {
 void wrap_sisssq(int fold, int N, float *x, int incx, float *y, int incy, float_indexed *z) {
   (void)y;
   (void)incy;
-  sisssq(fold, N, x, incx, 0.0, z);
+  idxdBLAS_sisssq(fold, N, x, incx, 0.0, z);
 }
 
 float wrap_rsdot(int fold, int N, float *x, int incx, float *y, int incy) {
@@ -105,7 +105,7 @@ float wrap_rsdot(int fold, int N, float *x, int incx, float *y, int incy) {
   }else{
     float_indexed *ires = idxd_sialloc(fold);
     idxd_sisetzero(fold, ires);
-    sisdot(fold, N, x, incx, y, incy, ires);
+    idxdBLAS_sisdot(fold, N, x, incx, y, incy, ires);
     float res = idxd_ssiconv(fold, ires);
     free(ires);
     return res;
@@ -113,7 +113,7 @@ float wrap_rsdot(int fold, int N, float *x, int incx, float *y, int incy) {
 }
 
 void wrap_sisdot(int fold, int N, float *x, int incx, float *y, int incy, float_indexed *z) {
-  sisdot(fold, N, x, incx, y, incy, z);
+  idxdBLAS_sisdot(fold, N, x, incx, y, incy, z);
 }
 
 float wrap_rsisiadd(int fold, int N, float *x, int incx, float *y, int incy) {
@@ -173,7 +173,7 @@ float wrap_rsisdeposit(int fold, int N, float *x, int incx, float *y, int incy) 
   (void)incy;
   float_indexed *ires = idxd_sialloc(fold);
   idxd_sisetzero(fold, ires);
-  float amax = samax(N, x, incx);
+  float amax = idxdBLAS_samax(N, x, incx);
   idxd_sisupdate(fold, amax, ires);
   int i;
   int j = 0;
@@ -194,7 +194,7 @@ float wrap_rsisdeposit(int fold, int N, float *x, int incx, float *y, int incy) 
 void wrap_sisdeposit(int fold, int N, float *x, int incx, float *y, int incy, float_indexed *z) {
   (void)y;
   (void)incy;
-  float amax = samax(N, x, incx);
+  float amax = idxdBLAS_samax(N, x, incx);
   idxd_sisupdate(fold, amax, z);
   int i;
   int j = 0;
@@ -475,10 +475,10 @@ float wrap_saugsum_bound(int fold, int N, wrap_saugsum_func_t func, float *X, in
     case wrap_saugsum_SISADD:
     case wrap_saugsum_SISDEPOSIT:
     case wrap_saugsum_RSASUM:
-      return idxd_sibound(fold, N, samax(N, X, incX), res);
+      return idxd_sibound(fold, N, idxdBLAS_samax(N, X, incX), res);
     case wrap_saugsum_RSNRM2:
       {
-        float amax = samax(N, X, incX);
+        float amax = idxdBLAS_samax(N, X, incX);
         float scale = idxd_sscale(amax);
         if (amax == 0.0){
           return 0.0;
@@ -486,7 +486,7 @@ float wrap_saugsum_bound(int fold, int N, wrap_saugsum_func_t func, float *X, in
         return idxd_sibound(fold, N, (amax/scale) * (amax/scale), (res/scale) * (res/scale)) * (scale / (res + ref)) * scale;
       }
     case wrap_saugsum_RSDOT:
-      return idxd_sibound(fold, N, samaxm(N, X, incX, Y, incY), res);
+      return idxd_sibound(fold, N, idxdBLAS_samaxm(N, X, incX, Y, incY), res);
   }
   fprintf(stderr, "ReproBLAS error: unknown bound for %s\n", wrap_saugsum_func_descs[func]);
   exit(125);

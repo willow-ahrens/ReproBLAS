@@ -9,7 +9,7 @@ float rsdot(const int N, const float* X, const int incX, const float *Y, const i
 
   idxd_sisetzero(SIDEFAULTFOLD, doti);
 
-  sisdot(SIDEFAULTFOLD, N, X, incX, Y, incY, doti);
+  idxdBLAS_sisdot(SIDEFAULTFOLD, N, X, incX, Y, incY, doti);
 
   dot = idxd_ssiconv(SIDEFAULTFOLD, doti);
   free(doti);

@@ -86,7 +86,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
       X = (float_indexed*)util_svec_alloc(N * idxd_sinum(j), 1);
       for(i = 0; i < N; i++){
         idxd_sisetzero(j, X + idxd_sinum(j));
-        sissum(j, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_sinum(j));
+        idxdBLAS_sissum(j, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_sinum(j));
       }
       ires = idxd_sialloc(j);
       time_tic();
@@ -104,7 +104,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   }else{
     X = (float_indexed*)util_svec_alloc(N * idxd_sinum(fold._int.value), 1);
     for(i = 0; i < N; i++){
-      sissum(fold._int.value, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_sinum(fold._int.value));
+      idxdBLAS_sissum(fold._int.value, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_sinum(fold._int.value));
     }
     ires = idxd_sialloc(fold._int.value);
     time_tic();

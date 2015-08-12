@@ -71,7 +71,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   if(fold._int.value == 0){
     ires = idxd_sialloc(SIMAXFOLD);
     idxd_sisetzero(SIMAXFOLD, ires);
-    sissum(SIMAXFOLD, N, X, incX, ires);
+    idxdBLAS_sissum(SIMAXFOLD, N, X, incX, ires);
     time_tic();
     for(j = 1; j <= SIMAXFOLD; j++){
       for(i = 0; i < trials; i++){
@@ -83,7 +83,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   }else{
     ires = idxd_sialloc(fold._int.value);
     idxd_sisetzero(fold._int.value, ires);
-    sissum(fold._int.value, N, X, incX, ires);
+    idxdBLAS_sissum(fold._int.value, N, X, incX, ires);
     time_tic();
     for(i = 0; i < trials; i++){
       res = idxd_ssiconv(fold._int.value, ires);

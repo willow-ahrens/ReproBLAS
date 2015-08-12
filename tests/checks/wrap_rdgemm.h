@@ -31,7 +31,7 @@ void wrap_rdgemm(int fold, char Order, char TransA, char TransB, int M, int N, i
         }
       }
     }
-    didgemm(fold, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, CI, ldc);
+    idxdBLAS_didgemm(fold, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, CI, ldc);
     for(i = 0; i < M; i++){
       for(j = 0; j < N; j++){
         switch(Order){
@@ -82,7 +82,7 @@ void wrap_ref_rdgemm(int fold, char Order, char TransA, char TransB, int M, int 
             idxd_didconv(fold, C[i * ldc + j] * beta, CI);
           }
           if(alpha != 0.0){
-            diddot(fold, K, opA + i * K, 1, opB + j, N, CI);
+            idxdBLAS_diddot(fold, K, opA + i * K, 1, opB + j, N, CI);
           }
           C[i * ldc + j] = idxd_ddiconv(fold, CI);
           break;
@@ -93,7 +93,7 @@ void wrap_ref_rdgemm(int fold, char Order, char TransA, char TransB, int M, int 
             idxd_didconv(fold, C[j * ldc + i] * beta, CI);
           }
           if(alpha != 0.0){
-            diddot(fold, K, opA + i, M, opB + j * K, 1, CI);
+            idxdBLAS_diddot(fold, K, opA + i, M, opB + j * K, 1, CI);
           }
           C[j * ldc + i] = idxd_ddiconv(fold, CI);
           break;

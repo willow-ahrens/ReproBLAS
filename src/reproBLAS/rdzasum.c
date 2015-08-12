@@ -9,7 +9,7 @@ double rdzasum(const int N, const void* X, const int incX) {
 
   idxd_disetzero(DIDEFAULTFOLD, asumi);
 
-  dizasum(DIDEFAULTFOLD, N, X, incX, asumi);
+  idxdBLAS_dizasum(DIDEFAULTFOLD, N, X, incX, asumi);
 
   asum = idxd_ddiconv(DIDEFAULTFOLD, asumi);
   free(asumi);

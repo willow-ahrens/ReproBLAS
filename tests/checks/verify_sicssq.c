@@ -56,17 +56,17 @@ int verify_sicssq_reproducibility(int fold, int N, float complex* X, int incX, f
   while (num_blocks < N && num_blocks <= max_num_blocks) {
     idxd_sisetzero(fold, ires);
     if (num_blocks == 1)
-      resscl = sicssq(fold, N, X, incX, resscl, ires);
+      resscl = idxdBLAS_sicssq(fold, N, X, incX, resscl, ires);
     else {
       block_N = (N + num_blocks - 1) / num_blocks;
       for (i = 0; i < N; i += block_N) {
         block_N = block_N < N - i ? block_N : (N-i);
-        resscl = sicssq(fold, block_N, X + i * incX, incX, resscl, ires);
+        resscl = idxdBLAS_sicssq(fold, block_N, X + i * incX, incX, resscl, ires);
       }
     }
     resssq = idxd_ssiconv(fold, ires);
     if (resssq != refssq || resscl != refscl) {
-      printf("sicssq(X)[num_blocks=%d,block_N=%d] = %g * (%g) != %g * (%g)\n", num_blocks, block_N, resscl, resssq, refscl, refssq);
+      printf("idxdBLAS_sicssq(X)[num_blocks=%d,block_N=%d] = %g * (%g) != %g * (%g)\n", num_blocks, block_N, resscl, resssq, refscl, refssq);
       printf("ref float_indexed:\n");
       idxd_siprint(fold, iref);
       printf("\nres float_indexed:\n");
@@ -130,7 +130,7 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX,
 
   //compute with unpermuted data
   idxd_sisetzero(fold._int.value, iref);
-  refscl = sicssq(fold._int.value, N, X, incX, refscl, iref);
+  refscl = idxdBLAS_sicssq(fold._int.value, N, X, incX, refscl, iref);
   refssq = idxd_ssiconv(fold._int.value, iref);
 
   P = util_identity_permutation(N);

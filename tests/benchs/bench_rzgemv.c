@@ -104,7 +104,7 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
           idxd_zizconv(fold._int.value, &betaY, YI + j * idxd_zisize(fold._int.value));
         }
       }
-      zizgemv(fold._int.value, Order, TransA, M, N, &alpha, A, lda, X, incX, YI, 1);
+      idxdBLAS_zizgemv(fold._int.value, Order, TransA, M, N, &alpha, A, lda, X, incX, YI, 1);
       for(j = 0; j < NY; j++){
         idxd_zziconv_sub(fold._int.value, YI + j * idxd_zisize(fold._int.value), res + j * incY);
       }

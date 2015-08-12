@@ -56,17 +56,17 @@ int verify_didssq_reproducibility(int fold, int N, double* X, int incX, double r
   while (num_blocks < N && num_blocks <= max_num_blocks) {
     idxd_disetzero(fold, ires);
     if (num_blocks == 1)
-      resscl = didssq(fold, N, X, incX, resscl, ires);
+      resscl = idxdBLAS_didssq(fold, N, X, incX, resscl, ires);
     else {
       block_N = (N + num_blocks - 1) / num_blocks;
       for (i = 0; i < N; i += block_N) {
         block_N = block_N < N - i ? block_N : (N-i);
-        resscl = didssq(fold, block_N, X + i * incX, incX, resscl, ires);
+        resscl = idxdBLAS_didssq(fold, block_N, X + i * incX, incX, resscl, ires);
       }
     }
     resssq = idxd_ddiconv(fold, ires);
     if (resssq != refssq || resscl != refscl) {
-      printf("didssq(X)[num_blocks=%d,block_N=%d] = %g * (%g) != %g * (%g)\n", num_blocks, block_N, resscl, resssq, refscl, refssq);
+      printf("idxdBLAS_didssq(X)[num_blocks=%d,block_N=%d] = %g * (%g) != %g * (%g)\n", num_blocks, block_N, resscl, resssq, refscl, refssq);
       printf("ref double_indexed:\n");
       idxd_diprint(fold, iref);
       printf("\nres double_indexed:\n");
@@ -129,7 +129,7 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX,
 
   //compute with unpermuted data
   idxd_disetzero(fold._int.value, iref);
-  refscl = didssq(fold._int.value, N, X, incX, refscl, iref);
+  refscl = idxdBLAS_didssq(fold._int.value, N, X, incX, refscl, iref);
   refssq = idxd_ddiconv(fold._int.value, iref);
 
   P = util_identity_permutation(N);

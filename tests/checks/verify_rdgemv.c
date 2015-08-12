@@ -71,10 +71,10 @@ int verify_dgemv_reproducibility(int fold, char Order, char TransA, int M, int N
               switch(Order){
                 case 'r':
                 case 'R':
-                  didgemv(fold, Order, TransA, M, block_N, alpha, A + i, lda, X + i * incX, incX, Ires, incY);
+                  idxdBLAS_didgemv(fold, Order, TransA, M, block_N, alpha, A + i, lda, X + i * incX, incX, Ires, incY);
                   break;
                 default:
-                  didgemv(fold, Order, TransA, M, block_N, alpha, A + i * lda, lda, X + i * incX, incX, Ires, incY);
+                  idxdBLAS_didgemv(fold, Order, TransA, M, block_N, alpha, A + i * lda, lda, X + i * incX, incX, Ires, incY);
                   break;
               }
             }
@@ -88,10 +88,10 @@ int verify_dgemv_reproducibility(int fold, char Order, char TransA, int M, int N
               switch(Order){
                 case 'r':
                 case 'R':
-                  didgemv(fold, Order, TransA, block_N, N, alpha, A + i * lda, lda, X + i * incX, incX, Ires, incY);
+                  idxdBLAS_didgemv(fold, Order, TransA, block_N, N, alpha, A + i * lda, lda, X + i * incX, incX, Ires, incY);
                   break;
                 default:
-                  didgemv(fold, Order, TransA, block_N, N, alpha, A + i, lda, X + i * incX, incX, Ires, incY);
+                  idxdBLAS_didgemv(fold, Order, TransA, block_N, N, alpha, A + i, lda, X + i * incX, incX, Ires, incY);
                   break;
               }
             }
@@ -192,7 +192,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   memcpy(Iref, YI, NY * incY * idxd_disize(fold._int.value));
 
   wrap_rdgemv(fold._int.value, Order, TransA, M, N, RealAlpha, A, lda, X, incX, RealBeta, ref, incY);
-  didgemv(fold._int.value, Order, TransA, M, N, RealAlpha, A, lda, X, incX, Iref, incY);
+  idxdBLAS_didgemv(fold._int.value, Order, TransA, M, N, RealAlpha, A, lda, X, incX, Iref, incY);
 
   P = util_identity_permutation(NX);
   util_dvec_reverse(NX, X, incX, P, 1);

@@ -8,7 +8,7 @@ void rcsum_sub(const int N, const void* X, const int incX, void *sum) {
 
   idxd_cisetzero(SIDEFAULTFOLD, sumi);
 
-  cicsum(SIDEFAULTFOLD, N, X, incX, sumi);
+  idxdBLAS_cicsum(SIDEFAULTFOLD, N, X, incX, sumi);
 
   idxd_cciconv_sub(SIDEFAULTFOLD, sumi, sum);
   free(sumi);

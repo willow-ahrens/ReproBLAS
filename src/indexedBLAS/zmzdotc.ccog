@@ -42,7 +42,7 @@ cog.out(generate.generate(blockSize.BlockSize("zmzdotc", "N_block_MAX", 32, term
 #define N_block_MAX 2048
 //[[[end]]]
 
-void zmzdotc(const int fold, const int N, const void *X, const int incX, const void *Y, const int incY, double *manZ, const int incmanZ, double *carZ, const int inccarZ){
+void idxdBLAS_zmzdotc(const int fold, const int N, const void *X, const int incX, const void *Y, const int incY, double *manZ, const int incmanZ, double *carZ, const int inccarZ){
   double amaxm[2];
   int i, j;
   int N_block = N_block_MAX;
@@ -54,7 +54,7 @@ void zmzdotc(const int fold, const int N, const void *X, const int incX, const v
   for (i = 0; i < N; i += N_block) {
     N_block = MIN((N - i), N_block);
 
-    zamaxm_sub(N_block, x, incX, y, incY, amaxm);
+    idxdBLAS_zamaxm_sub(N_block, x, incX, y, incY, amaxm);
 
     if (isinf(amaxm[0]) || isinf(manZ[0])){
       for (j = 0; j < N_block; j++){

@@ -42,7 +42,7 @@ cog.out(generate.generate(blockSize.BlockSize("cmcdotu", "N_block_MAX", 32, term
 #define N_block_MAX 512
 //[[[end]]]
 
-void cmcdotu(const int fold, const int N, const void *X, const int incX, const void *Y, const int incY, float *manZ, const int incmanZ, float *carZ, const int inccarZ){
+void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX, const void *Y, const int incY, float *manZ, const int incmanZ, float *carZ, const int inccarZ){
   float amaxm[2];
   int i, j;
   int N_block = N_block_MAX;
@@ -54,7 +54,7 @@ void cmcdotu(const int fold, const int N, const void *X, const int incX, const v
   for (i = 0; i < N; i += N_block) {
     N_block = MIN((N - i), N_block);
 
-    camaxm_sub(N_block, x, incX, y, incY, amaxm);
+    idxdBLAS_camaxm_sub(N_block, x, incX, y, incY, amaxm);
 
     if (isinf(amaxm[0]) || isinf(manZ[0])){
       for (j = 0; j < N_block; j++){

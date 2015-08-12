@@ -42,7 +42,7 @@ cog.out(generate.generate(blockSize.BlockSize("dmzssq", "N_block_MAX", 32, termi
 #define N_block_MAX 1024
 //[[[end]]]
 
-double dmzssq(const int fold, const int N, const void *X, const int incX, const double scaleY, double *manY, const int incmanY, double *carY, const int inccarY){
+double idxdBLAS_dmzssq(const int fold, const int N, const void *X, const int incX, const double scaleY, double *manY, const int incmanY, double *carY, const int inccarY){
   double amax_tmp[2];
   double amax;
   double scl = 0.0;
@@ -58,7 +58,7 @@ double dmzssq(const int fold, const int N, const void *X, const int incX, const 
   for (i = 0; i < N; i += N_block) {
     N_block = MIN((N - i), N_block);
 
-    zamax_sub(N_block, x, incX, amax_tmp);
+    idxdBLAS_zamax_sub(N_block, x, incX, amax_tmp);
     amax = MAX(amax_tmp[0], amax_tmp[1]);
 
     if (isinf(amax) || isinf(manY[0])){

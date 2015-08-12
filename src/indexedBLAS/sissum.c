@@ -4,6 +4,6 @@
 
 #include "indexedBLAS.h"
 
-void sissum(const int fold, const int N, const float *X, const int incX, float_indexed *Y){
-  smssum(fold, N, X, incX, Y, 1, Y + fold, 1);
+void idxdBLAS_sissum(const int fold, const int N, const float *X, const int incX, float_indexed *Y){
+  idxdBLAS_smssum(fold, N, X, incX, Y, 1, Y + fold, 1);
 }

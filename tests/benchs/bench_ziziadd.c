@@ -86,7 +86,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
       X = (double_complex_indexed*)util_zvec_alloc(N * idxd_zinum(j), 1);
       for(i = 0; i < N; i++){
         idxd_zisetzero(j, X + idxd_zinum(j));
-        zizsum(j, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_zinum(j));
+        idxdBLAS_zizsum(j, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_zinum(j));
       }
       ires = idxd_zialloc(j);
       time_tic();
@@ -104,7 +104,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   }else{
     X = (double_complex_indexed*)util_zvec_alloc(N * idxd_zinum(fold._int.value), 1);
     for(i = 0; i < N; i++){
-      zizsum(fold._int.value, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_zinum(fold._int.value));
+      idxdBLAS_zizsum(fold._int.value, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_zinum(fold._int.value));
     }
     ires = idxd_zialloc(fold._int.value);
     time_tic();
