@@ -1,7 +1,7 @@
 #include <math.h>
 
 #include <reproBLAS.h>
-#include <indexedBLAS.h>
+#include <idxdBLAS.h>
 
 #include "../../config.h"
 

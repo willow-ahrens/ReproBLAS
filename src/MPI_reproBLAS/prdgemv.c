@@ -10,7 +10,7 @@
 #include "MPI_idxd.h"
 #include "../MPI_indexed/MPI_dIndexed.h"
 #include "MPI_reproBLAS.h"
-#include "indexedBLAS.h"
+#include "idxdBLAS.h"
 #include "reproBLAS.h"
 
 

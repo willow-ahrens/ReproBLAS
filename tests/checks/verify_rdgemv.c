@@ -4,7 +4,7 @@
 #include <string.h>
 
 #include <idxd.h>
-#include <indexedBLAS.h>
+#include <idxdBLAS.h>
 #include <reproBLAS.h>
 
 #include "../common/test_opt.h"

@@ -10,7 +10,7 @@
 #include "../MPI_indexed/MPI_didxd.h"
 #include "../types.h"
 #include "MPI_reproBLAS.h"
-#include "indexedBLAS.h"
+#include "idxdBLAS.h"
 
 void przsumI(
 	MPI_Comm comm, int root,

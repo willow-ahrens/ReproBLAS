@@ -1,0 +1,122 @@
+#include <stdlib.h>
+
+#include <idxdBLAS.h>
+#include <idxd.h>
+
+#include "../common/common.h"
+
+/*[[[cog
+import cog
+import generate
+import dataTypes
+from src.common import blockSize
+from scripts import terminal
+
+cog.out(generate.generate(blockSize.BlockSize("dmdgemv", "Y_BLOCK", 1, 128, 128, ["bench_rdgemv_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("dmdgemv", "X_BLOCK", 1, 4 * terminal.get_diendurance(), 4 * terminal.get_diendurance(), ["bench_rdgemv_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("dmdgemv", "YT_BLOCK", 1, 128, 128, ["bench_rdgemv_fold_{}_trans".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("dmdgemv", "XT_BLOCK", 1, 4 * terminal.get_diendurance(), 4 * terminal.get_diendurance(), ["bench_rdgemv_fold_{}_trans".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("dmdgemv", "T_BLOCK", 1, 32, 32, ["bench_rdgemv_fold_{}_trans".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+]]]*/
+#define Y_BLOCK 128
+#define X_BLOCK 8192
+#define YT_BLOCK 128
+#define XT_BLOCK 8192
+#define T_BLOCK 32
+//[[[end]]]
+
+void idxdBLAS_dmdgemv(const int fold, const char Order,
+             const char TransA, const int M, const int N,
+             const double alpha, const double *A, const int lda,
+             const double *X, const int incX,
+             double *priY, const int incpriY, const int incincpriY,
+             double *carY, const int inccarY, const int incinccarY){
+  int i;
+  int ii;
+  int iii;
+  int j;
+  int jj;
+  int jjj;
+  double *alphaX;
+  int incalphaX;
+  double *bufA;
+
+  if(M == 0 || N == 0 || alpha == 0.0){
+    return;
+  }
+
+  switch(Order){
+    case 'r':
+    case 'R':
+      switch(TransA){
+        case 'n':
+        case 'N':
+          if(alpha == 1.0){
+            alphaX = (double*)X;
+            incalphaX = incX;
+          }else{
+            alphaX = (double*)malloc(N * sizeof(double));
+            for(j = 0; j < N; j++){
+              alphaX[j] = X[j * incX] * alpha;
+            }
+            incalphaX = 1;
+          }
+          for(i = 0; i < M; i += Y_BLOCK){
+            for(j = 0; j < N; j += X_BLOCK){
+              for(ii = i; ii < M && ii < i + Y_BLOCK; ii++){
+                idxdBLAS_dmddot(fold, MIN(X_BLOCK, N - j), A + ii * lda + j, 1, alphaX + j * incalphaX, incalphaX, priY + ii * incpriY * incincpriY * fold, incpriY, carY + ii * inccarY * incinccarY * fold, inccarY);
+              }
+            }
+          }
+          if(alpha != 1.0){
+            free(alphaX);
+          }
+          break;
+        default:
+          if(alpha == 1.0){
+            alphaX = (double*)X;
+            incalphaX = incX;
+          }else{
+            alphaX = (double*)malloc(M * sizeof(double));
+            for(j = 0; j < M; j++){
+              alphaX[j] = X[j * incX] * alpha;
+            }
+            incalphaX = 1;
+          }
+          bufA = (double*)malloc(XT_BLOCK * YT_BLOCK * sizeof(double));
+          for(i = 0; i < N; i += YT_BLOCK){
+            for(j = 0; j < M; j += XT_BLOCK){
+              for(jj = j; jj < M && jj < j + XT_BLOCK; jj += T_BLOCK){
+                for(ii = i; ii < N && ii < i + YT_BLOCK; ii+= T_BLOCK){
+                  for(jjj = jj; jjj < M && jjj < jj + MIN(T_BLOCK, XT_BLOCK); jjj++){
+                    for(iii = ii; iii < N && iii < ii + MIN(T_BLOCK, YT_BLOCK); iii++){
+                      bufA[(iii - i) * XT_BLOCK + (jjj - j)] = A[jjj * lda + iii];
+                    }
+                  }
+                }
+              }
+              for(ii = i; ii < N && ii < i + YT_BLOCK; ii++){
+                idxdBLAS_dmddot(fold, MIN(XT_BLOCK, M - j), bufA + (ii - i) * XT_BLOCK, 1, alphaX + j * incalphaX, incalphaX, priY + ii * incpriY * incincpriY * fold, incpriY, carY + ii * inccarY * incinccarY * fold, inccarY);
+              }
+            }
+          }
+          free(bufA);
+          if(alpha != 1.0){
+            free(alphaX);
+          }
+          break;
+      }
+      break;
+    default:
+      switch(TransA){
+        case 'n':
+        case 'N':
+          idxdBLAS_dmdgemv(fold, 'r', 't', N, M, alpha, A, lda, X, incX, priY, incpriY, incincpriY, carY, inccarY, incinccarY);
+          break;
+        default:
+          idxdBLAS_dmdgemv(fold, 'r', 'n', N, M, alpha, A, lda, X, incX, priY, incpriY, incincpriY, carY, inccarY, incinccarY);
+          break;
+      }
+      break;
+  }
+}

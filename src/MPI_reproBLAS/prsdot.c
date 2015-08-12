@@ -5,7 +5,7 @@
 #include "MPI_idxd.h"
 #include "../MPI_indexed/MPI_sidxd.h"
 #include "MPI_reproBLAS.h"
-#include "indexedBLAS.h"
+#include "idxdBLAS.h"
 
 void prsdotI(
 	MPI_Comm comm, int root,

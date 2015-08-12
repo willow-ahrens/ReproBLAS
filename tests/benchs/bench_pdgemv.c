@@ -1,4 +1,4 @@
-#include <indexedBLAS.h>
+#include <idxdBLAS.h>
 #include <MPI_reproBLAS.h>
 #include <idxd.h>
 #include <stdio.h>

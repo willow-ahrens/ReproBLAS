@@ -1,7 +1,7 @@
 #ifndef _REPRODUCIBLE_PAR_BLAS__H_
 #define _REPRODUCIBLE_PAR_BLAS__H_
 #include "idxd.h"
-#include "indexedBLAS.h"
+#include "idxdBLAS.h"
 #include <mpi.h>
 
 //---- double precision

@@ -2,7 +2,7 @@
 #define RCBLAS1_WRAPPER_H
 
 #include <reproBLAS.h>
-#include <indexedBLAS.h>
+#include <idxdBLAS.h>
 #include <idxd.h>
 #include "../../config.h"
 
