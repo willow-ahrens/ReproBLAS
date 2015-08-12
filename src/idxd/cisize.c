@@ -10,6 +10,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-size_t cisize(const int fold){
+size_t idxd_cisize(const int fold){
   return 4*fold*sizeof(float);
 }

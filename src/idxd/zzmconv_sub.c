@@ -15,7 +15,7 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zzmconv_sub(const int fold, const double *priX, const int incpriX, const double *carX, const int inccarX, void *conv) {
-  ((double*)conv)[0] = ddmconv(fold, priX, incpriX * 2, carX, inccarX + 1);
-  ((double*)conv)[1] = ddmconv(fold, priX + 1, incpriX * 2, carX + 1, inccarX + 1);
+void idxd_zzmconv_sub(const int fold, const double *priX, const int incpriX, const double *carX, const int inccarX, void *conv) {
+  ((double*)conv)[0] = idxd_ddmconv(fold, priX, incpriX * 2, carX, inccarX + 1);
+  ((double*)conv)[1] = idxd_ddmconv(fold, priX + 1, incpriX * 2, carX + 1, inccarX + 1);
 }

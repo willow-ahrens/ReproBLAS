@@ -11,6 +11,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void didconv(const int fold, const double X, double_indexed *Y) {
-  dmdconv(fold, X, Y, 1, Y + fold, 1);
+void idxd_didconv(const int fold, const double X, double_indexed *Y) {
+  idxd_dmdconv(fold, X, Y, 1, Y + fold, 1);
 }

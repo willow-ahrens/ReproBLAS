@@ -10,7 +10,7 @@
  *
  * Performs the operation Y += X on an indexed type Y where the index of Y is larger than the index of X
  *
- * @note This routine was provided as a means of allowing the you to optimize your code. After you have called #cmcupdate() on Y with the maximum absolute value of all future elements you wish to deposit in Y, you can call #cmcdeposit() to deposit a maximum of #idxd_SIENDURANCE elements into Y before renormalizing Y with #cmrenorm(). After any number of successive calls of #cmcdeposit() on Y, you must renormalize Y with #cmrenorm() before using any other function on Y.
+ * @note This routine was provided as a means of allowing the you to optimize your code. After you have called #idxd_cmcupdate() on Y with the maximum absolute value of all future elements you wish to deposit in Y, you can call #idxd_cmcdeposit() to deposit a maximum of #idxd_SIENDURANCE elements into Y before renormalizing Y with #idxd_cmrenorm(). After any number of successive calls of #idxd_cmcdeposit() on Y, you must renormalize Y with #idxd_cmrenorm() before using any other function on Y.
  *
  * @param fold the fold of the indexed types
  * @param X scalar X
@@ -21,7 +21,7 @@
  * @author Peter Ahrens
  * @date   10 Jun 2015
  */
-void cmcdeposit(const int fold, const void *X, float *priY, const int incpriY){
+void idxd_cmcdeposit(const int fold, const void *X, float *priY, const int incpriY){
   float MR, MI;
   int_float qR, qI;
   int i;
@@ -30,18 +30,18 @@ void cmcdeposit(const int fold, const void *X, float *priY, const int incpriY){
 
   if (ISNANINFF(xR) || ISNANINFF(priY[0])){
     priY[0] += xR;
-    smsdeposit(fold, xI, priY + 1, 2 * incpriY);
+    idxd_smsdeposit(fold, xI, priY + 1, 2 * incpriY);
     return;
   }
   if (ISNANINFF(xI) || ISNANINFF(priY[1])){
     priY[1] += xI;
-    smsdeposit(fold, xR, priY, 2 * incpriY);
+    idxd_smsdeposit(fold, xR, priY, 2 * incpriY);
     return;
   }
 
-  if(smindex0(priY) || smindex0(priY + 1)){
-    smsdeposit(fold, xR, priY, 2 * incpriY);
-    smsdeposit(fold, xI, priY + 1, 2 * incpriY);
+  if(idxd_smindex0(priY) || idxd_smindex0(priY + 1)){
+    idxd_smsdeposit(fold, xR, priY, 2 * incpriY);
+    idxd_smsdeposit(fold, xI, priY + 1, 2 * incpriY);
     return;
   }
 

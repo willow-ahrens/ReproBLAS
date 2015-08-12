@@ -20,7 +20,7 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cmcmadd(const int fold, const float *priX, const int incpriX, const float *carX, const int inccarX, float* priY, const int incpriY, float* carY, const int inccarY) {
-  smsmadd(fold, priX, 2 * incpriX, carX, 2 * inccarX, priY, 2 * incpriY, carY, 2 * inccarY);
-  smsmadd(fold, priX + 1, 2 * incpriX, carX + 1, 2 * inccarX, priY + 1, 2 * incpriY, carY + 1, 2 * inccarY);
+void idxd_cmcmadd(const int fold, const float *priX, const int incpriX, const float *carX, const int inccarX, float* priY, const int incpriY, float* carY, const int inccarY) {
+  idxd_smsmadd(fold, priX, 2 * incpriX, carX, 2 * inccarX, priY, 2 * incpriY, carY, 2 * inccarY);
+  idxd_smsmadd(fold, priX + 1, 2 * incpriX, carX + 1, 2 * inccarX, priY + 1, 2 * incpriY, carY + 1, 2 * inccarY);
 }

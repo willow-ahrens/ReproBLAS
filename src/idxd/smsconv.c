@@ -15,7 +15,7 @@
  * @author Peter Ahrens
  * @date   30 Apr 2015
  */
-void smsconv(const int fold, const float X, float* priY, const int incpriY, float* carY, const int inccarY) {
-  smsetzero(fold, priY, incpriY, carY, inccarY);
-  smsadd(fold, X, priY, incpriY, carY, inccarY);
+void idxd_smsconv(const int fold, const float X, float* priY, const int incpriY, float* carY, const int inccarY) {
+  idxd_smsetzero(fold, priY, incpriY, carY, inccarY);
+  idxd_smsadd(fold, X, priY, incpriY, carY, inccarY);
 }

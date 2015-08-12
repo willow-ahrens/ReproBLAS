@@ -6,15 +6,15 @@
 #include "../../config.h"
 
 float rscnrm2(const int N, const void* X, const int incX) {
-  float_indexed *ssq = sialloc(SIDEFAULTFOLD);
+  float_indexed *ssq = idxd_sialloc(SIDEFAULTFOLD);
   float scl;
   float nrm2;
 
-  sisetzero(SIDEFAULTFOLD, ssq);
+  idxd_sisetzero(SIDEFAULTFOLD, ssq);
 
   scl = sicssq(SIDEFAULTFOLD, N, X, incX, 0.0, ssq);
 
-  nrm2 = scl * sqrt(ssiconv(SIDEFAULTFOLD, ssq));
+  nrm2 = scl * sqrt(idxd_ssiconv(SIDEFAULTFOLD, ssq));
   free(ssq);
   return nrm2;
 }

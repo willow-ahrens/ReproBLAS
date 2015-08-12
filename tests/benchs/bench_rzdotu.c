@@ -76,23 +76,23 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   }else if(fold._int.value == 0){
     time_tic();
     for(j = 2; j <= DIMAXFOLD; j++){
-      ires = zialloc(j);
-      zisetzero(j, ires);
+      ires = idxd_zialloc(j);
+      idxd_zisetzero(j, ires);
       for(i = 0; i < trials; i++){
         zizdotu(j, N, X, incX, Y, incY, ires);
       }
-      zziconv_sub(j, ires, &res);
+      idxd_zziconv_sub(j, ires, &res);
       free(ires);
     }
     time_toc();
   }else{
     time_tic();
-    ires = zialloc(fold._int.value);
-    zisetzero(fold._int.value, ires);
+    ires = idxd_zialloc(fold._int.value);
+    idxd_zisetzero(fold._int.value, ires);
     for(i = 0; i < trials; i++){
       zizdotu(fold._int.value, N, X, incX, Y, incY, ires);
     }
-    zziconv_sub(fold._int.value, ires, &res);
+    idxd_zziconv_sub(fold._int.value, ires, &res);
     free(ires);
     time_toc();
   }

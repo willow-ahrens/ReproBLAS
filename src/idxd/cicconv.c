@@ -11,6 +11,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cicconv(const int fold, const void *X, float_complex_indexed *Y) {
-  cmcconv(fold, X, Y, 1, Y + 2 * fold, 1);
+void idxd_cicconv(const int fold, const void *X, float_complex_indexed *Y) {
+  idxd_cmcconv(fold, X, Y, 1, Y + 2 * fold, 1);
 }

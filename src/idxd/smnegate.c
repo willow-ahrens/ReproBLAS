@@ -16,11 +16,11 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void smnegate(const int fold, float* priX, const int incpriX, float* carX, const int inccarX) {
+void idxd_smnegate(const int fold, float* priX, const int incpriX, float* carX, const int inccarX) {
   int i;
   const float *bins;
   if(priX[0] != 0.0){
-    bins = smbins(smindex(priX));
+    bins = idxd_smbins(idxd_smindex(priX));
     for (i = 0; i < fold; i++) {
       priX[i * incpriX] = bins[i] - (priX[i * incpriX] - bins[i]);
       carX[i * inccarX] = -carX[i * inccarX];

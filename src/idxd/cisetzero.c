@@ -14,6 +14,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cisetzero(const int fold, float_complex_indexed *X){
-  memset(X, 0, cisize(fold));
+void idxd_cisetzero(const int fold, float_complex_indexed *X){
+  memset(X, 0, idxd_cisize(fold));
 }

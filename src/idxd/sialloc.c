@@ -9,6 +9,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-float_indexed *sialloc(const int fold){
-  return (float_indexed*)malloc(sisize(fold));
+float_indexed *idxd_sialloc(const int fold){
+  return (float_indexed*)malloc(idxd_sisize(fold));
 }

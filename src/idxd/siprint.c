@@ -10,6 +10,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void siprint(const int fold, const float_indexed *X) {
-  smprint(fold, X, 1, X + fold, 1);
+void idxd_siprint(const int fold, const float_indexed *X) {
+  idxd_smprint(fold, X, 1, X + fold, 1);
 }

@@ -11,6 +11,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-double ddiconv(const int fold, const double_indexed *X) {
-  return ddmconv(fold, X, 1, X + fold, 1);
+double idxd_ddiconv(const int fold, const double_indexed *X) {
+  return idxd_ddmconv(fold, X, 1, X + fold, 1);
 }

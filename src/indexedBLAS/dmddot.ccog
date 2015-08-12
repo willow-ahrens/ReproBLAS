@@ -67,11 +67,11 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
     }
 
     if (deposits + N_block > idxd_DIENDURANCE) {
-      dmrenorm(fold, manZ, incmanZ, carZ, inccarZ);
+      idxd_dmrenorm(fold, manZ, incmanZ, carZ, inccarZ);
       deposits = 0;
     }
 
-    dmdupdate(fold, amaxm, manZ, incmanZ, carZ, inccarZ);
+    idxd_dmdupdate(fold, amaxm, manZ, incmanZ, carZ, inccarZ);
 
     /*[[[cog
     cog.out(generate.generate(depositDot.DepositDot(dataTypes.Double, "fold", "N_block", "X", "incX", "manZ", "incmanZ", "Y", "incY"), cog.inFile, args, params, mode))
@@ -110,7 +110,7 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
 
               if(incX == 1){
                 if(incY == 1){
-                  if(dmindex0(manZ)){
+                  if(idxd_dmindex0(manZ)){
                     compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 4 <= N_block; i += 4, X += 4, Y += 4){
@@ -178,7 +178,7 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
                     }
                   }
                 }else{
-                  if(dmindex0(manZ)){
+                  if(idxd_dmindex0(manZ)){
                     compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 4 <= N_block; i += 4, X += 4, Y += (incY * 4)){
@@ -248,7 +248,7 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
                 }
               }else{
                 if(incY == 1){
-                  if(dmindex0(manZ)){
+                  if(idxd_dmindex0(manZ)){
                     compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 4 <= N_block; i += 4, X += (incX * 4), Y += 4){
@@ -316,7 +316,7 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
                     }
                   }
                 }else{
-                  if(dmindex0(manZ)){
+                  if(idxd_dmindex0(manZ)){
                     compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 4 <= N_block; i += 4, X += (incX * 4), Y += (incY * 4)){
@@ -418,7 +418,7 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
 
               if(incX == 1){
                 if(incY == 1){
-                  if(dmindex0(manZ)){
+                  if(idxd_dmindex0(manZ)){
                     compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 4 <= N_block; i += 4, X += 4, Y += 4){
@@ -492,7 +492,7 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
                     }
                   }
                 }else{
-                  if(dmindex0(manZ)){
+                  if(idxd_dmindex0(manZ)){
                     compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 4 <= N_block; i += 4, X += 4, Y += (incY * 4)){
@@ -568,7 +568,7 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
                 }
               }else{
                 if(incY == 1){
-                  if(dmindex0(manZ)){
+                  if(idxd_dmindex0(manZ)){
                     compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 4 <= N_block; i += 4, X += (incX * 4), Y += 4){
@@ -642,7 +642,7 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
                     }
                   }
                 }else{
-                  if(dmindex0(manZ)){
+                  if(idxd_dmindex0(manZ)){
                     compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 4 <= N_block; i += 4, X += (incX * 4), Y += (incY * 4)){
@@ -764,7 +764,7 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
 
               if(incX == 1){
                 if(incY == 1){
-                  if(dmindex0(manZ)){
+                  if(idxd_dmindex0(manZ)){
                     compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 2 <= N_block; i += 2, X += 2, Y += 2){
@@ -832,7 +832,7 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
                     }
                   }
                 }else{
-                  if(dmindex0(manZ)){
+                  if(idxd_dmindex0(manZ)){
                     compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 2 <= N_block; i += 2, X += 2, Y += (incY * 2)){
@@ -902,7 +902,7 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
                 }
               }else{
                 if(incY == 1){
-                  if(dmindex0(manZ)){
+                  if(idxd_dmindex0(manZ)){
                     compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 2 <= N_block; i += 2, X += (incX * 2), Y += 2){
@@ -970,7 +970,7 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
                     }
                   }
                 }else{
-                  if(dmindex0(manZ)){
+                  if(idxd_dmindex0(manZ)){
                     compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 2 <= N_block; i += 2, X += (incX * 2), Y += (incY * 2)){
@@ -1072,7 +1072,7 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
 
               if(incX == 1){
                 if(incY == 1){
-                  if(dmindex0(manZ)){
+                  if(idxd_dmindex0(manZ)){
                     compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 2 <= N_block; i += 2, X += 2, Y += 2){
@@ -1146,7 +1146,7 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
                     }
                   }
                 }else{
-                  if(dmindex0(manZ)){
+                  if(idxd_dmindex0(manZ)){
                     compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 2 <= N_block; i += 2, X += 2, Y += (incY * 2)){
@@ -1222,7 +1222,7 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
                 }
               }else{
                 if(incY == 1){
-                  if(dmindex0(manZ)){
+                  if(idxd_dmindex0(manZ)){
                     compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 2 <= N_block; i += 2, X += (incX * 2), Y += 2){
@@ -1296,7 +1296,7 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
                     }
                   }
                 }else{
-                  if(dmindex0(manZ)){
+                  if(idxd_dmindex0(manZ)){
                     compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 2 <= N_block; i += 2, X += (incX * 2), Y += (incY * 2)){
@@ -1409,7 +1409,7 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
 
               if(incX == 1){
                 if(incY == 1){
-                  if(dmindex0(manZ)){
+                  if(idxd_dmindex0(manZ)){
                     compression_0 = idxd_DMCOMPRESSION;
                     expansion_0 = idxd_DMEXPANSION * 0.5;
                     for(i = 0; i + 1 <= N_block; i += 1, X += 1, Y += 1){
@@ -1457,7 +1457,7 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
                     }
                   }
                 }else{
-                  if(dmindex0(manZ)){
+                  if(idxd_dmindex0(manZ)){
                     compression_0 = idxd_DMCOMPRESSION;
                     expansion_0 = idxd_DMEXPANSION * 0.5;
                     for(i = 0; i + 1 <= N_block; i += 1, X += 1, Y += incY){
@@ -1507,7 +1507,7 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
                 }
               }else{
                 if(incY == 1){
-                  if(dmindex0(manZ)){
+                  if(idxd_dmindex0(manZ)){
                     compression_0 = idxd_DMCOMPRESSION;
                     expansion_0 = idxd_DMEXPANSION * 0.5;
                     for(i = 0; i + 1 <= N_block; i += 1, X += incX, Y += 1){
@@ -1555,7 +1555,7 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
                     }
                   }
                 }else{
-                  if(dmindex0(manZ)){
+                  if(idxd_dmindex0(manZ)){
                     compression_0 = idxd_DMCOMPRESSION;
                     expansion_0 = idxd_DMEXPANSION * 0.5;
                     for(i = 0; i + 1 <= N_block; i += 1, X += incX, Y += incY){
@@ -1628,7 +1628,7 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
 
               if(incX == 1){
                 if(incY == 1){
-                  if(dmindex0(manZ)){
+                  if(idxd_dmindex0(manZ)){
                     compression_0 = idxd_DMCOMPRESSION;
                     expansion_0 = idxd_DMEXPANSION * 0.5;
                     for(i = 0; i + 1 <= N_block; i += 1, X += 1, Y += 1){
@@ -1677,7 +1677,7 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
                     }
                   }
                 }else{
-                  if(dmindex0(manZ)){
+                  if(idxd_dmindex0(manZ)){
                     compression_0 = idxd_DMCOMPRESSION;
                     expansion_0 = idxd_DMEXPANSION * 0.5;
                     for(i = 0; i + 1 <= N_block; i += 1, X += 1, Y += incY){
@@ -1728,7 +1728,7 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
                 }
               }else{
                 if(incY == 1){
-                  if(dmindex0(manZ)){
+                  if(idxd_dmindex0(manZ)){
                     compression_0 = idxd_DMCOMPRESSION;
                     expansion_0 = idxd_DMEXPANSION * 0.5;
                     for(i = 0; i + 1 <= N_block; i += 1, X += incX, Y += 1){
@@ -1777,7 +1777,7 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
                     }
                   }
                 }else{
-                  if(dmindex0(manZ)){
+                  if(idxd_dmindex0(manZ)){
                     compression_0 = idxd_DMCOMPRESSION;
                     expansion_0 = idxd_DMEXPANSION * 0.5;
                     for(i = 0; i + 1 <= N_block; i += 1, X += incX, Y += incY){
@@ -1844,5 +1844,5 @@ void dmddot(const int fold, const int N, const double *X, const int incX, const 
     deposits += N_block;
   }
 
-  dmrenorm(fold, manZ, incmanZ, carZ, inccarZ);
+  idxd_dmrenorm(fold, manZ, incmanZ, carZ, inccarZ);
 }

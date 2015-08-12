@@ -10,7 +10,7 @@
  *
  * Performs the operation Y += X on an indexed type Y where the index of Y is larger than the index of X
  *
- * @note This routine was provided as a means of allowing the you to optimize your code. After you have called #zmzupdate() on Y with the maximum absolute value of all future elements you wish to deposit in Y, you can call #zmzdeposit() to deposit a maximum of #idxd_DIENDURANCE elements into Y before renormalizing Y with #zmrenorm(). After any number of successive calls of #zmzdeposit() on Y, you must renormalize Y with #zmrenorm() before using any other function on Y.
+ * @note This routine was provided as a means of allowing the you to optimize your code. After you have called #idxd_zmzupdate() on Y with the maximum absolute value of all future elements you wish to deposit in Y, you can call #idxd_zmzdeposit() to deposit a maximum of #idxd_DIENDURANCE elements into Y before renormalizing Y with #idxd_zmrenorm(). After any number of successive calls of #idxd_zmzdeposit() on Y, you must renormalize Y with #idxd_zmrenorm() before using any other function on Y.
  *
  * @param fold the fold of the indexed types
  * @param X scalar X
@@ -21,7 +21,7 @@
  * @author Peter Ahrens
  * @date   10 Jun 2015
  */
-void zmzdeposit(const int fold, const void *X, double *priY, const int incpriY){
+void idxd_zmzdeposit(const int fold, const void *X, double *priY, const int incpriY){
   double MR, MI;
   long_double qR, qI;
   int i;
@@ -30,18 +30,18 @@ void zmzdeposit(const int fold, const void *X, double *priY, const int incpriY){
 
   if (ISNANINF(xR) || ISNANINF(priY[0])) {
     priY[0] += xR;
-    dmddeposit(fold, xI, priY + 1, 2 * incpriY);
+    idxd_dmddeposit(fold, xI, priY + 1, 2 * incpriY);
     return;
   }
   if (ISNANINF(xI) || ISNANINF(priY[1])) {
     priY[1] += xI;
-    dmddeposit(fold, xR, priY, 2 * incpriY);
+    idxd_dmddeposit(fold, xR, priY, 2 * incpriY);
     return;
   }
 
-  if(dmindex0(priY) || dmindex0(priY + 1)){
-    dmddeposit(fold, xR, priY, 2 * incpriY);
-    dmddeposit(fold, xI, priY + 1, 2 * incpriY);
+  if(idxd_dmindex0(priY) || idxd_dmindex0(priY + 1)){
+    idxd_dmddeposit(fold, xR, priY, 2 * incpriY);
+    idxd_dmddeposit(fold, xI, priY + 1, 2 * incpriY);
     return;
   }
 

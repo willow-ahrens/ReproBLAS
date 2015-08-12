@@ -20,7 +20,7 @@ static int bins_initialized = 0;
  * @author Hong Diep Nguyen
  * @date   19 Jun 2015
  */
-const double *dmbins(const int X) {
+const double *idxd_dmbins(const int X) {
   int index;
 
   if (!bins_initialized) {

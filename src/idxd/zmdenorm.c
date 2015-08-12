@@ -16,6 +16,6 @@
  * @author Peter Ahrens
  * @date   23 Jun 2015
  */
-int zmdenorm(const int fold, const double *priX){
-  return dmdenorm(fold, priX) || dmdenorm(fold, priX + 1);
+int idxd_zmdenorm(const int fold, const double *priX){
+  return idxd_dmdenorm(fold, priX) || idxd_dmdenorm(fold, priX + 1);
 }

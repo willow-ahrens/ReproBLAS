@@ -71,10 +71,10 @@ int acc_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealSca
 
   for(i = 0; i < trials; i++){
     util_zvec_fill(N, X, incX, FillX, RealScaleX, ImagScaleX);
-    ires = zialloc(fold._int.value);
-    zisetzero(fold._int.value, ires);
+    ires = idxd_zialloc(fold._int.value);
+    idxd_zisetzero(fold._int.value, ires);
     zizsum(fold._int.value, N, X, incX, ires);
-    zziconv_sub(fold._int.value, ires, &res);
+    idxd_zziconv_sub(fold._int.value, ires, &res);
     free(ires);
 
     util_dvec_sort(N, (double*)X, incX * 2, NULL, 0, util_Decreasing_Magnitude);

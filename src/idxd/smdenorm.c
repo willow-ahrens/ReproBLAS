@@ -16,6 +16,6 @@
  * @author Peter Ahrens
  * @date   23 Jun 2015
  */
-int smdenorm(const int fold, const float *priX){
+int idxd_smdenorm(const int fold, const float *priX){
   return EXPF(priX[0]) - fold * SIWIDTH < FLT_MIN_EXP + FLT_MANT_DIG + EXPF_BIAS + SIWIDTH;
 }

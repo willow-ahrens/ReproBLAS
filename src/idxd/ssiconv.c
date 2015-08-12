@@ -11,6 +11,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-float ssiconv(const int fold, const float_indexed *X) {
-  return ssmconv(fold, X, 1, X + fold, 1);
+float idxd_ssiconv(const int fold, const float_indexed *X) {
+  return idxd_ssmconv(fold, X, 1, X + fold, 1);
 }

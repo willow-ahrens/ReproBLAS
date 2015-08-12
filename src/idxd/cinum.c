@@ -9,6 +9,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-int cinum(const int fold){
+int idxd_cinum(const int fold){
   return 4*fold;
 }

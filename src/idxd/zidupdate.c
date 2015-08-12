@@ -13,6 +13,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zidupdate(const int fold, const double X, double_complex_indexed *Y) {
-  zmdupdate(fold, X, Y, 1, Y + 2 * fold, 1);
+void idxd_zidupdate(const int fold, const double X, double_complex_indexed *Y) {
+  idxd_zmdupdate(fold, X, Y, 1, Y + 2 * fold, 1);
 }

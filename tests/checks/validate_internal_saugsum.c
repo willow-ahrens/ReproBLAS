@@ -38,7 +38,7 @@ int validate_internal_saugsum(int fold, int N, float* X, int incX, float* Y, int
   float res;
   float error;
   float bound;
-  float_indexed *ires = sialloc(fold);
+  float_indexed *ires = idxd_sialloc(fold);
 
   res = (wrap_saugsum_func(func))(fold, N, X, incX, Y, incY);
   error = fabsf(res - ref);
@@ -46,10 +46,10 @@ int validate_internal_saugsum(int fold, int N, float* X, int incX, float* Y, int
   if (!util_ssoftequals(res, ref, bound)) {
     //TODO these error messages need to go to stderr for all tests.
     printf("%s(X, Y) = %g != %g\n|%g - %g| = %g > %g\n", wrap_saugsum_func_names[func], res, ref, res, ref, error, bound);
-    sisetzero(fold, ires);
+    idxd_sisetzero(fold, ires);
     (wrap_siaugsum_func(func))(fold, N, X, incX, Y, incY, ires);
     printf("\nres float_indexed:\n");
-    siprint(fold, ires);
+    idxd_siprint(fold, ires);
     printf("\n");
     return 1;
   }

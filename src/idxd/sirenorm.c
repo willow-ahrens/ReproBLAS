@@ -12,6 +12,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void sirenorm(const int fold, float_indexed *X) {
-  smrenorm(fold, X, 1, X + fold, 1);
+void idxd_sirenorm(const int fold, float_indexed *X) {
+  idxd_smrenorm(fold, X, 1, X + fold, 1);
 }

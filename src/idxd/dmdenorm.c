@@ -16,6 +16,6 @@
  * @author Peter Ahrens
  * @date   23 Jun 2015
  */
-int dmdenorm(const int fold, const double *priX){
+int idxd_dmdenorm(const int fold, const double *priX){
   return EXP(priX[0]) - DIWIDTH * fold < DBL_MIN_EXP + DBL_MANT_DIG + EXP_BIAS + DIWIDTH;
 }

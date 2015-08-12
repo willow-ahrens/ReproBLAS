@@ -13,6 +13,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void sisupdate(const int fold, const float X, float_indexed *Y) {
-  smsupdate(fold, X, Y, 1, Y + fold, 1);
+void idxd_sisupdate(const int fold, const float X, float_indexed *Y) {
+  idxd_smsupdate(fold, X, Y, 1, Y + fold, 1);
 }

@@ -14,6 +14,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void disetzero(const int fold, double_indexed *X){
-  memset(X, 0, disize(fold));
+void idxd_disetzero(const int fold, double_indexed *X){
+  memset(X, 0, idxd_disize(fold));
 }

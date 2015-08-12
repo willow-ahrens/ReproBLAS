@@ -76,7 +76,7 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
   double *Y  = util_dvec_alloc(NY, incY);
   double alpha = RealAlpha;
   double beta = RealBeta;
-  double_indexed *YI = (double_indexed*)malloc(NY * disize(fold._int.value));
+  double_indexed *YI = (double_indexed*)malloc(NY * idxd_disize(fold._int.value));
 
   util_dmat_fill(Order, 'n', M, N, A, lda, FillA, RealScaleA, ImagScaleA);
   util_dvec_fill(NX, X, incX, FillX, RealScaleX, ImagScaleX);
@@ -96,16 +96,16 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
       time_tic();
       if(beta == 1.0){
         for(j = 0; j < NY; j++){
-          didconv(fold._int.value, res[j * incY], YI + j * disize(fold._int.value));
+          idxd_didconv(fold._int.value, res[j * incY], YI + j * idxd_disize(fold._int.value));
         }
       }else{
         for(j = 0; j < NY; j++){
-          didconv(fold._int.value, res[j * incY] * beta, YI + j * disize(fold._int.value));
+          idxd_didconv(fold._int.value, res[j * incY] * beta, YI + j * idxd_disize(fold._int.value));
         }
       }
       didgemv(fold._int.value, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
       for(j = 0; j < NY; j++){
-        res[j * incY] = ddiconv(fold._int.value, YI + j * disize(fold._int.value));
+        res[j * incY] = idxd_ddiconv(fold._int.value, YI + j * idxd_disize(fold._int.value));
       }
       time_toc();
     }

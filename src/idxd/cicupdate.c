@@ -13,6 +13,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cicupdate(const int fold, const void *X, float_complex_indexed *Y) {
-  cmcupdate(fold, X, Y, 1, Y + 2 * fold, 1);
+void idxd_cicupdate(const int fold, const void *X, float_complex_indexed *Y) {
+  idxd_cmcupdate(fold, X, Y, 1, Y + 2 * fold, 1);
 }

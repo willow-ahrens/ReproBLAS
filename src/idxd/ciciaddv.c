@@ -15,9 +15,9 @@
  * @author Peter Ahrens
  * @date   25 Jun 2015
  */
-void ciciaddv(const int fold, const int N, const float_complex_indexed *X, const int incX, float_complex_indexed *Y, const int incY){
+void idxd_ciciaddv(const int fold, const int N, const float_complex_indexed *X, const int incX, float_complex_indexed *Y, const int incY){
   int i;
-  for(i = 0; i < N; i++, X += incX * cinum(fold), Y += incY * cinum(fold)){
-    cmcmadd(fold, X, 1, X + 2 * fold, 1, Y, 1, Y + 2 * fold, 1);
+  for(i = 0; i < N; i++, X += incX * idxd_cinum(fold), Y += incY * idxd_cinum(fold)){
+    idxd_cmcmadd(fold, X, 1, X + 2 * fold, 1, Y, 1, Y + 2 * fold, 1);
   }
 }

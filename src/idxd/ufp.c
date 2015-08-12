@@ -17,7 +17,7 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-double ufp(double X) {
+double idxd_ufp(double X) {
   /*
   int exp;
   if (X == 0.0) {

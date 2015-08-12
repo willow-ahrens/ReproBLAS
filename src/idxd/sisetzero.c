@@ -14,6 +14,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void sisetzero(const int fold, float_indexed *X){
-  memset(X, 0, sisize(fold));
+void idxd_sisetzero(const int fold, float_indexed *X){
+  memset(X, 0, idxd_sisize(fold));
 }

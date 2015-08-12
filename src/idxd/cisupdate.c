@@ -13,6 +13,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cisupdate(const int fold, const float X, float_complex_indexed *Y) {
-  cmsupdate(fold, X, Y, 1, Y + 2 * fold, 1);
+void idxd_cisupdate(const int fold, const float X, float_complex_indexed *Y) {
+  idxd_cmsupdate(fold, X, Y, 1, Y + 2 * fold, 1);
 }

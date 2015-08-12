@@ -69,12 +69,12 @@ int corroborate_rdgemm(int fold, char Order, char TransA, char TransB, int M, in
       break;
   }
   res = malloc(CNM * sizeof(double));
-  Ires = malloc(CNM * disize(fold));
+  Ires = malloc(CNM * idxd_disize(fold));
 
   num_blocks = 1;
   while (num_blocks < K && num_blocks <= max_num_blocks) {
     memcpy(res, C, CNM * sizeof(double));
-    memcpy(Ires, CI, CNM * disize(fold));
+    memcpy(Ires, CI, CNM * idxd_disize(fold));
     if (num_blocks == 1){
       wrap_rdgemm(fold, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, res, ldc);
     }else {
@@ -131,10 +131,10 @@ int corroborate_rdgemm(int fold, char Order, char TransA, char TransB, int M, in
           switch(Order){
             case 'r':
             case 'R':
-              res[i * ldc + j] = ddiconv(fold, Ires + (i * ldc + j) * dinum(fold));
+              res[i * ldc + j] = idxd_ddiconv(fold, Ires + (i * ldc + j) * idxd_dinum(fold));
               break;
             default:
-              res[i + j * ldc] = ddiconv(fold, Ires + (i + j * ldc) * dinum(fold));
+              res[i + j * ldc] = idxd_ddiconv(fold, Ires + (i + j * ldc) * idxd_dinum(fold));
               break;
           }
         }
@@ -223,7 +223,7 @@ int matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB
       CNM = ldc * N;
       break;
   }
-  double_indexed *CI = malloc(CNM * disize(fold._int.value));
+  double_indexed *CI = malloc(CNM * idxd_disize(fold._int.value));
 
   int *P;
 
@@ -235,10 +235,10 @@ int matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB
       switch(Order){
         case 'r':
         case 'R':
-          didconv(fold._int.value, C[i * ldc + j] * RealBeta, CI + (i * ldc + j) * dinum(fold._int.value));
+          idxd_didconv(fold._int.value, C[i * ldc + j] * RealBeta, CI + (i * ldc + j) * idxd_dinum(fold._int.value));
           break;
         default:
-          didconv(fold._int.value, C[i + j * ldc] * RealBeta, CI + (i + j * ldc) * dinum(fold._int.value));
+          idxd_didconv(fold._int.value, C[i + j * ldc] * RealBeta, CI + (i + j * ldc) * idxd_dinum(fold._int.value));
           break;
       }
     }

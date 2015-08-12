@@ -19,7 +19,7 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zmprint(const int fold, const double *priX, const int incpriX, const double *carX, const int inccarX){
+void idxd_zmprint(const int fold, const double *priX, const int incpriX, const double *carX, const int inccarX){
   int i;
   double M;
   for (i = 0; i < fold; i++, priX += incpriX, carX += inccarX) {

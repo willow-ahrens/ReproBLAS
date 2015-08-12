@@ -16,7 +16,7 @@
  * @author Peter Ahrens
  * @date   19 May 2015
  */
-int dmindex0(const double *priX){
+int idxd_dmindex0(const double *priX){
   /*
   int exp;
 

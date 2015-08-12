@@ -17,7 +17,7 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zmzupdate(const int fold, const void *X, double* priY, const int incpriY, double* carY, const int inccarY) {
-  dmdupdate(fold, ((double*)X)[0], priY, 2 * incpriY, carY, 2 * inccarY);
-  dmdupdate(fold, ((double*)X)[1], priY + 1, 2 * incpriY, carY + 1, 2 * inccarY);
+void idxd_zmzupdate(const int fold, const void *X, double* priY, const int incpriY, double* carY, const int inccarY) {
+  idxd_dmdupdate(fold, ((double*)X)[0], priY, 2 * incpriY, carY, 2 * inccarY);
+  idxd_dmdupdate(fold, ((double*)X)[1], priY + 1, 2 * incpriY, carY + 1, 2 * inccarY);
 }

@@ -12,6 +12,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void direnorm(const int fold, double_indexed *X) {
-  dmrenorm(fold, X, 1, X + fold, 1);
+void idxd_direnorm(const int fold, double_indexed *X) {
+  idxd_dmrenorm(fold, X, 1, X + fold, 1);
 }

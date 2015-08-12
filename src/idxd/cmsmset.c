@@ -20,7 +20,7 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cmsmset(const int fold, const float *priX, const int incpriX, const float *carX, const int inccarX, float *priY, const int incpriY, float *carY, const int inccarY){
-  smsmset(fold, priX, incpriX, carX, inccarX, priY, 2 * incpriY, carY, 2 * inccarY);
-  smsetzero(fold, priY + 1, 2 * incpriY, carY + 1, 2 * inccarY);
+void idxd_cmsmset(const int fold, const float *priX, const int incpriX, const float *carX, const int inccarX, float *priY, const int incpriY, float *carY, const int inccarY){
+  idxd_smsmset(fold, priX, incpriX, carX, inccarX, priY, 2 * incpriY, carY, 2 * inccarY);
+  idxd_smsetzero(fold, priY + 1, 2 * incpriY, carY + 1, 2 * inccarY);
 }

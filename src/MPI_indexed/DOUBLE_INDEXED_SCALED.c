@@ -11,7 +11,7 @@ static int types_initialized[DIMAXFOLD + 1]; //initializes to 0
 MPI_Datatype idxdMPI_DOUBLE_INDEXED_SCALED(const int fold){
   int rc;
   if(!types_initialized[fold]){
-    rc = MPI_Type_contiguous(dinum(fold) + 1, MPI_DOUBLE, types + fold);
+    rc = MPI_Type_contiguous(idxd_dinum(fold) + 1, MPI_DOUBLE, types + fold);
     if(rc != MPI_SUCCESS){
       if (rc == MPI_ERR_TYPE) {
         fprintf(stderr, "[%s.%d] ReproBLAS error: MPI_Type_contiguous error: MPI_ERR_TYPE\n", __FILE__, __LINE__);

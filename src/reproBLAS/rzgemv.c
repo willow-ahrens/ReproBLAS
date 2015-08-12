@@ -17,27 +17,27 @@ void rzgemv(const char Order,
   switch(TransA){
     case 'n':
     case 'N':
-      YI = (double_complex_indexed*)malloc(zisize(DIDEFAULTFOLD)*M);
+      YI = (double_complex_indexed*)malloc(idxd_zisize(DIDEFAULTFOLD)*M);
       for(i = 0; i < M; i++){
         betaY[0] = ((double*)Y)[2 * i * incY] * ((double*)beta)[0] - ((double*)Y)[2 * i * incY + 1] * ((double*)beta)[1];
         betaY[1] = ((double*)Y)[2 * i * incY] * ((double*)beta)[1] + ((double*)Y)[2 * i * incY + 1] * ((double*)beta)[0];
-        zizconv(DIDEFAULTFOLD, betaY, YI + i * zinum(DIDEFAULTFOLD));
+        idxd_zizconv(DIDEFAULTFOLD, betaY, YI + i * idxd_zinum(DIDEFAULTFOLD));
       }
       zizgemv(DIDEFAULTFOLD, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
       for(i = 0; i < M; i++){
-        zziconv_sub(DIDEFAULTFOLD, YI + i * zinum(DIDEFAULTFOLD), ((double*)Y) + 2 * i * incY);
+        idxd_zziconv_sub(DIDEFAULTFOLD, YI + i * idxd_zinum(DIDEFAULTFOLD), ((double*)Y) + 2 * i * incY);
       }
       break;
     default:
-      YI = (double_complex_indexed*)malloc(zisize(DIDEFAULTFOLD)*N);
+      YI = (double_complex_indexed*)malloc(idxd_zisize(DIDEFAULTFOLD)*N);
       for(i = 0; i < N; i++){
         betaY[0] = ((double*)Y)[2 * i * incY] * ((double*)beta)[0] - ((double*)Y)[2 * i * incY + 1] * ((double*)beta)[1];
         betaY[1] = ((double*)Y)[2 * i * incY] * ((double*)beta)[1] + ((double*)Y)[2 * i * incY + 1] * ((double*)beta)[0];
-        zizconv(DIDEFAULTFOLD, betaY, YI + i * zinum(DIDEFAULTFOLD));
+        idxd_zizconv(DIDEFAULTFOLD, betaY, YI + i * idxd_zinum(DIDEFAULTFOLD));
       }
       zizgemv(DIDEFAULTFOLD, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
       for(i = 0; i < N; i++){
-        zziconv_sub(DIDEFAULTFOLD, YI + i * zinum(DIDEFAULTFOLD), ((double*)Y) + 2 * i * incY);
+        idxd_zziconv_sub(DIDEFAULTFOLD, YI + i * idxd_zinum(DIDEFAULTFOLD), ((double*)Y) + 2 * i * incY);
       }
       break;
   }

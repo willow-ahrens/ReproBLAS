@@ -16,6 +16,6 @@
  * @author Peter Ahrens
  * @date   23 Jun 2015
  */
-int cmdenorm(const int fold, const float *priX){
-  return smdenorm(fold, priX) || smdenorm(fold, priX + 1);
+int idxd_cmdenorm(const int fold, const float *priX){
+  return idxd_smdenorm(fold, priX) || idxd_smdenorm(fold, priX + 1);
 }

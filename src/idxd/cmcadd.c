@@ -17,8 +17,8 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cmcadd(const int fold, const void *X, float *priY, const int incpriY, float *carY, const int inccarY){
-  cmcupdate(fold, X, priY, incpriY, carY, inccarY);
-  cmcdeposit(fold, X, priY, incpriY);
-  cmrenorm(fold, priY, incpriY, carY, inccarY);
+void idxd_cmcadd(const int fold, const void *X, float *priY, const int incpriY, float *carY, const int inccarY){
+  idxd_cmcupdate(fold, X, priY, incpriY, carY, inccarY);
+  idxd_cmcdeposit(fold, X, priY, incpriY);
+  idxd_cmrenorm(fold, priY, incpriY, carY, inccarY);
 }

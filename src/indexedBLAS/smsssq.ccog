@@ -61,21 +61,21 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
       }
     }
     if (isnan(manY[0])){
-      return sscale(1.0);
+      return idxd_sscale(1.0);
     } else if (isinf(manY[0])){
       X += N_block * incX;
       continue;
     }
 
     if (deposits + N_block > idxd_SIENDURANCE) {
-      smrenorm(fold, manY, incmanY, carY, inccarY);
+      idxd_smrenorm(fold, manY, incmanY, carY, inccarY);
       deposits = 0;
     }
 
-    new_scl = sscale(amax);
+    new_scl = idxd_sscale(amax);
     if (new_scl > scl) {
       if(scl > 0.0){
-        smsrescale(fold, new_scl, scl, manY, incmanY, carY, inccarY);
+        idxd_smsrescale(fold, new_scl, scl, manY, incmanY, carY, inccarY);
       }
       scl = new_scl;
     }
@@ -83,7 +83,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
     amax /= scl;
     amax = amax * amax;
 
-    smsupdate(fold, amax, manY, incmanY, carY, inccarY);
+    idxd_smsupdate(fold, amax, manY, incmanY, carY, inccarY);
 
     /*[[[cog
       cog.out(generate.generate(depositSSq.DepositSSq(dataTypes.Float, "fold", "N_block", "X", "incX", "manY", "incmanY", "scl"), cog.inFile, args, params, mode))
@@ -121,7 +121,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
               s_2_0 = _mm256_broadcast_ss(manY + (incmanY * 2));
 
               if(incX == 1){
-                if(smindex0(manY)){
+                if(idxd_smindex0(manY)){
                   compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                   expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 8 <= N_block; i += 8, X += 8){
@@ -185,7 +185,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                   }
                 }
               }else{
-                if(smindex0(manY)){
+                if(idxd_smindex0(manY)){
                   compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                   expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 8 <= N_block; i += 8, X += (incX * 8)){
@@ -280,7 +280,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
               }
 
               if(incX == 1){
-                if(smindex0(manY)){
+                if(idxd_smindex0(manY)){
                   compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                   expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 8 <= N_block; i += 8, X += 8){
@@ -350,7 +350,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                   }
                 }
               }else{
-                if(smindex0(manY)){
+                if(idxd_smindex0(manY)){
                   compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                   expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 8 <= N_block; i += 8, X += (incX * 8)){
@@ -466,7 +466,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
               s_2_0 = _mm_load1_ps(manY + (incmanY * 2));
 
               if(incX == 1){
-                if(smindex0(manY)){
+                if(idxd_smindex0(manY)){
                   compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                   expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 4 <= N_block; i += 4, X += 4){
@@ -530,7 +530,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                   }
                 }
               }else{
-                if(smindex0(manY)){
+                if(idxd_smindex0(manY)){
                   compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                   expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 4 <= N_block; i += 4, X += (incX * 4)){
@@ -625,7 +625,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
               }
 
               if(incX == 1){
-                if(smindex0(manY)){
+                if(idxd_smindex0(manY)){
                   compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                   expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 4 <= N_block; i += 4, X += 4){
@@ -695,7 +695,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                   }
                 }
               }else{
-                if(smindex0(manY)){
+                if(idxd_smindex0(manY)){
                   compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                   expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 4 <= N_block; i += 4, X += (incX * 4)){
@@ -802,7 +802,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
               s_2_0 = manY[(incmanY * 2)];
 
               if(incX == 1){
-                if(smindex0(manY)){
+                if(idxd_smindex0(manY)){
                   compression_0 = idxd_SMCOMPRESSION;
                   expansion_0 = idxd_SMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += 1){
@@ -848,7 +848,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                   }
                 }
               }else{
-                if(smindex0(manY)){
+                if(idxd_smindex0(manY)){
                   compression_0 = idxd_SMCOMPRESSION;
                   expansion_0 = idxd_SMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += incX){
@@ -916,7 +916,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
               }
 
               if(incX == 1){
-                if(smindex0(manY)){
+                if(idxd_smindex0(manY)){
                   compression_0 = idxd_SMCOMPRESSION;
                   expansion_0 = idxd_SMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += 1){
@@ -963,7 +963,7 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
                   }
                 }
               }else{
-                if(smindex0(manY)){
+                if(idxd_smindex0(manY)){
                   compression_0 = idxd_SMCOMPRESSION;
                   expansion_0 = idxd_SMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += incX){
@@ -1027,10 +1027,10 @@ float smsssq(const int fold, const int N, const float *X, const int incX, const 
     deposits += N_block;
   }
 
-  smrenorm(fold, manY, incmanY, carY, inccarY);
+  idxd_smrenorm(fold, manY, incmanY, carY, inccarY);
 
   if (ISNANINFF(manY[0])){
-    return sscale(1.0);
+    return idxd_sscale(1.0);
   } else {
     return scl;
   }

@@ -13,6 +13,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void ciciadd(const int fold, const float_complex_indexed *X, float_complex_indexed *Y){
-  cmcmadd(fold, X, 1, X + 2 * fold, 1, Y, 1, Y + 2 * fold, 1);
+void idxd_ciciadd(const int fold, const float_complex_indexed *X, float_complex_indexed *Y){
+  idxd_cmcmadd(fold, X, 1, X + 2 * fold, 1, Y, 1, Y + 2 * fold, 1);
 }

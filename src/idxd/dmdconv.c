@@ -15,7 +15,7 @@
  * @author Peter Ahrens
  * @date   30 Apr 2015
  */
-void dmdconv(const int fold, const double X, double* priY, const int incpriY, double* carY, const int inccarY) {
-  dmsetzero(fold, priY, incpriY, carY, inccarY);
-  dmdadd(fold, X, priY, incpriY, carY, inccarY);
+void idxd_dmdconv(const int fold, const double X, double* priY, const int incpriY, double* carY, const int inccarY) {
+  idxd_dmsetzero(fold, priY, incpriY, carY, inccarY);
+  idxd_dmdadd(fold, X, priY, incpriY, carY, inccarY);
 }

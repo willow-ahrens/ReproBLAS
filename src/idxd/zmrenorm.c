@@ -16,7 +16,7 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zmrenorm(const int fold, double* priX, const int incpriX, double* carX, const int inccarX) {
-  dmrenorm(fold, priX, 2 * incpriX, carX, 2 * inccarX);
-  dmrenorm(fold, priX + 1, 2 * incpriX, carX + 1, 2 * inccarX);
+void idxd_zmrenorm(const int fold, double* priX, const int incpriX, double* carX, const int inccarX) {
+  idxd_dmrenorm(fold, priX, 2 * incpriX, carX, 2 * inccarX);
+  idxd_dmrenorm(fold, priX + 1, 2 * incpriX, carX + 1, 2 * inccarX);
 }

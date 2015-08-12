@@ -15,7 +15,7 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cmcconv(const int fold, const void *X, float *priY, const int incpriY, float *carY, const int inccarY) {
-  smsconv(fold, ((float*)X)[0], priY, incpriY * 2, carY, inccarY * 2);
-  smsconv(fold, ((float*)X)[1], priY + 1, incpriY * 2, carY + 1, inccarY * 2);
+void idxd_cmcconv(const int fold, const void *X, float *priY, const int incpriY, float *carY, const int inccarY) {
+  idxd_smsconv(fold, ((float*)X)[0], priY, incpriY * 2, carY, inccarY * 2);
+  idxd_smsconv(fold, ((float*)X)[1], priY + 1, incpriY * 2, carY + 1, inccarY * 2);
 }

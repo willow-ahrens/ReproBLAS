@@ -20,7 +20,7 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void dmdmset(const int fold, const double *priX, const int incpriX, const double *carX, const int inccarX, double *priY, const int incpriY, double *carY, const int inccarY){
+void idxd_dmdmset(const int fold, const double *priX, const int incpriX, const double *carX, const int inccarX, double *priY, const int incpriY, double *carY, const int inccarY){
   int i;
   for(i = 0; i < fold; i++){
     priY[i * incpriY] = priX[i * incpriX];

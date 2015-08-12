@@ -16,7 +16,7 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cmsetzero(const int fold, float *priX, const int incpriX, float *carX, const int inccarX){
-  smsetzero(fold, priX, 2 * incpriX, carX, 2 * inccarX);
-  smsetzero(fold, priX + 1, 2 * incpriX, carX + 1, 2 * inccarX);
+void idxd_cmsetzero(const int fold, float *priX, const int incpriX, float *carX, const int inccarX){
+  idxd_smsetzero(fold, priX, 2 * incpriX, carX, 2 * inccarX);
+  idxd_smsetzero(fold, priX + 1, 2 * incpriX, carX + 1, 2 * inccarX);
 }

@@ -16,7 +16,7 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cmnegate(const int fold, float* priX, const int incpriX, float* carX, const int inccarX) {
-  smnegate(fold, priX, 2 * incpriX, carX, 2 * inccarX);
-  smnegate(fold, priX + 1, 2 * incpriX, carX + 1, 2 * inccarX);
+void idxd_cmnegate(const int fold, float* priX, const int incpriX, float* carX, const int inccarX) {
+  idxd_smnegate(fold, priX, 2 * incpriX, carX, 2 * inccarX);
+  idxd_smnegate(fold, priX + 1, 2 * incpriX, carX + 1, 2 * inccarX);
 }

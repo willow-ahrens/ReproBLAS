@@ -10,7 +10,7 @@
  *
  * Performs the operation Y += X on an indexed type Y where the index of Y is larger than the index of X
  *
- * @note This routine was provided as a means of allowing the you to optimize your code. After you have called #smsupdate() on Y with the maximum absolute value of all future elements you wish to deposit in Y, you can call #smsdeposit() to deposit a maximum of #idxd_SIENDURANCE elements into Y before renormalizing Y with #smrenorm(). After any number of successive calls of #smsdeposit() on Y, you must renormalize Y with #smrenorm() before using any other function on Y.
+ * @note This routine was provided as a means of allowing the you to optimize your code. After you have called #idxd_smsupdate() on Y with the maximum absolute value of all future elements you wish to deposit in Y, you can call #idxd_smsdeposit() to deposit a maximum of #idxd_SIENDURANCE elements into Y before renormalizing Y with #idxd_smrenorm(). After any number of successive calls of #idxd_smsdeposit() on Y, you must renormalize Y with #idxd_smrenorm() before using any other function on Y.
  *
  * @param fold the fold of the indexed types
  * @param X scalar X
@@ -21,7 +21,7 @@
  * @author Peter Ahrens
  * @date   10 Jun 2015
  */
-void smsdeposit(const int fold, const float X, float *priY, const int incpriY){
+void idxd_smsdeposit(const int fold, const float X, float *priY, const int incpriY){
   float M;
   int_float q;
   int i;
@@ -32,7 +32,7 @@ void smsdeposit(const int fold, const float X, float *priY, const int incpriY){
     return;
   }
 
-  if(smindex0(priY)){
+  if(idxd_smindex0(priY)){
     M = priY[0];
     q.f = x * idxd_SMCOMPRESSION;
     q.i |= 1;

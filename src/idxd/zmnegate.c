@@ -16,7 +16,7 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zmnegate(const int fold, double* priX, const int incpriX, double* carX, const int inccarX) {
-  dmnegate(fold, priX, 2 * incpriX, carX, 2 * inccarX);
-  dmnegate(fold, priX + 1, 2 * incpriX, carX + 1, 2 * inccarX);
+void idxd_zmnegate(const int fold, double* priX, const int incpriX, double* carX, const int inccarX) {
+  idxd_dmnegate(fold, priX, 2 * incpriX, carX, 2 * inccarX);
+  idxd_dmnegate(fold, priX + 1, 2 * incpriX, carX + 1, 2 * inccarX);
 }

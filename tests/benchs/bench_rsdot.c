@@ -76,23 +76,23 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   }else if(fold._int.value == 0){
     time_tic();
     for(j = 2; j <= SIMAXFOLD; j++){
-      ires = sialloc(j);
-      sisetzero(j, ires);
+      ires = idxd_sialloc(j);
+      idxd_sisetzero(j, ires);
       for(i = 0; i < trials; i++){
         sisdot(j, N, X, incX, Y, incY, ires);
       }
-      res = ssiconv(j, ires);
+      res = idxd_ssiconv(j, ires);
       free(ires);
     }
     time_toc();
   }else{
     time_tic();
-    ires = sialloc(fold._int.value);
-    sisetzero(fold._int.value, ires);
+    ires = idxd_sialloc(fold._int.value);
+    idxd_sisetzero(fold._int.value, ires);
     for(i = 0; i < trials; i++){
       sisdot(fold._int.value, N, X, incX, Y, incY, ires);
     }
-    res = ssiconv(fold._int.value, ires);
+    res = idxd_ssiconv(fold._int.value, ires);
     free(ires);
     time_toc();
   }

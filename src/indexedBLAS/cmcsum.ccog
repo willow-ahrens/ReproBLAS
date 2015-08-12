@@ -79,11 +79,11 @@ void cmcsum(const int fold, const int N, const void *X, const int incX, float *m
     }
 
     if (deposits + N_block > idxd_SIENDURANCE) {
-      cmrenorm(fold, manY, incmanY, carY, inccarY);
+      idxd_cmrenorm(fold, manY, incmanY, carY, inccarY);
       deposits = 0;
     }
 
-    cmcupdate(fold, amax, manY, incmanY, carY, inccarY);
+    idxd_cmcupdate(fold, amax, manY, incmanY, carY, inccarY);
 
     /*[[[cog
     cog.out(generate.generate(depositSum.DepositSum(dataTypes.FloatComplex, "fold", "N_block", "x", "incX", "manY", "incmanY"), cog.inFile, args, params, mode))
@@ -121,9 +121,9 @@ void cmcsum(const int fold, const int N, const void *X, const int incX, float *m
               s_2_0 = (__m256)_mm256_broadcast_sd((double *)(((float*)manY) + (incmanY * 4)));
 
               if(incX == 1){
-                if(smindex0(manY) || smindex0(manY + 1)){
-                  if(smindex0(manY)){
-                    if(smindex0(manY + 1)){
+                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
+                  if(idxd_smindex0(manY)){
+                    if(idxd_smindex0(manY + 1)){
                       compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -194,9 +194,9 @@ void cmcsum(const int fold, const int N, const void *X, const int incX, float *m
                   }
                 }
               }else{
-                if(smindex0(manY) || smindex0(manY + 1)){
-                  if(smindex0(manY)){
-                    if(smindex0(manY + 1)){
+                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
+                  if(idxd_smindex0(manY)){
+                    if(idxd_smindex0(manY + 1)){
                       compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -302,9 +302,9 @@ void cmcsum(const int fold, const int N, const void *X, const int incX, float *m
               }
 
               if(incX == 1){
-                if(smindex0(manY) || smindex0(manY + 1)){
-                  if(smindex0(manY)){
-                    if(smindex0(manY + 1)){
+                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
+                  if(idxd_smindex0(manY)){
+                    if(idxd_smindex0(manY + 1)){
                       compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -381,9 +381,9 @@ void cmcsum(const int fold, const int N, const void *X, const int incX, float *m
                   }
                 }
               }else{
-                if(smindex0(manY) || smindex0(manY + 1)){
-                  if(smindex0(manY)){
-                    if(smindex0(manY + 1)){
+                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
+                  if(idxd_smindex0(manY)){
+                    if(idxd_smindex0(manY + 1)){
                       compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -507,9 +507,9 @@ void cmcsum(const int fold, const int N, const void *X, const int incX, float *m
               s_2_0 = (__m128)_mm_load1_pd((double *)(((float*)manY) + (incmanY * 4)));
 
               if(incX == 1){
-                if(smindex0(manY) || smindex0(manY + 1)){
-                  if(smindex0(manY)){
-                    if(smindex0(manY + 1)){
+                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
+                  if(idxd_smindex0(manY)){
+                    if(idxd_smindex0(manY + 1)){
                       compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -580,9 +580,9 @@ void cmcsum(const int fold, const int N, const void *X, const int incX, float *m
                   }
                 }
               }else{
-                if(smindex0(manY) || smindex0(manY + 1)){
-                  if(smindex0(manY)){
-                    if(smindex0(manY + 1)){
+                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
+                  if(idxd_smindex0(manY)){
+                    if(idxd_smindex0(manY + 1)){
                       compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -688,9 +688,9 @@ void cmcsum(const int fold, const int N, const void *X, const int incX, float *m
               }
 
               if(incX == 1){
-                if(smindex0(manY) || smindex0(manY + 1)){
-                  if(smindex0(manY)){
-                    if(smindex0(manY + 1)){
+                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
+                  if(idxd_smindex0(manY)){
+                    if(idxd_smindex0(manY + 1)){
                       compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -767,9 +767,9 @@ void cmcsum(const int fold, const int N, const void *X, const int incX, float *m
                   }
                 }
               }else{
-                if(smindex0(manY) || smindex0(manY + 1)){
-                  if(smindex0(manY)){
-                    if(smindex0(manY + 1)){
+                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
+                  if(idxd_smindex0(manY)){
+                    if(idxd_smindex0(manY + 1)){
                       compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -887,9 +887,9 @@ void cmcsum(const int fold, const int N, const void *X, const int incX, float *m
               s_2_1 = ((float*)manY)[((incmanY * 4) + 1)];
 
               if(incX == 1){
-                if(smindex0(manY) || smindex0(manY + 1)){
-                  if(smindex0(manY)){
-                    if(smindex0(manY + 1)){
+                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
+                  if(idxd_smindex0(manY)){
+                    if(idxd_smindex0(manY + 1)){
                       compression_0 = idxd_SMCOMPRESSION;
                       expansion_0 = idxd_SMEXPANSION * 0.5;
                       expansion_mask_0 = idxd_SMEXPANSION * 0.5;
@@ -982,9 +982,9 @@ void cmcsum(const int fold, const int N, const void *X, const int incX, float *m
                   }
                 }
               }else{
-                if(smindex0(manY) || smindex0(manY + 1)){
-                  if(smindex0(manY)){
-                    if(smindex0(manY + 1)){
+                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
+                  if(idxd_smindex0(manY)){
+                    if(idxd_smindex0(manY + 1)){
                       compression_0 = idxd_SMCOMPRESSION;
                       expansion_0 = idxd_SMEXPANSION * 0.5;
                       expansion_mask_0 = idxd_SMEXPANSION * 0.5;
@@ -1104,9 +1104,9 @@ void cmcsum(const int fold, const int N, const void *X, const int incX, float *m
               }
 
               if(incX == 1){
-                if(smindex0(manY) || smindex0(manY + 1)){
-                  if(smindex0(manY)){
-                    if(smindex0(manY + 1)){
+                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
+                  if(idxd_smindex0(manY)){
+                    if(idxd_smindex0(manY + 1)){
                       compression_0 = idxd_SMCOMPRESSION;
                       expansion_0 = idxd_SMEXPANSION * 0.5;
                       expansion_mask_0 = idxd_SMEXPANSION * 0.5;
@@ -1197,9 +1197,9 @@ void cmcsum(const int fold, const int N, const void *X, const int incX, float *m
                   }
                 }
               }else{
-                if(smindex0(manY) || smindex0(manY + 1)){
-                  if(smindex0(manY)){
-                    if(smindex0(manY + 1)){
+                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
+                  if(idxd_smindex0(manY)){
+                    if(idxd_smindex0(manY + 1)){
                       compression_0 = idxd_SMCOMPRESSION;
                       expansion_0 = idxd_SMEXPANSION * 0.5;
                       expansion_mask_0 = idxd_SMEXPANSION * 0.5;
@@ -1315,5 +1315,5 @@ void cmcsum(const int fold, const int N, const void *X, const int incX, float *m
     deposits += N_block;
   }
 
-  cmrenorm(fold, manY, incmanY, carY, inccarY);
+  idxd_cmrenorm(fold, manY, incmanY, carY, inccarY);
 }

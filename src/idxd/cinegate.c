@@ -12,6 +12,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cinegate(const int fold, float_complex_indexed* X){
-  cmnegate(fold, X, 1, X + 2 * fold, 1);
+void idxd_cinegate(const int fold, float_complex_indexed* X){
+  idxd_cmnegate(fold, X, 1, X + 2 * fold, 1);
 }

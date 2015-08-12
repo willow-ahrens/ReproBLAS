@@ -12,6 +12,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void sinegate(const int fold, float_indexed* X){
-  smnegate(fold, X, 1, X + fold, 1);
+void idxd_sinegate(const int fold, float_indexed* X){
+  idxd_smnegate(fold, X, 1, X + fold, 1);
 }

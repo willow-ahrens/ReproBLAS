@@ -15,6 +15,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void didiset(const int fold, const double_indexed *X, double_indexed *Y){
-  memcpy(Y, X, disize(fold));
+void idxd_didiset(const int fold, const double_indexed *X, double_indexed *Y){
+  memcpy(Y, X, idxd_disize(fold));
 }

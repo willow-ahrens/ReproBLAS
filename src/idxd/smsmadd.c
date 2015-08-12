@@ -24,7 +24,7 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void smsmadd(const int fold, const float *priX, const int incpriX, const float *carX, const int inccarX, float* priY, const int incpriY, float* carY, const int inccarY) {
+void idxd_smsmadd(const int fold, const float *priX, const int incpriX, const float *carX, const int inccarX, float* priY, const int incpriY, float* carY, const int inccarY) {
   int i;
   int shift;
   int X_index;
@@ -47,11 +47,11 @@ void smsmadd(const int fold, const float *priX, const int incpriX, const float *
     return;
   }
 
-  X_index = smindex(priX);
-  Y_index = smindex(priY);
+  X_index = idxd_smindex(priX);
+  Y_index = idxd_smindex(priY);
   shift = Y_index - X_index;
   if(shift > 0){
-    bins = smbins(Y_index);
+    bins = idxd_smbins(Y_index);
     //shift Y upwards and add X to Y
     for (i = fold - 1; i >= shift; i--) {
       priY[i*incpriY] = priX[i*incpriX] + (priY[(i - shift)*incpriY] - bins[i - shift]);
@@ -62,7 +62,7 @@ void smsmadd(const int fold, const float *priX, const int incpriX, const float *
       carY[i*inccarY] = carX[i*inccarX];
     }
   }else{
-    bins = smbins(X_index);
+    bins = idxd_smbins(X_index);
     //shift X upwards and add X to Y
     for (i = 0 - shift; i < fold; i++) {
       priY[i*incpriY] += priX[(i + shift)*incpriX] - bins[i + shift];
@@ -70,5 +70,5 @@ void smsmadd(const int fold, const float *priX, const int incpriX, const float *
     }
   }
 
-  smrenorm(fold, priY, incpriY, carY, inccarY);
+  idxd_smrenorm(fold, priY, incpriY, carY, inccarY);
 }

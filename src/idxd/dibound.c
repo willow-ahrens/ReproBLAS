@@ -18,6 +18,6 @@
  * @author Peter Ahrens
  * @date   31 Jul 2015
  */
-double dibound(const int fold, const int N, const double X, const double S) {
+double idxd_dibound(const int fold, const int N, const double X, const double S) {
   return MAX(fabs(X), ldexp(0.5, DBL_MIN_EXP - 1)) * ldexp(0.5, (1 - fold)*DIWIDTH) * N + ((7.0 * DBL_EPSILON) / (1.0 - 6.0 * sqrt(DBL_EPSILON) - 7.0 * DBL_EPSILON)) * fabs(S);
 }

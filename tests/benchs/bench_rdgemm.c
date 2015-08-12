@@ -98,29 +98,29 @@ int bench_matmat_fill_test(int argc, char** argv, char Order, char TransA, char 
           break;
       }
       time_tic();
-      CI = (double_indexed*)malloc(M * N * disize(DIDEFAULTFOLD));
+      CI = (double_indexed*)malloc(M * N * idxd_disize(DIDEFAULTFOLD));
       switch(Order){
         case 'r':
         case 'R':
           if(beta == 1.0){
             for(i = 0; i < M; i++){
               for(j = 0; j < N; j++){
-                didconv(fold._int.value, res[i * ldc + j], CI + (i * N + j) * dinum(fold._int.value));
+                idxd_didconv(fold._int.value, res[i * ldc + j], CI + (i * N + j) * idxd_dinum(fold._int.value));
               }
             }
           }else if(beta == 0.0){
-            memset(CI, 0.0, M * N * disize(fold._int.value));
+            memset(CI, 0.0, M * N * idxd_disize(fold._int.value));
           }else{
             for(i = 0; i < M; i++){
               for(j = 0; j < N; j++){
-                didconv(fold._int.value, res[i * ldc + j] * beta, CI + (i * N + j) * dinum(fold._int.value));
+                idxd_didconv(fold._int.value, res[i * ldc + j] * beta, CI + (i * N + j) * idxd_dinum(fold._int.value));
               }
             }
           }
           didgemm(fold._int.value, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, CI, N);
           for(i = 0; i < M; i++){
             for(j = 0; j < N; j++){
-              res[i * ldc + j] = ddiconv(fold._int.value, CI + (i * N + j) * dinum(fold._int.value));
+              res[i * ldc + j] = idxd_ddiconv(fold._int.value, CI + (i * N + j) * idxd_dinum(fold._int.value));
             }
           }
           break;
@@ -128,22 +128,22 @@ int bench_matmat_fill_test(int argc, char** argv, char Order, char TransA, char 
           if(beta == 1.0){
             for(j = 0; j < N; j++){
               for(i = 0; i < M; i++){
-                didconv(fold._int.value, res[j * ldc + i], CI + (j * M + i) * dinum(fold._int.value));
+                idxd_didconv(fold._int.value, res[j * ldc + i], CI + (j * M + i) * idxd_dinum(fold._int.value));
               }
             }
           }else if(beta == 0.0){
-            memset(CI, 0.0, M * N * disize(fold._int.value));
+            memset(CI, 0.0, M * N * idxd_disize(fold._int.value));
           }else{
             for(j = 0; j < N; j++){
               for(i = 0; i < M; i++){
-                didconv(fold._int.value, res[j * ldc + i] * beta, CI + (j * M + i) * dinum(fold._int.value));
+                idxd_didconv(fold._int.value, res[j * ldc + i] * beta, CI + (j * M + i) * idxd_dinum(fold._int.value));
               }
             }
           }
           didgemm(fold._int.value, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, CI, M);
           for(j = 0; j < N; j++){
             for(i = 0; i < M; i++){
-              res[j * ldc + i] = ddiconv(fold._int.value, CI + (j * M + i) * dinum(fold._int.value));
+              res[j * ldc + i] = idxd_ddiconv(fold._int.value, CI + (j * M + i) * idxd_dinum(fold._int.value));
             }
           }
           break;

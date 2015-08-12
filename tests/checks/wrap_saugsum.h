@@ -42,10 +42,10 @@ float wrap_rssum(int fold, int N, float *x, int incx, float *y, int incy) {
   if(fold == SIDEFAULTFOLD){
     return rssum(N, x, incx);
   }else{
-    float_indexed *ires = sialloc(fold);
-    sisetzero(fold, ires);
+    float_indexed *ires = idxd_sialloc(fold);
+    idxd_sisetzero(fold, ires);
     sissum(fold, N, x, incx, ires);
-    float res = ssiconv(fold, ires);
+    float res = idxd_ssiconv(fold, ires);
     free(ires);
     return res;
   }
@@ -63,10 +63,10 @@ float wrap_rsasum(int fold, int N, float *x, int incx, float *y, int incy) {
   if(fold == SIDEFAULTFOLD){
     return rsasum(N, x, incx);
   }else{
-    float_indexed *ires = sialloc(fold);
-    sisetzero(fold, ires);
+    float_indexed *ires = idxd_sialloc(fold);
+    idxd_sisetzero(fold, ires);
     sisasum(fold, N, x, incx, ires);
-    float res = ssiconv(fold, ires);
+    float res = idxd_ssiconv(fold, ires);
     free(ires);
     return res;
   }
@@ -84,10 +84,10 @@ float wrap_rsnrm2(int fold, int N, float *x, int incx, float *y, int incy) {
   if(fold == SIDEFAULTFOLD){
     return rsnrm2(N, x, incx);
   }else{
-    float_indexed *ires = sialloc(fold);
-    sisetzero(fold, ires);
+    float_indexed *ires = idxd_sialloc(fold);
+    idxd_sisetzero(fold, ires);
     float scale = sisssq(fold, N, x, incx, 0.0, ires);
-    float res = ssiconv(fold, ires);
+    float res = idxd_ssiconv(fold, ires);
     free(ires);
     return scale * sqrt(res);
   }
@@ -103,10 +103,10 @@ float wrap_rsdot(int fold, int N, float *x, int incx, float *y, int incy) {
   if(fold == SIDEFAULTFOLD){
     return rsdot(N, x, incx, y, incy);
   }else{
-    float_indexed *ires = sialloc(fold);
-    sisetzero(fold, ires);
+    float_indexed *ires = idxd_sialloc(fold);
+    idxd_sisetzero(fold, ires);
     sisdot(fold, N, x, incx, y, incy, ires);
-    float res = ssiconv(fold, ires);
+    float res = idxd_ssiconv(fold, ires);
     free(ires);
     return res;
   }
@@ -119,15 +119,15 @@ void wrap_sisdot(int fold, int N, float *x, int incx, float *y, int incy, float_
 float wrap_rsisiadd(int fold, int N, float *x, int incx, float *y, int incy) {
   (void)y;
   (void)incy;
-  float_indexed *ires = sialloc(fold);
-  float_indexed *itmp = sialloc(fold);
-  sisetzero(fold, ires);
+  float_indexed *ires = idxd_sialloc(fold);
+  float_indexed *itmp = idxd_sialloc(fold);
+  idxd_sisetzero(fold, ires);
   int i;
   for(i = 0; i < N; i++){
-    sisconv(fold, x[i * incx], itmp);
-    sisiadd(fold, itmp, ires);
+    idxd_sisconv(fold, x[i * incx], itmp);
+    idxd_sisiadd(fold, itmp, ires);
   }
-  float res = ssiconv(fold, ires);
+  float res = idxd_ssiconv(fold, ires);
   free(ires);
   free(itmp);
   return res;
@@ -136,11 +136,11 @@ float wrap_rsisiadd(int fold, int N, float *x, int incx, float *y, int incy) {
 void wrap_sisiadd(int fold, int N, float *x, int incx, float *y, int incy, float_indexed *z) {
   (void)y;
   (void)incy;
-  float_indexed *itmp = sialloc(fold);
+  float_indexed *itmp = idxd_sialloc(fold);
   int i;
   for(i = 0; i < N; i++){
-    sisconv(fold, x[i * incx], itmp);
-    sisiadd(fold, itmp, z);
+    idxd_sisconv(fold, x[i * incx], itmp);
+    idxd_sisiadd(fold, itmp, z);
   }
   free(itmp);
 }
@@ -148,13 +148,13 @@ void wrap_sisiadd(int fold, int N, float *x, int incx, float *y, int incy, float
 float wrap_rsisadd(int fold, int N, float *x, int incx, float *y, int incy) {
   (void)y;
   (void)incy;
-  float_indexed *ires = sialloc(fold);
-  sisetzero(fold, ires);
+  float_indexed *ires = idxd_sialloc(fold);
+  idxd_sisetzero(fold, ires);
   int i;
   for(i = 0; i < N; i++){
-    sisadd(fold, x[i * incx], ires);
+    idxd_sisadd(fold, x[i * incx], ires);
   }
-  float res = ssiconv(fold, ires);
+  float res = idxd_ssiconv(fold, ires);
   free(ires);
   return res;
 }
@@ -164,29 +164,29 @@ void wrap_sisadd(int fold, int N, float *x, int incx, float *y, int incy, float_
   (void)incy;
   int i;
   for(i = 0; i < N; i++){
-    sisadd(fold, x[i * incx], z);
+    idxd_sisadd(fold, x[i * incx], z);
   }
 }
 
 float wrap_rsisdeposit(int fold, int N, float *x, int incx, float *y, int incy) {
   (void)y;
   (void)incy;
-  float_indexed *ires = sialloc(fold);
-  sisetzero(fold, ires);
+  float_indexed *ires = idxd_sialloc(fold);
+  idxd_sisetzero(fold, ires);
   float amax = samax(N, x, incx);
-  sisupdate(fold, amax, ires);
+  idxd_sisupdate(fold, amax, ires);
   int i;
   int j = 0;
   for(i = 0; i < N; i++){
     if(j >= idxd_SIENDURANCE){
-      sirenorm(fold, ires);
+      idxd_sirenorm(fold, ires);
       j = 0;
     }
-    sisdeposit(fold, x[i * incx], ires);
+    idxd_sisdeposit(fold, x[i * incx], ires);
     j++;
   }
-  sirenorm(fold, ires);
-  float res = ssiconv(fold, ires);
+  idxd_sirenorm(fold, ires);
+  float res = idxd_ssiconv(fold, ires);
   free(ires);
   return res;
 }
@@ -195,18 +195,18 @@ void wrap_sisdeposit(int fold, int N, float *x, int incx, float *y, int incy, fl
   (void)y;
   (void)incy;
   float amax = samax(N, x, incx);
-  sisupdate(fold, amax, z);
+  idxd_sisupdate(fold, amax, z);
   int i;
   int j = 0;
   for(i = 0; i < N; i++){
     if(j >= idxd_SIENDURANCE){
-      sirenorm(fold, z);
+      idxd_sirenorm(fold, z);
       j = 0;
     }
-    sisdeposit(fold, x[i * incx], z);
+    idxd_sisdeposit(fold, x[i * incx], z);
     j++;
   }
-  sirenorm(fold, z);
+  idxd_sirenorm(fold, z);
 }
 
 wrap_saugsum wrap_saugsum_func(wrap_saugsum_func_t func) {
@@ -310,7 +310,7 @@ float wrap_saugsum_result(int N, wrap_saugsum_func_t func, util_vec_fill_t FillX
         float new_scale;
         switch(FillX){
           case util_Vec_Constant:
-            new_scale = sscale(RealScaleX);
+            new_scale = idxd_sscale(RealScaleX);
             RealScaleX /= new_scale;
             return sqrtf(N * RealScaleX * RealScaleX) * new_scale;
           case util_Vec_Pos_Inf:
@@ -323,7 +323,7 @@ float wrap_saugsum_result(int N, wrap_saugsum_func_t func, util_vec_fill_t FillX
           case util_Vec_Pos_Neg_Inf_NaN:
             return NAN;
           case util_Vec_Pos_Big:
-            new_scale = sscale(RealScaleX * big);
+            new_scale = idxd_sscale(RealScaleX * big);
             small *= RealScaleX;
             small /= new_scale;
             big *= RealScaleX;
@@ -331,7 +331,7 @@ float wrap_saugsum_result(int N, wrap_saugsum_func_t func, util_vec_fill_t FillX
             return sqrtf((N - 1) * small * small + big * big) * new_scale;
           case util_Vec_Pos_Pos_Big:
           case util_Vec_Pos_Neg_Big:
-            new_scale = sscale(RealScaleX * big);
+            new_scale = idxd_sscale(RealScaleX * big);
             small *= RealScaleX;
             small /= new_scale;
             big *= RealScaleX;
@@ -475,18 +475,18 @@ float wrap_saugsum_bound(int fold, int N, wrap_saugsum_func_t func, float *X, in
     case wrap_saugsum_SISADD:
     case wrap_saugsum_SISDEPOSIT:
     case wrap_saugsum_RSASUM:
-      return sibound(fold, N, samax(N, X, incX), res);
+      return idxd_sibound(fold, N, samax(N, X, incX), res);
     case wrap_saugsum_RSNRM2:
       {
         float amax = samax(N, X, incX);
-        float scale = sscale(amax);
+        float scale = idxd_sscale(amax);
         if (amax == 0.0){
           return 0.0;
         }
-        return sibound(fold, N, (amax/scale) * (amax/scale), (res/scale) * (res/scale)) * (scale / (res + ref)) * scale;
+        return idxd_sibound(fold, N, (amax/scale) * (amax/scale), (res/scale) * (res/scale)) * (scale / (res + ref)) * scale;
       }
     case wrap_saugsum_RSDOT:
-      return sibound(fold, N, samaxm(N, X, incX, Y, incY), res);
+      return idxd_sibound(fold, N, samaxm(N, X, incX, Y, incY), res);
   }
   fprintf(stderr, "ReproBLAS error: unknown bound for %s\n", wrap_saugsum_func_descs[func]);
   exit(125);

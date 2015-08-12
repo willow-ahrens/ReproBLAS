@@ -93,7 +93,7 @@ void didgemm(const int fold, const char Order,
                     }
                     for(ii = i; ii < M && ii < i + Y_BLOCK; ii++){
                       for(jj = j; jj < N && jj < j + YT_BLOCK; jj++){
-                        diddot(fold, MIN(XT_BLOCK, K - k), bufA + ii * ldbufa + k, 1, bufB + (jj - j) * XT_BLOCK, 1, C + (ii * ldc + jj) * dinum(fold));
+                        diddot(fold, MIN(XT_BLOCK, K - k), bufA + ii * ldbufa + k, 1, bufB + (jj - j) * XT_BLOCK, 1, C + (ii * ldc + jj) * idxd_dinum(fold));
                       }
                     }
                   }
@@ -109,7 +109,7 @@ void didgemm(const int fold, const char Order,
                   for(k = 0; k < K; k += X_BLOCK){
                     for(ii = i; ii < M && ii < i + Y_BLOCK; ii++){
                       for(jj = j; jj < N && jj < j + Y_BLOCK; jj++){
-                        diddot(fold, MIN(X_BLOCK, K - k), bufA + ii * ldbufa + k, 1, B + jj * ldb + k, 1, C + (ii * ldc + jj) * dinum(fold));
+                        diddot(fold, MIN(X_BLOCK, K - k), bufA + ii * ldbufa + k, 1, B + jj * ldb + k, 1, C + (ii * ldc + jj) * idxd_dinum(fold));
                       }
                     }
                   }
@@ -148,7 +148,7 @@ void didgemm(const int fold, const char Order,
                       }
                       for(ii = i; ii < M && ii < i + YT_BLOCK; ii++){
                         for(jj = j; jj < N && jj < j + YT_BLOCK; jj++){
-                          diddot(fold, MIN(XT_BLOCK, K - k), bufA + (ii - i) * XT_BLOCK, 1, bufB + (jj - j) * XT_BLOCK, 1, C + (ii * ldc + jj) * dinum(fold));
+                          diddot(fold, MIN(XT_BLOCK, K - k), bufA + (ii - i) * XT_BLOCK, 1, bufB + (jj - j) * XT_BLOCK, 1, C + (ii * ldc + jj) * idxd_dinum(fold));
                         }
                       }
                     }
@@ -170,7 +170,7 @@ void didgemm(const int fold, const char Order,
                       }
                       for(ii = i; ii < M && ii < i + YT_BLOCK; ii++){
                         for(jj = j; jj < N && jj < j + YT_BLOCK; jj++){
-                          diddot(fold, MIN(XT_BLOCK, K - k), bufA + (ii - i) * XT_BLOCK, 1, bufB + (jj - j) * XT_BLOCK, 1, C + (ii * ldc + jj) * dinum(fold));
+                          diddot(fold, MIN(XT_BLOCK, K - k), bufA + (ii - i) * XT_BLOCK, 1, bufB + (jj - j) * XT_BLOCK, 1, C + (ii * ldc + jj) * idxd_dinum(fold));
                         }
                       }
                     }
@@ -195,7 +195,7 @@ void didgemm(const int fold, const char Order,
                       }
                       for(ii = i; ii < M && ii < i + YT_BLOCK; ii++){
                         for(jj = j; jj < N && jj < j + Y_BLOCK; jj++){
-                          diddot(fold, MIN(XT_BLOCK, K - k), bufA + (ii - i) * XT_BLOCK, 1, B + jj * ldb + k, 1, C + (ii * ldc + jj) * dinum(fold));
+                          diddot(fold, MIN(XT_BLOCK, K - k), bufA + (ii - i) * XT_BLOCK, 1, B + jj * ldb + k, 1, C + (ii * ldc + jj) * idxd_dinum(fold));
                         }
                       }
                     }
@@ -212,7 +212,7 @@ void didgemm(const int fold, const char Order,
                       }
                       for(ii = i; ii < M && ii < i + YT_BLOCK; ii++){
                         for(jj = j; jj < N && jj < j + Y_BLOCK; jj++){
-                          diddot(fold, MIN(XT_BLOCK, K - k), bufA + (ii - i) * XT_BLOCK, 1, B + jj * ldb + k, 1, C + (ii * ldc + jj) * dinum(fold));
+                          diddot(fold, MIN(XT_BLOCK, K - k), bufA + (ii - i) * XT_BLOCK, 1, B + jj * ldb + k, 1, C + (ii * ldc + jj) * idxd_dinum(fold));
                         }
                       }
                     }

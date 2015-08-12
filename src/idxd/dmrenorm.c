@@ -20,7 +20,7 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void dmrenorm(const int fold, double* priX, const int incpriX, double* carX, const int inccarX) {
+void idxd_dmrenorm(const int fold, double* priX, const int incpriX, double* carX, const int inccarX) {
   /*
   int i;
   double M;

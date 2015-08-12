@@ -12,6 +12,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cirenorm(const int fold, float_complex_indexed *X) {
-  cmrenorm(fold, X, 1, X + 2 * fold, 1);
+void idxd_cirenorm(const int fold, float_complex_indexed *X) {
+  idxd_cmrenorm(fold, X, 1, X + 2 * fold, 1);
 }

@@ -13,6 +13,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void ziziadd(const int fold, const double_complex_indexed *X, double_complex_indexed *Y){
-  zmzmadd(fold, X, 1, X + 2 * fold, 1, Y, 1, Y + 2 * fold, 1);
+void idxd_ziziadd(const int fold, const double_complex_indexed *X, double_complex_indexed *Y){
+  idxd_zmzmadd(fold, X, 1, X + 2 * fold, 1, Y, 1, Y + 2 * fold, 1);
 }

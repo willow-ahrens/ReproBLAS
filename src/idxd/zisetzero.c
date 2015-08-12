@@ -14,6 +14,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zisetzero(const int fold, double_complex_indexed *X){
-  memset(X, 0, zisize(fold));
+void idxd_zisetzero(const int fold, double_complex_indexed *X){
+  memset(X, 0, idxd_zisize(fold));
 }

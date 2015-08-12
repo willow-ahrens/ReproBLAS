@@ -17,7 +17,7 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-float ufpf(float X) {
+float idxd_ufpf(float X) {
   /*
   int exp;
   if (X == 0.0){

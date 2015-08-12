@@ -15,9 +15,9 @@
  * @author Peter Ahrens
  * @date   25 Jun 2015
  */
-void didiaddv(const int fold, const int N, const double_indexed *X, const int incX, double_indexed *Y, const int incY){
+void idxd_didiaddv(const int fold, const int N, const double_indexed *X, const int incX, double_indexed *Y, const int incY){
   int i;
-  for(i = 0; i < N; i++, X += incX * dinum(fold), Y += incY * dinum(fold)){
-    dmdmadd(fold, X, 1, X + fold, 1, Y, 1, Y + fold, 1);
+  for(i = 0; i < N; i++, X += incX * idxd_dinum(fold), Y += incY * idxd_dinum(fold)){
+    idxd_dmdmadd(fold, X, 1, X + fold, 1, Y, 1, Y + fold, 1);
   }
 }

@@ -17,7 +17,7 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cmsupdate(const int fold, const float X, float* priY, const int incpriY, float* carY, const int inccarY) {
-  smsupdate(fold, X, priY, 2 * incpriY, carY, 2 * inccarY);
-  smsupdate(fold, X, priY + 1, 2 * incpriY, carY + 1, 2 * inccarY);
+void idxd_cmsupdate(const int fold, const float X, float* priY, const int incpriY, float* carY, const int inccarY) {
+  idxd_smsupdate(fold, X, priY, 2 * incpriY, carY, 2 * inccarY);
+  idxd_smsupdate(fold, X, priY + 1, 2 * incpriY, carY + 1, 2 * inccarY);
 }

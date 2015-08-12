@@ -10,208 +10,208 @@ import cog
 from scripts import terminal
 for fold in range(2, terminal.get_dimaxindex() + 1):
   cog.outl("static void idxdMPI_ziziadd_{}(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){{".format(fold))
-  cog.outl("  didiaddv({}, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);".format(fold))
+  cog.outl("  idxd_didiaddv({}, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);".format(fold))
   cog.outl("}")
   cog.outl("")
 ]]]*/
 static void idxdMPI_ziziadd_2(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(2, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(2, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_3(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(3, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(3, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_4(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(4, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(4, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_5(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(5, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(5, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_6(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(6, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(6, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_7(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(7, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(7, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_8(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(8, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(8, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_9(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(9, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(9, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_10(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(10, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(10, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_11(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(11, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(11, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_12(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(12, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(12, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_13(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(13, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(13, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_14(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(14, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(14, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_15(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(15, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(15, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_16(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(16, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(16, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_17(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(17, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(17, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_18(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(18, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(18, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_19(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(19, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(19, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_20(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(20, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(20, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_21(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(21, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(21, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_22(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(22, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(22, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_23(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(23, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(23, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_24(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(24, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(24, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_25(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(25, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(25, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_26(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(26, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(26, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_27(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(27, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(27, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_28(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(28, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(28, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_29(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(29, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(29, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_30(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(30, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(30, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_31(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(31, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(31, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_32(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(32, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(32, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_33(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(33, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(33, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_34(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(34, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(34, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_35(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(35, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(35, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_36(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(36, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(36, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_37(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(37, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(37, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_38(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(38, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(38, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_39(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(39, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(39, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_40(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(40, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(40, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_41(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(41, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(41, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_42(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(42, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(42, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_43(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(43, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(43, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_44(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(44, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(44, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_45(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(45, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(45, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_46(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(46, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(46, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_47(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(47, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(47, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_48(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(48, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(48, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_49(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(49, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(49, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_50(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(50, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(50, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_ziziadd_51(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  didiaddv(51, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
+  idxd_didiaddv(51, *len, (double_complex_indexed*)invec, 1, (double_complex_indexed*)inoutvec, 1);
 }
 
 //[[[end]]]

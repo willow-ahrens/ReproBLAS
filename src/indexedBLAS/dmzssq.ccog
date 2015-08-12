@@ -50,8 +50,8 @@ double dmzssq(const int fold, const int N, const void *X, const int incX, const 
   int i, j;
   int N_block = N_block_MAX;
   int deposits = 0;
-  double_complex_indexed *ssq = zialloc(fold);
-  zisetzero(fold, ssq);
+  double_complex_indexed *ssq = idxd_zialloc(fold);
+  idxd_zisetzero(fold, ssq);
 
   const double *x = (const double*)X;
 
@@ -70,21 +70,21 @@ double dmzssq(const int fold, const int N, const void *X, const int incX, const 
     if (isnan(manY[0]) || isnan(ssq[0]) || isnan(ssq[1])){
       manY[0] += ssq[0] + ssq[1];
       free(ssq);
-      return dscale(1.0);
+      return idxd_dscale(1.0);
     } else if (isinf(manY[0])){
       x += N_block * 2 * incX;
       continue;
     }
 
     if (deposits + N_block > idxd_DIENDURANCE) {
-      zirenorm(fold, ssq);
+      idxd_zirenorm(fold, ssq);
       deposits = 0;
     }
 
-    new_scl = dscale(amax);
+    new_scl = idxd_dscale(amax);
     if (new_scl > scl) {
       if(scl > 0.0){
-        zmdrescale(fold, new_scl, scl, ssq, 1, ssq + 2 * fold, 1);
+        idxd_zmdrescale(fold, new_scl, scl, ssq, 1, ssq + 2 * fold, 1);
       }
       scl = new_scl;
     }
@@ -92,7 +92,7 @@ double dmzssq(const int fold, const int N, const void *X, const int incX, const 
     amax /= scl;
     amax = amax * amax;
 
-    zidupdate(fold, amax, ssq);
+    idxd_zidupdate(fold, amax, ssq);
 
     /*[[[cog
       cog.out(generate.generate(depositSSq.DepositSSq(dataTypes.DoubleComplex, "fold", "N_block", "x", "incX", "ssq", 1, "scl"), cog.inFile, args, params, mode))
@@ -131,9 +131,9 @@ double dmzssq(const int fold, const int N, const void *X, const int incX, const 
               s_2_0 = _mm256_broadcast_pd((__m128d *)(((double*)ssq) + 4));
 
               if(incX == 1){
-                if(dmindex0(ssq) || dmindex0(ssq + 1)){
-                  if(dmindex0(ssq)){
-                    if(dmindex0(ssq + 1)){
+                if(idxd_dmindex0(ssq) || idxd_dmindex0(ssq + 1)){
+                  if(idxd_dmindex0(ssq)){
+                    if(idxd_dmindex0(ssq + 1)){
                       compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                       expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                       expansion_mask_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -208,9 +208,9 @@ double dmzssq(const int fold, const int N, const void *X, const int incX, const 
                   }
                 }
               }else{
-                if(dmindex0(ssq) || dmindex0(ssq + 1)){
-                  if(dmindex0(ssq)){
-                    if(dmindex0(ssq + 1)){
+                if(idxd_dmindex0(ssq) || idxd_dmindex0(ssq + 1)){
+                  if(idxd_dmindex0(ssq)){
+                    if(idxd_dmindex0(ssq + 1)){
                       compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                       expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                       expansion_mask_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -320,9 +320,9 @@ double dmzssq(const int fold, const int N, const void *X, const int incX, const 
               }
 
               if(incX == 1){
-                if(dmindex0(ssq) || dmindex0(ssq + 1)){
-                  if(dmindex0(ssq)){
-                    if(dmindex0(ssq + 1)){
+                if(idxd_dmindex0(ssq) || idxd_dmindex0(ssq + 1)){
+                  if(idxd_dmindex0(ssq)){
+                    if(idxd_dmindex0(ssq + 1)){
                       compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                       expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                       expansion_mask_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -403,9 +403,9 @@ double dmzssq(const int fold, const int N, const void *X, const int incX, const 
                   }
                 }
               }else{
-                if(dmindex0(ssq) || dmindex0(ssq + 1)){
-                  if(dmindex0(ssq)){
-                    if(dmindex0(ssq + 1)){
+                if(idxd_dmindex0(ssq) || idxd_dmindex0(ssq + 1)){
+                  if(idxd_dmindex0(ssq)){
+                    if(idxd_dmindex0(ssq + 1)){
                       compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                       expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                       expansion_mask_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -534,9 +534,9 @@ double dmzssq(const int fold, const int N, const void *X, const int incX, const 
               s_2_0 = _mm_loadu_pd(((double*)ssq) + 4);
 
               if(incX == 1){
-                if(dmindex0(ssq) || dmindex0(ssq + 1)){
-                  if(dmindex0(ssq)){
-                    if(dmindex0(ssq + 1)){
+                if(idxd_dmindex0(ssq) || idxd_dmindex0(ssq + 1)){
+                  if(idxd_dmindex0(ssq)){
+                    if(idxd_dmindex0(ssq + 1)){
                       compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                       expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                       expansion_mask_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -581,9 +581,9 @@ double dmzssq(const int fold, const int N, const void *X, const int incX, const 
                   }
                 }
               }else{
-                if(dmindex0(ssq) || dmindex0(ssq + 1)){
-                  if(dmindex0(ssq)){
-                    if(dmindex0(ssq + 1)){
+                if(idxd_dmindex0(ssq) || idxd_dmindex0(ssq + 1)){
+                  if(idxd_dmindex0(ssq)){
+                    if(idxd_dmindex0(ssq + 1)){
                       compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                       expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                       expansion_mask_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -660,9 +660,9 @@ double dmzssq(const int fold, const int N, const void *X, const int incX, const 
               }
 
               if(incX == 1){
-                if(dmindex0(ssq) || dmindex0(ssq + 1)){
-                  if(dmindex0(ssq)){
-                    if(dmindex0(ssq + 1)){
+                if(idxd_dmindex0(ssq) || idxd_dmindex0(ssq + 1)){
+                  if(idxd_dmindex0(ssq)){
+                    if(idxd_dmindex0(ssq + 1)){
                       compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                       expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                       expansion_mask_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -710,9 +710,9 @@ double dmzssq(const int fold, const int N, const void *X, const int incX, const 
                   }
                 }
               }else{
-                if(dmindex0(ssq) || dmindex0(ssq + 1)){
-                  if(dmindex0(ssq)){
-                    if(dmindex0(ssq + 1)){
+                if(idxd_dmindex0(ssq) || idxd_dmindex0(ssq + 1)){
+                  if(idxd_dmindex0(ssq)){
+                    if(idxd_dmindex0(ssq + 1)){
                       compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                       expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                       expansion_mask_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -801,9 +801,9 @@ double dmzssq(const int fold, const int N, const void *X, const int incX, const 
               s_2_1 = ((double*)ssq)[5];
 
               if(incX == 1){
-                if(dmindex0(ssq) || dmindex0(ssq + 1)){
-                  if(dmindex0(ssq)){
-                    if(dmindex0(ssq + 1)){
+                if(idxd_dmindex0(ssq) || idxd_dmindex0(ssq + 1)){
+                  if(idxd_dmindex0(ssq)){
+                    if(idxd_dmindex0(ssq + 1)){
                       compression_0 = idxd_DMCOMPRESSION;
                       expansion_0 = idxd_DMEXPANSION * 0.5;
                       expansion_mask_0 = idxd_DMEXPANSION * 0.5;
@@ -900,9 +900,9 @@ double dmzssq(const int fold, const int N, const void *X, const int incX, const 
                   }
                 }
               }else{
-                if(dmindex0(ssq) || dmindex0(ssq + 1)){
-                  if(dmindex0(ssq)){
-                    if(dmindex0(ssq + 1)){
+                if(idxd_dmindex0(ssq) || idxd_dmindex0(ssq + 1)){
+                  if(idxd_dmindex0(ssq)){
+                    if(idxd_dmindex0(ssq + 1)){
                       compression_0 = idxd_DMCOMPRESSION;
                       expansion_0 = idxd_DMEXPANSION * 0.5;
                       expansion_mask_0 = idxd_DMEXPANSION * 0.5;
@@ -1026,9 +1026,9 @@ double dmzssq(const int fold, const int N, const void *X, const int incX, const 
               }
 
               if(incX == 1){
-                if(dmindex0(ssq) || dmindex0(ssq + 1)){
-                  if(dmindex0(ssq)){
-                    if(dmindex0(ssq + 1)){
+                if(idxd_dmindex0(ssq) || idxd_dmindex0(ssq + 1)){
+                  if(idxd_dmindex0(ssq)){
+                    if(idxd_dmindex0(ssq + 1)){
                       compression_0 = idxd_DMCOMPRESSION;
                       expansion_0 = idxd_DMEXPANSION * 0.5;
                       expansion_mask_0 = idxd_DMEXPANSION * 0.5;
@@ -1123,9 +1123,9 @@ double dmzssq(const int fold, const int N, const void *X, const int incX, const 
                   }
                 }
               }else{
-                if(dmindex0(ssq) || dmindex0(ssq + 1)){
-                  if(dmindex0(ssq)){
-                    if(dmindex0(ssq + 1)){
+                if(idxd_dmindex0(ssq) || idxd_dmindex0(ssq + 1)){
+                  if(idxd_dmindex0(ssq)){
+                    if(idxd_dmindex0(ssq + 1)){
                       compression_0 = idxd_DMCOMPRESSION;
                       expansion_0 = idxd_DMEXPANSION * 0.5;
                       expansion_mask_0 = idxd_DMEXPANSION * 0.5;
@@ -1238,14 +1238,14 @@ double dmzssq(const int fold, const int N, const void *X, const int incX, const 
     deposits += N_block;
   }
 
-  zirenorm(fold, ssq);
-  new_scl = dmdmaddsq(fold, scl, ssq, 2, ssq + 2 * fold, 2, scaleY, manY, incmanY, carY, inccarY);
-  scl = dmdmaddsq(fold, scl, ssq + 1, 2, ssq + 2 * fold + 1, 2, new_scl, manY, incmanY, carY, inccarY);
+  idxd_zirenorm(fold, ssq);
+  new_scl = idxd_dmdmaddsq(fold, scl, ssq, 2, ssq + 2 * fold, 2, scaleY, manY, incmanY, carY, inccarY);
+  scl = idxd_dmdmaddsq(fold, scl, ssq + 1, 2, ssq + 2 * fold + 1, 2, new_scl, manY, incmanY, carY, inccarY);
 
   free(ssq);
 
   if (ISNANINF(manY[0])){
-    return dscale(1.0);
+    return idxd_dscale(1.0);
   } else {
     return scl;
   }

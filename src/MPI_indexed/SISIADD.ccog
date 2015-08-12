@@ -10,84 +10,84 @@ import cog
 from scripts import terminal
 for fold in range(2, terminal.get_simaxindex() + 1):
   cog.outl("static void idxdMPI_sisiadd_{}(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){{".format(fold))
-  cog.outl("  sisiaddv({}, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);".format(fold))
+  cog.outl("  idxd_sisiaddv({}, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);".format(fold))
   cog.outl("}")
   cog.outl("")
 ]]]*/
 static void idxdMPI_sisiadd_2(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  sisiaddv(2, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
+  idxd_sisiaddv(2, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_sisiadd_3(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  sisiaddv(3, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
+  idxd_sisiaddv(3, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_sisiadd_4(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  sisiaddv(4, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
+  idxd_sisiaddv(4, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_sisiadd_5(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  sisiaddv(5, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
+  idxd_sisiaddv(5, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_sisiadd_6(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  sisiaddv(6, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
+  idxd_sisiaddv(6, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_sisiadd_7(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  sisiaddv(7, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
+  idxd_sisiaddv(7, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_sisiadd_8(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  sisiaddv(8, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
+  idxd_sisiaddv(8, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_sisiadd_9(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  sisiaddv(9, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
+  idxd_sisiaddv(9, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_sisiadd_10(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  sisiaddv(10, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
+  idxd_sisiaddv(10, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_sisiadd_11(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  sisiaddv(11, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
+  idxd_sisiaddv(11, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_sisiadd_12(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  sisiaddv(12, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
+  idxd_sisiaddv(12, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_sisiadd_13(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  sisiaddv(13, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
+  idxd_sisiaddv(13, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_sisiadd_14(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  sisiaddv(14, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
+  idxd_sisiaddv(14, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_sisiadd_15(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  sisiaddv(15, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
+  idxd_sisiaddv(15, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_sisiadd_16(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  sisiaddv(16, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
+  idxd_sisiaddv(16, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_sisiadd_17(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  sisiaddv(17, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
+  idxd_sisiaddv(17, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_sisiadd_18(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  sisiaddv(18, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
+  idxd_sisiaddv(18, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_sisiadd_19(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  sisiaddv(19, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
+  idxd_sisiaddv(19, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
 }
 
 static void idxdMPI_sisiadd_20(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
-  sisiaddv(20, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
+  idxd_sisiaddv(20, *len, (float_indexed*)invec, 1, (float_indexed*)inoutvec, 1);
 }
 
 //[[[end]]]

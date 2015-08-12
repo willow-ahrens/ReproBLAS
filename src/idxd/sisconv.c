@@ -11,6 +11,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void sisconv(const int fold, const float X, float_indexed *Y) {
-  smsconv(fold, X, Y, 1, Y + fold, 1);
+void idxd_sisconv(const int fold, const float X, float_indexed *Y) {
+  idxd_smsconv(fold, X, Y, 1, Y + fold, 1);
 }

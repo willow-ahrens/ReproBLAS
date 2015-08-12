@@ -15,7 +15,7 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void ccmconv_sub(const int fold, const float *priX, const int incpriX, const float *carX, const int inccarX, void *conv) {
-  ((float*)conv)[0] = ssmconv(fold, priX, incpriX * 2, carX, inccarX + 1);
-  ((float*)conv)[1] = ssmconv(fold, priX + 1, incpriX * 2, carX + 1, inccarX + 1);
+void idxd_ccmconv_sub(const int fold, const float *priX, const int incpriX, const float *carX, const int inccarX, void *conv) {
+  ((float*)conv)[0] = idxd_ssmconv(fold, priX, incpriX * 2, carX, inccarX + 1);
+  ((float*)conv)[1] = idxd_ssmconv(fold, priX + 1, incpriX * 2, carX + 1, inccarX + 1);
 }

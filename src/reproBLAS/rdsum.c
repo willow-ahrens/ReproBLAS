@@ -4,14 +4,14 @@
 #include "../../config.h"
 
 double rdsum(const int N, const double* X, const int incX) {
-  double_indexed *sumi = dialloc(DIDEFAULTFOLD);
+  double_indexed *sumi = idxd_dialloc(DIDEFAULTFOLD);
   double sum;
 
-  disetzero(DIDEFAULTFOLD, sumi);
+  idxd_disetzero(DIDEFAULTFOLD, sumi);
 
   didsum(DIDEFAULTFOLD, N, X, incX, sumi);
 
-  sum = ddiconv(DIDEFAULTFOLD, sumi);
+  sum = idxd_ddiconv(DIDEFAULTFOLD, sumi);
   free(sumi);
   return sum;
 }

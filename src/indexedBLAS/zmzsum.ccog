@@ -79,11 +79,11 @@ void zmzsum(const int fold, const int N, const void *X, const int incX, double *
     }
 
     if (deposits + N_block > idxd_DIENDURANCE) {
-      zmrenorm(fold, manY, incmanY, carY, inccarY);
+      idxd_zmrenorm(fold, manY, incmanY, carY, inccarY);
       deposits = 0;
     }
 
-    zmzupdate(fold, amax, manY, incmanY, carY, inccarY);
+    idxd_zmzupdate(fold, amax, manY, incmanY, carY, inccarY);
 
     /*[[[cog
     cog.out(generate.generate(depositSum.DepositSum(dataTypes.DoubleComplex, "fold", "N_block", "x", "incX", "manY", "incmanY"), cog.inFile, args, params, mode))
@@ -121,9 +121,9 @@ void zmzsum(const int fold, const int N, const void *X, const int incX, double *
               s_2_0 = _mm256_broadcast_pd((__m128d *)(((double*)manY) + (incmanY * 4)));
 
               if(incX == 1){
-                if(dmindex0(manY) || dmindex0(manY + 1)){
-                  if(dmindex0(manY)){
-                    if(dmindex0(manY + 1)){
+                if(idxd_dmindex0(manY) || idxd_dmindex0(manY + 1)){
+                  if(idxd_dmindex0(manY)){
+                    if(idxd_dmindex0(manY + 1)){
                       compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                       expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                       expansion_mask_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -194,9 +194,9 @@ void zmzsum(const int fold, const int N, const void *X, const int incX, double *
                   }
                 }
               }else{
-                if(dmindex0(manY) || dmindex0(manY + 1)){
-                  if(dmindex0(manY)){
-                    if(dmindex0(manY + 1)){
+                if(idxd_dmindex0(manY) || idxd_dmindex0(manY + 1)){
+                  if(idxd_dmindex0(manY)){
+                    if(idxd_dmindex0(manY + 1)){
                       compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                       expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                       expansion_mask_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -302,9 +302,9 @@ void zmzsum(const int fold, const int N, const void *X, const int incX, double *
               }
 
               if(incX == 1){
-                if(dmindex0(manY) || dmindex0(manY + 1)){
-                  if(dmindex0(manY)){
-                    if(dmindex0(manY + 1)){
+                if(idxd_dmindex0(manY) || idxd_dmindex0(manY + 1)){
+                  if(idxd_dmindex0(manY)){
+                    if(idxd_dmindex0(manY + 1)){
                       compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                       expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                       expansion_mask_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -381,9 +381,9 @@ void zmzsum(const int fold, const int N, const void *X, const int incX, double *
                   }
                 }
               }else{
-                if(dmindex0(manY) || dmindex0(manY + 1)){
-                  if(dmindex0(manY)){
-                    if(dmindex0(manY + 1)){
+                if(idxd_dmindex0(manY) || idxd_dmindex0(manY + 1)){
+                  if(idxd_dmindex0(manY)){
+                    if(idxd_dmindex0(manY + 1)){
                       compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                       expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                       expansion_mask_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -507,9 +507,9 @@ void zmzsum(const int fold, const int N, const void *X, const int incX, double *
               s_2_0 = _mm_loadu_pd(((double*)manY) + (incmanY * 4));
 
               if(incX == 1){
-                if(dmindex0(manY) || dmindex0(manY + 1)){
-                  if(dmindex0(manY)){
-                    if(dmindex0(manY + 1)){
+                if(idxd_dmindex0(manY) || idxd_dmindex0(manY + 1)){
+                  if(idxd_dmindex0(manY)){
+                    if(idxd_dmindex0(manY + 1)){
                       compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                       expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                       expansion_mask_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -552,9 +552,9 @@ void zmzsum(const int fold, const int N, const void *X, const int incX, double *
                   }
                 }
               }else{
-                if(dmindex0(manY) || dmindex0(manY + 1)){
-                  if(dmindex0(manY)){
-                    if(dmindex0(manY + 1)){
+                if(idxd_dmindex0(manY) || idxd_dmindex0(manY + 1)){
+                  if(idxd_dmindex0(manY)){
+                    if(idxd_dmindex0(manY + 1)){
                       compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                       expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                       expansion_mask_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -629,9 +629,9 @@ void zmzsum(const int fold, const int N, const void *X, const int incX, double *
               }
 
               if(incX == 1){
-                if(dmindex0(manY) || dmindex0(manY + 1)){
-                  if(dmindex0(manY)){
-                    if(dmindex0(manY + 1)){
+                if(idxd_dmindex0(manY) || idxd_dmindex0(manY + 1)){
+                  if(idxd_dmindex0(manY)){
+                    if(idxd_dmindex0(manY + 1)){
                       compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                       expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                       expansion_mask_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -677,9 +677,9 @@ void zmzsum(const int fold, const int N, const void *X, const int incX, double *
                   }
                 }
               }else{
-                if(dmindex0(manY) || dmindex0(manY + 1)){
-                  if(dmindex0(manY)){
-                    if(dmindex0(manY + 1)){
+                if(idxd_dmindex0(manY) || idxd_dmindex0(manY + 1)){
+                  if(idxd_dmindex0(manY)){
+                    if(idxd_dmindex0(manY + 1)){
                       compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                       expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                       expansion_mask_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -765,9 +765,9 @@ void zmzsum(const int fold, const int N, const void *X, const int incX, double *
               s_2_1 = ((double*)manY)[((incmanY * 4) + 1)];
 
               if(incX == 1){
-                if(dmindex0(manY) || dmindex0(manY + 1)){
-                  if(dmindex0(manY)){
-                    if(dmindex0(manY + 1)){
+                if(idxd_dmindex0(manY) || idxd_dmindex0(manY + 1)){
+                  if(idxd_dmindex0(manY)){
+                    if(idxd_dmindex0(manY + 1)){
                       compression_0 = idxd_DMCOMPRESSION;
                       expansion_0 = idxd_DMEXPANSION * 0.5;
                       expansion_mask_0 = idxd_DMEXPANSION * 0.5;
@@ -860,9 +860,9 @@ void zmzsum(const int fold, const int N, const void *X, const int incX, double *
                   }
                 }
               }else{
-                if(dmindex0(manY) || dmindex0(manY + 1)){
-                  if(dmindex0(manY)){
-                    if(dmindex0(manY + 1)){
+                if(idxd_dmindex0(manY) || idxd_dmindex0(manY + 1)){
+                  if(idxd_dmindex0(manY)){
+                    if(idxd_dmindex0(manY + 1)){
                       compression_0 = idxd_DMCOMPRESSION;
                       expansion_0 = idxd_DMEXPANSION * 0.5;
                       expansion_mask_0 = idxd_DMEXPANSION * 0.5;
@@ -982,9 +982,9 @@ void zmzsum(const int fold, const int N, const void *X, const int incX, double *
               }
 
               if(incX == 1){
-                if(dmindex0(manY) || dmindex0(manY + 1)){
-                  if(dmindex0(manY)){
-                    if(dmindex0(manY + 1)){
+                if(idxd_dmindex0(manY) || idxd_dmindex0(manY + 1)){
+                  if(idxd_dmindex0(manY)){
+                    if(idxd_dmindex0(manY + 1)){
                       compression_0 = idxd_DMCOMPRESSION;
                       expansion_0 = idxd_DMEXPANSION * 0.5;
                       expansion_mask_0 = idxd_DMEXPANSION * 0.5;
@@ -1075,9 +1075,9 @@ void zmzsum(const int fold, const int N, const void *X, const int incX, double *
                   }
                 }
               }else{
-                if(dmindex0(manY) || dmindex0(manY + 1)){
-                  if(dmindex0(manY)){
-                    if(dmindex0(manY + 1)){
+                if(idxd_dmindex0(manY) || idxd_dmindex0(manY + 1)){
+                  if(idxd_dmindex0(manY)){
+                    if(idxd_dmindex0(manY + 1)){
                       compression_0 = idxd_DMCOMPRESSION;
                       expansion_0 = idxd_DMEXPANSION * 0.5;
                       expansion_mask_0 = idxd_DMEXPANSION * 0.5;
@@ -1193,5 +1193,5 @@ void zmzsum(const int fold, const int N, const void *X, const int incX, double *
     deposits += N_block;
   }
 
-  zmrenorm(fold, manY, incmanY, carY, inccarY);
+  idxd_zmrenorm(fold, manY, incmanY, carY, inccarY);
 }

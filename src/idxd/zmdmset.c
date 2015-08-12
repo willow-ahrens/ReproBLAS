@@ -20,7 +20,7 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zmdmset(const int fold, const double *priX, const int incpriX, const double *carX, const int inccarX, double *priY, const int incpriY, double *carY, const int inccarY){
-  dmdmset(fold, priX, incpriX, carX, inccarX, priY, 2 * incpriY, carY, 2 * inccarY);
-  dmsetzero(fold, priY + 1, 2 * incpriY, carY + 1, 2 * inccarY);
+void idxd_zmdmset(const int fold, const double *priX, const int incpriX, const double *carX, const int inccarX, double *priY, const int incpriY, double *carY, const int inccarY){
+  idxd_dmdmset(fold, priX, incpriX, carX, inccarX, priY, 2 * incpriY, carY, 2 * inccarY);
+  idxd_dmsetzero(fold, priY + 1, 2 * incpriY, carY + 1, 2 * inccarY);
 }

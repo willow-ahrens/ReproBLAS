@@ -48,8 +48,8 @@ void smcasum(const int fold, const int N, const void *X, const int incX, float *
   int i, j;
   int N_block = N_block_MAX;
   int deposits = 0;
-  float_complex_indexed *asum = cialloc(fold);
-  cisetzero(fold, asum);
+  float_complex_indexed *asum = idxd_cialloc(fold);
+  idxd_cisetzero(fold, asum);
 
   const float *x = (const float*)X;
 
@@ -75,11 +75,11 @@ void smcasum(const int fold, const int N, const void *X, const int incX, float *
     }
 
     if (deposits + N_block > idxd_SIENDURANCE) {
-      cirenorm(fold, asum);
+      idxd_cirenorm(fold, asum);
       deposits = 0;
     }
 
-    cisupdate(fold, amax, asum);
+    idxd_cisupdate(fold, amax, asum);
 
     /*[[[cog
       cog.out(generate.generate(depositASum.DepositASum(dataTypes.FloatComplex, "fold", "N_block", "x", "incX", "asum", 1), cog.inFile, args, params, mode))
@@ -126,9 +126,9 @@ void smcasum(const int fold, const int N, const void *X, const int incX, float *
               s_2_0 = (__m256)_mm256_broadcast_sd((double *)(((float*)asum) + 4));
 
               if(incX == 1){
-                if(smindex0(asum) || smindex0(asum + 1)){
-                  if(smindex0(asum)){
-                    if(smindex0(asum + 1)){
+                if(idxd_smindex0(asum) || idxd_smindex0(asum + 1)){
+                  if(idxd_smindex0(asum)){
+                    if(idxd_smindex0(asum + 1)){
                       compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -199,9 +199,9 @@ void smcasum(const int fold, const int N, const void *X, const int incX, float *
                   }
                 }
               }else{
-                if(smindex0(asum) || smindex0(asum + 1)){
-                  if(smindex0(asum)){
-                    if(smindex0(asum + 1)){
+                if(idxd_smindex0(asum) || idxd_smindex0(asum + 1)){
+                  if(idxd_smindex0(asum)){
+                    if(idxd_smindex0(asum + 1)){
                       compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -307,9 +307,9 @@ void smcasum(const int fold, const int N, const void *X, const int incX, float *
               }
 
               if(incX == 1){
-                if(smindex0(asum) || smindex0(asum + 1)){
-                  if(smindex0(asum)){
-                    if(smindex0(asum + 1)){
+                if(idxd_smindex0(asum) || idxd_smindex0(asum + 1)){
+                  if(idxd_smindex0(asum)){
+                    if(idxd_smindex0(asum + 1)){
                       compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -386,9 +386,9 @@ void smcasum(const int fold, const int N, const void *X, const int incX, float *
                   }
                 }
               }else{
-                if(smindex0(asum) || smindex0(asum + 1)){
-                  if(smindex0(asum)){
-                    if(smindex0(asum + 1)){
+                if(idxd_smindex0(asum) || idxd_smindex0(asum + 1)){
+                  if(idxd_smindex0(asum)){
+                    if(idxd_smindex0(asum + 1)){
                       compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -521,9 +521,9 @@ void smcasum(const int fold, const int N, const void *X, const int incX, float *
               s_2_0 = (__m128)_mm_load1_pd((double *)(((float*)asum) + 4));
 
               if(incX == 1){
-                if(smindex0(asum) || smindex0(asum + 1)){
-                  if(smindex0(asum)){
-                    if(smindex0(asum + 1)){
+                if(idxd_smindex0(asum) || idxd_smindex0(asum + 1)){
+                  if(idxd_smindex0(asum)){
+                    if(idxd_smindex0(asum + 1)){
                       compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -594,9 +594,9 @@ void smcasum(const int fold, const int N, const void *X, const int incX, float *
                   }
                 }
               }else{
-                if(smindex0(asum) || smindex0(asum + 1)){
-                  if(smindex0(asum)){
-                    if(smindex0(asum + 1)){
+                if(idxd_smindex0(asum) || idxd_smindex0(asum + 1)){
+                  if(idxd_smindex0(asum)){
+                    if(idxd_smindex0(asum + 1)){
                       compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -702,9 +702,9 @@ void smcasum(const int fold, const int N, const void *X, const int incX, float *
               }
 
               if(incX == 1){
-                if(smindex0(asum) || smindex0(asum + 1)){
-                  if(smindex0(asum)){
-                    if(smindex0(asum + 1)){
+                if(idxd_smindex0(asum) || idxd_smindex0(asum + 1)){
+                  if(idxd_smindex0(asum)){
+                    if(idxd_smindex0(asum + 1)){
                       compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -781,9 +781,9 @@ void smcasum(const int fold, const int N, const void *X, const int incX, float *
                   }
                 }
               }else{
-                if(smindex0(asum) || smindex0(asum + 1)){
-                  if(smindex0(asum)){
-                    if(smindex0(asum + 1)){
+                if(idxd_smindex0(asum) || idxd_smindex0(asum + 1)){
+                  if(idxd_smindex0(asum)){
+                    if(idxd_smindex0(asum + 1)){
                       compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -901,9 +901,9 @@ void smcasum(const int fold, const int N, const void *X, const int incX, float *
               s_2_1 = ((float*)asum)[5];
 
               if(incX == 1){
-                if(smindex0(asum) || smindex0(asum + 1)){
-                  if(smindex0(asum)){
-                    if(smindex0(asum + 1)){
+                if(idxd_smindex0(asum) || idxd_smindex0(asum + 1)){
+                  if(idxd_smindex0(asum)){
+                    if(idxd_smindex0(asum + 1)){
                       compression_0 = idxd_SMCOMPRESSION;
                       expansion_0 = idxd_SMEXPANSION * 0.5;
                       expansion_mask_0 = idxd_SMEXPANSION * 0.5;
@@ -996,9 +996,9 @@ void smcasum(const int fold, const int N, const void *X, const int incX, float *
                   }
                 }
               }else{
-                if(smindex0(asum) || smindex0(asum + 1)){
-                  if(smindex0(asum)){
-                    if(smindex0(asum + 1)){
+                if(idxd_smindex0(asum) || idxd_smindex0(asum + 1)){
+                  if(idxd_smindex0(asum)){
+                    if(idxd_smindex0(asum + 1)){
                       compression_0 = idxd_SMCOMPRESSION;
                       expansion_0 = idxd_SMEXPANSION * 0.5;
                       expansion_mask_0 = idxd_SMEXPANSION * 0.5;
@@ -1118,9 +1118,9 @@ void smcasum(const int fold, const int N, const void *X, const int incX, float *
               }
 
               if(incX == 1){
-                if(smindex0(asum) || smindex0(asum + 1)){
-                  if(smindex0(asum)){
-                    if(smindex0(asum + 1)){
+                if(idxd_smindex0(asum) || idxd_smindex0(asum + 1)){
+                  if(idxd_smindex0(asum)){
+                    if(idxd_smindex0(asum + 1)){
                       compression_0 = idxd_SMCOMPRESSION;
                       expansion_0 = idxd_SMEXPANSION * 0.5;
                       expansion_mask_0 = idxd_SMEXPANSION * 0.5;
@@ -1211,9 +1211,9 @@ void smcasum(const int fold, const int N, const void *X, const int incX, float *
                   }
                 }
               }else{
-                if(smindex0(asum) || smindex0(asum + 1)){
-                  if(smindex0(asum)){
-                    if(smindex0(asum + 1)){
+                if(idxd_smindex0(asum) || idxd_smindex0(asum + 1)){
+                  if(idxd_smindex0(asum)){
+                    if(idxd_smindex0(asum + 1)){
                       compression_0 = idxd_SMCOMPRESSION;
                       expansion_0 = idxd_SMEXPANSION * 0.5;
                       expansion_mask_0 = idxd_SMEXPANSION * 0.5;
@@ -1322,9 +1322,9 @@ void smcasum(const int fold, const int N, const void *X, const int incX, float *
     deposits += N_block;
   }
 
-  cirenorm(fold, asum);
-  smsmadd(fold, asum, 2, asum + 2 * fold, 2, manY, incmanY, carY, inccarY);
-  smsmadd(fold, asum + 1, 2, asum + 2 * fold + 1, 2, manY, incmanY, carY, inccarY);
+  idxd_cirenorm(fold, asum);
+  idxd_smsmadd(fold, asum, 2, asum + 2 * fold, 2, manY, incmanY, carY, inccarY);
+  idxd_smsmadd(fold, asum + 1, 2, asum + 2 * fold + 1, 2, manY, incmanY, carY, inccarY);
 
   free(asum);
 

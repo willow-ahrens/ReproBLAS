@@ -23,14 +23,14 @@ void wrap_rzgemv(int fold, char Order, char TransA, int M, int N, double complex
         NY = N;
       break;
     }
-    YI = (double_indexed*)malloc(NY * incY * zisize(fold));
+    YI = (double_indexed*)malloc(NY * incY * idxd_zisize(fold));
     for(i = 0; i < NY; i++){
       betaY = Y[i * incY] * (*beta);
-      zizconv(fold, &betaY, YI + i * incY * zinum(fold));
+      idxd_zizconv(fold, &betaY, YI + i * incY * idxd_zinum(fold));
     }
     zizgemv(fold, Order, TransA, M, N, alpha, A, lda, X, incX, YI, incY);
     for(i = 0; i < NY; i++){
-      zziconv_sub(fold, YI + i * incY * zinum(fold), Y + i * incY);
+      idxd_zziconv_sub(fold, YI + i * incY * idxd_zinum(fold), Y + i * incY);
     }
     free(YI);
   }
@@ -104,8 +104,8 @@ double complex wrap_rzgemv_bound(int fold, char Order, char TransA, int M, int N
           break;
       }
       betaY = Y[i * incY] * (*beta);
-      bound_base[0] = dibound(fold, N + 1, MAX(fabs(creal(betaY)), creal(amaxm)), creal(res[i * incY]));
-      bound_base[1] = dibound(fold, N + 1, MAX(fabs(cimag(betaY)), cimag(amaxm)), cimag(res[i * incY]));
+      bound_base[0] = idxd_dibound(fold, N + 1, MAX(fabs(creal(betaY)), creal(amaxm)), creal(res[i * incY]));
+      bound_base[1] = idxd_dibound(fold, N + 1, MAX(fabs(cimag(betaY)), cimag(amaxm)), cimag(res[i * incY]));
       break;
     default:
       alphaX = (double complex*)malloc(M * sizeof(double complex));
@@ -122,8 +122,8 @@ double complex wrap_rzgemv_bound(int fold, char Order, char TransA, int M, int N
           break;
       }
       betaY = Y[i * incY] * (*beta);
-      bound_base[0] = dibound(fold, M + 1, MAX(fabs(creal(betaY)), creal(amaxm)), creal(res[i * incY]));
-      bound_base[1] = dibound(fold, M + 1, MAX(fabs(cimag(betaY)), cimag(amaxm)), cimag(res[i * incY]));
+      bound_base[0] = idxd_dibound(fold, M + 1, MAX(fabs(creal(betaY)), creal(amaxm)), creal(res[i * incY]));
+      bound_base[1] = idxd_dibound(fold, M + 1, MAX(fabs(cimag(betaY)), cimag(amaxm)), cimag(res[i * incY]));
       break;
   }
   free(alphaX);

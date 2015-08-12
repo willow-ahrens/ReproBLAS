@@ -4,14 +4,14 @@
 #include "../../config.h"
 
 float rsdot(const int N, const float* X, const int incX, const float *Y, const int incY) {
-  float_indexed *doti = sialloc(SIDEFAULTFOLD);
+  float_indexed *doti = idxd_sialloc(SIDEFAULTFOLD);
   float dot;
 
-  sisetzero(SIDEFAULTFOLD, doti);
+  idxd_sisetzero(SIDEFAULTFOLD, doti);
 
   sisdot(SIDEFAULTFOLD, N, X, incX, Y, incY, doti);
 
-  dot = ssiconv(SIDEFAULTFOLD, doti);
+  dot = idxd_ssiconv(SIDEFAULTFOLD, doti);
   free(doti);
   return dot;
 }

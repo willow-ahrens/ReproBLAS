@@ -22,13 +22,13 @@ void wrap_rdgemv(int fold, char Order, char TransA, int M, int N, double alpha, 
         opM = N;
       break;
     }
-    YI = (double_indexed*)malloc(opM * incY * disize(fold));
+    YI = (double_indexed*)malloc(opM * incY * idxd_disize(fold));
     for(i = 0; i < opM; i++){
-      didconv(fold, Y[i * incY] * beta, YI + i * incY * dinum(fold));
+      idxd_didconv(fold, Y[i * incY] * beta, YI + i * incY * idxd_dinum(fold));
     }
     didgemv(fold, Order, TransA, M, N, alpha, A, lda, X, incX, YI, incY);
     for(i = 0; i < opM; i++){
-      Y[i * incY] = ddiconv(fold, YI + i * incY * dinum(fold));
+      Y[i * incY] = idxd_ddiconv(fold, YI + i * incY * idxd_dinum(fold));
     }
     free(YI);
   }
@@ -53,16 +53,16 @@ void wrap_ref_rdgemv(int fold, char Order, char TransA, int M, int N, double alp
       break;
   }
   opA = util_dmat_op(Order, TransA, opM, opN, A, lda);
-  YI = dialloc(fold);
+  YI = idxd_dialloc(fold);
   opX = (double*)malloc(opN * sizeof(double));
   for(i = 0; i < opN; i++){
     opX[i] = alpha * X[i * incX];
   }
   for(i = 0; i < opM; i++){
     if(beta == 0.0){
-      disetzero(fold, YI);
+      idxd_disetzero(fold, YI);
     }else{
-      didconv(fold, Y[i * incY] * beta, YI);
+      idxd_didconv(fold, Y[i * incY] * beta, YI);
     }
     if(alpha != 0.0){
       switch(Order){
@@ -75,7 +75,7 @@ void wrap_ref_rdgemv(int fold, char Order, char TransA, int M, int N, double alp
           break;
       }
     }
-    Y[i * incY] = ddiconv(fold, YI);
+    Y[i * incY] = idxd_ddiconv(fold, YI);
   }
   free(YI);
   free(opA);
@@ -139,10 +139,10 @@ double wrap_rdgemv_bound(int fold, char Order, char TransA, int M, int N, double
       switch(Order){
         case 'r':
         case 'R':
-          bound = dibound(fold, N + 1, MAX(fabs(Y[i * incY] * beta), damaxm(N, A + i * lda, 1, alphaX, 1)), res[i * incY]);
+          bound = idxd_dibound(fold, N + 1, MAX(fabs(Y[i * incY] * beta), damaxm(N, A + i * lda, 1, alphaX, 1)), res[i * incY]);
           break;
         default:
-          bound = dibound(fold, N + 1, MAX(fabs(Y[i * incY] * beta), damaxm(N, A + i, lda, alphaX, 1)), res[i * incY]);
+          bound = idxd_dibound(fold, N + 1, MAX(fabs(Y[i * incY] * beta), damaxm(N, A + i, lda, alphaX, 1)), res[i * incY]);
           break;
       }
       break;
@@ -154,10 +154,10 @@ double wrap_rdgemv_bound(int fold, char Order, char TransA, int M, int N, double
       switch(Order){
         case 'r':
         case 'R':
-          bound = dibound(fold, M + 1, MAX(fabs(Y[i * incY] * beta), damaxm(M, A + i, lda, alphaX, 1)), res[i * incY]);
+          bound = idxd_dibound(fold, M + 1, MAX(fabs(Y[i * incY] * beta), damaxm(M, A + i, lda, alphaX, 1)), res[i * incY]);
           break;
         default:
-          bound = dibound(fold, M + 1, MAX(fabs(Y[i * incY] * beta), damaxm(M, A + i * lda, 1, alphaX, 1)), res[i * incY]);
+          bound = idxd_dibound(fold, M + 1, MAX(fabs(Y[i * incY] * beta), damaxm(M, A + i * lda, 1, alphaX, 1)), res[i * incY]);
           break;
       }
       break;

@@ -11,6 +11,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zziconv_sub(const int fold, const double_complex_indexed *X, void *conv) {
-  zzmconv_sub(fold, X, 1, X + 2 * fold, 1, conv);
+void idxd_zziconv_sub(const int fold, const double_complex_indexed *X, void *conv) {
+  idxd_zzmconv_sub(fold, X, 1, X + 2 * fold, 1, conv);
 }

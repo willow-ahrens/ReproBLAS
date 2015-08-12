@@ -69,24 +69,24 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   util_dvec_fill(N, X, incX, FillX, RealScaleX, ImagScaleX);
 
   if(fold._int.value == 0){
-    ires = dialloc(DIMAXFOLD);
-    disetzero(DIMAXFOLD, ires);
+    ires = idxd_dialloc(DIMAXFOLD);
+    idxd_disetzero(DIMAXFOLD, ires);
     didsum(DIMAXFOLD, N, X, incX, ires);
     time_tic();
     for(j = 1; j <= DIMAXFOLD; j++){
       for(i = 0; i < trials; i++){
-        res = ddiconv(j, ires);
+        res = idxd_ddiconv(j, ires);
       }
     }
     time_toc();
     free(ires);
   }else{
-    ires = dialloc(fold._int.value);
-    disetzero(fold._int.value, ires);
+    ires = idxd_dialloc(fold._int.value);
+    idxd_disetzero(fold._int.value, ires);
     didsum(fold._int.value, N, X, incX, ires);
     time_tic();
     for(i = 0; i < trials; i++){
-      res = ddiconv(fold._int.value, ires);
+      res = idxd_ddiconv(fold._int.value, ires);
     }
     time_toc();
     free(ires);

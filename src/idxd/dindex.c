@@ -16,7 +16,7 @@
  * @author Hong Diep Nguyen
  * @date   19 Jun 2015
  */
-int dindex(const double X){
+int idxd_dindex(const double X){
   /*
   int exp;
 

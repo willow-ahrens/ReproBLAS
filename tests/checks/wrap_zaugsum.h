@@ -47,11 +47,11 @@ double complex wrap_rzsum(int fold, int N, double complex *x, int incx, double c
     rzsum_sub(N, x, incx, &res);
     return res;
   }else{
-    double_complex_indexed *ires = zialloc(fold);
-    zisetzero(fold, ires);
+    double_complex_indexed *ires = idxd_zialloc(fold);
+    idxd_zisetzero(fold, ires);
     zizsum(fold, N, x, incx, ires);
     double complex res;
-    zziconv_sub(fold, ires, &res);
+    idxd_zziconv_sub(fold, ires, &res);
     free(ires);
     return res;
   }
@@ -69,10 +69,10 @@ double complex wrap_rdzasum(int fold, int N, double complex *x, int incx, double
   if(fold == DIDEFAULTFOLD){
     return rdzasum(N, x, incx);
   }else{
-    double_indexed *ires = dialloc(fold);
-    disetzero(fold, ires);
+    double_indexed *ires = idxd_dialloc(fold);
+    idxd_disetzero(fold, ires);
     dizasum(fold, N, x, incx, ires);
-    double res = ddiconv(fold, ires);
+    double res = idxd_ddiconv(fold, ires);
     free(ires);
     return (double complex)res;
   }
@@ -90,10 +90,10 @@ double complex wrap_rdznrm2(int fold, int N, double complex *x, int incx, double
   if(fold == DIDEFAULTFOLD){
     return rdznrm2(N, x, incx);
   }else{
-    double_indexed *ires = dialloc(fold);
-    disetzero(fold, ires);
+    double_indexed *ires = idxd_dialloc(fold);
+    idxd_disetzero(fold, ires);
     double scale = dizssq(fold, N, x, incx, 0.0, ires);
-    double res = ddiconv(fold, ires);
+    double res = idxd_ddiconv(fold, ires);
     free(ires);
     return (double complex)(scale * sqrt(res));
   }
@@ -111,11 +111,11 @@ double complex wrap_rzdotu(int fold, int N, double complex *x, int incx, double 
     rzdotu_sub(N, x, incx, y, incy, &res);
     return res;
   }else{
-    double_complex_indexed *ires = zialloc(fold);
-    zisetzero(fold, ires);
+    double_complex_indexed *ires = idxd_zialloc(fold);
+    idxd_zisetzero(fold, ires);
     zizdotu(fold, N, x, incx, y, incy, ires);
     double complex res;
-    zziconv_sub(fold, ires, &res);
+    idxd_zziconv_sub(fold, ires, &res);
     free(ires);
     return res;
   }
@@ -131,11 +131,11 @@ double complex wrap_rzdotc(int fold, int N, double complex *x, int incx, double 
     rzdotc_sub(N, x, incx, y, incy, &res);
     return res;
   }else{
-    double_complex_indexed *ires = zialloc(fold);
-    zisetzero(fold, ires);
+    double_complex_indexed *ires = idxd_zialloc(fold);
+    idxd_zisetzero(fold, ires);
     zizdotc(fold, N, x, incx, y, incy, ires);
     double complex res;
-    zziconv_sub(fold, ires, &res);
+    idxd_zziconv_sub(fold, ires, &res);
     free(ires);
     return res;
   }
@@ -148,16 +148,16 @@ void wrap_zizdotc(int fold, int N, double complex *x, int incx, double complex *
 double complex wrap_rziziadd(int fold, int N, double complex *x, int incx, double complex *y, int incy) {
   (void)y;
   (void)incy;
-  double_complex_indexed *ires = zialloc(fold);
-  double_complex_indexed *itmp = zialloc(fold);
-  zisetzero(fold, ires);
+  double_complex_indexed *ires = idxd_zialloc(fold);
+  double_complex_indexed *itmp = idxd_zialloc(fold);
+  idxd_zisetzero(fold, ires);
   int i;
   for(i = 0; i < N; i++){
-    zizconv(fold, x + i * incx, itmp);
-    ziziadd(fold, itmp, ires);
+    idxd_zizconv(fold, x + i * incx, itmp);
+    idxd_ziziadd(fold, itmp, ires);
   }
   double complex res;
-  zziconv_sub(fold, ires, &res);
+  idxd_zziconv_sub(fold, ires, &res);
   free(ires);
   free(itmp);
   return res;
@@ -166,11 +166,11 @@ double complex wrap_rziziadd(int fold, int N, double complex *x, int incx, doubl
 void wrap_ziziadd(int fold, int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {
   (void)y;
   (void)incy;
-  double_complex_indexed *itmp = zialloc(fold);
+  double_complex_indexed *itmp = idxd_zialloc(fold);
   int i;
   for(i = 0; i < N; i++){
-    zizconv(fold, x + i * incx, itmp);
-    ziziadd(fold, itmp, z);
+    idxd_zizconv(fold, x + i * incx, itmp);
+    idxd_ziziadd(fold, itmp, z);
   }
   free(itmp);
 }
@@ -178,14 +178,14 @@ void wrap_ziziadd(int fold, int N, double complex *x, int incx, double complex *
 double complex wrap_rzizadd(int fold, int N, double complex *x, int incx, double complex *y, int incy) {
   (void)y;
   (void)incy;
-  double_complex_indexed *ires = zialloc(fold);
-  zisetzero(fold, ires);
+  double_complex_indexed *ires = idxd_zialloc(fold);
+  idxd_zisetzero(fold, ires);
   int i;
   for(i = 0; i < N; i++){
-    zizadd(fold, x + i * incx, ires);
+    idxd_zizadd(fold, x + i * incx, ires);
   }
   double complex res;
-  zziconv_sub(fold, ires, &res);
+  idxd_zziconv_sub(fold, ires, &res);
   free(ires);
   return res;
 }
@@ -195,31 +195,31 @@ void wrap_zizadd(int fold, int N, double complex *x, int incx, double complex *y
   (void)incy;
   int i;
   for(i = 0; i < N; i++){
-    zizadd(fold, x + i * incx, z);
+    idxd_zizadd(fold, x + i * incx, z);
   }
 }
 
 double complex wrap_rzizdeposit(int fold, int N, double complex *x, int incx, double complex *y, int incy) {
   (void)y;
   (void)incy;
-  double_complex_indexed *ires = zialloc(fold);
-  zisetzero(fold, ires);
+  double_complex_indexed *ires = idxd_zialloc(fold);
+  idxd_zisetzero(fold, ires);
   double complex amax;
   zamax_sub(N, x, incx, &amax);
-  zizupdate(fold, &amax, ires);
+  idxd_zizupdate(fold, &amax, ires);
   int i;
   int j = 0;
   for(i = 0; i < N; i++){
     if(j >= idxd_DIENDURANCE){
-      zirenorm(fold, ires);
+      idxd_zirenorm(fold, ires);
       j = 0;
     }
-    zizdeposit(fold, x + i * incx, ires);
+    idxd_zizdeposit(fold, x + i * incx, ires);
     j++;
   }
-  zirenorm(fold, ires);
+  idxd_zirenorm(fold, ires);
   double complex res;
-  zziconv_sub(fold, ires, &res);
+  idxd_zziconv_sub(fold, ires, &res);
   free(ires);
   return res;
 }
@@ -229,18 +229,18 @@ void wrap_zizdeposit(int fold, int N, double complex *x, int incx, double comple
   (void)incy;
   double complex amax;
   zamax_sub(N, x, incx, &amax);
-  zizupdate(fold, &amax, z);
+  idxd_zizupdate(fold, &amax, z);
   int i;
   int j = 0;
   for(i = 0; i < N; i++){
     if(j >= idxd_DIENDURANCE){
-      zirenorm(fold, z);
+      idxd_zirenorm(fold, z);
       j = 0;
     }
-    zizdeposit(fold, x + i * incx, z);
+    idxd_zizdeposit(fold, x + i * incx, z);
     j++;
   }
-  zirenorm(fold, z);
+  idxd_zirenorm(fold, z);
 }
 
 wrap_zaugsum wrap_zaugsum_func(wrap_zaugsum_func_t func) {
@@ -408,7 +408,7 @@ double complex wrap_zaugsum_result(int N, wrap_zaugsum_func_t func, util_vec_fil
         double small_imag;
         switch(FillX){
           case util_Vec_Constant:
-            new_scale = dscale(new_scale);
+            new_scale = idxd_dscale(new_scale);
             RealScaleX /= new_scale;
             ImagScaleX /= new_scale;
             return sqrt(N * (RealScaleX * RealScaleX + ImagScaleX * ImagScaleX)) * new_scale;
@@ -445,7 +445,7 @@ double complex wrap_zaugsum_result(int N, wrap_zaugsum_func_t func, util_vec_fil
             }
             return tmpX0_base[0] + tmpX0_base[1];
           case util_Vec_Pos_Big:
-            new_scale = dscale(new_scale * big);
+            new_scale = idxd_dscale(new_scale * big);
             big_real = (big * RealScaleX)/new_scale;
             big_imag = (big * ImagScaleX)/new_scale;
             small_real = (small * RealScaleX)/new_scale;
@@ -453,7 +453,7 @@ double complex wrap_zaugsum_result(int N, wrap_zaugsum_func_t func, util_vec_fil
             return sqrt((N - 1) * (small_real * small_real + small_imag * small_imag) + big_real * big_real + big_imag * big_imag) * new_scale;
           case util_Vec_Pos_Pos_Big:
           case util_Vec_Pos_Neg_Big:
-            new_scale = dscale(new_scale * big);
+            new_scale = idxd_dscale(new_scale * big);
             big_real = (big * RealScaleX)/new_scale;
             big_imag = (big * ImagScaleX)/new_scale;
             small_real = (small * RealScaleX)/new_scale;
@@ -690,8 +690,8 @@ double complex wrap_zaugsum_bound(int fold, int N, wrap_zaugsum_func_t func, dou
         double complex bound;
         double *bound_base = (double*)&bound;
         zamax_sub(N, X, incX, &amax);
-        bound_base[0] = dibound(fold, N, creal(amax), creal(res));
-        bound_base[1] = dibound(fold, N, cimag(amax), cimag(res));
+        bound_base[0] = idxd_dibound(fold, N, creal(amax), creal(res));
+        bound_base[1] = idxd_dibound(fold, N, cimag(amax), cimag(res));
         return bound;
       }
     case wrap_zaugsum_RDZASUM:
@@ -700,7 +700,7 @@ double complex wrap_zaugsum_bound(int fold, int N, wrap_zaugsum_func_t func, dou
         double amax;
         zamax_sub(N, X, incX, &amax2);
         amax = MAX(creal(amax2), cimag(amax2));
-        return dibound(fold, N, amax, creal(res));
+        return idxd_dibound(fold, N, amax, creal(res));
       }
     case wrap_zaugsum_RDZNRM2:
       {
@@ -709,11 +709,11 @@ double complex wrap_zaugsum_bound(int fold, int N, wrap_zaugsum_func_t func, dou
         double scale;
         zamax_sub(N, X, incX, &amax2);
         amax = MAX(creal(amax2), cimag(amax2));
-        scale = dscale(amax);
+        scale = idxd_dscale(amax);
         if (amax == 0.0){
           return 0.0;
         }
-        return dibound(fold, N, (amax/scale) * (amax/scale), (creal(res)/scale) * (creal(res)/scale)) * (scale / (creal(res) + creal(ref))) * scale;
+        return idxd_dibound(fold, N, (amax/scale) * (amax/scale), (creal(res)/scale) * (creal(res)/scale)) * (scale / (creal(res) + creal(ref))) * scale;
       }
     case wrap_zaugsum_RZDOTU:
     case wrap_zaugsum_RZDOTC:
@@ -722,8 +722,8 @@ double complex wrap_zaugsum_bound(int fold, int N, wrap_zaugsum_func_t func, dou
         double complex bound;
         double *bound_base = (double*)&bound;
         zamaxm_sub(N, X, incX, Y, incY, &amaxm);
-        bound_base[0] = dibound(fold, N, creal(amaxm), creal(res));
-        bound_base[1] = dibound(fold, N, cimag(amaxm), cimag(res));
+        bound_base[0] = idxd_dibound(fold, N, creal(amaxm), creal(res));
+        bound_base[1] = idxd_dibound(fold, N, cimag(amaxm), cimag(res));
         return bound;
       }
   }

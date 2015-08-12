@@ -12,6 +12,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zirenorm(const int fold, double_complex_indexed *X) {
-  zmrenorm(fold, X, 1, X + 2 * fold, 1);
+void idxd_zirenorm(const int fold, double_complex_indexed *X) {
+  idxd_zmrenorm(fold, X, 1, X + 2 * fold, 1);
 }

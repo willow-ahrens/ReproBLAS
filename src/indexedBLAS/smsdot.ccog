@@ -67,11 +67,11 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
     }
 
     if (deposits + N_block > idxd_SIENDURANCE) {
-      smrenorm(fold, manZ, incmanZ, carZ, inccarZ);
+      idxd_smrenorm(fold, manZ, incmanZ, carZ, inccarZ);
       deposits = 0;
     }
 
-    smsupdate(fold, amaxm, manZ, incmanZ, carZ, inccarZ);
+    idxd_smsupdate(fold, amaxm, manZ, incmanZ, carZ, inccarZ);
 
     /*[[[cog
     cog.out(generate.generate(depositDot.DepositDot(dataTypes.Float, "fold", "N_block", "X", "incX", "manZ", "incmanZ", "Y", "incY"), cog.inFile, args, params, mode))
@@ -110,7 +110,7 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
 
               if(incX == 1){
                 if(incY == 1){
-                  if(smindex0(manZ)){
+                  if(idxd_smindex0(manZ)){
                     compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                     expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                     for(i = 0; i + 8 <= N_block; i += 8, X += 8, Y += 8){
@@ -178,7 +178,7 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
                     }
                   }
                 }else{
-                  if(smindex0(manZ)){
+                  if(idxd_smindex0(manZ)){
                     compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                     expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                     for(i = 0; i + 8 <= N_block; i += 8, X += 8, Y += (incY * 8)){
@@ -248,7 +248,7 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
                 }
               }else{
                 if(incY == 1){
-                  if(smindex0(manZ)){
+                  if(idxd_smindex0(manZ)){
                     compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                     expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                     for(i = 0; i + 8 <= N_block; i += 8, X += (incX * 8), Y += 8){
@@ -316,7 +316,7 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
                     }
                   }
                 }else{
-                  if(smindex0(manZ)){
+                  if(idxd_smindex0(manZ)){
                     compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                     expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                     for(i = 0; i + 8 <= N_block; i += 8, X += (incX * 8), Y += (incY * 8)){
@@ -418,7 +418,7 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
 
               if(incX == 1){
                 if(incY == 1){
-                  if(smindex0(manZ)){
+                  if(idxd_smindex0(manZ)){
                     compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                     expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                     for(i = 0; i + 8 <= N_block; i += 8, X += 8, Y += 8){
@@ -492,7 +492,7 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
                     }
                   }
                 }else{
-                  if(smindex0(manZ)){
+                  if(idxd_smindex0(manZ)){
                     compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                     expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                     for(i = 0; i + 8 <= N_block; i += 8, X += 8, Y += (incY * 8)){
@@ -568,7 +568,7 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
                 }
               }else{
                 if(incY == 1){
-                  if(smindex0(manZ)){
+                  if(idxd_smindex0(manZ)){
                     compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                     expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                     for(i = 0; i + 8 <= N_block; i += 8, X += (incX * 8), Y += 8){
@@ -642,7 +642,7 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
                     }
                   }
                 }else{
-                  if(smindex0(manZ)){
+                  if(idxd_smindex0(manZ)){
                     compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                     expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                     for(i = 0; i + 8 <= N_block; i += 8, X += (incX * 8), Y += (incY * 8)){
@@ -764,7 +764,7 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
 
               if(incX == 1){
                 if(incY == 1){
-                  if(smindex0(manZ)){
+                  if(idxd_smindex0(manZ)){
                     compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                     expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                     for(i = 0; i + 4 <= N_block; i += 4, X += 4, Y += 4){
@@ -832,7 +832,7 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
                     }
                   }
                 }else{
-                  if(smindex0(manZ)){
+                  if(idxd_smindex0(manZ)){
                     compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                     expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                     for(i = 0; i + 4 <= N_block; i += 4, X += 4, Y += (incY * 4)){
@@ -902,7 +902,7 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
                 }
               }else{
                 if(incY == 1){
-                  if(smindex0(manZ)){
+                  if(idxd_smindex0(manZ)){
                     compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                     expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                     for(i = 0; i + 4 <= N_block; i += 4, X += (incX * 4), Y += 4){
@@ -970,7 +970,7 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
                     }
                   }
                 }else{
-                  if(smindex0(manZ)){
+                  if(idxd_smindex0(manZ)){
                     compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                     expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                     for(i = 0; i + 4 <= N_block; i += 4, X += (incX * 4), Y += (incY * 4)){
@@ -1072,7 +1072,7 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
 
               if(incX == 1){
                 if(incY == 1){
-                  if(smindex0(manZ)){
+                  if(idxd_smindex0(manZ)){
                     compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                     expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                     for(i = 0; i + 4 <= N_block; i += 4, X += 4, Y += 4){
@@ -1146,7 +1146,7 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
                     }
                   }
                 }else{
-                  if(smindex0(manZ)){
+                  if(idxd_smindex0(manZ)){
                     compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                     expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                     for(i = 0; i + 4 <= N_block; i += 4, X += 4, Y += (incY * 4)){
@@ -1222,7 +1222,7 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
                 }
               }else{
                 if(incY == 1){
-                  if(smindex0(manZ)){
+                  if(idxd_smindex0(manZ)){
                     compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                     expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                     for(i = 0; i + 4 <= N_block; i += 4, X += (incX * 4), Y += 4){
@@ -1296,7 +1296,7 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
                     }
                   }
                 }else{
-                  if(smindex0(manZ)){
+                  if(idxd_smindex0(manZ)){
                     compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                     expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                     for(i = 0; i + 4 <= N_block; i += 4, X += (incX * 4), Y += (incY * 4)){
@@ -1409,7 +1409,7 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
 
               if(incX == 1){
                 if(incY == 1){
-                  if(smindex0(manZ)){
+                  if(idxd_smindex0(manZ)){
                     compression_0 = idxd_SMCOMPRESSION;
                     expansion_0 = idxd_SMEXPANSION * 0.5;
                     for(i = 0; i + 1 <= N_block; i += 1, X += 1, Y += 1){
@@ -1457,7 +1457,7 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
                     }
                   }
                 }else{
-                  if(smindex0(manZ)){
+                  if(idxd_smindex0(manZ)){
                     compression_0 = idxd_SMCOMPRESSION;
                     expansion_0 = idxd_SMEXPANSION * 0.5;
                     for(i = 0; i + 1 <= N_block; i += 1, X += 1, Y += incY){
@@ -1507,7 +1507,7 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
                 }
               }else{
                 if(incY == 1){
-                  if(smindex0(manZ)){
+                  if(idxd_smindex0(manZ)){
                     compression_0 = idxd_SMCOMPRESSION;
                     expansion_0 = idxd_SMEXPANSION * 0.5;
                     for(i = 0; i + 1 <= N_block; i += 1, X += incX, Y += 1){
@@ -1555,7 +1555,7 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
                     }
                   }
                 }else{
-                  if(smindex0(manZ)){
+                  if(idxd_smindex0(manZ)){
                     compression_0 = idxd_SMCOMPRESSION;
                     expansion_0 = idxd_SMEXPANSION * 0.5;
                     for(i = 0; i + 1 <= N_block; i += 1, X += incX, Y += incY){
@@ -1628,7 +1628,7 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
 
               if(incX == 1){
                 if(incY == 1){
-                  if(smindex0(manZ)){
+                  if(idxd_smindex0(manZ)){
                     compression_0 = idxd_SMCOMPRESSION;
                     expansion_0 = idxd_SMEXPANSION * 0.5;
                     for(i = 0; i + 1 <= N_block; i += 1, X += 1, Y += 1){
@@ -1677,7 +1677,7 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
                     }
                   }
                 }else{
-                  if(smindex0(manZ)){
+                  if(idxd_smindex0(manZ)){
                     compression_0 = idxd_SMCOMPRESSION;
                     expansion_0 = idxd_SMEXPANSION * 0.5;
                     for(i = 0; i + 1 <= N_block; i += 1, X += 1, Y += incY){
@@ -1728,7 +1728,7 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
                 }
               }else{
                 if(incY == 1){
-                  if(smindex0(manZ)){
+                  if(idxd_smindex0(manZ)){
                     compression_0 = idxd_SMCOMPRESSION;
                     expansion_0 = idxd_SMEXPANSION * 0.5;
                     for(i = 0; i + 1 <= N_block; i += 1, X += incX, Y += 1){
@@ -1777,7 +1777,7 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
                     }
                   }
                 }else{
-                  if(smindex0(manZ)){
+                  if(idxd_smindex0(manZ)){
                     compression_0 = idxd_SMCOMPRESSION;
                     expansion_0 = idxd_SMEXPANSION * 0.5;
                     for(i = 0; i + 1 <= N_block; i += 1, X += incX, Y += incY){
@@ -1844,5 +1844,5 @@ void smsdot(const int fold, const int N, const float *X, const int incX, const f
     deposits += N_block;
   }
 
-  smrenorm(fold, manZ, incmanZ, carZ, inccarZ);
+  idxd_smrenorm(fold, manZ, incmanZ, carZ, inccarZ);
 }

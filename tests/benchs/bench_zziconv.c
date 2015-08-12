@@ -69,24 +69,24 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   util_zvec_fill(N, X, incX, FillX, RealScaleX, ImagScaleX);
 
   if(fold._int.value == 0){
-    ires = zialloc(DIMAXFOLD);
-    zisetzero(DIMAXFOLD, ires);
+    ires = idxd_zialloc(DIMAXFOLD);
+    idxd_zisetzero(DIMAXFOLD, ires);
     zizsum(DIMAXFOLD, N, X, incX, ires);
     time_tic();
     for(j = 1; j <= DIMAXFOLD; j++){
       for(i = 0; i < trials; i++){
-        zziconv_sub(j, ires, &res);
+        idxd_zziconv_sub(j, ires, &res);
       }
     }
     time_toc();
     free(ires);
   }else{
-    ires = zialloc(fold._int.value);
-    zisetzero(fold._int.value, ires);
+    ires = idxd_zialloc(fold._int.value);
+    idxd_zisetzero(fold._int.value, ires);
     zizsum(fold._int.value, N, X, incX, ires);
     time_tic();
     for(i = 0; i < trials; i++){
-      zziconv_sub(fold._int.value, ires, &res);
+      idxd_zziconv_sub(fold._int.value, ires, &res);
     }
     time_toc();
     free(ires);

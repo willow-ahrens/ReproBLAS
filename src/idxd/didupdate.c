@@ -13,6 +13,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void didupdate(const int fold, const double X, double_indexed *Y) {
-  dmdupdate(fold, X, Y, 1, Y + fold, 1);
+void idxd_didupdate(const int fold, const double X, double_indexed *Y) {
+  idxd_dmdupdate(fold, X, Y, 1, Y + fold, 1);
 }

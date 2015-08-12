@@ -9,6 +9,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-double_complex_indexed *zialloc(const int fold){
-  return (double_complex_indexed*)malloc(zisize(fold));
+double_complex_indexed *idxd_zialloc(const int fold){
+  return (double_complex_indexed*)malloc(idxd_zisize(fold));
 }

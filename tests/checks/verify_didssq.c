@@ -47,14 +47,14 @@ int verify_didssq_reproducibility(int fold, int N, double* X, int incX, double r
   int i;
   double resscl = 0.0;
   double resssq;
-  double_indexed *ires = dialloc(fold);
+  double_indexed *ires = idxd_dialloc(fold);
   int num_blocks = 1;
 
   int block_N = (N + num_blocks - 1) / num_blocks;
 
   num_blocks = 1;
   while (num_blocks < N && num_blocks <= max_num_blocks) {
-    disetzero(fold, ires);
+    idxd_disetzero(fold, ires);
     if (num_blocks == 1)
       resscl = didssq(fold, N, X, incX, resscl, ires);
     else {
@@ -64,13 +64,13 @@ int verify_didssq_reproducibility(int fold, int N, double* X, int incX, double r
         resscl = didssq(fold, block_N, X + i * incX, incX, resscl, ires);
       }
     }
-    resssq = ddiconv(fold, ires);
+    resssq = idxd_ddiconv(fold, ires);
     if (resssq != refssq || resscl != refscl) {
       printf("didssq(X)[num_blocks=%d,block_N=%d] = %g * (%g) != %g * (%g)\n", num_blocks, block_N, resscl, resssq, refscl, refssq);
       printf("ref double_indexed:\n");
-      diprint(fold, iref);
+      idxd_diprint(fold, iref);
       printf("\nres double_indexed:\n");
-      diprint(fold, ires);
+      idxd_diprint(fold, ires);
       printf("\n");
       return 1;
     }
@@ -115,7 +115,7 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX,
   opt_eval_option(argc, argv, &shuffles);
   opt_eval_option(argc, argv, &fold);
 
-  iref = dialloc(fold._int.value);
+  iref = idxd_dialloc(fold._int.value);
 
   double *X = util_dvec_alloc(N, incX);
   double *Y = util_dvec_alloc(N, incY);
@@ -128,9 +128,9 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX,
 
 
   //compute with unpermuted data
-  disetzero(fold._int.value, iref);
+  idxd_disetzero(fold._int.value, iref);
   refscl = didssq(fold._int.value, N, X, incX, refscl, iref);
-  refssq = ddiconv(fold._int.value, iref);
+  refssq = idxd_ddiconv(fold._int.value, iref);
 
   P = util_identity_permutation(N);
   util_dvec_reverse(N, X, incX, P, 1);

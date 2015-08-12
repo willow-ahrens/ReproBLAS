@@ -19,7 +19,7 @@
  * @author Hong Diep Nguyen
  * @date   19 May 2015
  */
-int smindex(const float *priX){
+int idxd_smindex(const float *priX){
   /*
   int exp;
 

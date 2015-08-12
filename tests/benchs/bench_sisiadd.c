@@ -83,37 +83,37 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
 
   if(fold._int.value == 0){
     for(j = 1; j <= SIMAXFOLD; j++){
-      X = (float_indexed*)util_svec_alloc(N * sinum(j), 1);
+      X = (float_indexed*)util_svec_alloc(N * idxd_sinum(j), 1);
       for(i = 0; i < N; i++){
-        sisetzero(j, X + sinum(j));
-        sissum(j, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * sinum(j));
+        idxd_sisetzero(j, X + idxd_sinum(j));
+        sissum(j, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_sinum(j));
       }
-      ires = sialloc(j);
+      ires = idxd_sialloc(j);
       time_tic();
       for(i = 0; i < trials; i++){
-        sisetzero(j, ires);
+        idxd_sisetzero(j, ires);
         for(k = 0; k < N; k++){
-          sisiadd(j, X + k * sinum(j), ires);
+          idxd_sisiadd(j, X + k * idxd_sinum(j), ires);
         }
-        res = ssiconv(j, ires);
+        res = idxd_ssiconv(j, ires);
       }
       time_toc();
       free(ires);
       free(X);
     }
   }else{
-    X = (float_indexed*)util_svec_alloc(N * sinum(fold._int.value), 1);
+    X = (float_indexed*)util_svec_alloc(N * idxd_sinum(fold._int.value), 1);
     for(i = 0; i < N; i++){
-      sissum(fold._int.value, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * sinum(fold._int.value));
+      sissum(fold._int.value, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_sinum(fold._int.value));
     }
-    ires = sialloc(fold._int.value);
+    ires = idxd_sialloc(fold._int.value);
     time_tic();
     for(i = 0; i < trials; i++){
-      sisetzero(fold._int.value, ires);
+      idxd_sisetzero(fold._int.value, ires);
       for(k = 0; k < N; k++){
-        sisiadd(fold._int.value, X + k * sinum(fold._int.value), ires);
+        idxd_sisiadd(fold._int.value, X + k * idxd_sinum(fold._int.value), ires);
       }
-      res = ssiconv(fold._int.value, ires);
+      res = idxd_ssiconv(fold._int.value, ires);
     }
     time_toc();
     free(ires);

@@ -52,12 +52,12 @@ int verify_dgemv_reproducibility(int fold, char Order, char TransA, int M, int N
   int block_N;
 
   double *res = malloc(NY * incY * sizeof(double));
-  double_indexed *Ires = malloc(NY * incY * disize(fold));
+  double_indexed *Ires = malloc(NY * incY * idxd_disize(fold));
 
   num_blocks = 1;
   while (num_blocks < N && num_blocks <= max_num_blocks) {
     memcpy(res, Y, NY * incY * sizeof(double));
-    memcpy(Ires, YI, NY * incY * disize(fold));
+    memcpy(Ires, YI, NY * incY * idxd_disize(fold));
     if (num_blocks == 1){
       wrap_rdgemv(fold, Order, TransA, M, N, alpha, A, lda, X, incX, beta, res, incY);
     }else {
@@ -99,7 +99,7 @@ int verify_dgemv_reproducibility(int fold, char Order, char TransA, int M, int N
           break;
       }
       for(i = 0; i < NY; i++){
-        res[i * incY] = ddiconv(fold, Ires + i * incY * dinum(fold));
+        res[i * incY] = idxd_ddiconv(fold, Ires + i * incY * idxd_dinum(fold));
       }
     }
     for(i = 0; i < NY; i++){
@@ -107,9 +107,9 @@ int verify_dgemv_reproducibility(int fold, char Order, char TransA, int M, int N
         printf("rdgemv(A, X, Y)[num_blocks=%d,block_N=%d] = %g != %g\n", num_blocks, block_N, res[i * incY], ref[i * incY]);
         if (num_blocks != 1) {
           printf("Ref I_double:\n");
-          diprint(fold, Iref + i * incY * dinum(fold));
+          idxd_diprint(fold, Iref + i * incY * idxd_dinum(fold));
           printf("\nRes I_double:\n");
-          diprint(fold, Ires + i * incY * dinum(fold));
+          idxd_diprint(fold, Ires + i * incY * idxd_dinum(fold));
           printf("\n");
         }
         return 1;
@@ -174,7 +174,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   double *A  = util_dmat_alloc(Order, M, N, lda);
   double *X  = util_dvec_alloc(NX, incX);
   double *Y  = util_dvec_alloc(NY, incY);
-  double_indexed *YI = (double_indexed*)malloc(NY * incY * disize(fold._int.value));
+  double_indexed *YI = (double_indexed*)malloc(NY * incY * idxd_disize(fold._int.value));
 
   int *P;
 
@@ -182,14 +182,14 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   util_dvec_fill(NX, X, incX, FillX, RealScaleX, ImagScaleX);
   util_dvec_fill(NY, Y, incY, FillY, RealScaleY, ImagScaleY);
   for(i = 0; i < NY; i++){
-    didconv(fold._int.value, Y[i * incY] * RealBeta, YI + i * incY * dinum(fold._int.value));
+    idxd_didconv(fold._int.value, Y[i * incY] * RealBeta, YI + i * incY * idxd_dinum(fold._int.value));
   }
   double *ref  = (double*)malloc(NY * incY * sizeof(double));
-  double_indexed *Iref = (double_indexed*)malloc(NY * incY * disize(fold._int.value));
+  double_indexed *Iref = (double_indexed*)malloc(NY * incY * idxd_disize(fold._int.value));
 
   //compute with unpermuted data
   memcpy(ref, Y, NY * incY * sizeof(double));
-  memcpy(Iref, YI, NY * incY * disize(fold._int.value));
+  memcpy(Iref, YI, NY * incY * idxd_disize(fold._int.value));
 
   wrap_rdgemv(fold._int.value, Order, TransA, M, N, RealAlpha, A, lda, X, incX, RealBeta, ref, incY);
   didgemv(fold._int.value, Order, TransA, M, N, RealAlpha, A, lda, X, incX, Iref, incY);

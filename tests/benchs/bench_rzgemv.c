@@ -76,7 +76,7 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
   double complex alpha = RealAlpha + I * ImagBeta;
   double complex beta = RealBeta + I * ImagBeta;
   double complex betaY;
-  double_complex_indexed *YI = (double_complex_indexed*)malloc(NY * zisize(fold._int.value));
+  double_complex_indexed *YI = (double_complex_indexed*)malloc(NY * idxd_zisize(fold._int.value));
 
   util_zmat_fill(Order, 'n', M, N, A, lda, FillA, RealScaleA, ImagScaleA);
   util_zvec_fill(NX, X, incX, FillX, RealScaleX, ImagScaleX);
@@ -96,17 +96,17 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
       time_tic();
       if(beta == 1.0){
         for(j = 0; j < NY; j++){
-          zizconv(fold._int.value, res + j * incY, YI + j * zisize(fold._int.value));
+          idxd_zizconv(fold._int.value, res + j * incY, YI + j * idxd_zisize(fold._int.value));
         }
       }else{
         for(j = 0; j < NY; j++){
           betaY = res[j * incY] * beta;
-          zizconv(fold._int.value, &betaY, YI + j * zisize(fold._int.value));
+          idxd_zizconv(fold._int.value, &betaY, YI + j * idxd_zisize(fold._int.value));
         }
       }
       zizgemv(fold._int.value, Order, TransA, M, N, &alpha, A, lda, X, incX, YI, 1);
       for(j = 0; j < NY; j++){
-        zziconv_sub(fold._int.value, YI + j * zisize(fold._int.value), res + j * incY);
+        idxd_zziconv_sub(fold._int.value, YI + j * idxd_zisize(fold._int.value), res + j * incY);
       }
       time_toc();
     }

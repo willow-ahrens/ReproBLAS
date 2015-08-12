@@ -33,9 +33,9 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
     X[i * incX] = 3 * bin;
     bin *= 2;
 
-    ufpX = ufp(X[i * incX]);
+    ufpX = idxd_ufp(X[i * incX]);
     if (ufpX != bin) {
-      printf("ufp(%g) = %g != %g\n", X[i * incX], ufpX, bin);
+      printf("idxd_ufp(%g) = %g != %g\n", X[i * incX], ufpX, bin);
       return 1;
     }
   }

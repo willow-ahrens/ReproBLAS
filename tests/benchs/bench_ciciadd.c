@@ -83,37 +83,37 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
 
   if(fold._int.value == 0){
     for(j = 1; j <= SIMAXFOLD; j++){
-      X = (float_complex_indexed*)util_cvec_alloc(N * cinum(j), 1);
+      X = (float_complex_indexed*)util_cvec_alloc(N * idxd_cinum(j), 1);
       for(i = 0; i < N; i++){
-        cisetzero(j, X + cinum(j));
-        cicsum(j, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * cinum(j));
+        idxd_cisetzero(j, X + idxd_cinum(j));
+        cicsum(j, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_cinum(j));
       }
-      ires = cialloc(j);
+      ires = idxd_cialloc(j);
       time_tic();
       for(i = 0; i < trials; i++){
-        cisetzero(j, ires);
+        idxd_cisetzero(j, ires);
         for(k = 0; k < N; k++){
-          ciciadd(j, X + k * cinum(j), ires);
+          idxd_ciciadd(j, X + k * idxd_cinum(j), ires);
         }
-        cciconv_sub(j, ires, &res);
+        idxd_cciconv_sub(j, ires, &res);
       }
       time_toc();
       free(ires);
       free(X);
     }
   }else{
-    X = (float_complex_indexed*)util_cvec_alloc(N * cinum(fold._int.value), 1);
+    X = (float_complex_indexed*)util_cvec_alloc(N * idxd_cinum(fold._int.value), 1);
     for(i = 0; i < N; i++){
-      cicsum(fold._int.value, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * cinum(fold._int.value));
+      cicsum(fold._int.value, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_cinum(fold._int.value));
     }
-    ires = cialloc(fold._int.value);
+    ires = idxd_cialloc(fold._int.value);
     time_tic();
     for(i = 0; i < trials; i++){
-      cisetzero(fold._int.value, ires);
+      idxd_cisetzero(fold._int.value, ires);
       for(k = 0; k < N; k++){
-        ciciadd(fold._int.value, X + k * cinum(fold._int.value), ires);
+        idxd_ciciadd(fold._int.value, X + k * idxd_cinum(fold._int.value), ires);
       }
-      cciconv_sub(fold._int.value, ires, &res);
+      idxd_cciconv_sub(fold._int.value, ires, &res);
     }
     time_toc();
     free(ires);

@@ -13,6 +13,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zidiset(const int fold, const double_indexed *X, double_complex_indexed *Y){
-  zmdmset(fold, X, 1, X + fold, 1, Y, 1, Y + 2 * fold, 1);
+void idxd_zidiset(const int fold, const double_indexed *X, double_complex_indexed *Y){
+  idxd_zmdmset(fold, X, 1, X + fold, 1, Y, 1, Y + 2 * fold, 1);
 }

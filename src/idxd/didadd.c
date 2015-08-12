@@ -13,6 +13,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void didadd(const int fold, const double X, double_indexed *Y){
-  dmdadd(fold, X, Y, 1, Y + fold, 1);
+void idxd_didadd(const int fold, const double X, double_indexed *Y){
+  idxd_dmdadd(fold, X, Y, 1, Y + fold, 1);
 }

@@ -66,11 +66,11 @@ void dmdsum(const int fold, const int N, const double *X, const int incX, double
     }
 
     if (deposits + N_block > idxd_DIENDURANCE) {
-      dmrenorm(fold, manY, incmanY, carY, inccarY);
+      idxd_dmrenorm(fold, manY, incmanY, carY, inccarY);
       deposits = 0;
     }
 
-    dmdupdate(fold, amax, manY, incmanY, carY, inccarY);
+    idxd_dmdupdate(fold, amax, manY, incmanY, carY, inccarY);
 
     /*[[[cog
     cog.out(generate.generate(depositSum.DepositSum(dataTypes.Double, "fold", "N_block", "X", "incX", "manY", "incmanY"), cog.inFile, args, params, mode))
@@ -107,7 +107,7 @@ void dmdsum(const int fold, const int N, const double *X, const int incX, double
               s_2_0 = _mm256_broadcast_sd(manY + (incmanY * 2));
 
               if(incX == 1){
-                if(dmindex0(manY)){
+                if(idxd_dmindex0(manY)){
                   compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                   expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                   for(i = 0; i + 4 <= N_block; i += 4, X += 4){
@@ -167,7 +167,7 @@ void dmdsum(const int fold, const int N, const double *X, const int incX, double
                   }
                 }
               }else{
-                if(dmindex0(manY)){
+                if(idxd_dmindex0(manY)){
                   compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                   expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                   for(i = 0; i + 4 <= N_block; i += 4, X += (incX * 4)){
@@ -258,7 +258,7 @@ void dmdsum(const int fold, const int N, const double *X, const int incX, double
               }
 
               if(incX == 1){
-                if(dmindex0(manY)){
+                if(idxd_dmindex0(manY)){
                   compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                   expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                   for(i = 0; i + 4 <= N_block; i += 4, X += 4){
@@ -324,7 +324,7 @@ void dmdsum(const int fold, const int N, const double *X, const int incX, double
                   }
                 }
               }else{
-                if(dmindex0(manY)){
+                if(idxd_dmindex0(manY)){
                   compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                   expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                   for(i = 0; i + 4 <= N_block; i += 4, X += (incX * 4)){
@@ -435,7 +435,7 @@ void dmdsum(const int fold, const int N, const double *X, const int incX, double
               s_2_0 = _mm_load1_pd(manY + (incmanY * 2));
 
               if(incX == 1){
-                if(dmindex0(manY)){
+                if(idxd_dmindex0(manY)){
                   compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                   expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                   for(i = 0; i + 2 <= N_block; i += 2, X += 2){
@@ -495,7 +495,7 @@ void dmdsum(const int fold, const int N, const double *X, const int incX, double
                   }
                 }
               }else{
-                if(dmindex0(manY)){
+                if(idxd_dmindex0(manY)){
                   compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                   expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                   for(i = 0; i + 2 <= N_block; i += 2, X += (incX * 2)){
@@ -586,7 +586,7 @@ void dmdsum(const int fold, const int N, const double *X, const int incX, double
               }
 
               if(incX == 1){
-                if(dmindex0(manY)){
+                if(idxd_dmindex0(manY)){
                   compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                   expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                   for(i = 0; i + 2 <= N_block; i += 2, X += 2){
@@ -652,7 +652,7 @@ void dmdsum(const int fold, const int N, const double *X, const int incX, double
                   }
                 }
               }else{
-                if(dmindex0(manY)){
+                if(idxd_dmindex0(manY)){
                   compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                   expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                   for(i = 0; i + 2 <= N_block; i += 2, X += (incX * 2)){
@@ -754,7 +754,7 @@ void dmdsum(const int fold, const int N, const double *X, const int incX, double
               s_2_0 = manY[(incmanY * 2)];
 
               if(incX == 1){
-                if(dmindex0(manY)){
+                if(idxd_dmindex0(manY)){
                   compression_0 = idxd_DMCOMPRESSION;
                   expansion_0 = idxd_DMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += 1){
@@ -798,7 +798,7 @@ void dmdsum(const int fold, const int N, const double *X, const int incX, double
                   }
                 }
               }else{
-                if(dmindex0(manY)){
+                if(idxd_dmindex0(manY)){
                   compression_0 = idxd_DMCOMPRESSION;
                   expansion_0 = idxd_DMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += incX){
@@ -864,7 +864,7 @@ void dmdsum(const int fold, const int N, const double *X, const int incX, double
               }
 
               if(incX == 1){
-                if(dmindex0(manY)){
+                if(idxd_dmindex0(manY)){
                   compression_0 = idxd_DMCOMPRESSION;
                   expansion_0 = idxd_DMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += 1){
@@ -909,7 +909,7 @@ void dmdsum(const int fold, const int N, const double *X, const int incX, double
                   }
                 }
               }else{
-                if(dmindex0(manY)){
+                if(idxd_dmindex0(manY)){
                   compression_0 = idxd_DMCOMPRESSION;
                   expansion_0 = idxd_DMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += incX){
@@ -971,5 +971,5 @@ void dmdsum(const int fold, const int N, const double *X, const int incX, double
     deposits += N_block;
   }
 
-  dmrenorm(fold, manY, incmanY, carY, inccarY);
+  idxd_dmrenorm(fold, manY, incmanY, carY, inccarY);
 }

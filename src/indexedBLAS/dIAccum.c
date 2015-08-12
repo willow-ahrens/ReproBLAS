@@ -60,6 +60,6 @@ double dIAccExtract(dIAccum *acc) {
 	if (c > 0) {
 		dsumI1(c, acc->BUFFER, 1, 3,  acc->v.m, acc->v.c);
 	}
-	return ddiconv(&(acc->v), DEFAULT_FOLD);
+	return idxd_ddiconv(&(acc->v), DEFAULT_FOLD);
 }
 

@@ -76,7 +76,7 @@
 
   The unit in the last place of $f \in \F$, $\ulp(f)$, is the spacing between two consecutive floating point numbers of the same exponent as $f$. If $f$ is normalized, $\ulp(f) = 2^{\exp(f) - p + 1} = 2 \times \epsilon \times 2^{\exp(f)}$.
 
-  The unit in the first place of $f \in F$, $\ufp(f)$, is the value of the first significant bit of $f$. If $f$ is normalized, $\ufp(f) = 2^{\exp(f)}$.
+  The unit in the first place of $f \in F$, $\idxd_ufp(f)$, is the value of the first significant bit of $f$. If $f$ is normalized, $\idxd_ufp(f) = 2^{\exp(f)}$.
 
   As ReproBLAS is written in C, \texttt{float} and \texttt{double} refer to the floating point types specified in the 1989 C standard \cite{c89} and we assume that they correspond to the \texttt{binary-32} and \texttt{binary-64} types in the IEEE 754-2008 floating point standard \cite{ieee754}.
 
@@ -661,12 +661,12 @@
           \Statex ${Y_j}_P \in [1.25 \times \epsilon^{-1}\times 2^{a_{I + j}}, 2 \times \epsilon^{-1}\times 2^{a_{I + j}})$
         \Function{Renorm}{K, Y}
           \For{$j = 0 \To K - 1$}
-            \If{${Y_j}_P < 1.5 \times \ufp({Y_j}_P)$}
-              \State ${Y_j}_P = {Y_j}_P + 0.25 \times \ufp({Y_j}_P)$
+            \If{${Y_j}_P < 1.5 \times \idxd_ufp({Y_j}_P)$}
+              \State ${Y_j}_P = {Y_j}_P + 0.25 \times \idxd_ufp({Y_j}_P)$
               \State ${Y_j}_C = {Y_j}_C - 1$
             \EndIf
-            \If{${Y_j}_P \geq 1.75 \times \ufp({Y_j}_P)$}
-              \State ${Y_j}_P = {Y_j}_P - 0.25 \times \ufp({Y_j}_P)$
+            \If{${Y_j}_P \geq 1.75 \times \idxd_ufp({Y_j}_P)$}
+              \State ${Y_j}_P = {Y_j}_P - 0.25 \times \idxd_ufp({Y_j}_P)$
               \State ${Y_j}_C = {Y_j}_C + 1$
             \EndIf
           \EndFor

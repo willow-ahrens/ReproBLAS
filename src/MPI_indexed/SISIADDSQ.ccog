@@ -7,8 +7,8 @@
 
 static inline void sisiaddsqv(const int fold, const int N, const float *X, float *Y){
   int i;
-  for(i = 0; i < N; i++, X += dinum(fold) + 1, Y += dinum(fold) + 1){
-    smsmaddsq(fold, X[0], (float_indexed*)(X + 1), 1, (float_indexed*)(X + 1 + fold), 1, Y[0], (float_indexed*)(Y + 1), 1, (float_indexed*)(Y + 1 + fold), 1);
+  for(i = 0; i < N; i++, X += idxd_dinum(fold) + 1, Y += idxd_dinum(fold) + 1){
+    idxd_smsmaddsq(fold, X[0], (float_indexed*)(X + 1), 1, (float_indexed*)(X + 1 + fold), 1, Y[0], (float_indexed*)(Y + 1), 1, (float_indexed*)(Y + 1 + fold), 1);
   }
 }
 

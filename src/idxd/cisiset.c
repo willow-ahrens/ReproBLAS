@@ -13,6 +13,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cisiset(const int fold, const float_indexed *X, float_complex_indexed *Y){
-  cmsmset(fold, X, 1, X + fold, 1, Y, 1, Y + 2 * fold, 1);
+void idxd_cisiset(const int fold, const float_indexed *X, float_complex_indexed *Y){
+  idxd_cmsmset(fold, X, 1, X + fold, 1, Y, 1, Y + 2 * fold, 1);
 }

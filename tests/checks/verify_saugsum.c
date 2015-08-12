@@ -57,7 +57,7 @@ int verify_saugsum_reproducibility(int fold, int N, float* X, int incX, float* Y
   // GENERATE DATA
   int i;
   float res;
-  float_indexed *ires = sialloc(fold);
+  float_indexed *ires = idxd_sialloc(fold);
   int num_blocks = 1;
 
   int block_N = (N + num_blocks - 1) / num_blocks;
@@ -68,23 +68,23 @@ int verify_saugsum_reproducibility(int fold, int N, float* X, int incX, float* Y
       res = (wrap_saugsum_func(func))(fold, N, X, incX, Y, incY);
     else {
       block_N =  (N + num_blocks - 1) / num_blocks;
-      sisetzero(fold, ires);
+      idxd_sisetzero(fold, ires);
       for (i = 0; i < N; i += block_N) {
         block_N = block_N < N - i ? block_N : (N-i);
         (wrap_siaugsum_func(func))(fold, block_N, X + i * incX, incX, Y + i * incY, incY, ires);
       }
-      res = ssiconv(fold, ires);
+      res = idxd_ssiconv(fold, ires);
     }
     if (res != ref) {
       printf("%s(X, Y)[num_blocks=%d,block_N=%d] = %g != %g\n", wrap_saugsum_func_names[func], num_blocks, block_N, res, ref);
       if (num_blocks == 1) {
-        sisetzero(fold, ires);
+        idxd_sisetzero(fold, ires);
         (wrap_siaugsum_func(func))(fold, N, X, incX, Y, incY, ires);
       }
       printf("ref float_indexed:\n");
-      siprint(fold, iref);
+      idxd_siprint(fold, iref);
       printf("\nres float_indexed:\n");
-      siprint(fold, ires);
+      idxd_siprint(fold, ires);
       printf("\n");
       return 1;
     }
@@ -131,7 +131,7 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX,
   opt_eval_option(argc, argv, &shuffles);
   opt_eval_option(argc, argv, &fold);
 
-  iref = sialloc(fold._int.value);
+  iref = idxd_sialloc(fold._int.value);
 
   float *X = util_svec_alloc(N, incX);
   float *Y = util_svec_alloc(N, incY);
@@ -150,7 +150,7 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX,
 
   //compute with unpermuted data
   ref  = (wrap_saugsum_func(augsum_func._named.value))(fold._int.value, N, X, incX, Y, incY);
-  sisetzero(fold._int.value, iref);
+  idxd_sisetzero(fold._int.value, iref);
   (wrap_siaugsum_func(augsum_func._named.value))(fold._int.value, N, X, incX, Y, incY, iref);
 
   P = util_identity_permutation(N);

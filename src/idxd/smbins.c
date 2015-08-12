@@ -20,7 +20,7 @@ static int bins_initialized = 0;
  * @author Hong Diep Nguyen
  * @date   19 Jun 2015
  */
-const float *smbins(const int X) {
+const float *idxd_smbins(const int X) {
   int index;
 
   if (!bins_initialized){

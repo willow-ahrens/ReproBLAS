@@ -16,7 +16,7 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void dmsetzero(const int fold, double *priX, const int incpriX, double *carX, const int inccarX){
+void idxd_dmsetzero(const int fold, double *priX, const int incpriX, double *carX, const int inccarX){
   int i;
   for(i = 0; i < fold; i++){
     priX[i * incpriX] = 0.0;

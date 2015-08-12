@@ -58,7 +58,7 @@ int verify_zaugsum_reproducibility(int fold, int N, double complex* X, int incX,
   // GENERATE DATA
   int i;
   double complex res;
-  double_complex_indexed *ires = zialloc(fold);
+  double_complex_indexed *ires = idxd_zialloc(fold);
   int num_blocks = 1;
 
   int block_N = (N + num_blocks - 1) / num_blocks;
@@ -69,23 +69,23 @@ int verify_zaugsum_reproducibility(int fold, int N, double complex* X, int incX,
       res = (wrap_zaugsum_func(func))(fold, N, X, incX, Y, incY);
     else {
       block_N =  (N + num_blocks - 1) / num_blocks;
-      zisetzero(fold, ires);
+      idxd_zisetzero(fold, ires);
       for (i = 0; i < N; i += block_N) {
         block_N = block_N < N - i ? block_N : (N-i);
         (wrap_ziaugsum_func(func))(fold, block_N, X + i * incX, incX, Y + i * incY, incY, ires);
       }
-      zziconv_sub(fold, ires, &res);
+      idxd_zziconv_sub(fold, ires, &res);
     }
     if (res != ref) {
       printf("%s(X, Y)[num_blocks=%d,block_N=%d] = %g + %gi != %g + %gi\n", wrap_zaugsum_func_names[func], num_blocks, block_N, creal(res), cimag(res), creal(ref), cimag(ref));
       if (num_blocks == 1) {
-        zisetzero(fold, ires);
+        idxd_zisetzero(fold, ires);
         (wrap_ziaugsum_func(func))(fold, N, X, incX, Y, incY, ires);
       }
       printf("ref double_complex_indexed:\n");
-      ziprint(fold, iref);
+      idxd_ziprint(fold, iref);
       printf("\nres double_complex_indexed:\n");
-      ziprint(fold, ires);
+      idxd_ziprint(fold, ires);
       printf("\n");
       return 1;
     }
@@ -132,7 +132,7 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX,
   opt_eval_option(argc, argv, &shuffles);
   opt_eval_option(argc, argv, &fold);
 
-  iref = zialloc(fold._int.value);
+  iref = idxd_zialloc(fold._int.value);
 
   double complex *X = util_zvec_alloc(N, incX);
   double complex *Y = util_zvec_alloc(N, incY);
@@ -151,7 +151,7 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX,
 
   //compute with unpermuted data
   ref  = (wrap_zaugsum_func(augsum_func._named.value))(fold._int.value, N, X, incX, Y, incY);
-  zisetzero(fold._int.value, iref);
+  idxd_zisetzero(fold._int.value, iref);
   (wrap_ziaugsum_func(augsum_func._named.value))(fold._int.value, N, X, incX, Y, incY, iref);
 
   P = util_identity_permutation(N);

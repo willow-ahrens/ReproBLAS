@@ -30,7 +30,7 @@ void sIAdd_MPI(
 
 	for (i = 0; i < *len; i++) {
 
-        smsmadd(fold, (float*)invec, 1, (float*)(invec + array_of_addresses[1]), 1, (float*)inoutvec, 1, (float*)(inoutvec + array_of_addresses[1]), 1);
+        idxd_smsmadd(fold, (float*)invec, 1, (float*)(invec + array_of_addresses[1]), 1, (float*)inoutvec, 1, (float*)(inoutvec + array_of_addresses[1]), 1);
 
 		invec    = (char*)invec + size;
 		inoutvec = (char*)inoutvec + size;
@@ -60,7 +60,7 @@ void cIAdd_MPI(
 
 	for (i = 0; i < *len; i++) {
 
-        cmcmadd(fold, (float*)invec, 1, (float*)(invec + array_of_addresses[1]), 1, (float*)inoutvec, 1, (float*)(inoutvec + array_of_addresses[1]), 1);
+        idxd_cmcmadd(fold, (float*)invec, 1, (float*)(invec + array_of_addresses[1]), 1, (float*)inoutvec, 1, (float*)(inoutvec + array_of_addresses[1]), 1);
 		invec    = (char*)invec + size;
 		inoutvec = (char*)inoutvec + size;
 	}
@@ -115,7 +115,7 @@ void sINrm2_MPI(
 			pin[0] = scale1;
 		}
 
-		smsmadd(fold, (float*)pin  + 1, 1, (float*)(invec + array_of_addresses[1]), 1, (float*)pout + 1, 1, (float*)(inoutvec + array_of_addresses[1]), 1);
+		idxd_smsmadd(fold, (float*)pin  + 1, 1, (float*)(invec + array_of_addresses[1]), 1, (float*)pout + 1, 1, (float*)(inoutvec + array_of_addresses[1]), 1);
 
 		invec    = (char*)invec + size;
 		inoutvec = (char*)inoutvec + size;

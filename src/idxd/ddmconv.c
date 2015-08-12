@@ -20,7 +20,7 @@
  * @author Peter Ahrens
  * @date   31 Jul 2015
  */
-double ddmconv(const int fold, const double* priX, const int incpriX, const double* carX, const int inccarX) {
+double idxd_ddmconv(const int fold, const double* priX, const int incpriX, const double* carX, const int inccarX) {
   int i = 0;
   int X_index;
   const double *bins;
@@ -37,8 +37,8 @@ double ddmconv(const int fold, const double* priX, const int incpriX, const doub
   double scale_down;
   double scale_up;
   int scaled;
-  X_index = dmindex(priX);
-  bins = dmbins(X_index);
+  X_index = idxd_dmindex(priX);
+  bins = idxd_dmbins(X_index);
   if(X_index <= (3 * DBL_MANT_DIG - 1)/DIWIDTH){
     scale_down = ldexp(0.5, 1 - (2 * DBL_MANT_DIG - DIWIDTH - 2));
     scale_up = ldexp(0.5, 1 + (2 * DBL_MANT_DIG - DIWIDTH - 2));

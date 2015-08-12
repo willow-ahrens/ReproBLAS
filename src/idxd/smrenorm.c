@@ -20,7 +20,7 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void smrenorm(const int fold, float* priX, const int incpriX, float* carX, const int inccarX) {
+void idxd_smrenorm(const int fold, float* priX, const int incpriX, float* carX, const int inccarX) {
   /*
     int i;
     float M;

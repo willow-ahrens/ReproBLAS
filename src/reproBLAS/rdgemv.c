@@ -20,39 +20,39 @@ void rdgemv(const char Order,
   switch(TransA){
     case 'n':
     case 'N':
-      YI = (double_indexed*)malloc(M * disize(DIDEFAULTFOLD));
+      YI = (double_indexed*)malloc(M * idxd_disize(DIDEFAULTFOLD));
       if(beta == 1.0){
         for(i = 0; i < M; i++){
-          didconv(DIDEFAULTFOLD, Y[i * incY], YI + i * dinum(DIDEFAULTFOLD));
+          idxd_didconv(DIDEFAULTFOLD, Y[i * incY], YI + i * idxd_dinum(DIDEFAULTFOLD));
         }
       }else if(beta == 0.0){
-        memset(YI, 0, M * disize(DIDEFAULTFOLD));
+        memset(YI, 0, M * idxd_disize(DIDEFAULTFOLD));
       }else{
         for(i = 0; i < M; i++){
-          didconv(DIDEFAULTFOLD, Y[i * incY] * beta, YI + i * dinum(DIDEFAULTFOLD));
+          idxd_didconv(DIDEFAULTFOLD, Y[i * incY] * beta, YI + i * idxd_dinum(DIDEFAULTFOLD));
         }
       }
       didgemv(DIDEFAULTFOLD, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
       for(i = 0; i < M; i++){
-        Y[i * incY] = ddiconv(DIDEFAULTFOLD, YI + i * dinum(DIDEFAULTFOLD));
+        Y[i * incY] = idxd_ddiconv(DIDEFAULTFOLD, YI + i * idxd_dinum(DIDEFAULTFOLD));
       }
       break;
     default:
-      YI = (double_indexed*)malloc(N * disize(DIDEFAULTFOLD));
+      YI = (double_indexed*)malloc(N * idxd_disize(DIDEFAULTFOLD));
       if(beta == 1.0){
         for(i = 0; i < N; i++){
-          didconv(DIDEFAULTFOLD, Y[i * incY], YI + i * dinum(DIDEFAULTFOLD));
+          idxd_didconv(DIDEFAULTFOLD, Y[i * incY], YI + i * idxd_dinum(DIDEFAULTFOLD));
         }
       }else if(beta == 0.0){
-        memset(YI, 0, N * disize(DIDEFAULTFOLD));
+        memset(YI, 0, N * idxd_disize(DIDEFAULTFOLD));
       }else{
         for(i = 0; i < N; i++){
-          didconv(DIDEFAULTFOLD, Y[i * incY] * beta, YI + i * dinum(DIDEFAULTFOLD));
+          idxd_didconv(DIDEFAULTFOLD, Y[i * incY] * beta, YI + i * idxd_dinum(DIDEFAULTFOLD));
         }
       }
       didgemv(DIDEFAULTFOLD, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
       for(i = 0; i < N; i++){
-        Y[i * incY] = ddiconv(DIDEFAULTFOLD, YI + i * dinum(DIDEFAULTFOLD));
+        Y[i * incY] = idxd_ddiconv(DIDEFAULTFOLD, YI + i * idxd_dinum(DIDEFAULTFOLD));
       }
       break;
   }

@@ -16,7 +16,7 @@
  * @author Hong Diep Nguyen
  * @date   19 Jun 2015
  */
-int sindex(const float X){
+int idxd_sindex(const float X){
   /*
   int exp;
 

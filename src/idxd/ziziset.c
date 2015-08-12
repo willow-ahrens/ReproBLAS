@@ -15,6 +15,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void ziziset(const int fold, const double_complex_indexed *X, double_complex_indexed *Y){
-  memcpy(Y, X, zisize(fold));
+void idxd_ziziset(const int fold, const double_complex_indexed *X, double_complex_indexed *Y){
+  memcpy(Y, X, idxd_zisize(fold));
 }

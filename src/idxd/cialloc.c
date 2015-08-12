@@ -9,6 +9,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-float_complex_indexed *cialloc(const int fold){
-  return (float_complex_indexed*)malloc(cisize(fold));
+float_complex_indexed *idxd_cialloc(const int fold){
+  return (float_complex_indexed*)malloc(idxd_cisize(fold));
 }

@@ -9,6 +9,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-double_indexed *dialloc(const int fold){
-  return (double_indexed*)malloc(disize(fold));
+double_indexed *idxd_dialloc(const int fold){
+  return (double_indexed*)malloc(idxd_disize(fold));
 }

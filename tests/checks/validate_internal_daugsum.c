@@ -38,7 +38,7 @@ int validate_internal_daugsum(int fold, int N, double* X, int incX, double* Y, i
   double res;
   double error;
   double bound;
-  double_indexed *ires = dialloc(fold);
+  double_indexed *ires = idxd_dialloc(fold);
 
   res = (wrap_daugsum_func(func))(fold, N, X, incX, Y, incY);
   error = fabs(res - ref);
@@ -46,10 +46,10 @@ int validate_internal_daugsum(int fold, int N, double* X, int incX, double* Y, i
   if (!util_dsoftequals(res, ref, bound)) {
     //TODO these error messages need to go to stderr for all tests.
     printf("%s(X, Y) = %g != %g\n|%g - %g| = %g > %g\n", wrap_daugsum_func_names[func], res, ref, res, ref, error, bound);
-    disetzero(fold, ires);
+    idxd_disetzero(fold, ires);
     (wrap_diaugsum_func(func))(fold, N, X, incX, Y, incY, ires);
     printf("\nres double_indexed:\n");
-    diprint(fold, ires);
+    idxd_diprint(fold, ires);
     printf("\n");
     return 1;
   }

@@ -9,6 +9,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-int dinum(const int fold){
+int idxd_dinum(const int fold){
   return 2*fold;
 }

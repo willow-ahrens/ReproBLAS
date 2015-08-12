@@ -51,12 +51,12 @@ int verify_zgemv_reproducibility(int fold, char Order, char TransA, int M, int N
   int block_N;
 
   double complex *res = malloc(NY * incY * sizeof(double complex));
-  double_complex_indexed *Ires = malloc(NY * incY * zisize(fold));
+  double_complex_indexed *Ires = malloc(NY * incY * idxd_zisize(fold));
 
   num_blocks = 1;
   while (num_blocks < N && num_blocks <= max_num_blocks) {
     memcpy(res, Y, NY * incY * sizeof(double complex));
-    memcpy(Ires, YI, NY * incY * zisize(fold));
+    memcpy(Ires, YI, NY * incY * idxd_zisize(fold));
     if (num_blocks == 1){
       wrap_rzgemv(fold, Order, TransA, M, N, alpha, A, lda, X, incX, beta, res, incY);
     }else {
@@ -98,7 +98,7 @@ int verify_zgemv_reproducibility(int fold, char Order, char TransA, int M, int N
           break;
       }
       for(i = 0; i < NY; i++){
-        zziconv_sub(fold, Ires + i * incY * zinum(fold), (void*)(res + i * incY));
+        idxd_zziconv_sub(fold, Ires + i * incY * idxd_zinum(fold), (void*)(res + i * incY));
       }
     }
     for(i = 0; i < NY; i++){
@@ -106,9 +106,9 @@ int verify_zgemv_reproducibility(int fold, char Order, char TransA, int M, int N
         printf("rzgemv(A, X, Y)[num_blocks=%d,block_N=%d] = %g + %gi != %g + %gi\n", num_blocks, block_N, creal(res[i * incY]), cimag(res[i * incY]), creal(ref[i * incY]), cimag(ref[i * incY]));
         if (num_blocks != 1) {
           printf("Ref I_double_complex:\n");
-          ziprint(fold, Iref + i * incY * zinum(fold));
+          idxd_ziprint(fold, Iref + i * incY * idxd_zinum(fold));
           printf("\nRes I_double_complex:\n");
-          ziprint(fold, Ires + i * incY * zinum(fold));
+          idxd_ziprint(fold, Ires + i * incY * idxd_zinum(fold));
           printf("\n");
         }
         return 1;
@@ -174,7 +174,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   double complex alpha = RealAlpha + I * ImagAlpha;
   double complex beta = RealBeta + I * ImagBeta;
   double complex betaY;
-  double_complex_indexed *YI = (double_complex_indexed*)malloc(NY * incY * zisize(fold._int.value));
+  double_complex_indexed *YI = (double_complex_indexed*)malloc(NY * incY * idxd_zisize(fold._int.value));
 
   int *P;
 
@@ -183,14 +183,14 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   util_zvec_fill(NY, Y, incY, FillY, RealScaleY, ImagScaleY);
   for(i = 0; i < NY; i++){
     betaY = Y[i * incY] * beta;
-    zizconv(fold._int.value, (void*)&betaY, YI + i * incY * zinum(fold._int.value));
+    idxd_zizconv(fold._int.value, (void*)&betaY, YI + i * incY * idxd_zinum(fold._int.value));
   }
   double complex *ref  = (double complex*)malloc(NY * incY * sizeof(double complex));
-  double_complex_indexed *Iref = (double_complex_indexed*)malloc(NY * incY * zisize(fold._int.value));
+  double_complex_indexed *Iref = (double_complex_indexed*)malloc(NY * incY * idxd_zisize(fold._int.value));
 
   //compute with unpermuted data
   memcpy(ref, Y, NY * incY * sizeof(double complex));
-  memcpy(Iref, YI, NY * incY * zisize(fold._int.value));
+  memcpy(Iref, YI, NY * incY * idxd_zisize(fold._int.value));
 
   wrap_rzgemv(fold._int.value, Order, TransA, M, N, &alpha, A, lda, X, incX, &beta, ref, incY);
   zizgemv(fold._int.value, Order, TransA, M, N, &alpha, A, lda, X, incX, Iref, incY);

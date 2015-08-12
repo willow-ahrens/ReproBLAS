@@ -83,37 +83,37 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
 
   if(fold._int.value == 0){
     for(j = 1; j <= DIMAXFOLD; j++){
-      X = (double_complex_indexed*)util_zvec_alloc(N * zinum(j), 1);
+      X = (double_complex_indexed*)util_zvec_alloc(N * idxd_zinum(j), 1);
       for(i = 0; i < N; i++){
-        zisetzero(j, X + zinum(j));
-        zizsum(j, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * zinum(j));
+        idxd_zisetzero(j, X + idxd_zinum(j));
+        zizsum(j, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_zinum(j));
       }
-      ires = zialloc(j);
+      ires = idxd_zialloc(j);
       time_tic();
       for(i = 0; i < trials; i++){
-        zisetzero(j, ires);
+        idxd_zisetzero(j, ires);
         for(k = 0; k < N; k++){
-          ziziadd(j, X + k * zinum(j), ires);
+          idxd_ziziadd(j, X + k * idxd_zinum(j), ires);
         }
-        zziconv_sub(j, ires, &res);
+        idxd_zziconv_sub(j, ires, &res);
       }
       time_toc();
       free(ires);
       free(X);
     }
   }else{
-    X = (double_complex_indexed*)util_zvec_alloc(N * zinum(fold._int.value), 1);
+    X = (double_complex_indexed*)util_zvec_alloc(N * idxd_zinum(fold._int.value), 1);
     for(i = 0; i < N; i++){
-      zizsum(fold._int.value, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * zinum(fold._int.value));
+      zizsum(fold._int.value, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_zinum(fold._int.value));
     }
-    ires = zialloc(fold._int.value);
+    ires = idxd_zialloc(fold._int.value);
     time_tic();
     for(i = 0; i < trials; i++){
-      zisetzero(fold._int.value, ires);
+      idxd_zisetzero(fold._int.value, ires);
       for(k = 0; k < N; k++){
-        ziziadd(fold._int.value, X + k * zinum(fold._int.value), ires);
+        idxd_ziziadd(fold._int.value, X + k * idxd_zinum(fold._int.value), ires);
       }
-      zziconv_sub(fold._int.value, ires, &res);
+      idxd_zziconv_sub(fold._int.value, ires, &res);
     }
     time_toc();
     free(ires);

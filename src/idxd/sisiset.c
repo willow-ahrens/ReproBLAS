@@ -15,6 +15,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void sisiset(const int fold, const float_indexed *X, float_indexed *Y){
-  memcpy(Y, X, sisize(fold));
+void idxd_sisiset(const int fold, const float_indexed *X, float_indexed *Y){
+  memcpy(Y, X, idxd_sisize(fold));
 }

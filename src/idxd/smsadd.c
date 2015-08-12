@@ -17,8 +17,8 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void smsadd(const int fold, const float X, float *priY, const int incpriY, float *carY, const int inccarY){
-  smsupdate(fold, X, priY, incpriY, carY, inccarY);
-  smsdeposit(fold, X, priY, incpriY);
-  smrenorm(fold, priY, incpriY, carY, inccarY);
+void idxd_smsadd(const int fold, const float X, float *priY, const int incpriY, float *carY, const int inccarY){
+  idxd_smsupdate(fold, X, priY, incpriY, carY, inccarY);
+  idxd_smsdeposit(fold, X, priY, incpriY);
+  idxd_smrenorm(fold, priY, incpriY, carY, inccarY);
 }

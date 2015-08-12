@@ -81,11 +81,11 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
     }
 
     if (deposits + N_block > idxd_DIENDURANCE/2) {
-      zmrenorm(fold, manZ, incmanZ, carZ, inccarZ);
+      idxd_zmrenorm(fold, manZ, incmanZ, carZ, inccarZ);
       deposits = 0;
     }
 
-    zmzupdate(fold, amaxm, manZ, incmanZ, carZ, inccarZ);
+    idxd_zmzupdate(fold, amaxm, manZ, incmanZ, carZ, inccarZ);
 
     /*[[[cog
     cog.out(generate.generate(depositDotU.DepositDotU(dataTypes.DoubleComplex, "fold", "N_block", "x", "incX", "manZ", "incmanZ", "y", "incY"), cog.inFile, args, params, mode))
@@ -132,9 +132,9 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
 
               if(incX == 1){
                 if(incY == 1){
-                  if(dmindex0(manZ) || dmindex0(manZ + 1)){
-                    if(dmindex0(manZ)){
-                      if(dmindex0(manZ + 1)){
+                  if(idxd_dmindex0(manZ) || idxd_dmindex0(manZ + 1)){
+                    if(idxd_dmindex0(manZ)){
+                      if(idxd_dmindex0(manZ + 1)){
                         compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                         expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                         expansion_mask_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -253,9 +253,9 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     }
                   }
                 }else{
-                  if(dmindex0(manZ) || dmindex0(manZ + 1)){
-                    if(dmindex0(manZ)){
-                      if(dmindex0(manZ + 1)){
+                  if(idxd_dmindex0(manZ) || idxd_dmindex0(manZ + 1)){
+                    if(idxd_dmindex0(manZ)){
+                      if(idxd_dmindex0(manZ + 1)){
                         compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                         expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                         expansion_mask_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -376,9 +376,9 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                 }
               }else{
                 if(incY == 1){
-                  if(dmindex0(manZ) || dmindex0(manZ + 1)){
-                    if(dmindex0(manZ)){
-                      if(dmindex0(manZ + 1)){
+                  if(idxd_dmindex0(manZ) || idxd_dmindex0(manZ + 1)){
+                    if(idxd_dmindex0(manZ)){
+                      if(idxd_dmindex0(manZ + 1)){
                         compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                         expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                         expansion_mask_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -497,9 +497,9 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     }
                   }
                 }else{
-                  if(dmindex0(manZ) || dmindex0(manZ + 1)){
-                    if(dmindex0(manZ)){
-                      if(dmindex0(manZ + 1)){
+                  if(idxd_dmindex0(manZ) || idxd_dmindex0(manZ + 1)){
+                    if(idxd_dmindex0(manZ)){
+                      if(idxd_dmindex0(manZ + 1)){
                         compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                         expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                         expansion_mask_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -662,9 +662,9 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
 
               if(incX == 1){
                 if(incY == 1){
-                  if(dmindex0(manZ) || dmindex0(manZ + 1)){
-                    if(dmindex0(manZ)){
-                      if(dmindex0(manZ + 1)){
+                  if(idxd_dmindex0(manZ) || idxd_dmindex0(manZ + 1)){
+                    if(idxd_dmindex0(manZ)){
+                      if(idxd_dmindex0(manZ + 1)){
                         compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                         expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                         expansion_mask_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -787,9 +787,9 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     }
                   }
                 }else{
-                  if(dmindex0(manZ) || dmindex0(manZ + 1)){
-                    if(dmindex0(manZ)){
-                      if(dmindex0(manZ + 1)){
+                  if(idxd_dmindex0(manZ) || idxd_dmindex0(manZ + 1)){
+                    if(idxd_dmindex0(manZ)){
+                      if(idxd_dmindex0(manZ + 1)){
                         compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                         expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                         expansion_mask_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -914,9 +914,9 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                 }
               }else{
                 if(incY == 1){
-                  if(dmindex0(manZ) || dmindex0(manZ + 1)){
-                    if(dmindex0(manZ)){
-                      if(dmindex0(manZ + 1)){
+                  if(idxd_dmindex0(manZ) || idxd_dmindex0(manZ + 1)){
+                    if(idxd_dmindex0(manZ)){
+                      if(idxd_dmindex0(manZ + 1)){
                         compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                         expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                         expansion_mask_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -1039,9 +1039,9 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     }
                   }
                 }else{
-                  if(dmindex0(manZ) || dmindex0(manZ + 1)){
-                    if(dmindex0(manZ)){
-                      if(dmindex0(manZ + 1)){
+                  if(idxd_dmindex0(manZ) || idxd_dmindex0(manZ + 1)){
+                    if(idxd_dmindex0(manZ)){
+                      if(idxd_dmindex0(manZ + 1)){
                         compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                         expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                         expansion_mask_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -1223,9 +1223,9 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
 
               if(incX == 1){
                 if(incY == 1){
-                  if(dmindex0(manZ) || dmindex0(manZ + 1)){
-                    if(dmindex0(manZ)){
-                      if(dmindex0(manZ + 1)){
+                  if(idxd_dmindex0(manZ) || idxd_dmindex0(manZ + 1)){
+                    if(idxd_dmindex0(manZ)){
+                      if(idxd_dmindex0(manZ + 1)){
                         compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                         expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                         expansion_mask_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -1292,9 +1292,9 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     }
                   }
                 }else{
-                  if(dmindex0(manZ) || dmindex0(manZ + 1)){
-                    if(dmindex0(manZ)){
-                      if(dmindex0(manZ + 1)){
+                  if(idxd_dmindex0(manZ) || idxd_dmindex0(manZ + 1)){
+                    if(idxd_dmindex0(manZ)){
+                      if(idxd_dmindex0(manZ + 1)){
                         compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                         expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                         expansion_mask_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -1363,9 +1363,9 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                 }
               }else{
                 if(incY == 1){
-                  if(dmindex0(manZ) || dmindex0(manZ + 1)){
-                    if(dmindex0(manZ)){
-                      if(dmindex0(manZ + 1)){
+                  if(idxd_dmindex0(manZ) || idxd_dmindex0(manZ + 1)){
+                    if(idxd_dmindex0(manZ)){
+                      if(idxd_dmindex0(manZ + 1)){
                         compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                         expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                         expansion_mask_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -1432,9 +1432,9 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     }
                   }
                 }else{
-                  if(dmindex0(manZ) || dmindex0(manZ + 1)){
-                    if(dmindex0(manZ)){
-                      if(dmindex0(manZ + 1)){
+                  if(idxd_dmindex0(manZ) || idxd_dmindex0(manZ + 1)){
+                    if(idxd_dmindex0(manZ)){
+                      if(idxd_dmindex0(manZ + 1)){
                         compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                         expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                         expansion_mask_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -1542,9 +1542,9 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
 
               if(incX == 1){
                 if(incY == 1){
-                  if(dmindex0(manZ) || dmindex0(manZ + 1)){
-                    if(dmindex0(manZ)){
-                      if(dmindex0(manZ + 1)){
+                  if(idxd_dmindex0(manZ) || idxd_dmindex0(manZ + 1)){
+                    if(idxd_dmindex0(manZ)){
+                      if(idxd_dmindex0(manZ + 1)){
                         compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                         expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                         expansion_mask_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -1613,9 +1613,9 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     }
                   }
                 }else{
-                  if(dmindex0(manZ) || dmindex0(manZ + 1)){
-                    if(dmindex0(manZ)){
-                      if(dmindex0(manZ + 1)){
+                  if(idxd_dmindex0(manZ) || idxd_dmindex0(manZ + 1)){
+                    if(idxd_dmindex0(manZ)){
+                      if(idxd_dmindex0(manZ + 1)){
                         compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                         expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                         expansion_mask_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -1686,9 +1686,9 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                 }
               }else{
                 if(incY == 1){
-                  if(dmindex0(manZ) || dmindex0(manZ + 1)){
-                    if(dmindex0(manZ)){
-                      if(dmindex0(manZ + 1)){
+                  if(idxd_dmindex0(manZ) || idxd_dmindex0(manZ + 1)){
+                    if(idxd_dmindex0(manZ)){
+                      if(idxd_dmindex0(manZ + 1)){
                         compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                         expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                         expansion_mask_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -1757,9 +1757,9 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     }
                   }
                 }else{
-                  if(dmindex0(manZ) || dmindex0(manZ + 1)){
-                    if(dmindex0(manZ)){
-                      if(dmindex0(manZ + 1)){
+                  if(idxd_dmindex0(manZ) || idxd_dmindex0(manZ + 1)){
+                    if(idxd_dmindex0(manZ)){
+                      if(idxd_dmindex0(manZ + 1)){
                         compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                         expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                         expansion_mask_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
@@ -1873,9 +1873,9 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
 
               if(incX == 1){
                 if(incY == 1){
-                  if(dmindex0(manZ) || dmindex0(manZ + 1)){
-                    if(dmindex0(manZ)){
-                      if(dmindex0(manZ + 1)){
+                  if(idxd_dmindex0(manZ) || idxd_dmindex0(manZ + 1)){
+                    if(idxd_dmindex0(manZ)){
+                      if(idxd_dmindex0(manZ + 1)){
                         compression_0 = idxd_DMCOMPRESSION;
                         expansion_0 = idxd_DMEXPANSION * 0.5;
                         expansion_mask_0 = idxd_DMEXPANSION * 0.5;
@@ -2040,9 +2040,9 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     }
                   }
                 }else{
-                  if(dmindex0(manZ) || dmindex0(manZ + 1)){
-                    if(dmindex0(manZ)){
-                      if(dmindex0(manZ + 1)){
+                  if(idxd_dmindex0(manZ) || idxd_dmindex0(manZ + 1)){
+                    if(idxd_dmindex0(manZ)){
+                      if(idxd_dmindex0(manZ + 1)){
                         compression_0 = idxd_DMCOMPRESSION;
                         expansion_0 = idxd_DMEXPANSION * 0.5;
                         expansion_mask_0 = idxd_DMEXPANSION * 0.5;
@@ -2209,9 +2209,9 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                 }
               }else{
                 if(incY == 1){
-                  if(dmindex0(manZ) || dmindex0(manZ + 1)){
-                    if(dmindex0(manZ)){
-                      if(dmindex0(manZ + 1)){
+                  if(idxd_dmindex0(manZ) || idxd_dmindex0(manZ + 1)){
+                    if(idxd_dmindex0(manZ)){
+                      if(idxd_dmindex0(manZ + 1)){
                         compression_0 = idxd_DMCOMPRESSION;
                         expansion_0 = idxd_DMEXPANSION * 0.5;
                         expansion_mask_0 = idxd_DMEXPANSION * 0.5;
@@ -2376,9 +2376,9 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     }
                   }
                 }else{
-                  if(dmindex0(manZ) || dmindex0(manZ + 1)){
-                    if(dmindex0(manZ)){
-                      if(dmindex0(manZ + 1)){
+                  if(idxd_dmindex0(manZ) || idxd_dmindex0(manZ + 1)){
+                    if(idxd_dmindex0(manZ)){
+                      if(idxd_dmindex0(manZ + 1)){
                         compression_0 = idxd_DMCOMPRESSION;
                         expansion_0 = idxd_DMEXPANSION * 0.5;
                         expansion_mask_0 = idxd_DMEXPANSION * 0.5;
@@ -2585,9 +2585,9 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
 
               if(incX == 1){
                 if(incY == 1){
-                  if(dmindex0(manZ) || dmindex0(manZ + 1)){
-                    if(dmindex0(manZ)){
-                      if(dmindex0(manZ + 1)){
+                  if(idxd_dmindex0(manZ) || idxd_dmindex0(manZ + 1)){
+                    if(idxd_dmindex0(manZ)){
+                      if(idxd_dmindex0(manZ + 1)){
                         compression_0 = idxd_DMCOMPRESSION;
                         expansion_0 = idxd_DMEXPANSION * 0.5;
                         expansion_mask_0 = idxd_DMEXPANSION * 0.5;
@@ -2744,9 +2744,9 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     }
                   }
                 }else{
-                  if(dmindex0(manZ) || dmindex0(manZ + 1)){
-                    if(dmindex0(manZ)){
-                      if(dmindex0(manZ + 1)){
+                  if(idxd_dmindex0(manZ) || idxd_dmindex0(manZ + 1)){
+                    if(idxd_dmindex0(manZ)){
+                      if(idxd_dmindex0(manZ + 1)){
                         compression_0 = idxd_DMCOMPRESSION;
                         expansion_0 = idxd_DMEXPANSION * 0.5;
                         expansion_mask_0 = idxd_DMEXPANSION * 0.5;
@@ -2905,9 +2905,9 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                 }
               }else{
                 if(incY == 1){
-                  if(dmindex0(manZ) || dmindex0(manZ + 1)){
-                    if(dmindex0(manZ)){
-                      if(dmindex0(manZ + 1)){
+                  if(idxd_dmindex0(manZ) || idxd_dmindex0(manZ + 1)){
+                    if(idxd_dmindex0(manZ)){
+                      if(idxd_dmindex0(manZ + 1)){
                         compression_0 = idxd_DMCOMPRESSION;
                         expansion_0 = idxd_DMEXPANSION * 0.5;
                         expansion_mask_0 = idxd_DMEXPANSION * 0.5;
@@ -3064,9 +3064,9 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
                     }
                   }
                 }else{
-                  if(dmindex0(manZ) || dmindex0(manZ + 1)){
-                    if(dmindex0(manZ)){
-                      if(dmindex0(manZ + 1)){
+                  if(idxd_dmindex0(manZ) || idxd_dmindex0(manZ + 1)){
+                    if(idxd_dmindex0(manZ)){
+                      if(idxd_dmindex0(manZ + 1)){
                         compression_0 = idxd_DMCOMPRESSION;
                         expansion_0 = idxd_DMEXPANSION * 0.5;
                         expansion_mask_0 = idxd_DMEXPANSION * 0.5;
@@ -3253,5 +3253,5 @@ void zmzdotu(const int fold, const int N, const void *X, const int incX, const v
     deposits += N_block;
   }
 
-  zmrenorm(fold, manZ, incmanZ, carZ, inccarZ);
+  idxd_zmrenorm(fold, manZ, incmanZ, carZ, inccarZ);
 }

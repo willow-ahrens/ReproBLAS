@@ -19,7 +19,7 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-float ssmconv(const int fold, const float* priX, const int incpriX, const float* carX, const int inccarX) {
+float idxd_ssmconv(const int fold, const float* priX, const int incpriX, const float* carX, const int inccarX) {
   int i = 0;
   double Y = 0.0;
   int X_index;
@@ -36,8 +36,8 @@ float ssmconv(const int fold, const float* priX, const int incpriX, const float*
   //Note that the following order of summation is in order of decreasing
   //exponent. The following code is specific to SIWIDTH=13, FLT_MANT_DIG=24, and
   //the number of carries equal to 1.
-  X_index = smindex(priX);
-  bins = smbins(X_index);
+  X_index = idxd_smindex(priX);
+  bins = idxd_smbins(X_index);
   if(X_index == 0){
     Y += (double)carX[0] * (double)(bins[0]/6.0) * (double)idxd_SMEXPANSION;
     Y += (double)carX[inccarX] * (double)(bins[1]/6.0);

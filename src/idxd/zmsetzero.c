@@ -16,7 +16,7 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zmsetzero(const int fold, double *priX, const int incpriX, double *carX, const int inccarX){
-  dmsetzero(fold, priX, 2 * incpriX, carX, 2 * inccarX);
-  dmsetzero(fold, priX + 1, 2 * incpriX, carX + 1, 2 * inccarX);
+void idxd_zmsetzero(const int fold, double *priX, const int incpriX, double *carX, const int inccarX){
+  idxd_dmsetzero(fold, priX, 2 * incpriX, carX, 2 * inccarX);
+  idxd_dmsetzero(fold, priX + 1, 2 * incpriX, carX + 1, 2 * inccarX);
 }

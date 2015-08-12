@@ -13,6 +13,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void sisiadd(const int fold, const float_indexed *X, float_indexed *Y){
-  smsmadd(fold, X, 1, X + fold, 1, Y, 1, Y + fold, 1);
+void idxd_sisiadd(const int fold, const float_indexed *X, float_indexed *Y){
+  idxd_smsmadd(fold, X, 1, X + fold, 1, Y, 1, Y + fold, 1);
 }

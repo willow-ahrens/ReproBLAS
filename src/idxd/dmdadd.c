@@ -17,8 +17,8 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void dmdadd(const int fold, const double X, double *priY, const int incpriY, double *carY, const int inccarY){
-  dmdupdate(fold, X, priY, incpriY, carY, inccarY);
-  dmddeposit(fold, X, priY, incpriY);
-  dmrenorm(fold, priY, incpriY, carY, inccarY);
+void idxd_dmdadd(const int fold, const double X, double *priY, const int incpriY, double *carY, const int inccarY){
+  idxd_dmdupdate(fold, X, priY, incpriY, carY, inccarY);
+  idxd_dmddeposit(fold, X, priY, incpriY);
+  idxd_dmrenorm(fold, priY, incpriY, carY, inccarY);
 }

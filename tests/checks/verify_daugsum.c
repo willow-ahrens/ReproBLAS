@@ -57,7 +57,7 @@ int verify_daugsum_reproducibility(int fold, int N, double* X, int incX, double*
   // GENERATE DATA
   int i;
   double res;
-  double_indexed *ires = dialloc(fold);
+  double_indexed *ires = idxd_dialloc(fold);
   int num_blocks = 1;
 
   int block_N = (N + num_blocks - 1) / num_blocks;
@@ -68,23 +68,23 @@ int verify_daugsum_reproducibility(int fold, int N, double* X, int incX, double*
       res = (wrap_daugsum_func(func))(fold, N, X, incX, Y, incY);
     else {
       block_N =  (N + num_blocks - 1) / num_blocks;
-      disetzero(fold, ires);
+      idxd_disetzero(fold, ires);
       for (i = 0; i < N; i += block_N) {
         block_N = block_N < N - i ? block_N : (N-i);
         (wrap_diaugsum_func(func))(fold, block_N, X + i * incX, incX, Y + i * incY, incY, ires);
       }
-      res = ddiconv(fold, ires);
+      res = idxd_ddiconv(fold, ires);
     }
     if (res != ref) {
       printf("%s(X, Y)[num_blocks=%d,block_N=%d] = %g != %g\n", wrap_daugsum_func_names[func], num_blocks, block_N, res, ref);
       if (num_blocks == 1) {
-        disetzero(fold, ires);
+        idxd_disetzero(fold, ires);
         (wrap_diaugsum_func(func))(fold, N, X, incX, Y, incY, ires);
       }
       printf("ref double_indexed:\n");
-      diprint(fold, iref);
+      idxd_diprint(fold, iref);
       printf("\nres double_indexed:\n");
-      diprint(fold, ires);
+      idxd_diprint(fold, ires);
       printf("\n");
       return 1;
     }
@@ -131,7 +131,7 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX,
   opt_eval_option(argc, argv, &shuffles);
   opt_eval_option(argc, argv, &fold);
 
-  iref = dialloc(fold._int.value);
+  iref = idxd_dialloc(fold._int.value);
 
   double *X = util_dvec_alloc(N, incX);
   double *Y = util_dvec_alloc(N, incY);
@@ -149,7 +149,7 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX,
 
   //compute with unpermuted data
   ref  = (wrap_daugsum_func(augsum_func._named.value))(fold._int.value, N, X, incX, Y, incY);
-  disetzero(fold._int.value, iref);
+  idxd_disetzero(fold._int.value, iref);
   (wrap_diaugsum_func(augsum_func._named.value))(fold._int.value, N, X, incX, Y, incY, iref);
 
   P = util_identity_permutation(N);

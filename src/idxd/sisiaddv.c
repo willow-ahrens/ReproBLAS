@@ -15,9 +15,9 @@
  * @author Peter Ahrens
  * @date   25 Jun 2015
  */
-void sisiaddv(const int fold, const int N, const float_indexed *X, const int incX, float_indexed *Y, const int incY){
+void idxd_sisiaddv(const int fold, const int N, const float_indexed *X, const int incX, float_indexed *Y, const int incY){
   int i;
-  for(i = 0; i < N; i++, X += incX * sinum(fold), Y += incY * sinum(fold)){
-    smsmadd(fold, X, 1, X + fold, 1, Y, 1, Y + fold, 1);
+  for(i = 0; i < N; i++, X += incX * idxd_sinum(fold), Y += incY * idxd_sinum(fold)){
+    idxd_smsmadd(fold, X, 1, X + fold, 1, Y, 1, Y + fold, 1);
   }
 }

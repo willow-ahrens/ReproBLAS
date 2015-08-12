@@ -66,11 +66,11 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
     }
 
     if (deposits + N_block > idxd_SIENDURANCE) {
-      smrenorm(fold, manY, incmanY, carY, inccarY);
+      idxd_smrenorm(fold, manY, incmanY, carY, inccarY);
       deposits = 0;
     }
 
-    smsupdate(fold, amax, manY, incmanY, carY, inccarY);
+    idxd_smsupdate(fold, amax, manY, incmanY, carY, inccarY);
 
     /*[[[cog
     cog.out(generate.generate(depositASum.DepositASum(dataTypes.Float, "fold", "N_block", "X", "incX", "manY", "incmanY"), cog.inFile, args, params, mode))
@@ -116,7 +116,7 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
               s_2_0 = _mm256_broadcast_ss(manY + (incmanY * 2));
 
               if(incX == 1){
-                if(smindex0(manY)){
+                if(idxd_smindex0(manY)){
                   compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                   expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 8 <= N_block; i += 8, X += 8){
@@ -176,7 +176,7 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
                   }
                 }
               }else{
-                if(smindex0(manY)){
+                if(idxd_smindex0(manY)){
                   compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                   expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 8 <= N_block; i += 8, X += (incX * 8)){
@@ -267,7 +267,7 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
               }
 
               if(incX == 1){
-                if(smindex0(manY)){
+                if(idxd_smindex0(manY)){
                   compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                   expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 8 <= N_block; i += 8, X += 8){
@@ -333,7 +333,7 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
                   }
                 }
               }else{
-                if(smindex0(manY)){
+                if(idxd_smindex0(manY)){
                   compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                   expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 8 <= N_block; i += 8, X += (incX * 8)){
@@ -453,7 +453,7 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
               s_2_0 = _mm_load1_ps(manY + (incmanY * 2));
 
               if(incX == 1){
-                if(smindex0(manY)){
+                if(idxd_smindex0(manY)){
                   compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                   expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 4 <= N_block; i += 4, X += 4){
@@ -513,7 +513,7 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
                   }
                 }
               }else{
-                if(smindex0(manY)){
+                if(idxd_smindex0(manY)){
                   compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                   expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 4 <= N_block; i += 4, X += (incX * 4)){
@@ -604,7 +604,7 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
               }
 
               if(incX == 1){
-                if(smindex0(manY)){
+                if(idxd_smindex0(manY)){
                   compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                   expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 4 <= N_block; i += 4, X += 4){
@@ -670,7 +670,7 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
                   }
                 }
               }else{
-                if(smindex0(manY)){
+                if(idxd_smindex0(manY)){
                   compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                   expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 4 <= N_block; i += 4, X += (incX * 4)){
@@ -772,7 +772,7 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
               s_2_0 = manY[(incmanY * 2)];
 
               if(incX == 1){
-                if(smindex0(manY)){
+                if(idxd_smindex0(manY)){
                   compression_0 = idxd_SMCOMPRESSION;
                   expansion_0 = idxd_SMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += 1){
@@ -816,7 +816,7 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
                   }
                 }
               }else{
-                if(smindex0(manY)){
+                if(idxd_smindex0(manY)){
                   compression_0 = idxd_SMCOMPRESSION;
                   expansion_0 = idxd_SMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += incX){
@@ -882,7 +882,7 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
               }
 
               if(incX == 1){
-                if(smindex0(manY)){
+                if(idxd_smindex0(manY)){
                   compression_0 = idxd_SMCOMPRESSION;
                   expansion_0 = idxd_SMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += 1){
@@ -927,7 +927,7 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
                   }
                 }
               }else{
-                if(smindex0(manY)){
+                if(idxd_smindex0(manY)){
                   compression_0 = idxd_SMCOMPRESSION;
                   expansion_0 = idxd_SMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += incX){
@@ -989,5 +989,5 @@ void smsasum(const int fold, const int N, const float *X, const int incX, float 
     deposits += N_block;
   }
 
-  smrenorm(fold, manY, incmanY, carY, inccarY);
+  idxd_smrenorm(fold, manY, incmanY, carY, inccarY);
 }

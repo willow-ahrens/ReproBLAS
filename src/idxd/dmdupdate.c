@@ -21,7 +21,7 @@
  * @author Peter Ahrens
  * @date   5 May 2015
  */
-void dmdupdate(const int fold, const double X, double* priY, const int incpriY, double* carY, const int inccarY) {
+void idxd_dmdupdate(const int fold, const double X, double* priY, const int incpriY, double* carY, const int inccarY) {
   int i;
   int j;
   int X_index;
@@ -32,21 +32,21 @@ void dmdupdate(const int fold, const double X, double* priY, const int incpriY, 
     return;
   }
 
-  X_index = dindex(X);
+  X_index = idxd_dindex(X);
   if(priY[0] == 0.0){
-    bins = dmbins(X_index);
+    bins = idxd_dmbins(X_index);
     for(i = 0; i < fold; i++){
       priY[i * incpriY] = bins[i];
       carY[i * inccarY] = 0.0;
     }
   }else{
-    shift = dmindex(priY) - X_index;
+    shift = idxd_dmindex(priY) - X_index;
     if(shift > 0){
       for(i = fold - 1; i >= shift; i--){
         priY[i * incpriY] = priY[(i - shift) * incpriY];
         carY[i * inccarY] = carY[(i - shift) * inccarY];
       }
-      bins = dmbins(X_index);
+      bins = idxd_dmbins(X_index);
       for(j = 0; j < i + 1; j++){
         priY[j * incpriY] = bins[j];
         carY[j * inccarY] = 0.0;

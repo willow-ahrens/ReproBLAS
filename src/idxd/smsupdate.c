@@ -21,7 +21,7 @@
  * @author Peter Ahrens
  * @date   5 May 2015
  */
-void smsupdate(const int fold, const float X, float* priY, const int incpriY, float* carY, const int inccarY) {
+void idxd_smsupdate(const int fold, const float X, float* priY, const int incpriY, float* carY, const int inccarY) {
   int i;
   int j;
   int X_index;
@@ -32,21 +32,21 @@ void smsupdate(const int fold, const float X, float* priY, const int incpriY, fl
     return;
   }
 
-  X_index = sindex(X);
+  X_index = idxd_sindex(X);
   if(priY[0] == 0.0){
-    bins = smbins(X_index);
+    bins = idxd_smbins(X_index);
     for(i = 0; i < fold; i++){
       priY[i * incpriY] = bins[i];
       carY[i * inccarY] = 0.0;
     }
   }else{
-    shift = smindex(priY) - X_index;
+    shift = idxd_smindex(priY) - X_index;
     if(shift > 0){
       for(i = fold - 1; i >= shift; i--){
         priY[i * incpriY] = priY[(i - shift) * incpriY];
         carY[i * inccarY] = carY[(i - shift) * inccarY];
       }
-      bins = smbins(X_index);
+      bins = idxd_smbins(X_index);
       for(j = 0; j < i + 1; j++){
         priY[j * incpriY] = bins[j];
         carY[j * inccarY] = 0.0;

@@ -16,7 +16,7 @@
  * @author Peter Ahrens
  * @date   19 May 2015
  */
-int smindex0(const float *priX){
+int idxd_smindex0(const float *priX){
   /*
   int exp;
 

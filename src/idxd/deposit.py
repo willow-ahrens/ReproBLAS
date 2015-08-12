@@ -213,12 +213,12 @@ class Deposit(Target):
         self.process0(code_block, fold, reg_width, n // max_pipe_width)
 
     if self.data_type.is_complex:
-      code_block.write("if({0}mindex0({1}) || {0}mindex0({1} + 1)){{".format(self.data_type.base_type.name_char, self.priY_name))
+      code_block.write("if(idxd_{0}mindex0({1}) || idxd_{0}mindex0({1} + 1)){{".format(self.data_type.base_type.name_char, self.priY_name))
       code_block.indent()
 
-      code_block.write("if({0}mindex0({1})){{".format(self.data_type.base_type.name_char, self.priY_name))
+      code_block.write("if(idxd_{0}mindex0({1})){{".format(self.data_type.base_type.name_char, self.priY_name))
       code_block.indent()
-      code_block.write("if({0}mindex0({1} + 1)){{".format(self.data_type.base_type.name_char, self.priY_name))
+      code_block.write("if(idxd_{0}mindex0({1} + 1)){{".format(self.data_type.base_type.name_char, self.priY_name))
       code_block.indent()
       code_block.set_equal(self.compression_vars, self.vec.set("idxd_{0}MCOMPRESSION".format(self.data_type.base_type.name_char.upper())))
       code_block.set_equal(self.expansion_vars, self.vec.set("idxd_{0}MEXPANSION * 0.5".format(self.data_type.base_type.name_char.upper())))
@@ -247,7 +247,7 @@ class Deposit(Target):
       code_block.dedent()
       code_block.write("}")
     else:
-      code_block.write("if({0}mindex0({1})){{".format(self.data_type.base_type.name_char, self.priY_name))
+      code_block.write("if(idxd_{0}mindex0({1})){{".format(self.data_type.base_type.name_char, self.priY_name))
       code_block.indent()
       code_block.set_equal(self.compression_vars, self.vec.set("idxd_{0}MCOMPRESSION".format(self.data_type.base_type.name_char.upper())))
       code_block.set_equal(self.expansion_vars, self.vec.set("idxd_{0}MEXPANSION * 0.5".format(self.data_type.base_type.name_char.upper())))
@@ -327,7 +327,7 @@ class Deposit(Target):
           self.vec.add_blp_into(self.s_vars[fold - 1], self.s_vars[fold - 1], self.load_vars[0][i * reg_width:], reg_width)
 
   def set_daz_ftz(self, code_block):
-    code_block.write("if(!{}mdenorm({}, {})){{".format(self.data_type.name_char, self.fold_name, self.priY_name))
+    code_block.write("if(!idxd_{}mdenorm({}, {})){{".format(self.data_type.name_char, self.fold_name, self.priY_name))
     code_block.indent()
     self.vec.set_SIMD_daz_ftz()
     code_block.dedent()

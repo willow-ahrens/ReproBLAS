@@ -11,6 +11,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void cciconv_sub(const int fold, const float_complex_indexed *X, void *conv) {
-  ccmconv_sub(fold, X, 1, X + 2 * fold, 1, conv);
+void idxd_cciconv_sub(const int fold, const float_complex_indexed *X, void *conv) {
+  idxd_ccmconv_sub(fold, X, 1, X + 2 * fold, 1, conv);
 }

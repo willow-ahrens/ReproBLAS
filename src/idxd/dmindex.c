@@ -19,7 +19,7 @@
  * @author Hong Diep Nguyen
  * @date   19 May 2015
  */
-int dmindex(const double *priX){
+int idxd_dmindex(const double *priX){
   /*
   int exp;
 

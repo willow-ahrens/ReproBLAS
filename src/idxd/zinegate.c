@@ -12,6 +12,6 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zinegate(const int fold, double_complex_indexed* X){
-  zmnegate(fold, X, 1, X + 2 * fold, 1);
+void idxd_zinegate(const int fold, double_complex_indexed* X){
+  idxd_zmnegate(fold, X, 1, X + 2 * fold, 1);
 }

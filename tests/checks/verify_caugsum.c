@@ -59,7 +59,7 @@ int verify_caugsum_reproducibility(int fold, int N, float complex* X, int incX, 
   // GENERATE DATA
   int i;
   float complex res;
-  float_complex_indexed *ires = cialloc(fold);
+  float_complex_indexed *ires = idxd_cialloc(fold);
   int num_blocks = 1;
 
   int block_N = (N + num_blocks - 1) / num_blocks;
@@ -70,23 +70,23 @@ int verify_caugsum_reproducibility(int fold, int N, float complex* X, int incX, 
       res = (wrap_caugsum_func(func))(fold, N, X, incX, Y, incY);
     else {
       block_N =  (N + num_blocks - 1) / num_blocks;
-      cisetzero(fold, ires);
+      idxd_cisetzero(fold, ires);
       for (i = 0; i < N; i += block_N) {
         block_N = block_N < N - i ? block_N : (N-i);
         (wrap_ciaugsum_func(func))(fold, block_N, X + i * incX, incX, Y + i * incY, incY, ires);
       }
-      cciconv_sub(fold, ires, &res);
+      idxd_cciconv_sub(fold, ires, &res);
     }
     if (res != ref) {
       printf("%s(X, Y)[num_blocks=%d,block_N=%d] = %g + %gi != %g + %gi\n", wrap_caugsum_func_names[func], num_blocks, block_N, crealf(res), cimagf(res), crealf(ref), cimagf(ref));
       if (num_blocks == 1) {
-        cisetzero(fold, ires);
+        idxd_cisetzero(fold, ires);
         (wrap_ciaugsum_func(func))(fold, N, X, incX, Y, incY, ires);
       }
       printf("ref float_complex_indexed:\n");
-      ciprint(fold, iref);
+      idxd_ciprint(fold, iref);
       printf("\nres float_complex_indexed:\n");
-      ciprint(fold, ires);
+      idxd_ciprint(fold, ires);
       printf("\n");
       return 1;
     }
@@ -133,7 +133,7 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX,
   opt_eval_option(argc, argv, &shuffles);
   opt_eval_option(argc, argv, &fold);
 
-  iref = cialloc(fold._int.value);
+  iref = idxd_cialloc(fold._int.value);
 
   float complex *X = util_cvec_alloc(N, incX);
   float complex *Y = util_cvec_alloc(N, incY);
@@ -152,7 +152,7 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX,
 
   //compute with unpermuted data
   ref  = (wrap_caugsum_func(augsum_func._named.value))(fold._int.value, N, X, incX, Y, incY);
-  cisetzero(fold._int.value, iref);
+  idxd_cisetzero(fold._int.value, iref);
   (wrap_ciaugsum_func(augsum_func._named.value))(fold._int.value, N, X, incX, Y, incY, iref);
 
   P = util_identity_permutation(N);

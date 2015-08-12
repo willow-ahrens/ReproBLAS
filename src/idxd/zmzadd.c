@@ -17,8 +17,8 @@
  * @author Peter Ahrens
  * @date   27 Apr 2015
  */
-void zmzadd(const int fold, const void *X, double *priY, const int incpriY, double *carY, const int inccarY){
-  zmzupdate(fold, X, priY, incpriY, carY, inccarY);
-  zmzdeposit(fold, X, priY, incpriY);
-  zmrenorm(fold, priY, incpriY, carY, inccarY);
+void idxd_zmzadd(const int fold, const void *X, double *priY, const int incpriY, double *carY, const int inccarY){
+  idxd_zmzupdate(fold, X, priY, incpriY, carY, inccarY);
+  idxd_zmzdeposit(fold, X, priY, incpriY);
+  idxd_zmrenorm(fold, priY, incpriY, carY, inccarY);
 }
