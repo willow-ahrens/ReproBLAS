@@ -30,7 +30,7 @@ double complex wrap_rzsum(int N, double complex *x, int incx, double complex *y,
   (void)y;
   (void)incy;
   double complex ret;
-  rzsum_sub(N, x, incx, &ret);
+  reproBLAS_rzsum_sub(N, x, incx, &ret);
   return ret;
 }
 
@@ -43,7 +43,7 @@ void wrap_zizsum(int N, double complex *x, int incx, double complex *y, int incy
 double complex wrap_rdzasum(int N, double complex *x, int incx, double complex *y, int incy) {
   (void)y;
   (void)incy;
-  return (double complex)rdzasum(N, x, incx);
+  return (double complex)reproBLAS_rdzasum(N, x, incx);
 }
 
 void wrap_dizasum(int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {
@@ -54,7 +54,7 @@ void wrap_dizasum(int N, double complex *x, int incx, double complex *y, int inc
 
 double complex wrap_rzdotu(int N, double complex *x, int incx, double complex *y, int incy) {
   double complex ret;
-  rzdotu_sub(N, x, incx, y, incy, &ret);
+  reproBLAS_rzdotu_sub(N, x, incx, y, incy, &ret);
   return ret;
 }
 
@@ -64,7 +64,7 @@ void wrap_zizdotu(int N, double complex *x, int incx, double complex *y, int inc
 
 double complex wrap_rzdotc(int N, double complex *x, int incx, double complex *y, int incy) {
   double complex ret;
-  rzdotc_sub(N, x, incx, y, incy, &ret);
+  reproBLAS_rzdotc_sub(N, x, incx, y, incy, &ret);
   return ret;
 }
 
@@ -75,7 +75,7 @@ void wrap_zizdotc(int N, double complex *x, int incx, double complex *y, int inc
 double complex wrap_rdznrm2(int N, double complex *x, int incx, double complex *y, int incy) {
   (void)y;
   (void)incy;
-  return rdznrm2(N, x, incx);
+  return reproBLAS_rdznrm2(N, x, incx);
 }
 
 void wrap_diznrm(int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {

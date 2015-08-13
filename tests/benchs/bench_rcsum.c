@@ -72,7 +72,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   if(fold._int.value == SIDEFAULTFOLD){
     time_tic();
     for(i = 0; i < trials; i++){
-      rcsum_sub(N, X, incX, &res);
+      reproBLAS_rcsum_sub(N, X, incX, &res);
     }
     time_toc();
   }else if(fold._int.value == 0){

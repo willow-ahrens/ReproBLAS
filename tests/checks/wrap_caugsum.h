@@ -44,7 +44,7 @@ float complex wrap_rcsum(int fold, int N, float complex *x, int incx, float comp
   (void)incy;
   if(fold == SIDEFAULTFOLD){
     float complex res;
-    rcsum_sub(N, x, incx, &res);
+    reproBLAS_rcsum_sub(N, x, incx, &res);
     return res;
   }else{
     float_complex_indexed *ires = idxd_cialloc(fold);
@@ -67,7 +67,7 @@ float complex wrap_rscasum(int fold, int N, float complex *x, int incx, float co
   (void)y;
   (void)incy;
   if(fold == SIDEFAULTFOLD){
-    return rscasum(N, x, incx);
+    return reproBLAS_rscasum(N, x, incx);
   }else{
     float_indexed *ires = idxd_sialloc(fold);
     idxd_sisetzero(fold, ires);
@@ -88,7 +88,7 @@ float complex wrap_rscnrm2(int fold, int N, float complex *x, int incx, float co
   (void)y;
   (void)incy;
   if(fold == SIDEFAULTFOLD){
-    return rscnrm2(N, x, incx);
+    return reproBLAS_rscnrm2(N, x, incx);
   }else{
     float_indexed *ires = idxd_sialloc(fold);
     idxd_sisetzero(fold, ires);
@@ -108,7 +108,7 @@ void wrap_sicssq(int fold, int N, float complex *x, int incx, float complex *y, 
 float complex wrap_rcdotu(int fold, int N, float complex *x, int incx, float complex *y, int incy) {
   if(fold == SIDEFAULTFOLD){
     float complex res;
-    rcdotu_sub(N, x, incx, y, incy, &res);
+    reproBLAS_rcdotu_sub(N, x, incx, y, incy, &res);
     return res;
   }else{
     float_complex_indexed *ires = idxd_cialloc(fold);
@@ -128,7 +128,7 @@ void wrap_cicdotu(int fold, int N, float complex *x, int incx, float complex *y,
 float complex wrap_rcdotc(int fold, int N, float complex *x, int incx, float complex *y, int incy) {
   if(fold == SIDEFAULTFOLD){
     float complex res;
-    rcdotc_sub(N, x, incx, y, incy, &res);
+    reproBLAS_rcdotc_sub(N, x, incx, y, incy, &res);
     return res;
   }else{
     float_complex_indexed *ires = idxd_cialloc(fold);

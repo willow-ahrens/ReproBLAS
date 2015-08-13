@@ -3,7 +3,7 @@
 
 #include "../../config.h"
 
-void rzdotc_sub(const int N, const void* X, const int incX, const void *Y, const int incY, void *dotc) {
+void reproBLAS_rzdotc_sub(const int N, const void* X, const int incX, const void *Y, const int incY, void *dotc) {
   double_complex_indexed *dotci = idxd_zialloc(DIDEFAULTFOLD);
 
   idxd_zisetzero(DIDEFAULTFOLD, dotci);

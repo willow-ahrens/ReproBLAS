@@ -27,7 +27,7 @@ double toc( )
 
 double sum(int n, double* v)
 {
-  return rdsum(n, v, 1);
+  return reproBLAS_rdsum(n, v, 1);
 }
 
 int main( int argc, char **argv)

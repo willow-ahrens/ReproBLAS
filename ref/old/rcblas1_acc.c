@@ -173,7 +173,7 @@ int main( int argc, char **argv ) {
 
 		relerr = 0.0;
 		for (s = 0; s < 53; s++) {
-			ref = rscasum(n, v, incv);
+			ref = reproBLAS_rscasum(n, v, incv);
 
 			// log output
 			if (s == 0)
@@ -290,7 +290,7 @@ int main( int argc, char **argv ) {
 		fprintf(stdout, "%10.2g", ref_rerr);	
 #		endif
 
-		ref = rscnrm2(n, v, incv);
+		ref = reproBLAS_rscnrm2(n, v, incv);
 		out_result[OUT_RSCNRM2] = ref;
 		ref = ref / scale;
 		ph = TwoProd(ref, ref, &pl);

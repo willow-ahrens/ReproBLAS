@@ -39,7 +39,7 @@ int validate_internal_dgemv(int fold, char Order, char TransA, int M, int N, int
     bound = wrap_rdgemv_bound(fold, Order, TransA, M, N, alpha, A, lda, X, incX, beta, Y, incY, res, ref, i);
     if (!util_dsoftequals(res[i * incY], ref[i], bound)) {
       //TODO these error messages need to go to stderr for all tests.
-      printf("rdgemv(A, X, Y) = %g != %g\n|%g - %g| = %g > %g\n", res[i * incY], ref[i], res[i * incY], ref[i], error, bound);
+      printf("reproBLAS_rdgemv(A, X, Y) = %g != %g\n|%g - %g| = %g > %g\n", res[i * incY], ref[i], res[i * incY], ref[i], error, bound);
       return 1;
     }
   }

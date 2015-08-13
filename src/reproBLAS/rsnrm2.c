@@ -5,7 +5,7 @@
 
 #include "../../config.h"
 
-float rsnrm2(const int N, const float* X, const int incX) {
+float reproBLAS_rsnrm2(const int N, const float* X, const int incX) {
   float_indexed *ssq = idxd_sialloc(SIDEFAULTFOLD);
   float scl;
   float nrm2;

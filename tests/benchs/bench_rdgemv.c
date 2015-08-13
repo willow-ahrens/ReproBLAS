@@ -87,7 +87,7 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
     for(t = 0; t < trials; t++){
       memcpy(res, Y, NY * incY * sizeof(double));
       time_tic();
-      rdgemv(Order, TransA, M, N, alpha, A, lda, X, incX, beta, res, incY);
+      reproBLAS_rdgemv(Order, TransA, M, N, alpha, A, lda, X, incX, beta, res, incY);
       time_toc();
     }
   }else{

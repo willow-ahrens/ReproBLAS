@@ -11,7 +11,7 @@ void wrap_rdgemv(int fold, char Order, char TransA, int M, int N, double alpha, 
   int opM;
   int i;
   if(fold == DIDEFAULTFOLD){
-    rdgemv(Order, TransA, M, N, alpha, A, lda, X, incX, beta, Y, incY);
+    reproBLAS_rdgemv(Order, TransA, M, N, alpha, A, lda, X, incX, beta, Y, incY);
   }else{
     switch(TransA){
       case 'n':

@@ -12,7 +12,7 @@ void wrap_rzgemv(int fold, char Order, char TransA, int M, int N, double complex
   int NY;
   int i;
   if(fold == DIDEFAULTFOLD){
-    rzgemv(Order, TransA, M, N, (void*)alpha, (void*)A, lda, (void*)X, incX, (void*)beta, (void*)Y, incY);
+    reproBLAS_rzgemv(Order, TransA, M, N, (void*)alpha, (void*)A, lda, (void*)X, incX, (void*)beta, (void*)Y, incY);
   }else{
     switch(TransA){
       case 'n':

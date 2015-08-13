@@ -117,7 +117,7 @@ int corroborate_rdgemv(int fold, char Order, char TransA, int M, int N, double a
     }
     for(i = 0; i < opM; i++){
       if(res[i * incY] != ref[i * incY]){
-        printf("rdgemv(A, X, Y)[num_blocks=%d,block_opN=%d] = %g != %g\n", num_blocks, block_opN, res[i * incY], ref[i * incY]);
+        printf("reproBLAS_rdgemv(A, X, Y)[num_blocks=%d,block_opN=%d] = %g != %g\n", num_blocks, block_opN, res[i * incY], ref[i * incY]);
         return 1;
       }
     }

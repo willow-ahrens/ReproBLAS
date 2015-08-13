@@ -83,7 +83,7 @@ int bench_matmat_fill_test(int argc, char** argv, char Order, char TransA, char 
           break;
       }
       time_tic();
-      rdgemm(Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, res, ldc);
+      reproBLAS_rdgemm(Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, res, ldc);
       time_toc();
     }
   }else{

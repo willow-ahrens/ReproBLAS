@@ -5,7 +5,7 @@
 
 #include "../../config.h"
 
-void rdgemv(const char Order,
+void reproBLAS_rdgemv(const char Order,
             const char TransA, const int M, const int N,
             const double alpha, const double *A, const int lda,
             const double *X, const int incX,

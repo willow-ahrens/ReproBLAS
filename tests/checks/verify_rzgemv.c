@@ -103,7 +103,7 @@ int verify_zgemv_reproducibility(int fold, char Order, char TransA, int M, int N
     }
     for(i = 0; i < NY; i++){
       if(res[i * incY] != ref[i * incY]){
-        printf("rzgemv(A, X, Y)[num_blocks=%d,block_N=%d] = %g + %gi != %g + %gi\n", num_blocks, block_N, creal(res[i * incY]), cimag(res[i * incY]), creal(ref[i * incY]), cimag(ref[i * incY]));
+        printf("reproBLAS_rzgemv(A, X, Y)[num_blocks=%d,block_N=%d] = %g + %gi != %g + %gi\n", num_blocks, block_N, creal(res[i * incY]), cimag(res[i * incY]), creal(ref[i * incY]), cimag(ref[i * incY]));
         if (num_blocks != 1) {
           printf("Ref I_double_complex:\n");
           idxd_ziprint(fold, Iref + i * incY * idxd_zinum(fold));

@@ -140,7 +140,7 @@ int main( int argc, char **argv ) {
 #		endif
 
 #		ifdef CALL_RSASUM
-		ref = rsasum(n, v, IONE);
+		ref = reproBLAS_rsasum(n, v, IONE);
 		ACC_CHECK;
 #		endif
 
@@ -159,7 +159,7 @@ int main( int argc, char **argv ) {
 #		ifdef CALL_RSSUM
 		relerr = 0.0;
 		for (s = 0; s < 53; s++) {
-			ref = rssum(n, v, IONE);
+			ref = reproBLAS_rssum(n, v, IONE);
 			ACC_CHECK_;
 			if (relerr < ref_rerr) relerr = ref_rerr;
 
@@ -193,7 +193,7 @@ int main( int argc, char **argv ) {
 #		ifdef CALL_RSNRM2
 		relerr = 0.0;
 		for (s = 0; s < 53; s++) {
-			ref = rsnrm2(n, v, IONE);
+			ref = reproBLAS_rsnrm2(n, v, IONE);
 			ACC_CHECK_;
 			if (relerr < ref_rerr) relerr = ref_rerr;
 
@@ -230,7 +230,7 @@ int main( int argc, char **argv ) {
 #		ifdef CALL_RSDOT
 		relerr = 0.0;
 		for (s = 0; s < 53; s++) {
-			ref = rsdot(n, v, IONE, y, IONE);
+			ref = reproBLAS_rsdot(n, v, IONE, y, IONE);
 			ACC_CHECK_;
 			if (relerr < ref_rerr) relerr = ref_rerr;
 
@@ -246,7 +246,7 @@ int main( int argc, char **argv ) {
 		}
 #		endif
 		/*
-		ref = rsdot(n, v, incv, y, incv);
+		ref = reproBLAS_rsdot(n, v, incv, y, incv);
 		ACC_CHECK;
 		*/
 //		fprintf(stdout, "   %10g %10g %10g", ref, dd[0], dd[1]);

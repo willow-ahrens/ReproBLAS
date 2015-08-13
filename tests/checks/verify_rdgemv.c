@@ -104,7 +104,7 @@ int verify_dgemv_reproducibility(int fold, char Order, char TransA, int M, int N
     }
     for(i = 0; i < NY; i++){
       if(res[i * incY] != ref[i * incY]){
-        printf("rdgemv(A, X, Y)[num_blocks=%d,block_N=%d] = %g != %g\n", num_blocks, block_N, res[i * incY], ref[i * incY]);
+        printf("reproBLAS_rdgemv(A, X, Y)[num_blocks=%d,block_N=%d] = %g != %g\n", num_blocks, block_N, res[i * incY], ref[i * incY]);
         if (num_blocks != 1) {
           printf("Ref I_double:\n");
           idxd_diprint(fold, Iref + i * incY * idxd_dinum(fold));

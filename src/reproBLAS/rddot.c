@@ -3,7 +3,7 @@
 
 #include "../../config.h"
 
-double rddot(const int N, const double* X, const int incX, const double *Y, const int incY) {
+double reproBLAS_rddot(const int N, const double* X, const int incX, const double *Y, const int incY) {
   double_indexed *doti = idxd_dialloc(DIDEFAULTFOLD);
   double dot;
 

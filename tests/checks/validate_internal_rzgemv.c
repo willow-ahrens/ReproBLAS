@@ -39,7 +39,7 @@ int validate_internal_zgemv(int fold, char Order, char TransA, int M, int N, int
     bound = wrap_rzgemv_bound(fold, Order, TransA, M, N, alpha, A, lda, X, incX, beta, Y, incY, res, ref, i);
     if (!util_zsoftequals(res[i * incY], ref[i], bound)) {
       //TODO these error messages need to go to stderr for all tests.
-      printf("rzgemv(A, X, Y) = %g + %gi != %g + %gi\n|%g - %g| = %g > %g and/or |%gi - %gi| = %g > %g\n", creal(res[i * incY]), cimag(res[i * incY]), creal(ref[i]), cimag(ref[i]), creal(res[i * incY]), creal(ref[i]), fabs(creal(error)), creal(bound), cimag(res[i * incY]), cimag(ref[i]), fabs(cimag(error)), cimag(bound));
+      printf("reproBLAS_rzgemv(A, X, Y) = %g + %gi != %g + %gi\n|%g - %g| = %g > %g and/or |%gi - %gi| = %g > %g\n", creal(res[i * incY]), cimag(res[i * incY]), creal(ref[i]), cimag(ref[i]), creal(res[i * incY]), creal(ref[i]), fabs(creal(error)), creal(bound), cimag(res[i * incY]), cimag(ref[i]), fabs(cimag(error)), cimag(bound));
       return 1;
     }
   }

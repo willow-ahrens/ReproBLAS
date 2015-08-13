@@ -70,7 +70,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   if(fold._int.value == DIDEFAULTFOLD){
     time_tic();
     for(i = 0; i < trials; i++){
-      rzdotu_sub(N, X, incX, Y, incY, &res);
+      reproBLAS_rzdotu_sub(N, X, incX, Y, incY, &res);
     }
     time_toc();
   }else if(fold._int.value == 0){

@@ -3,7 +3,7 @@
 
 #include "../../config.h"
 
-float rscasum(const int N, const void* X, const int incX) {
+float reproBLAS_rscasum(const int N, const void* X, const int incX) {
   float_indexed *asumi = idxd_sialloc(SIDEFAULTFOLD);
   float asum;
 

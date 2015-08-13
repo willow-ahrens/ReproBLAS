@@ -5,7 +5,7 @@
 
 #include "../../config.h"
 
-double rdnrm2(const int N, const double* X, const int incX) {
+double reproBLAS_rdnrm2(const int N, const double* X, const int incX) {
   double_indexed *ssq = idxd_dialloc(DIDEFAULTFOLD);
   double scl;
   double nrm2;

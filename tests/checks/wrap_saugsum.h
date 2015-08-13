@@ -40,7 +40,7 @@ float wrap_rssum(int fold, int N, float *x, int incx, float *y, int incy) {
   (void)y;
   (void)incy;
   if(fold == SIDEFAULTFOLD){
-    return rssum(N, x, incx);
+    return reproBLAS_rssum(N, x, incx);
   }else{
     float_indexed *ires = idxd_sialloc(fold);
     idxd_sisetzero(fold, ires);
@@ -61,7 +61,7 @@ float wrap_rsasum(int fold, int N, float *x, int incx, float *y, int incy) {
   (void)y;
   (void)incy;
   if(fold == SIDEFAULTFOLD){
-    return rsasum(N, x, incx);
+    return reproBLAS_rsasum(N, x, incx);
   }else{
     float_indexed *ires = idxd_sialloc(fold);
     idxd_sisetzero(fold, ires);
@@ -82,7 +82,7 @@ float wrap_rsnrm2(int fold, int N, float *x, int incx, float *y, int incy) {
   (void)y;
   (void)incy;
   if(fold == SIDEFAULTFOLD){
-    return rsnrm2(N, x, incx);
+    return reproBLAS_rsnrm2(N, x, incx);
   }else{
     float_indexed *ires = idxd_sialloc(fold);
     idxd_sisetzero(fold, ires);
@@ -101,7 +101,7 @@ void wrap_sisssq(int fold, int N, float *x, int incx, float *y, int incy, float_
 
 float wrap_rsdot(int fold, int N, float *x, int incx, float *y, int incy) {
   if(fold == SIDEFAULTFOLD){
-    return rsdot(N, x, incx, y, incy);
+    return reproBLAS_rsdot(N, x, incx, y, incy);
   }else{
     float_indexed *ires = idxd_sialloc(fold);
     idxd_sisetzero(fold, ires);

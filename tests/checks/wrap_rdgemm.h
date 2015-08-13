@@ -11,7 +11,7 @@ void wrap_rdgemm(int fold, char Order, char TransA, char TransB, int M, int N, i
   int i;
   int j;
   if(fold == DIDEFAULTFOLD){
-    rdgemm(Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc);
+    reproBLAS_rdgemm(Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc);
   }else{
     CI = (double_indexed*)malloc(M * N * idxd_disize(fold));
     if(beta == 0.0){

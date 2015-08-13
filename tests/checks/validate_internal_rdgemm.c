@@ -77,7 +77,7 @@ int validate_internal_dgemm(int fold, char Order, char TransA, char TransB, int 
       bound = wrap_rdgemm_bound(fold, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc, res, ref, i, j);
       if (!util_dsoftequals(tmpres, tmpref, bound)) {
         //TODO these error messages need to go to stderr for all tests.
-        printf("rdgemm(A, X, Y) = %g != %g\n|%g - %g| = %g > %g\n", tmpres, tmpref, tmpres, tmpref, error, bound);
+        printf("reproBLAS_rdgemm(A, X, Y) = %g != %g\n|%g - %g| = %g > %g\n", tmpres, tmpref, tmpres, tmpref, error, bound);
         return 1;
       }
     }

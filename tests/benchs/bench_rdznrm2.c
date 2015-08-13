@@ -69,7 +69,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   if(fold._int.value == DIDEFAULTFOLD){
     time_tic();
     for(i = 0; i < trials; i++){
-      res = rdznrm2(N, X, incX);
+      res = reproBLAS_rdznrm2(N, X, incX);
     }
     time_toc();
   }else if(fold._int.value == 0){

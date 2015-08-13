@@ -45,25 +45,25 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   util_zvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
   X[0]         = big;
 
-rzsum_sub(N, X, incX, &  res);
+reproBLAS_rzsum_sub(N, X, incX, &  res);
   if (res != ref) {
     printf("rzsum(X) = %g + %gi != %g + %gi (1 Big at beginning)\n", creal(res), cimag(res), creal(ref), cimag(ref));
     return 1;
   }
 
-  res = rdzasum(N, X, incX);
+  res = reproBLAS_rdzasum(N, X, incX);
   if (res != refa) {
-    printf("rdzasum(X) = %g + %gi != %g + %gi (1 Big at beginning)\n", creal(res), cimag(res), creal(refa), cimag(refa));
+    printf("reproBLAS_rdzasum(X) = %g + %gi != %g + %gi (1 Big at beginning)\n", creal(res), cimag(res), creal(refa), cimag(refa));
     return 1;
   }
 
-rzdotu_sub(N, X, incX, Y, incY, &  res);
+reproBLAS_rzdotu_sub(N, X, incX, Y, incY, &  res);
   if (res != refdu) {
     printf("rzdotu(X) = %g + %gi != %g + %gi (1 Big at beginning)\n", creal(res), cimag(res), creal(refdu), cimag(refdu));
     return 1;
   }
 
-rzdotc_sub(N, X, incX, Y, incY, &  res);
+reproBLAS_rzdotc_sub(N, X, incX, Y, incY, &  res);
   if (res != refdc) {
     printf("rzdotc(X) = %g + %gi != %g + %gi (1 Big at beginning)\n", creal(res), cimag(res), creal(refdc), cimag(refdc));
     return 1;
@@ -73,25 +73,25 @@ rzdotc_sub(N, X, incX, Y, incY, &  res);
   util_zvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
   X[(N/2)*incX] = big;
 
-rzsum_sub(N, X, incX, &  res);
+reproBLAS_rzsum_sub(N, X, incX, &  res);
   if (res != ref) {
     printf("rzsum(X) = %g + %gi != %g + %gi (1 Big in middle)\n", creal(res), cimag(res), creal(ref), cimag(ref));
     return 1;
   }
 
-  res = rdzasum(N, X, incX);
+  res = reproBLAS_rdzasum(N, X, incX);
   if (res != refa) {
-    printf("rdzasum(X) = %g + %gi != %g + %gi (1 Big in middle)\n", creal(res), cimag(res), creal(refa), cimag(refa));
+    printf("reproBLAS_rdzasum(X) = %g + %gi != %g + %gi (1 Big in middle)\n", creal(res), cimag(res), creal(refa), cimag(refa));
     return 1;
   }
 
-rzdotu_sub(N, X, incX, Y, incY, &  res);
+reproBLAS_rzdotu_sub(N, X, incX, Y, incY, &  res);
   if (res != refdu) {
     printf("rzdotu(X) = %g + %gi != %g + %gi (1 Big in middle)\n", creal(res), cimag(res), creal(refdu), cimag(refdu));
     return 1;
   }
 
-rzdotc_sub(N, X, incX, Y, incY, &  res);
+reproBLAS_rzdotc_sub(N, X, incX, Y, incY, &  res);
   if (res != refdc) {
     printf("rzdotc(X) = %g + %gi != %g + %gi (1 Big in middle)\n", creal(res), cimag(res), creal(refdc), cimag(refdc));
     return 1;
@@ -101,25 +101,25 @@ rzdotc_sub(N, X, incX, Y, incY, &  res);
   util_zvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
   X[(N-1)*incX] = big;
 
-rzsum_sub(N, X, incX, &  res);
+reproBLAS_rzsum_sub(N, X, incX, &  res);
   if (res != ref) {
     printf("rzsum(X) = %g + %gi != %g + %gi (1 Big at end)\n", creal(res), cimag(res), creal(ref), cimag(ref));
     return 1;
   }
 
-  res = rdzasum(N, X, incX);
+  res = reproBLAS_rdzasum(N, X, incX);
   if (res != refa) {
-    printf("rdzasum(X) = %g + %gi != %g + %gi (1 Big at end)\n", creal(res), cimag(res), creal(refa), cimag(refa));
+    printf("reproBLAS_rdzasum(X) = %g + %gi != %g + %gi (1 Big at end)\n", creal(res), cimag(res), creal(refa), cimag(refa));
     return 1;
   }
 
-rzdotu_sub(N, X, incX, Y, incY, &  res);
+reproBLAS_rzdotu_sub(N, X, incX, Y, incY, &  res);
   if (res != refdu) {
     printf("rzdotu(X) = %g + %gi != %g + %gi (1 Big at end)\n", creal(res), cimag(res), creal(refdu), cimag(refdu));
     return 1;
   }
 
-rzdotc_sub(N, X, incX, Y, incY, &  res);
+reproBLAS_rzdotc_sub(N, X, incX, Y, incY, &  res);
   if (res != refdc) {
     printf("rzdotc(X) = %g + %gi != %g + %gi (1 Big at end)\n", creal(res), cimag(res), creal(refdc), cimag(refdc));
     return 1;
@@ -136,25 +136,25 @@ rzdotc_sub(N, X, incX, Y, incY, &  res);
   X[0]         = big;
   X[(N/2)*incX] = -big;
 
-rzsum_sub(N, X, incX, &  res);
+reproBLAS_rzsum_sub(N, X, incX, &  res);
   if (res != ref) {
     printf("rzsum(X) = %g + %gi != %g + %gi (1 Big pos neg at beginning)\n", creal(res), cimag(res), creal(ref), cimag(ref));
     return 1;
   }
 
-  res = rdzasum(N, X, incX);
+  res = reproBLAS_rdzasum(N, X, incX);
   if (res != refa) {
-    printf("rdzasum(X) = %g + %gi != %g + %gi (1 Big pos neg at beginning)\n", creal(res), cimag(res), creal(refa), cimag(refa));
+    printf("reproBLAS_rdzasum(X) = %g + %gi != %g + %gi (1 Big pos neg at beginning)\n", creal(res), cimag(res), creal(refa), cimag(refa));
     return 1;
   }
 
-rzdotu_sub(N, X, incX, Y, incY, &  res);
+reproBLAS_rzdotu_sub(N, X, incX, Y, incY, &  res);
   if (res != refdu) {
     printf("rzdotu(X) = %g + %gi != %g + %gi (1 Big pos neg at beginning)\n", creal(res), cimag(res), creal(refdu), cimag(refdu));
     return 1;
   }
 
-rzdotc_sub(N, X, incX, Y, incY, &  res);
+reproBLAS_rzdotc_sub(N, X, incX, Y, incY, &  res);
   if (res != refdc) {
     printf("rzdotc(X) = %g + %gi != %g + %gi (1 Big pos neg at beginning)\n", creal(res), cimag(res), creal(refdc), cimag(refdc));
     return 1;
@@ -165,25 +165,25 @@ rzdotc_sub(N, X, incX, Y, incY, &  res);
   X[0]         = big;
   X[(N-1)*incX] = -big;
 
-rzsum_sub(N, X, incX, &  res);
+reproBLAS_rzsum_sub(N, X, incX, &  res);
   if (res != ref) {
     printf("rzsum(X) = %g + %gi != %g + %gi (1 Big pos neg at ends)\n", creal(res), cimag(res), creal(ref), cimag(ref));
     return 1;
   }
 
-  res = rdzasum(N, X, incX);
+  res = reproBLAS_rdzasum(N, X, incX);
   if (res != refa) {
-    printf("rdzasum(X) = %g + %gi != %g + %gi (1 Big pos neg at ends)\n", creal(res), cimag(res), creal(refa), cimag(refa));
+    printf("reproBLAS_rdzasum(X) = %g + %gi != %g + %gi (1 Big pos neg at ends)\n", creal(res), cimag(res), creal(refa), cimag(refa));
     return 1;
   }
 
-rzdotu_sub(N, X, incX, Y, incY, &  res);
+reproBLAS_rzdotu_sub(N, X, incX, Y, incY, &  res);
   if (res != refdu) {
     printf("rzdotu(X) = %g + %gi != %g + %gi (1 Big pos neg at ends)\n", creal(res), cimag(res), creal(refdu), cimag(refdu));
     return 1;
   }
 
-rzdotc_sub(N, X, incX, Y, incY, &  res);
+reproBLAS_rzdotc_sub(N, X, incX, Y, incY, &  res);
   if (res != refdc) {
     printf("rzdotc(X) = %g + %gi != %g + %gi (1 Big pos neg at ends)\n", creal(res), cimag(res), creal(refdc), cimag(refdc));
     return 1;
@@ -194,25 +194,25 @@ rzdotc_sub(N, X, incX, Y, incY, &  res);
   X[(N/2)*incX] = big;
   X[(N-1)*incX] = -big;
 
-rzsum_sub(N, X, incX, &  res);
+reproBLAS_rzsum_sub(N, X, incX, &  res);
   if (res != ref) {
     printf("rzsum(X) = %g + %gi != %g + %gi (1 Big pos neg at end)\n", creal(res), cimag(res), creal(ref), cimag(ref));
     return 1;
   }
 
-  res = rdzasum(N, X, incX);
+  res = reproBLAS_rdzasum(N, X, incX);
   if (res != refa) {
-    printf("rdzasum(X) = %g + %gi != %g + %gi (1 Big pos neg at end)\n", creal(res), cimag(res), creal(refa), cimag(refa));
+    printf("reproBLAS_rdzasum(X) = %g + %gi != %g + %gi (1 Big pos neg at end)\n", creal(res), cimag(res), creal(refa), cimag(refa));
     return 1;
   }
 
-rzdotu_sub(N, X, incX, Y, incY, &  res);
+reproBLAS_rzdotu_sub(N, X, incX, Y, incY, &  res);
   if (res != refdu) {
     printf("rzdotu(X) = %g + %gi != %g + %gi (1 Big pos neg at end)\n", creal(res), cimag(res), creal(refdu), cimag(refdu));
     return 1;
   }
 
-rzdotc_sub(N, X, incX, Y, incY, &  res);
+reproBLAS_rzdotc_sub(N, X, incX, Y, incY, &  res);
   if (res != refdc) {
     printf("rzdotc(X) = %g + %gi != %g + %gi (1 Big pos neg at end)\n", creal(res), cimag(res), creal(refdc), cimag(refdc));
     return 1;

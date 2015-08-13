@@ -3,7 +3,7 @@
 
 #include "../../config.h"
 
-double rdzasum(const int N, const void* X, const int incX) {
+double reproBLAS_rdzasum(const int N, const void* X, const int incX) {
   double_indexed *asumi = idxd_dialloc(DIDEFAULTFOLD);
   double asum;
 

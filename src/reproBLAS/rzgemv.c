@@ -5,7 +5,7 @@
 
 #include "../../config.h"
 
-void rzgemv(const char Order,
+void reproBLAS_rzgemv(const char Order,
             const char TransA, const int M, const int N,
             const void *alpha, const void *A, const int lda,
             const void *X, const int incX,

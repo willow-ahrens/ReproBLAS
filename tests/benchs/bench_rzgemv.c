@@ -87,7 +87,7 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
     for(i = 0; i < trials; i++){
       memcpy(res, Y, NY * incY * sizeof(double complex));
       time_tic();
-      rzgemv(Order, TransA, M, N, &alpha, A, lda, X, incX, &beta, res, incY);
+      reproBLAS_rzgemv(Order, TransA, M, N, &alpha, A, lda, X, incX, &beta, res, incY);
       time_toc();
     }
   }else{

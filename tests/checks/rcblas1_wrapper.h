@@ -31,7 +31,7 @@ float complex wrap_rcsum(int N, float complex *x, int incx, float complex *y, in
   (void)y;
   (void)incy;
   float complex ret;
-  rcsum_sub(N, x, incx, &ret);
+  reproBLAS_rcsum_sub(N, x, incx, &ret);
   return ret;
 }
 
@@ -44,7 +44,7 @@ void wrap_cicsum(int N, float complex *x, int incx, float complex *y, int incy, 
 float complex wrap_rscasum(int N, float complex *x, int incx, float complex *y, int incy) {
   (void)y;
   (void)incy;
-  return (float complex)rscasum(N, x, incx);
+  return (float complex)reproBLAS_rscasum(N, x, incx);
 }
 
 void wrap_sicasum(int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *z) {
@@ -55,7 +55,7 @@ void wrap_sicasum(int N, float complex *x, int incx, float complex *y, int incy,
 
 float complex wrap_rcdotu(int N, float complex *x, int incx, float complex *y, int incy) {
   float complex ret;
-  rcdotu_sub(N, x, incx, y, incy, &ret);
+  reproBLAS_rcdotu_sub(N, x, incx, y, incy, &ret);
   return ret;
 }
 
@@ -65,7 +65,7 @@ void wrap_cicdotu(int N, float complex *x, int incx, float complex *y, int incy,
 
 float complex wrap_rcdotc(int N, float complex *x, int incx, float complex *y, int incy) {
   float complex ret;
-  rcdotc_sub(N, x, incx, y, incy, &ret);
+  reproBLAS_rcdotc_sub(N, x, incx, y, incy, &ret);
   return ret;
 }
 
@@ -76,7 +76,7 @@ void wrap_cicdotc(int N, float complex *x, int incx, float complex *y, int incy,
 float complex wrap_rscnrm2(int N, float complex *x, int incx, float complex *y, int incy) {
   (void)y;
   (void)incy;
-  return rscnrm2(N, x, incx);
+  return reproBLAS_rscnrm2(N, x, incx);
 }
 
 void wrap_sicnrm(int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *z) {

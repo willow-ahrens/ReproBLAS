@@ -3,7 +3,7 @@
 
 #include "../../config.h"
 
-float rsdot(const int N, const float* X, const int incX, const float *Y, const int incY) {
+float reproBLAS_rsdot(const int N, const float* X, const int incX, const float *Y, const int incY) {
   float_indexed *doti = idxd_sialloc(SIDEFAULTFOLD);
   float dot;
 

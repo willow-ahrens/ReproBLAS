@@ -298,7 +298,7 @@ int main( int argc, char **argv ) {
 		MPI_Allgather(y, n, MPI_DOUBLE, ly, n, MPI_DOUBLE, MPI_COMM_WORLD);
 
 //#ifdef CALL_PRDDOT
-		sum = rddot(N, lv, 1, ly, 1);
+		sum = reproBLAS_rddot(N, lv, 1, ly, 1);
 		err = RELERR(sum, result[1]);
 		MPI_Reduce(&err, &rerr, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
 		if (rank == 0) {
@@ -308,7 +308,7 @@ int main( int argc, char **argv ) {
 //#endif
 
 //#ifdef CALL_PRDASUM
-		sum = rdasum(N, lv, 1);
+		sum = reproBLAS_rdasum(N, lv, 1);
 
 		err = RELERR(sum, result[3]);
 		MPI_Reduce(&err, &rerr, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
@@ -319,7 +319,7 @@ int main( int argc, char **argv ) {
 //#endif
 
 //#ifdef CALL_PRDSUM
-		sum = rdsum(N, lv, 1);
+		sum = reproBLAS_rdsum(N, lv, 1);
 
 		err = RELERR(sum, result[7]);
 		MPI_Reduce(&err, &rerr, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
@@ -330,7 +330,7 @@ int main( int argc, char **argv ) {
 //#endif
 
 //#ifdef CALL_PRDNRM2
-		sum = rdnrm2(N, lv, 1);
+		sum = reproBLAS_rdnrm2(N, lv, 1);
 		err = RELERR(sum, result[5]);
 		MPI_Reduce(&err, &rerr, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
 		if (rank == 0) {
