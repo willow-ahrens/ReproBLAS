@@ -22,7 +22,7 @@ static void bench_rzgemv_options_initialize(void){
   fold._int.header.long_name  = "fold";
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
-  fold._int.min               = 0;
+  fold._int.min               = 2;
   fold._int.max               = DIMAXFOLD;
   fold._int.value             = DIDEFAULTFOLD;
 }
@@ -49,7 +49,6 @@ const char* bench_matvec_fill_name(int argc, char** argv){
 int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int N, double RealAlpha, double ImagAlpha, int FillA, double RealScaleA, double ImagScaleA, int lda, int FillX, double RealScaleX, double ImagScaleX, int incX, double RealBeta, double ImagBeta, int FillY, double RealScaleY, double ImagScaleY, int incY, int trials){
   int rc = 0;
   int i = 0;
-  int j = 0;
 
   bench_rzgemv_options_initialize();
 
@@ -75,41 +74,17 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
   double complex *Y  = util_zvec_alloc(NY, incY);
   double complex alpha = RealAlpha + I * ImagBeta;
   double complex beta = RealBeta + I * ImagBeta;
-  double complex betaY;
-  double_complex_indexed *YI = (double_complex_indexed*)malloc(NY * idxd_zisize(fold._int.value));
 
   util_zmat_fill(Order, 'n', M, N, A, lda, FillA, RealScaleA, ImagScaleA);
   util_zvec_fill(NX, X, incX, FillX, RealScaleX, ImagScaleX);
   util_zvec_fill(NY, Y, incY, FillY, RealScaleY, ImagScaleY);
   double complex *res  = (double complex*)malloc(NY * incY * sizeof(double complex));
 
-  if(fold._int.value == DIDEFAULTFOLD){
-    for(i = 0; i < trials; i++){
-      memcpy(res, Y, NY * incY * sizeof(double complex));
-      time_tic();
-      reproBLAS_rzgemv(Order, TransA, M, N, &alpha, A, lda, X, incX, &beta, res, incY);
-      time_toc();
-    }
-  }else{
-    for(i = 0; i < trials; i++){
-      memcpy(res, Y, NY * incY * sizeof(double complex));
-      time_tic();
-      if(beta == 1.0){
-        for(j = 0; j < NY; j++){
-          idxd_zizconv(fold._int.value, res + j * incY, YI + j * idxd_zisize(fold._int.value));
-        }
-      }else{
-        for(j = 0; j < NY; j++){
-          betaY = res[j * incY] * beta;
-          idxd_zizconv(fold._int.value, &betaY, YI + j * idxd_zisize(fold._int.value));
-        }
-      }
-      idxdBLAS_zizgemv(fold._int.value, Order, TransA, M, N, &alpha, A, lda, X, incX, YI, 1);
-      for(j = 0; j < NY; j++){
-        idxd_zziconv_sub(fold._int.value, YI + j * idxd_zisize(fold._int.value), res + j * incY);
-      }
-      time_toc();
-    }
+  for(i = 0; i < trials; i++){
+    memcpy(res, Y, NY * incY * sizeof(double complex));
+    time_tic();
+    reproBLAS_rzgemv(fold._int.value, Order, TransA, M, N, &alpha, A, lda, X, incX, &beta, res, incY);
+    time_toc();
   }
 
   metric_load_double("time", time_read());
@@ -123,7 +98,6 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
 
   free(X);
   free(Y);
-  free(YI);
   free(res);
   return rc;
 }

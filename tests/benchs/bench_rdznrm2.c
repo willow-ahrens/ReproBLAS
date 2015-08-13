@@ -21,7 +21,7 @@ static void bench_rdznrm2_options_initialize(void){
   fold._int.header.long_name  = "fold";
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
-  fold._int.min               = 0;
+  fold._int.min               = 2;
   fold._int.max               = DIMAXFOLD;
   fold._int.value             = DIDEFAULTFOLD;
 }
@@ -51,10 +51,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   (void)incY;
   int rc = 0;
   int i;
-  int j;
   double res = 0.0;
-  double_indexed *ires;
-  double scale = 0.0;
 
   bench_rdznrm2_options_initialize();
   opt_eval_option(argc, argv, &fold);
@@ -66,46 +63,21 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   //fill X
   util_zvec_fill(N, X, incX, FillX, RealScaleX, ImagScaleX);
 
-  if(fold._int.value == DIDEFAULTFOLD){
-    time_tic();
-    for(i = 0; i < trials; i++){
-      res = reproBLAS_rdznrm2(N, X, incX);
-    }
-    time_toc();
-  }else if(fold._int.value == 0){
-    time_tic();
-    for(j = 2; j <= DIMAXFOLD; j++){
-      ires = idxd_dialloc(j);
-      idxd_disetzero(j, ires);
-      for(i = 0; i < trials; i++){
-        scale = idxdBLAS_dizssq(j, N, X, incX, 0.0, ires);
-      }
-      res = scale * sqrt(idxd_ddiconv(j, ires));
-      free(ires);
-    }
-    time_toc();
-  }else{
-    time_tic();
-    ires = idxd_dialloc(fold._int.value);
-    idxd_disetzero(fold._int.value, ires);
-    for(i = 0; i < trials; i++){
-      scale = idxdBLAS_dizssq(fold._int.value, N, X, incX, 0.0, ires);
-    }
-    res = scale * sqrt(idxd_ddiconv(fold._int.value, ires));
-    free(ires);
-    time_toc();
+  time_tic();
+  for(i = 0; i < trials; i++){
+    res = reproBLAS_rdznrm2(fold._int.value, N, X, incX);
   }
+  time_toc();
 
+  double dN = (double)N;
   metric_load_double("time", time_read());
   metric_load_double("res", res);
   metric_load_double("trials", (double)trials);
-  metric_load_double("input", (double)N);
-  metric_load_double("output", (double)1);
-  if(fold._int.value != 0){
-    metric_load_double("d_mul", (double)4 * N);
-    metric_load_double("d_add", (double)(3 * fold._int.value - 2) * 2 * N);
-    metric_load_double("d_orb", (double)fold._int.value * 2 * N);
-  }
+  metric_load_double("input", dN);
+  metric_load_double("output", 1.0);
+  metric_load_double("d_mul", 4.0 * dN);
+  metric_load_double("d_add", (3 * fold._int.value - 2) * 2.0 * dN);
+  metric_load_double("d_orb", fold._int.value * 2.0 * dN);
   metric_dump();
 
   free(X);

@@ -30,10 +30,7 @@ const char* bench_matmat_fill_name(int argc, char** argv){
 
 int bench_matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB, int M, int N, int K, double RealAlpha, double ImagAlpha, int FillA, double RealScaleA, double ImagScaleA, int lda, int FillB, double RealScaleB, double ImagScaleB, int ldb, double RealBeta, double ImagBeta, int FillC, double RealScaleC, double ImagScaleC, int ldc, int trials){
   int rc = 0;
-  int t;
   int i;
-  int j;
-  int k;
 
   util_random_seed();
 

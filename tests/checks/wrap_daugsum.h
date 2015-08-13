@@ -40,14 +40,9 @@ double wrap_rdsum(int fold, int N, double *x, int incx, double *y, int incy) {
   (void)y;
   (void)incy;
   if(fold == DIDEFAULTFOLD){
-    return reproBLAS_rdsum(N, x, incx);
+    return reproBLAS_dsum(N, x, incx);
   }else{
-    double_indexed *ires = idxd_dialloc(fold);
-    idxd_disetzero(fold, ires);
-    idxdBLAS_didsum(fold, N, x, incx, ires);
-    double res = idxd_ddiconv(fold, ires);
-    free(ires);
-    return res;
+    return reproBLAS_rdsum(fold, N, x, incx);
   }
 }
 
@@ -61,14 +56,9 @@ double wrap_rdasum(int fold, int N, double *x, int incx, double *y, int incy) {
   (void)y;
   (void)incy;
   if(fold == DIDEFAULTFOLD){
-    return reproBLAS_rdasum(N, x, incx);
+    return reproBLAS_dasum(N, x, incx);
   }else{
-    double_indexed *ires = idxd_dialloc(fold);
-    idxd_disetzero(fold, ires);
-    idxdBLAS_didasum(fold, N, x, incx, ires);
-    double res = idxd_ddiconv(fold, ires);
-    free(ires);
-    return res;
+    return reproBLAS_rdasum(fold, N, x, incx);
   }
 }
 
@@ -82,14 +72,9 @@ double wrap_rdnrm2(int fold, int N, double *x, int incx, double *y, int incy) {
   (void)y;
   (void)incy;
   if(fold == DIDEFAULTFOLD){
-    return reproBLAS_rdnrm2(N, x, incx);
+    return reproBLAS_dnrm2(N, x, incx);
   }else{
-    double_indexed *ires = idxd_dialloc(fold);
-    idxd_disetzero(fold, ires);
-    double scale = idxdBLAS_didssq(fold, N, x, incx, 0.0, ires);
-    double res = idxd_ddiconv(fold, ires);
-    free(ires);
-    return scale * sqrt(res);
+    return reproBLAS_rdnrm2(fold, N, x, incx);
   }
 }
 
@@ -101,14 +86,9 @@ void wrap_didssq(int fold, int N, double *x, int incx, double *y, int incy, doub
 
 double wrap_rddot(int fold, int N, double *x, int incx, double *y, int incy) {
   if(fold == DIDEFAULTFOLD){
-    return reproBLAS_rddot(N, x, incx, y, incy);
+    return reproBLAS_ddot(N, x, incx, y, incy);
   }else{
-    double_indexed *ires = idxd_dialloc(fold);
-    idxd_disetzero(fold, ires);
-    idxdBLAS_diddot(fold, N, x, incx, y, incy, ires);
-    double res = idxd_ddiconv(fold, ires);
-    free(ires);
-    return res;
+    return reproBLAS_rddot(fold, N, x, incx, y, incy);
   }
 }
 

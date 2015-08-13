@@ -64,7 +64,7 @@ int corroborate_rdgemv(int fold, char Order, char TransA, int M, int N, double a
     break;
   }
 
-  double *res = malloc(opM * incY * sizeof(double));
+  double *res = util_dvec_alloc(opM, incY);
   double_indexed *Ires = malloc(opM * incY * idxd_disize(fold));
 
   num_blocks = 1;
@@ -187,8 +187,12 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   util_dmat_fill(Order, 'n', M, N, A, lda, FillA, RealScaleA, ImagScaleA);
   util_dvec_fill(opN, X, incX, FillX, RealScaleX, ImagScaleX);
   util_dvec_fill(opM, Y, incY, FillY, RealScaleY, ImagScaleY);
-  for(i = 0; i < opM; i++){
-    idxd_didconv(fold._int.value, Y[i * incY] * RealBeta, YI + i * incY * idxd_dinum(fold._int.value));
+  if(RealBeta == 0.0){
+    memset(YI, 0, opM * idxd_dinum(fold._int.value));
+  }else{
+    for(i = 0; i < opM; i++){
+      idxd_didconv(fold._int.value, Y[i * incY] * RealBeta, YI + i * incY * idxd_dinum(fold._int.value));
+    }
   }
   double *ref  = (double*)malloc(opM * incY * sizeof(double));
 
@@ -267,6 +271,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   free(A);
   free(X);
   free(Y);
+  free(YI);
   free(ref);
 
   return rc;

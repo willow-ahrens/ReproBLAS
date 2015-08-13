@@ -44,15 +44,11 @@ double complex wrap_rzsum(int fold, int N, double complex *x, int incx, double c
   (void)incy;
   if(fold == DIDEFAULTFOLD){
     double complex res;
-    reproBLAS_rzsum_sub(N, x, incx, &res);
+    reproBLAS_zsum_sub(N, x, incx, &res);
     return res;
   }else{
-    double_complex_indexed *ires = idxd_zialloc(fold);
-    idxd_zisetzero(fold, ires);
-    idxdBLAS_zizsum(fold, N, x, incx, ires);
     double complex res;
-    idxd_zziconv_sub(fold, ires, &res);
-    free(ires);
+    reproBLAS_rzsum_sub(fold, N, x, incx, &res);
     return res;
   }
 }
@@ -67,14 +63,9 @@ double complex wrap_rdzasum(int fold, int N, double complex *x, int incx, double
   (void)y;
   (void)incy;
   if(fold == DIDEFAULTFOLD){
-    return reproBLAS_rdzasum(N, x, incx);
+    return reproBLAS_dzasum(N, x, incx);
   }else{
-    double_indexed *ires = idxd_dialloc(fold);
-    idxd_disetzero(fold, ires);
-    idxdBLAS_dizasum(fold, N, x, incx, ires);
-    double res = idxd_ddiconv(fold, ires);
-    free(ires);
-    return (double complex)res;
+    return reproBLAS_rdzasum(fold, N, x, incx);
   }
 }
 
@@ -88,14 +79,9 @@ double complex wrap_rdznrm2(int fold, int N, double complex *x, int incx, double
   (void)y;
   (void)incy;
   if(fold == DIDEFAULTFOLD){
-    return reproBLAS_rdznrm2(N, x, incx);
+    return reproBLAS_dznrm2(N, x, incx);
   }else{
-    double_indexed *ires = idxd_dialloc(fold);
-    idxd_disetzero(fold, ires);
-    double scale = idxdBLAS_dizssq(fold, N, x, incx, 0.0, ires);
-    double res = idxd_ddiconv(fold, ires);
-    free(ires);
-    return (double complex)(scale * sqrt(res));
+    return reproBLAS_rdznrm2(fold, N, x, incx);
   }
 }
 
@@ -108,15 +94,11 @@ void wrap_dizssq(int fold, int N, double complex *x, int incx, double complex *y
 double complex wrap_rzdotu(int fold, int N, double complex *x, int incx, double complex *y, int incy) {
   if(fold == DIDEFAULTFOLD){
     double complex res;
-    reproBLAS_rzdotu_sub(N, x, incx, y, incy, &res);
+    reproBLAS_zdotu_sub(N, x, incx, y, incy, &res);
     return res;
   }else{
-    double_complex_indexed *ires = idxd_zialloc(fold);
-    idxd_zisetzero(fold, ires);
-    idxdBLAS_zizdotu(fold, N, x, incx, y, incy, ires);
     double complex res;
-    idxd_zziconv_sub(fold, ires, &res);
-    free(ires);
+    reproBLAS_rzdotu_sub(fold, N, x, incx, y, incy, &res);
     return res;
   }
 }
@@ -128,15 +110,11 @@ void wrap_zizdotu(int fold, int N, double complex *x, int incx, double complex *
 double complex wrap_rzdotc(int fold, int N, double complex *x, int incx, double complex *y, int incy) {
   if(fold == DIDEFAULTFOLD){
     double complex res;
-    reproBLAS_rzdotc_sub(N, x, incx, y, incy, &res);
+    reproBLAS_rzdotc_sub(fold, N, x, incx, y, incy, &res);
     return res;
   }else{
-    double_complex_indexed *ires = idxd_zialloc(fold);
-    idxd_zisetzero(fold, ires);
-    idxdBLAS_zizdotc(fold, N, x, incx, y, incy, ires);
     double complex res;
-    idxd_zziconv_sub(fold, ires, &res);
-    free(ires);
+    reproBLAS_rzdotc_sub(fold, N, x, incx, y, incy, &res);
     return res;
   }
 }

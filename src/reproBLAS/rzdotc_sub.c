@@ -1,17 +1,14 @@
 #include <reproBLAS.h>
 #include <idxdBLAS.h>
 
-#include "../../config.h"
+void reproBLAS_rzdotc_sub(const int fold, const int N, const void* X, const int incX, const void *Y, const int incY, void *dotc) {
+  double_complex_indexed *dotci = idxd_zialloc(fold);
 
-void reproBLAS_rzdotc_sub(const int N, const void* X, const int incX, const void *Y, const int incY, void *dotc) {
-  double_complex_indexed *dotci = idxd_zialloc(DIDEFAULTFOLD);
+  idxd_zisetzero(fold, dotci);
 
-  idxd_zisetzero(DIDEFAULTFOLD, dotci);
+  idxdBLAS_zizdotc(fold, N, X, incX, Y, incY, dotci);
 
-  idxdBLAS_zizdotc(DIDEFAULTFOLD, N, X, incX, Y, incY, dotci);
-
-  idxd_zziconv_sub(DIDEFAULTFOLD, dotci, dotc);
+  idxd_zziconv_sub(fold, dotci, dotc);
   free(dotci);
   return;
 }
-
