@@ -1,0 +1,46 @@
+#include <mpi.h>
+#include <stdio.h>
+
+#include <idxd.h>
+#include <idxdMPI.h>
+
+#include <../config.h>
+
+/*[[[cog
+import cog
+from scripts import terminal
+for fold in range(2, terminal.get_dimaxindex() + 1):
+  cog.outl("static void idxdMPI_didiadd_{}(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){{".format(fold))
+  cog.outl("  idxd_didiaddv({}, *len, (double_indexed*)invec, 1, (double_indexed*)inoutvec, 1);".format(fold))
+  cog.outl("}")
+  cog.outl("")
+]]]*/
+//[[[end]]]
+
+static MPI_Op ops[DIMAXFOLD + 1];
+static int ops_initialized[DIMAXFOLD + 1]; //initializes to 0
+
+MPI_Op idxdMPI_DIDIADD(const int fold){
+  int rc;
+  if(!ops_initialized[fold]){
+    switch(fold){
+      /*[[[cog
+      import cog
+      from scripts import terminal
+      for fold in range(2, terminal.get_dimaxindex() + 1):
+        cog.outl("case {}:".format(fold))
+        cog.outl("  rc = MPI_Op_create(&idxdMPI_didiadd_{0}, 1, ops + {0});".format(fold))
+        cog.outl("  break;")
+        cog.outl("")
+      ]]]*/
+      //[[[end]]]
+    }
+    if(rc != MPI_SUCCESS){
+      fprintf(stderr, "[%s.%d] ReproBLAS error: MPI_Op_create error: %d\n", __FILE__, __LINE__, rc);
+      MPI_Abort(MPI_COMM_WORLD, rc);
+      return 0;
+    }
+    ops_initialized[fold] = 1;
+  }
+  return ops[fold];
+}

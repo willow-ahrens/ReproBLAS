@@ -1,4 +1,4 @@
 TARGETS :=
-SUBDIRS := idxd idxdBLAS reproBLAS MPI_indexed MPI_reproBLAS
+SUBDIRS := idxd idxdBLAS reproBLAS idxdMPI
 
 INCLUDES += $(d)/gen

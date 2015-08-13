@@ -29,8 +29,8 @@
  * @internal
  * Power users of the library may find themselves wanting to manually specify the underlying primary and carry vectors of an indexed type themselves. If you do not know what these are, don't worry about the manually specified indexed types.
  */
-#ifndef _INDEXED_BLAS__H_
-#define _INDEXED_BLAS__H_
+#ifndef IDXDBLAS_H_
+#define IDXDBLAS_H_
 #include "idxd.h"
 #include "reproBLAS.h"
 #include <complex.h>

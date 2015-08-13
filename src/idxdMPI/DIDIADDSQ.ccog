@@ -1,0 +1,53 @@
+#include <mpi.h>
+#include <stdio.h>
+
+#include <idxd.h>
+#include <idxdMPI.h>
+
+#include <../config.h>
+
+static inline void didiaddsqv(const int fold, const int N, const double *X, double *Y){
+  int i;
+  for(i = 0; i < N; i++, X += idxd_dinum(fold) + 1, Y += idxd_dinum(fold) + 1){
+    idxd_dmdmaddsq(fold, X[0], (double_indexed*)(X + 1), 1, (double_indexed*)(X + 1 + fold), 1, Y[0], (double_indexed*)(Y + 1), 1, (double_indexed*)(Y + 1 + fold), 1);
+  }
+}
+
+/*[[[cog
+import cog
+from scripts import terminal
+for fold in range(2, terminal.get_dimaxindex() + 1):
+  cog.outl("static void idxdMPI_didiaddsq_{}(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){{".format(fold))
+  cog.outl("  didiaddsqv({}, *len, (double*)invec, (double*)inoutvec);".format(fold))
+  cog.outl("}")
+  cog.outl("")
+]]]*/
+//[[[end]]]
+
+static MPI_Op ops[DIMAXFOLD + 1];
+static int ops_initialized[DIMAXFOLD + 1]; //initializes to 0
+
+MPI_Op idxdMPI_DIDIADDSQ(const int fold){
+  int rc;
+  if(!ops_initialized[fold]){
+    switch(fold){
+      /*[[[cog
+      import cog
+      from scripts import terminal
+      for fold in range(2, terminal.get_dimaxindex() + 1):
+        cog.outl("case {}:".format(fold))
+        cog.outl("  rc = MPI_Op_create(&idxdMPI_didiaddsq_{0}, 1, ops + {0});".format(fold))
+        cog.outl("  break;")
+        cog.outl("")
+      ]]]*/
+      //[[[end]]]
+    }
+    if(rc != MPI_SUCCESS){
+      fprintf(stderr, "[%s.%d] ReproBLAS error: MPI_Op_create error: %d\n", __FILE__, __LINE__, rc);
+      MPI_Abort(MPI_COMM_WORLD, rc);
+      return 0;
+    }
+    ops_initialized[fold] = 1;
+  }
+  return ops[fold];
+}

@@ -1,4 +1,4 @@
-TARGETS := libindexedblas.a
+TARGETS := libidxdblas.a
 SUBDIRS :=
 
 INSTALL_LIB := $(TARGETS)
@@ -21,21 +21,21 @@ PRECIOUS = damax.c damaxm.c                               \
            zmzsum.c dmzasum.c dmzssq.c zmzdotu.c zmzdotc.c zmzgemv.c\
            cmcsum.c smcasum.c smcssq.c cmcdotu.c cmcdotc.c\
 
-LIBINDEXEDBLAS := $(OBJPATH)/libindexedblas.a
+LIBIDXDBLAS := $(OBJPATH)/libidxdblas.a
 
-libindexedblas.a_DEPS = $$(LIBINDEXED)                                 \
-                        damax.o damaxm.o                               \
-                        zamax_sub.o zamaxm_sub.o                       \
-                        samax.o samaxm.o                               \
-                        camax_sub.o camaxm_sub.o                       \
-                        dmdsum.o dmdasum.o dmdssq.o dmddot.o dmdgemv.o didgemm.o \
-                        smssum.o smsasum.o smsssq.o smsdot.o           \
-                        cmcsum.o smcasum.o smcssq.o cmcdotu.o cmcdotc.o\
-                        zmzsum.o dmzasum.o dmzssq.o zmzdotu.o zmzdotc.o zmzgemv.o\
-                        didsum.o didasum.o didssq.o diddot.o didgemv.o \
-                        sissum.o sisasum.o sisssq.o sisdot.o           \
-                        cicsum.o sicasum.o sicssq.o cicdotu.o cicdotc.o\
-                        zizsum.o dizasum.o dizssq.o zizdotu.o zizdotc.o zizgemv.o\
+libidxdblas.a_DEPS = $$(LIBIDXD)                                    \
+                     damax.o damaxm.o                               \
+                     zamax_sub.o zamaxm_sub.o                       \
+                     samax.o samaxm.o                               \
+                     camax_sub.o camaxm_sub.o                       \
+                     dmdsum.o dmdasum.o dmdssq.o dmddot.o dmdgemv.o didgemm.o \
+                     smssum.o smsasum.o smsssq.o smsdot.o           \
+                     cmcsum.o smcasum.o smcssq.o cmcdotu.o cmcdotc.o\
+                     zmzsum.o dmzasum.o dmzssq.o zmzdotu.o zmzdotc.o zmzgemv.o\
+                     didsum.o didasum.o didssq.o diddot.o didgemv.o \
+                     sissum.o sisasum.o sisssq.o sisdot.o           \
+                     cicsum.o sicasum.o sicssq.o cicdotu.o cicdotc.o\
+                     zizsum.o dizasum.o dizssq.o zizdotu.o zizdotc.o zizgemv.o\
 
 damax.c_DEPS = damax.ccog
 damaxm.c_DEPS = damaxm.ccog

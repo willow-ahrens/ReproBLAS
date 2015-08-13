@@ -18,11 +18,6 @@ cog.out(generate.generate(blockSize.BlockSize("dmdgemv", "YT_BLOCK", 1, 128, 128
 cog.out(generate.generate(blockSize.BlockSize("dmdgemv", "XT_BLOCK", 1, 4 * terminal.get_diendurance(), 4 * terminal.get_diendurance(), ["bench_rdgemv_fold_{}_trans".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
 cog.out(generate.generate(blockSize.BlockSize("dmdgemv", "T_BLOCK", 1, 32, 32, ["bench_rdgemv_fold_{}_trans".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
 ]]]*/
-#define Y_BLOCK 128
-#define X_BLOCK 8192
-#define YT_BLOCK 128
-#define XT_BLOCK 8192
-#define T_BLOCK 32
 //[[[end]]]
 
 void idxdBLAS_dmdgemv(const int fold, const char Order,

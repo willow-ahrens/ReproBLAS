@@ -1,11 +1,11 @@
 TARGETS := libreproblas.a
-SUBDIRS := 
+SUBDIRS :=
 
 INSTALL_LIB := $(TARGETS)
 
 LIBREPROBLAS := $(OBJPATH)/libreproblas.a
 
-libreproblas.a_DEPS = $$(LIBINDEXED) $$(LIBINDEXEDBLAS)                        \
+libreproblas.a_DEPS = $$(LIBIDXD) $$(LIBIDXDBLAS)                        \
                       rdsum.o rdasum.o rdnrm2.o rddot.o rdgemv.o rdgemm.o              \
                       rzsum_sub.o rdzasum.o rdznrm2.o rzdotc_sub.o rzdotu_sub.o rzgemv.o \
                       rssum.o rsasum.o rsnrm2.o rsdot.o                        \

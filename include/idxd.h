@@ -31,8 +31,8 @@
  * Power users of the library may find themselves wanting to manually specify the underlying primary and carry vectors of an indexed type themselves. If you do not know what these are, don't worry about the manually specified indexed types.
  */
 
-#ifndef INDEXED_H
-#define INDEXED_H
+#ifndef IDXD_H_
+#define IDXD_H_
 #include <stddef.h>
 #include <stdlib.h>
 #include <float.h>

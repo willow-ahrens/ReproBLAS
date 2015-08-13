@@ -1,5 +1,5 @@
-#ifndef _REPRODUCIBLE_BLAS__H_
-#define _REPRODUCIBLE_BLAS__H_
+#ifndef REPROBLAS_H_
+#define REPROBLAS_H_
 #include <complex.h>
 
 double rdsum(const int N, const double* X, const int incX);
