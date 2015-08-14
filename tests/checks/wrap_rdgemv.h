@@ -34,9 +34,6 @@ void wrap_ref_rdgemv(int fold, char Order, char TransA, int M, int N, double alp
   opA = util_dmat_op(Order, TransA, opM, opN, A, lda);
   YI = idxd_dialloc(fold);
   opX = (double*)malloc(opN * sizeof(double));
-  for(i = 0; i < opN; i++){
-    opX[i] = alpha * X[i * incX];
-  }
   for(i = 0; i < opM; i++){
     if(beta == 0.0){
       idxd_disetzero(fold, YI);
@@ -44,6 +41,9 @@ void wrap_ref_rdgemv(int fold, char Order, char TransA, int M, int N, double alp
       idxd_didconv(fold, Y[i * incY] * beta, YI);
     }
     if(alpha != 0.0){
+      for(i = 0; i < opN; i++){
+        opX[i] = alpha * X[i * incX];
+      }
       switch(Order){
         case 'r':
         case 'R':

@@ -642,12 +642,12 @@
   "zdepositSum_max_unroll_width_SSE_fold_2": 1,
   "zdepositSum_max_unroll_width_SSE_fold_3": 1,
   "zdepositSum_max_unroll_width_SSE_fold_4": 1,
+  "zizgemv_block_size_T_BLOCK": 32,
+  "zizgemv_block_size_XT_BLOCK": 8192,
+  "zizgemv_block_size_X_BLOCK": 8192,
+  "zizgemv_block_size_YT_BLOCK": 128,
+  "zizgemv_block_size_Y_BLOCK": 128,
   "zmzdotc_block_size_N_block_MAX": 2048,
   "zmzdotu_block_size_N_block_MAX": 2048,
-  "zmzgemv_block_size_T_BLOCK": 32,
-  "zmzgemv_block_size_XT_BLOCK": 8192,
-  "zmzgemv_block_size_X_BLOCK": 8192,
-  "zmzgemv_block_size_YT_BLOCK": 128,
-  "zmzgemv_block_size_Y_BLOCK": 128,
   "zmzsum_block_size_N_block_MAX": 2048
 }

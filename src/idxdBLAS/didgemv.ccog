@@ -14,9 +14,9 @@ from scripts import terminal
 
 cog.out(generate.generate(blockSize.BlockSize("didgemv", "Y_BLOCK", 1, 128, 128, ["bench_rdgemv_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
 cog.out(generate.generate(blockSize.BlockSize("didgemv", "X_BLOCK", 1, 4 * terminal.get_diendurance(), 4 * terminal.get_diendurance(), ["bench_rdgemv_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
-cog.out(generate.generate(blockSize.BlockSize("didgemv", "YT_BLOCK", 1, 128, 128, ["bench_rdgemv_fold_{}_transA".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
-cog.out(generate.generate(blockSize.BlockSize("didgemv", "XT_BLOCK", 1, 4 * terminal.get_diendurance(), 4 * terminal.get_diendurance(), ["bench_rdgemv_fold_{}_transA".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
-cog.out(generate.generate(blockSize.BlockSize("didgemv", "T_BLOCK", 1, 32, 32, ["bench_rdgemv_fold_{}_transA".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("didgemv", "YT_BLOCK", 1, 128, 128, ["bench_rdgemv_fold_{}_TransA".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("didgemv", "XT_BLOCK", 1, 4 * terminal.get_diendurance(), 4 * terminal.get_diendurance(), ["bench_rdgemv_fold_{}_TransA".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("didgemv", "T_BLOCK", 1, 32, 32, ["bench_rdgemv_fold_{}_TransA".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
 ]]]*/
 #define Y_BLOCK 128
 #define X_BLOCK 8192
@@ -26,10 +26,10 @@ cog.out(generate.generate(blockSize.BlockSize("didgemv", "T_BLOCK", 1, 32, 32, [
 //[[[end]]]
 
 void idxdBLAS_didgemv(const int fold, const char Order,
-             const char TransA, const int M, const int N,
-             const double alpha, const double *A, const int lda,
-             const double *X, const int incX,
-             double_indexed *Y, const int incY){
+                      const char TransA, const int M, const int N,
+                      const double alpha, const double *A, const int lda,
+                      const double *X, const int incX,
+                      double_indexed *Y, const int incY){
   int i;
   int ii;
   int iii;

@@ -7,125 +7,64 @@
 #include "wrap_zaugsum.h"
 
 void wrap_rzgemv(int fold, char Order, char TransA, int M, int N, double complex *alpha, double complex *A, int lda, double complex *X, int incX, double complex *beta, double complex *Y, int incY){
-  double_indexed *YI;
-  double complex betaY;
-  int NY;
-  int i;
   if(fold == DIDEFAULTFOLD){
-    reproBLAS_rzgemv(Order, TransA, M, N, (void*)alpha, (void*)A, lda, (void*)X, incX, (void*)beta, (void*)Y, incY);
+    reproBLAS_zgemv(Order, TransA, M, N, alpha, A, lda, X, incX, beta, Y, incY);
   }else{
-    switch(TransA){
-      case 'n':
-      case 'N':
-        NY = M;
-      break;
-      default:
-        NY = N;
-      break;
-    }
-    YI = (double_indexed*)malloc(NY * incY * idxd_zisize(fold));
-    for(i = 0; i < NY; i++){
-      betaY = Y[i * incY] * (*beta);
-      idxd_zizconv(fold, &betaY, YI + i * incY * idxd_zinum(fold));
-    }
-    idxdBLAS_zizgemv(fold, Order, TransA, M, N, alpha, A, lda, X, incX, YI, incY);
-    for(i = 0; i < NY; i++){
-      idxd_zziconv_sub(fold, YI + i * incY * idxd_zinum(fold), Y + i * incY);
-    }
-    free(YI);
+    reproBLAS_rzgemv(fold, Order, TransA, M, N, alpha, A, lda, X, incX, beta, Y, incY);
   }
 }
 
-double complex* wrap_rzgemv_result(char Order, char TransA, int M, int N, double RealAlpha, double ImagAlpha, int FillA, double RealScaleA, double ImagScaleA, double complex *A, int lda, int FillX, double RealScaleX, double ImagScaleX, double complex *X, int incX, double RealBeta, double ImagBeta, double complex *Y, int incY){
-  int i;
-  int j;
-  double complex *res;
-  switch(TransA){
-    case 'n':
-    case 'N':
-      res = (double complex*)malloc(M * sizeof(double complex));
-      for(i = 0; i < M; i++){
-        res[i] = Y[i * incY] * (RealBeta + I * ImagBeta);
-        if(FillA == util_Mat_Identity){
-          for(j = 0; j < N; j++){
-            if(j == i){
-              res[i] += ((RealAlpha + I * ImagAlpha)* X[j * incX]) * 1.0;
-            }else{
-              res[i] += ((RealAlpha + I * ImagAlpha) * X[j * incX]) * 0.0;
-            }
-          }
-        }else{
-          res[i] += wrap_zaugsum_result(N, wrap_zaugsum_RZDOTU, FillX, RealScaleX * RealAlpha - ImagScaleX * ImagAlpha, ImagScaleX * RealAlpha + RealScaleX * ImagAlpha, (util_vec_fill_t)FillA, RealScaleA, ImagScaleA);
-        }
-      }
-      break;
-    default:
-      res = (double complex*)malloc(N * sizeof(double complex));
-      for(i = 0; i < N; i++){
-        res[i] = Y[i * incY] * (RealBeta + I * ImagBeta);
-        if(FillA == util_Mat_Identity){
-          for(j = 0; j < M; j++){
-            if(j == i){
-              res[i] += ((RealAlpha + I * ImagAlpha) * X[j * incX]) * 1.0;
-            }else{
-              res[i] += ((RealAlpha + I * ImagAlpha) * X[j * incX]) * 0.0;
-            }
-          }
-        }else{
-          res[i] += wrap_zaugsum_result(M, wrap_zaugsum_RZDOTU, FillX, RealScaleX * RealAlpha - ImagScaleX * ImagAlpha, ImagScaleX * RealAlpha + RealScaleX * ImagAlpha, (util_vec_fill_t)FillA, RealScaleA, ImagScaleA);
-        }
-      }
-      break;
-  }
-  return res;
-}
-
-double complex wrap_rzgemv_bound(int fold, char Order, char TransA, int M, int N, double complex *alpha, double complex *A, int lda, double complex *X, int incX, double complex *beta, double complex *Y, int incY, double complex *res, double complex *ref, int i){
-  int j;
-  double complex *alphaX;
+void wrap_ref_rzgemv(int fold, char Order, char TransA, int M, int N, double complex *alpha, double complex *A, int lda, double complex *X, int incX, double complex *beta, double complex *Y, int incY){
+  int opM;
+  int opN;
+  double complex *opA;
+  double complex *opX;
+  double_complex_indexed *YI;
   double complex betaY;
-  double complex bound;
-  double complex amaxm;
-  double *bound_base = (double*)&bound;
+  int i;
   switch(TransA){
     case 'n':
     case 'N':
-      alphaX = (double complex*)malloc(N * sizeof(double complex));
-      for(j = 0; j < N; j++){
-        alphaX[j] = X[j * incX] * (*alpha);
-      }
-      switch(Order){
-        case 'r':
-        case 'R':
-          idxdBLAS_zamaxm_sub(N, A + i * lda, 1, alphaX, 1, &amaxm);
-          break;
-        default:
-          idxdBLAS_zamaxm_sub(N, A + i, lda, alphaX, 1, &amaxm);
-          break;
-      }
-      betaY = Y[i * incY] * (*beta);
-      bound_base[0] = idxd_dibound(fold, N + 1, MAX(fabs(creal(betaY)), creal(amaxm)), creal(res[i * incY]));
-      bound_base[1] = idxd_dibound(fold, N + 1, MAX(fabs(cimag(betaY)), cimag(amaxm)), cimag(res[i * incY]));
+      opM = M;
+      opN = N;
       break;
     default:
-      alphaX = (double complex*)malloc(M * sizeof(double complex));
-      for(j = 0; j < M; j++){
-        alphaX[j] = X[j * incX] * (*alpha);
+      opM = N;
+      opN = M;
+      break;
+  }
+  opA = util_zmat_op(Order, TransA, opM, opN, A, lda);
+  YI = idxd_zialloc(fold);
+  opX = (double complex*)malloc(opN * sizeof(double complex));
+  for(i = 0; i < opM; i++){
+    if(beta[0] == 0.0){
+      idxd_zisetzero(fold, YI);
+    }else if(beta[0] == 1.0){
+      idxd_zizconv(fold, Y + i * incY, YI);
+    }else{
+      betaY = Y[i * incY] * beta[0];
+      idxd_zizconv(fold, &betaY, YI);
+    }
+    if(alpha[0] != 0.0){
+      for(i = 0; i < opN; i++){
+        if(alpha[0] == 1.0){
+          opX[i] = X[i * incX];
+        }else{
+          opX[i] = alpha[0] * X[i * incX];
+        }
       }
       switch(Order){
         case 'r':
         case 'R':
-          idxdBLAS_zamaxm_sub(M, A + i, lda, alphaX, 1, &amaxm);
+          idxdBLAS_zizdotu(fold, opN, opA + i * opN, 1, opX, 1, YI);
           break;
         default:
-          idxdBLAS_zamaxm_sub(M, A + i * lda, 1, alphaX, 1, &amaxm);
+          idxdBLAS_zizdotu(fold, opN, opA + i, opN, opX, 1, YI);
           break;
       }
-      betaY = Y[i * incY] * (*beta);
-      bound_base[0] = idxd_dibound(fold, M + 1, MAX(fabs(creal(betaY)), creal(amaxm)), creal(res[i * incY]));
-      bound_base[1] = idxd_dibound(fold, M + 1, MAX(fabs(cimag(betaY)), cimag(amaxm)), cimag(res[i * incY]));
-      break;
+    }
+    idxd_zziconv_sub(fold, YI, Y + i * incY);
   }
-  free(alphaX);
-  return bound;
+  free(YI);
+  free(opA);
 }

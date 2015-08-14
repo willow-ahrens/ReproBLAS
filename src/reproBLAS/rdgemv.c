@@ -20,12 +20,12 @@ void reproBLAS_rdgemv(const int fold, const char Order,
     case 'n':
     case 'N':
       YI = (double_indexed*)malloc(M * idxd_disize(fold));
-      if(beta == 1.0){
+      if(beta == 0.0){
+        memset(YI, 0, M * idxd_disize(fold));
+      }else if(beta == 1.0){
         for(i = 0; i < M; i++){
           idxd_didconv(fold, Y[i * incY], YI + i * idxd_dinum(fold));
         }
-      }else if(beta == 0.0){
-        memset(YI, 0, M * idxd_disize(fold));
       }else{
         for(i = 0; i < M; i++){
           idxd_didconv(fold, Y[i * incY] * beta, YI + i * idxd_dinum(fold));
@@ -38,12 +38,12 @@ void reproBLAS_rdgemv(const int fold, const char Order,
       break;
     default:
       YI = (double_indexed*)malloc(N * idxd_disize(fold));
-      if(beta == 1.0){
+      if(beta == 0.0){
+        memset(YI, 0, N * idxd_disize(fold));
+      }else if(beta == 1.0){
         for(i = 0; i < N; i++){
           idxd_didconv(fold, Y[i * incY], YI + i * idxd_dinum(fold));
         }
-      }else if(beta == 0.0){
-        memset(YI, 0, N * idxd_disize(fold));
       }else{
         for(i = 0; i < N; i++){
           idxd_didconv(fold, Y[i * incY] * beta, YI + i * idxd_dinum(fold));
