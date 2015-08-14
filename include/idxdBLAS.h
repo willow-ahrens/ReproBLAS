@@ -58,12 +58,6 @@ void idxdBLAS_didgemv(const int fold, const char Order, const char TransA,
              const double alpha, const double *A, const int lda,
              const double *X, const int incX,
              double_indexed *Y, const int incY);
-void idxdBLAS_dmdgemv(const int fold, const char Order, const char TransA,
-             const int M, const int N,
-             const double alpha, const double *A, const int lda,
-             const double *X, const int incX,
-             double *priY, const int incpriY, const int incincpriY,
-             double *carY, const int inccarY, const int incinccarY);
 
 void idxdBLAS_didgemm(const int fold, const char Order,
              const char TransA, const char TransB,

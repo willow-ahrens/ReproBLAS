@@ -18,6 +18,11 @@ cog.out(generate.generate(blockSize.BlockSize("dmdgemm", "YT_BLOCK", 1, 128, 128
 cog.out(generate.generate(blockSize.BlockSize("dmdgemm", "XT_BLOCK", 1, 4 * terminal.get_diendurance(), 4 * terminal.get_diendurance(), ["bench_rdgemm_fold_{}_transA".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
 cog.out(generate.generate(blockSize.BlockSize("dmdgemm", "T_BLOCK", 1, 32, 32, ["bench_rdgemm_fold_{}_transA".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
 ]]]*/
+#define Y_BLOCK 128
+#define X_BLOCK 8192
+#define YT_BLOCK 128
+#define XT_BLOCK 8192
+#define T_BLOCK 32
 //[[[end]]]
 #define Y_BLOCK 32
 #define X_BLOCK 1024
@@ -33,17 +38,13 @@ void idxdBLAS_didgemm(const int fold, const char Order,
              double_indexed *C, const int ldc){
   int i;
   int ii;
-  int iii;
   int k;
   int kk;
-  int kkk;
   int j;
   int jj;
-  int jjj;
   double *bufA;
   int ldbufa;
   double *bufB;
-  int ldbufb;
 
   //early returns
   if(M == 0 || N == 0 || K == 0 || alpha == 0.0){
@@ -329,19 +330,19 @@ void idxdBLAS_didgemm(const int fold, const char Order,
 
         //column major A transposed
         default:
-          switch(TransB){
-            if(alpha == 1.0){
-              bufA = (double*)A;
-              ldbufa = lda;
-            }else{
-              bufA = (double*)malloc(M * K * sizeof(double));
-              for(i = 0; i < M; i++){
-                for(k = 0; k < K; k++){
-                  bufA[i * K + k] = A[i * lda + k] * alpha;
-                }
+          if(alpha == 1.0){
+            bufA = (double*)A;
+            ldbufa = lda;
+          }else{
+            bufA = (double*)malloc(M * K * sizeof(double));
+            for(i = 0; i < M; i++){
+              for(k = 0; k < K; k++){
+                bufA[i * K + k] = A[i * lda + k] * alpha;
               }
-              ldbufa = K;
             }
+            ldbufa = K;
+          }
+          switch(TransB){
 
             //column major A transposed B not transposed
             case 'n':
