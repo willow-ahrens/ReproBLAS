@@ -10,7 +10,7 @@ COGGED = damax.ccog damaxm.ccog                                        \
          dmdsum.ccog dmdasum.ccog dmdssq.ccog dmddot.ccog didgemv.ccog didgemm.ccog \
          smssum.ccog smsasum.ccog smsssq.ccog smsdot.ccog              \
          cmcsum.ccog smcasum.ccog smcssq.ccog cmcdotu.ccog cmcdotc.ccog\
-         zmzsum.ccog dmzasum.ccog dmzssq.ccog zmzdotu.ccog zmzdotc.ccog zmzgemv.ccog
+         zmzsum.ccog dmzasum.ccog dmzssq.ccog zmzdotu.ccog zmzdotc.ccog zizgemv.ccog
 
 PRECIOUS = damax.c damaxm.c                               \
            zamax_sub.c zamaxm_sub.c                       \
@@ -18,7 +18,7 @@ PRECIOUS = damax.c damaxm.c                               \
            camax_sub.c camaxm_sub.c                       \
            dmdsum.c dmdasum.c dmdssq.c dmddot.c didgemv.c didgemm.c\
            smssum.c smsasum.c smsssq.c smsdot.c           \
-           zmzsum.c dmzasum.c dmzssq.c zmzdotu.c zmzdotc.c zmzgemv.c\
+           zmzsum.c dmzasum.c dmzssq.c zmzdotu.c zmzdotc.c zizgemv.c\
            cmcsum.c smcasum.c smcssq.c cmcdotu.c cmcdotc.c\
 
 LIBIDXDBLAS := $(OBJPATH)/libidxdblas.a
@@ -28,11 +28,11 @@ libidxdblas.a_DEPS = $$(LIBIDXD)                                    \
                      zamax_sub.o zamaxm_sub.o                       \
                      samax.o samaxm.o                               \
                      camax_sub.o camaxm_sub.o                       \
-                     dmdsum.o dmdasum.o dmdssq.o dmddot.o didgemv.o didgemm.o \
+                     dmdsum.o dmdasum.o dmdssq.o dmddot.o           \
                      smssum.o smsasum.o smsssq.o smsdot.o           \
                      cmcsum.o smcasum.o smcssq.o cmcdotu.o cmcdotc.o\
-                     zmzsum.o dmzasum.o dmzssq.o zmzdotu.o zmzdotc.o zmzgemv.o\
-                     didsum.o didasum.o didssq.o diddot.o \
+                     zmzsum.o dmzasum.o dmzssq.o zmzdotu.o zmzdotc.o\
+                     didsum.o didasum.o didssq.o diddot.o didgemv.o didgemm.o \
                      sissum.o sisasum.o sisssq.o sisdot.o           \
                      cicsum.o sicasum.o sicssq.o cicdotu.o cicdotc.o\
                      zizsum.o dizasum.o dizssq.o zizdotu.o zizdotc.o zizgemv.o\
@@ -65,4 +65,4 @@ dmzasum.c_DEPS = $$(GETTER) dmzasum.ccog
 dmzssq.c_DEPS = $$(GETTER) dmzssq.ccog
 zmzdotu.c_DEPS = $$(GETTER) zmzdotu.ccog
 zmzdotc.c_DEPS = $$(GETTER) zmzdotc.ccog
-zmzgemv.c_DEPS = $$(GETTER) zmzgemv.ccog
+zizgemv.c_DEPS = $$(GETTER) zizgemv.ccog

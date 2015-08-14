@@ -18,6 +18,11 @@ cog.out(generate.generate(blockSize.BlockSize("didgemv", "YT_BLOCK", 1, 128, 128
 cog.out(generate.generate(blockSize.BlockSize("didgemv", "XT_BLOCK", 1, 4 * terminal.get_diendurance(), 4 * terminal.get_diendurance(), ["bench_rdgemv_fold_{}_transA".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
 cog.out(generate.generate(blockSize.BlockSize("didgemv", "T_BLOCK", 1, 32, 32, ["bench_rdgemv_fold_{}_transA".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
 ]]]*/
+#define Y_BLOCK 128
+#define X_BLOCK 8192
+#define YT_BLOCK 128
+#define XT_BLOCK 8192
+#define T_BLOCK 32
 //[[[end]]]
 
 void idxdBLAS_didgemv(const int fold, const char Order,
@@ -40,9 +45,13 @@ void idxdBLAS_didgemv(const int fold, const char Order,
   }
 
   switch(Order){
+
+    //row major
     case 'r':
     case 'R':
       switch(TransA){
+
+        //row major A not transposed
         case 'n':
         case 'N':
           if(alpha == 1.0){
@@ -66,6 +75,8 @@ void idxdBLAS_didgemv(const int fold, const char Order,
             free(bufX);
           }
           break;
+
+        //row major A transposed
         default:
           if(alpha == 1.0){
             bufX = (double*)X;
@@ -101,14 +112,20 @@ void idxdBLAS_didgemv(const int fold, const char Order,
           break;
       }
       break;
+
+    //column major
     default:
       switch(TransA){
+
+        //column major A not transposed
         case 'n':
         case 'N':
-          idxdBLAS_dmdgemv(fold, 'r', 't', N, M, alpha, A, lda, X, incX, priY, incpriY, incincpriY, carY, inccarY, incinccarY);
+          idxdBLAS_didgemv(fold, 'r', 't', N, M, alpha, A, lda, X, incX, Y, incY);
           break;
+
+        //column major A transposed
         default:
-          idxdBLAS_dmdgemv(fold, 'r', 'n', N, M, alpha, A, lda, X, incX, priY, incpriY, incincpriY, carY, inccarY, incinccarY);
+          idxdBLAS_didgemv(fold, 'r', 'n', N, M, alpha, A, lda, X, incX, Y, incY);
           break;
       }
       break;
