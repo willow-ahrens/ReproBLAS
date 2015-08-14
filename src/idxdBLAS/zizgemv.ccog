@@ -68,7 +68,7 @@ void idxdBLAS_zizgemv(const int fold, const char Order,
           for(i = 0; i < M; i += Y_BLOCK){
             for(j = 0; j < N; j += X_BLOCK){
               for(ii = i; ii < M && ii < i + Y_BLOCK; ii++){
-                idxdBLAS_zizdotu(fold, MIN(X_BLOCK, N - j), ((double*)A) + 2 * (ii * lda + j), 1, bufX + 2 * j * incbufX, incbufX, Y + 2 * ii * incY * idxd_zinum(fold));
+                idxdBLAS_zizdotu(fold, MIN(X_BLOCK, N - j), ((double*)A) + 2 * (ii * lda + j), 1, bufX + 2 * j * incbufX, incbufX, Y + ii * incY * idxd_zinum(fold));
               }
             }
           }
@@ -91,7 +91,7 @@ void idxdBLAS_zizgemv(const int fold, const char Order,
             }
             incbufX = 1;
           }
-          bufA = (double*)malloc(XT_BLOCK * YT_BLOCK * sizeof(double));
+          bufA = (double*)malloc(XT_BLOCK * YT_BLOCK * 2 * sizeof(double));
           for(i = 0; i < N; i += YT_BLOCK){
             for(j = 0; j < M; j += XT_BLOCK){
               for(jj = j; jj < M && jj < j + XT_BLOCK; jj += T_BLOCK){
@@ -105,7 +105,7 @@ void idxdBLAS_zizgemv(const int fold, const char Order,
                 }
               }
               for(ii = i; ii < N && ii < i + YT_BLOCK; ii++){
-                idxdBLAS_zizdotu(fold, MIN(XT_BLOCK, M - j), bufA + 2 * (ii - i) * XT_BLOCK, 1, bufX + 2 * j * incbufX, incbufX, Y + 2 * ii * incY * idxd_zinum(fold));
+                idxdBLAS_zizdotu(fold, MIN(XT_BLOCK, M - j), bufA + 2 * (ii - i) * XT_BLOCK, 1, bufX + 2 * j * incbufX, incbufX, Y + ii * incY * idxd_zinum(fold));
               }
             }
           }
@@ -128,7 +128,7 @@ void idxdBLAS_zizgemv(const int fold, const char Order,
             }
             incbufX = 1;
           }
-          bufA = (double*)malloc(XT_BLOCK * YT_BLOCK * sizeof(double));
+          bufA = (double*)malloc(XT_BLOCK * YT_BLOCK * 2 * sizeof(double));
           for(i = 0; i < N; i += YT_BLOCK){
             for(j = 0; j < M; j += XT_BLOCK){
               for(jj = j; jj < M && jj < j + XT_BLOCK; jj += T_BLOCK){
@@ -142,7 +142,7 @@ void idxdBLAS_zizgemv(const int fold, const char Order,
                 }
               }
               for(ii = i; ii < N && ii < i + YT_BLOCK; ii++){
-                idxdBLAS_zizdotc(fold, MIN(XT_BLOCK, M - j), bufA + 2 * (ii - i) * XT_BLOCK, 1, bufX + 2 * j * incbufX, incbufX, Y + 2 * ii * incY * idxd_zinum(fold));
+                idxdBLAS_zizdotc(fold, MIN(XT_BLOCK, M - j), bufA + 2 * (ii - i) * XT_BLOCK, 1, bufX + 2 * j * incbufX, incbufX, Y + ii * incY * idxd_zinum(fold));
               }
             }
           }

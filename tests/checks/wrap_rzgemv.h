@@ -22,6 +22,7 @@ void wrap_ref_rzgemv(int fold, char Order, char TransA, int M, int N, double com
   double_complex_indexed *YI;
   double complex betaY;
   int i;
+  int j;
   switch(TransA){
     case 'n':
     case 'N':
@@ -46,11 +47,11 @@ void wrap_ref_rzgemv(int fold, char Order, char TransA, int M, int N, double com
       idxd_zizconv(fold, &betaY, YI);
     }
     if(alpha[0] != 0.0){
-      for(i = 0; i < opN; i++){
+      for(j = 0; j < opN; j++){
         if(alpha[0] == 1.0){
-          opX[i] = X[i * incX];
+          opX[j] = X[j * incX];
         }else{
-          opX[i] = alpha[0] * X[i * incX];
+          opX[j] = alpha[0] * X[j * incX];
         }
       }
       switch(Order){
@@ -59,7 +60,7 @@ void wrap_ref_rzgemv(int fold, char Order, char TransA, int M, int N, double com
           idxdBLAS_zizdotu(fold, opN, opA + i * opN, 1, opX, 1, YI);
           break;
         default:
-          idxdBLAS_zizdotu(fold, opN, opA + i, opN, opX, 1, YI);
+          idxdBLAS_zizdotu(fold, opN, opA + i, opM, opX, 1, YI);
           break;
       }
     }

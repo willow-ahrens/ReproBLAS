@@ -35,31 +35,38 @@ for i in range(DBL_MANT_DIG):
   DBL_ONES += 2.0 ** -i
 
 check_suite.add_checks([checks.CorroborateRDGEMVTest(),\
+                        checks.CorroborateRZGEMVTest(),\
                         ],\
-                       ["O", "T", ("N", "lda"), "M", ("incX", "incY"), "FillA", "FillX", "FillY", "fold"],\
-                       [["RowMajor"], ["Trans", "NoTrans"], [(255, 256), (2048, 2048)], [255, 2048], list(zip(incs, incs)),\
+                       ["O", "T", ("N", "lda"), "M", ("incX", "incY"), "FillA", "FillX", "FillY", ("RealAlpha", "ImagAlpha"), ("RealBeta", "ImagBeta"), "fold"],\
+                       [["RowMajor"], ["Trans", "NoTrans"], [(255, 256), (512, 512)], [255, 512], list(zip(incs, incs)),\
                         ["rand",\
                          ],\
                         ["rand",\
                          ],\
                         ["rand"],\
+                        [(0.0, 0.0), (1.0, 0.0), (2.0, 2.0)],\
+                        [(0.0, 0.0), (1.0, 0.0), (2.0, 2.0)],\
                         folds])
 
 check_suite.add_checks([checks.CorroborateRDGEMVTest(),\
+                        checks.CorroborateRZGEMVTest(),\
                         ],\
-                       ["O", "T", ("M", "lda"), "N", ("incX", "incY"), "FillA", "FillX", "FillY", "fold"],\
-                       [["ColMajor"], ["Trans", "NoTrans"], [(255, 256), (2048, 2048)], [255, 2048], list(zip(incs, incs)),\
+                       ["O", "T", ("M", "lda"), "N", ("incX", "incY"), "FillA", "FillX", "FillY", ("RealAlpha", "ImagAlpha"), ("RealBeta", "ImagBeta"), "fold"],\
+                       [["ColMajor"], ["Trans", "NoTrans"], [(255, 256), (512, 512)], [255, 512], list(zip(incs, incs)),\
                         ["rand",\
                          ],\
                         ["rand",\
                          ],\
                         ["rand"],\
+                        [(0.0, 0.0), (1.0, 0.0), (2.0, 2.0)],\
+                        [(0.0, 0.0), (1.0, 0.0), (2.0, 2.0)],\
                         folds])
 
+"""
 check_suite.add_checks([checks.CorroborateRDGEMMTest(),\
                         ],\
                        ["O", "TransA", "TransB", ("K", "lda"), ("N", "ldb", "ldc"), "M", "FillA", "FillB", "FillC", "RealAlpha", "fold"],\
-                       [["RowMajor"], ["Trans", "NoTrans"], ["Trans", "NoTrans"], [(255, 256), (1024, 1024)], [(255, 256, 256), (1024, 1024, 1024)], [255, 1024], \
+                       [["RowMajor"], ["Trans", "NoTrans"], ["Trans", "NoTrans"], [(255, 256), (512, 512)], [(255, 256, 256), (512, 512, 512)], [255, 512], \
                         ["rand",\
                          ],\
                         ["rand",\
@@ -71,7 +78,7 @@ check_suite.add_checks([checks.CorroborateRDGEMMTest(),\
 check_suite.add_checks([checks.CorroborateRDGEMMTest(),\
                         ],\
                        ["O", "TransA", "TransB", ("K", "ldb"), ("M", "lda", "ldc"), "N", "FillA", "FillB", "FillC", "RealAlpha", "fold"],\
-                       [["ColMajor"], ["Trans", "NoTrans"], ["Trans", "NoTrans"], [(255, 256), (1024, 1024)], [(255, 256, 256), (1024, 1024, 1024)], [255, 1024], \
+                       [["ColMajor"], ["Trans", "NoTrans"], ["Trans", "NoTrans"], [(255, 256), (512, 512)], [(255, 256, 256), (512, 512, 512)], [255, 512], \
                         ["rand",\
                          ],\
                         ["rand",\
@@ -80,7 +87,6 @@ check_suite.add_checks([checks.CorroborateRDGEMMTest(),\
                         [1.0, 2.0],\
                         folds])
 
-"""
 
 check_suite.add_checks([checks.ValidateInternalDSCALETest(),\
                         checks.ValidateInternalSSCALETest()],\

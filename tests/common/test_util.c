@@ -2266,14 +2266,14 @@ double *util_dmat_op(char Order, char TransA, int opM, int opN, double *A, int l
         case 'N':
           for(i = 0; i < opM; i++){
             for(j = 0; j < opN; j++){
-              opA[j * opN + i] = A[j * lda + i];
+              opA[j * opM + i] = A[j * lda + i];
             }
           }
           break;
         default:
           for(i = 0; i < opM; i++){
             for(j = 0; j < opN; j++){
-              opA[j * opN + i] = A[i * lda + j];
+              opA[j * opM + i] = A[i * lda + j];
             }
           }
           break;
@@ -2323,7 +2323,7 @@ double complex *util_zmat_op(char Order, char TransA, int opM, int opN, double c
         case 'N':
           for(i = 0; i < opM; i++){
             for(j = 0; j < opN; j++){
-              opA[j * opN + i] = A[j * lda + i];
+              opA[j * opM + i] = A[j * lda + i];
             }
           }
           break;
@@ -2331,14 +2331,14 @@ double complex *util_zmat_op(char Order, char TransA, int opM, int opN, double c
         case 'T':
           for(i = 0; i < opM; i++){
             for(j = 0; j < opN; j++){
-              opA[j * opN + i] = A[i * lda + j];
+              opA[j * opM + i] = A[i * lda + j];
             }
           }
           break;
         default:
           for(i = 0; i < opM; i++){
             for(j = 0; j < opN; j++){
-              opA[j * opN + i] = conj(A[i * lda + j]);
+              opA[j * opM + i] = conj(A[i * lda + j]);
             }
           }
           break;

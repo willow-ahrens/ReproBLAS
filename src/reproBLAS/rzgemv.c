@@ -5,10 +5,10 @@
 #include <idxdBLAS.h>
 
 void reproBLAS_rzgemv(const int fold, const char Order,
-            const char TransA, const int M, const int N,
-            const void *alpha, const void *A, const int lda,
-            const void *X, const int incX,
-            const void *beta, void *Y, const int incY){
+                      const char TransA, const int M, const int N,
+                      const void *alpha, const void *A, const int lda,
+                      const void *X, const int incX,
+                      const void *beta, void *Y, const int incY){
   double_complex_indexed *YI;
   double betaY[2];
   int i;

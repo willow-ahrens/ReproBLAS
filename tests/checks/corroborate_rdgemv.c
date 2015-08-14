@@ -68,7 +68,7 @@ int corroborate_rdgemv(int fold, char Order, char TransA, int M, int N, double a
   double_indexed *Ires = malloc(opM * incY * idxd_disize(fold));
 
   num_blocks = 1;
-  while (num_blocks < N && num_blocks <= max_num_blocks) {
+  while (num_blocks < opN && num_blocks <= max_num_blocks) {
     memcpy(res, Y, opM * incY * sizeof(double));
     memcpy(Ires, YI, opM * incY * idxd_disize(fold));
     if (num_blocks == 1){

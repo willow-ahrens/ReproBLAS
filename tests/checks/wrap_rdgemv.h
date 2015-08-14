@@ -20,6 +20,7 @@ void wrap_ref_rdgemv(int fold, char Order, char TransA, int M, int N, double alp
   double *opX;
   double_indexed *YI;
   int i;
+  int j;
   switch(TransA){
     case 'n':
     case 'N':
@@ -41,8 +42,8 @@ void wrap_ref_rdgemv(int fold, char Order, char TransA, int M, int N, double alp
       idxd_didconv(fold, Y[i * incY] * beta, YI);
     }
     if(alpha != 0.0){
-      for(i = 0; i < opN; i++){
-        opX[i] = alpha * X[i * incX];
+      for(j = 0; j < opN; j++){
+        opX[j] = alpha * X[j * incX];
       }
       switch(Order){
         case 'r':
@@ -50,7 +51,7 @@ void wrap_ref_rdgemv(int fold, char Order, char TransA, int M, int N, double alp
           idxdBLAS_diddot(fold, opN, opA + i * opN, 1, opX, 1, YI);
           break;
         default:
-          idxdBLAS_diddot(fold, opN, opA + i, opN, opX, 1, YI);
+          idxdBLAS_diddot(fold, opN, opA + i, opM, opX, 1, YI);
           break;
       }
     }
