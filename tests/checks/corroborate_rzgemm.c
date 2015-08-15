@@ -10,13 +10,13 @@
 #include "../common/test_opt.h"
 #include "../common/test_matmat_fill_header.h"
 
-#include "wrap_rdgemm.h"
+#include "wrap_rzgemm.h"
 
 static opt_option max_blocks;
 static opt_option shuffles;
 static opt_option fold;
 
-static void corroborate_rdgemm_options_initialize(void){
+static void corroborate_rzgemm_options_initialize(void){
   max_blocks._int.header.type       = opt_int;
   max_blocks._int.header.short_name = 'B';
   max_blocks._int.header.long_name  = "blocks";
@@ -45,7 +45,7 @@ static void corroborate_rdgemm_options_initialize(void){
   fold._int.value             = DIDEFAULTFOLD;
 }
 
-int corroborate_rdgemm(int fold, char Order, char TransA, char TransB, int M, int N, int K, double alpha, double *A, int lda, double* B, int ldb, double beta, double *C, double_indexed *CI, int ldc, double *ref, int max_num_blocks) {
+int corroborate_rzgemm(int fold, char Order, char TransA, char TransB, int M, int N, int K, double complex *alpha, double complex *A, int lda, double complex *B, int ldb, double complex *beta, double complex *C, double_complex_indexed *CI, int ldc, double complex *ref, int max_num_blocks) {
 
   int i;
   int j;
@@ -53,10 +53,10 @@ int corroborate_rdgemm(int fold, char Order, char TransA, char TransB, int M, in
   int num_blocks = 1;
   int block_K;
 
-  double *res;
-  double_indexed *Ires;
-  double *tmpA;
-  double *tmpB;
+  double complex *res;
+  double_complex_indexed *Ires;
+  double complex *tmpA;
+  double complex *tmpB;
   int CNM;
 
   switch(Order){
@@ -68,15 +68,15 @@ int corroborate_rdgemm(int fold, char Order, char TransA, char TransB, int M, in
       CNM = ldc * N;
       break;
   }
-  res = malloc(CNM * sizeof(double));
-  Ires = malloc(CNM * idxd_disize(fold));
+  res = malloc(CNM * sizeof(double complex));
+  Ires = malloc(CNM * idxd_zisize(fold));
 
   num_blocks = 1;
   while (num_blocks < K && num_blocks <= max_num_blocks) {
     memcpy(res, C, CNM * sizeof(double));
-    memcpy(Ires, CI, CNM * idxd_disize(fold));
+    memcpy(Ires, CI, CNM * idxd_zisize(fold));
     if (num_blocks == 1){
-      wrap_rdgemm(fold, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, res, ldc);
+      wrap_rzgemm(fold, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, res, ldc);
     }else {
       block_K = (K + num_blocks - 1) / num_blocks;
       for (k = 0; k < K; k += block_K) {
@@ -124,17 +124,17 @@ int corroborate_rdgemm(int fold, char Order, char TransA, char TransB, int M, in
             }
             break;
         }
-        idxdBLAS_didgemm(fold, Order, TransA, TransB, M, N, block_K, alpha, tmpA, lda, tmpB, ldb, Ires, ldc);
+        idxdBLAS_zizgemm(fold, Order, TransA, TransB, M, N, block_K, alpha, tmpA, lda, tmpB, ldb, Ires, ldc);
       }
       for(i = 0; i < M; i++){
         for(j = 0; j < N; j++){
           switch(Order){
             case 'r':
             case 'R':
-              res[i * ldc + j] = idxd_ddiconv(fold, Ires + (i * ldc + j) * idxd_dinum(fold));
+              idxd_zziconv(fold, Ires + (i * ldc + j) * idxd_zinum(fold), res + i * ldc + j);
               break;
             default:
-              res[j * ldc + i] = idxd_ddiconv(fold, Ires + (j * ldc + i) * idxd_dinum(fold));
+              idxd_zziconv(fold, Ires + (j * ldc + i) * idxd_zinum(fold), res + j * ldc + i);
               break;
           }
         }
@@ -146,13 +146,13 @@ int corroborate_rdgemm(int fold, char Order, char TransA, char TransB, int M, in
           case 'r':
           case 'R':
             if(res[i * ldc + j] != ref[i * ldc + j]){
-              printf("reproBLAS_rdgemm(A, X, Y)[num_blocks=%d,block_K=%d] = %g != %g\n", num_blocks, block_K, res[i * ldc + j], ref[i * ldc + j]);
+              printf("reproBLAS_rzgemm(A, X, Y)[num_blocks=%d,block_K=%d] = %g + %gi != %g + %gi\n", num_blocks, block_K, creal(res[i * ldc + j]), cimag(res[i * ldc + j]), creal(ref[i * ldc + j]), cimag(ref[i * ldc + j]));
               return 1;
             }
             break;
           default:
             if(res[j * ldc + i] != ref[j * ldc + i]){
-              printf("reproBLAS_rdgemm(A, X, Y)[num_blocks=%d,block_K=%d] = %g != %g\n", num_blocks, block_K, res[j * ldc + i], ref[j * ldc + i]);
+              printf("reproBLAS_rzgemm(A, X, Y)[num_blocks=%d,block_K=%d] = %g + %gi != %g + %gi\n", num_blocks, block_K, creal(res[j * ldc + i]), cimag(res[j * ldc + i]), creal(ref[j * ldc + i]), cimag(ref[j * ldc + i]));
               return 1;
             }
             break;
@@ -165,7 +165,7 @@ int corroborate_rdgemm(int fold, char Order, char TransA, char TransB, int M, in
 }
 
 int matmat_fill_show_help(void){
-  corroborate_rdgemm_options_initialize();
+  corroborate_rzgemm_options_initialize();
 
   opt_show_option(fold);
   opt_show_option(max_blocks);
@@ -176,12 +176,12 @@ int matmat_fill_show_help(void){
 const char* matmat_fill_name(int argc, char** argv){
   static char name_buffer[MAX_LINE];
 
-  corroborate_rdgemm_options_initialize();
+  corroborate_rzgemm_options_initialize();
 
   opt_eval_option(argc, argv, &fold);
   opt_eval_option(argc, argv, &max_blocks);
 
-  snprintf(name_buffer, MAX_LINE * sizeof(char), "Corroborate rdgemm fold=%d", fold._int.value);
+  snprintf(name_buffer, MAX_LINE * sizeof(char), "Corroborate rzgemm fold=%d", fold._int.value);
   return name_buffer;
 }
 
@@ -192,7 +192,7 @@ int matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB
   int i;
   int j;
 
-  corroborate_rdgemm_options_initialize();
+  corroborate_rzgemm_options_initialize();
 
   opt_eval_option(argc, argv, &fold);
   opt_eval_option(argc, argv, &max_blocks);
@@ -210,9 +210,11 @@ int matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB
     break;
   }
 
-  double *A  = util_dmat_alloc(Order, M, K, lda);
-  double *B  = util_dmat_alloc(Order, K, N, ldb);
-  double *C  = util_dmat_alloc(Order, M, N, ldc);
+  double complex *A  = util_zmat_alloc(Order, M, K, lda);
+  double complex *B  = util_zmat_alloc(Order, K, N, ldb);
+  double complex *C  = util_zmat_alloc(Order, M, N, ldc);
+  double complex alpha = RealAlpha + I * ImagAlpha;
+  double complex beta = RealBeta + I * ImagBeta;
   int CNM;
   switch(Order){
     case 'r':
@@ -223,95 +225,117 @@ int matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB
       CNM = ldc * N;
       break;
   }
-  double_indexed *CI = malloc(CNM * idxd_disize(fold._int.value));
+  double_indexed *CI = malloc(CNM * idxd_zisize(fold._int.value));
 
   int *P;
 
-  util_dmat_fill(Order, NTransA, M, K, A, lda, FillA, RealScaleA, ImagScaleA);
-  util_dmat_fill(Order, TransB, K, N, B, ldb, FillB, RealScaleB, ImagScaleB);
-  util_dmat_fill(Order, 'n', M, N, C, ldc, FillC, RealScaleC, ImagScaleC);
+  util_zmat_fill(Order, NTransA, M, K, A, lda, FillA, RealScaleA, ImagScaleA);
+  util_zmat_fill(Order, TransB, K, N, B, ldb, FillB, RealScaleB, ImagScaleB);
+  util_zmat_fill(Order, 'n', M, N, C, ldc, FillC, RealScaleC, ImagScaleC);
   for(i = 0; i < M; i++){
     for(j = 0; j < N; j++){
-      switch(Order){
-        case 'r':
-        case 'R':
-          idxd_didconv(fold._int.value, C[i * ldc + j] * RealBeta, CI + (i * ldc + j) * idxd_dinum(fold._int.value));
-          break;
-        default:
-          idxd_didconv(fold._int.value, C[j * ldc + i] * RealBeta, CI + (j * ldc + i) * idxd_dinum(fold._int.value));
-          break;
+      if(beta == 0.0){
+        switch(Order){
+          case 'r':
+          case 'R':
+            idxd_zizconv(fold._int.value, 0.0, CI + (i * ldc + j) * idxd_zinum(fold._int.value));
+            break;
+          default:
+            idxd_zizconv(fold._int.value, 0.0, CI + (j * ldc + i) * idxd_zinum(fold._int.value));
+            break;
+        }
+      }else if(beta == 1.0){
+        switch(Order){
+          case 'r':
+          case 'R':
+            idxd_zizconv(fold._int.value, C[i * ldc + j], CI + (i * ldc + j) * idxd_zinum(fold._int.value));
+            break;
+          default:
+            idxd_zizconv(fold._int.value, C[j * ldc + i], CI + (j * ldc + i) * idxd_zinum(fold._int.value));
+            break;
+        }
+      }else{
+        switch(Order){
+          case 'r':
+          case 'R':
+            idxd_zizconv(fold._int.value, C[i * ldc + j] * beta, CI + (i * ldc + j) * idxd_zinum(fold._int.value));
+            break;
+          default:
+            idxd_zizconv(fold._int.value, C[j * ldc + i] * beta, CI + (j * ldc + i) * idxd_zinum(fold._int.value));
+            break;
+        }
       }
     }
   }
-  double *ref  = (double*)malloc(CNM * sizeof(double));
+  double complex *ref  = (double complex*)malloc(CNM * sizeof(double complex));
 
   //compute with unpermuted data
-  memcpy(ref, C, CNM * sizeof(double));
+  memcpy(ref, C, CNM * sizeof(double complex));
 
-  wrap_ref_rdgemm(fold._int.value, Order, TransA, TransB, M, N, K, RealAlpha, A, lda, B, ldb, RealBeta, ref, ldc);
+  wrap_ref_rzgemm(fold._int.value, Order, TransA, TransB, M, N, K, &alpha, A, lda, B, ldb, &beta, ref, ldc);
 
-  rc = corroborate_rdgemm(fold._int.value, Order, TransA, TransB, M, N, K, RealAlpha, A, lda, B, ldb, RealBeta, C, CI, ldc, ref, max_blocks._int.value);
+  rc = corroborate_rzgemm(fold._int.value, Order, TransA, TransB, M, N, K, &alpha, A, lda, B, ldb, &beta, C, CI, ldc, ref, max_blocks._int.value);
   if(rc != 0){
     return rc;
   }
 
   P = util_identity_permutation(K);
-  util_dmat_row_reverse(Order, NTransA, M, K, A, lda, P, 1);
-  util_dmat_row_permute(Order, TransB, K, N, B, ldb, P, 1, NULL, 1);
+  util_zmat_row_reverse(Order, NTransA, M, K, A, lda, P, 1);
+  util_zmat_row_permute(Order, TransB, K, N, B, ldb, P, 1, NULL, 1);
   free(P);
 
-  rc = corroborate_rdgemm(fold._int.value, Order, TransA, TransB, M, N, K, RealAlpha, A, lda, B, ldb, RealBeta, C, CI, ldc, ref, max_blocks._int.value);
+  rc = corroborate_rzgemm(fold._int.value, Order, TransA, TransB, M, N, K, &alpha, A, lda, B, ldb, &beta, C, CI, ldc, ref, max_blocks._int.value);
   if(rc != 0){
     return rc;
   }
 
   P = util_identity_permutation(K);
-  util_dmat_row_sort(Order, NTransA, M, K, A, lda, P, 1, util_Increasing, 0);
-  util_dmat_row_permute(Order, TransB, K, N, B, ldb, P, 1, NULL, 1);
+  util_zmat_row_sort(Order, NTransA, M, K, A, lda, P, 1, util_Increasing, 0);
+  util_zmat_row_permute(Order, TransB, K, N, B, ldb, P, 1, NULL, 1);
   free(P);
 
-  rc = corroborate_rdgemm(fold._int.value, Order, TransA, TransB, M, N, K, RealAlpha, A, lda, B, ldb, RealBeta, C, CI, ldc, ref, max_blocks._int.value);
+  rc = corroborate_rzgemm(fold._int.value, Order, TransA, TransB, M, N, K, &alpha, A, lda, B, ldb, &beta, C, CI, ldc, ref, max_blocks._int.value);
   if(rc != 0){
     return rc;
   }
 
   P = util_identity_permutation(K);
-  util_dmat_row_sort(Order, NTransA, M, K, A, lda, P, 1, util_Decreasing, 0);
-  util_dmat_row_permute(Order, TransB, K, N, B, ldb, P, 1, NULL, 1);
+  util_zmat_row_sort(Order, NTransA, M, K, A, lda, P, 1, util_Decreasing, 0);
+  util_zmat_row_permute(Order, TransB, K, N, B, ldb, P, 1, NULL, 1);
   free(P);
 
-  rc = corroborate_rdgemm(fold._int.value, Order, TransA, TransB, M, N, K, RealAlpha, A, lda, B, ldb, RealBeta, C, CI, ldc, ref, max_blocks._int.value);
+  rc = corroborate_rzgemm(fold._int.value, Order, TransA, TransB, M, N, K, &alpha, A, lda, B, ldb, &beta, C, CI, ldc, ref, max_blocks._int.value);
   if(rc != 0){
     return rc;
   }
 
   P = util_identity_permutation(K);
-  util_dmat_row_sort(Order, NTransA, M, K, A, lda, P, 1, util_Increasing_Magnitude, 0);
-  util_dmat_row_permute(Order, TransB, K, N, B, ldb, P, 1, NULL, 1);
+  util_zmat_row_sort(Order, NTransA, M, K, A, lda, P, 1, util_Increasing_Magnitude, 0);
+  util_zmat_row_permute(Order, TransB, K, N, B, ldb, P, 1, NULL, 1);
   free(P);
 
-  rc = corroborate_rdgemm(fold._int.value, Order, TransA, TransB, M, N, K, RealAlpha, A, lda, B, ldb, RealBeta, C, CI, ldc, ref, max_blocks._int.value);
+  rc = corroborate_rzgemm(fold._int.value, Order, TransA, TransB, M, N, K, &alpha, A, lda, B, ldb, &beta, C, CI, ldc, ref, max_blocks._int.value);
   if(rc != 0){
     return rc;
   }
 
   P = util_identity_permutation(K);
-  util_dmat_row_sort(Order, NTransA, M, K, A, lda, P, 1, util_Decreasing_Magnitude, 0);
-  util_dmat_row_permute(Order, TransB, K, N, B, ldb, P, 1, NULL, 1);
+  util_zmat_row_sort(Order, NTransA, M, K, A, lda, P, 1, util_Decreasing_Magnitude, 0);
+  util_zmat_row_permute(Order, TransB, K, N, B, ldb, P, 1, NULL, 1);
   free(P);
 
-  rc = corroborate_rdgemm(fold._int.value, Order, TransA, TransB, M, N, K, RealAlpha, A, lda, B, ldb, RealBeta, C, CI, ldc, ref, max_blocks._int.value);
+  rc = corroborate_rzgemm(fold._int.value, Order, TransA, TransB, M, N, K, &alpha, A, lda, B, ldb, &beta, C, CI, ldc, ref, max_blocks._int.value);
   if(rc != 0){
     return rc;
   }
 
   for(i = 0; i < shuffles._int.value; i++){
     P = util_identity_permutation(K);
-    util_dmat_row_shuffle(Order, NTransA, M, K, A, lda, P, 1);
-    util_dmat_row_permute(Order, TransB, K, N, B, ldb, P, 1, NULL, 1);
+    util_zmat_row_shuffle(Order, NTransA, M, K, A, lda, P, 1);
+    util_zmat_row_permute(Order, TransB, K, N, B, ldb, P, 1, NULL, 1);
     free(P);
 
-    rc = corroborate_rdgemm(fold._int.value, Order, TransA, TransB, M, N, K, RealAlpha, A, lda, B, ldb, RealBeta, C, CI, ldc, ref, max_blocks._int.value);
+    rc = corroborate_rzgemm(fold._int.value, Order, TransA, TransB, M, N, K, &alpha, A, lda, B, ldb, &beta, C, CI, ldc, ref, max_blocks._int.value);
     if(rc != 0){
       return rc;
     }

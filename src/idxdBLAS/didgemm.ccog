@@ -12,11 +12,11 @@ import dataTypes
 from src.common import blockSize
 from scripts import terminal
 
-cog.out(generate.generate(blockSize.BlockSize("dmdgemm", "Y_BLOCK", 1, 128, 128, ["bench_rdgemm_fold_{}_TransB".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
-cog.out(generate.generate(blockSize.BlockSize("dmdgemm", "X_BLOCK", 1, 4 * terminal.get_diendurance(), 4 * terminal.get_diendurance(), ["bench_rdgemm_fold_{}_TransB".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
-cog.out(generate.generate(blockSize.BlockSize("dmdgemm", "YT_BLOCK", 1, 128, 128, ["bench_rdgemm_fold_{}_TransA".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
-cog.out(generate.generate(blockSize.BlockSize("dmdgemm", "XT_BLOCK", 1, 4 * terminal.get_diendurance(), 4 * terminal.get_diendurance(), ["bench_rdgemm_fold_{}_TransA".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
-cog.out(generate.generate(blockSize.BlockSize("dmdgemm", "T_BLOCK", 1, 32, 32, ["bench_rdgemm_fold_{}_TransA".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("didgemm", "Y_BLOCK", 1, 128, 128, ["bench_rdgemm_fold_{}_TransB".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("didgemm", "X_BLOCK", 1, 4 * terminal.get_diendurance(), 4 * terminal.get_diendurance(), ["bench_rdgemm_fold_{}_TransB".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("didgemm", "YT_BLOCK", 1, 128, 128, ["bench_rdgemm_fold_{}_TransA".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("didgemm", "XT_BLOCK", 1, 4 * terminal.get_diendurance(), 4 * terminal.get_diendurance(), ["bench_rdgemm_fold_{}_TransA".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("didgemm", "T_BLOCK", 1, 32, 32, ["bench_rdgemm_fold_{}_TransA".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
 ]]]*/
 #define Y_BLOCK 128
 #define X_BLOCK 8192
