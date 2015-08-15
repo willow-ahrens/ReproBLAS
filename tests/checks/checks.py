@@ -564,6 +564,11 @@ class CorroborateRDGEMMTest(CheckTest):
   executable = "tests/checks/corroborate_rdgemm"
   name = "corroborate_rdgemm"
 
+class CorroborateRZGEMMTest(CheckTest):
+  base_flags = ""
+  executable = "tests/checks/corroborate_rzgemm"
+  name = "corroborate_rzgemm"
+
 class ValidateInternalDSCALETest(CheckTest):
   base_flags = ""
   executable = "tests/checks/validate_internal_dscale"

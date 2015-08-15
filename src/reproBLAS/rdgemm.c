@@ -21,14 +21,14 @@ void reproBLAS_rdgemm(const int fold, const char Order, const char TransA, const
   switch(Order){
     case 'r':
     case 'R':
-      if(beta == 1.0){
+      if(beta == 0.0){
+        memset(CI, 0, M * N * idxd_disize(fold));
+      }else if(beta == 1.0){
         for(i = 0; i < M; i++){
           for(j = 0; j < N; j++){
             idxd_didconv(fold, C[i * ldc + j], CI + (i * N + j) * idxd_dinum(fold));
           }
         }
-      }else if(beta == 0.0){
-        memset(CI, 0.0, M * N * idxd_disize(fold));
       }else{
         for(i = 0; i < M; i++){
           for(j = 0; j < N; j++){
@@ -44,14 +44,14 @@ void reproBLAS_rdgemm(const int fold, const char Order, const char TransA, const
       }
       break;
     default:
-      if(beta == 1.0){
+      if(beta == 0.0){
+        memset(CI, 0, M * N * idxd_disize(fold));
+      }else if(beta == 1.0){
         for(j = 0; j < N; j++){
           for(i = 0; i < M; i++){
             idxd_didconv(fold, C[j * ldc + i], CI + (j * M + i) * idxd_dinum(fold));
           }
         }
-      }else if(beta == 0.0){
-        memset(CI, 0.0, M * N * idxd_disize(fold));
       }else{
         for(j = 0; j < N; j++){
           for(i = 0; i < M; i++){

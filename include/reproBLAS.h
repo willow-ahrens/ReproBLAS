@@ -32,6 +32,11 @@ void reproBLAS_rzgemv(const int fold, const char Order, const char TransA,
             const void *alpha, const void *A, const int lda,
             const void *X, const int incX,
             const void *beta, void *Y, const int incY);
+void reproBLAS_rzgemm(const int fold, const char Order, const char TransA, const char TransB,
+            const int M, const int N, const int K,
+            const void *alpha, const void *A, const int lda,
+            const void *B, const int ldb,
+            const void *beta, void *C, const int ldc);
 
 void reproBLAS_rcsum_sub(const int fold, const int N, const void* X, const int incX, void *sum);
 float reproBLAS_rscasum(const int fold, const int N, const void* X, const int incX);

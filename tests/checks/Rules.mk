@@ -9,6 +9,7 @@ TARGETS := validate_internal_damax$(EXE) validate_internal_zamax$(EXE) validate_
            corroborate_rdgemv$(EXE) \
            corroborate_rdgemm$(EXE) \
            corroborate_rzgemv$(EXE) \
+           corroborate_rzgemm$(EXE) \
 
 SUBDIRS :=
 
@@ -42,3 +43,4 @@ verify_sicssq$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) verify_sicssq.o
 corroborate_rdgemv$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) corroborate_rdgemv.o
 corroborate_rdgemm$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) corroborate_rdgemm.o
 corroborate_rzgemv$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) corroborate_rzgemv.o
+corroborate_rzgemm$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) corroborate_rzgemm.o

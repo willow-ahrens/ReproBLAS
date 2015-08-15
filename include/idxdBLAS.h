@@ -81,6 +81,12 @@ void idxdBLAS_zizgemv(const int fold, const char Order, const char TransA,
              const void *alpha, const void *A, const int lda,
              const void *X, const int incX,
              double_complex_indexed *Y, const int incY);
+void idxdBLAS_zizgemm(const int fold, const char Order,
+             const char TransA, const char TransB,
+             const int M, const int N, const int K,
+             const void *alpha, const void *A, const int lda,
+             const void *B, const int ldb,
+             double_complex_indexed *C, const int ldc);
 
 void idxdBLAS_sissum(const int fold, const int N, const float *X, const int incX, float_indexed *Y);
 void idxdBLAS_smssum(const int fold, const int N, const float *X, const int incX, float *priY, const int incpriY, float *carY, const int inccarY);
