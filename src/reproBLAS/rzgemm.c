@@ -34,7 +34,7 @@ void reproBLAS_rzgemm(const int fold, const char Order, const char TransA, const
         for(i = 0; i < M; i++){
           for(j = 0; j < N; j++){
             betaC[0] = ((double*)C)[2 * (i * ldc + j)] * ((double*)beta)[0] - ((double*)C)[2 * (i * ldc + j) + 1] * ((double*)beta)[1],
-            betaC[1] = ((double*)C)[2 * (i * ldc + j) + 1] * ((double*)beta)[1] + ((double*)C)[2 * (i * ldc + j) + 1] * ((double*)beta)[0],
+            betaC[1] = ((double*)C)[2 * (i * ldc + j)] * ((double*)beta)[1] + ((double*)C)[2 * (i * ldc + j) + 1] * ((double*)beta)[0],
             idxd_zizconv(fold, betaC, CI + (i * N + j) * idxd_zinum(fold));
           }
         }
@@ -59,7 +59,7 @@ void reproBLAS_rzgemm(const int fold, const char Order, const char TransA, const
         for(j = 0; j < N; j++){
           for(i = 0; i < M; i++){
             betaC[0] = ((double*)C)[2 * (j * ldc + i)] * ((double*)beta)[0] - ((double*)C)[2 * (j * ldc + i) + 1] * ((double*)beta)[1],
-            betaC[1] = ((double*)C)[2 * (j * ldc + i) + 1] * ((double*)beta)[1] + ((double*)C)[2 * (j * ldc + i) + 1] * ((double*)beta)[0],
+            betaC[1] = ((double*)C)[2 * (j * ldc + i)] * ((double*)beta)[1] + ((double*)C)[2 * (j * ldc + i) + 1] * ((double*)beta)[0],
             idxd_zizconv(fold, betaC, CI + (j * M + i) * idxd_zinum(fold));
           }
         }

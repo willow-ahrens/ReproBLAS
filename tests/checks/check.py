@@ -38,8 +38,8 @@ for i in range(DBL_MANT_DIG):
 check_suite.add_checks([checks.CorroborateRDGEMVTest(),\
                         checks.CorroborateRZGEMVTest(),\
                         ],\
-                       ["O", "T", ("N", "lda"), "M", ("incX", "incY"), "FillA", "FillX", "FillY", ("RealAlpha", "ImagAlpha"), ("RealBeta", "ImagBeta"), "fold"],\
-                       [["RowMajor"], ["Trans", "NoTrans"], [(256, 256), (511, 512)], [256, 512], list(zip(incs, incs)),\
+                       ["O", "T", "M", "N", "lda", ("incX", "incY"), "FillA", "FillX", "FillY", ("RealAlpha", "ImagAlpha"), ("RealBeta", "ImagBeta"), "fold"],\
+                       [["RowMajor", "ColMajor"], ["Trans", "NoTrans"], [255, 512], [255, 512], [0, -15], list(zip(incs, incs)),\
                         ["rand",\
                          ],\
                         ["rand",\
@@ -49,39 +49,13 @@ check_suite.add_checks([checks.CorroborateRDGEMVTest(),\
                         [(0.0, 0.0), (1.0, 0.0), (2.0, 2.0)],\
                         folds])
 
-check_suite.add_checks([checks.CorroborateRDGEMVTest(),\
-                        checks.CorroborateRZGEMVTest(),\
-                        ],\
-                       ["O", "T", ("M", "lda"), "N", ("incX", "incY"), "FillA", "FillX", "FillY", ("RealAlpha", "ImagAlpha"), ("RealBeta", "ImagBeta"), "fold"],\
-                       [["ColMajor"], ["Trans", "NoTrans"], [(256, 256), (511, 512)], [256, 512], list(zip(incs, incs)),\
-                        ["rand",\
-                         ],\
-                        ["rand",\
-                         ],\
-                        ["rand"],\
-                        [(0.0, 0.0), (1.0, 0.0), (2.0, 2.0)],\
-                        [(0.0, 0.0), (1.0, 0.0), (2.0, 2.0)],\
-                        folds])
 
 """
                         #checks.CorroborateRZGEMMTest(),\
-check_suite.add_checks([checks.CorroborateRDGEMMTest(),\
+check_suite.add_checks([checks.CorroborateRZGEMMTest(),\
                         ],\
-                       ["O", "TransA", "TransB", ("K", "lda"), ("N", "ldb", "ldc"), "M", "FillA", "FillB", "FillC", ("RealAlpha", "ImagAlpha"), ("RealBeta", "ImagBeta"), "fold"],\
-                       [["RowMajor"], ["Trans", "NoTrans"], ["Trans", "NoTrans"], [(64, 64), (255, 256)], [(64, 64, 64), (255, 256, 256)], [64, 256], \
-                        ["rand",\
-                         ],\
-                        ["rand",\
-                         ],\
-                        ["rand"],\
-                        [(0.0, 0.0), (1.0, 0.0), (2.0, 2.0)],\
-                        [(0.0, 0.0), (1.0, 0.0), (2.0, 2.0)],\
-                        folds])
-
-check_suite.add_checks([checks.CorroborateRDGEMMTest(),\
-                        ],\
-                       ["O", "TransA", "TransB", ("K", "ldb"), ("M", "lda", "ldc"), "N", "FillA", "FillB", "FillC", ("RealAlpha", "ImagAlpha"), ("RealBeta", "ImagBeta"), "fold"],\
-                       [["ColMajor"], ["Trans", "NoTrans"], ["Trans", "NoTrans"], [(64, 64), (255, 256)], [(64, 64, 64), (255, 256, 256)], [64, 256], \
+                       ["O", "TransA", "TransB", "M", "N", "K", ("lda", "ldb", "ldc"), "FillA", "FillB", "FillC", ("RealAlpha", "ImagAlpha"), ("RealBeta", "ImagBeta"), "fold"],\
+                       [["RowMajor", "ColMajor"], ["ConjTrans", "Trans", "NoTrans"], ["ConjTrans", "Trans", "NoTrans"], [64, 255], [64, 255], [64, 255], [(0, 0, 0), (-63, -63, -63)], \
                         ["rand",\
                          ],\
                         ["rand",\

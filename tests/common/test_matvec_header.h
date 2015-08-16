@@ -64,7 +64,7 @@ static void matvec_options_initialize(void){
   lda._int.header.long_name  = "lda";
   lda._int.header.help       = "leading A size (0 for auto)";
   lda._int.required          = 0;
-  lda._int.min               = 0;
+  lda._int.min               = INT_MIN;
   lda._int.max               = INT_MAX;
   lda._int.value             = 0;
 
@@ -132,19 +132,21 @@ int test(int argc, char** argv){
   switch(Order._named.names[Order._named.value][0]){
     case 'r':
     case 'R':
-      if(lda._int.value == 0){
+      if(lda._int.value < 0){
+        lda._int.value = N._int.value - lda._int.value;
+      }else if(lda._int.value == 0){
         lda._int.value = N._int.value;
-      }
-      if(N._int.value > lda._int.value){
+      }else if(N._int.value > lda._int.value){
         fprintf(stderr, "ReproBLAS error: row major matrix arguments inconsistent N=%d, lda=%d\n", N._int.value, lda._int.value);
         return 125;
       }
       break;
     default:
-      if(lda._int.value == 0){
+      if(lda._int.value < 0){
+        lda._int.value = M._int.value - lda._int.value;
+      }else if(lda._int.value == 0){
         lda._int.value = M._int.value;
-      }
-      if(M._int.value > lda._int.value){
+      }else if(M._int.value > lda._int.value){
         fprintf(stderr, "ReproBLAS error: column major matrix arguments inconsistent M=%d, lda=%d\n", M._int.value, lda._int.value);
         return 125;
       }

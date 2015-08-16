@@ -73,7 +73,7 @@ int corroborate_rzgemm(int fold, char Order, char TransA, char TransB, int M, in
 
   num_blocks = 1;
   while (num_blocks < K && num_blocks <= max_num_blocks) {
-    memcpy(res, C, CNM * sizeof(double));
+    memcpy(res, C, CNM * sizeof(double complex));
     memcpy(Ires, CI, CNM * idxd_zisize(fold));
     if (num_blocks == 1){
       wrap_rzgemm(fold, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, res, ldc);
