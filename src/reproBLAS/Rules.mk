@@ -11,6 +11,6 @@ libreproblas.a_DEPS = $$(LIBIDXD) $$(LIBIDXDBLAS)                        \
                       rssum.o rsasum.o rsnrm2.o rsdot.o                        \
                       rcsum_sub.o rscasum.o rscnrm2.o rcdotc_sub.o rcdotu_sub.o\
                       dsum.o dasum.o dnrm2.o ddot.o dgemv.o dgemm.o              \
-                      zsum_sub.o dzasum.o dznrm2.o zdotc_sub.o zdotu_sub.o zgemv.o \
+                      zsum_sub.o dzasum.o dznrm2.o zdotc_sub.o zdotu_sub.o zgemv.o zgemm.o \
                       ssum.o sasum.o snrm2.o sdot.o                        \
                       csum_sub.o scasum.o scnrm2.o cdotc_sub.o cdotu_sub.o\

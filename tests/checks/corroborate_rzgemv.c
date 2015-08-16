@@ -117,7 +117,6 @@ int corroborate_rzgemv(int fold, char Order, char TransA, int M, int N, double c
     }
     for(i = 0; i < opM; i++){
       if(res[i * incY] != ref[i * incY]){
-        printf("i %d\n", i);
         printf("reproBLAS_rzgemv(A, X, Y)[num_blocks=%d,block_opN=%d] = %g + %gi != %g + %gi\n", num_blocks, block_opN, creal(res[i * incY]), cimag(res[i * incY]), creal(ref[i * incY]), cimag(ref[i * incY]));
         return 1;
       }

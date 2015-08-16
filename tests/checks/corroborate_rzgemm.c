@@ -131,10 +131,10 @@ int corroborate_rzgemm(int fold, char Order, char TransA, char TransB, int M, in
           switch(Order){
             case 'r':
             case 'R':
-              idxd_zziconv(fold, Ires + (i * ldc + j) * idxd_zinum(fold), res + i * ldc + j);
+              idxd_zziconv_sub(fold, Ires + (i * ldc + j) * idxd_zinum(fold), res + i * ldc + j);
               break;
             default:
-              idxd_zziconv(fold, Ires + (j * ldc + i) * idxd_zinum(fold), res + j * ldc + i);
+              idxd_zziconv_sub(fold, Ires + (j * ldc + i) * idxd_zinum(fold), res + j * ldc + i);
               break;
           }
         }
@@ -200,19 +200,42 @@ int matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB
 
   util_random_seed();
   char NTransA;
+  int opAM;
+  int opAK;
+  int opBK;
+  int opBN;
+
   switch(TransA){
     case 'n':
     case 'N':
-      NTransA = 'T';
-    break;
+      opAM = M;
+      opAK = K;
+      NTransA = 't';
+      break;
     default:
-      NTransA = 'N';
-    break;
+      opAM = K;
+      opAK = M;
+      NTransA = 'n';
+      break;
   }
 
-  double complex *A  = util_zmat_alloc(Order, M, K, lda);
-  double complex *B  = util_zmat_alloc(Order, K, N, ldb);
+  switch(TransB){
+    case 'n':
+    case 'N':
+      opBK = K;
+      opBN = N;
+      break;
+    default:
+      opBK = N;
+      opBN = K;
+      break;
+  }
+
+
+  double complex *A  = util_zmat_alloc(Order, opAM, opAK, lda);
+  double complex *B  = util_zmat_alloc(Order, opBK, opBN, ldb);
   double complex *C  = util_zmat_alloc(Order, M, N, ldc);
+  double complex betaC;
   double complex alpha = RealAlpha + I * ImagAlpha;
   double complex beta = RealBeta + I * ImagBeta;
   int CNM;
@@ -225,12 +248,12 @@ int matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB
       CNM = ldc * N;
       break;
   }
-  double_indexed *CI = malloc(CNM * idxd_zisize(fold._int.value));
+  double_complex_indexed *CI = malloc(CNM * idxd_zisize(fold._int.value));
 
   int *P;
 
-  util_zmat_fill(Order, NTransA, M, K, A, lda, FillA, RealScaleA, ImagScaleA);
-  util_zmat_fill(Order, TransB, K, N, B, ldb, FillB, RealScaleB, ImagScaleB);
+  util_zmat_fill(Order, NTransA, opAM, opAK, A, lda, FillA, RealScaleA, ImagScaleA);
+  util_zmat_fill(Order, TransB, opBK, opBN, B, ldb, FillB, RealScaleB, ImagScaleB);
   util_zmat_fill(Order, 'n', M, N, C, ldc, FillC, RealScaleC, ImagScaleC);
   for(i = 0; i < M; i++){
     for(j = 0; j < N; j++){
@@ -238,30 +261,32 @@ int matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB
         switch(Order){
           case 'r':
           case 'R':
-            idxd_zizconv(fold._int.value, 0.0, CI + (i * ldc + j) * idxd_zinum(fold._int.value));
+            idxd_zisetzero(fold._int.value, CI + (i * ldc + j) * idxd_zinum(fold._int.value));
             break;
           default:
-            idxd_zizconv(fold._int.value, 0.0, CI + (j * ldc + i) * idxd_zinum(fold._int.value));
+            idxd_zisetzero(fold._int.value, CI + (j * ldc + i) * idxd_zinum(fold._int.value));
             break;
         }
       }else if(beta == 1.0){
         switch(Order){
           case 'r':
           case 'R':
-            idxd_zizconv(fold._int.value, C[i * ldc + j], CI + (i * ldc + j) * idxd_zinum(fold._int.value));
+            idxd_zizconv(fold._int.value, C + i * ldc + j, CI + (i * ldc + j) * idxd_zinum(fold._int.value));
             break;
           default:
-            idxd_zizconv(fold._int.value, C[j * ldc + i], CI + (j * ldc + i) * idxd_zinum(fold._int.value));
+            idxd_zizconv(fold._int.value, C + j * ldc + i, CI + (j * ldc + i) * idxd_zinum(fold._int.value));
             break;
         }
       }else{
         switch(Order){
           case 'r':
           case 'R':
-            idxd_zizconv(fold._int.value, C[i * ldc + j] * beta, CI + (i * ldc + j) * idxd_zinum(fold._int.value));
+            betaC = C[i * ldc + j] * beta;
+            idxd_zizconv(fold._int.value, &betaC, CI + (i * ldc + j) * idxd_zinum(fold._int.value));
             break;
           default:
-            idxd_zizconv(fold._int.value, C[j * ldc + i] * beta, CI + (j * ldc + i) * idxd_zinum(fold._int.value));
+            betaC = C[j * ldc + i] * beta;
+            idxd_zizconv(fold._int.value, &betaC, CI + (j * ldc + i) * idxd_zinum(fold._int.value));
             break;
         }
       }
@@ -280,8 +305,8 @@ int matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB
   }
 
   P = util_identity_permutation(K);
-  util_zmat_row_reverse(Order, NTransA, M, K, A, lda, P, 1);
-  util_zmat_row_permute(Order, TransB, K, N, B, ldb, P, 1, NULL, 1);
+  util_zmat_row_reverse(Order, NTransA, opAM, opAK, A, lda, P, 1);
+  util_zmat_row_permute(Order, TransB, opBK, opBN, B, ldb, P, 1, NULL, 1);
   free(P);
 
   rc = corroborate_rzgemm(fold._int.value, Order, TransA, TransB, M, N, K, &alpha, A, lda, B, ldb, &beta, C, CI, ldc, ref, max_blocks._int.value);
@@ -290,8 +315,8 @@ int matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB
   }
 
   P = util_identity_permutation(K);
-  util_zmat_row_sort(Order, NTransA, M, K, A, lda, P, 1, util_Increasing, 0);
-  util_zmat_row_permute(Order, TransB, K, N, B, ldb, P, 1, NULL, 1);
+  util_zmat_row_sort(Order, NTransA, opAM, opAK, A, lda, P, 1, util_Increasing, 0);
+  util_zmat_row_permute(Order, TransB, opBK, opBN, B, ldb, P, 1, NULL, 1);
   free(P);
 
   rc = corroborate_rzgemm(fold._int.value, Order, TransA, TransB, M, N, K, &alpha, A, lda, B, ldb, &beta, C, CI, ldc, ref, max_blocks._int.value);
@@ -300,8 +325,8 @@ int matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB
   }
 
   P = util_identity_permutation(K);
-  util_zmat_row_sort(Order, NTransA, M, K, A, lda, P, 1, util_Decreasing, 0);
-  util_zmat_row_permute(Order, TransB, K, N, B, ldb, P, 1, NULL, 1);
+  util_zmat_row_sort(Order, NTransA, opAM, opAK, A, lda, P, 1, util_Decreasing, 0);
+  util_zmat_row_permute(Order, TransB, opBK, opBN, B, ldb, P, 1, NULL, 1);
   free(P);
 
   rc = corroborate_rzgemm(fold._int.value, Order, TransA, TransB, M, N, K, &alpha, A, lda, B, ldb, &beta, C, CI, ldc, ref, max_blocks._int.value);
@@ -310,8 +335,8 @@ int matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB
   }
 
   P = util_identity_permutation(K);
-  util_zmat_row_sort(Order, NTransA, M, K, A, lda, P, 1, util_Increasing_Magnitude, 0);
-  util_zmat_row_permute(Order, TransB, K, N, B, ldb, P, 1, NULL, 1);
+  util_zmat_row_sort(Order, NTransA, opAM, opAK, A, lda, P, 1, util_Increasing_Magnitude, 0);
+  util_zmat_row_permute(Order, TransB, opBK, opBN, B, ldb, P, 1, NULL, 1);
   free(P);
 
   rc = corroborate_rzgemm(fold._int.value, Order, TransA, TransB, M, N, K, &alpha, A, lda, B, ldb, &beta, C, CI, ldc, ref, max_blocks._int.value);
@@ -320,8 +345,8 @@ int matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB
   }
 
   P = util_identity_permutation(K);
-  util_zmat_row_sort(Order, NTransA, M, K, A, lda, P, 1, util_Decreasing_Magnitude, 0);
-  util_zmat_row_permute(Order, TransB, K, N, B, ldb, P, 1, NULL, 1);
+  util_zmat_row_sort(Order, NTransA, opAM, opAK, A, lda, P, 1, util_Decreasing_Magnitude, 0);
+  util_zmat_row_permute(Order, TransB, opBK, opBN, B, ldb, P, 1, NULL, 1);
   free(P);
 
   rc = corroborate_rzgemm(fold._int.value, Order, TransA, TransB, M, N, K, &alpha, A, lda, B, ldb, &beta, C, CI, ldc, ref, max_blocks._int.value);
@@ -331,8 +356,8 @@ int matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB
 
   for(i = 0; i < shuffles._int.value; i++){
     P = util_identity_permutation(K);
-    util_zmat_row_shuffle(Order, NTransA, M, K, A, lda, P, 1);
-    util_zmat_row_permute(Order, TransB, K, N, B, ldb, P, 1, NULL, 1);
+    util_zmat_row_shuffle(Order, NTransA, opAM, opAK, A, lda, P, 1);
+    util_zmat_row_permute(Order, TransB, opBK, opBN, B, ldb, P, 1, NULL, 1);
     free(P);
 
     rc = corroborate_rzgemm(fold._int.value, Order, TransA, TransB, M, N, K, &alpha, A, lda, B, ldb, &beta, C, CI, ldc, ref, max_blocks._int.value);

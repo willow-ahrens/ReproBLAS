@@ -8,6 +8,7 @@
 #include <reproBLAS.h>
 
 #include "../common/test_opt.h"
+#include "../common/test_BLAS.h"
 #include "../common/test_matmat_fill_header.h"
 
 #include "wrap_rdgemm.h"
@@ -200,18 +201,39 @@ int matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB
 
   util_random_seed();
   char NTransA;
+  int opAM;
+  int opAK;
+  int opBK;
+  int opBN;
+
   switch(TransA){
     case 'n':
     case 'N':
-      NTransA = 'T';
-    break;
+      opAM = M;
+      opAK = K;
+      NTransA = 't';
+      break;
     default:
-      NTransA = 'N';
-    break;
+      opAM = K;
+      opAK = M;
+      NTransA = 'n';
+      break;
   }
 
-  double *A  = util_dmat_alloc(Order, M, K, lda);
-  double *B  = util_dmat_alloc(Order, K, N, ldb);
+  switch(TransB){
+    case 'n':
+    case 'N':
+      opBK = K;
+      opBN = N;
+      break;
+    default:
+      opBK = N;
+      opBN = K;
+      break;
+  }
+
+  double *A  = util_dmat_alloc(Order, opAM, opAK, lda);
+  double *B  = util_dmat_alloc(Order, opBK, opBN, ldb);
   double *C  = util_dmat_alloc(Order, M, N, ldc);
   int CNM;
   switch(Order){
@@ -227,8 +249,8 @@ int matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB
 
   int *P;
 
-  util_dmat_fill(Order, NTransA, M, K, A, lda, FillA, RealScaleA, ImagScaleA);
-  util_dmat_fill(Order, TransB, K, N, B, ldb, FillB, RealScaleB, ImagScaleB);
+  util_dmat_fill(Order, NTransA, opAM, opAK, A, lda, FillA, RealScaleA, ImagScaleA);
+  util_dmat_fill(Order, TransB, opBK, opBN, B, ldb, FillB, RealScaleB, ImagScaleB);
   util_dmat_fill(Order, 'n', M, N, C, ldc, FillC, RealScaleC, ImagScaleC);
   for(i = 0; i < M; i++){
     for(j = 0; j < N; j++){
@@ -256,8 +278,8 @@ int matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB
   }
 
   P = util_identity_permutation(K);
-  util_dmat_row_reverse(Order, NTransA, M, K, A, lda, P, 1);
-  util_dmat_row_permute(Order, TransB, K, N, B, ldb, P, 1, NULL, 1);
+  util_dmat_row_reverse(Order, NTransA, opAM, opAK, A, lda, P, 1);
+  util_dmat_row_permute(Order, TransB, opBK, opBN, B, ldb, P, 1, NULL, 1);
   free(P);
 
   rc = corroborate_rdgemm(fold._int.value, Order, TransA, TransB, M, N, K, RealAlpha, A, lda, B, ldb, RealBeta, C, CI, ldc, ref, max_blocks._int.value);
@@ -266,8 +288,8 @@ int matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB
   }
 
   P = util_identity_permutation(K);
-  util_dmat_row_sort(Order, NTransA, M, K, A, lda, P, 1, util_Increasing, 0);
-  util_dmat_row_permute(Order, TransB, K, N, B, ldb, P, 1, NULL, 1);
+  util_dmat_row_sort(Order, NTransA, opAM, opAK, A, lda, P, 1, util_Increasing, 0);
+  util_dmat_row_permute(Order, TransB, opBK, opBN, B, ldb, P, 1, NULL, 1);
   free(P);
 
   rc = corroborate_rdgemm(fold._int.value, Order, TransA, TransB, M, N, K, RealAlpha, A, lda, B, ldb, RealBeta, C, CI, ldc, ref, max_blocks._int.value);
@@ -276,8 +298,8 @@ int matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB
   }
 
   P = util_identity_permutation(K);
-  util_dmat_row_sort(Order, NTransA, M, K, A, lda, P, 1, util_Decreasing, 0);
-  util_dmat_row_permute(Order, TransB, K, N, B, ldb, P, 1, NULL, 1);
+  util_dmat_row_sort(Order, NTransA, opAM, opAK, A, lda, P, 1, util_Decreasing, 0);
+  util_dmat_row_permute(Order, TransB, opBK, opBN, B, ldb, P, 1, NULL, 1);
   free(P);
 
   rc = corroborate_rdgemm(fold._int.value, Order, TransA, TransB, M, N, K, RealAlpha, A, lda, B, ldb, RealBeta, C, CI, ldc, ref, max_blocks._int.value);
@@ -286,8 +308,8 @@ int matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB
   }
 
   P = util_identity_permutation(K);
-  util_dmat_row_sort(Order, NTransA, M, K, A, lda, P, 1, util_Increasing_Magnitude, 0);
-  util_dmat_row_permute(Order, TransB, K, N, B, ldb, P, 1, NULL, 1);
+  util_dmat_row_sort(Order, NTransA, opAM, opAK, A, lda, P, 1, util_Increasing_Magnitude, 0);
+  util_dmat_row_permute(Order, TransB, opBK, opBN, B, ldb, P, 1, NULL, 1);
   free(P);
 
   rc = corroborate_rdgemm(fold._int.value, Order, TransA, TransB, M, N, K, RealAlpha, A, lda, B, ldb, RealBeta, C, CI, ldc, ref, max_blocks._int.value);
@@ -296,8 +318,8 @@ int matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB
   }
 
   P = util_identity_permutation(K);
-  util_dmat_row_sort(Order, NTransA, M, K, A, lda, P, 1, util_Decreasing_Magnitude, 0);
-  util_dmat_row_permute(Order, TransB, K, N, B, ldb, P, 1, NULL, 1);
+  util_dmat_row_sort(Order, NTransA, opAM, opAK, A, lda, P, 1, util_Decreasing_Magnitude, 0);
+  util_dmat_row_permute(Order, TransB, opBK, opBN, B, ldb, P, 1, NULL, 1);
   free(P);
 
   rc = corroborate_rdgemm(fold._int.value, Order, TransA, TransB, M, N, K, RealAlpha, A, lda, B, ldb, RealBeta, C, CI, ldc, ref, max_blocks._int.value);
@@ -307,8 +329,8 @@ int matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB
 
   for(i = 0; i < shuffles._int.value; i++){
     P = util_identity_permutation(K);
-    util_dmat_row_shuffle(Order, NTransA, M, K, A, lda, P, 1);
-    util_dmat_row_permute(Order, TransB, K, N, B, ldb, P, 1, NULL, 1);
+    util_dmat_row_shuffle(Order, NTransA, opAM, opAK, A, lda, P, 1);
+    util_dmat_row_permute(Order, TransB, opBK, opBN, B, ldb, P, 1, NULL, 1);
     free(P);
 
     rc = corroborate_rdgemm(fold._int.value, Order, TransA, TransB, M, N, K, RealAlpha, A, lda, B, ldb, RealBeta, C, CI, ldc, ref, max_blocks._int.value);

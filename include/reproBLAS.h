@@ -74,6 +74,11 @@ void reproBLAS_zgemv(const char Order, const char TransA,
             const void *alpha, const void *A, const int lda,
             const void *X, const int incX,
             const void *beta, void *Y, const int incY);
+void reproBLAS_zgemm(const char Order, const char TransA, const char TransB,
+            const int M, const int N, const int K,
+            const void *alpha, const void *A, const int lda,
+            const void *B, const int ldb,
+            const void *beta, void *C, const int ldc);
 
 void reproBLAS_csum_sub(const int N, const void* X, const int incX, void *sum);
 float reproBLAS_scasum(const int N, const void* X, const int incX);

@@ -162,19 +162,46 @@ int test(int argc, char** argv){
   switch(Order._named.names[Order._named.value][0]){
     case 'r':
     case 'R':
-      if(lda._int.value == 0){
-        lda._int.value = K._int.value;
+      switch(TransA._named.names[TransA._named.value][0]){
+        case 'n':
+        case 'N':
+          if(lda._int.value == 0){
+            lda._int.value = K._int.value;
+          }
+          if(K._int.value > lda._int.value){
+            fprintf(stderr, "ReproBLAS error: row major matrix arguments inconsistent K=%d, lda=%d\n", K._int.value, lda._int.value);
+            return 125;
+          }
+          break;
+        default:
+          if(lda._int.value == 0){
+            lda._int.value = M._int.value;
+          }
+          if(M._int.value > lda._int.value){
+            fprintf(stderr, "ReproBLAS error: row major matrix arguments inconsistent M=%d, lda=%d\n", M._int.value, lda._int.value);
+            return 125;
+          }
+          break;
       }
-      if(K._int.value > lda._int.value){
-        fprintf(stderr, "ReproBLAS error: row major matrix arguments inconsistent K=%d, lda=%d\n", K._int.value, lda._int.value);
-        return 125;
-      }
-      if(ldb._int.value == 0){
-        ldb._int.value = N._int.value;
-      }
-      if(N._int.value > ldb._int.value){
-        fprintf(stderr, "ReproBLAS error: row major matrix arguments inconsistent N=%d, ldb=%d\n", N._int.value, ldb._int.value);
-        return 125;
+      switch(TransB._named.names[TransB._named.value][0]){
+        case 'n':
+        case 'N':
+          if(ldb._int.value == 0){
+            ldb._int.value = N._int.value;
+          }
+          if(N._int.value > ldb._int.value){
+            fprintf(stderr, "ReproBLAS error: row major matrix arguments inconsistent N=%d, ldb=%d\n", N._int.value, ldb._int.value);
+            return 125;
+          }
+        default:
+          if(ldb._int.value == 0){
+            ldb._int.value = K._int.value;
+          }
+          if(K._int.value > ldb._int.value){
+            fprintf(stderr, "ReproBLAS error: row major matrix arguments inconsistent K=%d, ldb=%d\n", K._int.value, ldb._int.value);
+            return 125;
+          }
+          break;
       }
       if(ldc._int.value == 0){
         ldc._int.value = N._int.value;
@@ -185,19 +212,46 @@ int test(int argc, char** argv){
       }
       break;
     default:
-      if(lda._int.value == 0){
-        lda._int.value = M._int.value;
+      switch(TransA._named.names[TransA._named.value][0]){
+        case 'n':
+        case 'N':
+          if(lda._int.value == 0){
+            lda._int.value = M._int.value;
+          }
+          if(M._int.value > lda._int.value){
+            fprintf(stderr, "ReproBLAS error: row major matrix arguments inconsistent M=%d, lda=%d\n", M._int.value, lda._int.value);
+            return 125;
+          }
+          break;
+        default:
+          if(lda._int.value == 0){
+            lda._int.value = K._int.value;
+          }
+          if(K._int.value > lda._int.value){
+            fprintf(stderr, "ReproBLAS error: row major matrix arguments inconsistent K=%d, lda=%d\n", K._int.value, lda._int.value);
+            return 125;
+          }
+          break;
       }
-      if(M._int.value > lda._int.value){
-        fprintf(stderr, "ReproBLAS error: row major matrix arguments inconsistent M=%d, lda=%d\n", M._int.value, lda._int.value);
-        return 125;
-      }
-      if(ldb._int.value == 0){
-        ldb._int.value = K._int.value;
-      }
-      if(K._int.value > ldb._int.value){
-        fprintf(stderr, "ReproBLAS error: row major matrix arguments inconsistent K=%d, ldb=%d\n", K._int.value, ldb._int.value);
-        return 125;
+      switch(TransB._named.names[TransB._named.value][0]){
+        case 'n':
+        case 'N':
+          if(ldb._int.value == 0){
+            ldb._int.value = K._int.value;
+          }
+          if(K._int.value > ldb._int.value){
+            fprintf(stderr, "ReproBLAS error: row major matrix arguments inconsistent K=%d, ldb=%d\n", K._int.value, ldb._int.value);
+            return 125;
+          }
+        default:
+          if(ldb._int.value == 0){
+            ldb._int.value = N._int.value;
+          }
+          if(N._int.value > ldb._int.value){
+            fprintf(stderr, "ReproBLAS error: row major matrix arguments inconsistent N=%d, ldb=%d\n", N._int.value, ldb._int.value);
+            return 125;
+          }
+          break;
       }
       if(ldc._int.value == 0){
         ldc._int.value = M._int.value;
