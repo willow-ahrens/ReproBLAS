@@ -20,7 +20,7 @@ static void vecvec_options_initialize(void){
   N._int.required          = 0;
   N._int.min               = 0;
   N._int.max               = INT_MAX;
-  N._int.value             = 2048;
+  N._int.value             = 4096;
 
   incX._int.header.type       = opt_int;
   incX._int.header.short_name = '\0';

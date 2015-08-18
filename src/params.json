@@ -738,9 +738,6 @@
     "ddepositSum_max_unroll_width_SSE_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
-    "didgemm_block_size_T_BLOCK": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/didgemm.ccog"
-    ],
     "didgemm_block_size_XT_BLOCK": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/didgemm.ccog"
     ],
@@ -1929,9 +1926,6 @@
     "zdepositSum_max_unroll_width_SSE_fold_4": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
-    "zizgemm_block_size_T_BLOCK": [
-      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zizgemm.ccog"
-    ],
     "zizgemm_block_size_XT_BLOCK": [
       "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zizgemm.ccog"
     ],
@@ -2708,32 +2702,29 @@
     "ddepositSum_max_unroll_width_SSE_fold_4": [
       "bench_rdsum_fold_4"
     ],
-    "didgemm_block_size_T_BLOCK": [
-      "bench_rdgemm_fold_3_TransA"
-    ],
     "didgemm_block_size_XT_BLOCK": [
-      "bench_rdgemm_fold_3_TransA"
+      "bench_rdgemm_TransA_fold_3"
     ],
     "didgemm_block_size_X_BLOCK": [
-      "bench_rdgemm_fold_3_TransB"
+      "bench_rdgemm_TransB_fold_3"
     ],
     "didgemm_block_size_YT_BLOCK": [
-      "bench_rdgemm_fold_3_TransA"
+      "bench_rdgemm_TransA_fold_3"
     ],
     "didgemm_block_size_Y_BLOCK": [
-      "bench_rdgemm_fold_3_TransB"
+      "bench_rdgemm_TransB_fold_3"
     ],
     "didgemv_block_size_T_BLOCK": [
-      "bench_rdgemv_fold_3_TransA"
+      "bench_rdgemv_TransA_fold_3"
     ],
     "didgemv_block_size_XT_BLOCK": [
-      "bench_rdgemv_fold_3_TransA"
+      "bench_rdgemv_fold_TransA_3"
     ],
     "didgemv_block_size_X_BLOCK": [
       "bench_rdgemv_fold_3"
     ],
     "didgemv_block_size_YT_BLOCK": [
-      "bench_rdgemv_fold_3_TransA"
+      "bench_rdgemv_fold_TransA_3"
     ],
     "didgemv_block_size_Y_BLOCK": [
       "bench_rdgemv_fold_3"
@@ -3899,32 +3890,29 @@
     "zdepositSum_max_unroll_width_SSE_fold_4": [
       "bench_rzsum_fold_4"
     ],
-    "zizgemm_block_size_T_BLOCK": [
-      "bench_rdgemm_fold_3_TransA"
-    ],
     "zizgemm_block_size_XT_BLOCK": [
-      "bench_rdgemm_fold_3_TransA"
+      "bench_rzgemm_TransA_fold_3"
     ],
     "zizgemm_block_size_X_BLOCK": [
-      "bench_rdgemm_fold_3_TransB"
+      "bench_rzgemm_TransB_fold_3"
     ],
     "zizgemm_block_size_YT_BLOCK": [
-      "bench_rdgemm_fold_3_TransA"
+      "bench_rzgemm_TransA_fold_3"
     ],
     "zizgemm_block_size_Y_BLOCK": [
-      "bench_rdgemm_fold_3_TransB"
+      "bench_rzgemm_TransB_fold_3"
     ],
     "zizgemv_block_size_T_BLOCK": [
-      "bench_rzgemv_fold_3_TransA"
+      "bench_rzgemv_TransA_fold_3"
     ],
     "zizgemv_block_size_XT_BLOCK": [
-      "bench_rzgemv_fold_3_TransA"
+      "bench_rzgemv_TransA_fold_3"
     ],
     "zizgemv_block_size_X_BLOCK": [
       "bench_rzgemv_fold_3"
     ],
     "zizgemv_block_size_YT_BLOCK": [
-      "bench_rzgemv_fold_3_TransA"
+      "bench_rzgemv_TransA_fold_3"
     ],
     "zizgemv_block_size_Y_BLOCK": [
       "bench_rzgemv_fold_3"
@@ -3951,8 +3939,8 @@
       "camaxm_max_unroll_width_SSE"
     ],
     "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog": [
-      "cdepositDotC_max_unroll_width_SSE_fold_4",
-      "cdepositDotC_max_pipe_width_AVX_fold_4",
+      "cdepositDotC_max_pipe_width_AVX_fold_2",
+      "cdepositDotC_max_unroll_width_SSE_fold_2",
       "cmcdotc_block_size_N_block_MAX",
       "cdepositDotC_expand_SISD_fold_2",
       "cdepositDotC_expand_SISD_fold_3",
@@ -3978,28 +3966,28 @@
       "cdepositDotC_max_unroll_width_AVX_fold_4",
       "cdepositDotC_max_pipe_width_AVX_fold_0",
       "cdepositDotC_max_pipe_width_AVX_fold_3",
-      "cdepositDotC_max_pipe_width_AVX_fold_2",
+      "cdepositDotC_max_unroll_width_SSE_fold_4",
       "cdepositDotC_max_unroll_width_SSE_fold_3",
-      "cdepositDotC_max_unroll_width_SSE_fold_2",
+      "cdepositDotC_max_pipe_width_AVX_fold_4",
       "cdepositDotC_max_unroll_width_SSE_fold_0",
       "cdepositDotC_expand_SSE_fold_3",
       "cdepositDotC_expand_SSE_fold_2",
       "cdepositDotC_expand_SSE_fold_4"
     ],
     "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog": [
-      "cdepositDotU_max_unroll_width_AVX_fold_4",
       "cdepositDotU_max_pipe_width_SISD_fold_2",
       "cdepositDotU_max_pipe_width_SISD_fold_3",
       "cdepositDotU_max_pipe_width_SISD_fold_0",
       "cdepositDotU_max_pipe_width_SISD_fold_4",
-      "cdepositDotU_expand_AVX_fold_4",
       "cdepositDotU_max_unroll_width_SSE_fold_0",
       "cdepositDotU_max_unroll_width_SSE_fold_3",
       "cdepositDotU_max_unroll_width_SSE_fold_2",
       "cdepositDotU_max_unroll_width_SSE_fold_4",
+      "cdepositDotU_max_unroll_width_AVX_fold_2",
       "cmcdotu_block_size_N_block_MAX",
-      "cdepositDotU_expand_AVX_fold_3",
+      "cdepositDotU_max_unroll_width_SISD_fold_4",
       "cdepositDotU_expand_AVX_fold_2",
+      "cdepositDotU_max_pipe_width_AVX_fold_2",
       "cdepositDotU_max_unroll_width_SISD_fold_0",
       "cdepositDotU_max_unroll_width_SISD_fold_2",
       "cdepositDotU_max_unroll_width_SISD_fold_3",
@@ -4007,25 +3995,25 @@
       "cdepositDotU_max_pipe_width_SSE_fold_3",
       "cdepositDotU_max_pipe_width_SSE_fold_2",
       "cdepositDotU_max_pipe_width_SSE_fold_0",
-      "cdepositDotU_max_unroll_width_SISD_fold_4",
+      "cdepositDotU_expand_AVX_fold_3",
       "cdepositDotU_expand_SSE_fold_3",
       "cdepositDotU_expand_SSE_fold_2",
-      "cdepositDotU_expand_SISD_fold_4",
+      "cdepositDotU_max_unroll_width_AVX_fold_3",
       "cdepositDotU_expand_SSE_fold_4",
       "cdepositDotU_max_pipe_width_AVX_fold_4",
-      "cdepositDotU_max_pipe_width_AVX_fold_3",
+      "cdepositDotU_expand_SISD_fold_2",
       "cdepositDotU_expand_SISD_fold_3",
       "cdepositDotU_max_unroll_width_AVX_fold_0",
-      "cdepositDotU_max_unroll_width_AVX_fold_3",
-      "cdepositDotU_max_unroll_width_AVX_fold_2",
-      "cdepositDotU_expand_SISD_fold_2",
-      "cdepositDotU_max_pipe_width_AVX_fold_2",
+      "cdepositDotU_expand_SISD_fold_4",
+      "cdepositDotU_expand_AVX_fold_4",
+      "cdepositDotU_max_pipe_width_AVX_fold_3",
+      "cdepositDotU_max_unroll_width_AVX_fold_4",
       "cdepositDotU_max_pipe_width_AVX_fold_0"
     ],
     "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog": [
-      "cdepositSum_expand_SISD_fold_2",
+      "cdepositSum_expand_SSE_fold_3",
       "cdepositSum_max_pipe_width_AVX_fold_4",
-      "cdepositSum_expand_SSE_fold_2",
+      "cdepositSum_expand_SISD_fold_3",
       "cdepositSum_max_pipe_width_AVX_fold_0",
       "cdepositSum_max_pipe_width_AVX_fold_3",
       "cdepositSum_max_pipe_width_AVX_fold_2",
@@ -4046,16 +4034,16 @@
       "cdepositSum_max_unroll_width_SISD_fold_0",
       "cdepositSum_max_unroll_width_SSE_fold_3",
       "cdepositSum_max_unroll_width_SSE_fold_2",
-      "cdepositSum_expand_SSE_fold_3",
-      "cdepositSum_expand_SISD_fold_3",
+      "cdepositSum_expand_SISD_fold_2",
+      "cdepositSum_expand_SSE_fold_2",
       "cdepositSum_expand_SISD_fold_4",
       "cdepositSum_expand_SSE_fold_4",
       "cdepositSum_max_unroll_width_SSE_fold_4",
-      "cdepositSum_max_pipe_width_SISD_fold_2",
+      "cdepositSum_max_unroll_width_SSE_fold_0",
       "cdepositSum_max_pipe_width_SISD_fold_4",
       "cmcsum_block_size_N_block_MAX",
       "cdepositSum_max_pipe_width_SISD_fold_0",
-      "cdepositSum_max_unroll_width_SSE_fold_0",
+      "cdepositSum_max_pipe_width_SISD_fold_2",
       "cdepositSum_max_pipe_width_SISD_fold_3"
     ],
     "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/damax.ccog": [
@@ -4071,7 +4059,6 @@
     "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/didgemm.ccog": [
       "didgemm_block_size_X_BLOCK",
       "didgemm_block_size_Y_BLOCK",
-      "didgemm_block_size_T_BLOCK",
       "didgemm_block_size_XT_BLOCK",
       "didgemm_block_size_YT_BLOCK"
     ],
@@ -4213,7 +4200,7 @@
       "ddepositSum_max_pipe_width_AVX_fold_2",
       "ddepositSum_max_pipe_width_AVX_fold_3",
       "ddepositSum_max_pipe_width_AVX_fold_0",
-      "ddepositSum_max_unroll_width_AVX_fold_2",
+      "ddepositSum_max_pipe_width_SSE_fold_0",
       "ddepositSum_max_pipe_width_AVX_fold_4",
       "ddepositSum_max_unroll_width_AVX_fold_3",
       "ddepositSum_expand_AVX_fold_4",
@@ -4222,7 +4209,7 @@
       "ddepositSum_max_pipe_width_SSE_fold_4",
       "ddepositSum_max_unroll_width_AVX_fold_0",
       "ddepositSum_max_pipe_width_SISD_fold_0",
-      "ddepositSum_max_pipe_width_SSE_fold_0",
+      "ddepositSum_max_unroll_width_AVX_fold_2",
       "ddepositSum_max_pipe_width_SISD_fold_2",
       "ddepositSum_expand_SISD_fold_4"
     ],
@@ -4239,10 +4226,10 @@
       "dzdepositASum_max_unroll_width_SSE_fold_3",
       "dzdepositASum_max_unroll_width_SSE_fold_2",
       "dzdepositASum_max_unroll_width_SSE_fold_0",
+      "dzdepositASum_max_pipe_width_AVX_fold_2",
       "dzdepositASum_expand_SSE_fold_4",
       "dzdepositASum_expand_SSE_fold_3",
       "dzdepositASum_expand_SSE_fold_2",
-      "dzdepositASum_max_pipe_width_SSE_fold_4",
       "dzdepositASum_expand_AVX_fold_3",
       "dzdepositASum_max_unroll_width_AVX_fold_3",
       "dzdepositASum_max_unroll_width_AVX_fold_2",
@@ -4251,15 +4238,15 @@
       "dzdepositASum_max_pipe_width_AVX_fold_4",
       "dzdepositASum_max_pipe_width_AVX_fold_0",
       "dzdepositASum_max_pipe_width_AVX_fold_3",
-      "dzdepositASum_max_pipe_width_AVX_fold_2",
-      "dzdepositASum_max_pipe_width_SISD_fold_0",
+      "dzdepositASum_max_pipe_width_SSE_fold_4",
+      "dzdepositASum_max_unroll_width_SISD_fold_2",
       "dzdepositASum_max_unroll_width_AVX_fold_0",
-      "dzdepositASum_max_unroll_width_SISD_fold_0",
+      "dzdepositASum_max_pipe_width_SISD_fold_2",
       "dzdepositASum_max_pipe_width_SISD_fold_4",
       "dzdepositASum_max_unroll_width_SISD_fold_4",
-      "dzdepositASum_max_unroll_width_SISD_fold_2",
+      "dzdepositASum_max_pipe_width_SISD_fold_0",
       "dzdepositASum_max_unroll_width_SISD_fold_3",
-      "dzdepositASum_max_pipe_width_SISD_fold_2",
+      "dzdepositASum_max_unroll_width_SISD_fold_0",
       "dzdepositASum_max_pipe_width_SISD_fold_3"
     ],
     "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog": [
@@ -4345,9 +4332,9 @@
       "scdepositASum_max_unroll_width_SSE_fold_3"
     ],
     "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog": [
-      "scdepositSSq_max_unroll_width_SSE_fold_4",
-      "scdepositSSq_max_pipe_width_AVX_fold_4",
-      "scdepositSSq_max_unroll_width_AVX_fold_4",
+      "scdepositSSq_max_pipe_width_AVX_fold_2",
+      "scdepositSSq_max_unroll_width_SSE_fold_2",
+      "smcssq_block_size_N_block_MAX",
       "scdepositSSq_expand_SISD_fold_2",
       "scdepositSSq_expand_SISD_fold_3",
       "scdepositSSq_expand_SISD_fold_4",
@@ -4356,10 +4343,10 @@
       "scdepositSSq_max_pipe_width_SISD_fold_0",
       "scdepositSSq_max_pipe_width_SSE_fold_0",
       "scdepositSSq_max_pipe_width_SISD_fold_2",
-      "scdepositSSq_max_pipe_width_SISD_fold_3",
+      "scdepositSSq_max_pipe_width_SSE_fold_2",
       "scdepositSSq_max_pipe_width_SSE_fold_3",
       "scdepositSSq_expand_AVX_fold_4",
-      "scdepositSSq_max_pipe_width_SSE_fold_2",
+      "scdepositSSq_max_pipe_width_SISD_fold_3",
       "scdepositSSq_expand_AVX_fold_3",
       "scdepositSSq_expand_AVX_fold_2",
       "scdepositSSq_max_unroll_width_AVX_fold_3",
@@ -4369,12 +4356,12 @@
       "scdepositSSq_max_unroll_width_SISD_fold_2",
       "scdepositSSq_max_unroll_width_SISD_fold_3",
       "scdepositSSq_max_unroll_width_SISD_fold_0",
-      "smcssq_block_size_N_block_MAX",
+      "scdepositSSq_max_unroll_width_AVX_fold_4",
       "scdepositSSq_max_pipe_width_AVX_fold_0",
       "scdepositSSq_max_pipe_width_AVX_fold_3",
-      "scdepositSSq_max_pipe_width_AVX_fold_2",
+      "scdepositSSq_max_unroll_width_SSE_fold_4",
       "scdepositSSq_max_unroll_width_SSE_fold_3",
-      "scdepositSSq_max_unroll_width_SSE_fold_2",
+      "scdepositSSq_max_pipe_width_AVX_fold_4",
       "scdepositSSq_max_unroll_width_SSE_fold_0",
       "scdepositSSq_expand_SSE_fold_3",
       "scdepositSSq_expand_SSE_fold_2",
@@ -4417,9 +4404,9 @@
       "sdepositASum_max_pipe_width_SSE_fold_0"
     ],
     "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog": [
-      "sdepositDot_expand_SISD_fold_2",
+      "sdepositDot_expand_SSE_fold_3",
       "smsdot_block_size_N_block_MAX",
-      "sdepositDot_max_unroll_width_SSE_fold_0",
+      "sdepositDot_expand_SSE_fold_2",
       "sdepositDot_max_pipe_width_AVX_fold_0",
       "sdepositDot_max_pipe_width_AVX_fold_3",
       "sdepositDot_max_pipe_width_AVX_fold_2",
@@ -4440,8 +4427,8 @@
       "sdepositDot_max_unroll_width_SISD_fold_0",
       "sdepositDot_max_unroll_width_SSE_fold_3",
       "sdepositDot_max_unroll_width_SSE_fold_2",
-      "sdepositDot_expand_SSE_fold_3",
-      "sdepositDot_expand_SSE_fold_2",
+      "sdepositDot_expand_SISD_fold_2",
+      "sdepositDot_max_unroll_width_SSE_fold_0",
       "sdepositDot_expand_SISD_fold_4",
       "sdepositDot_expand_SSE_fold_4",
       "sdepositDot_max_unroll_width_SSE_fold_4",
@@ -4456,11 +4443,11 @@
       "smsssq_block_size_N_block_MAX",
       "sdepositSSq_max_pipe_width_SSE_fold_3",
       "sdepositSSq_max_pipe_width_SSE_fold_2",
-      "sdepositSSq_max_pipe_width_SSE_fold_0",
+      "sdepositSSq_expand_SSE_fold_4",
       "sdepositSSq_expand_SSE_fold_3",
       "sdepositSSq_expand_SSE_fold_2",
       "sdepositSSq_max_pipe_width_SSE_fold_4",
-      "sdepositSSq_expand_SSE_fold_4",
+      "sdepositSSq_max_pipe_width_SSE_fold_0",
       "sdepositSSq_max_pipe_width_AVX_fold_3",
       "sdepositSSq_max_pipe_width_AVX_fold_2",
       "sdepositSSq_max_pipe_width_AVX_fold_0",
@@ -4535,7 +4522,6 @@
       "zamaxm_max_unroll_width_AVX"
     ],
     "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zizgemm.ccog": [
-      "zizgemm_block_size_T_BLOCK",
       "zizgemm_block_size_XT_BLOCK",
       "zizgemm_block_size_YT_BLOCK",
       "zizgemm_block_size_X_BLOCK",
@@ -4549,7 +4535,7 @@
       "zizgemv_block_size_T_BLOCK"
     ],
     "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog": [
-      "zdepositDotC_max_unroll_width_SSE_fold_3",
+      "zdepositDotC_max_unroll_width_SISD_fold_0",
       "zdepositDotC_max_pipe_width_AVX_fold_4",
       "zdepositDotC_max_pipe_width_AVX_fold_2",
       "zdepositDotC_max_pipe_width_AVX_fold_3",
@@ -4570,16 +4556,16 @@
       "zdepositDotC_max_unroll_width_SISD_fold_3",
       "zdepositDotC_max_unroll_width_SISD_fold_2",
       "zdepositDotC_max_unroll_width_SSE_fold_2",
-      "zdepositDotC_max_unroll_width_SISD_fold_0",
+      "zdepositDotC_max_unroll_width_SSE_fold_3",
       "zdepositDotC_expand_SSE_fold_2",
       "zdepositDotC_expand_SSE_fold_3",
       "zdepositDotC_expand_SISD_fold_3",
       "zdepositDotC_expand_SISD_fold_2",
       "zdepositDotC_expand_SISD_fold_4",
       "zdepositDotC_expand_SSE_fold_4",
-      "zdepositDotC_max_pipe_width_SISD_fold_4",
-      "zmzdotc_block_size_N_block_MAX",
       "zdepositDotC_max_unroll_width_SSE_fold_0",
+      "zmzdotc_block_size_N_block_MAX",
+      "zdepositDotC_max_pipe_width_SISD_fold_4",
       "zdepositDotC_max_pipe_width_SISD_fold_0",
       "zdepositDotC_max_pipe_width_SISD_fold_3",
       "zdepositDotC_max_pipe_width_SISD_fold_2"
@@ -4625,7 +4611,6 @@
       "zdepositSum_max_unroll_width_SSE_fold_2",
       "zdepositSum_max_unroll_width_SSE_fold_3",
       "zdepositSum_max_unroll_width_SSE_fold_0",
-      "zdepositSum_max_pipe_width_SISD_fold_0",
       "zdepositSum_max_pipe_width_AVX_fold_4",
       "zdepositSum_max_pipe_width_AVX_fold_0",
       "zdepositSum_max_pipe_width_AVX_fold_2",
@@ -4646,6 +4631,7 @@
       "zdepositSum_max_pipe_width_SISD_fold_3",
       "zdepositSum_max_pipe_width_SISD_fold_2",
       "zdepositSum_max_unroll_width_SISD_fold_2",
+      "zdepositSum_max_pipe_width_SISD_fold_0",
       "zdepositSum_max_pipe_width_SISD_fold_4",
       "zdepositSum_max_unroll_width_AVX_fold_4",
       "zdepositSum_max_unroll_width_AVX_fold_2",
@@ -4729,12 +4715,12 @@
       "cdepositDotU_max_pipe_width_AVX_fold_0"
     ],
     "bench_rcdotu_fold_2": [
-      "cdepositDotU_max_unroll_width_AVX_fold_2",
+      "cdepositDotU_max_unroll_width_SSE_fold_2",
       "cdepositDotU_max_pipe_width_SISD_fold_2",
       "cdepositDotU_max_pipe_width_SSE_fold_2",
-      "cdepositDotU_expand_SSE_fold_2",
       "cdepositDotU_expand_AVX_fold_2",
-      "cdepositDotU_max_unroll_width_SSE_fold_2",
+      "cdepositDotU_expand_SSE_fold_2",
+      "cdepositDotU_max_unroll_width_AVX_fold_2",
       "cdepositDotU_expand_SISD_fold_2",
       "cdepositDotU_max_pipe_width_AVX_fold_2",
       "cdepositDotU_max_unroll_width_SISD_fold_2"
@@ -4742,25 +4728,25 @@
     "bench_rcdotu_fold_3": [
       "cmcdotu_block_size_N_block_MAX",
       "cdepositDotU_max_pipe_width_SSE_fold_3",
-      "cdepositDotU_expand_SISD_fold_3",
-      "cdepositDotU_expand_SSE_fold_3",
-      "cdepositDotU_max_pipe_width_SISD_fold_3",
-      "cdepositDotU_expand_AVX_fold_3",
       "cdepositDotU_max_unroll_width_AVX_fold_3",
-      "cdepositDotU_max_pipe_width_AVX_fold_3",
+      "cdepositDotU_expand_AVX_fold_3",
+      "cdepositDotU_max_pipe_width_SISD_fold_3",
+      "cdepositDotU_expand_SSE_fold_3",
       "cdepositDotU_max_unroll_width_SSE_fold_3",
+      "cdepositDotU_max_pipe_width_AVX_fold_3",
+      "cdepositDotU_expand_SISD_fold_3",
       "cdepositDotU_max_unroll_width_SISD_fold_3"
     ],
     "bench_rcdotu_fold_4": [
       "cdepositDotU_max_pipe_width_SSE_fold_4",
       "cdepositDotU_max_pipe_width_SISD_fold_4",
-      "cdepositDotU_max_unroll_width_AVX_fold_4",
+      "cdepositDotU_max_unroll_width_SSE_fold_4",
+      "cdepositDotU_expand_AVX_fold_4",
       "cdepositDotU_max_unroll_width_SISD_fold_4",
-      "cdepositDotU_expand_SSE_fold_4",
       "cdepositDotU_expand_SISD_fold_4",
       "cdepositDotU_max_pipe_width_AVX_fold_4",
-      "cdepositDotU_max_unroll_width_SSE_fold_4",
-      "cdepositDotU_expand_AVX_fold_4"
+      "cdepositDotU_max_unroll_width_AVX_fold_4",
+      "cdepositDotU_expand_SSE_fold_4"
     ],
     "bench_rcsum_fold_0": [
       "cdepositSum_max_unroll_width_SSE_fold_0",
@@ -4771,12 +4757,12 @@
       "cdepositSum_max_pipe_width_SSE_fold_0"
     ],
     "bench_rcsum_fold_2": [
+      "cdepositSum_max_pipe_width_AVX_fold_2",
       "cdepositSum_max_pipe_width_SSE_fold_2",
       "cdepositSum_expand_AVX_fold_2",
-      "cdepositSum_max_pipe_width_AVX_fold_2",
       "cdepositSum_max_unroll_width_SISD_fold_2",
-      "cdepositSum_max_unroll_width_SSE_fold_2",
       "cdepositSum_max_unroll_width_AVX_fold_2",
+      "cdepositSum_max_unroll_width_SSE_fold_2",
       "cdepositSum_expand_SISD_fold_2",
       "cdepositSum_expand_SSE_fold_2",
       "cdepositSum_max_pipe_width_SISD_fold_2"
@@ -4785,9 +4771,9 @@
       "cdepositSum_max_pipe_width_AVX_fold_3",
       "cdepositSum_max_pipe_width_SSE_fold_3",
       "cdepositSum_expand_AVX_fold_3",
-      "cdepositSum_max_unroll_width_SSE_fold_3",
-      "cdepositSum_max_unroll_width_SISD_fold_3",
       "cdepositSum_max_unroll_width_AVX_fold_3",
+      "cdepositSum_max_unroll_width_SISD_fold_3",
+      "cdepositSum_max_unroll_width_SSE_fold_3",
       "cmcsum_block_size_N_block_MAX",
       "cdepositSum_expand_SSE_fold_3",
       "cdepositSum_expand_SISD_fold_3",
@@ -4799,10 +4785,10 @@
       "cdepositSum_expand_AVX_fold_4",
       "cdepositSum_max_unroll_width_SISD_fold_4",
       "cdepositSum_max_pipe_width_SISD_fold_4",
-      "cdepositSum_max_unroll_width_SSE_fold_4",
+      "cdepositSum_max_unroll_width_AVX_fold_4",
       "cdepositSum_expand_SISD_fold_4",
       "cdepositSum_expand_SSE_fold_4",
-      "cdepositSum_max_unroll_width_AVX_fold_4"
+      "cdepositSum_max_unroll_width_SSE_fold_4"
     ],
     "bench_rdasum_fold_0": [
       "ddepositASum_max_pipe_width_AVX_fold_0",
@@ -4888,28 +4874,24 @@
       "ddepositDot_max_unroll_width_SSE_fold_4",
       "ddepositDot_max_unroll_width_SISD_fold_4"
     ],
-    "bench_rdgemm_fold_3_TransA": [
-      "zizgemm_block_size_T_BLOCK",
-      "didgemm_block_size_T_BLOCK",
+    "bench_rdgemm_TransA_fold_3": [
       "didgemm_block_size_XT_BLOCK",
-      "didgemm_block_size_YT_BLOCK",
-      "zizgemm_block_size_XT_BLOCK",
-      "zizgemm_block_size_YT_BLOCK"
+      "didgemm_block_size_YT_BLOCK"
     ],
-    "bench_rdgemm_fold_3_TransB": [
+    "bench_rdgemm_TransB_fold_3": [
       "didgemm_block_size_X_BLOCK",
-      "didgemm_block_size_Y_BLOCK",
-      "zizgemm_block_size_X_BLOCK",
-      "zizgemm_block_size_Y_BLOCK"
+      "didgemm_block_size_Y_BLOCK"
+    ],
+    "bench_rdgemv_TransA_fold_3": [
+      "didgemv_block_size_T_BLOCK"
     ],
     "bench_rdgemv_fold_3": [
       "didgemv_block_size_Y_BLOCK",
       "didgemv_block_size_X_BLOCK"
     ],
-    "bench_rdgemv_fold_3_TransA": [
+    "bench_rdgemv_fold_TransA_3": [
       "didgemv_block_size_YT_BLOCK",
-      "didgemv_block_size_XT_BLOCK",
-      "didgemv_block_size_T_BLOCK"
+      "didgemv_block_size_XT_BLOCK"
     ],
     "bench_rdnrm2_fold_0": [
       "ddepositSSq_max_unroll_width_AVX_fold_0",
@@ -5060,8 +5042,8 @@
     "bench_rdznrm2_fold_3": [
       "dzdepositSSq_max_unroll_width_SSE_fold_3",
       "dzdepositSSq_max_unroll_width_SISD_fold_3",
-      "dzdepositSSq_expand_AVX_fold_3",
       "dzdepositSSq_max_pipe_width_SSE_fold_3",
+      "dzdepositSSq_expand_AVX_fold_3",
       "dzdepositSSq_expand_SSE_fold_3",
       "dzdepositSSq_expand_SISD_fold_3",
       "dzdepositSSq_max_pipe_width_SISD_fold_3",
@@ -5105,17 +5087,17 @@
       "sdepositASum_expand_SISD_fold_3",
       "sdepositASum_max_unroll_width_SISD_fold_3",
       "sdepositASum_expand_AVX_fold_3",
-      "sdepositASum_max_pipe_width_SISD_fold_3",
       "smsasum_block_size_N_block_MAX",
+      "sdepositASum_max_pipe_width_SISD_fold_3",
       "sdepositASum_max_pipe_width_SSE_fold_3",
       "sdepositASum_max_unroll_width_SSE_fold_3"
     ],
     "bench_rsasum_fold_4": [
+      "sdepositASum_max_unroll_width_SSE_fold_4",
       "sdepositASum_max_unroll_width_SISD_fold_4",
-      "sdepositASum_max_unroll_width_AVX_fold_4",
       "sdepositASum_expand_SISD_fold_4",
       "sdepositASum_max_pipe_width_AVX_fold_4",
-      "sdepositASum_max_unroll_width_SSE_fold_4",
+      "sdepositASum_max_unroll_width_AVX_fold_4",
       "sdepositASum_expand_SSE_fold_4",
       "sdepositASum_max_pipe_width_SSE_fold_4",
       "sdepositASum_expand_AVX_fold_4",
@@ -5132,9 +5114,9 @@
     "bench_rscasum_fold_2": [
       "scdepositASum_max_unroll_width_SISD_fold_2",
       "scdepositASum_max_pipe_width_SISD_fold_2",
-      "scdepositASum_expand_AVX_fold_2",
-      "scdepositASum_max_unroll_width_SSE_fold_2",
       "scdepositASum_max_pipe_width_SSE_fold_2",
+      "scdepositASum_max_unroll_width_SSE_fold_2",
+      "scdepositASum_expand_AVX_fold_2",
       "scdepositASum_max_pipe_width_AVX_fold_2",
       "scdepositASum_expand_SISD_fold_2",
       "scdepositASum_expand_SSE_fold_2",
@@ -5217,8 +5199,8 @@
       "sdepositDot_max_pipe_width_SSE_fold_2",
       "sdepositDot_expand_AVX_fold_2",
       "sdepositDot_max_unroll_width_SISD_fold_2",
-      "sdepositDot_max_unroll_width_SSE_fold_2",
       "sdepositDot_max_unroll_width_AVX_fold_2",
+      "sdepositDot_max_unroll_width_SSE_fold_2",
       "sdepositDot_expand_SISD_fold_2",
       "sdepositDot_expand_SSE_fold_2",
       "sdepositDot_max_pipe_width_AVX_fold_2",
@@ -5229,9 +5211,9 @@
       "sdepositDot_max_pipe_width_AVX_fold_3",
       "sdepositDot_max_pipe_width_SSE_fold_3",
       "sdepositDot_expand_AVX_fold_3",
-      "sdepositDot_max_unroll_width_SSE_fold_3",
-      "sdepositDot_max_unroll_width_SISD_fold_3",
       "sdepositDot_max_unroll_width_AVX_fold_3",
+      "sdepositDot_max_unroll_width_SISD_fold_3",
+      "sdepositDot_max_unroll_width_SSE_fold_3",
       "sdepositDot_expand_SSE_fold_3",
       "sdepositDot_expand_SISD_fold_3",
       "sdepositDot_max_pipe_width_SISD_fold_3"
@@ -5242,10 +5224,10 @@
       "sdepositDot_expand_AVX_fold_4",
       "sdepositDot_max_unroll_width_SISD_fold_4",
       "sdepositDot_max_pipe_width_SISD_fold_4",
-      "sdepositDot_max_unroll_width_SSE_fold_4",
+      "sdepositDot_max_unroll_width_AVX_fold_4",
       "sdepositDot_expand_SISD_fold_4",
       "sdepositDot_expand_SSE_fold_4",
-      "sdepositDot_max_unroll_width_AVX_fold_4"
+      "sdepositDot_max_unroll_width_SSE_fold_4"
     ],
     "bench_rsnrm2_fold_0": [
       "sdepositSSq_max_pipe_width_AVX_fold_0",
@@ -5271,10 +5253,10 @@
       "sdepositSSq_expand_AVX_fold_3",
       "sdepositSSq_max_pipe_width_SISD_fold_3",
       "sdepositSSq_max_unroll_width_SSE_fold_3",
-      "sdepositSSq_max_unroll_width_SISD_fold_3",
+      "smsssq_block_size_N_block_MAX",
       "sdepositSSq_expand_SISD_fold_3",
       "sdepositSSq_max_unroll_width_AVX_fold_3",
-      "smsssq_block_size_N_block_MAX",
+      "sdepositSSq_max_unroll_width_SISD_fold_3",
       "sdepositSSq_max_pipe_width_SSE_fold_3",
       "sdepositSSq_expand_SSE_fold_3"
     ],
@@ -5298,45 +5280,45 @@
       "sdepositSum_max_pipe_width_SSE_fold_0"
     ],
     "bench_rssum_fold_2": [
-      "sdepositSum_max_pipe_width_AVX_fold_2",
       "sdepositSum_max_unroll_width_SISD_fold_2",
       "sdepositSum_max_unroll_width_SSE_fold_2",
       "sdepositSum_expand_SISD_fold_2",
       "sdepositSum_expand_SSE_fold_2",
+      "sdepositSum_max_unroll_width_AVX_fold_2",
       "sdepositSum_max_pipe_width_SISD_fold_2",
       "sdepositSum_max_pipe_width_SSE_fold_2",
-      "sdepositSum_max_unroll_width_AVX_fold_2",
+      "sdepositSum_max_pipe_width_AVX_fold_2",
       "sdepositSum_expand_AVX_fold_2"
     ],
     "bench_rssum_fold_3": [
-      "sdepositSum_max_pipe_width_SSE_fold_3",
+      "sdepositSum_max_pipe_width_AVX_fold_3",
       "sdepositSum_max_unroll_width_SISD_fold_3",
       "sdepositSum_max_unroll_width_AVX_fold_3",
       "sdepositSum_expand_SSE_fold_3",
       "sdepositSum_expand_SISD_fold_3",
       "sdepositSum_max_pipe_width_SISD_fold_3",
       "sdepositSum_max_unroll_width_SSE_fold_3",
-      "sdepositSum_max_pipe_width_AVX_fold_3",
+      "sdepositSum_max_pipe_width_SSE_fold_3",
       "smssum_block_size_N_block_MAX",
       "sdepositSum_expand_AVX_fold_3"
     ],
     "bench_rssum_fold_4": [
       "sdepositSum_max_unroll_width_SISD_fold_4",
-      "sdepositSum_max_pipe_width_SSE_fold_4",
+      "sdepositSum_max_pipe_width_AVX_fold_4",
       "sdepositSum_max_pipe_width_SISD_fold_4",
       "sdepositSum_expand_SISD_fold_4",
       "sdepositSum_expand_SSE_fold_4",
       "sdepositSum_max_unroll_width_AVX_fold_4",
-      "sdepositSum_max_pipe_width_AVX_fold_4",
+      "sdepositSum_max_pipe_width_SSE_fold_4",
       "sdepositSum_max_unroll_width_SSE_fold_4",
       "sdepositSum_expand_AVX_fold_4"
     ],
     "bench_rzdotc_fold_0": [
       "zdepositDotC_max_pipe_width_AVX_fold_0",
       "zdepositDotC_max_pipe_width_SSE_fold_0",
-      "zdepositDotC_max_unroll_width_SSE_fold_0",
-      "zdepositDotC_max_unroll_width_SISD_fold_0",
       "zdepositDotC_max_unroll_width_AVX_fold_0",
+      "zdepositDotC_max_unroll_width_SISD_fold_0",
+      "zdepositDotC_max_unroll_width_SSE_fold_0",
       "zdepositDotC_max_pipe_width_SISD_fold_0"
     ],
     "bench_rzdotc_fold_2": [
@@ -5363,11 +5345,11 @@
       "zdepositDotC_max_pipe_width_AVX_fold_3"
     ],
     "bench_rzdotc_fold_4": [
-      "zdepositDotC_max_unroll_width_SSE_fold_4",
+      "zdepositDotC_max_unroll_width_AVX_fold_4",
       "zdepositDotC_max_pipe_width_AVX_fold_4",
       "zdepositDotC_max_pipe_width_SSE_fold_4",
       "zdepositDotC_expand_AVX_fold_4",
-      "zdepositDotC_max_unroll_width_AVX_fold_4",
+      "zdepositDotC_max_unroll_width_SSE_fold_4",
       "zdepositDotC_max_unroll_width_SISD_fold_4",
       "zdepositDotC_max_pipe_width_SISD_fold_4",
       "zdepositDotC_expand_SISD_fold_4",
@@ -5394,15 +5376,15 @@
     ],
     "bench_rzdotu_fold_3": [
       "zdepositDotU_max_unroll_width_SISD_fold_3",
-      "zdepositDotU_expand_AVX_fold_3",
+      "zdepositDotU_max_pipe_width_SSE_fold_3",
       "zdepositDotU_expand_SISD_fold_3",
       "zdepositDotU_max_unroll_width_SSE_fold_3",
-      "zdepositDotU_max_pipe_width_SSE_fold_3",
+      "zdepositDotU_expand_AVX_fold_3",
       "zdepositDotU_max_pipe_width_SISD_fold_3",
-      "zdepositDotU_max_unroll_width_AVX_fold_3",
+      "zmzdotu_block_size_N_block_MAX",
       "zdepositDotU_max_pipe_width_AVX_fold_3",
       "zdepositDotU_expand_SSE_fold_3",
-      "zmzdotu_block_size_N_block_MAX"
+      "zdepositDotU_max_unroll_width_AVX_fold_3"
     ],
     "bench_rzdotu_fold_4": [
       "zdepositDotU_expand_AVX_fold_4",
@@ -5415,14 +5397,22 @@
       "zdepositDotU_max_unroll_width_AVX_fold_4",
       "zdepositDotU_expand_SSE_fold_4"
     ],
-    "bench_rzgemv_fold_3": [
-      "zizgemv_block_size_Y_BLOCK",
-      "zizgemv_block_size_X_BLOCK"
+    "bench_rzgemm_TransA_fold_3": [
+      "zizgemm_block_size_XT_BLOCK",
+      "zizgemm_block_size_YT_BLOCK"
     ],
-    "bench_rzgemv_fold_3_TransA": [
+    "bench_rzgemm_TransB_fold_3": [
+      "zizgemm_block_size_X_BLOCK",
+      "zizgemm_block_size_Y_BLOCK"
+    ],
+    "bench_rzgemv_TransA_fold_3": [
       "zizgemv_block_size_YT_BLOCK",
       "zizgemv_block_size_XT_BLOCK",
       "zizgemv_block_size_T_BLOCK"
+    ],
+    "bench_rzgemv_fold_3": [
+      "zizgemv_block_size_Y_BLOCK",
+      "zizgemv_block_size_X_BLOCK"
     ],
     "bench_rzsum_fold_0": [
       "zdepositSum_max_unroll_width_SSE_fold_0",
@@ -5450,10 +5440,10 @@
       "zdepositSum_expand_SISD_fold_3",
       "zdepositSum_max_unroll_width_SISD_fold_3",
       "zdepositSum_max_pipe_width_AVX_fold_3",
-      "zdepositSum_max_unroll_width_AVX_fold_3",
       "zmzsum_block_size_N_block_MAX",
       "zdepositSum_max_pipe_width_SISD_fold_3",
-      "zdepositSum_max_pipe_width_SSE_fold_3"
+      "zdepositSum_max_pipe_width_SSE_fold_3",
+      "zdepositSum_max_unroll_width_AVX_fold_3"
     ],
     "bench_rzsum_fold_4": [
       "zdepositSum_max_unroll_width_SSE_fold_4",
@@ -5674,7 +5664,7 @@
     "cdepositDotC_max_pipe_width_AVX_fold_0": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "cdepositDotC_max_pipe_width_AVX_fold_0",
       "tags": [
@@ -5687,7 +5677,7 @@
     "cdepositDotC_max_pipe_width_AVX_fold_2": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "cdepositDotC_max_pipe_width_AVX_fold_2",
       "tags": [
@@ -5700,7 +5690,7 @@
     "cdepositDotC_max_pipe_width_AVX_fold_3": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "cdepositDotC_max_pipe_width_AVX_fold_3",
       "tags": [
@@ -5713,7 +5703,7 @@
     "cdepositDotC_max_pipe_width_AVX_fold_4": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "cdepositDotC_max_pipe_width_AVX_fold_4",
       "tags": [
@@ -5726,7 +5716,7 @@
     "cdepositDotC_max_pipe_width_SISD_fold_0": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotC_max_pipe_width_SISD_fold_0",
       "tags": [
@@ -5739,7 +5729,7 @@
     "cdepositDotC_max_pipe_width_SISD_fold_2": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotC_max_pipe_width_SISD_fold_2",
       "tags": [
@@ -5752,7 +5742,7 @@
     "cdepositDotC_max_pipe_width_SISD_fold_3": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotC_max_pipe_width_SISD_fold_3",
       "tags": [
@@ -5765,7 +5755,7 @@
     "cdepositDotC_max_pipe_width_SISD_fold_4": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotC_max_pipe_width_SISD_fold_4",
       "tags": [
@@ -5778,7 +5768,7 @@
     "cdepositDotC_max_pipe_width_SSE_fold_0": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "cdepositDotC_max_pipe_width_SSE_fold_0",
       "tags": [
@@ -5791,7 +5781,7 @@
     "cdepositDotC_max_pipe_width_SSE_fold_2": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "cdepositDotC_max_pipe_width_SSE_fold_2",
       "tags": [
@@ -5804,7 +5794,7 @@
     "cdepositDotC_max_pipe_width_SSE_fold_3": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "cdepositDotC_max_pipe_width_SSE_fold_3",
       "tags": [
@@ -5817,7 +5807,7 @@
     "cdepositDotC_max_pipe_width_SSE_fold_4": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "cdepositDotC_max_pipe_width_SSE_fold_4",
       "tags": [
@@ -5830,7 +5820,7 @@
     "cdepositDotC_max_unroll_width_AVX_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotC_max_unroll_width_AVX_fold_0",
       "step": 1,
@@ -5844,7 +5834,7 @@
     "cdepositDotC_max_unroll_width_AVX_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotC_max_unroll_width_AVX_fold_2",
       "step": 1,
@@ -5858,7 +5848,7 @@
     "cdepositDotC_max_unroll_width_AVX_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotC_max_unroll_width_AVX_fold_3",
       "step": 1,
@@ -5872,7 +5862,7 @@
     "cdepositDotC_max_unroll_width_AVX_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotC_max_unroll_width_AVX_fold_4",
       "step": 1,
@@ -5886,7 +5876,7 @@
     "cdepositDotC_max_unroll_width_SISD_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotC_max_unroll_width_SISD_fold_0",
       "step": 1,
@@ -5900,7 +5890,7 @@
     "cdepositDotC_max_unroll_width_SISD_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotC_max_unroll_width_SISD_fold_2",
       "step": 1,
@@ -5914,7 +5904,7 @@
     "cdepositDotC_max_unroll_width_SISD_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotC_max_unroll_width_SISD_fold_3",
       "step": 1,
@@ -5928,7 +5918,7 @@
     "cdepositDotC_max_unroll_width_SISD_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotC_max_unroll_width_SISD_fold_4",
       "step": 1,
@@ -5942,7 +5932,7 @@
     "cdepositDotC_max_unroll_width_SSE_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotC_max_unroll_width_SSE_fold_0",
       "step": 1,
@@ -5956,7 +5946,7 @@
     "cdepositDotC_max_unroll_width_SSE_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotC_max_unroll_width_SSE_fold_2",
       "step": 1,
@@ -5970,7 +5960,7 @@
     "cdepositDotC_max_unroll_width_SSE_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotC_max_unroll_width_SSE_fold_3",
       "step": 1,
@@ -5984,7 +5974,7 @@
     "cdepositDotC_max_unroll_width_SSE_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotC_max_unroll_width_SSE_fold_4",
       "step": 1,
@@ -6097,7 +6087,7 @@
     "cdepositDotU_max_pipe_width_AVX_fold_0": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "cdepositDotU_max_pipe_width_AVX_fold_0",
       "tags": [
@@ -6110,7 +6100,7 @@
     "cdepositDotU_max_pipe_width_AVX_fold_2": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "cdepositDotU_max_pipe_width_AVX_fold_2",
       "tags": [
@@ -6123,7 +6113,7 @@
     "cdepositDotU_max_pipe_width_AVX_fold_3": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "cdepositDotU_max_pipe_width_AVX_fold_3",
       "tags": [
@@ -6136,7 +6126,7 @@
     "cdepositDotU_max_pipe_width_AVX_fold_4": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "cdepositDotU_max_pipe_width_AVX_fold_4",
       "tags": [
@@ -6149,7 +6139,7 @@
     "cdepositDotU_max_pipe_width_SISD_fold_0": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotU_max_pipe_width_SISD_fold_0",
       "tags": [
@@ -6162,7 +6152,7 @@
     "cdepositDotU_max_pipe_width_SISD_fold_2": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotU_max_pipe_width_SISD_fold_2",
       "tags": [
@@ -6175,7 +6165,7 @@
     "cdepositDotU_max_pipe_width_SISD_fold_3": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotU_max_pipe_width_SISD_fold_3",
       "tags": [
@@ -6188,7 +6178,7 @@
     "cdepositDotU_max_pipe_width_SISD_fold_4": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotU_max_pipe_width_SISD_fold_4",
       "tags": [
@@ -6201,7 +6191,7 @@
     "cdepositDotU_max_pipe_width_SSE_fold_0": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "cdepositDotU_max_pipe_width_SSE_fold_0",
       "tags": [
@@ -6214,7 +6204,7 @@
     "cdepositDotU_max_pipe_width_SSE_fold_2": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "cdepositDotU_max_pipe_width_SSE_fold_2",
       "tags": [
@@ -6227,7 +6217,7 @@
     "cdepositDotU_max_pipe_width_SSE_fold_3": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "cdepositDotU_max_pipe_width_SSE_fold_3",
       "tags": [
@@ -6240,7 +6230,7 @@
     "cdepositDotU_max_pipe_width_SSE_fold_4": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "cdepositDotU_max_pipe_width_SSE_fold_4",
       "tags": [
@@ -6253,7 +6243,7 @@
     "cdepositDotU_max_unroll_width_AVX_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotU_max_unroll_width_AVX_fold_0",
       "step": 1,
@@ -6267,7 +6257,7 @@
     "cdepositDotU_max_unroll_width_AVX_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotU_max_unroll_width_AVX_fold_2",
       "step": 1,
@@ -6281,7 +6271,7 @@
     "cdepositDotU_max_unroll_width_AVX_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotU_max_unroll_width_AVX_fold_3",
       "step": 1,
@@ -6295,7 +6285,7 @@
     "cdepositDotU_max_unroll_width_AVX_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotU_max_unroll_width_AVX_fold_4",
       "step": 1,
@@ -6309,7 +6299,7 @@
     "cdepositDotU_max_unroll_width_SISD_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotU_max_unroll_width_SISD_fold_0",
       "step": 1,
@@ -6323,7 +6313,7 @@
     "cdepositDotU_max_unroll_width_SISD_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotU_max_unroll_width_SISD_fold_2",
       "step": 1,
@@ -6337,7 +6327,7 @@
     "cdepositDotU_max_unroll_width_SISD_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotU_max_unroll_width_SISD_fold_3",
       "step": 1,
@@ -6351,7 +6341,7 @@
     "cdepositDotU_max_unroll_width_SISD_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotU_max_unroll_width_SISD_fold_4",
       "step": 1,
@@ -6365,7 +6355,7 @@
     "cdepositDotU_max_unroll_width_SSE_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotU_max_unroll_width_SSE_fold_0",
       "step": 1,
@@ -6379,7 +6369,7 @@
     "cdepositDotU_max_unroll_width_SSE_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotU_max_unroll_width_SSE_fold_2",
       "step": 1,
@@ -6393,7 +6383,7 @@
     "cdepositDotU_max_unroll_width_SSE_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotU_max_unroll_width_SSE_fold_3",
       "step": 1,
@@ -6407,7 +6397,7 @@
     "cdepositDotU_max_unroll_width_SSE_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositDotU_max_unroll_width_SSE_fold_4",
       "step": 1,
@@ -6520,7 +6510,7 @@
     "cdepositSum_max_pipe_width_AVX_fold_0": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "cdepositSum_max_pipe_width_AVX_fold_0",
       "tags": [
@@ -6533,7 +6523,7 @@
     "cdepositSum_max_pipe_width_AVX_fold_2": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "cdepositSum_max_pipe_width_AVX_fold_2",
       "tags": [
@@ -6546,7 +6536,7 @@
     "cdepositSum_max_pipe_width_AVX_fold_3": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "cdepositSum_max_pipe_width_AVX_fold_3",
       "tags": [
@@ -6559,7 +6549,7 @@
     "cdepositSum_max_pipe_width_AVX_fold_4": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "cdepositSum_max_pipe_width_AVX_fold_4",
       "tags": [
@@ -6572,7 +6562,7 @@
     "cdepositSum_max_pipe_width_SISD_fold_0": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositSum_max_pipe_width_SISD_fold_0",
       "tags": [
@@ -6585,7 +6575,7 @@
     "cdepositSum_max_pipe_width_SISD_fold_2": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositSum_max_pipe_width_SISD_fold_2",
       "tags": [
@@ -6598,7 +6588,7 @@
     "cdepositSum_max_pipe_width_SISD_fold_3": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositSum_max_pipe_width_SISD_fold_3",
       "tags": [
@@ -6611,7 +6601,7 @@
     "cdepositSum_max_pipe_width_SISD_fold_4": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositSum_max_pipe_width_SISD_fold_4",
       "tags": [
@@ -6624,7 +6614,7 @@
     "cdepositSum_max_pipe_width_SSE_fold_0": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "cdepositSum_max_pipe_width_SSE_fold_0",
       "tags": [
@@ -6637,7 +6627,7 @@
     "cdepositSum_max_pipe_width_SSE_fold_2": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "cdepositSum_max_pipe_width_SSE_fold_2",
       "tags": [
@@ -6650,7 +6640,7 @@
     "cdepositSum_max_pipe_width_SSE_fold_3": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "cdepositSum_max_pipe_width_SSE_fold_3",
       "tags": [
@@ -6663,7 +6653,7 @@
     "cdepositSum_max_pipe_width_SSE_fold_4": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "cdepositSum_max_pipe_width_SSE_fold_4",
       "tags": [
@@ -6676,7 +6666,7 @@
     "cdepositSum_max_unroll_width_AVX_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositSum_max_unroll_width_AVX_fold_0",
       "step": 1,
@@ -6690,7 +6680,7 @@
     "cdepositSum_max_unroll_width_AVX_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositSum_max_unroll_width_AVX_fold_2",
       "step": 1,
@@ -6704,7 +6694,7 @@
     "cdepositSum_max_unroll_width_AVX_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositSum_max_unroll_width_AVX_fold_3",
       "step": 1,
@@ -6718,7 +6708,7 @@
     "cdepositSum_max_unroll_width_AVX_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositSum_max_unroll_width_AVX_fold_4",
       "step": 1,
@@ -6732,7 +6722,7 @@
     "cdepositSum_max_unroll_width_SISD_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositSum_max_unroll_width_SISD_fold_0",
       "step": 1,
@@ -6746,7 +6736,7 @@
     "cdepositSum_max_unroll_width_SISD_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositSum_max_unroll_width_SISD_fold_2",
       "step": 1,
@@ -6760,7 +6750,7 @@
     "cdepositSum_max_unroll_width_SISD_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositSum_max_unroll_width_SISD_fold_3",
       "step": 1,
@@ -6774,7 +6764,7 @@
     "cdepositSum_max_unroll_width_SISD_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositSum_max_unroll_width_SISD_fold_4",
       "step": 1,
@@ -6788,7 +6778,7 @@
     "cdepositSum_max_unroll_width_SSE_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositSum_max_unroll_width_SSE_fold_0",
       "step": 1,
@@ -6802,7 +6792,7 @@
     "cdepositSum_max_unroll_width_SSE_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositSum_max_unroll_width_SSE_fold_2",
       "step": 1,
@@ -6816,7 +6806,7 @@
     "cdepositSum_max_unroll_width_SSE_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositSum_max_unroll_width_SSE_fold_3",
       "step": 1,
@@ -6830,7 +6820,7 @@
     "cdepositSum_max_unroll_width_SSE_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "cdepositSum_max_unroll_width_SSE_fold_4",
       "step": 1,
@@ -7051,7 +7041,7 @@
     "ddepositASum_max_pipe_width_AVX_fold_0": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "ddepositASum_max_pipe_width_AVX_fold_0",
       "tags": [
@@ -7064,7 +7054,7 @@
     "ddepositASum_max_pipe_width_AVX_fold_2": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "ddepositASum_max_pipe_width_AVX_fold_2",
       "tags": [
@@ -7077,7 +7067,7 @@
     "ddepositASum_max_pipe_width_AVX_fold_3": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "ddepositASum_max_pipe_width_AVX_fold_3",
       "tags": [
@@ -7090,7 +7080,7 @@
     "ddepositASum_max_pipe_width_AVX_fold_4": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "ddepositASum_max_pipe_width_AVX_fold_4",
       "tags": [
@@ -7103,7 +7093,7 @@
     "ddepositASum_max_pipe_width_SISD_fold_0": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositASum_max_pipe_width_SISD_fold_0",
       "tags": [
@@ -7116,7 +7106,7 @@
     "ddepositASum_max_pipe_width_SISD_fold_2": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositASum_max_pipe_width_SISD_fold_2",
       "tags": [
@@ -7129,7 +7119,7 @@
     "ddepositASum_max_pipe_width_SISD_fold_3": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositASum_max_pipe_width_SISD_fold_3",
       "tags": [
@@ -7142,7 +7132,7 @@
     "ddepositASum_max_pipe_width_SISD_fold_4": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositASum_max_pipe_width_SISD_fold_4",
       "tags": [
@@ -7155,7 +7145,7 @@
     "ddepositASum_max_pipe_width_SSE_fold_0": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "ddepositASum_max_pipe_width_SSE_fold_0",
       "tags": [
@@ -7168,7 +7158,7 @@
     "ddepositASum_max_pipe_width_SSE_fold_2": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "ddepositASum_max_pipe_width_SSE_fold_2",
       "tags": [
@@ -7181,7 +7171,7 @@
     "ddepositASum_max_pipe_width_SSE_fold_3": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "ddepositASum_max_pipe_width_SSE_fold_3",
       "tags": [
@@ -7194,7 +7184,7 @@
     "ddepositASum_max_pipe_width_SSE_fold_4": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "ddepositASum_max_pipe_width_SSE_fold_4",
       "tags": [
@@ -7207,7 +7197,7 @@
     "ddepositASum_max_unroll_width_AVX_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositASum_max_unroll_width_AVX_fold_0",
       "step": 1,
@@ -7221,7 +7211,7 @@
     "ddepositASum_max_unroll_width_AVX_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositASum_max_unroll_width_AVX_fold_2",
       "step": 1,
@@ -7235,7 +7225,7 @@
     "ddepositASum_max_unroll_width_AVX_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositASum_max_unroll_width_AVX_fold_3",
       "step": 1,
@@ -7249,7 +7239,7 @@
     "ddepositASum_max_unroll_width_AVX_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositASum_max_unroll_width_AVX_fold_4",
       "step": 1,
@@ -7263,7 +7253,7 @@
     "ddepositASum_max_unroll_width_SISD_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositASum_max_unroll_width_SISD_fold_0",
       "step": 1,
@@ -7277,7 +7267,7 @@
     "ddepositASum_max_unroll_width_SISD_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositASum_max_unroll_width_SISD_fold_2",
       "step": 1,
@@ -7291,7 +7281,7 @@
     "ddepositASum_max_unroll_width_SISD_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositASum_max_unroll_width_SISD_fold_3",
       "step": 1,
@@ -7305,7 +7295,7 @@
     "ddepositASum_max_unroll_width_SISD_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositASum_max_unroll_width_SISD_fold_4",
       "step": 1,
@@ -7319,7 +7309,7 @@
     "ddepositASum_max_unroll_width_SSE_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositASum_max_unroll_width_SSE_fold_0",
       "step": 1,
@@ -7333,7 +7323,7 @@
     "ddepositASum_max_unroll_width_SSE_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositASum_max_unroll_width_SSE_fold_2",
       "step": 1,
@@ -7347,7 +7337,7 @@
     "ddepositASum_max_unroll_width_SSE_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositASum_max_unroll_width_SSE_fold_3",
       "step": 1,
@@ -7361,7 +7351,7 @@
     "ddepositASum_max_unroll_width_SSE_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositASum_max_unroll_width_SSE_fold_4",
       "step": 1,
@@ -7474,7 +7464,7 @@
     "ddepositDot_max_pipe_width_AVX_fold_0": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "ddepositDot_max_pipe_width_AVX_fold_0",
       "tags": [
@@ -7487,7 +7477,7 @@
     "ddepositDot_max_pipe_width_AVX_fold_2": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "ddepositDot_max_pipe_width_AVX_fold_2",
       "tags": [
@@ -7500,7 +7490,7 @@
     "ddepositDot_max_pipe_width_AVX_fold_3": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "ddepositDot_max_pipe_width_AVX_fold_3",
       "tags": [
@@ -7513,7 +7503,7 @@
     "ddepositDot_max_pipe_width_AVX_fold_4": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "ddepositDot_max_pipe_width_AVX_fold_4",
       "tags": [
@@ -7526,7 +7516,7 @@
     "ddepositDot_max_pipe_width_SISD_fold_0": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositDot_max_pipe_width_SISD_fold_0",
       "tags": [
@@ -7539,7 +7529,7 @@
     "ddepositDot_max_pipe_width_SISD_fold_2": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositDot_max_pipe_width_SISD_fold_2",
       "tags": [
@@ -7552,7 +7542,7 @@
     "ddepositDot_max_pipe_width_SISD_fold_3": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositDot_max_pipe_width_SISD_fold_3",
       "tags": [
@@ -7565,7 +7555,7 @@
     "ddepositDot_max_pipe_width_SISD_fold_4": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositDot_max_pipe_width_SISD_fold_4",
       "tags": [
@@ -7578,7 +7568,7 @@
     "ddepositDot_max_pipe_width_SSE_fold_0": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "ddepositDot_max_pipe_width_SSE_fold_0",
       "tags": [
@@ -7591,7 +7581,7 @@
     "ddepositDot_max_pipe_width_SSE_fold_2": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "ddepositDot_max_pipe_width_SSE_fold_2",
       "tags": [
@@ -7604,7 +7594,7 @@
     "ddepositDot_max_pipe_width_SSE_fold_3": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "ddepositDot_max_pipe_width_SSE_fold_3",
       "tags": [
@@ -7617,7 +7607,7 @@
     "ddepositDot_max_pipe_width_SSE_fold_4": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "ddepositDot_max_pipe_width_SSE_fold_4",
       "tags": [
@@ -7630,7 +7620,7 @@
     "ddepositDot_max_unroll_width_AVX_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositDot_max_unroll_width_AVX_fold_0",
       "step": 1,
@@ -7644,7 +7634,7 @@
     "ddepositDot_max_unroll_width_AVX_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositDot_max_unroll_width_AVX_fold_2",
       "step": 1,
@@ -7658,7 +7648,7 @@
     "ddepositDot_max_unroll_width_AVX_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositDot_max_unroll_width_AVX_fold_3",
       "step": 1,
@@ -7672,7 +7662,7 @@
     "ddepositDot_max_unroll_width_AVX_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositDot_max_unroll_width_AVX_fold_4",
       "step": 1,
@@ -7686,7 +7676,7 @@
     "ddepositDot_max_unroll_width_SISD_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositDot_max_unroll_width_SISD_fold_0",
       "step": 1,
@@ -7700,7 +7690,7 @@
     "ddepositDot_max_unroll_width_SISD_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositDot_max_unroll_width_SISD_fold_2",
       "step": 1,
@@ -7714,7 +7704,7 @@
     "ddepositDot_max_unroll_width_SISD_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositDot_max_unroll_width_SISD_fold_3",
       "step": 1,
@@ -7728,7 +7718,7 @@
     "ddepositDot_max_unroll_width_SISD_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositDot_max_unroll_width_SISD_fold_4",
       "step": 1,
@@ -7742,7 +7732,7 @@
     "ddepositDot_max_unroll_width_SSE_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositDot_max_unroll_width_SSE_fold_0",
       "step": 1,
@@ -7756,7 +7746,7 @@
     "ddepositDot_max_unroll_width_SSE_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositDot_max_unroll_width_SSE_fold_2",
       "step": 1,
@@ -7770,7 +7760,7 @@
     "ddepositDot_max_unroll_width_SSE_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositDot_max_unroll_width_SSE_fold_3",
       "step": 1,
@@ -7784,7 +7774,7 @@
     "ddepositDot_max_unroll_width_SSE_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositDot_max_unroll_width_SSE_fold_4",
       "step": 1,
@@ -7897,7 +7887,7 @@
     "ddepositSSq_max_pipe_width_AVX_fold_0": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "ddepositSSq_max_pipe_width_AVX_fold_0",
       "tags": [
@@ -7910,7 +7900,7 @@
     "ddepositSSq_max_pipe_width_AVX_fold_2": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "ddepositSSq_max_pipe_width_AVX_fold_2",
       "tags": [
@@ -7923,7 +7913,7 @@
     "ddepositSSq_max_pipe_width_AVX_fold_3": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "ddepositSSq_max_pipe_width_AVX_fold_3",
       "tags": [
@@ -7936,7 +7926,7 @@
     "ddepositSSq_max_pipe_width_AVX_fold_4": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "ddepositSSq_max_pipe_width_AVX_fold_4",
       "tags": [
@@ -7949,7 +7939,7 @@
     "ddepositSSq_max_pipe_width_SISD_fold_0": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSSq_max_pipe_width_SISD_fold_0",
       "tags": [
@@ -7962,7 +7952,7 @@
     "ddepositSSq_max_pipe_width_SISD_fold_2": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSSq_max_pipe_width_SISD_fold_2",
       "tags": [
@@ -7975,7 +7965,7 @@
     "ddepositSSq_max_pipe_width_SISD_fold_3": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSSq_max_pipe_width_SISD_fold_3",
       "tags": [
@@ -7988,7 +7978,7 @@
     "ddepositSSq_max_pipe_width_SISD_fold_4": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSSq_max_pipe_width_SISD_fold_4",
       "tags": [
@@ -8001,7 +7991,7 @@
     "ddepositSSq_max_pipe_width_SSE_fold_0": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "ddepositSSq_max_pipe_width_SSE_fold_0",
       "tags": [
@@ -8014,7 +8004,7 @@
     "ddepositSSq_max_pipe_width_SSE_fold_2": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "ddepositSSq_max_pipe_width_SSE_fold_2",
       "tags": [
@@ -8027,7 +8017,7 @@
     "ddepositSSq_max_pipe_width_SSE_fold_3": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "ddepositSSq_max_pipe_width_SSE_fold_3",
       "tags": [
@@ -8040,7 +8030,7 @@
     "ddepositSSq_max_pipe_width_SSE_fold_4": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "ddepositSSq_max_pipe_width_SSE_fold_4",
       "tags": [
@@ -8053,7 +8043,7 @@
     "ddepositSSq_max_unroll_width_AVX_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSSq_max_unroll_width_AVX_fold_0",
       "step": 1,
@@ -8067,7 +8057,7 @@
     "ddepositSSq_max_unroll_width_AVX_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSSq_max_unroll_width_AVX_fold_2",
       "step": 1,
@@ -8081,7 +8071,7 @@
     "ddepositSSq_max_unroll_width_AVX_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSSq_max_unroll_width_AVX_fold_3",
       "step": 1,
@@ -8095,7 +8085,7 @@
     "ddepositSSq_max_unroll_width_AVX_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSSq_max_unroll_width_AVX_fold_4",
       "step": 1,
@@ -8109,7 +8099,7 @@
     "ddepositSSq_max_unroll_width_SISD_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSSq_max_unroll_width_SISD_fold_0",
       "step": 1,
@@ -8123,7 +8113,7 @@
     "ddepositSSq_max_unroll_width_SISD_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSSq_max_unroll_width_SISD_fold_2",
       "step": 1,
@@ -8137,7 +8127,7 @@
     "ddepositSSq_max_unroll_width_SISD_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSSq_max_unroll_width_SISD_fold_3",
       "step": 1,
@@ -8151,7 +8141,7 @@
     "ddepositSSq_max_unroll_width_SISD_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSSq_max_unroll_width_SISD_fold_4",
       "step": 1,
@@ -8165,7 +8155,7 @@
     "ddepositSSq_max_unroll_width_SSE_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSSq_max_unroll_width_SSE_fold_0",
       "step": 1,
@@ -8179,7 +8169,7 @@
     "ddepositSSq_max_unroll_width_SSE_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSSq_max_unroll_width_SSE_fold_2",
       "step": 1,
@@ -8193,7 +8183,7 @@
     "ddepositSSq_max_unroll_width_SSE_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSSq_max_unroll_width_SSE_fold_3",
       "step": 1,
@@ -8207,7 +8197,7 @@
     "ddepositSSq_max_unroll_width_SSE_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSSq_max_unroll_width_SSE_fold_4",
       "step": 1,
@@ -8320,7 +8310,7 @@
     "ddepositSum_max_pipe_width_AVX_fold_0": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "ddepositSum_max_pipe_width_AVX_fold_0",
       "tags": [
@@ -8333,7 +8323,7 @@
     "ddepositSum_max_pipe_width_AVX_fold_2": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "ddepositSum_max_pipe_width_AVX_fold_2",
       "tags": [
@@ -8346,7 +8336,7 @@
     "ddepositSum_max_pipe_width_AVX_fold_3": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "ddepositSum_max_pipe_width_AVX_fold_3",
       "tags": [
@@ -8359,7 +8349,7 @@
     "ddepositSum_max_pipe_width_AVX_fold_4": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "ddepositSum_max_pipe_width_AVX_fold_4",
       "tags": [
@@ -8372,7 +8362,7 @@
     "ddepositSum_max_pipe_width_SISD_fold_0": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSum_max_pipe_width_SISD_fold_0",
       "tags": [
@@ -8385,7 +8375,7 @@
     "ddepositSum_max_pipe_width_SISD_fold_2": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSum_max_pipe_width_SISD_fold_2",
       "tags": [
@@ -8398,7 +8388,7 @@
     "ddepositSum_max_pipe_width_SISD_fold_3": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSum_max_pipe_width_SISD_fold_3",
       "tags": [
@@ -8411,7 +8401,7 @@
     "ddepositSum_max_pipe_width_SISD_fold_4": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSum_max_pipe_width_SISD_fold_4",
       "tags": [
@@ -8424,7 +8414,7 @@
     "ddepositSum_max_pipe_width_SSE_fold_0": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "ddepositSum_max_pipe_width_SSE_fold_0",
       "tags": [
@@ -8437,7 +8427,7 @@
     "ddepositSum_max_pipe_width_SSE_fold_2": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "ddepositSum_max_pipe_width_SSE_fold_2",
       "tags": [
@@ -8450,7 +8440,7 @@
     "ddepositSum_max_pipe_width_SSE_fold_3": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "ddepositSum_max_pipe_width_SSE_fold_3",
       "tags": [
@@ -8463,7 +8453,7 @@
     "ddepositSum_max_pipe_width_SSE_fold_4": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "ddepositSum_max_pipe_width_SSE_fold_4",
       "tags": [
@@ -8476,7 +8466,7 @@
     "ddepositSum_max_unroll_width_AVX_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSum_max_unroll_width_AVX_fold_0",
       "step": 1,
@@ -8490,7 +8480,7 @@
     "ddepositSum_max_unroll_width_AVX_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSum_max_unroll_width_AVX_fold_2",
       "step": 1,
@@ -8504,7 +8494,7 @@
     "ddepositSum_max_unroll_width_AVX_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSum_max_unroll_width_AVX_fold_3",
       "step": 1,
@@ -8518,7 +8508,7 @@
     "ddepositSum_max_unroll_width_AVX_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSum_max_unroll_width_AVX_fold_4",
       "step": 1,
@@ -8532,7 +8522,7 @@
     "ddepositSum_max_unroll_width_SISD_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSum_max_unroll_width_SISD_fold_0",
       "step": 1,
@@ -8546,7 +8536,7 @@
     "ddepositSum_max_unroll_width_SISD_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSum_max_unroll_width_SISD_fold_2",
       "step": 1,
@@ -8560,7 +8550,7 @@
     "ddepositSum_max_unroll_width_SISD_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSum_max_unroll_width_SISD_fold_3",
       "step": 1,
@@ -8574,7 +8564,7 @@
     "ddepositSum_max_unroll_width_SISD_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSum_max_unroll_width_SISD_fold_4",
       "step": 1,
@@ -8588,7 +8578,7 @@
     "ddepositSum_max_unroll_width_SSE_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSum_max_unroll_width_SSE_fold_0",
       "step": 1,
@@ -8602,7 +8592,7 @@
     "ddepositSum_max_unroll_width_SSE_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSum_max_unroll_width_SSE_fold_2",
       "step": 1,
@@ -8616,7 +8606,7 @@
     "ddepositSum_max_unroll_width_SSE_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSum_max_unroll_width_SSE_fold_3",
       "step": 1,
@@ -8630,7 +8620,7 @@
     "ddepositSum_max_unroll_width_SSE_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "ddepositSum_max_unroll_width_SSE_fold_4",
       "step": 1,
@@ -8641,42 +8631,34 @@
         ]
       ]
     },
-    "didgemm_block_size_T_BLOCK": {
-      "default": 32,
-      "flavor": "poweroftwo",
-      "maximum": 32,
-      "minimum": 1,
-      "name": "didgemm_block_size_T_BLOCK",
-      "tags": []
-    },
     "didgemm_block_size_XT_BLOCK": {
-      "default": 8192,
+      "default": 4096,
       "flavor": "poweroftwo",
-      "maximum": 8192,
+      "maximum": 4096,
       "minimum": 1,
       "name": "didgemm_block_size_XT_BLOCK",
       "tags": []
     },
     "didgemm_block_size_X_BLOCK": {
-      "default": 8192,
+      "default": 4096,
       "flavor": "poweroftwo",
-      "maximum": 8192,
+      "maximum": 4096,
       "minimum": 1,
       "name": "didgemm_block_size_X_BLOCK",
       "tags": []
     },
     "didgemm_block_size_YT_BLOCK": {
-      "default": 128,
+      "default": 64,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 64,
       "minimum": 1,
       "name": "didgemm_block_size_YT_BLOCK",
       "tags": []
     },
     "didgemm_block_size_Y_BLOCK": {
-      "default": 128,
+      "default": 64,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 64,
       "minimum": 1,
       "name": "didgemm_block_size_Y_BLOCK",
       "tags": []
@@ -8690,17 +8672,17 @@
       "tags": []
     },
     "didgemv_block_size_XT_BLOCK": {
-      "default": 8192,
+      "default": 4096,
       "flavor": "poweroftwo",
-      "maximum": 8192,
+      "maximum": 4096,
       "minimum": 1,
       "name": "didgemv_block_size_XT_BLOCK",
       "tags": []
     },
     "didgemv_block_size_X_BLOCK": {
-      "default": 8192,
+      "default": 4096,
       "flavor": "poweroftwo",
-      "maximum": 8192,
+      "maximum": 4096,
       "minimum": 1,
       "name": "didgemv_block_size_X_BLOCK",
       "tags": []
@@ -8871,7 +8853,7 @@
     "dzdepositASum_max_pipe_width_AVX_fold_0": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "dzdepositASum_max_pipe_width_AVX_fold_0",
       "tags": [
@@ -8884,7 +8866,7 @@
     "dzdepositASum_max_pipe_width_AVX_fold_2": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "dzdepositASum_max_pipe_width_AVX_fold_2",
       "tags": [
@@ -8897,7 +8879,7 @@
     "dzdepositASum_max_pipe_width_AVX_fold_3": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "dzdepositASum_max_pipe_width_AVX_fold_3",
       "tags": [
@@ -8910,7 +8892,7 @@
     "dzdepositASum_max_pipe_width_AVX_fold_4": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "dzdepositASum_max_pipe_width_AVX_fold_4",
       "tags": [
@@ -8923,7 +8905,7 @@
     "dzdepositASum_max_pipe_width_SISD_fold_0": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositASum_max_pipe_width_SISD_fold_0",
       "tags": [
@@ -8936,7 +8918,7 @@
     "dzdepositASum_max_pipe_width_SISD_fold_2": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositASum_max_pipe_width_SISD_fold_2",
       "tags": [
@@ -8949,7 +8931,7 @@
     "dzdepositASum_max_pipe_width_SISD_fold_3": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositASum_max_pipe_width_SISD_fold_3",
       "tags": [
@@ -8962,7 +8944,7 @@
     "dzdepositASum_max_pipe_width_SISD_fold_4": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositASum_max_pipe_width_SISD_fold_4",
       "tags": [
@@ -8975,7 +8957,7 @@
     "dzdepositASum_max_pipe_width_SSE_fold_0": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositASum_max_pipe_width_SSE_fold_0",
       "tags": [
@@ -8988,7 +8970,7 @@
     "dzdepositASum_max_pipe_width_SSE_fold_2": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositASum_max_pipe_width_SSE_fold_2",
       "tags": [
@@ -9001,7 +8983,7 @@
     "dzdepositASum_max_pipe_width_SSE_fold_3": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositASum_max_pipe_width_SSE_fold_3",
       "tags": [
@@ -9014,7 +8996,7 @@
     "dzdepositASum_max_pipe_width_SSE_fold_4": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositASum_max_pipe_width_SSE_fold_4",
       "tags": [
@@ -9027,7 +9009,7 @@
     "dzdepositASum_max_unroll_width_AVX_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositASum_max_unroll_width_AVX_fold_0",
       "step": 1,
@@ -9041,7 +9023,7 @@
     "dzdepositASum_max_unroll_width_AVX_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositASum_max_unroll_width_AVX_fold_2",
       "step": 1,
@@ -9055,7 +9037,7 @@
     "dzdepositASum_max_unroll_width_AVX_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositASum_max_unroll_width_AVX_fold_3",
       "step": 1,
@@ -9069,7 +9051,7 @@
     "dzdepositASum_max_unroll_width_AVX_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositASum_max_unroll_width_AVX_fold_4",
       "step": 1,
@@ -9083,7 +9065,7 @@
     "dzdepositASum_max_unroll_width_SISD_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositASum_max_unroll_width_SISD_fold_0",
       "step": 1,
@@ -9097,7 +9079,7 @@
     "dzdepositASum_max_unroll_width_SISD_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositASum_max_unroll_width_SISD_fold_2",
       "step": 1,
@@ -9111,7 +9093,7 @@
     "dzdepositASum_max_unroll_width_SISD_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositASum_max_unroll_width_SISD_fold_3",
       "step": 1,
@@ -9125,7 +9107,7 @@
     "dzdepositASum_max_unroll_width_SISD_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositASum_max_unroll_width_SISD_fold_4",
       "step": 1,
@@ -9139,7 +9121,7 @@
     "dzdepositASum_max_unroll_width_SSE_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositASum_max_unroll_width_SSE_fold_0",
       "step": 1,
@@ -9153,7 +9135,7 @@
     "dzdepositASum_max_unroll_width_SSE_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositASum_max_unroll_width_SSE_fold_2",
       "step": 1,
@@ -9167,7 +9149,7 @@
     "dzdepositASum_max_unroll_width_SSE_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositASum_max_unroll_width_SSE_fold_3",
       "step": 1,
@@ -9181,7 +9163,7 @@
     "dzdepositASum_max_unroll_width_SSE_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositASum_max_unroll_width_SSE_fold_4",
       "step": 1,
@@ -9294,7 +9276,7 @@
     "dzdepositSSq_max_pipe_width_AVX_fold_0": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "dzdepositSSq_max_pipe_width_AVX_fold_0",
       "tags": [
@@ -9307,7 +9289,7 @@
     "dzdepositSSq_max_pipe_width_AVX_fold_2": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "dzdepositSSq_max_pipe_width_AVX_fold_2",
       "tags": [
@@ -9320,7 +9302,7 @@
     "dzdepositSSq_max_pipe_width_AVX_fold_3": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "dzdepositSSq_max_pipe_width_AVX_fold_3",
       "tags": [
@@ -9333,7 +9315,7 @@
     "dzdepositSSq_max_pipe_width_AVX_fold_4": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "dzdepositSSq_max_pipe_width_AVX_fold_4",
       "tags": [
@@ -9346,7 +9328,7 @@
     "dzdepositSSq_max_pipe_width_SISD_fold_0": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositSSq_max_pipe_width_SISD_fold_0",
       "tags": [
@@ -9359,7 +9341,7 @@
     "dzdepositSSq_max_pipe_width_SISD_fold_2": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositSSq_max_pipe_width_SISD_fold_2",
       "tags": [
@@ -9372,7 +9354,7 @@
     "dzdepositSSq_max_pipe_width_SISD_fold_3": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositSSq_max_pipe_width_SISD_fold_3",
       "tags": [
@@ -9385,7 +9367,7 @@
     "dzdepositSSq_max_pipe_width_SISD_fold_4": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositSSq_max_pipe_width_SISD_fold_4",
       "tags": [
@@ -9398,7 +9380,7 @@
     "dzdepositSSq_max_pipe_width_SSE_fold_0": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositSSq_max_pipe_width_SSE_fold_0",
       "tags": [
@@ -9411,7 +9393,7 @@
     "dzdepositSSq_max_pipe_width_SSE_fold_2": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositSSq_max_pipe_width_SSE_fold_2",
       "tags": [
@@ -9424,7 +9406,7 @@
     "dzdepositSSq_max_pipe_width_SSE_fold_3": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositSSq_max_pipe_width_SSE_fold_3",
       "tags": [
@@ -9437,7 +9419,7 @@
     "dzdepositSSq_max_pipe_width_SSE_fold_4": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositSSq_max_pipe_width_SSE_fold_4",
       "tags": [
@@ -9450,7 +9432,7 @@
     "dzdepositSSq_max_unroll_width_AVX_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositSSq_max_unroll_width_AVX_fold_0",
       "step": 1,
@@ -9464,7 +9446,7 @@
     "dzdepositSSq_max_unroll_width_AVX_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositSSq_max_unroll_width_AVX_fold_2",
       "step": 1,
@@ -9478,7 +9460,7 @@
     "dzdepositSSq_max_unroll_width_AVX_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositSSq_max_unroll_width_AVX_fold_3",
       "step": 1,
@@ -9492,7 +9474,7 @@
     "dzdepositSSq_max_unroll_width_AVX_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositSSq_max_unroll_width_AVX_fold_4",
       "step": 1,
@@ -9506,7 +9488,7 @@
     "dzdepositSSq_max_unroll_width_SISD_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositSSq_max_unroll_width_SISD_fold_0",
       "step": 1,
@@ -9520,7 +9502,7 @@
     "dzdepositSSq_max_unroll_width_SISD_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositSSq_max_unroll_width_SISD_fold_2",
       "step": 1,
@@ -9534,7 +9516,7 @@
     "dzdepositSSq_max_unroll_width_SISD_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositSSq_max_unroll_width_SISD_fold_3",
       "step": 1,
@@ -9548,7 +9530,7 @@
     "dzdepositSSq_max_unroll_width_SISD_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositSSq_max_unroll_width_SISD_fold_4",
       "step": 1,
@@ -9562,7 +9544,7 @@
     "dzdepositSSq_max_unroll_width_SSE_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositSSq_max_unroll_width_SSE_fold_0",
       "step": 1,
@@ -9576,7 +9558,7 @@
     "dzdepositSSq_max_unroll_width_SSE_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositSSq_max_unroll_width_SSE_fold_2",
       "step": 1,
@@ -9590,7 +9572,7 @@
     "dzdepositSSq_max_unroll_width_SSE_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositSSq_max_unroll_width_SSE_fold_3",
       "step": 1,
@@ -9604,7 +9586,7 @@
     "dzdepositSSq_max_unroll_width_SSE_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "dzdepositSSq_max_unroll_width_SSE_fold_4",
       "step": 1,
@@ -9801,7 +9783,7 @@
     "scdepositASum_max_pipe_width_AVX_fold_0": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "scdepositASum_max_pipe_width_AVX_fold_0",
       "tags": [
@@ -9814,7 +9796,7 @@
     "scdepositASum_max_pipe_width_AVX_fold_2": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "scdepositASum_max_pipe_width_AVX_fold_2",
       "tags": [
@@ -9827,7 +9809,7 @@
     "scdepositASum_max_pipe_width_AVX_fold_3": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "scdepositASum_max_pipe_width_AVX_fold_3",
       "tags": [
@@ -9840,7 +9822,7 @@
     "scdepositASum_max_pipe_width_AVX_fold_4": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "scdepositASum_max_pipe_width_AVX_fold_4",
       "tags": [
@@ -9853,7 +9835,7 @@
     "scdepositASum_max_pipe_width_SISD_fold_0": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositASum_max_pipe_width_SISD_fold_0",
       "tags": [
@@ -9866,7 +9848,7 @@
     "scdepositASum_max_pipe_width_SISD_fold_2": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositASum_max_pipe_width_SISD_fold_2",
       "tags": [
@@ -9879,7 +9861,7 @@
     "scdepositASum_max_pipe_width_SISD_fold_3": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositASum_max_pipe_width_SISD_fold_3",
       "tags": [
@@ -9892,7 +9874,7 @@
     "scdepositASum_max_pipe_width_SISD_fold_4": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositASum_max_pipe_width_SISD_fold_4",
       "tags": [
@@ -9905,7 +9887,7 @@
     "scdepositASum_max_pipe_width_SSE_fold_0": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "scdepositASum_max_pipe_width_SSE_fold_0",
       "tags": [
@@ -9918,7 +9900,7 @@
     "scdepositASum_max_pipe_width_SSE_fold_2": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "scdepositASum_max_pipe_width_SSE_fold_2",
       "tags": [
@@ -9931,7 +9913,7 @@
     "scdepositASum_max_pipe_width_SSE_fold_3": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "scdepositASum_max_pipe_width_SSE_fold_3",
       "tags": [
@@ -9944,7 +9926,7 @@
     "scdepositASum_max_pipe_width_SSE_fold_4": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "scdepositASum_max_pipe_width_SSE_fold_4",
       "tags": [
@@ -9957,7 +9939,7 @@
     "scdepositASum_max_unroll_width_AVX_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositASum_max_unroll_width_AVX_fold_0",
       "step": 1,
@@ -9971,7 +9953,7 @@
     "scdepositASum_max_unroll_width_AVX_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositASum_max_unroll_width_AVX_fold_2",
       "step": 1,
@@ -9985,7 +9967,7 @@
     "scdepositASum_max_unroll_width_AVX_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositASum_max_unroll_width_AVX_fold_3",
       "step": 1,
@@ -9999,7 +9981,7 @@
     "scdepositASum_max_unroll_width_AVX_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositASum_max_unroll_width_AVX_fold_4",
       "step": 1,
@@ -10013,7 +9995,7 @@
     "scdepositASum_max_unroll_width_SISD_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositASum_max_unroll_width_SISD_fold_0",
       "step": 1,
@@ -10027,7 +10009,7 @@
     "scdepositASum_max_unroll_width_SISD_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositASum_max_unroll_width_SISD_fold_2",
       "step": 1,
@@ -10041,7 +10023,7 @@
     "scdepositASum_max_unroll_width_SISD_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositASum_max_unroll_width_SISD_fold_3",
       "step": 1,
@@ -10055,7 +10037,7 @@
     "scdepositASum_max_unroll_width_SISD_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositASum_max_unroll_width_SISD_fold_4",
       "step": 1,
@@ -10069,7 +10051,7 @@
     "scdepositASum_max_unroll_width_SSE_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositASum_max_unroll_width_SSE_fold_0",
       "step": 1,
@@ -10083,7 +10065,7 @@
     "scdepositASum_max_unroll_width_SSE_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositASum_max_unroll_width_SSE_fold_2",
       "step": 1,
@@ -10097,7 +10079,7 @@
     "scdepositASum_max_unroll_width_SSE_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositASum_max_unroll_width_SSE_fold_3",
       "step": 1,
@@ -10111,7 +10093,7 @@
     "scdepositASum_max_unroll_width_SSE_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositASum_max_unroll_width_SSE_fold_4",
       "step": 1,
@@ -10224,7 +10206,7 @@
     "scdepositSSq_max_pipe_width_AVX_fold_0": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "scdepositSSq_max_pipe_width_AVX_fold_0",
       "tags": [
@@ -10237,7 +10219,7 @@
     "scdepositSSq_max_pipe_width_AVX_fold_2": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "scdepositSSq_max_pipe_width_AVX_fold_2",
       "tags": [
@@ -10250,7 +10232,7 @@
     "scdepositSSq_max_pipe_width_AVX_fold_3": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "scdepositSSq_max_pipe_width_AVX_fold_3",
       "tags": [
@@ -10263,7 +10245,7 @@
     "scdepositSSq_max_pipe_width_AVX_fold_4": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "scdepositSSq_max_pipe_width_AVX_fold_4",
       "tags": [
@@ -10276,7 +10258,7 @@
     "scdepositSSq_max_pipe_width_SISD_fold_0": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositSSq_max_pipe_width_SISD_fold_0",
       "tags": [
@@ -10289,7 +10271,7 @@
     "scdepositSSq_max_pipe_width_SISD_fold_2": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositSSq_max_pipe_width_SISD_fold_2",
       "tags": [
@@ -10302,7 +10284,7 @@
     "scdepositSSq_max_pipe_width_SISD_fold_3": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositSSq_max_pipe_width_SISD_fold_3",
       "tags": [
@@ -10315,7 +10297,7 @@
     "scdepositSSq_max_pipe_width_SISD_fold_4": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositSSq_max_pipe_width_SISD_fold_4",
       "tags": [
@@ -10328,7 +10310,7 @@
     "scdepositSSq_max_pipe_width_SSE_fold_0": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "scdepositSSq_max_pipe_width_SSE_fold_0",
       "tags": [
@@ -10341,7 +10323,7 @@
     "scdepositSSq_max_pipe_width_SSE_fold_2": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "scdepositSSq_max_pipe_width_SSE_fold_2",
       "tags": [
@@ -10354,7 +10336,7 @@
     "scdepositSSq_max_pipe_width_SSE_fold_3": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "scdepositSSq_max_pipe_width_SSE_fold_3",
       "tags": [
@@ -10367,7 +10349,7 @@
     "scdepositSSq_max_pipe_width_SSE_fold_4": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "scdepositSSq_max_pipe_width_SSE_fold_4",
       "tags": [
@@ -10380,7 +10362,7 @@
     "scdepositSSq_max_unroll_width_AVX_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositSSq_max_unroll_width_AVX_fold_0",
       "step": 1,
@@ -10394,7 +10376,7 @@
     "scdepositSSq_max_unroll_width_AVX_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositSSq_max_unroll_width_AVX_fold_2",
       "step": 1,
@@ -10408,7 +10390,7 @@
     "scdepositSSq_max_unroll_width_AVX_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositSSq_max_unroll_width_AVX_fold_3",
       "step": 1,
@@ -10422,7 +10404,7 @@
     "scdepositSSq_max_unroll_width_AVX_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositSSq_max_unroll_width_AVX_fold_4",
       "step": 1,
@@ -10436,7 +10418,7 @@
     "scdepositSSq_max_unroll_width_SISD_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositSSq_max_unroll_width_SISD_fold_0",
       "step": 1,
@@ -10450,7 +10432,7 @@
     "scdepositSSq_max_unroll_width_SISD_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositSSq_max_unroll_width_SISD_fold_2",
       "step": 1,
@@ -10464,7 +10446,7 @@
     "scdepositSSq_max_unroll_width_SISD_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositSSq_max_unroll_width_SISD_fold_3",
       "step": 1,
@@ -10478,7 +10460,7 @@
     "scdepositSSq_max_unroll_width_SISD_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositSSq_max_unroll_width_SISD_fold_4",
       "step": 1,
@@ -10492,7 +10474,7 @@
     "scdepositSSq_max_unroll_width_SSE_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositSSq_max_unroll_width_SSE_fold_0",
       "step": 1,
@@ -10506,7 +10488,7 @@
     "scdepositSSq_max_unroll_width_SSE_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositSSq_max_unroll_width_SSE_fold_2",
       "step": 1,
@@ -10520,7 +10502,7 @@
     "scdepositSSq_max_unroll_width_SSE_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositSSq_max_unroll_width_SSE_fold_3",
       "step": 1,
@@ -10534,7 +10516,7 @@
     "scdepositSSq_max_unroll_width_SSE_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "scdepositSSq_max_unroll_width_SSE_fold_4",
       "step": 1,
@@ -10647,7 +10629,7 @@
     "sdepositASum_max_pipe_width_AVX_fold_0": {
       "default": 8,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 64,
       "minimum": 8,
       "name": "sdepositASum_max_pipe_width_AVX_fold_0",
       "tags": [
@@ -10660,7 +10642,7 @@
     "sdepositASum_max_pipe_width_AVX_fold_2": {
       "default": 8,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 64,
       "minimum": 8,
       "name": "sdepositASum_max_pipe_width_AVX_fold_2",
       "tags": [
@@ -10673,7 +10655,7 @@
     "sdepositASum_max_pipe_width_AVX_fold_3": {
       "default": 8,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 64,
       "minimum": 8,
       "name": "sdepositASum_max_pipe_width_AVX_fold_3",
       "tags": [
@@ -10686,7 +10668,7 @@
     "sdepositASum_max_pipe_width_AVX_fold_4": {
       "default": 8,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 64,
       "minimum": 8,
       "name": "sdepositASum_max_pipe_width_AVX_fold_4",
       "tags": [
@@ -10699,7 +10681,7 @@
     "sdepositASum_max_pipe_width_SISD_fold_0": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositASum_max_pipe_width_SISD_fold_0",
       "tags": [
@@ -10712,7 +10694,7 @@
     "sdepositASum_max_pipe_width_SISD_fold_2": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositASum_max_pipe_width_SISD_fold_2",
       "tags": [
@@ -10725,7 +10707,7 @@
     "sdepositASum_max_pipe_width_SISD_fold_3": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositASum_max_pipe_width_SISD_fold_3",
       "tags": [
@@ -10738,7 +10720,7 @@
     "sdepositASum_max_pipe_width_SISD_fold_4": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositASum_max_pipe_width_SISD_fold_4",
       "tags": [
@@ -10751,7 +10733,7 @@
     "sdepositASum_max_pipe_width_SSE_fold_0": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "sdepositASum_max_pipe_width_SSE_fold_0",
       "tags": [
@@ -10764,7 +10746,7 @@
     "sdepositASum_max_pipe_width_SSE_fold_2": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "sdepositASum_max_pipe_width_SSE_fold_2",
       "tags": [
@@ -10777,7 +10759,7 @@
     "sdepositASum_max_pipe_width_SSE_fold_3": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "sdepositASum_max_pipe_width_SSE_fold_3",
       "tags": [
@@ -10790,7 +10772,7 @@
     "sdepositASum_max_pipe_width_SSE_fold_4": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "sdepositASum_max_pipe_width_SSE_fold_4",
       "tags": [
@@ -10803,7 +10785,7 @@
     "sdepositASum_max_unroll_width_AVX_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositASum_max_unroll_width_AVX_fold_0",
       "step": 1,
@@ -10817,7 +10799,7 @@
     "sdepositASum_max_unroll_width_AVX_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositASum_max_unroll_width_AVX_fold_2",
       "step": 1,
@@ -10831,7 +10813,7 @@
     "sdepositASum_max_unroll_width_AVX_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositASum_max_unroll_width_AVX_fold_3",
       "step": 1,
@@ -10845,7 +10827,7 @@
     "sdepositASum_max_unroll_width_AVX_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositASum_max_unroll_width_AVX_fold_4",
       "step": 1,
@@ -10859,7 +10841,7 @@
     "sdepositASum_max_unroll_width_SISD_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositASum_max_unroll_width_SISD_fold_0",
       "step": 1,
@@ -10873,7 +10855,7 @@
     "sdepositASum_max_unroll_width_SISD_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositASum_max_unroll_width_SISD_fold_2",
       "step": 1,
@@ -10887,7 +10869,7 @@
     "sdepositASum_max_unroll_width_SISD_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositASum_max_unroll_width_SISD_fold_3",
       "step": 1,
@@ -10901,7 +10883,7 @@
     "sdepositASum_max_unroll_width_SISD_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositASum_max_unroll_width_SISD_fold_4",
       "step": 1,
@@ -10915,7 +10897,7 @@
     "sdepositASum_max_unroll_width_SSE_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositASum_max_unroll_width_SSE_fold_0",
       "step": 1,
@@ -10929,7 +10911,7 @@
     "sdepositASum_max_unroll_width_SSE_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositASum_max_unroll_width_SSE_fold_2",
       "step": 1,
@@ -10943,7 +10925,7 @@
     "sdepositASum_max_unroll_width_SSE_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositASum_max_unroll_width_SSE_fold_3",
       "step": 1,
@@ -10957,7 +10939,7 @@
     "sdepositASum_max_unroll_width_SSE_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositASum_max_unroll_width_SSE_fold_4",
       "step": 1,
@@ -11070,7 +11052,7 @@
     "sdepositDot_max_pipe_width_AVX_fold_0": {
       "default": 8,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 64,
       "minimum": 8,
       "name": "sdepositDot_max_pipe_width_AVX_fold_0",
       "tags": [
@@ -11083,7 +11065,7 @@
     "sdepositDot_max_pipe_width_AVX_fold_2": {
       "default": 8,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 64,
       "minimum": 8,
       "name": "sdepositDot_max_pipe_width_AVX_fold_2",
       "tags": [
@@ -11096,7 +11078,7 @@
     "sdepositDot_max_pipe_width_AVX_fold_3": {
       "default": 8,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 64,
       "minimum": 8,
       "name": "sdepositDot_max_pipe_width_AVX_fold_3",
       "tags": [
@@ -11109,7 +11091,7 @@
     "sdepositDot_max_pipe_width_AVX_fold_4": {
       "default": 8,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 64,
       "minimum": 8,
       "name": "sdepositDot_max_pipe_width_AVX_fold_4",
       "tags": [
@@ -11122,7 +11104,7 @@
     "sdepositDot_max_pipe_width_SISD_fold_0": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositDot_max_pipe_width_SISD_fold_0",
       "tags": [
@@ -11135,7 +11117,7 @@
     "sdepositDot_max_pipe_width_SISD_fold_2": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositDot_max_pipe_width_SISD_fold_2",
       "tags": [
@@ -11148,7 +11130,7 @@
     "sdepositDot_max_pipe_width_SISD_fold_3": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositDot_max_pipe_width_SISD_fold_3",
       "tags": [
@@ -11161,7 +11143,7 @@
     "sdepositDot_max_pipe_width_SISD_fold_4": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositDot_max_pipe_width_SISD_fold_4",
       "tags": [
@@ -11174,7 +11156,7 @@
     "sdepositDot_max_pipe_width_SSE_fold_0": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "sdepositDot_max_pipe_width_SSE_fold_0",
       "tags": [
@@ -11187,7 +11169,7 @@
     "sdepositDot_max_pipe_width_SSE_fold_2": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "sdepositDot_max_pipe_width_SSE_fold_2",
       "tags": [
@@ -11200,7 +11182,7 @@
     "sdepositDot_max_pipe_width_SSE_fold_3": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "sdepositDot_max_pipe_width_SSE_fold_3",
       "tags": [
@@ -11213,7 +11195,7 @@
     "sdepositDot_max_pipe_width_SSE_fold_4": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "sdepositDot_max_pipe_width_SSE_fold_4",
       "tags": [
@@ -11226,7 +11208,7 @@
     "sdepositDot_max_unroll_width_AVX_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositDot_max_unroll_width_AVX_fold_0",
       "step": 1,
@@ -11240,7 +11222,7 @@
     "sdepositDot_max_unroll_width_AVX_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositDot_max_unroll_width_AVX_fold_2",
       "step": 1,
@@ -11254,7 +11236,7 @@
     "sdepositDot_max_unroll_width_AVX_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositDot_max_unroll_width_AVX_fold_3",
       "step": 1,
@@ -11268,7 +11250,7 @@
     "sdepositDot_max_unroll_width_AVX_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositDot_max_unroll_width_AVX_fold_4",
       "step": 1,
@@ -11282,7 +11264,7 @@
     "sdepositDot_max_unroll_width_SISD_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositDot_max_unroll_width_SISD_fold_0",
       "step": 1,
@@ -11296,7 +11278,7 @@
     "sdepositDot_max_unroll_width_SISD_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositDot_max_unroll_width_SISD_fold_2",
       "step": 1,
@@ -11310,7 +11292,7 @@
     "sdepositDot_max_unroll_width_SISD_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositDot_max_unroll_width_SISD_fold_3",
       "step": 1,
@@ -11324,7 +11306,7 @@
     "sdepositDot_max_unroll_width_SISD_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositDot_max_unroll_width_SISD_fold_4",
       "step": 1,
@@ -11338,7 +11320,7 @@
     "sdepositDot_max_unroll_width_SSE_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositDot_max_unroll_width_SSE_fold_0",
       "step": 1,
@@ -11352,7 +11334,7 @@
     "sdepositDot_max_unroll_width_SSE_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositDot_max_unroll_width_SSE_fold_2",
       "step": 1,
@@ -11366,7 +11348,7 @@
     "sdepositDot_max_unroll_width_SSE_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositDot_max_unroll_width_SSE_fold_3",
       "step": 1,
@@ -11380,7 +11362,7 @@
     "sdepositDot_max_unroll_width_SSE_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositDot_max_unroll_width_SSE_fold_4",
       "step": 1,
@@ -11493,7 +11475,7 @@
     "sdepositSSq_max_pipe_width_AVX_fold_0": {
       "default": 8,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 64,
       "minimum": 8,
       "name": "sdepositSSq_max_pipe_width_AVX_fold_0",
       "tags": [
@@ -11506,7 +11488,7 @@
     "sdepositSSq_max_pipe_width_AVX_fold_2": {
       "default": 8,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 64,
       "minimum": 8,
       "name": "sdepositSSq_max_pipe_width_AVX_fold_2",
       "tags": [
@@ -11519,7 +11501,7 @@
     "sdepositSSq_max_pipe_width_AVX_fold_3": {
       "default": 8,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 64,
       "minimum": 8,
       "name": "sdepositSSq_max_pipe_width_AVX_fold_3",
       "tags": [
@@ -11532,7 +11514,7 @@
     "sdepositSSq_max_pipe_width_AVX_fold_4": {
       "default": 8,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 64,
       "minimum": 8,
       "name": "sdepositSSq_max_pipe_width_AVX_fold_4",
       "tags": [
@@ -11545,7 +11527,7 @@
     "sdepositSSq_max_pipe_width_SISD_fold_0": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSSq_max_pipe_width_SISD_fold_0",
       "tags": [
@@ -11558,7 +11540,7 @@
     "sdepositSSq_max_pipe_width_SISD_fold_2": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSSq_max_pipe_width_SISD_fold_2",
       "tags": [
@@ -11571,7 +11553,7 @@
     "sdepositSSq_max_pipe_width_SISD_fold_3": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSSq_max_pipe_width_SISD_fold_3",
       "tags": [
@@ -11584,7 +11566,7 @@
     "sdepositSSq_max_pipe_width_SISD_fold_4": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSSq_max_pipe_width_SISD_fold_4",
       "tags": [
@@ -11597,7 +11579,7 @@
     "sdepositSSq_max_pipe_width_SSE_fold_0": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "sdepositSSq_max_pipe_width_SSE_fold_0",
       "tags": [
@@ -11610,7 +11592,7 @@
     "sdepositSSq_max_pipe_width_SSE_fold_2": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "sdepositSSq_max_pipe_width_SSE_fold_2",
       "tags": [
@@ -11623,7 +11605,7 @@
     "sdepositSSq_max_pipe_width_SSE_fold_3": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "sdepositSSq_max_pipe_width_SSE_fold_3",
       "tags": [
@@ -11636,7 +11618,7 @@
     "sdepositSSq_max_pipe_width_SSE_fold_4": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "sdepositSSq_max_pipe_width_SSE_fold_4",
       "tags": [
@@ -11649,7 +11631,7 @@
     "sdepositSSq_max_unroll_width_AVX_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSSq_max_unroll_width_AVX_fold_0",
       "step": 1,
@@ -11663,7 +11645,7 @@
     "sdepositSSq_max_unroll_width_AVX_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSSq_max_unroll_width_AVX_fold_2",
       "step": 1,
@@ -11677,7 +11659,7 @@
     "sdepositSSq_max_unroll_width_AVX_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSSq_max_unroll_width_AVX_fold_3",
       "step": 1,
@@ -11691,7 +11673,7 @@
     "sdepositSSq_max_unroll_width_AVX_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSSq_max_unroll_width_AVX_fold_4",
       "step": 1,
@@ -11705,7 +11687,7 @@
     "sdepositSSq_max_unroll_width_SISD_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSSq_max_unroll_width_SISD_fold_0",
       "step": 1,
@@ -11719,7 +11701,7 @@
     "sdepositSSq_max_unroll_width_SISD_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSSq_max_unroll_width_SISD_fold_2",
       "step": 1,
@@ -11733,7 +11715,7 @@
     "sdepositSSq_max_unroll_width_SISD_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSSq_max_unroll_width_SISD_fold_3",
       "step": 1,
@@ -11747,7 +11729,7 @@
     "sdepositSSq_max_unroll_width_SISD_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSSq_max_unroll_width_SISD_fold_4",
       "step": 1,
@@ -11761,7 +11743,7 @@
     "sdepositSSq_max_unroll_width_SSE_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSSq_max_unroll_width_SSE_fold_0",
       "step": 1,
@@ -11775,7 +11757,7 @@
     "sdepositSSq_max_unroll_width_SSE_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSSq_max_unroll_width_SSE_fold_2",
       "step": 1,
@@ -11789,7 +11771,7 @@
     "sdepositSSq_max_unroll_width_SSE_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSSq_max_unroll_width_SSE_fold_3",
       "step": 1,
@@ -11803,7 +11785,7 @@
     "sdepositSSq_max_unroll_width_SSE_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSSq_max_unroll_width_SSE_fold_4",
       "step": 1,
@@ -11916,7 +11898,7 @@
     "sdepositSum_max_pipe_width_AVX_fold_0": {
       "default": 8,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 64,
       "minimum": 8,
       "name": "sdepositSum_max_pipe_width_AVX_fold_0",
       "tags": [
@@ -11929,7 +11911,7 @@
     "sdepositSum_max_pipe_width_AVX_fold_2": {
       "default": 8,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 64,
       "minimum": 8,
       "name": "sdepositSum_max_pipe_width_AVX_fold_2",
       "tags": [
@@ -11942,7 +11924,7 @@
     "sdepositSum_max_pipe_width_AVX_fold_3": {
       "default": 8,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 64,
       "minimum": 8,
       "name": "sdepositSum_max_pipe_width_AVX_fold_3",
       "tags": [
@@ -11955,7 +11937,7 @@
     "sdepositSum_max_pipe_width_AVX_fold_4": {
       "default": 8,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 64,
       "minimum": 8,
       "name": "sdepositSum_max_pipe_width_AVX_fold_4",
       "tags": [
@@ -11968,7 +11950,7 @@
     "sdepositSum_max_pipe_width_SISD_fold_0": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSum_max_pipe_width_SISD_fold_0",
       "tags": [
@@ -11981,7 +11963,7 @@
     "sdepositSum_max_pipe_width_SISD_fold_2": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSum_max_pipe_width_SISD_fold_2",
       "tags": [
@@ -11994,7 +11976,7 @@
     "sdepositSum_max_pipe_width_SISD_fold_3": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSum_max_pipe_width_SISD_fold_3",
       "tags": [
@@ -12007,7 +11989,7 @@
     "sdepositSum_max_pipe_width_SISD_fold_4": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSum_max_pipe_width_SISD_fold_4",
       "tags": [
@@ -12020,7 +12002,7 @@
     "sdepositSum_max_pipe_width_SSE_fold_0": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "sdepositSum_max_pipe_width_SSE_fold_0",
       "tags": [
@@ -12033,7 +12015,7 @@
     "sdepositSum_max_pipe_width_SSE_fold_2": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "sdepositSum_max_pipe_width_SSE_fold_2",
       "tags": [
@@ -12046,7 +12028,7 @@
     "sdepositSum_max_pipe_width_SSE_fold_3": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "sdepositSum_max_pipe_width_SSE_fold_3",
       "tags": [
@@ -12059,7 +12041,7 @@
     "sdepositSum_max_pipe_width_SSE_fold_4": {
       "default": 4,
       "flavor": "poweroftwo",
-      "maximum": 64,
+      "maximum": 32,
       "minimum": 4,
       "name": "sdepositSum_max_pipe_width_SSE_fold_4",
       "tags": [
@@ -12072,7 +12054,7 @@
     "sdepositSum_max_unroll_width_AVX_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSum_max_unroll_width_AVX_fold_0",
       "step": 1,
@@ -12086,7 +12068,7 @@
     "sdepositSum_max_unroll_width_AVX_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSum_max_unroll_width_AVX_fold_2",
       "step": 1,
@@ -12100,7 +12082,7 @@
     "sdepositSum_max_unroll_width_AVX_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSum_max_unroll_width_AVX_fold_3",
       "step": 1,
@@ -12114,7 +12096,7 @@
     "sdepositSum_max_unroll_width_AVX_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSum_max_unroll_width_AVX_fold_4",
       "step": 1,
@@ -12128,7 +12110,7 @@
     "sdepositSum_max_unroll_width_SISD_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSum_max_unroll_width_SISD_fold_0",
       "step": 1,
@@ -12142,7 +12124,7 @@
     "sdepositSum_max_unroll_width_SISD_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSum_max_unroll_width_SISD_fold_2",
       "step": 1,
@@ -12156,7 +12138,7 @@
     "sdepositSum_max_unroll_width_SISD_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSum_max_unroll_width_SISD_fold_3",
       "step": 1,
@@ -12170,7 +12152,7 @@
     "sdepositSum_max_unroll_width_SISD_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSum_max_unroll_width_SISD_fold_4",
       "step": 1,
@@ -12184,7 +12166,7 @@
     "sdepositSum_max_unroll_width_SSE_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSum_max_unroll_width_SSE_fold_0",
       "step": 1,
@@ -12198,7 +12180,7 @@
     "sdepositSum_max_unroll_width_SSE_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSum_max_unroll_width_SSE_fold_2",
       "step": 1,
@@ -12212,7 +12194,7 @@
     "sdepositSum_max_unroll_width_SSE_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSum_max_unroll_width_SSE_fold_3",
       "step": 1,
@@ -12226,7 +12208,7 @@
     "sdepositSum_max_unroll_width_SSE_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "sdepositSum_max_unroll_width_SSE_fold_4",
       "step": 1,
@@ -12471,7 +12453,7 @@
     "zdepositDotC_max_pipe_width_AVX_fold_0": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "zdepositDotC_max_pipe_width_AVX_fold_0",
       "tags": [
@@ -12484,7 +12466,7 @@
     "zdepositDotC_max_pipe_width_AVX_fold_2": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "zdepositDotC_max_pipe_width_AVX_fold_2",
       "tags": [
@@ -12497,7 +12479,7 @@
     "zdepositDotC_max_pipe_width_AVX_fold_3": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "zdepositDotC_max_pipe_width_AVX_fold_3",
       "tags": [
@@ -12510,7 +12492,7 @@
     "zdepositDotC_max_pipe_width_AVX_fold_4": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "zdepositDotC_max_pipe_width_AVX_fold_4",
       "tags": [
@@ -12523,7 +12505,7 @@
     "zdepositDotC_max_pipe_width_SISD_fold_0": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotC_max_pipe_width_SISD_fold_0",
       "tags": [
@@ -12536,7 +12518,7 @@
     "zdepositDotC_max_pipe_width_SISD_fold_2": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotC_max_pipe_width_SISD_fold_2",
       "tags": [
@@ -12549,7 +12531,7 @@
     "zdepositDotC_max_pipe_width_SISD_fold_3": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotC_max_pipe_width_SISD_fold_3",
       "tags": [
@@ -12562,7 +12544,7 @@
     "zdepositDotC_max_pipe_width_SISD_fold_4": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotC_max_pipe_width_SISD_fold_4",
       "tags": [
@@ -12575,7 +12557,7 @@
     "zdepositDotC_max_pipe_width_SSE_fold_0": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotC_max_pipe_width_SSE_fold_0",
       "tags": [
@@ -12588,7 +12570,7 @@
     "zdepositDotC_max_pipe_width_SSE_fold_2": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotC_max_pipe_width_SSE_fold_2",
       "tags": [
@@ -12601,7 +12583,7 @@
     "zdepositDotC_max_pipe_width_SSE_fold_3": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotC_max_pipe_width_SSE_fold_3",
       "tags": [
@@ -12614,7 +12596,7 @@
     "zdepositDotC_max_pipe_width_SSE_fold_4": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotC_max_pipe_width_SSE_fold_4",
       "tags": [
@@ -12627,7 +12609,7 @@
     "zdepositDotC_max_unroll_width_AVX_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotC_max_unroll_width_AVX_fold_0",
       "step": 1,
@@ -12641,7 +12623,7 @@
     "zdepositDotC_max_unroll_width_AVX_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotC_max_unroll_width_AVX_fold_2",
       "step": 1,
@@ -12655,7 +12637,7 @@
     "zdepositDotC_max_unroll_width_AVX_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotC_max_unroll_width_AVX_fold_3",
       "step": 1,
@@ -12669,7 +12651,7 @@
     "zdepositDotC_max_unroll_width_AVX_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotC_max_unroll_width_AVX_fold_4",
       "step": 1,
@@ -12683,7 +12665,7 @@
     "zdepositDotC_max_unroll_width_SISD_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotC_max_unroll_width_SISD_fold_0",
       "step": 1,
@@ -12697,7 +12679,7 @@
     "zdepositDotC_max_unroll_width_SISD_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotC_max_unroll_width_SISD_fold_2",
       "step": 1,
@@ -12711,7 +12693,7 @@
     "zdepositDotC_max_unroll_width_SISD_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotC_max_unroll_width_SISD_fold_3",
       "step": 1,
@@ -12725,7 +12707,7 @@
     "zdepositDotC_max_unroll_width_SISD_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotC_max_unroll_width_SISD_fold_4",
       "step": 1,
@@ -12739,7 +12721,7 @@
     "zdepositDotC_max_unroll_width_SSE_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotC_max_unroll_width_SSE_fold_0",
       "step": 1,
@@ -12753,7 +12735,7 @@
     "zdepositDotC_max_unroll_width_SSE_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotC_max_unroll_width_SSE_fold_2",
       "step": 1,
@@ -12767,7 +12749,7 @@
     "zdepositDotC_max_unroll_width_SSE_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotC_max_unroll_width_SSE_fold_3",
       "step": 1,
@@ -12781,7 +12763,7 @@
     "zdepositDotC_max_unroll_width_SSE_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotC_max_unroll_width_SSE_fold_4",
       "step": 1,
@@ -12894,7 +12876,7 @@
     "zdepositDotU_max_pipe_width_AVX_fold_0": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "zdepositDotU_max_pipe_width_AVX_fold_0",
       "tags": [
@@ -12907,7 +12889,7 @@
     "zdepositDotU_max_pipe_width_AVX_fold_2": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "zdepositDotU_max_pipe_width_AVX_fold_2",
       "tags": [
@@ -12920,7 +12902,7 @@
     "zdepositDotU_max_pipe_width_AVX_fold_3": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "zdepositDotU_max_pipe_width_AVX_fold_3",
       "tags": [
@@ -12933,7 +12915,7 @@
     "zdepositDotU_max_pipe_width_AVX_fold_4": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "zdepositDotU_max_pipe_width_AVX_fold_4",
       "tags": [
@@ -12946,7 +12928,7 @@
     "zdepositDotU_max_pipe_width_SISD_fold_0": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotU_max_pipe_width_SISD_fold_0",
       "tags": [
@@ -12959,7 +12941,7 @@
     "zdepositDotU_max_pipe_width_SISD_fold_2": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotU_max_pipe_width_SISD_fold_2",
       "tags": [
@@ -12972,7 +12954,7 @@
     "zdepositDotU_max_pipe_width_SISD_fold_3": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotU_max_pipe_width_SISD_fold_3",
       "tags": [
@@ -12985,7 +12967,7 @@
     "zdepositDotU_max_pipe_width_SISD_fold_4": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotU_max_pipe_width_SISD_fold_4",
       "tags": [
@@ -12998,7 +12980,7 @@
     "zdepositDotU_max_pipe_width_SSE_fold_0": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotU_max_pipe_width_SSE_fold_0",
       "tags": [
@@ -13011,7 +12993,7 @@
     "zdepositDotU_max_pipe_width_SSE_fold_2": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotU_max_pipe_width_SSE_fold_2",
       "tags": [
@@ -13024,7 +13006,7 @@
     "zdepositDotU_max_pipe_width_SSE_fold_3": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotU_max_pipe_width_SSE_fold_3",
       "tags": [
@@ -13037,7 +13019,7 @@
     "zdepositDotU_max_pipe_width_SSE_fold_4": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotU_max_pipe_width_SSE_fold_4",
       "tags": [
@@ -13050,7 +13032,7 @@
     "zdepositDotU_max_unroll_width_AVX_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotU_max_unroll_width_AVX_fold_0",
       "step": 1,
@@ -13064,7 +13046,7 @@
     "zdepositDotU_max_unroll_width_AVX_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotU_max_unroll_width_AVX_fold_2",
       "step": 1,
@@ -13078,7 +13060,7 @@
     "zdepositDotU_max_unroll_width_AVX_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotU_max_unroll_width_AVX_fold_3",
       "step": 1,
@@ -13092,7 +13074,7 @@
     "zdepositDotU_max_unroll_width_AVX_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotU_max_unroll_width_AVX_fold_4",
       "step": 1,
@@ -13106,7 +13088,7 @@
     "zdepositDotU_max_unroll_width_SISD_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotU_max_unroll_width_SISD_fold_0",
       "step": 1,
@@ -13120,7 +13102,7 @@
     "zdepositDotU_max_unroll_width_SISD_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotU_max_unroll_width_SISD_fold_2",
       "step": 1,
@@ -13134,7 +13116,7 @@
     "zdepositDotU_max_unroll_width_SISD_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotU_max_unroll_width_SISD_fold_3",
       "step": 1,
@@ -13148,7 +13130,7 @@
     "zdepositDotU_max_unroll_width_SISD_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotU_max_unroll_width_SISD_fold_4",
       "step": 1,
@@ -13162,7 +13144,7 @@
     "zdepositDotU_max_unroll_width_SSE_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotU_max_unroll_width_SSE_fold_0",
       "step": 1,
@@ -13176,7 +13158,7 @@
     "zdepositDotU_max_unroll_width_SSE_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotU_max_unroll_width_SSE_fold_2",
       "step": 1,
@@ -13190,7 +13172,7 @@
     "zdepositDotU_max_unroll_width_SSE_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotU_max_unroll_width_SSE_fold_3",
       "step": 1,
@@ -13204,7 +13186,7 @@
     "zdepositDotU_max_unroll_width_SSE_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositDotU_max_unroll_width_SSE_fold_4",
       "step": 1,
@@ -13317,7 +13299,7 @@
     "zdepositSum_max_pipe_width_AVX_fold_0": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "zdepositSum_max_pipe_width_AVX_fold_0",
       "tags": [
@@ -13330,7 +13312,7 @@
     "zdepositSum_max_pipe_width_AVX_fold_2": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "zdepositSum_max_pipe_width_AVX_fold_2",
       "tags": [
@@ -13343,7 +13325,7 @@
     "zdepositSum_max_pipe_width_AVX_fold_3": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "zdepositSum_max_pipe_width_AVX_fold_3",
       "tags": [
@@ -13356,7 +13338,7 @@
     "zdepositSum_max_pipe_width_AVX_fold_4": {
       "default": 2,
       "flavor": "poweroftwo",
-      "maximum": 32,
+      "maximum": 16,
       "minimum": 2,
       "name": "zdepositSum_max_pipe_width_AVX_fold_4",
       "tags": [
@@ -13369,7 +13351,7 @@
     "zdepositSum_max_pipe_width_SISD_fold_0": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositSum_max_pipe_width_SISD_fold_0",
       "tags": [
@@ -13382,7 +13364,7 @@
     "zdepositSum_max_pipe_width_SISD_fold_2": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositSum_max_pipe_width_SISD_fold_2",
       "tags": [
@@ -13395,7 +13377,7 @@
     "zdepositSum_max_pipe_width_SISD_fold_3": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositSum_max_pipe_width_SISD_fold_3",
       "tags": [
@@ -13408,7 +13390,7 @@
     "zdepositSum_max_pipe_width_SISD_fold_4": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositSum_max_pipe_width_SISD_fold_4",
       "tags": [
@@ -13421,7 +13403,7 @@
     "zdepositSum_max_pipe_width_SSE_fold_0": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositSum_max_pipe_width_SSE_fold_0",
       "tags": [
@@ -13434,7 +13416,7 @@
     "zdepositSum_max_pipe_width_SSE_fold_2": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositSum_max_pipe_width_SSE_fold_2",
       "tags": [
@@ -13447,7 +13429,7 @@
     "zdepositSum_max_pipe_width_SSE_fold_3": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositSum_max_pipe_width_SSE_fold_3",
       "tags": [
@@ -13460,7 +13442,7 @@
     "zdepositSum_max_pipe_width_SSE_fold_4": {
       "default": 1,
       "flavor": "poweroftwo",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositSum_max_pipe_width_SSE_fold_4",
       "tags": [
@@ -13473,7 +13455,7 @@
     "zdepositSum_max_unroll_width_AVX_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositSum_max_unroll_width_AVX_fold_0",
       "step": 1,
@@ -13487,7 +13469,7 @@
     "zdepositSum_max_unroll_width_AVX_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositSum_max_unroll_width_AVX_fold_2",
       "step": 1,
@@ -13501,7 +13483,7 @@
     "zdepositSum_max_unroll_width_AVX_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositSum_max_unroll_width_AVX_fold_3",
       "step": 1,
@@ -13515,7 +13497,7 @@
     "zdepositSum_max_unroll_width_AVX_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositSum_max_unroll_width_AVX_fold_4",
       "step": 1,
@@ -13529,7 +13511,7 @@
     "zdepositSum_max_unroll_width_SISD_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositSum_max_unroll_width_SISD_fold_0",
       "step": 1,
@@ -13543,7 +13525,7 @@
     "zdepositSum_max_unroll_width_SISD_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositSum_max_unroll_width_SISD_fold_2",
       "step": 1,
@@ -13557,7 +13539,7 @@
     "zdepositSum_max_unroll_width_SISD_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositSum_max_unroll_width_SISD_fold_3",
       "step": 1,
@@ -13571,7 +13553,7 @@
     "zdepositSum_max_unroll_width_SISD_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositSum_max_unroll_width_SISD_fold_4",
       "step": 1,
@@ -13585,7 +13567,7 @@
     "zdepositSum_max_unroll_width_SSE_fold_0": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositSum_max_unroll_width_SSE_fold_0",
       "step": 1,
@@ -13599,7 +13581,7 @@
     "zdepositSum_max_unroll_width_SSE_fold_2": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositSum_max_unroll_width_SSE_fold_2",
       "step": 1,
@@ -13613,7 +13595,7 @@
     "zdepositSum_max_unroll_width_SSE_fold_3": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositSum_max_unroll_width_SSE_fold_3",
       "step": 1,
@@ -13627,7 +13609,7 @@
     "zdepositSum_max_unroll_width_SSE_fold_4": {
       "default": 1,
       "flavor": "integer",
-      "maximum": 16,
+      "maximum": 8,
       "minimum": 1,
       "name": "zdepositSum_max_unroll_width_SSE_fold_4",
       "step": 1,
@@ -13638,42 +13620,34 @@
         ]
       ]
     },
-    "zizgemm_block_size_T_BLOCK": {
-      "default": 32,
-      "flavor": "poweroftwo",
-      "maximum": 32,
-      "minimum": 1,
-      "name": "zizgemm_block_size_T_BLOCK",
-      "tags": []
-    },
     "zizgemm_block_size_XT_BLOCK": {
-      "default": 8192,
+      "default": 4096,
       "flavor": "poweroftwo",
-      "maximum": 8192,
+      "maximum": 4096,
       "minimum": 1,
       "name": "zizgemm_block_size_XT_BLOCK",
       "tags": []
     },
     "zizgemm_block_size_X_BLOCK": {
-      "default": 8192,
+      "default": 4096,
       "flavor": "poweroftwo",
-      "maximum": 8192,
+      "maximum": 4096,
       "minimum": 1,
       "name": "zizgemm_block_size_X_BLOCK",
       "tags": []
     },
     "zizgemm_block_size_YT_BLOCK": {
-      "default": 128,
+      "default": 64,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 64,
       "minimum": 1,
       "name": "zizgemm_block_size_YT_BLOCK",
       "tags": []
     },
     "zizgemm_block_size_Y_BLOCK": {
-      "default": 128,
+      "default": 64,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 64,
       "minimum": 1,
       "name": "zizgemm_block_size_Y_BLOCK",
       "tags": []
@@ -13687,17 +13661,17 @@
       "tags": []
     },
     "zizgemv_block_size_XT_BLOCK": {
-      "default": 8192,
+      "default": 4096,
       "flavor": "poweroftwo",
-      "maximum": 8192,
+      "maximum": 4096,
       "minimum": 1,
       "name": "zizgemv_block_size_XT_BLOCK",
       "tags": []
     },
     "zizgemv_block_size_X_BLOCK": {
-      "default": 8192,
+      "default": 4096,
       "flavor": "poweroftwo",
-      "maximum": 8192,
+      "maximum": 4096,
       "minimum": 1,
       "name": "zizgemv_block_size_X_BLOCK",
       "tags": []

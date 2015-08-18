@@ -17,7 +17,7 @@ static void bench_matmat_fill_options_initialize(void){
   trials._int.required          = 0;
   trials._int.min               = 1;
   trials._int.max               = INT_MAX;
-  trials._int.value             = 100;
+  trials._int.value             = 1;
 }
 
 int matmat_fill_show_help(void){

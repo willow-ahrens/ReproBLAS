@@ -13,15 +13,15 @@ from src.common import blockSize
 from scripts import terminal
 
 cog.out(generate.generate(blockSize.BlockSize("zizgemv", "Y_BLOCK", 1, 128, 128, ["bench_rzgemv_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
-cog.out(generate.generate(blockSize.BlockSize("zizgemv", "X_BLOCK", 1, 4 * terminal.get_diendurance(), 4 * terminal.get_diendurance(), ["bench_rzgemv_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
-cog.out(generate.generate(blockSize.BlockSize("zizgemv", "YT_BLOCK", 1, 128, 128, ["bench_rzgemv_fold_{}_TransA".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
-cog.out(generate.generate(blockSize.BlockSize("zizgemv", "XT_BLOCK", 1, 4 * terminal.get_diendurance(), 4 * terminal.get_diendurance(), ["bench_rzgemv_fold_{}_TransA".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
-cog.out(generate.generate(blockSize.BlockSize("zizgemv", "T_BLOCK", 1, 32, 32, ["bench_rzgemv_fold_{}_TransA".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("zizgemv", "X_BLOCK", 1, 2 * terminal.get_diendurance(), 2 * terminal.get_diendurance(), ["bench_rzgemv_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("zizgemv", "YT_BLOCK", 1, 128, 128, ["bench_rzgemv_TransA_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("zizgemv", "XT_BLOCK", 1, 2 * terminal.get_diendurance(), 2 * terminal.get_diendurance(), ["bench_rzgemv_TransA_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("zizgemv", "T_BLOCK", 1, 32, 32, ["bench_rzgemv_TransA_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
 ]]]*/
 #define Y_BLOCK 128
-#define X_BLOCK 8192
+#define X_BLOCK 4096
 #define YT_BLOCK 128
-#define XT_BLOCK 8192
+#define XT_BLOCK 4096
 #define T_BLOCK 32
 //[[[end]]]
 
