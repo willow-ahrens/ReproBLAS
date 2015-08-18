@@ -311,11 +311,11 @@ for i in range(1, terminal.get_simaxfold() + 1):
                      "bench_rscasum_fold_{}".format(i): (BenchRSCASUMTest, flagss),\
                      "bench_rscnrm2_fold_{}".format(i): (BenchRSCNRM2Test, flagss),\
                      "bench_rsdot_fold_{}".format(i): (BenchRSDOTTest, flagss),\
-                     "bench_rsnrm2_fold_{}".format(i): (BenchRSNRM2Test, flags),\
+                     "bench_rsnrm2_fold_{}".format(i): (BenchRSNRM2Test, flagss),\
                      "bench_rssum_fold_{}".format(i): (BenchRSSUMTest, flagss),\
                     })
 
-for i in range(2, terminal.get_dimaxfold() + 1):
+for i in range(1, terminal.get_dimaxfold() + 1):
   if i == 1:
     i = 0
     flagss = ["--fold {}".format(j) for j in range(2, terminal.get_dimaxfold() + 1)]

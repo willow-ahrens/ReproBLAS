@@ -101,7 +101,7 @@ def run(apis):
     for api in apis_to_run:
       bench_test = benchs.all_benchs[api.measurement_interface.benchmark]
       bench_tests.append(bench_test[0]())
-      bench_tests[-1].setup(flags = "-N 4096 -a 100000 " + bench_test[1], avg_flags = bench_test[2], args=arguments_file_name, remake=True, verbose=args.verbose)
+      bench_tests[-1].setup(flagss = ["-N 4096 -a 100000 " + flags for flags in bench_test[1]], args=arguments_file_name, remake=True, verbose=args.verbose)
       command_list += bench_tests[-1].get_command_list()
 
     #run with these arguments
@@ -170,7 +170,7 @@ def main():
                                                                "bench_rdzasum_fold_{}".format(fold),
                                                                "bench_rdznrm2_fold_{}".format(fold),
                                                                "bench_rzdotu_fold_{}".format(fold),
-                                                               "bench_rzdotc_fold_{}".format(fold)]
+                                                               "bench_rzdotc_fold_{}".format(fold)]]
   for fold in range(2, terminal.get_simaxfold() + 1):
     apis += [create_benchmark_api(benchmark) for benchmark in ["bench_rssum_fold_{}".format(fold),
                                                                "bench_rsasum_fold_{}".format(fold),
@@ -182,27 +182,14 @@ def main():
                                                                "bench_rcdotu_fold_{}".format(fold),
                                                                "bench_rcdotc_fold_{}".format(fold)]]
   run(apis)
-  apis = []
-  for fold in range(2, terminal.get_dimaxfold() + 1):
-    apis += [create_benchmark_api(benchmark) for benchmark in ["bench_rdsum_fold_{}".format(fold),
-                                                               "bench_rdasum_fold_{}".format(fold),
-                                                               "bench_rdnrm2_fold_{}".format(fold),
-                                                               "bench_rddot_fold_{}".format(fold),
-                                                               "bench_rzsum_fold_{}".format(fold),
-                                                               "bench_rdzasum_fold_{}".format(fold),
-                                                               "bench_rdznrm2_fold_{}".format(fold),
-                                                               "bench_rzdotu_fold_{}".format(fold),
-                                                               "bench_rzdotc_fold_{}".format(fold)]
-  for fold in range(2, terminal.get_simaxfold() + 1):
-    apis += [create_benchmark_api(benchmark) for benchmark in ["bench_rssum_fold_{}".format(fold),
-                                                               "bench_rsasum_fold_{}".format(fold),
-                                                               "bench_rsnrm2_fold_{}".format(fold),
-                                                               "bench_rsdot_fold_{}".format(fold),
-                                                               "bench_rcsum_fold_{}".format(fold),
-                                                               "bench_rscasum_fold_{}".format(fold),
-                                                               "bench_rscnrm2_fold_{}".format(fold),
-                                                               "bench_rcdotu_fold_{}".format(fold),
-                                                               "bench_rcdotc_fold_{}".format(fold)]]
+  apis = [create_benchmark_api(benchmark) for benchmark in ["bench_rdgemv_fold_{}".format(terminal.get_didefaultfold()),
+                                                            "bench_rdgemv_TransA_fold_{}".format(terminal.get_didefaultfold()),
+                                                            "bench_rdgemm_TransA_fold_{}".format(terminal.get_didefaultfold()),
+                                                            "bench_rdgemm_TransB_fold_{}".format(terminal.get_didefaultfold()),
+                                                            "bench_rzgemv_fold_{}".format(terminal.get_didefaultfold()),
+                                                            "bench_rzgemv_TransA_fold_{}".format(terminal.get_didefaultfold()),
+                                                            "bench_rzgemm_TransA_fold_{}".format(terminal.get_didefaultfold()),
+                                                            "bench_rzgemm_TransB_fold_{}".format(terminal.get_didefaultfold())]]
   run(apis)
 
 if __name__ == '__main__':

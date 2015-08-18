@@ -3,9 +3,6 @@
 #include <math.h>
 #include <string.h>
 
-#include <idxdBLAS.h>
-#include <reproBLAS.h>
-
 #include "../common/test_opt.h"
 #include "../common/test_time.h"
 #include "../common/test_metric.h"

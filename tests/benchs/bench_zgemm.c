@@ -3,46 +3,24 @@
 #include <math.h>
 #include <string.h>
 
-#include <idxdBLAS.h>
-#include <reproBLAS.h>
-
 #include "../common/test_opt.h"
 #include "../common/test_time.h"
 #include "../common/test_metric.h"
+#include "../common/test_BLAS.h"
 
 #include "../../config.h"
 
 #include "bench_matmat_fill_header.h"
 
-static opt_option fold;
-
-static void bench_rzgemm_options_initialize(void){
-  fold._int.header.type       = opt_int;
-  fold._int.header.short_name = 'k';
-  fold._int.header.long_name  = "fold";
-  fold._int.header.help       = "fold";
-  fold._int.required          = 0;
-  fold._int.min               = 2;
-  fold._int.max               = DIMAXFOLD;
-  fold._int.value             = DIDEFAULTFOLD;
-}
-
 int bench_matmat_fill_show_help(void){
-  bench_rzgemm_options_initialize();
-
-  opt_show_option(fold);
   return 0;
 }
 
 const char* bench_matmat_fill_name(int argc, char** argv){
   (void)argc;
   (void)argv;
-  bench_rzgemm_options_initialize();
-
-  opt_eval_option(argc, argv, &fold);
-
   static char name_buffer[MAX_LINE];
-  snprintf(name_buffer, MAX_LINE * sizeof(char), "Benchmark [rzgemm] (fold = %d)", fold._int.value);
+  snprintf(name_buffer, MAX_LINE * sizeof(char), "Benchmark [rzgemm]");
   return name_buffer;
 }
 
@@ -50,18 +28,14 @@ int bench_matmat_fill_test(int argc, char** argv, char Order, char TransA, char 
   int rc = 0;
   int i;
 
-  bench_rzgemm_options_initialize();
-
-  opt_eval_option(argc, argv, &fold);
-
   util_random_seed();
 
   double complex *A  = util_zmat_alloc(Order, M, K, lda);
   double complex *B  = util_zmat_alloc(Order, K, N, ldb);
   double complex *C  = util_zmat_alloc(Order, M, N, ldc);
   double complex *res  = util_zmat_alloc(Order, M, N, ldc);
-  double alpha = RealAlpha + I * ImagAlpha;
-  double beta = RealBeta + I * ImagBeta;
+  double complex alpha = RealAlpha + I * ImagAlpha;
+  double complex beta = RealBeta + I * ImagBeta;
 
   util_zmat_fill(Order, TransA, M, N, A, lda, FillA, RealScaleA, ImagScaleA);
   util_zmat_fill(Order, TransB, M, N, A, ldb, FillB, RealScaleB, ImagScaleB);
@@ -78,7 +52,7 @@ int bench_matmat_fill_test(int argc, char** argv, char Order, char TransA, char 
         break;
     }
     time_tic();
-    CALL_ZGEMM(fold._int.value, Order, TransA, TransB, M, N, K, &alpha, A, lda, B, ldb, &beta, res, ldc);
+    CALL_ZGEMM(Order, TransA, TransB, M, N, K, &alpha, A, lda, B, ldb, &beta, res, ldc);
     time_toc();
   }
 
@@ -90,8 +64,7 @@ int bench_matmat_fill_test(int argc, char** argv, char Order, char TransA, char 
   metric_load_double("input", dM * dK + dK * dN + dM * dN);
   metric_load_double("output", dN * dM);
   metric_load_double("d_mul", 4.0 * dN * dM * dK);
-  metric_load_double("d_add", 4.0 * (3 * fold._int.value - 2) * dN * dM * dK);
-  metric_load_double("d_orb", 4.0 * fold._int.value * dN * dM * dK);
+  metric_load_double("d_add", 4.0 * dN * dM * dK);
   metric_dump();
 
   free(A);
