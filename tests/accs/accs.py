@@ -8,19 +8,19 @@ class AccSuite(harness.MetricSuite):
   pass
 
 class AccTest(harness.MetricTest):
-  def parse_output(self):
+  def parse_output(self, output):
     if self.attribute == "max_ratio":
-      self.result = self.output["max_ratio"]
+      return output["max_ratio"]
     elif self.attribute == "max_ratio(e)":
-      self.result = self.output["max_ratio"]/self.output["e"]
+      return output["max_ratio"]/output["e"]
     elif self.attribute == "med_ratio":
-      self.result = self.output["med_ratio"]
+      return output["med_ratio"]
     elif self.attribute == "med_ratio(e)":
-      self.result = self.output["med_ratio"]/self.output["e"]
+      return output["med_ratio"]/output["e"]
     elif self.attribute == "min_ratio":
-      self.result = self.output["min_ratio"]
+      return output["min_ratio"]
     elif self.attribute == "min_ratio(e)":
-      self.result = self.output["min_ratio"]/self.output["e"]
+      return output["min_ratio"]/output["e"]
 
 class AccCDOTCTest(AccTest):
   name = "CDOTC"

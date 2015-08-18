@@ -8,15 +8,15 @@ class BenchSuite(harness.MetricSuite):
   pass
 
 class BenchTest(harness.MetricTest):
-  def parse_output(self):
+  def parse_output(self, output):
     if self.attribute == "freq":
-      self.result = (self.output["trials"] * self.output["input"]) / self.output["time"]
+      return (output["trials"] * output["input"]) / output["time"]
     elif self.attribute == "peak":
-      self.result = (terminal.get_peak_time(self.output) * self.output["trials"])/self.output["time"]
+      return (terminal.get_peak_time(output) * output["trials"])/output["time"]
     elif self.attribute == "%peak":
-      self.result = (100.0 * terminal.get_peak_time(self.output) * self.output["trials"])/self.output["time"]
+      return (100.0 * terminal.get_peak_time(output) * output["trials"])/output["time"]
     else: #self.attribute == "time":
-      self.result = self.output["time"] / self.output["trials"]
+      return output["time"] / output["trials"]
 
 class BenchCAMAXTest(BenchTest):
   name = "CAMAX"
@@ -250,6 +250,14 @@ class BenchRZGEMVTest(BenchTest):
   name = "RZGEMV"
   executable = "tests/benchs/bench_rzgemv"
 
+class BenchRZGEMMTest(BenchTest):
+  name = "RZGEMM"
+  executable = "tests/benchs/bench_rzgemm"
+
+class BenchZGEMMTest(BenchTest):
+  name = "ZGEMM"
+  executable = "tests/benchs/bench_zgemm"
+
 all_benchs = {"bench_camax": (BenchCAMAXTest, ""),\
               "bench_camaxm": (BenchCAMAXMTest, ""),\
               "bench_cciconv": (BenchCCICONVTest, ""),\
@@ -286,9 +294,11 @@ all_benchs = {"bench_camax": (BenchCAMAXTest, ""),\
               "bench_zziconv": (BenchZZICONVTest, ""),\
               "bench_dgemv": (BenchDGEMVTest, ""),\
               "bench_zgemv": (BenchZGEMVTest, ""),\
+              "bench_dgemm": (BenchDGEMVTest, ""),\
+              "bench_zgemm": (BenchZGEMVTest, ""),\
              }
 
-for i in range(terminal.get_simaxfold() + 1):
+for i in range(2, terminal.get_simaxfold() + 1):
   all_benchs.update({"bench_rcdotc_fold_{}".format(i): (BenchRCDOTCTest, "--fold {}".format(i)),\
                      "bench_rcdotu_fold_{}".format(i): (BenchRCDOTUTest, "--fold {}".format(i)),\
                      "bench_rcsum_fold_{}".format(i): (BenchRCSUMTest, "--fold {}".format(i)),\
@@ -300,16 +310,18 @@ for i in range(terminal.get_simaxfold() + 1):
                      "bench_rssum_fold_{}".format(i): (BenchRSSUMTest, "--fold {}".format(i)),\
                     })
 
-for i in range(terminal.get_dimaxfold() + 1):
+for i in range(2, terminal.get_dimaxfold() + 1):
   all_benchs.update({"bench_rdasum_fold_{}".format(i): (BenchRDASUMTest, "--fold {}".format(i)),\
                      "bench_rddot_fold_{}".format(i): (BenchRDDOTTest, "--fold {}".format(i)),\
                      "bench_rdnrm2_fold_{}".format(i): (BenchRDNRM2Test, "--fold {}".format(i)),\
                      "bench_rdsum_fold_{}".format(i): (BenchRDSUMTest, "--fold {}".format(i)),\
                      "bench_rdgemv_fold_{}".format(i): (BenchRDGEMVTest, "--fold {}".format(i)),\
+                     "bench_rdgemm_fold_{}".format(i): (BenchRDGEMMTest, "--fold {}".format(i)),\
                      "bench_rdzasum_fold_{}".format(i): (BenchRDZASUMTest, "--fold {}".format(i)),\
                      "bench_rdznrm2_fold_{}".format(i): (BenchRDZNRM2Test, "--fold {}".format(i)),\
                      "bench_rzdotc_fold_{}".format(i): (BenchRZDOTCTest, "--fold {}".format(i)),\
                      "bench_rzdotu_fold_{}".format(i): (BenchRZDOTUTest, "--fold {}".format(i)),\
                      "bench_rzsum_fold_{}".format(i): (BenchRZSUMTest, "--fold {}".format(i)),\
                      "bench_rzgemv_fold_{}".format(i): (BenchRZGEMVTest, "--fold {}".format(i)),\
+                     "bench_rzgemm_fold_{}".format(i): (BenchRZGEMMTest, "--fold {}".format(i)),\
                     })

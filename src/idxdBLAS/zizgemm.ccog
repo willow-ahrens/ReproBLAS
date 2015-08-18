@@ -178,7 +178,7 @@ void idxdBLAS_zizgemm(const int fold, const char Order,
                       for(kk = k; kk < K && kk < k + XT_BLOCK; kk++){
                         for(ii = i; ii < M && ii < i + YT_BLOCK; ii++){
                           bufA[2 * ((ii - i) * XT_BLOCK + (kk - k))] = ((double*)A)[2 * (kk * lda + ii)] * ((double*)alpha)[0] - ((double*)A)[2 * (kk * lda + ii) + 1] * ((double*)alpha)[1];
-                          bufA[2 * ((ii - i) * XT_BLOCK + (kk - k))] = ((double*)A)[2 * (kk * lda + ii)] * ((double*)alpha)[1] + ((double*)A)[2 * (kk * lda + ii) + 1] * ((double*)alpha)[0];
+                          bufA[2 * ((ii - i) * XT_BLOCK + (kk - k)) + 1] = ((double*)A)[2 * (kk * lda + ii)] * ((double*)alpha)[1] + ((double*)A)[2 * (kk * lda + ii) + 1] * ((double*)alpha)[0];
                         }
                       }
                       for(kk = k; kk < K && kk < k + XT_BLOCK; kk++){
@@ -229,7 +229,7 @@ void idxdBLAS_zizgemm(const int fold, const char Order,
                       for(kk = k; kk < K && kk < k + XT_BLOCK; kk++){
                         for(ii = i; ii < M && ii < i + YT_BLOCK; ii++){
                           bufA[2 * ((ii - i) * XT_BLOCK + (kk - k))] = ((double*)A)[2 * (kk * lda + ii)] * ((double*)alpha)[0] - ((double*)A)[2 * (kk * lda + ii) + 1] * ((double*)alpha)[1];
-                          bufA[2 * ((ii - i) * XT_BLOCK + (kk - k))] = ((double*)A)[2 * (kk * lda + ii)] * ((double*)alpha)[1] + ((double*)A)[2 * (kk * lda + ii) + 1] * ((double*)alpha)[0];
+                          bufA[2 * ((ii - i) * XT_BLOCK + (kk - k)) + 1] = ((double*)A)[2 * (kk * lda + ii)] * ((double*)alpha)[1] + ((double*)A)[2 * (kk * lda + ii) + 1] * ((double*)alpha)[0];
                         }
                       }
                       for(ii = i; ii < M && ii < i + YT_BLOCK; ii++){
@@ -272,7 +272,7 @@ void idxdBLAS_zizgemm(const int fold, const char Order,
                       for(kk = k; kk < K && kk < k + XT_BLOCK; kk++){
                         for(ii = i; ii < M && ii < i + YT_BLOCK; ii++){
                           bufA[2 * ((ii - i) * XT_BLOCK + (kk - k))] = ((double*)A)[2 * (kk * lda + ii)] * ((double*)alpha)[0] - ((double*)A)[2 * (kk * lda + ii) + 1] * ((double*)alpha)[1];
-                          bufA[2 * ((ii - i) * XT_BLOCK + (kk - k))] = ((double*)A)[2 * (kk * lda + ii)] * ((double*)alpha)[1] + ((double*)A)[2 * (kk * lda + ii) + 1] * ((double*)alpha)[0];
+                          bufA[2 * ((ii - i) * XT_BLOCK + (kk - k)) + 1] = ((double*)A)[2 * (kk * lda + ii)] * ((double*)alpha)[1] + ((double*)A)[2 * (kk * lda + ii) + 1] * ((double*)alpha)[0];
                         }
                       }
                       for(ii = i; ii < M && ii < i + YT_BLOCK; ii++){
@@ -330,7 +330,7 @@ void idxdBLAS_zizgemm(const int fold, const char Order,
                       for(kk = k; kk < K && kk < k + XT_BLOCK; kk++){
                         for(ii = i; ii < M && ii < i + YT_BLOCK; ii++){
                           bufA[2 * ((ii - i) * XT_BLOCK + (kk - k))] = ((double*)A)[2 * (kk * lda + ii)] * ((double*)alpha)[0] + ((double*)A)[2 * (kk * lda + ii) + 1] * ((double*)alpha)[1];
-                          bufA[2 * ((ii - i) * XT_BLOCK + (kk - k))] = ((double*)A)[2 * (kk * lda + ii)] * ((double*)alpha)[1] - ((double*)A)[2 * (kk * lda + ii) + 1] * ((double*)alpha)[0];
+                          bufA[2 * ((ii - i) * XT_BLOCK + (kk - k)) + 1] = ((double*)A)[2 * (kk * lda + ii)] * ((double*)alpha)[1] - ((double*)A)[2 * (kk * lda + ii) + 1] * ((double*)alpha)[0];
                         }
                       }
                       for(kk = k; kk < K && kk < k + XT_BLOCK; kk++){
@@ -381,7 +381,7 @@ void idxdBLAS_zizgemm(const int fold, const char Order,
                       for(kk = k; kk < K && kk < k + XT_BLOCK; kk++){
                         for(ii = i; ii < M && ii < i + YT_BLOCK; ii++){
                           bufA[2 * ((ii - i) * XT_BLOCK + (kk - k))] = ((double*)A)[2 * (kk * lda + ii)] * ((double*)alpha)[0] + ((double*)A)[2 * (kk * lda + ii) + 1] * ((double*)alpha)[1];
-                          bufA[2 * ((ii - i) * XT_BLOCK + (kk - k))] = ((double*)A)[2 * (kk * lda + ii)] * ((double*)alpha)[1] - ((double*)A)[2 * (kk * lda + ii) + 1] * ((double*)alpha)[0];
+                          bufA[2 * ((ii - i) * XT_BLOCK + (kk - k)) + 1] = ((double*)A)[2 * (kk * lda + ii)] * ((double*)alpha)[1] - ((double*)A)[2 * (kk * lda + ii) + 1] * ((double*)alpha)[0];
                         }
                       }
                       for(ii = i; ii < M && ii < i + YT_BLOCK; ii++){
@@ -424,7 +424,7 @@ void idxdBLAS_zizgemm(const int fold, const char Order,
                       for(kk = k; kk < K && kk < k + XT_BLOCK; kk++){
                         for(ii = i; ii < M && ii < i + YT_BLOCK; ii++){
                           bufA[2 * ((ii - i) * XT_BLOCK + (kk - k))] = ((double*)A)[2 * (kk * lda + ii)] * ((double*)alpha)[0] + ((double*)A)[2 * (kk * lda + ii) + 1] * ((double*)alpha)[1];
-                          bufA[2 * ((ii - i) * XT_BLOCK + (kk - k))] = ((double*)A)[2 * (kk * lda + ii)] * ((double*)alpha)[1] - ((double*)A)[2 * (kk * lda + ii) + 1] * ((double*)alpha)[0];
+                          bufA[2 * ((ii - i) * XT_BLOCK + (kk - k)) + 1] = ((double*)A)[2 * (kk * lda + ii)] * ((double*)alpha)[1] - ((double*)A)[2 * (kk * lda + ii) + 1] * ((double*)alpha)[0];
                         }
                       }
                       for(ii = i; ii < M && ii < i + YT_BLOCK; ii++){

@@ -87,13 +87,15 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
     time_toc();
   }
 
+  double dM = (double)M;
+  double dN = (double)N;
   metric_load_double("time", time_read());
   metric_load_double("trials", (double)(trials));
-  metric_load_double("input", (double)(N * M + N + M));
-  metric_load_double("output", (double)NY);
-  metric_load_double("d_mul", (double)(4 * N * M));
-  metric_load_double("d_add", (double)(3 * fold._int.value - 2) * 4 * N * M);
-  metric_load_double("d_orb", (double)(4 * fold._int.value * N * M));
+  metric_load_double("input", dN * dM + dN + dM);
+  metric_load_double("output", (double*)NY);
+  metric_load_double("d_mul", 4.0 * dN * dM);
+  metric_load_double("d_add", 4.0 * (3 * fold._int.value - 2) * dN * dM);
+  metric_load_double("d_orb", 4.0 * fold._int.value * dN * dM);
   metric_dump();
 
   free(X);

@@ -223,12 +223,15 @@ class Test(object):
 class ExecutableTest(Test):
   base_flags = ""
 
-  def setup(self, flags="", **kwargs):
+  def setup(self, flags="", avg_flagss=[], **kwargs):
     self.flags = flags
+    self.avg_flagss = avg_flagss
+    if not self.avg_flagss:
+      self.avg_flagss = [""]
     self.executable_output = terminal.make(self.executable, **kwargs)
 
   def get_command_list(self):
-    return ["{} {} {}".format(self.executable_output, self.base_flags, self.flags)]
+    return ["{} {} {} {}".format(self.executable_output, self.base_flags, self.flags, avg_flags) for avg_flags in self.avg_flagss]
 
   def get_num_commands(self):
     return 1
@@ -243,10 +246,14 @@ class MetricTest(ExecutableTest):
     super(MetricTest, self).setup(**kwargs)
 
   def parse_output_list(self, output_list):
-    assert len(output_list) == 1, "ReproBLAS error: unexpected test output"
+    assert len(output_list) == len(self.avg_flagss), "ReproBLAS error: unexpected test output"
 
-    self.output = json.loads(output_list[0][1])
-    self.parse_output()
+    self.output = []
+    self.result = 0.0
+    for output in output_list:
+      self.output.append(json.loads(output[1]))
+      self.result += self.parse_output(self.output[-1])
+    self.result /= len(output_list)
 
   def parse_output(self):
     raise(NotImplementedError())
@@ -256,4 +263,3 @@ class MetricTest(ExecutableTest):
 
   def get_result(self):
     return self.result
-
