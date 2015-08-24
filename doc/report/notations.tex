@@ -1,0 +1,225 @@
+\section{Notation and Background}
+  Let $\R, \F, $ and $\Z$ denote the sets of real numbers, floating-point numbers, and integers respectively.
+
+  For all $r \in \R$, let $r\Z$ denote the set of all multiples of $r$, $\{rz | z \in \Z\}$.
+
+  For all $r \in \R$, let $\lceil r \rceil$ be the minimum element $z \in \Z$ such that $z \geq r$.
+
+  For all $r \in \R$, let $\lfloor r \rfloor$ be the maximum element $z \in \Z$ such that $z \leq r$.
+
+  We define the function $\roundtonearestinfty(r, e), r \in R, e \in \Z$ as
+
+  \begin{equation}
+    \roundtonearestinfty(r, e) = \begin{cases}\lfloor r/2^e + 1/2 \rfloor 2^e \text{ if } r \geq 0\\ \\ \lceil r/2^e - 1/2 \rceil 2^e \text{ otherwise}\end{cases}
+  \end{equation}
+
+  $\roundtonearestinfty(r, e)$ rounds $r$ to the nearest multiple of $2^e$, breaking ties away from 0. A property of such rounding is shown in  \eqref{eq:round}
+
+  \begin{equation}
+    \bigl|r - \roundtonearestinfty(r, e)\bigr| \leq 2^{e - 1}
+    \label{eq:round}
+  \end{equation}
+
+  Assume that floating point arithmetic complies with the IEEE 754-2008 standard \cite{ieee754} in some ``to nearest'' rounding mode (no specific tie breaking behaviour is required) and that underflow occurs gradually, although methods to handle abrupt underflow will be considered in Section \ref{sec:indexed_underflow_abrupt}.
+
+  Let $f = sm2^e \in \F$ be a floating-point number represented in IEEE 754-2008 format \cite{ieee754} where $s \in \{1, -1\}$ is the \textbf{sign}, $e_{\max} \geq e \geq e_{\min}$ is the \textbf{exponent} ($\exp(f)$ is defined to be $e$), $p$ is the \textbf{precision}, and $m = m_0.m_1m_2...m_{p-1}$ where $m_0, ..., m_{p - 1} \in \{0, 1\}$ is the \textbf{significand} of $f$. $f$ is said to be \textbf{normalized} if $m_0 = 1$ and $e \geq e_{\min}$, \textbf{unnormalized} if $m_0 = 0$, and \textbf{denormalized} if $m_0 = 0$ and $e = e_{\min}$. $f = 0$ if all $m_j = 0$ and $e = e_{\min}$.
+
+  $r \in \R$ is \textbf{representable} as a floating point number if there exists $f \in \F$ such that $r = f$ as real numbers.
+
+  For all $r \in \R$, $e \in \Z$ such that $e_{\min} - p < e$ and $|r| < 2 \cdot 2^{e_{\max}}$, if $r \in 2^e\Z$ and $|r| \leq 2^{e + p}$ then $r$ is representable.
+
+  Machine epsilon, $\epsilon$, the difference between 1 and the greatest floating point number smaller than 1, is defined as $\epsilon = 2^{-p}$.
+
+  The unit in the last place of $f \in \F$, $\ulp(f)$, is the spacing between two consecutive floating point numbers of the same exponent as $f$. If $f$ is normalized, $\ulp(f) = 2^{\exp(f) - p + 1} = 2  \epsilon  2^{\exp(f)}$ and $\ulp(f) \leq 2^{p - 1}|f|$.
+
+  The unit in the first place of $f \in F$, $\ufp(f)$, is the value of the first significant bit of $f$. If $f$ is normalized, $\ufp(f) = 2^{\exp(f)}$.
+
+  For all $f_0, f_1 \in \F$, $\fl(f_0 \text{ op } f_1)$ denotes the evaluated result of the expression $(f_0 \text{ op } f_1)$ in floating point arithmetic. If $(f_0 \text{ op } f_1)$ is representable, then $\fl(f_0 \text{ op } f_1) = (f_0 \text{ op } f_1)$. If rounding is ``to nearest,'' then we have that $|\fl(f_0 \text{ op } f_1) - (f_0 \text{ op } f_1)| \leq 0.5\ulp(\fl(f_0 \text{ op } f_1))$.
+
+  As ReproBLAS is written in C, \texttt{float} and \texttt{double} refer to the floating point types specified in the 1989 C standard \cite{c89} and we assume that they correspond to the \texttt{binary-32} and \texttt{binary-64} types in the IEEE 754-2008 floating point standard \cite{ieee754}.
+
+  All indices start at $0$ in correspondence with the actual ReproBLAS implementation.
+\section{Binning}
+  \label{sec:binning}
+    We achieve reproducible summation of floating point numbers through binning. Each number is split into several components corresponding to predefined exponent ranges, then the components corresponding to each range are accumulated separately. We begin in Section \ref{sec:binning_bins} by explaining the particular set of ranges (referred to as bins) used. Section \ref{sec:binning_slices} develops mathematical theory to describe the components (referred to as slices) corresponding to each bin. We develop this theory to concisely describe and prove correctness of algorithms throughout the paper (especially Algorithms \ref{alg:depositrestricted} and \ref{alg:deposit}).
+  \subsection{Bins}
+    \label{sec:binning_bins}
+    We start by dividing the exponent range $(e_{\min} - p, ..., e_{\max} + 1]$  into \textbf{bins} $(a_i, b_i]$ of \textbf{width} $W$ according to \eqref{eq:imax}, \eqref{eq:a}, and \eqref{eq:b}. Such a range is used so that the largest and smallest (denormalized) floating point numbers may be approximated.
+
+    \begin{equation}
+      i_{\max} = \bigl\lfloor(e_{\max} - e_{\min} + p - 1)/W\bigr\rfloor - 1
+      \label{eq:imax}
+    \end{equation}
+
+    \begin{equation}
+      a_i = e_{\max} + 1 - (i + 1)W \text{ for } 0 \leq i \leq i_{\max}
+      \label{eq:a}
+    \end{equation}
+
+    \begin{equation}
+      b_i = a_i + W
+      \label{eq:b}
+    \end{equation}
+
+    We say the bin $(a_{i_0}, b_{i_0}]$ is \textbf{greater} than the bin $(a_{i_1}, b_{i_1}]$ if $a_{i_0} > a_{i_1}$ (which is equivalent to both $b_{i_0} > b_{i_1}$ and $i_0 < i_1$).
+
+    We say the bin $(a_{i_0}, b_{i_0}]$ is \textbf{less} than the bin $(a_{i_1}, b_{i_1}]$ if $a_{i_0} < a_{i_1}$ (which is equivalent to both $b_{i_0} < b_{i_1}$ and $i_0 > i_1$).
+
+    We use $i \leq i_{\max} = \lfloor(e_{\max} - e_{\min} + p - 1)/W\rfloor - 1$ to ensure that $a_i > e_{\min} - p + 1$ as discussed in Section \ref{sec:indexed_underflow_gradual}. This means that the greatest bin, $(a_{0}, b_{0}]$, is
+
+    \begin{equation}
+      (e_{\max} + 1 - W, e_{\max} + 1]
+      \label{eq:binmax}
+    \end{equation}
+
+    and the least bin, $(a_{i_{\max}}, b_{i_{\max}}]$, is
+
+    \begin{equation}
+      \Bigl(e_{\min} - p + 2 + \bigl((e_{\max} - e_{\min} + p - 1)\mod W\bigr),
+      e_{\min} - p + 2 + W + \bigl((e_{\max} - e_{\min} + p - 1)\mod W\bigr)\Bigr]
+      \label{eq:binmin}
+    \end{equation}
+
+    Section \ref{sec:indexed_underflow_gradual} explains why the bottom of the exponent range
+
+    \begin{equation*}
+    \Bigl(e_{\min} - p, e_{\min} - p + 2 + \bigl((e_{\max} - e_{\min} + p - 1) \mod W\bigr)\Bigr]
+    \end{equation*}
+
+    is ignored.
+
+    As discussed in \cite{repsum}, and explained again in Section~\ref{sec:primitiveops_renormalize},
+    we must assume
+    \begin{equation}
+      W < p - 2
+      \label{eq:wupper}
+    \end{equation}
+
+    As discussed in Section \ref{sec:indexed_overflow}, we must also assume
+    \begin{equation}
+      2 W > p + 1
+      \label{eq:wlower}
+    \end{equation}
+
+    ReproBLAS uses both \texttt{float} and \texttt{double} floating point types. The chosen division of exponent ranges for both types is shown in Figure \ref{fig:bins}.
+    \begin{figure}[H] \centering\begin{tabular}{ | l | l | l | p{5cm} |} \hline Floating-Point Type & \texttt{float} & \texttt{double}\\ \hline $e_{\max}$ & 127 & 1023\\ \hline $e_{\min}$ &  -126 & -1022 \\ \hline $p$ & 24 & 53 \\ \hline $e_{\min} - p$ & -140 & -1075 \\ \hline $W$ & 13 & 40 \\ \hline $i_{\max}$ & 19 & 51 \\ \hline $(a_0, b_0]$ & $(115, 128]$ & $(984, 1024]$\\ \hline $(a_{i_{\max}}, b_{i_{\max}}]$ & $(-132, -119]$ & $(-1056, -1016]$ \\ \hline\end{tabular} \caption{ReproBLAS Binning Scheme}\label{fig:bins}\end{figure}
+
+  \subsection{Slices}
+    \label{sec:binning_slices}
+    Throughout the text we will refer to the \textbf{slice} of some $x \in \F$ in the bin $(a_i, b_i]$. $x$ can be split into several slices, each slice corresponding to a bin $(a_i, b_i]$ and expressible as the (possibly negated) sum of a subset of $\{2^e, e \in (a_i, b_i]\}$, such that the sum of the slices provides a good approximation of $x$. Specifically, the slice of $x \in \F$ in the bin $(a_i, b_i]$ is defined recursively as $d(x, i)$ in \eqref{eq:d}. We must define $d(x, i)$ recursively because it is not a simple bitwise extraction.
+    \begin{equation}
+      \begin{aligned}
+      d(x,0) & = \roundtonearestinfty(x, a_0+1) \\
+      d(x, i) & = \roundtonearestinfty\bigl(x - \sum\limits_{j=0}^{i - 1}d(x,j), a_i + 1\bigr) \text{ for } i > 0.
+      \end{aligned}
+      \label{eq:d}
+    \end{equation}
+
+    We make three initial observations on the definition of $d(x, i)$. First, we note that $d(x, i)$ is well defined recursively on $i$ with base case $d(x, 0) = \roundtonearestinfty(x, a_0 + 1)$.
+
+    Next, notice that $d(x, i) \in 2^{a_{i} + 1}\Z$.
+
+    Finally, it is possible that $d(x, 0)$ may be too large to represent as a floating point number. Overflow of this type is accounted for in Section \ref{sec:indexed_overflow}.
+
+    Lemmas \ref{lem:dzero} and \ref{lem:dmiddle} follow from the definition of $d(x, i)$.
+
+    \begin{samepage}
+    \begin{lem}
+      For all $i \in \{0, ..., i_{\max}\}$ and $x \in \F$ such that $|x| < 2^{a_i}$, $d(x, i) = 0.$
+      \label{lem:dzero}
+    \end{lem}
+    \end{samepage}
+
+    \begin{proof}
+      We show the claim by induction on $i$.
+
+      In the base case, we have $|x| < 2^{a_0}$ and $d(x, 0) = \roundtonearestinfty(x, a_0 + 1)$. By the triangle inequality and  \eqref{eq:round},
+      \begin{equation*}
+        \bigl|\roundtonearestinfty(x, a_0 + 1)\bigr| \leq |x| + \bigl|x - \roundtonearestinfty(x, a_0 + 1)\bigr| < 2^{a_0 + 1}
+      \end{equation*}
+      Since $\roundtonearestinfty(x, a_0 + 1) \in 2^{a_0 + 1}\Z$, we then have
+      \begin{equation*}
+        d(x, 0) = \roundtonearestinfty(x, a_0 + 1) = 0
+      \end{equation*}
+
+      In the inductive step, we have $|x| < 2^{a_{i + 1}} < \ldots < 2^{a_0}$ by \eqref{eq:a} and by induction $d(x, i)= ... = d(x, 0) = 0$. Thus,
+      \begin{equation*}
+        d(x, i + 1) = \roundtonearestinfty\bigl(x - \sum\limits_{j = 0}^{i}d(x, j), a_{i + 1} + 1\bigr) = \roundtonearestinfty(x, a_{i+1} + 1)
+      \end{equation*}
+      Again by the triangle inequality and  \eqref{eq:round},
+      \begin{equation*}
+        \bigl|\roundtonearestinfty(x, a_{i + 1} + 1)\bigr| \leq |x| + \bigl|x - \roundtonearestinfty(x, a_{i + 1} + 1)\bigr| < 2^{a_{i + 1} + 1}
+      \end{equation*}
+      Since $\roundtonearestinfty(x, a_{i + 1} + 1) \in 2^{a_{i + 1} + 1}\Z$, we then have
+      \begin{equation*}
+        d(x, i + 1) = \roundtonearestinfty(x, a_{i + 1} + 1) = 0
+      \end{equation*}
+    \end{proof}
+
+    \begin{samepage}
+    \begin{lem}
+      For all $i \in \{0, ..., i_{\max}\}$ and $x \in \F$ such that $|x| < 2^{b_i}$, $d(x, i) = \roundtonearestinfty(x, a_i + 1)$.
+      \label{lem:dmiddle}
+    \end{lem}
+    \end{samepage}
+
+    \begin{proof}
+      The claim is a simple consequence of Lemma \ref{lem:dzero}.
+
+      By  \eqref{eq:a} and \eqref{eq:b}, $|x| < 2^{b_i} = 2^{a_{i - 1}} < \ldots <2^{a_0}$. Therefore Lemma \ref{lem:dzero} implies $d(x, 0) = ... = d(x, i - 1) = 0$ and we have \begin{equation*}
+        d(x, i) = \roundtonearestinfty\bigl(x - \sum\limits_{j = 0}^{i - 1}d(x, j), a_{i} + 1\bigr) = \roundtonearestinfty(x, a_{i} + 1)
+      \end{equation*}
+    \end{proof}
+
+    Lemma \ref{lem:dzero}, Lemma \ref{lem:dmiddle}, and \eqref{eq:d} can be combined to yield an equivalent definition of $d(x, i)$ for all $i \in \{0, ..., i_{\max}\}$ and $x \in \F$.
+
+    \begin{equation}
+      d(x, i) = \begin{cases}0 \text{ if } |x| < 2^{a_i}\\ \roundtonearestinfty(x, a_i + 1) \text{ if } 2^{a_i} \leq |x| < 2^{b_i}\\\roundtonearestinfty\bigl(x - \sum\limits_{j=0}^{i - 1}d(x,j), a_i + 1\bigr) \text{ if } 2^{b_i} \leq |x| \end{cases}
+      \label{eq:d2}
+    \end{equation}
+
+    Theorem \ref{thm:dround} shows that sum of the slices of $x \in \F$ provides a good approximation of $x$.
+
+    \begin{samepage}
+    \begin{thm}
+      For all $i \in \{0, ..., i_{\max}\}$ and $x \in \F$, $|x - \sum \limits_{j = 0}^id(x, j)| \leq 2^{a_i}$.
+      \label{thm:dround}
+    \end{thm}
+    \end{samepage}
+
+    \begin{proof}
+      We apply  \eqref{eq:round} and \eqref{eq:d2}
+      \begin{align*}
+        \bigl|x - \sum \limits_{j = 0}^{i}d(x, j)\bigr| & = \Bigl|\bigl(x - \sum \limits_{j = 0}^{i - 1}d(x, j)\bigr) - d(x, i)\Bigr| \\
+         & = \Bigl|\bigl(x - \sum \limits_{j = 0}^{i - 1}d(x, j)\bigr) - \roundtonearestinfty\bigl(x - \sum \limits_{j = 0}^{i - 1}d(x, j), a_{i} + 1\bigr)\Bigr| \leq 2^{a_{i}}
+      \end{align*}
+    \end{proof}
+
+    Theorem \ref{thm:dbound} shows a bound on $d(x, i)$.
+
+    \begin{samepage}
+    \begin{thm}
+      For all $i \in \{0, ..., i_{\max}\}$ and $x \in \F$, $|d(x, i)| \leq 2^{b_i}$.
+      \label{thm:dbound}
+    \end{thm}
+    \end{samepage}
+
+    \begin{proof}
+      First, we show that $|x - \sum\limits_{j=0}^{i - 1}d(x,j)| \leq 2^{b_i}$.
+
+      If $i = 0$, then we have
+      \begin{equation*}
+        \bigl|x - \sum\limits_{j=0}^{i - 1}d(x,j)\bigr| = |x| < 2 \cdot 2^{e_{\max}} < 2^{b_0}
+      \end{equation*}
+      Otherwise, we can apply  \eqref{eq:a} and \eqref{eq:b} to Theorem \ref{thm:dround} to get
+      \begin{equation*}
+        \bigl|x - \sum \limits_{j = 0}^{i - 1}d(x, j)\bigr| \leq 2^{a_{i - 1}} = 2^{b_i}
+      \end{equation*}
+
+      As $2^{b_i} \in 2^{a_i + 1}\Z$,  \eqref{eq:d} can be used
+
+      \begin{equation*}
+        \bigl|d(x, i)\bigr| = \Bigl|\roundtonearestinfty\bigl(x - \sum\limits_{j=0}^{i - 1}d(x,j), a_i + 1\bigr)\Bigr| \leq 2^{b_i}
+      \end{equation*}
+    \end{proof}
+

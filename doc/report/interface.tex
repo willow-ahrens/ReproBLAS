@@ -1,0 +1,32 @@
+\section{Interface}
+  \subsection{Section Summary}
+  \subsection{Fold}
+  \subsection{Complex Types}
+  \subsection{Naming Conventions}
+  \subsection{Build System}
+\section{indexed.h}
+  \subsection{Section Summary}
+  \subsection{Types}
+  \subsection{Functions}
+    \subsubsection{xixadd}
+    \subsubsection{xixiadd}
+    \subsubsection{xscale}
+    \subsubsection{xixiaddsq}
+\section{idxdBLAS.h}
+  \label{sec:idxdBLAS}
+  \subsection{Section Summary}
+  \subsection{Functions}
+    \subsubsection{xixdot}
+    \subsubsection{xixnrm2}
+    \subsubsection{xixgemv}
+    \subsubsection{xixgemm}
+  \subsection{Optimization}
+    Due to the proportion of time spent in the deposit routine, optimization of the deposit routine was prioritized. In the event that multiple $x$ need to be added to $Y$, the deposit routine can be vectorized by accumulating the $x$ in multiple copies of $Y$. The number of copies of $Y$ to make, $c$, and the number of unrolled loop iterations, $u$ are tuning parameters.
+\section{repBLAS.h}
+  \subsection{Section Summary}
+\section{idxdMPI.h}
+  \subsection{Section Summary}
+  \subsection{Types}
+  \subsection{Functions}
+    \subsubsection{XIXIREDUCE}
+
