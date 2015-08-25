@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include <indexedBLAS.h>
+#include <idxdBLAS.h>
 #include <reproBLAS.h>
 
 #include "../common/test_opt.h"
@@ -71,10 +71,10 @@ int acc_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealSca
 
   for(i = 0; i < trials; i++){
     util_svec_fill(N, X, incX, FillX, RealScaleX, ImagScaleX);
-    ires = sialloc(fold._int.value);
-    sisetzero(fold._int.value, ires);
-    sissum(fold._int.value, N, X, incX, ires);
-    res = ssiconv(fold._int.value, ires);
+    ires = idxd_sialloc(fold._int.value);
+    idxd_sisetzero(fold._int.value, ires);
+    idxdBLAS_sissum(fold._int.value, N, X, incX, ires);
+    res = idxd_ssiconv(fold._int.value, ires);
     free(ires);
 
     util_svec_sort(N, (float*)X, incX, NULL, 0, util_Decreasing_Magnitude);

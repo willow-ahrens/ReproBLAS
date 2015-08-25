@@ -2,8 +2,8 @@
 #define CAUGSUM_WRAPPER_H
 
 #include <reproBLAS.h>
-#include <indexedBLAS.h>
-#include <indexed.h>
+#include <idxdBLAS.h>
+#include <idxd.h>
 #include "../../config.h"
 
 #include "../common/test_util.h"
@@ -44,15 +44,11 @@ float complex wrap_rcsum(int fold, int N, float complex *x, int incx, float comp
   (void)incy;
   if(fold == SIDEFAULTFOLD){
     float complex res;
-    rcsum_sub(N, x, incx, &res);
+    reproBLAS_csum_sub(N, x, incx, &res);
     return res;
   }else{
-    float_complex_indexed *ires = cialloc(fold);
-    cisetzero(fold, ires);
-    cicsum(fold, N, x, incx, ires);
     float complex res;
-    cciconv_sub(fold, ires, &res);
-    free(ires);
+    reproBLAS_rcsum_sub(fold, N, x, incx, &res);
     return res;
   }
 }
@@ -60,104 +56,86 @@ float complex wrap_rcsum(int fold, int N, float complex *x, int incx, float comp
 void wrap_cicsum(int fold, int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *c) {
   (void)y;
   (void)incy;
-  cicsum(fold, N, x, incx, c);
+  idxdBLAS_cicsum(fold, N, x, incx, c);
 }
 
 float complex wrap_rscasum(int fold, int N, float complex *x, int incx, float complex *y, int incy) {
   (void)y;
   (void)incy;
   if(fold == SIDEFAULTFOLD){
-    return rscasum(N, x, incx);
+    return reproBLAS_scasum(N, x, incx);
   }else{
-    float_indexed *ires = sialloc(fold);
-    sisetzero(fold, ires);
-    sicasum(fold, N, x, incx, ires);
-    float res = ssiconv(fold, ires);
-    free(ires);
-    return (float complex)res;
+    return reproBLAS_rscasum(fold, N, x, incx);
   }
 }
 
 void wrap_sicasum(int fold, int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *c) {
   (void)y;
   (void)incy;
-  smcasum(fold, N, x, incx, c, 2, c + 2 * fold, 2);
+  idxdBLAS_smcasum(fold, N, x, incx, c, 2, c + 2 * fold, 2);
 }
 
 float complex wrap_rscnrm2(int fold, int N, float complex *x, int incx, float complex *y, int incy) {
   (void)y;
   (void)incy;
   if(fold == SIDEFAULTFOLD){
-    return rscnrm2(N, x, incx);
+    return reproBLAS_scnrm2(N, x, incx);
   }else{
-    float_indexed *ires = sialloc(fold);
-    sisetzero(fold, ires);
-    float scale = sicssq(fold, N, x, incx, 0.0, ires);
-    float res = ssiconv(fold, ires);
-    free(ires);
-    return (float complex)(scale * sqrt(res));
+    return reproBLAS_rscnrm2(fold, N, x, incx);
   }
 }
 
 void wrap_sicssq(int fold, int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *c) {
   (void)y;
   (void)incy;
-  smcssq(fold, N, x, incx, 0.0, c, 2, c + 2 * fold, 2);
+  idxdBLAS_smcssq(fold, N, x, incx, 0.0, c, 2, c + 2 * fold, 2);
 }
 
 float complex wrap_rcdotu(int fold, int N, float complex *x, int incx, float complex *y, int incy) {
   if(fold == SIDEFAULTFOLD){
     float complex res;
-    rcdotu_sub(N, x, incx, y, incy, &res);
+    reproBLAS_cdotu_sub(N, x, incx, y, incy, &res);
     return res;
   }else{
-    float_complex_indexed *ires = cialloc(fold);
-    cisetzero(fold, ires);
-    cicdotu(fold, N, x, incx, y, incy, ires);
     float complex res;
-    cciconv_sub(fold, ires, &res);
-    free(ires);
+    reproBLAS_rcdotu_sub(fold, N, x, incx, y, incy, &res);
     return res;
   }
 }
 
 void wrap_cicdotu(int fold, int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *c) {
-  cicdotu(fold, N, x, incx, y, incy, c);
+  idxdBLAS_cicdotu(fold, N, x, incx, y, incy, c);
 }
 
 float complex wrap_rcdotc(int fold, int N, float complex *x, int incx, float complex *y, int incy) {
   if(fold == SIDEFAULTFOLD){
     float complex res;
-    rcdotc_sub(N, x, incx, y, incy, &res);
+    reproBLAS_cdotc_sub(N, x, incx, y, incy, &res);
     return res;
   }else{
-    float_complex_indexed *ires = cialloc(fold);
-    cisetzero(fold, ires);
-    cicdotc(fold, N, x, incx, y, incy, ires);
     float complex res;
-    cciconv_sub(fold, ires, &res);
-    free(ires);
+    reproBLAS_rcdotc_sub(fold, N, x, incx, y, incy, &res);
     return res;
   }
 }
 
 void wrap_cicdotc(int fold, int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *c) {
-  cicdotc(fold, N, x, incx, y, incy, c);
+  idxdBLAS_cicdotc(fold, N, x, incx, y, incy, c);
 }
 
 float complex wrap_rciciadd(int fold, int N, float complex *x, int incx, float complex *y, int incy) {
   (void)y;
   (void)incy;
-  float_complex_indexed *ires = cialloc(fold);
-  float_complex_indexed *itmp = cialloc(fold);
-  cisetzero(fold, ires);
+  float_complex_indexed *ires = idxd_cialloc(fold);
+  float_complex_indexed *itmp = idxd_cialloc(fold);
+  idxd_cisetzero(fold, ires);
   int i;
   for(i = 0; i < N; i++){
-    cicconv(fold, x + i * incx, itmp);
-    ciciadd(fold, itmp, ires);
+    idxd_cicconv(fold, x + i * incx, itmp);
+    idxd_ciciadd(fold, itmp, ires);
   }
   float complex res;
-  cciconv_sub(fold, ires, &res);
+  idxd_cciconv_sub(fold, ires, &res);
   free(ires);
   free(itmp);
   return res;
@@ -166,11 +144,11 @@ float complex wrap_rciciadd(int fold, int N, float complex *x, int incx, float c
 void wrap_ciciadd(int fold, int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *c) {
   (void)y;
   (void)incy;
-  float_complex_indexed *itmp = cialloc(fold);
+  float_complex_indexed *itmp = idxd_cialloc(fold);
   int i;
   for(i = 0; i < N; i++){
-    cicconv(fold, x + i * incx, itmp);
-    ciciadd(fold, itmp, c);
+    idxd_cicconv(fold, x + i * incx, itmp);
+    idxd_ciciadd(fold, itmp, c);
   }
   free(itmp);
 }
@@ -178,14 +156,14 @@ void wrap_ciciadd(int fold, int N, float complex *x, int incx, float complex *y,
 float complex wrap_rcicadd(int fold, int N, float complex *x, int incx, float complex *y, int incy) {
   (void)y;
   (void)incy;
-  float_complex_indexed *ires = cialloc(fold);
-  cisetzero(fold, ires);
+  float_complex_indexed *ires = idxd_cialloc(fold);
+  idxd_cisetzero(fold, ires);
   int i;
   for(i = 0; i < N; i++){
-    cicadd(fold, x + i * incx, ires);
+    idxd_cicadd(fold, x + i * incx, ires);
   }
   float complex res;
-  cciconv_sub(fold, ires, &res);
+  idxd_cciconv_sub(fold, ires, &res);
   free(ires);
   return res;
 }
@@ -195,31 +173,31 @@ void wrap_cicadd(int fold, int N, float complex *x, int incx, float complex *y, 
   (void)incy;
   int i;
   for(i = 0; i < N; i++){
-    cicadd(fold, x + i * incx, c);
+    idxd_cicadd(fold, x + i * incx, c);
   }
 }
 
 float complex wrap_rcicdeposit(int fold, int N, float complex *x, int incx, float complex *y, int incy) {
   (void)y;
   (void)incy;
-  float_complex_indexed *ires = cialloc(fold);
-  cisetzero(fold, ires);
+  float_complex_indexed *ires = idxd_cialloc(fold);
+  idxd_cisetzero(fold, ires);
   float complex amax;
-  camax_sub(N, x, incx, &amax);
-  cicupdate(fold, &amax, ires);
+  idxdBLAS_camax_sub(N, x, incx, &amax);
+  idxd_cicupdate(fold, &amax, ires);
   int i;
   int j = 0;
   for(i = 0; i < N; i++){
-    if(j >= SIENDURANCE){
-      cirenorm(fold, ires);
+    if(j >= idxd_SIENDURANCE){
+      idxd_cirenorm(fold, ires);
       j = 0;
     }
-    cicdeposit(fold, x + i * incx, ires);
+    idxd_cicdeposit(fold, x + i * incx, ires);
     j++;
   }
-  cirenorm(fold, ires);
+  idxd_cirenorm(fold, ires);
   float complex res;
-  cciconv_sub(fold, ires, &res);
+  idxd_cciconv_sub(fold, ires, &res);
   free(ires);
   return res;
 }
@@ -228,19 +206,19 @@ void wrap_cicdeposit(int fold, int N, float complex *x, int incx, float complex 
   (void)y;
   (void)incy;
   float complex amax;
-  camax_sub(N, x, incx, &amax);
-  cicupdate(fold, &amax, c);
+  idxdBLAS_camax_sub(N, x, incx, &amax);
+  idxd_cicupdate(fold, &amax, c);
   int i;
   int j = 0;
   for(i = 0; i < N; i++){
-    if(j >= SIENDURANCE){
-      cirenorm(fold, c);
+    if(j >= idxd_SIENDURANCE){
+      idxd_cirenorm(fold, c);
       j = 0;
     }
-    cicdeposit(fold, x + i * incx, c);
+    idxd_cicdeposit(fold, x + i * incx, c);
     j++;
   }
-  cirenorm(fold, c);
+  idxd_cirenorm(fold, c);
 }
 
 wrap_caugsum wrap_caugsum_func(wrap_caugsum_func_t func) {
@@ -408,7 +386,7 @@ float complex wrap_caugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill
         double small_imag;
         switch(FillX){
           case util_Vec_Constant:
-            new_scale = sscale(new_scale);
+            new_scale = idxd_sscale(new_scale);
             RealScaleX /= new_scale;
             ImagScaleX /= new_scale;
             return sqrt(N * (RealScaleX * RealScaleX + ImagScaleX * ImagScaleX)) * new_scale;
@@ -445,7 +423,7 @@ float complex wrap_caugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill
             }
             return tmpX0_base[0] + tmpX0_base[1];
           case util_Vec_Pos_Big:
-            new_scale = sscale(new_scale * big);
+            new_scale = idxd_sscale(new_scale * big);
             big_real = (big * RealScaleX)/new_scale;
             big_imag = (big * ImagScaleX)/new_scale;
             small_real = (small * RealScaleX)/new_scale;
@@ -453,7 +431,7 @@ float complex wrap_caugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill
             return sqrt((N - 1) * (small_real * small_real + small_imag * small_imag) + big_real * big_real + big_imag * big_imag) * new_scale;
           case util_Vec_Pos_Pos_Big:
           case util_Vec_Pos_Neg_Big:
-            new_scale = sscale(new_scale * big);
+            new_scale = idxd_sscale(new_scale * big);
             big_real = (big * RealScaleX)/new_scale;
             big_imag = (big * ImagScaleX)/new_scale;
             small_real = (small * RealScaleX)/new_scale;
@@ -679,7 +657,7 @@ float complex wrap_caugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill
   }
 }
 
-float complex wrap_caugsum_bound(int fold, int N, wrap_caugsum_func_t func, float complex *X, int incX, float complex *Y, int incY, float res, float ref){
+float complex wrap_caugsum_bound(int fold, int N, wrap_caugsum_func_t func, float complex *X, int incX, float complex *Y, int incY, float complex res, float complex ref){
   switch(func){
     case wrap_caugsum_RCSUM:
     case wrap_caugsum_CICIADD:
@@ -689,29 +667,31 @@ float complex wrap_caugsum_bound(int fold, int N, wrap_caugsum_func_t func, floa
         float complex amax;
         float complex bound;
         float *bound_base = (float*)&bound;
-        camax_sub(N, X, incX, &amax);
-        bound_base[0] = sibound(fold, N, crealf(amax));
-        bound_base[1] = sibound(fold, N, cimagf(amax));
+        idxdBLAS_camax_sub(N, X, incX, &amax);
+        bound_base[0] = idxd_sibound(fold, N, crealf(amax), crealf(res));
+        bound_base[1] = idxd_sibound(fold, N, cimagf(amax), cimagf(res));
         return bound;
       }
     case wrap_caugsum_RSCASUM:
       {
         float complex amax2;
         float amax;
-        camax_sub(N, X, incX, &amax2);
+        idxdBLAS_camax_sub(N, X, incX, &amax2);
         amax = MAX(crealf(amax2), cimagf(amax2));
-        return sibound(fold, N, amax);
+        return idxd_sibound(fold, N, amax, crealf(res));
       }
     case wrap_caugsum_RSCNRM2:
       {
         float complex amax2;
         float amax;
-        camax_sub(N, X, incX, &amax2);
+        float scale;
+        idxdBLAS_camax_sub(N, X, incX, &amax2);
         amax = MAX(crealf(amax2), cimagf(amax2));
+        scale = idxd_sscale(amax);
         if (amax == 0.0){
           return 0.0;
         }
-        return sibound(fold, N, amax) * (amax / (res + ref));
+        return idxd_sibound(fold, N, (amax/scale) * (amax/scale), (crealf(res)/scale) * (crealf(res)/scale)) * (scale / (crealf(res) + crealf(ref))) * scale;
       }
     case wrap_caugsum_RCDOTU:
     case wrap_caugsum_RCDOTC:
@@ -719,9 +699,9 @@ float complex wrap_caugsum_bound(int fold, int N, wrap_caugsum_func_t func, floa
         float complex amaxm;
         float complex bound;
         float *bound_base = (float*)&bound;
-        camaxm_sub(N, X, incX, Y, incY, &amaxm);
-        bound_base[0] = sibound(fold, N, crealf(amaxm));
-        bound_base[1] = sibound(fold, N, cimagf(amaxm));
+        idxdBLAS_camaxm_sub(N, X, incX, Y, incY, &amaxm);
+        bound_base[0] = idxd_sibound(fold, N, crealf(amaxm), crealf(res));
+        bound_base[1] = idxd_sibound(fold, N, cimagf(amaxm), cimagf(res));
         return bound;
       }
   }

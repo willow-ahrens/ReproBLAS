@@ -1,5 +1,5 @@
-#include <indexedBLAS.h>
-#include <indexed.h>
+#include <idxdBLAS.h>
+#include <idxd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -26,7 +26,7 @@ int verify_rcblas1_reproducibility(int N, float complex* X, int incX, float comp
   // GENERATE DATA
   int i;
   float complex res;
-  float_complex_indexed *Ires = cialloc(SIDEFAULTFOLD);
+  float_complex_indexed *Ires = idxd_cialloc(SIDEFAULTFOLD);
   int num_blocks = 1;
 
   int block_N = (N + num_blocks - 1) / num_blocks;
@@ -37,23 +37,23 @@ int verify_rcblas1_reproducibility(int N, float complex* X, int incX, float comp
       res = (wrap_rcblas1_func(func))(N, X, incX, Y, incY);
     else {
       block_N =  (N + num_blocks - 1) / num_blocks;
-      cisetzero(SIDEFAULTFOLD, Ires);
+      idxd_cisetzero(SIDEFAULTFOLD, Ires);
       for (i = 0; i < N; i += block_N) {
         block_N = block_N < N - i ? block_N : (N-i);
         (wrap_ciblas1_func(func))(block_N, X + i * incX, incX, Y + i * incY, incY, Ires);
       }
-      cciconv_sub(SIDEFAULTFOLD, Ires, &res);
+      idxd_cciconv_sub(SIDEFAULTFOLD, Ires, &res);
     }
     if (res != ref) {
       printf("%s(X, Y)[num_blocks=%d,block_N=%d] = %g + %gi != %g + %gi\n", wrap_rcblas1_names[func], num_blocks, block_N, crealf(res), cimagf(res), crealf(ref), cimagf(ref));
       if (num_blocks == 1) {
-        cisetzero(SIDEFAULTFOLD, Ires);
+        idxd_cisetzero(SIDEFAULTFOLD, Ires);
         (wrap_ciblas1_func(func))(N, X, incX, Y, incY, Ires);
       }
       printf("Ref I_float_Complex:\n");
-      ciprint(SIDEFAULTFOLD, Iref);
+      idxd_ciprint(SIDEFAULTFOLD, Iref);
       printf("\nRes I_float_Complex:\n");
-      ciprint(SIDEFAULTFOLD, Ires);
+      idxd_ciprint(SIDEFAULTFOLD, Ires);
       printf("\n");
       return 1;
     }
@@ -83,7 +83,7 @@ const char* vecvec_fill_name(int argc, char** argv){
 int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX, double ImagScaleX, int incX, int FillY, double RealScaleY, double ImagScaleY, int incY){
   int rc = 0;
   float complex ref;
-  float_complex_indexed *Iref = cialloc(SIDEFAULTFOLD);
+  float_complex_indexed *Iref = idxd_cialloc(SIDEFAULTFOLD);
   int max_num_blocks = 1024;
 
   verify_rcblas1_options_initialize();
@@ -106,7 +106,7 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX,
 
   //compute with unpermuted data
   ref  = (wrap_rcblas1_func(func_type._named.value))(N, X, incX, Y, incY);
-  cisetzero(SIDEFAULTFOLD, Iref);
+  idxd_cisetzero(SIDEFAULTFOLD, Iref);
   (wrap_ciblas1_func(func_type._named.value))(N, X, incX, Y, incY, Iref);
 
   P = util_identity_permutation(N);

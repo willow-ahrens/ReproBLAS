@@ -2,8 +2,8 @@
 #define RZBLAS1_WRAPPER_H
 
 #include <reproBLAS.h>
-#include <indexedBLAS.h>
-#include <indexed.h>
+#include <idxdBLAS.h>
+#include <idxd.h>
 #include "../../config.h"
 
 #define wrap_RZSUM  0
@@ -30,58 +30,58 @@ double complex wrap_rzsum(int N, double complex *x, int incx, double complex *y,
   (void)y;
   (void)incy;
   double complex ret;
-  rzsum_sub(N, x, incx, &ret);
+  reproBLAS_rzsum_sub(N, x, incx, &ret);
   return ret;
 }
 
 void wrap_zizsum(int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {
   (void)y;
   (void)incy;
-  zizsum(DIDEFAULTFOLD, N, x, incx, z);
+  idxdBLAS_zizsum(DIDEFAULTFOLD, N, x, incx, z);
 }
 
 double complex wrap_rdzasum(int N, double complex *x, int incx, double complex *y, int incy) {
   (void)y;
   (void)incy;
-  return (double complex)rdzasum(N, x, incx);
+  return (double complex)reproBLAS_rdzasum(N, x, incx);
 }
 
 void wrap_dizasum(int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {
   (void)y;
   (void)incy;
-  dmzasum(DIDEFAULTFOLD, N, x, incx, z, 2, z + 2 * DIDEFAULTFOLD, 2);
+  idxdBLAS_dmzasum(DIDEFAULTFOLD, N, x, incx, z, 2, z + 2 * DIDEFAULTFOLD, 2);
 }
 
 double complex wrap_rzdotu(int N, double complex *x, int incx, double complex *y, int incy) {
   double complex ret;
-  rzdotu_sub(N, x, incx, y, incy, &ret);
+  reproBLAS_rzdotu_sub(N, x, incx, y, incy, &ret);
   return ret;
 }
 
 void wrap_zizdotu(int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {
-  zizdotu(DIDEFAULTFOLD, N, x, incx, y, incy, z);
+  idxdBLAS_zizdotu(DIDEFAULTFOLD, N, x, incx, y, incy, z);
 }
 
 double complex wrap_rzdotc(int N, double complex *x, int incx, double complex *y, int incy) {
   double complex ret;
-  rzdotc_sub(N, x, incx, y, incy, &ret);
+  reproBLAS_rzdotc_sub(N, x, incx, y, incy, &ret);
   return ret;
 }
 
 void wrap_zizdotc(int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {
-  zizdotc(DIDEFAULTFOLD, N, x, incx, y, incy, z);
+  idxdBLAS_zizdotc(DIDEFAULTFOLD, N, x, incx, y, incy, z);
 }
 
 double complex wrap_rdznrm2(int N, double complex *x, int incx, double complex *y, int incy) {
   (void)y;
   (void)incy;
-  return rdznrm2(N, x, incx);
+  return reproBLAS_rdznrm2(N, x, incx);
 }
 
 void wrap_diznrm(int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {
   (void)y;
   (void)incy;
-  dmzssq(DIDEFAULTFOLD, N, x, incx, 0.0, z, 2, z + 2 * DIDEFAULTFOLD, 2);
+  idxdBLAS_dmzssq(DIDEFAULTFOLD, N, x, incx, 0.0, z, 2, z + 2 * DIDEFAULTFOLD, 2);
 }
 
 wrap_rzblas1 wrap_rzblas1_func(int func) {

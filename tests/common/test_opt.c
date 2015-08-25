@@ -15,13 +15,13 @@ static void opt_fprintf_option(FILE *f, opt_option option) {
   char buffer[LINE_MAX * HELP_MAX];
 
   strncpy(buffer, option.header.help, LINE_MAX*HELP_MAX);
-  
+
   token = strtok(buffer, "\n");
   if(token){
-    fprintf(f, "-%c, --%-12s: %-60s\n", option.header.short_name, option.header.long_name, token);
+    fprintf(f, "-%c, --%-12s: %.60s\n", option.header.short_name, option.header.long_name, token);
     token = strtok(NULL, "\n");
     while(token){
-      fprintf(f, "                    %60s\n", token);
+      fprintf(f, "                    %.60s\n", token);
       token = strtok(NULL, "\n");
     }
   }else{
@@ -65,9 +65,9 @@ static void opt_fprintf_option(FILE *f, opt_option option) {
       {
         int i;
         for(i = 0; i < option._named.n_names - 1; i++){
-          fprintf(f, "                      %-26s: %-32s\n", option._named.names[i], option._named.descs[i]);
+          fprintf(f, "                      %-26s: %.30s\n", option._named.names[i], option._named.descs[i]);
         }
-        fprintf(f, "                      %-26s: %-31s]\n", option._named.names[option._named.n_names-1], option._named.descs[option._named.n_names-1]);
+        fprintf(f, "                      %-26s: %-29s]\n", option._named.names[option._named.n_names-1], option._named.descs[option._named.n_names-1]);
       }
       break;
   }

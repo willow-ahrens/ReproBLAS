@@ -1,5 +1,5 @@
-#include <indexedBLAS.h>
-#include <indexed.h>
+#include <idxdBLAS.h>
+#include <idxd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -38,7 +38,7 @@ int validate_internal_caugsum(int fold, int N, float complex* X, int incX, float
   float complex res;
   float complex error;
   float complex bound;
-  float_complex_indexed *ires = cialloc(fold);
+  float_complex_indexed *ires = idxd_cialloc(fold);
 
   res = (wrap_caugsum_func(func))(fold, N, X, incX, Y, incY);
   error = res - ref;
@@ -46,10 +46,10 @@ int validate_internal_caugsum(int fold, int N, float complex* X, int incX, float
   if (!util_csoftequals(res, ref, bound)) {
     //TODO these error messages need to go to stderr for all tests.
     printf("%s(X, Y) = %g + %gi != %g + %gi\n|%g - %g| = %g > %g and/or |%gi - %gi| = %g > %g\n", wrap_caugsum_func_names[func], crealf(res), cimagf(res), crealf(ref), cimagf(ref), crealf(res), crealf(ref), fabsf(crealf(error)), crealf(bound), cimagf(res), cimagf(ref), fabsf(cimagf(error)), cimagf(bound));
-    cisetzero(fold, ires);
+    idxd_cisetzero(fold, ires);
     (wrap_ciaugsum_func(func))(fold, N, X, incX, Y, incY, ires);
     printf("\nres float_complex_indexed:\n");
-    ciprint(fold, ires);
+    idxd_ciprint(fold, ires);
     printf("\n");
     return 1;
   }
@@ -143,46 +143,6 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX,
 
   P = util_identity_permutation(N);
   util_cvec_sort(N, X, incX, P, 1, util_Decreasing_Magnitude);
-  util_cvec_permute(N, Y, incY, P, 1, NULL, 1);
-  free(P);
-
-  rc = validate_internal_caugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
-  if(rc != 0){
-    return rc;
-  }
-
-  P = util_identity_permutation(N);
-  util_cvec_shuffle(N, X, incX, P, 1);
-  util_cvec_permute(N, Y, incY, P, 1, NULL, 1);
-  free(P);
-
-  rc = validate_internal_caugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
-  if(rc != 0){
-    return rc;
-  }
-
-  P = util_identity_permutation(N);
-  util_cvec_shuffle(N, X, incX, P, 1);
-  util_cvec_permute(N, Y, incY, P, 1, NULL, 1);
-  free(P);
-
-  rc = validate_internal_caugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
-  if(rc != 0){
-    return rc;
-  }
-
-  P = util_identity_permutation(N);
-  util_cvec_shuffle(N, X, incX, P, 1);
-  util_cvec_permute(N, Y, incY, P, 1, NULL, 1);
-  free(P);
-
-  rc = validate_internal_caugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
-  if(rc != 0){
-    return rc;
-  }
-
-  P = util_identity_permutation(N);
-  util_cvec_shuffle(N, X, incX, P, 1);
   util_cvec_permute(N, Y, incY, P, 1, NULL, 1);
   free(P);
 

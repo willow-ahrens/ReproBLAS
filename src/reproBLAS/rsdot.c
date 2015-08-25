@@ -1,18 +1,15 @@
 #include <reproBLAS.h>
-#include <indexedBLAS.h>
+#include <idxdBLAS.h>
 
-#include "../../config.h"
-
-float rsdot(const int N, const float* X, const int incX, const float *Y, const int incY) {
-  float_indexed *doti = sialloc(SIDEFAULTFOLD);
+float reproBLAS_rsdot(const int fold, const int N, const float* X, const int incX, const float *Y, const int incY) {
+  float_indexed *doti = idxd_sialloc(fold);
   float dot;
 
-  sisetzero(SIDEFAULTFOLD, doti);
+  idxd_sisetzero(fold, doti);
 
-  sisdot(SIDEFAULTFOLD, N, X, incX, Y, incY, doti);
+  idxdBLAS_sisdot(fold, N, X, incX, Y, incY, doti);
 
-  dot = ssiconv(SIDEFAULTFOLD, doti);
+  dot = idxd_ssiconv(fold, doti);
   free(doti);
   return dot;
 }
-

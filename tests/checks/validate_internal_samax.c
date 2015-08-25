@@ -1,5 +1,5 @@
-#include <indexedBLAS.h>
-#include <indexed.h>
+#include <idxdBLAS.h>
+#include <idxd.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -12,7 +12,7 @@ int vecvec_show_help(void){
 const char* vecvec_name(int argc, char** argv) {
   (void)argc;
   (void)argv;
-  return "Validate samax(m) X=+big";
+  return "Validate idxdBLAS_samax(m) X=+big";
 }
 
 int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
@@ -39,15 +39,15 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   util_svec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
   X[0]         = -big;
 
-  res = samax(N, X, incX);
+  res = idxdBLAS_samax(N, X, incX);
   if (res != ref) {
-    printf("samax(X) = %g != %g (1 Big at beginning)\n", res, ref);
+    printf("idxdBLAS_samax(X) = %g != %g (1 Big at beginning)\n", res, ref);
     return 1;
   }
 
-  res = samaxm(N, X, incX, Y, incY);
+  res = idxdBLAS_samaxm(N, X, incX, Y, incY);
   if (res != ref) {
-    printf("samaxm(X) = %g != %g (1 Big at beginning)\n", res, ref);
+    printf("idxdBLAS_samaxm(X) = %g != %g (1 Big at beginning)\n", res, ref);
     return 1;
   }
 
@@ -55,15 +55,15 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   util_svec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
   X[(N-1)*incX]         = -big;
 
-  res = samax(N, X, incX);
+  res = idxdBLAS_samax(N, X, incX);
   if (res != ref) {
-    printf("samax(X) = %g != %g (1 Big at end)\n", res, ref);
+    printf("idxdBLAS_samax(X) = %g != %g (1 Big at end)\n", res, ref);
     return 1;
   }
 
-  res = samaxm(N, X, incX, Y, incY);
+  res = idxdBLAS_samaxm(N, X, incX, Y, incY);
   if (res != ref) {
-    printf("samaxm(X) = %g != %g (1 Big at end)\n", res, ref);
+    printf("idxdBLAS_samaxm(X) = %g != %g (1 Big at end)\n", res, ref);
     return 1;
   }
 

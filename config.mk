@@ -10,7 +10,7 @@ CC = cc
 CFLAGS += -Wall
 
 # add CPPFLAGS
-CPPFLAGS += 
+CPPFLAGS +=
 
 # add LDFLAGS
 LDFLAGS +=
@@ -26,7 +26,7 @@ LDFLAGS +=
 #MPICFLAGS =
 
 # select python (comment all for auto)
-#PYTHON = python
+PYTHON = python
 #PYTHON = python3
 
 # select vectorization (comment all for auto)
@@ -48,7 +48,7 @@ LDFLAGS +=
 #AVX2 := false
 
 # select optimization flags (comment for auto)
-#OPTFLAGS := -O2
+OPTFLAGS := -O3 -funroll-loops
 
 # select endianness (by default we are running on the same architecture we are
 # building - if you're cross compiling then you should set this manually)
@@ -59,7 +59,7 @@ ENDIAN := $(shell perl -le 'print unpack(N,pack(L,0x01020304)) == 0x01020304 ? b
 #BLAS := REF
 #BLAS := ATLAS
 #BLAS := MKL
-#BLAS := ACCELERATE
+BLAS := ACCELERATE
 #BLAS := CUSTOM
 
 # select CUSTOM BLAS LDFLAGS (if BLAS == CUSTOM)

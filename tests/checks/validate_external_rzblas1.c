@@ -1,5 +1,5 @@
-#include <indexedBLAS.h>
-#include <indexed.h>
+#include <idxdBLAS.h>
+#include <idxd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -62,12 +62,12 @@ int file_test(int argc, char** argv, char *fname) {
   double complex *Y;
 
   double complex ref;
-  double_complex_indexed *Iref = zialloc(DIDEFAULTFOLD);
-  zisetzero(DIDEFAULTFOLD, Iref);
+  double_complex_indexed *Iref = idxd_zialloc(DIDEFAULTFOLD);
+  idxd_zisetzero(DIDEFAULTFOLD, Iref);
 
   double complex res;
-  double_complex_indexed *Ires = zialloc(DIDEFAULTFOLD);
-  zisetzero(DIDEFAULTFOLD, Ires);
+  double_complex_indexed *Ires = idxd_zialloc(DIDEFAULTFOLD);
+  idxd_zisetzero(DIDEFAULTFOLD, Ires);
 
   file_read_vector(fname, &N, (void**)&X, sizeof(double complex));
   Y = util_zvec_alloc(N, 1);
@@ -86,14 +86,14 @@ int file_test(int argc, char** argv, char *fname) {
     Iref = Ires;
 
     file_write_vector(ref_fname, 1, &ref, sizeof(ref));
-    file_write_vector(Iref_fname, 1, Iref, zisize(DIDEFAULTFOLD));
+    file_write_vector(Iref_fname, 1, Iref, idxd_zisize(DIDEFAULTFOLD));
   } else {
     void *data;
     int unused0;
     file_read_vector(ref_fname, &unused0, &data, sizeof(ref));
     ref = *(double complex*)data;
     free(data);
-    file_read_vector(Iref_fname, &unused0, &data, zisize(DIDEFAULTFOLD));
+    file_read_vector(Iref_fname, &unused0, &data, idxd_zisize(DIDEFAULTFOLD));
     free(Iref);
     Iref = data;
     if(ref != res){
@@ -101,13 +101,13 @@ int file_test(int argc, char** argv, char *fname) {
       return 1;
     }
     if(memcmp(&Iref, &Ires, sizeof(Iref)) != 0){
-      zziconv_sub(DIDEFAULTFOLD, Ires, &res);
-      zziconv_sub(DIDEFAULTFOLD, Iref, &ref);
+      idxd_zziconv_sub(DIDEFAULTFOLD, Ires, &res);
+      idxd_zziconv_sub(DIDEFAULTFOLD, Iref, &ref);
       printf("I%s(%s) = %g + %gi != %g + %gi\n", wrap_rzblas1_names[func_type._named.value], fname, creal(res), cimag(res), creal(ref), cimag(ref));
       printf("Ref I_double_Complex:\n");
-      ziprint(DIDEFAULTFOLD, Iref);
+      idxd_ziprint(DIDEFAULTFOLD, Iref);
       printf("\nRes I_double_Complex:\n");
-      ziprint(DIDEFAULTFOLD, Ires);
+      idxd_ziprint(DIDEFAULTFOLD, Ires);
       printf("\n");
       return 1;
     }

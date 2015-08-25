@@ -101,7 +101,7 @@ def run(apis):
     for api in apis_to_run:
       bench_test = benchs.all_benchs[api.measurement_interface.benchmark]
       bench_tests.append(bench_test[0]())
-      bench_tests[-1].setup(flags = "-N 4096 -a 100000 " + bench_test[1], args=arguments_file_name, remake=True, verbose=args.verbose)
+      bench_tests[-1].setup(flagss = bench_test[1], attribute="%peak", args=arguments_file_name, remake=True, verbose=args.verbose)
       command_list += bench_tests[-1].get_command_list()
 
     #run with these arguments
@@ -111,7 +111,7 @@ def run(apis):
     for api, desired_result, bench_test in zip(apis_to_run, desired_results, bench_tests):
       bench_test.parse_output_list(output_list[:len(bench_test.get_command_list())])
       output_list = output_list[len(bench_test.get_command_list()):]
-      result = Result(time=1000000.0 * bench_test.get_result())
+      result = Result(time=(100.0/bench_test.get_result()))
       api.report_result(desired_result, result)
 
   #parse the best configurations
@@ -131,6 +131,7 @@ def run(apis):
 
 def main():
   print("tuning {}".format(terminal.get_vectorization()))
+  """
   apis = [create_benchmark_api(benchmark) for benchmark in ["bench_damax",
                                                             "bench_damaxm",
                                                             "bench_zamax",
@@ -170,7 +171,7 @@ def main():
                                                                "bench_rdzasum_fold_{}".format(fold),
                                                                "bench_rdznrm2_fold_{}".format(fold),
                                                                "bench_rzdotu_fold_{}".format(fold),
-                                                               "bench_rzdotc_fold_{}".format(fold)]
+                                                               "bench_rzdotc_fold_{}".format(fold)]]
   for fold in range(2, terminal.get_simaxfold() + 1):
     apis += [create_benchmark_api(benchmark) for benchmark in ["bench_rssum_fold_{}".format(fold),
                                                                "bench_rsasum_fold_{}".format(fold),
@@ -181,6 +182,16 @@ def main():
                                                                "bench_rscnrm2_fold_{}".format(fold),
                                                                "bench_rcdotu_fold_{}".format(fold),
                                                                "bench_rcdotc_fold_{}".format(fold)]]
+  run(apis)
+  """
+  apis = [create_benchmark_api(benchmark) for benchmark in ["bench_rdgemv_fold_{}".format(terminal.get_didefaultfold()),
+                                                            "bench_rdgemv_TransA_fold_{}".format(terminal.get_didefaultfold()),
+                                                            "bench_rdgemm_TransA_fold_{}".format(terminal.get_didefaultfold()),
+                                                            "bench_rdgemm_TransB_fold_{}".format(terminal.get_didefaultfold()),
+                                                            "bench_rzgemv_fold_{}".format(terminal.get_didefaultfold()),
+                                                            "bench_rzgemv_TransA_fold_{}".format(terminal.get_didefaultfold()),
+                                                            "bench_rzgemm_TransA_fold_{}".format(terminal.get_didefaultfold()),
+                                                            "bench_rzgemm_TransB_fold_{}".format(terminal.get_didefaultfold())]]
   run(apis)
 
 if __name__ == '__main__':

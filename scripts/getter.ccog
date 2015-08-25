@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include <indexed.h>
+#include <idxd.h>
 
 #include "../config.h"
 
@@ -36,9 +36,9 @@ int main(int argc, char** argv){
   #endif
   //[[[end]]]
 
-  printf("  \"dimaxindex\": %d,\n", DIMAXINDEX);
+  printf("  \"dimaxindex\": %d,\n", idxd_DIMAXINDEX);
 
-  printf("  \"simaxindex\": %d,\n", SIMAXINDEX);
+  printf("  \"simaxindex\": %d,\n", idxd_SIMAXINDEX);
 
   printf("  \"dimaxfold\": %d,\n", DIMAXFOLD);
 
@@ -48,9 +48,9 @@ int main(int argc, char** argv){
 
   printf("  \"sidefaultfold\": %d,\n", SIDEFAULTFOLD);
 
-  printf("  \"diendurance\": %d,\n", DIENDURANCE);
+  printf("  \"diendurance\": %d,\n", idxd_DIENDURANCE);
 
-  printf("  \"siendurance\": %d\n", SIENDURANCE);
+  printf("  \"siendurance\": %d\n", idxd_SIENDURANCE);
 
   printf("}\n");
 

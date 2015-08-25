@@ -152,9 +152,20 @@ void util_dvec_permute(int N, double* V, int incV, int *Q, int incQ, int *P, int
 void util_svec_permute(int N, float* V, int incV, int *Q, int incQ, int *P, int incP);
 void util_zvec_permute(int N, double complex* V, int incV, int *Q, int incQ, int *P, int incP);
 void util_cvec_permute(int N, float complex* V, int incV, int *Q, int incQ, int *P, int incP);
+void util_divec_permute(int num, int N, double* V, int incV, int *Q, int incQ, int *P, int incP);
+void util_sivec_permute(int num, int N, float* V, int incV, int *Q, int incQ, int *P, int incP);
+void util_zivec_permute(int num, int N, double complex* V, int incV, int *Q, int incQ, int *P, int incP);
+void util_civec_permute(int num, int N, float complex* V, int incV, int *Q, int incQ, int *P, int incP);
 void util_dmat_row_permute(char Order, char TransA, int M, int N, double *A, int lda, int *Q, int incQ, int *P, int incP);
 void util_smat_row_permute(char Order, char TransA, int M, int N, float *A, int lda, int *Q, int incQ, int *P, int incP);
 void util_zmat_row_permute(char Order, char TransA, int M, int N, double complex *A, int lda, int *Q, int incQ, int *P, int incP);
 void util_cmat_row_permute(char Order, char TransA, int M, int N, float complex *A, int lda, int *Q, int incQ, int *P, int incP);
+void util_dimat_row_permute(int num, char Order, char TransA, int M, int N, double *A, int lda, int *Q, int incQ, int *P, int incP);
+void util_simat_row_permute(int num, char Order, char TransA, int M, int N, float *A, int lda, int *Q, int incQ, int *P, int incP);
+void util_zimat_row_permute(int num, char Order, char TransA, int M, int N, double complex *A, int lda, int *Q, int incQ, int *P, int incP);
+void util_cimat_row_permute(int num, char Order, char TransA, int M, int N, float complex *A, int lda, int *Q, int incQ, int *P, int incP);
+
+double *util_dmat_op(char Order, char TransA, int opM, int opN, double *A, int lda);
+double complex *util_zmat_op(char Order, char TransA, int opM, int opN, double complex *A, int lda);
 
 #endif

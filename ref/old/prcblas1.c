@@ -354,7 +354,7 @@ int main( int argc, char **argv ) {
 //#endif
 
 //#ifdef CALL_PRCASUM
-		sumd = rscasum(N, lv, 1);
+		sumd = reproBLAS_rscasum(N, lv, 1);
 		ind += 2;
 		err = RELERR(sumd, creal(result[ind + 1]));
 		MPI_Reduce(&err, &rerr, 1, MPI_FLOAT, MPI_SUM, 0, MPI_COMM_WORLD);
@@ -377,7 +377,7 @@ int main( int argc, char **argv ) {
 //#endif
 
 //#ifdef CALL_PRCNRM2
-		sumd = rscnrm2(N, lv, 1);
+		sumd = reproBLAS_rscnrm2(N, lv, 1);
 		ind += 2;
 		err = RELERR(sumd, creal(result[ind+1]));
 		MPI_Reduce(&err, &rerr, 1, MPI_FLOAT, MPI_SUM, 0, MPI_COMM_WORLD);

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include <indexedBLAS.h>
+#include <idxdBLAS.h>
 #include <reproBLAS.h>
 
 #include "../common/test_opt.h"
@@ -21,7 +21,7 @@ static void bench_rddot_options_initialize(void){
   fold._int.header.long_name  = "fold";
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
-  fold._int.min               = 0;
+  fold._int.min               = 2;
   fold._int.max               = DIMAXFOLD;
   fold._int.value             = DIDEFAULTFOLD;
 }
@@ -51,9 +51,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   (void)argv;
   int rc = 0;
   int i;
-  int j;
   double res = 0.0;
-  double_indexed *ires;
 
   bench_rddot_options_initialize();
   opt_eval_option(argc, argv, &fold);
@@ -67,46 +65,21 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   util_dvec_fill(N, X, incX, FillX, RealScaleX, ImagScaleX);
   util_dvec_fill(N, Y, incY, FillY, RealScaleY, ImagScaleY);
 
-  if(fold._int.value == DIDEFAULTFOLD){
-    time_tic();
-    for(i = 0; i < trials; i++){
-      res = rddot(N, X, incX, Y, incY);
-    }
-    time_toc();
-  }else if(fold._int.value == 0){
-    time_tic();
-    for(j = 2; j <= DIMAXFOLD; j++){
-      ires = dialloc(j);
-      disetzero(j, ires);
-      for(i = 0; i < trials; i++){
-        diddot(j, N, X, incX, Y, incY, ires);
-      }
-      res = ddiconv(j, ires);
-      free(ires);
-    }
-    time_toc();
-  }else{
-    time_tic();
-    ires = dialloc(fold._int.value);
-    disetzero(fold._int.value, ires);
-    for(i = 0; i < trials; i++){
-      diddot(fold._int.value, N, X, incX, Y, incY, ires);
-    }
-    res = ddiconv(fold._int.value, ires);
-    free(ires);
-    time_toc();
+  time_tic();
+  for(i = 0; i < trials; i++){
+    res = reproBLAS_rddot(fold._int.value, N, X, incX, Y, incY);
   }
+  time_toc();
 
+  double dN = (double)N;
   metric_load_double("time", time_read());
   metric_load_double("res", res);
   metric_load_double("trials", (double)trials);
-  metric_load_double("input", (double)2 * N);
-  metric_load_double("output", (double)1);
-  if(fold._int.value != 0){
-    metric_load_double("d_mul", (double)N);
-    metric_load_double("d_add", (double)(3 * fold._int.value - 2) * N);
-    metric_load_double("d_orb", (double)fold._int.value * N);
-  }
+  metric_load_double("input", 2.0 * dN);
+  metric_load_double("output", 1.0);
+  metric_load_double("d_mul", dN);
+  metric_load_double("d_add", (3 * fold._int.value - 2) * dN);
+  metric_load_double("d_orb", fold._int.value * dN);
   metric_dump();
 
   free(X);

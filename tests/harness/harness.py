@@ -139,7 +139,7 @@ class MetricSuite(Suite):
   def setup(self, **kwargs):
     for (metric_row, args) in zip(self.metric_rows, self.argss):
       for metric in metric_row:
-        metric.setup(attribute = self.attribute, flags = terminal.flags(self.params, args),**kwargs)
+        metric.setup(attribute = self.attribute, flagss = [terminal.flags(self.params, args)],**kwargs)
 
   def get_command_list(self):
     command_list = []
@@ -223,12 +223,12 @@ class Test(object):
 class ExecutableTest(Test):
   base_flags = ""
 
-  def setup(self, flags="", **kwargs):
-    self.flags = flags
+  def setup(self, flagss=[""], **kwargs):
+    self.flagss = flagss
     self.executable_output = terminal.make(self.executable, **kwargs)
 
   def get_command_list(self):
-    return ["{} {} {}".format(self.executable_output, self.base_flags, self.flags)]
+    return ["{} {} {}".format(self.executable_output, self.base_flags, flags) for flags in self.flagss]
 
   def get_num_commands(self):
     return 1
@@ -243,12 +243,16 @@ class MetricTest(ExecutableTest):
     super(MetricTest, self).setup(**kwargs)
 
   def parse_output_list(self, output_list):
-    assert len(output_list) == 1, "ReproBLAS error: unexpected test output"
+    assert len(output_list) == len(self.flagss), "ReproBLAS error: unexpected test output"
 
-    self.output = json.loads(output_list[0][1])
-    self.parse_output()
+    self.result = 0
+    self.output = []
+    for output_item in output_list:
+      print(output_item)
+      self.output.append(json.loads(output_item[1]))
+      self.result += self.parse_output(self.output[-1])
 
-  def parse_output(self):
+  def parse_output(self, output):
     raise(NotImplementedError())
 
   def get_output(self):
@@ -256,4 +260,3 @@ class MetricTest(ExecutableTest):
 
   def get_result(self):
     return self.result
-

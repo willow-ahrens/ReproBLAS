@@ -177,7 +177,7 @@ int main( int argc, char **argv ) {
 
 		relerr = 0.0;
 		for (s = 0; s < 53; s++) {
-			ref = rdzasum(n, v, incv);
+			ref = reproBLAS_rdzasum(n, v, incv);
 
 			// log output
 			if (s == 0)
@@ -294,7 +294,7 @@ int main( int argc, char **argv ) {
 		fprintf(stdout, "%10.2g", ref_rerr);	
 #		endif
 
-		ref = rdznrm2(n, v, incv);
+		ref = reproBLAS_rdznrm2(n, v, incv);
 		out_result[OUT_RDZNRM2] = ref;
 		ref = ref / scale;
 		ph = TwoProd(ref, ref, &pl);

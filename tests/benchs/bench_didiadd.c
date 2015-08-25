@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include <indexedBLAS.h>
+#include <idxdBLAS.h>
 #include <reproBLAS.h>
 
 #include "../common/test_opt.h"
@@ -22,7 +22,7 @@ static void bench_didiadd_options_initialize(void){
   fold._int.header.long_name  = "fold";
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
-  fold._int.min               = 0;
+  fold._int.min               = 2;
   fold._int.max               = DIMAXFOLD;
   fold._int.value             = DIDEFAULTFOLD;
 
@@ -83,37 +83,37 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
 
   if(fold._int.value == 0){
     for(j = 1; j <= DIMAXFOLD; j++){
-      X = (double_indexed*)util_dvec_alloc(N * dinum(j), 1);
+      X = (double_indexed*)util_dvec_alloc(N * idxd_dinum(j), 1);
       for(i = 0; i < N; i++){
-        disetzero(j, X + dinum(j));
-        didsum(j, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * dinum(j));
+        idxd_disetzero(j, X + idxd_dinum(j));
+        idxdBLAS_didsum(j, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_dinum(j));
       }
-      ires = dialloc(j);
+      ires = idxd_dialloc(j);
       time_tic();
       for(i = 0; i < trials; i++){
-        disetzero(j, ires);
+        idxd_disetzero(j, ires);
         for(k = 0; k < N; k++){
-          didiadd(j, X + k * dinum(j), ires);
+          idxd_didiadd(j, X + k * idxd_dinum(j), ires);
         }
-        res = ddiconv(j, ires);
+        res = idxd_ddiconv(j, ires);
       }
       time_toc();
       free(ires);
       free(X);
     }
   }else{
-    X = (double_indexed*)util_dvec_alloc(N * dinum(fold._int.value), 1);
+    X = (double_indexed*)util_dvec_alloc(N * idxd_dinum(fold._int.value), 1);
     for(i = 0; i < N; i++){
-      didsum(fold._int.value, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * dinum(fold._int.value));
+      idxdBLAS_didsum(fold._int.value, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_dinum(fold._int.value));
     }
-    ires = dialloc(fold._int.value);
+    ires = idxd_dialloc(fold._int.value);
     time_tic();
     for(i = 0; i < trials; i++){
-      disetzero(fold._int.value, ires);
+      idxd_disetzero(fold._int.value, ires);
       for(k = 0; k < N; k++){
-        didiadd(fold._int.value, X + k * dinum(fold._int.value), ires);
+        idxd_didiadd(fold._int.value, X + k * idxd_dinum(fold._int.value), ires);
       }
-      res = ddiconv(fold._int.value, ires);
+      res = idxd_ddiconv(fold._int.value, ires);
     }
     time_toc();
     free(ires);

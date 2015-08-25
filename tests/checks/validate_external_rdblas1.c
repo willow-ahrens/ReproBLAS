@@ -1,5 +1,5 @@
-#include <indexedBLAS.h>
-#include <indexed.h>
+#include <idxdBLAS.h>
+#include <idxd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -63,12 +63,12 @@ int file_test(int argc, char** argv, char *fname) {
   double *Y;
 
   double ref;
-  double_indexed *Iref = dialloc(DIDEFAULTFOLD);
-  disetzero(DIDEFAULTFOLD, Iref);
+  double_indexed *Iref = idxd_dialloc(DIDEFAULTFOLD);
+  idxd_disetzero(DIDEFAULTFOLD, Iref);
 
   double res;
-  double_indexed *Ires = dialloc(DIDEFAULTFOLD);
-  disetzero(DIDEFAULTFOLD, Ires);
+  double_indexed *Ires = idxd_dialloc(DIDEFAULTFOLD);
+  idxd_disetzero(DIDEFAULTFOLD, Ires);
 
   file_read_vector(fname, &N, (void**)&X, sizeof(double));
   Y = util_dvec_alloc(N, 1);
@@ -88,26 +88,26 @@ int file_test(int argc, char** argv, char *fname) {
     Iref = Ires;
 
     file_write_vector(ref_fname, 1, &ref, sizeof(ref));
-    file_write_vector(Iref_fname, 1, Iref, disize(DIDEFAULTFOLD));
+    file_write_vector(Iref_fname, 1, Iref, idxd_disize(DIDEFAULTFOLD));
   } else {
     void *data;
     int unused0;
     file_read_vector(ref_fname, &unused0, &data, sizeof(ref));
     ref = *(double*)data;
     free(data);
-    file_read_vector(Iref_fname, &unused0, &data, disize(DIDEFAULTFOLD));
+    file_read_vector(Iref_fname, &unused0, &data, idxd_disize(DIDEFAULTFOLD));
     free(Iref);
     Iref = data;
     if(ref != res){
       printf("%s(%s) = %g != %g\n", wrap_rdblas1_names[func_type._named.value], fname, res, ref);
       return 1;
     }
-    if(memcmp(&Iref, &Ires, disize(DIDEFAULTFOLD)) != 0){
-      printf("I%s(%s) = %g != %g\n", wrap_rdblas1_names[func_type._named.value], fname, ddiconv(DIDEFAULTFOLD, Ires), ddiconv(DIDEFAULTFOLD, Iref));
+    if(memcmp(&Iref, &Ires, idxd_disize(DIDEFAULTFOLD)) != 0){
+      printf("I%s(%s) = %g != %g\n", wrap_rdblas1_names[func_type._named.value], fname, idxd_ddiconv(DIDEFAULTFOLD, Ires), idxd_ddiconv(DIDEFAULTFOLD, Iref));
       printf("Ref I_double:\n");
-      diprint(DIDEFAULTFOLD, Iref);
+      idxd_diprint(DIDEFAULTFOLD, Iref);
       printf("\nRes I_double:\n");
-      diprint(DIDEFAULTFOLD, Ires);
+      idxd_diprint(DIDEFAULTFOLD, Ires);
       printf("\n");
       return 1;
     }

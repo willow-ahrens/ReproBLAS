@@ -195,7 +195,7 @@ int main( int argc, char **argv ) {
 
 		relerr = 0.0;
 		for (s = 0; s < 53; s++) {
-			ref = rdasum(n, v, IONE);
+			ref = reproBLAS_rdasum(n, v, IONE);
 
 			// log output
 			if (s == 0)
@@ -229,7 +229,7 @@ int main( int argc, char **argv ) {
 
 		relerr = 0.0;
 		for (s = 0; s < 53; s++) {
-			ref = rdsum(n, v, IONE);
+			ref = reproBLAS_rdsum(n, v, IONE);
 
 			// log output
 			if (s == 0)
@@ -293,7 +293,7 @@ int main( int argc, char **argv ) {
 		fprintf(stdout, "%10.2g", ref_rerr);	
 #		endif
 
-		ref = rdnrm2(n, v, IONE);
+		ref = reproBLAS_rdnrm2(n, v, IONE);
 		out_result[OUT_RDNRM2] = ref;
 		ref = ref / scale;
 		ph = TwoProd(ref, ref, &pl);
@@ -327,7 +327,7 @@ int main( int argc, char **argv ) {
 
 		relerr = 0.0;
 		for (s = 0; s < 53; s++) {
-			ref = rddot(n, v, IONE, y, IONE);
+			ref = reproBLAS_rddot(n, v, IONE, y, IONE);
 
 			// log output
 			if (s == 0)

@@ -1,0 +1,166 @@
+#include <complex.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <float.h>
+#include <math.h>
+#include "../config.h"
+#include "../common/common.h"
+#include "idxdBLAS.h"
+
+/*[[[cog
+import cog
+import generate
+import dataTypes
+import amax
+import vectorizations
+
+code_block = generate.CodeBlock()
+vectorizations.conditionally_include_vectorizations(code_block)
+cog.out(str(code_block))
+]]]*/
+#ifdef __AVX__
+  #include <immintrin.h>
+
+#elif defined(__SSE2__)
+  #include <emmintrin.h>
+
+#else
+
+
+#endif
+//[[[end]]]
+
+void idxdBLAS_camax_sub(const int N, const void *X, const int incX, void *amax) {
+  const float *x = (const float*)X;
+  /*[[[cog
+  cog.out(generate.generate(amax.AMax(dataTypes.FloatComplex, "N", "x", "incX", "amax"), cog.inFile, args, params, mode))
+  ]]]*/
+  #ifdef __AVX__
+    __m256 abs_mask_tmp;
+    {
+      __m256 tmp;
+      tmp = _mm256_set1_ps(1);
+      abs_mask_tmp = _mm256_set1_ps(-1);
+      abs_mask_tmp = _mm256_xor_ps(abs_mask_tmp, tmp);
+      tmp = _mm256_cmp_ps(tmp, tmp, 0);
+      abs_mask_tmp = _mm256_xor_ps(abs_mask_tmp, tmp);
+    }
+    float max_buffer_tmp[8] __attribute__((aligned(32))); (void)max_buffer_tmp;
+
+    int i;
+
+    __m256 x_0;
+    __m256 m_0;
+    m_0 = _mm256_setzero_ps();
+
+    if(incX == 1){
+
+      for(i = 0; i + 4 <= N; i += 4, x += 8){
+        x_0 = _mm256_and_ps(_mm256_loadu_ps(((float*)x)), abs_mask_tmp);
+        m_0 = _mm256_max_ps(m_0, x_0);
+      }
+      if(i < N){
+        x_0 = _mm256_and_ps((__m256)_mm256_set_pd(0, (N - i)>2?((double*)((float*)x))[2]:0, (N - i)>1?((double*)((float*)x))[1]:0, ((double*)((float*)x))[0]), abs_mask_tmp);
+        m_0 = _mm256_max_ps(m_0, x_0);
+        x += ((N - i) * 2);
+      }
+    }else{
+
+      for(i = 0; i + 4 <= N; i += 4, x += (incX * 8)){
+        x_0 = _mm256_and_ps(_mm256_set_ps(((float*)x)[((incX * 6) + 1)], ((float*)x)[(incX * 6)], ((float*)x)[((incX * 4) + 1)], ((float*)x)[(incX * 4)], ((float*)x)[((incX * 2) + 1)], ((float*)x)[(incX * 2)], ((float*)x)[1], ((float*)x)[0]), abs_mask_tmp);
+        m_0 = _mm256_max_ps(m_0, x_0);
+      }
+      if(i < N){
+        x_0 = _mm256_and_ps((__m256)_mm256_set_pd(0, (N - i)>2?((double*)((float*)x))[(incX * 2)]:0, (N - i)>1?((double*)((float*)x))[incX]:0, ((double*)((float*)x))[0]), abs_mask_tmp);
+        m_0 = _mm256_max_ps(m_0, x_0);
+        x += (incX * (N - i) * 2);
+      }
+    }
+    _mm256_store_ps(max_buffer_tmp, m_0);
+    max_buffer_tmp[0] = (max_buffer_tmp[0] > max_buffer_tmp[2] ? max_buffer_tmp[0]: max_buffer_tmp[2]);
+    max_buffer_tmp[1] = (max_buffer_tmp[1] > max_buffer_tmp[3] ? max_buffer_tmp[1]: max_buffer_tmp[3]);
+    max_buffer_tmp[0] = (max_buffer_tmp[0] > max_buffer_tmp[4] ? max_buffer_tmp[0]: max_buffer_tmp[4]);
+    max_buffer_tmp[1] = (max_buffer_tmp[1] > max_buffer_tmp[5] ? max_buffer_tmp[1]: max_buffer_tmp[5]);
+    max_buffer_tmp[0] = (max_buffer_tmp[0] > max_buffer_tmp[6] ? max_buffer_tmp[0]: max_buffer_tmp[6]);
+    max_buffer_tmp[1] = (max_buffer_tmp[1] > max_buffer_tmp[7] ? max_buffer_tmp[1]: max_buffer_tmp[7]);
+    ((float*)amax)[0] = max_buffer_tmp[0];
+    ((float*)amax)[1] = max_buffer_tmp[1];
+
+  #elif defined(__SSE2__)
+    __m128 abs_mask_tmp;
+    {
+      __m128 tmp;
+      tmp = _mm_set1_ps(1);
+      abs_mask_tmp = _mm_set1_ps(-1);
+      abs_mask_tmp = _mm_xor_ps(abs_mask_tmp, tmp);
+      tmp = _mm_cmpeq_ps(tmp, tmp);
+      abs_mask_tmp = _mm_xor_ps(abs_mask_tmp, tmp);
+    }
+    float max_buffer_tmp[4] __attribute__((aligned(16))); (void)max_buffer_tmp;
+
+    int i;
+
+    __m128 x_0;
+    __m128 m_0;
+    m_0 = _mm_setzero_ps();
+
+    if(incX == 1){
+
+      for(i = 0; i + 2 <= N; i += 2, x += 4){
+        x_0 = _mm_and_ps(_mm_loadu_ps(((float*)x)), abs_mask_tmp);
+        m_0 = _mm_max_ps(m_0, x_0);
+      }
+      if(i < N){
+        x_0 = _mm_and_ps(_mm_set_ps(0, 0, ((float*)x)[1], ((float*)x)[0]), abs_mask_tmp);
+        m_0 = _mm_max_ps(m_0, x_0);
+        x += ((N - i) * 2);
+      }
+    }else{
+
+      for(i = 0; i + 2 <= N; i += 2, x += (incX * 4)){
+        x_0 = _mm_and_ps(_mm_set_ps(((float*)x)[((incX * 2) + 1)], ((float*)x)[(incX * 2)], ((float*)x)[1], ((float*)x)[0]), abs_mask_tmp);
+        m_0 = _mm_max_ps(m_0, x_0);
+      }
+      if(i < N){
+        x_0 = _mm_and_ps(_mm_set_ps(0, 0, ((float*)x)[1], ((float*)x)[0]), abs_mask_tmp);
+        m_0 = _mm_max_ps(m_0, x_0);
+        x += (incX * (N - i) * 2);
+      }
+    }
+    _mm_store_ps(max_buffer_tmp, m_0);
+    max_buffer_tmp[0] = (max_buffer_tmp[0] > max_buffer_tmp[2] ? max_buffer_tmp[0]: max_buffer_tmp[2]);
+    max_buffer_tmp[1] = (max_buffer_tmp[1] > max_buffer_tmp[3] ? max_buffer_tmp[1]: max_buffer_tmp[3]);
+    ((float*)amax)[0] = max_buffer_tmp[0];
+    ((float*)amax)[1] = max_buffer_tmp[1];
+
+  #else
+    int i;
+
+    float x_0, x_1;
+    float m_0, m_1;
+    m_0 = 0;
+    m_1 = 0;
+
+    if(incX == 1){
+
+      for(i = 0; i + 1 <= N; i += 1, x += 2){
+        x_0 = fabsf(((float*)x)[0]);
+        x_1 = fabsf(((float*)x)[1]);
+        m_0 = (m_0 > x_0? m_0: x_0);
+        m_1 = (m_1 > x_1? m_1: x_1);
+      }
+    }else{
+
+      for(i = 0; i + 1 <= N; i += 1, x += (incX * 2)){
+        x_0 = fabsf(((float*)x)[0]);
+        x_1 = fabsf(((float*)x)[1]);
+        m_0 = (m_0 > x_0? m_0: x_0);
+        m_1 = (m_1 > x_1? m_1: x_1);
+      }
+    }
+    ((float*)amax)[0] = m_0;
+    ((float*)amax)[1] = m_1;
+
+  #endif
+  //[[[end]]]
+}

@@ -2,8 +2,8 @@
 #define RCBLAS1_WRAPPER_H
 
 #include <reproBLAS.h>
-#include <indexedBLAS.h>
-#include <indexed.h>
+#include <idxdBLAS.h>
+#include <idxd.h>
 #include "../../config.h"
 
 #define wrap_RCSUM  0
@@ -31,58 +31,58 @@ float complex wrap_rcsum(int N, float complex *x, int incx, float complex *y, in
   (void)y;
   (void)incy;
   float complex ret;
-  rcsum_sub(N, x, incx, &ret);
+  reproBLAS_rcsum_sub(N, x, incx, &ret);
   return ret;
 }
 
 void wrap_cicsum(int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *z) {
   (void)y;
   (void)incy;
-  cicsum(SIDEFAULTFOLD, N, x, incx, z);
+  idxdBLAS_cicsum(SIDEFAULTFOLD, N, x, incx, z);
 }
 
 float complex wrap_rscasum(int N, float complex *x, int incx, float complex *y, int incy) {
   (void)y;
   (void)incy;
-  return (float complex)rscasum(N, x, incx);
+  return (float complex)reproBLAS_rscasum(N, x, incx);
 }
 
 void wrap_sicasum(int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *z) {
   (void)y;
   (void)incy;
-  smcasum(SIDEFAULTFOLD, N, x, incx, z, 2, z + 2 * SIDEFAULTFOLD, 2);
+  idxdBLAS_smcasum(SIDEFAULTFOLD, N, x, incx, z, 2, z + 2 * SIDEFAULTFOLD, 2);
 }
 
 float complex wrap_rcdotu(int N, float complex *x, int incx, float complex *y, int incy) {
   float complex ret;
-  rcdotu_sub(N, x, incx, y, incy, &ret);
+  reproBLAS_rcdotu_sub(N, x, incx, y, incy, &ret);
   return ret;
 }
 
 void wrap_cicdotu(int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *z) {
-  cicdotu(SIDEFAULTFOLD, N, x, incx, y, incy, z);
+  idxdBLAS_cicdotu(SIDEFAULTFOLD, N, x, incx, y, incy, z);
 }
 
 float complex wrap_rcdotc(int N, float complex *x, int incx, float complex *y, int incy) {
   float complex ret;
-  rcdotc_sub(N, x, incx, y, incy, &ret);
+  reproBLAS_rcdotc_sub(N, x, incx, y, incy, &ret);
   return ret;
 }
 
 void wrap_cicdotc(int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *z) {
-  cicdotc(SIDEFAULTFOLD, N, x, incx, y, incy, z);
+  idxdBLAS_cicdotc(SIDEFAULTFOLD, N, x, incx, y, incy, z);
 }
 
 float complex wrap_rscnrm2(int N, float complex *x, int incx, float complex *y, int incy) {
   (void)y;
   (void)incy;
-  return rscnrm2(N, x, incx);
+  return reproBLAS_rscnrm2(N, x, incx);
 }
 
 void wrap_sicnrm(int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *z) {
   (void)y;
   (void)incy;
-  smcssq(SIDEFAULTFOLD, N, x, incx, 0.0, z, 2, z + 2 * SIDEFAULTFOLD, 2);
+  idxdBLAS_smcssq(SIDEFAULTFOLD, N, x, incx, 0.0, z, 2, z + 2 * SIDEFAULTFOLD, 2);
 }
 
 wrap_rcblas1 wrap_rcblas1_func(int func) {

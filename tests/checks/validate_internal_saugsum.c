@@ -1,5 +1,5 @@
-#include <indexedBLAS.h>
-#include <indexed.h>
+#include <idxdBLAS.h>
+#include <idxd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -38,7 +38,7 @@ int validate_internal_saugsum(int fold, int N, float* X, int incX, float* Y, int
   float res;
   float error;
   float bound;
-  float_indexed *ires = sialloc(fold);
+  float_indexed *ires = idxd_sialloc(fold);
 
   res = (wrap_saugsum_func(func))(fold, N, X, incX, Y, incY);
   error = fabsf(res - ref);
@@ -46,10 +46,10 @@ int validate_internal_saugsum(int fold, int N, float* X, int incX, float* Y, int
   if (!util_ssoftequals(res, ref, bound)) {
     //TODO these error messages need to go to stderr for all tests.
     printf("%s(X, Y) = %g != %g\n|%g - %g| = %g > %g\n", wrap_saugsum_func_names[func], res, ref, res, ref, error, bound);
-    sisetzero(fold, ires);
+    idxd_sisetzero(fold, ires);
     (wrap_siaugsum_func(func))(fold, N, X, incX, Y, incY, ires);
     printf("\nres float_indexed:\n");
-    siprint(fold, ires);
+    idxd_siprint(fold, ires);
     printf("\n");
     return 1;
   }
@@ -143,46 +143,6 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX,
 
   P = util_identity_permutation(N);
   util_svec_sort(N, X, incX, P, 1, util_Decreasing_Magnitude);
-  util_svec_permute(N, Y, incY, P, 1, NULL, 1);
-  free(P);
-
-  rc = validate_internal_saugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
-  if(rc != 0){
-    return rc;
-  }
-
-  P = util_identity_permutation(N);
-  util_svec_shuffle(N, X, incX, P, 1);
-  util_svec_permute(N, Y, incY, P, 1, NULL, 1);
-  free(P);
-
-  rc = validate_internal_saugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
-  if(rc != 0){
-    return rc;
-  }
-
-  P = util_identity_permutation(N);
-  util_svec_shuffle(N, X, incX, P, 1);
-  util_svec_permute(N, Y, incY, P, 1, NULL, 1);
-  free(P);
-
-  rc = validate_internal_saugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
-  if(rc != 0){
-    return rc;
-  }
-
-  P = util_identity_permutation(N);
-  util_svec_shuffle(N, X, incX, P, 1);
-  util_svec_permute(N, Y, incY, P, 1, NULL, 1);
-  free(P);
-
-  rc = validate_internal_saugsum(fold._int.value, N, X, incX, Y, incY, augsum_func._named.value, ref);
-  if(rc != 0){
-    return rc;
-  }
-
-  P = util_identity_permutation(N);
-  util_svec_shuffle(N, X, incX, P, 1);
   util_svec_permute(N, Y, incY, P, 1, NULL, 1);
   free(P);
 

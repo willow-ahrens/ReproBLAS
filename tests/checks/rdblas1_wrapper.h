@@ -2,8 +2,8 @@
 #define RDBLAS1_WRAPPER_H
 
 #include <reproBLAS.h>
-#include <indexedBLAS.h>
-#include <indexed.h>
+#include <idxdBLAS.h>
+#include <idxd.h>
 #include "../../config.h"
 
 #define wrap_RDSUM  0
@@ -26,45 +26,45 @@ static const char* wrap_rdblas1_descs[] = {"rdsum",
 double wrap_rdsum(int N, double *x, int incx, double *y, int incy) {
   (void)y;
   (void)incy;
-  return rdsum(N, x, incx);
+  return reproBLAS_rdsum(N, x, incx);
 }
 
 void wrap_didsum(int N, double *x, int incx, double *y, int incy, double_indexed *z) {
   (void)y;
   (void)incy;
-  didsum(DIDEFAULTFOLD, N, x, incx, z);
+  idxdBLAS_didsum(DIDEFAULTFOLD, N, x, incx, z);
 }
 
 double wrap_rdasum(int N, double *x, int incx, double *y, int incy) {
   (void)y;
   (void)incy;
-  return rdasum(N, x, incx);
+  return reproBLAS_rdasum(N, x, incx);
 }
 
 void wrap_didasum(int N, double *x, int incx, double *y, int incy, double_indexed *z) {
   (void)y;
   (void)incy;
-  didasum(DIDEFAULTFOLD, N, x, incx, z);
+  idxdBLAS_didasum(DIDEFAULTFOLD, N, x, incx, z);
 }
 
 double wrap_rddot(int N, double *x, int incx, double *y, int incy) {
-  return rddot(N, x, incx, y, incy);
+  return reproBLAS_rddot(N, x, incx, y, incy);
 }
 
 void wrap_diddot(int N, double *x, int incx, double *y, int incy, double_indexed *z) {
-  diddot(DIDEFAULTFOLD, N, x, incx, y, incy, z);
+  idxdBLAS_diddot(DIDEFAULTFOLD, N, x, incx, y, incy, z);
 }
 
 double wrap_rdnrm2(int N, double *x, int incx, double *y, int incy) {
   (void)y;
   (void)incy;
-  return rdnrm2(N, x, incx);
+  return reproBLAS_rdnrm2(N, x, incx);
 }
 
 void wrap_didnrm(int N, double *x, int incx, double *y, int incy, double_indexed *z) {
   (void)y;
   (void)incy;
-  didssq(DIDEFAULTFOLD, N, x, incx, 0.0, z);
+  idxdBLAS_didssq(DIDEFAULTFOLD, N, x, incx, 0.0, z);
 }
 
 wrap_rdblas1 wrap_rdblas1_func(int func) {

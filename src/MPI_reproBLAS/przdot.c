@@ -6,11 +6,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "MPI_indexed.h"
-#include "../MPI_indexed/MPI_dindexed.h"
+#include "MPI_idxd.h"
+#include "../MPI_indexed/MPI_didxd.h"
 #include "../types.h"
 #include "MPI_reproBLAS.h"
-#include "indexedBLAS.h"
+#include "idxdBLAS.h"
 
 void przdotI(
 	MPI_Comm comm, int root,

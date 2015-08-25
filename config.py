@@ -80,7 +80,7 @@ def run_parallel(command_list, verbose="false"):
   result_list = []
   if verbose != "true":
     status(0, len(command_list));
-  for (i, result) in enumerate(p.imap(execute, [(command, verbose) for command in command_list], chunksize=multiprocessing.cpu_count() * 16)):
+  for (i, result) in enumerate(p.imap(execute, [(command, verbose) for command in command_list], chunksize=multiprocessing.cpu_count() * 8)):
     if verbose != "true":
       status(i, len(command_list));
     result_list.append(result)
@@ -106,6 +106,7 @@ def run_parallel(command_list, verbose="false"):
 #                s_orb  - number of single precision bitwise or
 #                freq  - frequency of cpu
 #                vec   - best vectorization available ("AVX", "SSE", "SISD")
+#                fma   - is fma available (True, False)
 #  @return idealized theoretical time in which the cpu could complete the given instructions (in any order)
 #
 #  @author Peter Ahrens
@@ -121,14 +122,13 @@ def peak_time(data):
   elif data["vec"] == "AVX":
     vec_d_ops = 4
     vec_s_ops = 8
-#  data["d_add"] += data["d_fma"]
-#  data["d_mul"] += data["d_fma"]
-#  data["d_fma"] = 0
-#  data["s_add"] += data["s_fma"]
-#  data["s_mul"] += data["s_fma"]
-#  data["s_fma"] = 0
-#  d_ops = data["d_add"] + data["d_mul"] + data["d_fma"] + data["d_orb"]
-#  s_ops = data["s_add"] + data["s_mul"] + data["s_fma"] + data["s_orb"]
+  if not data['fma']:
+    data["d_add"] += data["d_fma"]
+    data["d_mul"] += data["d_fma"]
+    data["d_fma"] = 0
+    data["s_add"] += data["s_fma"]
+    data["s_mul"] += data["s_fma"]
+    data["s_fma"] = 0
   d_ops = max(data["d_add"] + data["d_mul"] + data["d_fma"], data["d_orb"])
   s_ops = max(data["s_add"] + data["s_mul"] + data["s_fma"], data["s_orb"])
   return float(d_ops/vec_d_ops + s_ops/vec_s_ops)/data["freq"];

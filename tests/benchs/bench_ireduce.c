@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <math.h>
 #include <mpi.h>
-#include <indexed.h>
-#include <MPI_indexed.h>
+#include <idxd.h>
+#include <MPI_idxd.h>
 #include "../common/test_opt.h"
 #include "../common/test_time.h"
 #include "../common/test_metric.h"
@@ -44,8 +44,8 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
 
   double *X = util_dvec_alloc(N, incX);
   double *Y = util_dvec_alloc(N, incX);
-  double *IY = util_dvec_alloc(N * dinum(DEFAULT_FOLD), incX);
-  double *IX = util_dvec_alloc(N * dinum(DEFAULT_FOLD), incX);
+  double *IY = util_dvec_alloc(N * idxd_dinum(DEFAULT_FOLD), incX);
+  double *IX = util_dvec_alloc(N * idxd_dinum(DEFAULT_FOLD), incX);
 
   //fill X
   util_dvec_fill(N, X, incX, FillX, RealScaleX, ImagScaleX);
@@ -53,12 +53,12 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   time_tic();
   for(i = 0; i < trials; i++){
     for (j = 0; j < N; j++){
-      didconv(DEFAULT_FOLD, X[j], IX + j * dinum(DEFAULT_FOLD));
+      idxd_didconv(DEFAULT_FOLD, X[j], IX + j * idxd_dinum(DEFAULT_FOLD));
     }
     MPI_Reduce(IX, IY, N, MPI_IDOUBLE, MPI_RSUM, 0, MPI_COMM_WORLD);
     if(rank == 0){
       for(j = 0; j < N; j++){
-        Y[j] = ddiconv(DEFAULT_FOLD, IY + j * dinum(DEFAULT_FOLD));
+        Y[j] = idxd_ddiconv(DEFAULT_FOLD, IY + j * idxd_dinum(DEFAULT_FOLD));
       }
     }
   }

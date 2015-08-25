@@ -1,18 +1,15 @@
 #include <reproBLAS.h>
-#include <indexedBLAS.h>
+#include <idxdBLAS.h>
 
-#include "../../config.h"
-
-double rdsum(const int N, const double* X, const int incX) {
-  double_indexed *sumi = dialloc(DIDEFAULTFOLD);
+double reproBLAS_rdsum(const int fold, const int N, const double* X, const int incX) {
+  double_indexed *sumi = idxd_dialloc(fold);
   double sum;
 
-  disetzero(DIDEFAULTFOLD, sumi);
+  idxd_disetzero(fold, sumi);
 
-  didsum(DIDEFAULTFOLD, N, X, incX, sumi);
+  idxdBLAS_didsum(fold, N, X, incX, sumi);
 
-  sum = ddiconv(DIDEFAULTFOLD, sumi);
+  sum = idxd_ddiconv(fold, sumi);
   free(sumi);
   return sum;
 }
-

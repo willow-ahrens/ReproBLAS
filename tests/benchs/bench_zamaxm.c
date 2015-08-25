@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <indexedBLAS.h>
+#include <idxdBLAS.h>
 #include "../common/test_opt.h"
 #include "../common/test_time.h"
 #include "../common/test_metric.h"
@@ -38,7 +38,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
 
   time_tic();
   for(i = 0; i < trials; i++){
-    zamaxm_sub(N, X, incX, Y, incY, &res);
+    idxdBLAS_zamaxm_sub(N, X, incX, Y, incY, &res);
   }
   time_toc();
 

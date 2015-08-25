@@ -5,7 +5,7 @@
 
 int bench_matvec_fill_show_help(void);
 const char* bench_matvec_fill_name(int argc, char** argv);
-int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int N, int FillA, double RealScaleA, double ImagScaleA, int lda, int FillX, double RealScaleX, double ImagScaleX, int incX, int trials);
+int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int N, double RealAlpha, double ImagAlpha, int FillA, double RealScaleA, double ImagScaleA, int lda, int FillX, double RealScaleX, double ImagScaleX, int incX, double RealBeta, double ImagBeta, int FillY, double RealScaleY, double ImagScaleY, int incY, int trials);
 
 static opt_option trials;
 
@@ -17,7 +17,7 @@ static void bench_matvec_fill_options_initialize(void){
   trials._int.required          = 0;
   trials._int.min               = 1;
   trials._int.max               = INT_MAX;
-  trials._int.value             = 100;
+  trials._int.value             = 10;
 }
 
 int matvec_fill_show_help(void){
@@ -37,10 +37,10 @@ const char* matvec_fill_name(int argc, char** argv){
   return name_buffer;
 }
 
-int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int N, int FillA, double RealScaleA, double ImagScaleA, int lda, int FillX, double RealScaleX, double ImagScaleX, int incX){
+int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int N, double RealAlpha, double ImagAlpha, int FillA, double RealScaleA, double ImagScaleA, int lda, int FillX, double RealScaleX, double ImagScaleX, int incX, double RealBeta, double ImagBeta, int FillY, double RealScaleY, double ImagScaleY, int incY){
   bench_matvec_fill_options_initialize();
 
   opt_eval_option(argc, argv, &trials);
-  int rc = bench_matvec_fill_test(argc, argv, Order, TransA, M, N, FillA, RealScaleA, ImagScaleA, lda, FillX, RealScaleX, ImagScaleX, incX, trials._int.value);
+  int rc = bench_matvec_fill_test(argc, argv, Order, TransA, M, N, RealAlpha, ImagAlpha, FillA, RealScaleA, ImagScaleA, lda, FillX, RealScaleX, ImagScaleX, incX, RealBeta, ImagBeta, FillY, RealScaleY, ImagScaleY, incY, trials._int.value);
   return rc;
 }

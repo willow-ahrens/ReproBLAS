@@ -1,17 +1,14 @@
 #include <reproBLAS.h>
-#include <indexedBLAS.h>
+#include <idxdBLAS.h>
 
-#include "../../config.h"
+void reproBLAS_rzsum_sub(const int fold, const int N, const void* X, const int incX, void *sum) {
+  double_complex_indexed *sumi = idxd_zialloc(fold);
 
-void rzsum_sub(const int N, const void* X, const int incX, void *sum) {
-  double_complex_indexed *sumi = zialloc(DIDEFAULTFOLD);
+  idxd_zisetzero(fold, sumi);
 
-  zisetzero(DIDEFAULTFOLD, sumi);
+  idxdBLAS_zizsum(fold, N, X, incX, sumi);
 
-  zizsum(DIDEFAULTFOLD, N, X, incX, sumi);
-
-  zziconv_sub(DIDEFAULTFOLD, sumi, sum);
+  idxd_zziconv_sub(fold, sumi, sum);
   free(sumi);
   return;
 }
-

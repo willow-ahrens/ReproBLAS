@@ -2,8 +2,8 @@
 #define RSBLAS1_WRAPPER_H
 
 #include <reproBLAS.h>
-#include <indexedBLAS.h>
-#include <indexed.h>
+#include <idxdBLAS.h>
+#include <idxd.h>
 #include "../../config.h"
 
 #define wrap_RSSUM  0
@@ -26,45 +26,45 @@ typedef void (*wrap_siblas1)(int, float*, int, float*, int, float_indexed*);
 float wrap_rssum(int N, float *x, int incx, float *y, int incy) {
   (void)y;
   (void)incy;
-  return rssum(N, x, incx);
+  return reproBLAS_rssum(N, x, incx);
 }
 
 void wrap_sissum(int N, float *x, int incx, float *y, int incy, float_indexed *z) {
   (void)y;
   (void)incy;
-  sissum(SIDEFAULTFOLD, N, x, incx, z);
+  idxdBLAS_sissum(SIDEFAULTFOLD, N, x, incx, z);
 }
 
 float wrap_rsasum(int N, float *x, int incx, float *y, int incy) {
   (void)y;
   (void)incy;
-  return rsasum(N, x, incx);
+  return reproBLAS_rsasum(N, x, incx);
 }
 
 void wrap_sisasum(int N, float *x, int incx, float *y, int incy, float_indexed *z) {
   (void)y;
   (void)incy;
-  sisasum(SIDEFAULTFOLD, N, x, incx, z);
+  idxdBLAS_sisasum(SIDEFAULTFOLD, N, x, incx, z);
 }
 
 float wrap_rsdot(int N, float *x, int incx, float *y, int incy) {
-  return rsdot(N, x, incx, y, incy);
+  return reproBLAS_rsdot(N, x, incx, y, incy);
 }
 
 void wrap_sisdot(int N, float *x, int incx, float *y, int incy, float_indexed *z) {
-  sisdot(SIDEFAULTFOLD, N, x, incx, y, incy, z);
+  idxdBLAS_sisdot(SIDEFAULTFOLD, N, x, incx, y, incy, z);
 }
 
 float wrap_rsnrm2(int N, float *x, int incx, float *y, int incy) {
   (void)y;
   (void)incy;
-  return rsnrm2(N, x, incx);
+  return reproBLAS_rsnrm2(N, x, incx);
 }
 
 void wrap_sisnrm(int N, float *x, int incx, float *y, int incy, float_indexed *z) {
   (void)y;
   (void)incy;
-  sisssq(SIDEFAULTFOLD, N, x, incx, 0.0, z);
+  idxdBLAS_sisssq(SIDEFAULTFOLD, N, x, incx, 0.0, z);
 }
 
 wrap_rsblas1 wrap_rsblas1_func(int func) {

@@ -1,20 +1,18 @@
 #include <math.h>
 
 #include <reproBLAS.h>
-#include <indexedBLAS.h>
+#include <idxdBLAS.h>
 
-#include "../../config.h"
-
-float rscnrm2(const int N, const void* X, const int incX) {
-  float_indexed *ssq = sialloc(SIDEFAULTFOLD);
+float reproBLAS_rscnrm2(const int fold, const int N, const void* X, const int incX) {
+  float_indexed *ssq = idxd_sialloc(fold);
   float scl;
   float nrm2;
 
-  sisetzero(SIDEFAULTFOLD, ssq);
+  idxd_sisetzero(fold, ssq);
 
-  scl = sicssq(SIDEFAULTFOLD, N, X, incX, 0.0, ssq);
+  scl = idxdBLAS_sicssq(fold, N, X, incX, 0.0, ssq);
 
-  nrm2 = scl * sqrt(ssiconv(SIDEFAULTFOLD, ssq));
+  nrm2 = scl * sqrt(idxd_ssiconv(fold, ssq));
   free(ssq);
   return nrm2;
 }

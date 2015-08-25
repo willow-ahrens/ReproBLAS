@@ -1,17 +1,14 @@
 #include <reproBLAS.h>
-#include <indexedBLAS.h>
+#include <idxdBLAS.h>
 
-#include "../../config.h"
+void reproBLAS_rcdotc_sub(const int fold, const int N, const void* X, const int incX, const void *Y, const int incY, void *dotc) {
+  float_complex_indexed *dotci = idxd_cialloc(fold);
 
-void rcdotc_sub(const int N, const void* X, const int incX, const void *Y, const int incY, void *dotc) {
-  float_complex_indexed *dotci = cialloc(SIDEFAULTFOLD);
+  idxd_cisetzero(fold, dotci);
 
-  cisetzero(SIDEFAULTFOLD, dotci);
+  idxdBLAS_cicdotc(fold, N, X, incX, Y, incY, dotci);
 
-  cicdotc(SIDEFAULTFOLD, N, X, incX, Y, incY, dotci);
-
-  cciconv_sub(SIDEFAULTFOLD, dotci, dotc);
+  idxd_cciconv_sub(fold, dotci, dotc);
   free(dotci);
   return;
 }
-

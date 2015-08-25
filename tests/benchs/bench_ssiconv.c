@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include <indexedBLAS.h>
+#include <idxdBLAS.h>
 
 #include "../common/test_opt.h"
 #include "../common/test_time.h"
@@ -20,7 +20,7 @@ static void bench_ssiconv_options_initialize(void){
   fold._int.header.long_name  = "fold";
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
-  fold._int.min               = 0;
+  fold._int.min               = 2;
   fold._int.max               = SIMAXFOLD;
   fold._int.value             = SIDEFAULTFOLD;
 }
@@ -69,24 +69,24 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   util_svec_fill(N, X, incX, FillX, RealScaleX, ImagScaleX);
 
   if(fold._int.value == 0){
-    ires = sialloc(SIMAXFOLD);
-    sisetzero(SIMAXFOLD, ires);
-    sissum(SIMAXFOLD, N, X, incX, ires);
+    ires = idxd_sialloc(SIMAXFOLD);
+    idxd_sisetzero(SIMAXFOLD, ires);
+    idxdBLAS_sissum(SIMAXFOLD, N, X, incX, ires);
     time_tic();
     for(j = 1; j <= SIMAXFOLD; j++){
       for(i = 0; i < trials; i++){
-        res = ssiconv(j, ires);
+        res = idxd_ssiconv(j, ires);
       }
     }
     time_toc();
     free(ires);
   }else{
-    ires = sialloc(fold._int.value);
-    sisetzero(fold._int.value, ires);
-    sissum(fold._int.value, N, X, incX, ires);
+    ires = idxd_sialloc(fold._int.value);
+    idxd_sisetzero(fold._int.value, ires);
+    idxdBLAS_sissum(fold._int.value, N, X, incX, ires);
     time_tic();
     for(i = 0; i < trials; i++){
-      res = ssiconv(fold._int.value, ires);
+      res = idxd_ssiconv(fold._int.value, ires);
     }
     time_toc();
     free(ires);

@@ -11,8 +11,8 @@ int matvec_test(int argc, char** argv, char Order, char TransA, int M, int N, in
 static const char *Order_names[] = {"RowMajor", "ColMajor"};
 static const char *Order_descs[] = {"Row Major", "Column Major"};
 static opt_option Order;
-static const char *TransA_names[] = {"NoTrans", "Trans"};
-static const char *TransA_descs[] = {"Don't Transpose", "Transpose"};
+static const char *TransA_names[] = {"NoTrans", "Trans", "ConjTrans"};
+static const char *TransA_descs[] = {"Don't Transpose", "Transpose", "Conjugate Transpose"};
 static opt_option TransA;
 static opt_option M;
 static opt_option N;
@@ -36,7 +36,7 @@ static void matvec_options_initialize(void){
   TransA._named.header.long_name  = "TransA";
   TransA._named.header.help       = "transpose A?";
   TransA._named.required          = 0;
-  TransA._named.n_names           = 2;
+  TransA._named.n_names           = 3;
   TransA._named.names             = (char**)TransA_names;
   TransA._named.descs             = (char**)TransA_descs;
   TransA._named.value             = 0;
@@ -60,16 +60,16 @@ static void matvec_options_initialize(void){
   N._int.value             = 2048;
 
   lda._int.header.type       = opt_int;
-  lda._int.header.short_name = 'A';
+  lda._int.header.short_name = '\0';
   lda._int.header.long_name  = "lda";
   lda._int.header.help       = "leading A size (0 for auto)";
   lda._int.required          = 0;
-  lda._int.min               = 0;
+  lda._int.min               = INT_MIN;
   lda._int.max               = INT_MAX;
   lda._int.value             = 0;
 
   incX._int.header.type       = opt_int;
-  incX._int.header.short_name = 'x';
+  incX._int.header.short_name = '\0';
   incX._int.header.long_name  = "incX";
   incX._int.header.help       = "X vector increment";
   incX._int.required          = 0;
@@ -77,14 +77,14 @@ static void matvec_options_initialize(void){
   incX._int.max               = INT_MAX;
   incX._int.value             = 1;
 
-  incX._int.header.type       = opt_int;
-  incX._int.header.short_name = 'y';
-  incX._int.header.long_name  = "incY";
-  incX._int.header.help       = "Y vector increment";
-  incX._int.required          = 0;
-  incX._int.min               = 1;
-  incX._int.max               = INT_MAX;
-  incX._int.value             = 1;
+  incY._int.header.type       = opt_int;
+  incY._int.header.short_name = '\0';
+  incY._int.header.long_name  = "incY";
+  incY._int.header.help       = "Y vector increment";
+  incY._int.required          = 0;
+  incY._int.min               = 1;
+  incY._int.max               = INT_MAX;
+  incY._int.value             = 1;
 }
 
 int show_help(void){
@@ -132,19 +132,21 @@ int test(int argc, char** argv){
   switch(Order._named.names[Order._named.value][0]){
     case 'r':
     case 'R':
-      if(lda._int.value == 0){
+      if(lda._int.value < 0){
+        lda._int.value = N._int.value - lda._int.value;
+      }else if(lda._int.value == 0){
         lda._int.value = N._int.value;
-      }
-      if(N._int.value > lda._int.value){
+      }else if(N._int.value > lda._int.value){
         fprintf(stderr, "ReproBLAS error: row major matrix arguments inconsistent N=%d, lda=%d\n", N._int.value, lda._int.value);
         return 125;
       }
       break;
     default:
-      if(lda._int.value == 0){
+      if(lda._int.value < 0){
+        lda._int.value = M._int.value - lda._int.value;
+      }else if(lda._int.value == 0){
         lda._int.value = M._int.value;
-      }
-      if(M._int.value > lda._int.value){
+      }else if(M._int.value > lda._int.value){
         fprintf(stderr, "ReproBLAS error: column major matrix arguments inconsistent M=%d, lda=%d\n", M._int.value, lda._int.value);
         return 125;
       }
