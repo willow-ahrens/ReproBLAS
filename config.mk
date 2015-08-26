@@ -13,7 +13,11 @@ CFLAGS += -Wall
 CPPFLAGS +=
 
 # add LDFLAGS
-LDFLAGS +=
+LDFLAGS += -lm
+
+# select whether or not to build MPI (comment not to build MPI. Corresponding 
+# parts of ReproBLAS won't build)
+#BUILD_MPI = true
 
 # select MPI compiler flags (comment all for auto)
 #MPICFLAGS = $(shell mpicc --showme compile)
@@ -59,7 +63,7 @@ ENDIAN := $(shell perl -le 'print unpack(N,pack(L,0x01020304)) == 0x01020304 ? b
 #BLAS := REF
 #BLAS := ATLAS
 #BLAS := MKL
-BLAS := ACCELERATE
+#BLAS := ACCELERATE
 #BLAS := CUSTOM
 
 # select CUSTOM BLAS LDFLAGS (if BLAS == CUSTOM)
