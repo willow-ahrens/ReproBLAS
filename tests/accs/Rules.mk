@@ -14,3 +14,12 @@ acc_csum$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) acc_csum.o
 acc_dsum$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) acc_dsum.o
 acc_ssum$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) acc_ssum.o
 acc_zsum$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) acc_zsum.o
+
+acc_rcsum$(EXE)_LIBS = -lm
+acc_rdsum$(EXE)_LIBS = -lm
+acc_rssum$(EXE)_LIBS = -lm
+acc_rzsum$(EXE)_LIBS = -lm
+acc_csum$(EXE)_LIBS = -lm
+acc_dsum$(EXE)_LIBS = -lm
+acc_ssum$(EXE)_LIBS = -lm
+acc_zsum$(EXE)_LIBS = -lm
