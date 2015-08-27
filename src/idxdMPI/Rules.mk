@@ -1,6 +1,4 @@
-ifeq (BUILD_MPI,true)
-  TARGETS := libidxdmpi.a
-endif
+TARGETS := libidxdmpi.a
 SUBDIRS :=
 
 INSTALL_LIB := $(TARGETS)

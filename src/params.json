@@ -1,1966 +1,1966 @@
 {
   "backward_dependencies": {
     "camax_max_unroll_width_AVX": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/camax_sub.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/camax_sub.ccog"
     ],
     "camax_max_unroll_width_SISD": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/camax_sub.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/camax_sub.ccog"
     ],
     "camax_max_unroll_width_SSE": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/camax_sub.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/camax_sub.ccog"
     ],
     "camaxm_max_unroll_width_AVX": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/camaxm_sub.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/camaxm_sub.ccog"
     ],
     "camaxm_max_unroll_width_SISD": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/camaxm_sub.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/camaxm_sub.ccog"
     ],
     "camaxm_max_unroll_width_SSE": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/camaxm_sub.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/camaxm_sub.ccog"
     ],
     "cdepositDotC_expand_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_expand_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_expand_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_expand_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_expand_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_expand_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_expand_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_expand_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_expand_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_pipe_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_pipe_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_pipe_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_pipe_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_pipe_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_pipe_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_pipe_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_pipe_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_pipe_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_pipe_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_pipe_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_pipe_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_unroll_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_unroll_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_unroll_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_unroll_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_unroll_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_unroll_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_unroll_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_unroll_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_unroll_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_unroll_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_unroll_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_unroll_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cdepositDotU_expand_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_expand_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_expand_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_expand_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_expand_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_expand_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_expand_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_expand_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_expand_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_pipe_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_pipe_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_pipe_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_pipe_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_pipe_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_pipe_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_pipe_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_pipe_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_pipe_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_pipe_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_pipe_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_pipe_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_unroll_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_unroll_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_unroll_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_unroll_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_unroll_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_unroll_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_unroll_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_unroll_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_unroll_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_unroll_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_unroll_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_unroll_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cdepositSum_expand_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_expand_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_expand_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_expand_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_expand_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_expand_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_expand_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_expand_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_expand_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_pipe_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_pipe_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_pipe_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_pipe_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_pipe_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_pipe_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_pipe_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_pipe_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_pipe_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_pipe_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_pipe_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_pipe_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_unroll_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_unroll_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_unroll_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_unroll_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_unroll_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_unroll_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_unroll_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_unroll_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_unroll_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_unroll_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_unroll_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_unroll_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "cmcdotc_block_size_N_block_MAX": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog"
     ],
     "cmcdotu_block_size_N_block_MAX": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog"
     ],
     "cmcsum_block_size_N_block_MAX": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
     "damax_max_unroll_width_AVX": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/damax.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/damax.ccog"
     ],
     "damax_max_unroll_width_SISD": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/damax.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/damax.ccog"
     ],
     "damax_max_unroll_width_SSE": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/damax.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/damax.ccog"
     ],
     "damaxm_max_unroll_width_AVX": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/damaxm.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/damaxm.ccog"
     ],
     "damaxm_max_unroll_width_SISD": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/damaxm.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/damaxm.ccog"
     ],
     "damaxm_max_unroll_width_SSE": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/damaxm.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/damaxm.ccog"
     ],
     "ddepositASum_expand_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_expand_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_expand_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_expand_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_expand_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_expand_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_expand_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_expand_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_expand_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_pipe_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_pipe_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_pipe_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_pipe_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_pipe_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_pipe_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_pipe_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_pipe_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_pipe_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_pipe_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_pipe_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_pipe_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_unroll_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_unroll_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_unroll_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_unroll_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_unroll_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_unroll_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_unroll_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_unroll_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_unroll_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_unroll_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_unroll_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_unroll_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "ddepositDot_expand_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_expand_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_expand_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_expand_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_expand_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_expand_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_expand_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_expand_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_expand_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_pipe_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_pipe_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_pipe_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_pipe_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_pipe_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_pipe_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_pipe_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_pipe_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_pipe_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_pipe_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_pipe_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_pipe_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_unroll_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_unroll_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_unroll_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_unroll_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_unroll_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_unroll_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_unroll_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_unroll_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_unroll_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_unroll_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_unroll_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_unroll_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "ddepositSSq_expand_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_expand_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_expand_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_expand_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_expand_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_expand_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_expand_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_expand_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_expand_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_pipe_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_pipe_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_pipe_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_pipe_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_pipe_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_pipe_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_pipe_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_pipe_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_pipe_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_pipe_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_pipe_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_pipe_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_unroll_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_unroll_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_unroll_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_unroll_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_unroll_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_unroll_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_unroll_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_unroll_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_unroll_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_unroll_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_unroll_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_unroll_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "ddepositSum_expand_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_expand_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_expand_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_expand_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_expand_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_expand_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_expand_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_expand_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_expand_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_pipe_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_pipe_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_pipe_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_pipe_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_pipe_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_pipe_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_pipe_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_pipe_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_pipe_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_pipe_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_pipe_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_pipe_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_unroll_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_unroll_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_unroll_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_unroll_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_unroll_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_unroll_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_unroll_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_unroll_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_unroll_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_unroll_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_unroll_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_unroll_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "didgemm_block_size_XT_BLOCK": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/didgemm.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/didgemm.ccog"
     ],
     "didgemm_block_size_X_BLOCK": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/didgemm.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/didgemm.ccog"
     ],
     "didgemm_block_size_YT_BLOCK": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/didgemm.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/didgemm.ccog"
     ],
     "didgemm_block_size_Y_BLOCK": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/didgemm.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/didgemm.ccog"
     ],
     "didgemv_block_size_T_BLOCK": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/didgemv.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/didgemv.ccog"
     ],
     "didgemv_block_size_XT_BLOCK": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/didgemv.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/didgemv.ccog"
     ],
     "didgemv_block_size_X_BLOCK": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/didgemv.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/didgemv.ccog"
     ],
     "didgemv_block_size_YT_BLOCK": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/didgemv.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/didgemv.ccog"
     ],
     "didgemv_block_size_Y_BLOCK": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/didgemv.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/didgemv.ccog"
     ],
     "dmdasum_block_size_N_block_MAX": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog"
     ],
     "dmddot_block_size_N_block_MAX": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog"
     ],
     "dmdssq_block_size_N_block_MAX": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog"
     ],
     "dmdsum_block_size_N_block_MAX": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
     "dmzasum_block_size_N_block_MAX": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dmzssq_block_size_N_block_MAX": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositASum_expand_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_expand_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_expand_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_expand_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_expand_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_expand_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_expand_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_expand_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_expand_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_pipe_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_pipe_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_pipe_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_pipe_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_pipe_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_pipe_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_pipe_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_pipe_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_pipe_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_pipe_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_pipe_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_pipe_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_unroll_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_unroll_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_unroll_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_unroll_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_unroll_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_unroll_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_unroll_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_unroll_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_unroll_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_unroll_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_unroll_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_unroll_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog"
     ],
     "dzdepositSSq_expand_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_expand_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_expand_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_expand_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_expand_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_expand_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_expand_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_expand_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_expand_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_pipe_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_pipe_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_pipe_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_pipe_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_pipe_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_pipe_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_pipe_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_pipe_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_pipe_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_pipe_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_pipe_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_pipe_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_unroll_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_unroll_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_unroll_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_unroll_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_unroll_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_unroll_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_unroll_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_unroll_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_unroll_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_unroll_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_unroll_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_unroll_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog"
     ],
     "samax_max_unroll_width_AVX": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/samax.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/samax.ccog"
     ],
     "samax_max_unroll_width_SISD": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/samax.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/samax.ccog"
     ],
     "samax_max_unroll_width_SSE": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/samax.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/samax.ccog"
     ],
     "samaxm_max_unroll_width_AVX": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/samaxm.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/samaxm.ccog"
     ],
     "samaxm_max_unroll_width_SISD": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/samaxm.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/samaxm.ccog"
     ],
     "samaxm_max_unroll_width_SSE": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/samaxm.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/samaxm.ccog"
     ],
     "scdepositASum_expand_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_expand_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_expand_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_expand_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_expand_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_expand_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_expand_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_expand_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_expand_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_pipe_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_pipe_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_pipe_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_pipe_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_pipe_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_pipe_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_pipe_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_pipe_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_pipe_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_pipe_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_pipe_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_pipe_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_unroll_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_unroll_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_unroll_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_unroll_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_unroll_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_unroll_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_unroll_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_unroll_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_unroll_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_unroll_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_unroll_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_unroll_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "scdepositSSq_expand_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_expand_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_expand_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_expand_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_expand_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_expand_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_expand_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_expand_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_expand_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_pipe_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_pipe_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_pipe_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_pipe_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_pipe_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_pipe_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_pipe_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_pipe_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_pipe_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_pipe_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_pipe_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_pipe_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_unroll_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_unroll_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_unroll_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_unroll_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_unroll_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_unroll_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_unroll_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_unroll_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_unroll_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_unroll_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_unroll_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_unroll_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "sdepositASum_expand_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_expand_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_expand_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_expand_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_expand_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_expand_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_expand_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_expand_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_expand_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_pipe_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_pipe_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_pipe_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_pipe_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_pipe_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_pipe_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_pipe_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_pipe_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_pipe_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_pipe_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_pipe_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_pipe_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_unroll_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_unroll_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_unroll_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_unroll_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_unroll_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_unroll_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_unroll_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_unroll_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_unroll_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_unroll_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_unroll_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_unroll_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "sdepositDot_expand_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_expand_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_expand_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_expand_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_expand_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_expand_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_expand_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_expand_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_expand_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_pipe_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_pipe_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_pipe_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_pipe_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_pipe_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_pipe_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_pipe_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_pipe_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_pipe_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_pipe_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_pipe_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_pipe_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_unroll_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_unroll_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_unroll_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_unroll_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_unroll_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_unroll_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_unroll_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_unroll_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_unroll_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_unroll_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_unroll_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_unroll_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "sdepositSSq_expand_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_expand_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_expand_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_expand_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_expand_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_expand_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_expand_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_expand_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_expand_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_pipe_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_pipe_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_pipe_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_pipe_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_pipe_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_pipe_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_pipe_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_pipe_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_pipe_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_pipe_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_pipe_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_pipe_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_unroll_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_unroll_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_unroll_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_unroll_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_unroll_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_unroll_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_unroll_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_unroll_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_unroll_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_unroll_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_unroll_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_unroll_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "sdepositSum_expand_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_expand_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_expand_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_expand_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_expand_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_expand_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_expand_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_expand_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_expand_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_max_pipe_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_max_pipe_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_max_pipe_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_max_pipe_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_max_pipe_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_max_pipe_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_max_pipe_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_max_pipe_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_max_pipe_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_max_pipe_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_max_pipe_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_max_pipe_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_max_unroll_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_max_unroll_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_max_unroll_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_max_unroll_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_max_unroll_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_max_unroll_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_max_unroll_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_max_unroll_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_max_unroll_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_max_unroll_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_max_unroll_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "sdepositSum_max_unroll_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "smcasum_block_size_N_block_MAX": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog"
     ],
     "smcssq_block_size_N_block_MAX": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog"
     ],
     "smsasum_block_size_N_block_MAX": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog"
     ],
     "smsdot_block_size_N_block_MAX": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog"
     ],
     "smsssq_block_size_N_block_MAX": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog"
     ],
     "smssum_block_size_N_block_MAX": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
     "zamax_max_unroll_width_AVX": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zamax_sub.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zamax_sub.ccog"
     ],
     "zamax_max_unroll_width_SISD": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zamax_sub.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zamax_sub.ccog"
     ],
     "zamax_max_unroll_width_SSE": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zamax_sub.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zamax_sub.ccog"
     ],
     "zamaxm_max_unroll_width_AVX": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zamaxm_sub.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zamaxm_sub.ccog"
     ],
     "zamaxm_max_unroll_width_SISD": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zamaxm_sub.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zamaxm_sub.ccog"
     ],
     "zamaxm_max_unroll_width_SSE": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zamaxm_sub.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zamaxm_sub.ccog"
     ],
     "zdepositDotC_expand_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_expand_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_expand_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_expand_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_expand_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_expand_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_expand_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_expand_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_expand_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_pipe_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_pipe_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_pipe_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_pipe_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_pipe_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_pipe_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_pipe_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_pipe_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_pipe_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_pipe_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_pipe_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_pipe_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_unroll_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_unroll_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_unroll_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_unroll_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_unroll_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_unroll_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_unroll_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_unroll_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_unroll_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_unroll_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_unroll_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_unroll_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zdepositDotU_expand_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_expand_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_expand_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_expand_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_expand_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_expand_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_expand_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_expand_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_expand_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_pipe_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_pipe_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_pipe_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_pipe_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_pipe_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_pipe_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_pipe_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_pipe_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_pipe_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_pipe_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_pipe_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_pipe_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_unroll_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_unroll_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_unroll_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_unroll_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_unroll_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_unroll_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_unroll_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_unroll_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_unroll_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_unroll_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_unroll_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_unroll_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zdepositSum_expand_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_expand_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_expand_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_expand_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_expand_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_expand_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_expand_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_expand_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_expand_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_pipe_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_pipe_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_pipe_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_pipe_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_pipe_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_pipe_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_pipe_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_pipe_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_pipe_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_pipe_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_pipe_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_pipe_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_unroll_width_AVX_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_unroll_width_AVX_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_unroll_width_AVX_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_unroll_width_AVX_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_unroll_width_SISD_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_unroll_width_SISD_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_unroll_width_SISD_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_unroll_width_SISD_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_unroll_width_SSE_fold_0": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_unroll_width_SSE_fold_2": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_unroll_width_SSE_fold_3": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_unroll_width_SSE_fold_4": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
     "zizgemm_block_size_XT_BLOCK": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zizgemm.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zizgemm.ccog"
     ],
     "zizgemm_block_size_X_BLOCK": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zizgemm.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zizgemm.ccog"
     ],
     "zizgemm_block_size_YT_BLOCK": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zizgemm.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zizgemm.ccog"
     ],
     "zizgemm_block_size_Y_BLOCK": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zizgemm.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zizgemm.ccog"
     ],
     "zizgemv_block_size_T_BLOCK": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zizgemv.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zizgemv.ccog"
     ],
     "zizgemv_block_size_XT_BLOCK": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zizgemv.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zizgemv.ccog"
     ],
     "zizgemv_block_size_X_BLOCK": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zizgemv.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zizgemv.ccog"
     ],
     "zizgemv_block_size_YT_BLOCK": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zizgemv.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zizgemv.ccog"
     ],
     "zizgemv_block_size_Y_BLOCK": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zizgemv.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zizgemv.ccog"
     ],
     "zmzdotc_block_size_N_block_MAX": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog"
     ],
     "zmzdotu_block_size_N_block_MAX": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog"
     ],
     "zmzsum_block_size_N_block_MAX": [
-      "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog"
+      "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ]
   },
   "backward_metrics": {
@@ -3928,17 +3928,17 @@
     ]
   },
   "forward_dependencies": {
-    "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/camax_sub.ccog": [
+    "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/camax_sub.ccog": [
       "camax_max_unroll_width_SSE",
       "camax_max_unroll_width_AVX",
       "camax_max_unroll_width_SISD"
     ],
-    "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/camaxm_sub.ccog": [
+    "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/camaxm_sub.ccog": [
       "camaxm_max_unroll_width_SISD",
       "camaxm_max_unroll_width_AVX",
       "camaxm_max_unroll_width_SSE"
     ],
-    "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotc.ccog": [
+    "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog": [
       "cdepositDotC_max_pipe_width_AVX_fold_2",
       "cdepositDotC_max_unroll_width_SSE_fold_2",
       "cmcdotc_block_size_N_block_MAX",
@@ -3974,7 +3974,7 @@
       "cdepositDotC_expand_SSE_fold_2",
       "cdepositDotC_expand_SSE_fold_4"
     ],
-    "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcdotu.ccog": [
+    "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog": [
       "cdepositDotU_max_pipe_width_SISD_fold_2",
       "cdepositDotU_max_pipe_width_SISD_fold_3",
       "cdepositDotU_max_pipe_width_SISD_fold_0",
@@ -4010,7 +4010,7 @@
       "cdepositDotU_max_unroll_width_AVX_fold_4",
       "cdepositDotU_max_pipe_width_AVX_fold_0"
     ],
-    "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/cmcsum.ccog": [
+    "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/cmcsum.ccog": [
       "cdepositSum_expand_SSE_fold_3",
       "cdepositSum_max_pipe_width_AVX_fold_4",
       "cdepositSum_expand_SISD_fold_3",
@@ -4046,30 +4046,30 @@
       "cdepositSum_max_pipe_width_SISD_fold_2",
       "cdepositSum_max_pipe_width_SISD_fold_3"
     ],
-    "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/damax.ccog": [
+    "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/damax.ccog": [
       "damax_max_unroll_width_SSE",
       "damax_max_unroll_width_AVX",
       "damax_max_unroll_width_SISD"
     ],
-    "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/damaxm.ccog": [
+    "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/damaxm.ccog": [
       "damaxm_max_unroll_width_SSE",
       "damaxm_max_unroll_width_SISD",
       "damaxm_max_unroll_width_AVX"
     ],
-    "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/didgemm.ccog": [
+    "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/didgemm.ccog": [
       "didgemm_block_size_X_BLOCK",
       "didgemm_block_size_Y_BLOCK",
       "didgemm_block_size_XT_BLOCK",
       "didgemm_block_size_YT_BLOCK"
     ],
-    "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/didgemv.ccog": [
+    "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/didgemv.ccog": [
       "didgemv_block_size_YT_BLOCK",
       "didgemv_block_size_XT_BLOCK",
       "didgemv_block_size_Y_BLOCK",
       "didgemv_block_size_X_BLOCK",
       "didgemv_block_size_T_BLOCK"
     ],
-    "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdasum.ccog": [
+    "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdasum.ccog": [
       "dmdasum_block_size_N_block_MAX",
       "ddepositASum_expand_AVX_fold_2",
       "ddepositASum_expand_AVX_fold_3",
@@ -4105,7 +4105,7 @@
       "ddepositASum_expand_SISD_fold_2",
       "ddepositASum_expand_SISD_fold_4"
     ],
-    "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmddot.ccog": [
+    "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmddot.ccog": [
       "ddepositDot_expand_AVX_fold_2",
       "ddepositDot_expand_AVX_fold_3",
       "ddepositDot_expand_AVX_fold_4",
@@ -4141,7 +4141,7 @@
       "ddepositDot_max_pipe_width_AVX_fold_4",
       "ddepositDot_max_unroll_width_SISD_fold_4"
     ],
-    "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdssq.ccog": [
+    "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdssq.ccog": [
       "ddepositSSq_max_pipe_width_AVX_fold_4",
       "ddepositSSq_expand_AVX_fold_2",
       "ddepositSSq_expand_AVX_fold_3",
@@ -4177,7 +4177,7 @@
       "ddepositSSq_max_pipe_width_SISD_fold_0",
       "ddepositSSq_max_pipe_width_SISD_fold_4"
     ],
-    "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmdsum.ccog": [
+    "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmdsum.ccog": [
       "ddepositSum_max_pipe_width_SISD_fold_3",
       "ddepositSum_max_unroll_width_SISD_fold_4",
       "ddepositSum_max_unroll_width_SISD_fold_3",
@@ -4213,7 +4213,7 @@
       "ddepositSum_max_pipe_width_SISD_fold_2",
       "ddepositSum_expand_SISD_fold_4"
     ],
-    "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzasum.ccog": [
+    "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzasum.ccog": [
       "dzdepositASum_expand_SISD_fold_2",
       "dzdepositASum_expand_SISD_fold_3",
       "dzdepositASum_expand_SISD_fold_4",
@@ -4249,7 +4249,7 @@
       "dzdepositASum_max_unroll_width_SISD_fold_0",
       "dzdepositASum_max_pipe_width_SISD_fold_3"
     ],
-    "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/dmzssq.ccog": [
+    "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/dmzssq.ccog": [
       "dzdepositSSq_max_pipe_width_SSE_fold_0",
       "dzdepositSSq_max_pipe_width_SSE_fold_3",
       "dzdepositSSq_max_pipe_width_SSE_fold_2",
@@ -4285,17 +4285,17 @@
       "dzdepositSSq_max_unroll_width_AVX_fold_2",
       "dzdepositSSq_max_unroll_width_AVX_fold_0"
     ],
-    "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/samax.ccog": [
+    "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/samax.ccog": [
       "samax_max_unroll_width_SSE",
       "samax_max_unroll_width_AVX",
       "samax_max_unroll_width_SISD"
     ],
-    "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/samaxm.ccog": [
+    "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/samaxm.ccog": [
       "samaxm_max_unroll_width_SISD",
       "samaxm_max_unroll_width_AVX",
       "samaxm_max_unroll_width_SSE"
     ],
-    "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcasum.ccog": [
+    "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcasum.ccog": [
       "scdepositASum_max_pipe_width_SSE_fold_4",
       "scdepositASum_max_pipe_width_SSE_fold_0",
       "scdepositASum_max_pipe_width_SSE_fold_3",
@@ -4331,7 +4331,7 @@
       "scdepositASum_max_unroll_width_SSE_fold_4",
       "scdepositASum_max_unroll_width_SSE_fold_3"
     ],
-    "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smcssq.ccog": [
+    "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smcssq.ccog": [
       "scdepositSSq_max_pipe_width_AVX_fold_2",
       "scdepositSSq_max_unroll_width_SSE_fold_2",
       "smcssq_block_size_N_block_MAX",
@@ -4367,7 +4367,7 @@
       "scdepositSSq_expand_SSE_fold_2",
       "scdepositSSq_expand_SSE_fold_4"
     ],
-    "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsasum.ccog": [
+    "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsasum.ccog": [
       "sdepositASum_expand_SSE_fold_3",
       "sdepositASum_expand_SSE_fold_2",
       "sdepositASum_expand_SISD_fold_4",
@@ -4403,7 +4403,7 @@
       "sdepositASum_expand_SISD_fold_2",
       "sdepositASum_max_pipe_width_SSE_fold_0"
     ],
-    "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsdot.ccog": [
+    "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsdot.ccog": [
       "sdepositDot_expand_SSE_fold_3",
       "smsdot_block_size_N_block_MAX",
       "sdepositDot_expand_SSE_fold_2",
@@ -4439,7 +4439,7 @@
       "sdepositDot_max_pipe_width_SISD_fold_2",
       "sdepositDot_max_pipe_width_SISD_fold_3"
     ],
-    "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smsssq.ccog": [
+    "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smsssq.ccog": [
       "smsssq_block_size_N_block_MAX",
       "sdepositSSq_max_pipe_width_SSE_fold_3",
       "sdepositSSq_max_pipe_width_SSE_fold_2",
@@ -4475,7 +4475,7 @@
       "sdepositSSq_expand_AVX_fold_3",
       "sdepositSSq_expand_AVX_fold_2"
     ],
-    "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/smssum.ccog": [
+    "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/smssum.ccog": [
       "sdepositSum_expand_SSE_fold_3",
       "sdepositSum_expand_SSE_fold_2",
       "sdepositSum_expand_SSE_fold_4",
@@ -4511,30 +4511,30 @@
       "sdepositSum_max_pipe_width_SSE_fold_3",
       "sdepositSum_max_pipe_width_SSE_fold_2"
     ],
-    "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zamax_sub.ccog": [
+    "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zamax_sub.ccog": [
       "zamax_max_unroll_width_AVX",
       "zamax_max_unroll_width_SSE",
       "zamax_max_unroll_width_SISD"
     ],
-    "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zamaxm_sub.ccog": [
+    "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zamaxm_sub.ccog": [
       "zamaxm_max_unroll_width_SSE",
       "zamaxm_max_unroll_width_SISD",
       "zamaxm_max_unroll_width_AVX"
     ],
-    "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zizgemm.ccog": [
+    "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zizgemm.ccog": [
       "zizgemm_block_size_XT_BLOCK",
       "zizgemm_block_size_YT_BLOCK",
       "zizgemm_block_size_X_BLOCK",
       "zizgemm_block_size_Y_BLOCK"
     ],
-    "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zizgemv.ccog": [
+    "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zizgemv.ccog": [
       "zizgemv_block_size_Y_BLOCK",
       "zizgemv_block_size_X_BLOCK",
       "zizgemv_block_size_YT_BLOCK",
       "zizgemv_block_size_XT_BLOCK",
       "zizgemv_block_size_T_BLOCK"
     ],
-    "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotc.ccog": [
+    "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog": [
       "zdepositDotC_max_unroll_width_SISD_fold_0",
       "zdepositDotC_max_pipe_width_AVX_fold_4",
       "zdepositDotC_max_pipe_width_AVX_fold_2",
@@ -4570,7 +4570,7 @@
       "zdepositDotC_max_pipe_width_SISD_fold_3",
       "zdepositDotC_max_pipe_width_SISD_fold_2"
     ],
-    "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzdotu.ccog": [
+    "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog": [
       "zdepositDotU_expand_SISD_fold_3",
       "zdepositDotU_expand_SISD_fold_2",
       "zdepositDotU_expand_SISD_fold_4",
@@ -4606,7 +4606,7 @@
       "zdepositDotU_max_unroll_width_AVX_fold_3",
       "zdepositDotU_max_unroll_width_AVX_fold_0"
     ],
-    "/home/eecs/peter.ahrens/f00/ReproBLAS/src/idxdBLAS/zmzsum.ccog": [
+    "/Users/peter/Projects/RBLAS/ReproBLAS2/src/idxdBLAS/zmzsum.ccog": [
       "zdepositSum_max_unroll_width_SSE_fold_4",
       "zdepositSum_max_unroll_width_SSE_fold_2",
       "zdepositSum_max_unroll_width_SSE_fold_3",
@@ -8648,17 +8648,17 @@
       "tags": []
     },
     "didgemm_block_size_YT_BLOCK": {
-      "default": 128,
+      "default": 64,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 64,
       "minimum": 1,
       "name": "didgemm_block_size_YT_BLOCK",
       "tags": []
     },
     "didgemm_block_size_Y_BLOCK": {
-      "default": 128,
+      "default": 64,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 64,
       "minimum": 1,
       "name": "didgemm_block_size_Y_BLOCK",
       "tags": []
@@ -13637,17 +13637,17 @@
       "tags": []
     },
     "zizgemm_block_size_YT_BLOCK": {
-      "default": 128,
+      "default": 64,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 64,
       "minimum": 1,
       "name": "zizgemm_block_size_YT_BLOCK",
       "tags": []
     },
     "zizgemm_block_size_Y_BLOCK": {
-      "default": 128,
+      "default": 64,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 64,
       "minimum": 1,
       "name": "zizgemm_block_size_Y_BLOCK",
       "tags": []
