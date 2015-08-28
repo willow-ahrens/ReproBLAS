@@ -8,9 +8,9 @@ check_dir = os.path.dirname(os.path.abspath(__file__))
 
 check_suite = checks.CheckSuite()
 
-folds = [2, 3, 4]
-inf_folds = [2]
-incs = [1, 3]
+folds = [3]
+inf_folds = [3]
+incs = [1]
 
 FLT_BIN_WIDTH=13
 FLT_MAX_EXP=128
