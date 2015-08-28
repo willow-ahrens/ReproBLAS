@@ -49,33 +49,45 @@ def make_call(command, verbose="false"):
 
 top = make_call("make top")
 
+def in_directory(path, directory):
+  path = os.path.realpath(path)
+  directory = os.path.join(os.path.realpath(directory), '')
+  return os.path.commonprefix([path, directory]) == directory;
 
-def make_clean(location, verbose="false"):
-  call("cd {0}; make clean".format(os.path.join(top, location)), verbose=verbose)
+made = {}
+
+def make_clean(directory, verbose="false"):
+  call("cd {0}; make clean".format(os.path.join(top, directory)), verbose=verbose)
+  unclean = list(made.keys())
+  for executable in unclean:
+    if in_directory(executable, directory):
+      made.pop(executable)
 
 def make(executable, args = None, id = None, remake = False, verbose="false"):
-  executable_dir = os.path.join(top, os.path.split(executable)[0])
-  executable_name = os.path.split(executable)[1]
-  if executable_dir not in make.build_dir:
-    make.build_dir[executable_dir] = make_call("cd {0}; make pbd".format(executable_dir), verbose=verbose)
-  build_dir = make.build_dir[executable_dir]
-  build_name = executable_name
-  if id:
-    build_name = "{}__{}{}".format(os.path.splitext(executable_name)[1], id, os.path.splitext(executable_name[0]))
-  build = os.path.join(build_dir, build_name)
-  if not os.path.isfile(build) or remake:
-    result = os.path.join(build_dir, executable_name)
-    if remake:
-      callsafe("rm -f {}".format(result), verbose=verbose)
-    env = ""
-    if args:
-      env = "ARGS={}".format(args)
-    callsafe("make -j {} {} {}".format(multiprocessing.cpu_count(), result, env), verbose=verbose)
-    assert os.path.isfile(result), "Error: make unsuccessful."
+  if(executable not in made):
+    executable_dir = os.path.join(top, os.path.split(executable)[0])
+    executable_name = os.path.split(executable)[1]
+    if executable_dir not in make.build_dir:
+      make.build_dir[executable_dir] = make_call("cd {0}; make pbd".format(executable_dir), verbose=verbose)
+    build_dir = make.build_dir[executable_dir]
+    build_name = executable_name
     if id:
-      call("cp {} {}".format(result, build), verbose=verbose)
-    assert os.path.isfile(build), "Error: make unsuccessful."
-  return build
+      build_name = "{}__{}{}".format(os.path.splitext(executable_name)[1], id, os.path.splitext(executable_name[0]))
+    build = os.path.join(build_dir, build_name)
+    if not os.path.isfile(build) or remake:
+      result = os.path.join(build_dir, executable_name)
+      if remake:
+        callsafe("rm -f {}".format(result), verbose=verbose)
+      env = ""
+      if args:
+        env = "ARGS={}".format(args)
+      callsafe("make -j {} {} {}".format(multiprocessing.cpu_count(), result, env), verbose=verbose)
+      assert os.path.isfile(result), "Error: make unsuccessful."
+      if id:
+        call("cp {} {}".format(result, build), verbose=verbose)
+      assert os.path.isfile(build), "Error: make unsuccessful."
+    made[executable] = build
+  return made[executable]
 make.build_dir = {}
 
 def flags(params, args):

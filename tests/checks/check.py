@@ -9,7 +9,7 @@ check_dir = os.path.dirname(os.path.abspath(__file__))
 check_suite = checks.CheckSuite()
 
 folds = [2, 3, 4]
-inf_folds = [2, 3, 4]
+inf_folds = [2]
 incs = [1, 3]
 
 FLT_BIN_WIDTH=13
@@ -47,7 +47,7 @@ check_suite.add_checks([checks.CorroborateRDGEMVTest(),\
                         folds])
 
 
-check_suite.add_checks([checks.CorroborateRDGEMMTest(),\
+check_suite.add_checks([checks.CorroborateRDGEMMTest(),
                         checks.CorroborateRZGEMMTest(),\
                         ],\
                        ["O", "TransA", "TransB", "M", "N", "K", ("lda", "ldb", "ldc"), "FillA", "FillB", "FillC", ("RealAlpha", "ImagAlpha"), ("RealBeta", "ImagBeta"), "fold"],\
