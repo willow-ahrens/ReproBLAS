@@ -32,6 +32,7 @@ DBL_ONES = 0
 for i in range(DBL_MANT_DIG):
   DBL_ONES += 2.0 ** -i
 
+"""
 check_suite.add_checks([checks.CorroborateRDGEMVTest(),\
                         checks.CorroborateRZGEMVTest(),\
                         ],\
@@ -249,7 +250,7 @@ check_suite.add_checks([checks.ValidateInternalRDDOTTest(),\
                          "+inf_nan",\
                          "++inf_nan",\
                          "+-inf_nan"]])
-
+"""
 check_suite.add_checks([checks.ValidateInternalRZDOTUTest(),\
                         checks.ValidateInternalRZDOTCTest(),\
                         checks.ValidateInternalRCDOTUTest(),\
@@ -273,6 +274,7 @@ check_suite.add_checks([checks.ValidateInternalRZDOTUTest(),\
                          "+inf_nan",\
                          "++inf_nan",\
                          "+-inf_nan"]])
+"""
 
 check_suite.add_checks([checks.VerifyRDSUMTest(),\
                         checks.VerifyRDASUMTest(),\
@@ -593,6 +595,7 @@ check_suite.add_checks([checks.ValidateInternalSISIADDTest(),\
                        ["N", "fold", "incX", "RealScaleX", "ImagScaleX", "FillX"],\
                        [[1], folds, incs, [FLT_ONES * 2 **(FLT_MAX_EXP - 1), 1.0], [FLT_ONES * 2 **(FLT_MAX_EXP - 1), 1.0],\
                         ["constant",]])
+"""
 
 check_harness = harness.Harness("check")
 check_harness.add_suite(check_suite)
