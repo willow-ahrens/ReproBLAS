@@ -25,7 +25,7 @@ class CheckSuite(harness.Suite):
     self.verbose = verbose;
     for check_row, params, args in zip(self.check_rows, self.params, self.args):
       for check in check_row:
-        check.setup(flags = terminal.flags(params, args), verbose=verbose, **kwargs)
+        check.setup(flagss = [terminal.flags(params, args)], verbose=verbose, **kwargs)
 
   def get_command_list(self):
     command_list = []
@@ -92,7 +92,7 @@ class CheckTest(harness.ExecutableTest):
     return a list of commands that constitute the test to be run on the
     target architecture
     """
-    return ["{} {} {}".format(self.executable_output, self.base_flags, self.flags), "{} {} {}".format(self.executable_output, self.base_flags, self.flags + " -p")]
+    return ["{} {} {}".format(self.executable_output, self.base_flags, self.flagss[0]), "{} {} {}".format(self.executable_output, self.base_flags, self.flagss[0] + " -p")]
 
   def get_num_commands(self):
     return 2

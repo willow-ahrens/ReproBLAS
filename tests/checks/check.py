@@ -8,11 +8,9 @@ check_dir = os.path.dirname(os.path.abspath(__file__))
 
 check_suite = checks.CheckSuite()
 
-#folds = [2, 3, 4]
-folds = [3]
+folds = [2, 3, 4]
 inf_folds = [2, 3, 4]
-#incs = [1, 3]
-incs = [1]
+incs = [1, 3]
 
 FLT_BIN_WIDTH=13
 FLT_MAX_EXP=128
@@ -34,7 +32,6 @@ DBL_ONES = 0
 for i in range(DBL_MANT_DIG):
   DBL_ONES += 2.0 ** -i
 
-"""
 check_suite.add_checks([checks.CorroborateRDGEMVTest(),\
                         checks.CorroborateRZGEMVTest(),\
                         ],\
@@ -50,12 +47,11 @@ check_suite.add_checks([checks.CorroborateRDGEMVTest(),\
                         folds])
 
 
-"""
-                        #checks.CorroborateRZGEMMTest(),\
-check_suite.add_checks([checks.CorroborateRZGEMMTest(),\
+check_suite.add_checks([checks.CorroborateRDGEMMTest(),\
+                        checks.CorroborateRZGEMMTest(),\
                         ],\
                        ["O", "TransA", "TransB", "M", "N", "K", ("lda", "ldb", "ldc"), "FillA", "FillB", "FillC", ("RealAlpha", "ImagAlpha"), ("RealBeta", "ImagBeta"), "fold"],\
-                       [["RowMajor", "ColMajor"], ["ConjTrans", "Trans", "NoTrans"], ["ConjTrans", "Trans", "NoTrans"], [64, 255], [64, 255], [64, 255], [(0, 0, 0), (-63, -63, -63)], \
+                       [["RowMajor", "ColMajor"], ["ConjTrans", "Trans", "NoTrans"], ["ConjTrans", "Trans", "NoTrans"], [32, 64], [32, 64], [32, 64], [(0, 0, 0), (-63, -63, -63)], \
                         ["rand",\
                          ],\
                         ["rand",\
@@ -64,8 +60,6 @@ check_suite.add_checks([checks.CorroborateRZGEMMTest(),\
                         [(0.0, 0.0), (1.0, 0.0), (2.0, 2.0)],\
                         [(0.0, 0.0), (1.0, 0.0), (2.0, 2.0)],\
                         folds])
-
-"""
 
 check_suite.add_checks([checks.ValidateInternalDSCALETest(),\
                         checks.ValidateInternalSSCALETest()],\
@@ -599,7 +593,6 @@ check_suite.add_checks([checks.ValidateInternalSISIADDTest(),\
                        ["N", "fold", "incX", "RealScaleX", "ImagScaleX", "FillX"],\
                        [[1], folds, incs, [FLT_ONES * 2 **(FLT_MAX_EXP - 1), 1.0], [FLT_ONES * 2 **(FLT_MAX_EXP - 1), 1.0],\
                         ["constant",]])
-"""
 
 check_harness = harness.Harness("check")
 check_harness.add_suite(check_suite)

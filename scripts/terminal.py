@@ -49,6 +49,7 @@ def make_call(command, verbose="false"):
 
 top = make_call("make top")
 
+
 def make_clean(location, verbose="false"):
   call("cd {0}; make clean".format(os.path.join(top, location)), verbose=verbose)
 
