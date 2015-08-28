@@ -250,7 +250,7 @@ check_suite.add_checks([checks.ValidateInternalRDDOTTest(),\
                          "+inf_nan",\
                          "++inf_nan",\
                          "+-inf_nan"]])
-"""
+
 check_suite.add_checks([checks.ValidateInternalRZDOTUTest(),\
                         checks.ValidateInternalRZDOTCTest(),\
                         checks.ValidateInternalRCDOTUTest(),\
@@ -274,7 +274,6 @@ check_suite.add_checks([checks.ValidateInternalRZDOTUTest(),\
                          "+inf_nan",\
                          "++inf_nan",\
                          "+-inf_nan"]])
-"""
 
 check_suite.add_checks([checks.VerifyRDSUMTest(),\
                         checks.VerifyRDASUMTest(),\
@@ -458,6 +457,7 @@ for i in range(DBL_BIN_WIDTH + 2):
                            "+-big"]])
 
 
+"""
 for i in range(FLT_BIN_WIDTH + 2):
   check_suite.add_checks([checks.ValidateInternalRSSUMTest(),\
                           checks.ValidateInternalSISIADDTest(),\
@@ -562,6 +562,7 @@ for i in range(FLT_BIN_WIDTH + 2):
                            "++big",\
                            "+-big"]])
 
+"""
 check_suite.add_checks([checks.ValidateInternalDIDIADDTest(),\
                         checks.ValidateInternalDIDADDTest(),\
                         checks.ValidateInternalDIDDEPOSITTest(),\

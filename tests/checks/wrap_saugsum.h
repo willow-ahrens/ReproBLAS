@@ -230,8 +230,8 @@ wrap_siaugsum wrap_siaugsum_func(wrap_saugsum_func_t func) {
 }
 
 float wrap_saugsum_result(int N, wrap_saugsum_func_t func, util_vec_fill_t FillX, double RealScaleX, double ImagScaleX, util_vec_fill_t FillY, double RealScaleY, double ImagScaleY){
-  float small = 1.0 / (1024.0 * 4.0); // 2^-12
-  float big   = 1024.0 * 8.0;  // 2^13
+  double small = 1.0 / (1024.0 * 4.0); // 2^-12
+  double big   = 1024.0 * 8.0;  // 2^13
   switch(func){
     case wrap_saugsum_RSSUM:
     case wrap_saugsum_SISIADD:
