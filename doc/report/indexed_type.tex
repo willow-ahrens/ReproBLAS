@@ -35,7 +35,7 @@
       In order to keep the primary fields in the necessary range while the slices are accumulated and to keep the representation of $Y_k$ unique, ${Y_k}_P$ is routinely renormalized to the range $[1.5 \epsilon^{-1} 2^{a_{I + k}}, 1.75 \epsilon^{-1} 2^{a_{I + k}})$.
       As will be shown in Section~\ref{sec:primitiveops_renormalize},
       that renormalization is required every $2^{p-W-2}$ iterations,
-      so $2^{11}$ in double and $2^9$ in single.
+      so $2^{11}$ in double and $2^9$ in single precision.
       Which means the renormalization introduces a very low overhead to the overall running time.
       %Section \ref{sec:primitiveops_renormalize} contains a discussion of how often such renormalizations are necessary.
       To renormalize, ${Y_k}_P$ is incremented or decremented by $0.25 \epsilon^{-1} 2^{a_{I + k}}$ when necessary, leaving the carry field ${Y_k}_C$ to record the number of such adjustments.
@@ -69,7 +69,7 @@
     \end{samepage}
 
       \begin{proof}
-        $a_1 = e_{\max} + 1 - 2 W$ by \eqref{eq:a}, therefore $a_1 < e_{\max} - p$ using $W < p - 2$ and since all quantities are integers, $a_1 \leq e_{\max} - p - 1$. If $I + k \geq 1$, $a_{I + k} \leq a_1 \leq e_{\max} - p - 1$ by \eqref{eq:a}.
+        $a_1 = e_{\max} + 1 - 2 W$ by \eqref{eq:a}, therefore $a_1 < e_{\max} - p$ using $2W > p+1$ and since all quantities are integers, $a_1 \leq e_{\max} - p - 1$. If $I + k \geq 1$, $a_{I + k} \leq a_1 \leq e_{\max} - p - 1$ by \eqref{eq:a}.
 
         ${Y_k}_P$ is kept within the range $(\epsilon^{-1} 2^{a_{I + k}}, 2 \epsilon^{-1} 2^{a_{I + k}})$, therefore
         \begin{equation*}

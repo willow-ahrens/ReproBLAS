@@ -1,8 +1,20 @@
 \section{Primitive Operations}
-    Here we reorganize algorithms in \cite{repsum} into a user-friendly set of primitive operations on an indexed type. Two simple original algorithms relating to the index of an indexed type are given in Section \ref{sec:primitiveops_index}. Theoretical summaries of algorithms (with some improvements) from \cite{repsum} are provided in Sections \ref{sec:primitiveops_update}, \ref{sec:primitiveops_deposit}, \ref{sec:primitiveops_renormalize}, \ref{sec:primitiveops_reduce}. Section \ref{sec:primitiveops_convert} provides an original algorithm (with an improved error bound) to obtain the value represented by an indexed type. Sections \ref{sec:primitiveops_error} and \ref{sec:primitiveops_limits} extend analysis in \cite{repsum} to the new algorithms.
+    Here we reorganize algorithms in \cite{repsum} into a user-friendly set of
+    primitive operations on an indexed type. Two simple original algorithms
+    relating to the index of an indexed type are given in Section
+    \ref{sec:primitiveops_index}. Theoretical summaries of algorithms (with
+    some improvements) from \cite{repsum} are provided in Sections
+    \ref{sec:primitiveops_update}, \ref{sec:primitiveops_deposit},
+    \ref{sec:primitiveops_renormalize}, \ref{sec:primitiveops_reduce}. Section
+    \ref{sec:primitiveops_convert} provides an original algorithm (with an
+    improved error bound) to obtain the value represented by an indexed type.
+    Sections \ref{sec:primitiveops_error} and \ref{sec:primitiveops_limits}
+    extend analysis in \cite{repsum} to the new algorithms.
   \subsection{Index}
     \label{sec:primitiveops_index}
-    When operating on indexed types it is sometimes necessary to compute their index. Algorithm \ref{alg:iindex} yields the index of an indexed type in constant time.
+    When operating on indexed types it is sometimes necessary to compute their
+    index. Algorithm \ref{alg:iindex} yields the index of an indexed type in
+    constant time.
 
     \begin{samepage}
     \begin{alg}
@@ -20,10 +32,14 @@
     \end{alg}
     \end{samepage}
 
-    Note that the floor function is necessary in Algorithm \ref{alg:iindex} to account for the case of $Y$ with index $0$, which has $\exp({Y_0}_P) = 2^{e_{\max}}$ as discussed in Section \ref{sec:indexed_overflow}.
-    This uses the assumption that $\frac{p+1}{2} < W < p-2$, so $3 < p - W + 1 < W.$
+    Note that the floor function is necessary in Algorithm \ref{alg:iindex} to
+    account for the case of $Y$ with index $0$, which has $\exp({Y_0}_P) =
+    2^{e_{\max}}$ as discussed in Section \ref{sec:indexed_overflow}.  This
+    uses the assumption that $\frac{p+1}{2} < W < p-2$, so $3 < p - W + 1 < W.$
 
-    Another useful operation is, given some $x \in \F$, to find the unique bin $(a_J, b_J]$ such that $2^{b_J} > |x| \geq 2^{a_J}$. Algorithm \ref{alg:index} yields such a $J$ in constant time.
+    Another useful operation is, given some $x \in \F$, to find the unique bin
+    $(a_J, b_J]$ such that $2^{b_J} > |x| \geq 2^{a_J}$. Algorithm
+    \ref{alg:index} yields such a $J$ in constant time.
 
     \begin{samepage}
     \begin{alg}
@@ -41,17 +57,28 @@
 
   \subsection{Deposit}
     \label{sec:primitiveops_deposit}
-    The deposit operation (here referred to as Algorithm \ref{alg:deposit}, which deals with overflow, unlike a simpler version described in the ``Extract $K$ first bins'' Section (lines 18-20) of Algorithm $6$ in \cite{repsum}) is used to extract the slices of a floating point number and add them to the appropriate accumulators of an indexed type.
+    The deposit operation (here referred to as Algorithm \ref{alg:deposit},
+    which deals with overflow, unlike a simpler version described in the
+    ``Extract $K$ first bins'' Section (lines 18-20) of Algorithm $6$ in
+    \cite{repsum}) is used to extract the slices of a floating point number and
+    add them to the appropriate accumulators of an indexed type.
 
-    Algorithm \ref{alg:depositrestricted} deposits floating point numbers in the case that there is no overflow (the indexed type has an index greater than 0).
+    Algorithm \ref{alg:depositrestricted} deposits floating point numbers in
+    the case that there is no overflow (the indexed type has an index greater
+    than 0).
 
       \begin{samepage}
       \begin{alg}
-        Extract slices of $x \in \F$, where $|x| < 2^{b_I}$, in bins $(a_I, b_I], ..., (a_{I + K - 1}, b_{I + K - 1}]$ and add to indexed type $Y$. Here, $(r | 1)$ represents the result of setting the last bit of the significand ($m_{p - 1}$) of floating point number $r$ to 1. This is a restatement of lines 18-20 of Algorithm $6$ in \cite{repsum}.
+        Extract slices of $x \in \F$, where $|x| < 2^{b_I}$, in bins $(a_I,
+        b_I], ..., (a_{I + K - 1}, b_{I + K - 1}]$ and add to indexed type $Y$.
+        Here, $(r | 1)$ represents the result of setting the last bit of the
+        significand ($m_{p - 1}$) of floating point number $r$ to 1. This is a
+        restatement of lines 18-20 of Algorithm $6$ in \cite{repsum}.
         \begin{algorithmic}[1]
           \Require
           \Statex No overflow occurs.
-          \Statex Operations are performed in some ``to nearest'' rounding mode (no specific tie breaking behavior is required).
+          \Statex Operations are performed in some ``to nearest'' rounding mode
+          (no specific tie breaking behavior is required).
           \Statex $|x| < 2^{b_I}$.
           \Statex ${Y_k}_P \in (\epsilon^{-1}  2^{a_{I + k}}, 2  \epsilon^{-1}  2^{a_{I + k}})$ at all times. (The carry fields ${Y_k}_C$ will be used to ensure this in Algorithm \ref{alg:renorm})
           \Function{DepositRestricted}{K, x, Y}
@@ -71,24 +98,44 @@
       \end{alg}
       \end{samepage}
 
-      The last bit of $r$ is set to break ties when rounding ``to nearest'' so that the amount added to ${Y_k}_P$ does not depend on the size of ${Y_k}_P$ so far. The following theorem proves the ``Ensure'' claim at the end of Algorithm \ref{alg:depositrestricted}.
+      The last bit of $r$ is set to break ties when rounding ``to nearest'' so
+      that the amount added to ${Y_k}_P$ does not depend on the size of
+      ${Y_k}_P$ so far. The following theorem proves the ``Ensure'' claim at
+      the end of Algorithm \ref{alg:depositrestricted}.
 
     \begin{samepage}
       \begin{thm}
-        Let $Y$ be an $K$-fold indexed type of index $I$. Assume that we run Algorithm \ref{alg:depositrestricted} on $Y$ and some $x \in \F$, $|x| < 2^{b_I}$. If all requirements of the algorithm are satisfied, then the amount added to ${Y_k}_P$ is exactly $d(x, I + k)$.
+        Let $Y$ be an $K$-fold indexed type of index $I$. Assume that we run
+        Algorithm \ref{alg:depositrestricted} on $Y$ and some $x \in \F$, $|x|
+        < 2^{b_I}$. If all requirements of the algorithm are satisfied, then
+        the amount added to ${Y_k}_P$ is exactly $d(x, I + k)$.
         \label{thm:ddepositrestricted}
       \end{thm}
     \end{samepage}
 
       \begin{proof}
-        Throughout the proof, assume that the phrase ``for all $k$'' means ``for all $k \in \{0, ..., K - 1\}$.'' Assume also that $r_k$ and $S_k$ refer to the value of $r$ and $S$ after executing line \ref{alg:depositrestricted:split} in the $k^{th}$ iteration of the loop. Finally, assume ${Y_k}_P$ refers to the initial value of ${Y_k}_P$ and $S_k$ refers to the final value of ${Y_k}_P$. Therefore, $S_k - {Y_k}_P$ is the amount added to ${Y_k}_P$.
+        Throughout the proof, assume that the phrase ``for all $k$'' means
+        ``for all $k \in \{0, ..., K - 1\}$.'' Assume also that $r_k$ and $S_k$
+        refer to the value of $r$ and $S$ after executing line
+        \ref{alg:depositrestricted:split} in the $k^{th}$ iteration of the
+        loop. Finally, assume ${Y_k}_P$ refers to the initial value of
+        ${Y_k}_P$ and $S_k$ refers to the final value of ${Y_k}_P$. Therefore,
+        $S_k - {Y_k}_P$ is the amount added to ${Y_k}_P$.
 
-        Note that lines \ref{alg:depositrestricted:split}-\ref{alg:depositrestricted:endsplit} correspond to Algorithm 4 of \cite{repsum}.
-        Therefore, if $\ulp({Y_k}_P) = \ulp(S_k)$ and $\ulp(r_k) < 0.5\ulp({Y_k}_P)$, Corollary 3 of \cite{repsum} applies and we have that $S_k - {Y_k}_P \in \ulp({Y_k}_P)\Z \in 2^{a_{I + k} + 1}\Z$ and that $|r_{k + 1}| \leq 0.5\ulp({Y_k}_P) = 2^{a_{I + k}}$.
+        Note that lines
+        \ref{alg:depositrestricted:split}-\ref{alg:depositrestricted:endsplit}
+        correspond to Algorithm 4 of \cite{repsum}.  Therefore, if
+        $\ulp({Y_k}_P) = \ulp(S_k)$ and $\ulp(r_k) < 0.5\ulp({Y_k}_P)$,
+        Corollary 3 of \cite{repsum} applies and we have that
+        $S_k - {Y_k}_P \in \ulp({Y_k}_P)\Z \in 2^{a_{I + k} + 1}\Z$
+        and that $|r_{k + 1}| \leq 0.5\ulp({Y_k}_P) = 2^{a_{I + k}}$.
 
-        As it is assumed ${Y_k}_P, S_k \in (\epsilon^{-1}  2^{a_{I + k}}, 2  \epsilon^{-1}  2^{a_{I + k}})$, we have $\ulp(S_k) = \ulp({Y_k}_P)$ for all $k$.
+        As it is assumed
+        ${Y_k}_P, S_k \in (\epsilon^{-1}  2^{a_{I + k}}, 2  \epsilon^{-1}  2^{a_{I + k}})$,
+        we have $\ulp(S_k) = \ulp({Y_k}_P)$ for all $k$.
 
-        We show $|r_k| \leq 2^{b_{I + k}} = 2^{a_{I + k - 1}}$ for all $k$ inductively. As a base case, $r_0 = x$ (from line \ref{alg:depositrestricted:rgetsx}) so $|r_0| = |x| < 2^{b_{I}}$.
+        We show $|r_k| \leq 2^{b_{I + k}} = 2^{a_{I + k - 1}}$ for all $k$ inductively.
+        As a base case, $r_0 = x$ (from line \ref{alg:depositrestricted:rgetsx}) so $|r_0| = |x| < 2^{b_{I}}$.
         As an inductive step, assume $|r_k| \leq 2^{b_{I + k}}$. We must show $\ulp(r_k) < 0.5\ulp({Y_k}_P)$.
 
         By Theorem \ref{thm:underflowufp} we have that ${Y_k}_P$ is normalized and therefore $\ulp({Y_k}_P) = 2^{a_{I + k} + 1}$.
@@ -419,12 +466,13 @@
 
     Assume that $Y$ is the indexed sum of some $x_0, ..., x_{n - 1} \in \F$. If we simply evaluate \eqref{eq:indexedvalue} and apply the standard summation error bound given by \cite{higham}, the error in the final answer (the computed floating point approximation of $\mathcal{Y}$) is only bounded by (using  \eqref{eq:baderrorapprox})
     \begin{equation}
-      |\overline{\mathcal{Y}} - \sum_{j=0}^{n-1}x_j| \leq n \bigl(2^{W  (1 - K) - 1} + (2  K - 1)  \epsilon\bigr)\max|x_j|
+      |\overline{\mathcal{Y}} - \sum_{j=0}^{n-1}x_j| \leq n \bigl(2^{W  (1 - K)} + (2  K - 1)  \epsilon\bigr)\max|x_j|
       \label{eq:baderrorapproxdup}
     \end{equation}
-    However, if we sum the fields in order of decreasing ``unnormalized'' exponent, the error is bounded by (using  \eqref{eq:errorapprox})
+    However, if we sum the fields in order of decreasing ``unnormalized''
+    exponent, the error is bounded by (using  \eqref{eq:errorapprox})
     \begin{equation}
-      |\overline{\mathcal{Y}} - \sum_{j=0}^{n-1}x_j| \leq n 2^{W  (1 - K) - 1}\max|x_j|  + 7 \epsilon \bigl|\sum\limits_{j = 0}^{n - 1} x_j\bigr|
+      |\overline{\mathcal{Y}} - \sum_{j=0}^{n-1}x_j| \leq n 2^{W  (1 - K)}\max|x_j|  + 7 \epsilon \bigl|\sum\limits_{j = 0}^{n - 1} x_j\bigr|
       \label{eq:errorapproxdup}
     \end{equation}
 
@@ -747,13 +795,13 @@
       \end{equation}
 
       Using  \eqref{eq:fmfiveexp}, for all $j \geq m + 5$ we have
-
       \begin{equation}
         |f_j| < 2 \cdot 2^{\exp(f_j')} \leq 2 \cdot 2^{\exp(f_m) - p - 2} = \epsilon \cdot 2^{\exp(f_m') - 1}
         \label{eq:maxfmfive}
       \end{equation}
 
-      And by \eqref{eq:maxfmfive} and \eqref{eq:minsmfoursimple}, all additions after $f_{m + 4}$ have no effect and we have $\overline{S_{n-1}} = \overline{S_{m+4}}$.
+      And by \eqref{eq:maxfmfive} and \eqref{eq:minsmfoursimple}, all additions
+      after $f_{m + 4}$ have no effect and we have $\overline{S_{n-1}} = \overline{S_{m+4}}$.
       This, together with \eqref{eq:smfiveerror-1}, implies
       \begin{equation*}
         \left|S_{n-1} - \overline{S_{n-1}}\right| \leq \frac{7\epsilon}{1-6\sqrt{\epsilon}} |S_{n-1}|
@@ -761,118 +809,160 @@
       The proof is complete.
     \end{proof}
 
-    Consider the $K$-fold indexed sum $Y$ of floating point numbers $x_0, ..., x_{n - 1}$. We denote the true sum $\sum \limits_{j = 0}^{n - 1} x_j$ by $T$, the true value of the indexed sum as obtained using  \eqref{eq:indexedvalue} by $\mathcal{Y}$, and the floating point approximation of $\mathcal{Y}$ obtained using an appropriate algorithm from Section \ref{sec:primitiveops_convert} by $\overline{\mathcal{Y}}$.
+    Consider the $K$-fold indexed sum $Y$ of floating point numbers $x_0, \ldots, x_{n - 1}$.
+    We denote the true sum $\sum \limits_{j = 0}^{n - 1} x_j$ by $T$, the true
+    value of the indexed sum as obtained using \eqref{eq:indexedvalue} by
+    $\mathcal{Y}$, and the floating point approximation of $\mathcal{Y}$
+    obtained using an appropriate algorithm from Section
+    \ref{sec:primitiveops_convert} by $\overline{\mathcal{Y}}$.
 
-    \cite{repsum} discusses the absolute error $|T - \mathcal{Y}|$ but does not give a method to construct $\overline{\mathcal{Y}}$ and therefore no error bound ($|T - \overline{\mathcal{Y}}|$) on the final floating point answer was given. Here we extend the error bound of \cite{repsum} all the way to the final return value of the algorithm.
+    \cite{repsum} discusses the absolute error $|T - \mathcal{Y}|$ but does not
+    give a method to construct $\overline{\mathcal{Y}}$ and therefore no error
+    bound $|T - \overline{\mathcal{Y}}|$ on the final floating point answer
+    was given. Here we extend the error bound of \cite{repsum} all the way to
+    the final return value of the algorithm.
 
-    It has been shown in \cite{repsum} that
+    %It has been shown in \cite{repsum} that
+    Let $I$ be the index of $Y$, which is also the index of $\max|x_j|$,
+    we have $2^{b_I} > \max|x_j| \geq 2^{a_I}$.
+    Therefore for all $i < I$ the slice of $x_j$ in bin $i$ is $d(x_j, i) = 0$.
+    The index of the smallest bin of $Y$ is $I + K - 1$.
+    According to Theorem~\ref{thm:dround}, we have
+    \begin{align*}
+        |x_j - \sum_{j=I}^{I + K -1} d(x,i)|
+            & = |x_j - \sum_{j=0}^{I + K - 1}|
+            \leq 2^{a_{I + K -1}} 
+            = 2^{a_I - (K-1)W} \\
+            & \leq 2^{W(1-K)} \max|x_j|. 
+    \end{align*}
 
-    \begin{equation}
-      \label{eq:repboundnaive}
-      |T - \mathcal{Y}| < n  2^{W  (1 - K) - 1}\max|x_j|
-    \end{equation}
+    Since the summation in each bin $Y_i$ is exact, we have
+    \begin{align}
+        |T - \mathcal{Y}| & = |\sum_{j=0}^{n-1} x_j - \sum_{i=I}^{I+K-1} \sum_{j=0}^{n-1} d(x_j, i)|
+            = |\sum_{j=0}^{n-1} (x_j - \sum_{i=I}^{I+K-1} d(x_j,i)| \nonumber \\
+            & \leq n 2^{W(1-K)} \max|x_j|.
+            \label{eq:repboundnaive}
+    \end{align}
 
-    However, this bound does not consider underflow. By  \eqref{eq:droundunderflow}, a small modification yields a bound that considers underflow
-
+    However, this bound does not consider underflow. By
+    \eqref{eq:droundunderflow}, a small modification yields a bound that
+    considers underflow
     \begin{equation}
       \label{eq:repbound}
-      |T - \mathcal{Y}| < n \cdot \max\bigl(2^{W  (1 - K) - 1} \max|x_j|, 2^{e_{\min} - 1}\bigr)
+      |T - \mathcal{Y}| < n \cdot \max\bigl(2^{W  (1 - K)} \max|x_j|, 2^{e_{\min} - 1}\bigr)
     \end{equation}
 
-    By  \eqref{eq:gammadecreases} and \eqref{eq:gammadecreasesfast}, Theorem \ref{thm:mysortsum} applies to yield
-
+    By  \eqref{eq:gammadecreases} and \eqref{eq:gammadecreasesfast},
+    Theorem \ref{thm:mysortsum} applies to yield
     \begin{equation*}
       \left|\mathcal{Y} - \overline{\mathcal{Y}}\right| < \frac{7\epsilon}{1 - 6\sqrt\epsilon}|\mathcal{Y}|
     \end{equation*}
 
     By the triangle inequality
-
     \begin{equation*}
-      |\mathcal{Y}| \leq |T| + |T - \mathcal{Y}| < n \cdot \max\bigl(2^{W  (1 - K) - 1}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + |T|
+      |\mathcal{Y}| \leq |T| + |T - \mathcal{Y}| < n \cdot \max\bigl(2^{W(1-K)}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + |T|
     \end{equation*}
 
-    The above results can be used to obtain  \eqref{eq:error}, the absolute error of the floating point approximation of an indexed sum $|T - \overline{\mathcal{Y}}|$.
-
+    The above results can be used to obtain  \eqref{eq:error}, the absolute
+    error of the floating point approximation of an indexed sum $|T - \overline{\mathcal{Y}}|$.
     \begin{align}
       \left|T - \overline{\mathcal{Y}}\right| &\leq |T - \mathcal{Y}| + \left|\mathcal{Y} - \overline{\mathcal{Y}}\right| \nonumber \\
-      &< n \cdot \max\bigl(2^{W  (1 - K) - 1}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + \frac{7\epsilon}{1 - 6\sqrt\epsilon} |\mathcal{Y}| \nonumber \\
-      &< n \cdot \max\bigl(2^{W  (1 - K) - 1}  \max|x_j|, 2^{e_{\min} - 1}\bigr) \nonumber \\
+      &< n \cdot \max\bigl(2^{W  (1 - K)}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + \frac{7\epsilon}{1 - 6\sqrt\epsilon} |\mathcal{Y}| \nonumber \\
+      &< n \cdot \max\bigl(2^{W  (1 - K)}  \max|x_j|, 2^{e_{\min} - 1}\bigr) \nonumber \\
       &+ \frac{7\epsilon}{1 - 6\sqrt\epsilon} \Bigl(n \cdot \max\bigl(2^{W  (1 - K) - 1}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + |T|\Bigr) \nonumber \\
-      &< \left(1 + \frac{7\epsilon}{1 - 6\sqrt\epsilon}\right) \Bigl(n \cdot \max\bigl(2^{W (1 - K) - 1} \max|x_j|, 2^{e_{\min} - 1}\bigr)\Bigr) + \frac{7\epsilon}{1 - 6\sqrt\epsilon} |T|
+      &< \left(1 + \frac{7\epsilon}{1 - 6\sqrt\epsilon}\right) \Bigl(n \cdot \max\bigl(2^{W (1 - K)} \max|x_j|, 2^{e_{\min} - 1}\bigr)\Bigr) + \frac{7\epsilon}{1 - 6\sqrt\epsilon} |T|
       \label{eq:error}
     \end{align}
 
     Equation \eqref{eq:error} can be approximated as \eqref{eq:errorapprox}.
-
     \begin{align}
-      \left|T - \overline{\mathcal{Y}}\right| &< \left(1 + \frac{7\epsilon}{1 - 6\sqrt\epsilon}\right) \Bigl(n \cdot \max\bigl(2^{W (1 - K) - 1} \max|x_j|, 2^{e_{\min} - 1}\bigr)\Bigr) + \frac{7\epsilon}{1 - 6\sqrt\epsilon} |T| \nonumber \\
-    &\approx n 2^{W  (1 - K) - 1} \max|x_j| + 7  \epsilon |T|
+      \left|T - \overline{\mathcal{Y}}\right| &< \left(1 + \frac{7\epsilon}{1 - 6\sqrt\epsilon}\right) \Bigl(n \cdot \max\bigl(2^{W (1 - K)} \max|x_j|, 2^{e_{\min} - 1}\bigr)\Bigr) + \frac{7\epsilon}{1 - 6\sqrt\epsilon} |T| \nonumber \\
+    &\approx n 2^{W  (1 - K)} \max|x_j| + 7  \epsilon |T|
       \label{eq:errorapprox}
     \end{align}
 
-    A perhaps more useful mathematical construction is the error expressed relative to the result $\overline{\mathcal{Y}}$, and not the theoretical sum $T$. Again by the triangle inequality,
-
+    A perhaps more useful mathematical construction is the error expressed
+    relative to the result $\overline{\mathcal{Y}}$, and not the theoretical
+    sum $T$. Again by the triangle inequality,
     \begin{equation*}
       |\mathcal{Y}| \leq \left|\overline{\mathcal{Y}}\right| + \left|\mathcal{Y} - \overline{\mathcal{Y}}\right|
     \end{equation*}
 
     Applying the bound on $|\mathcal{Y} - \overline{\mathcal{Y}}|$ yields
-
     \begin{equation*}
       |\mathcal{Y}| < \left|\overline{\mathcal{Y}}\right| + \frac{7\epsilon}{1 - 6\sqrt\epsilon}|\mathcal{Y}|
     \end{equation*}
 
     After simplification,
-
     \begin{align*}
       |\mathcal{Y}| &< \left(\frac{1}{1 - \frac{7\epsilon}{1 - 6\sqrt\epsilon}}\right)  \left|\overline{\mathcal{Y}}\right| \nonumber \\
       &< \frac{1 - 6 \sqrt\epsilon}{1 - 6 \sqrt \epsilon - 7\epsilon}  \left|\overline{\mathcal{Y}}\right|
     \end{align*}
 
-    The above results can be used to obtain  \eqref{eq:error2}, the absolute error of the floating point approximation of an indexed sum $|T - \overline{\mathcal{Y}}|$.
-
+    The above results can be used to obtain  \eqref{eq:error2}, the absolute
+    error of the floating point approximation of an indexed sum $|T -
+    \overline{\mathcal{Y}}|$.
     \begin{align}
       \left|T - \overline{\mathcal{Y}}\right| &\leq |T - \mathcal{Y}| + \left|\mathcal{Y} - \overline{\mathcal{Y}}\right| \nonumber \\
-      &< n \cdot \max\bigl(2^{W  (1 - K) - 1}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + \frac{7\epsilon}{1 - 6\sqrt\epsilon}|\mathcal{Y}| \nonumber \\
-      &< n \cdot \max\bigl(2^{W  (1 - K) - 1}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + \frac{7\epsilon}{1 - 6\sqrt\epsilon}\left(\frac{1 - 6 \sqrt\epsilon}{1 - 6 \sqrt \epsilon - 7\epsilon}\left|\overline{\mathcal{Y}}\right|\right) \nonumber \\
-      &< n \cdot \max\bigl(2^{W  (1 - K) - 1}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + \frac{7\epsilon}{1 - 6 \sqrt \epsilon - 7\epsilon}\left|\overline{\mathcal{Y}}\right|
+      &< n \cdot \max\bigl(2^{W(1-K)}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + \frac{7\epsilon}{1 - 6\sqrt\epsilon}|\mathcal{Y}| \nonumber \\
+      &< n \cdot \max\bigl(2^{W(1-K)}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + \frac{7\epsilon}{1 - 6\sqrt\epsilon}\left(\frac{1 - 6 \sqrt\epsilon}{1 - 6 \sqrt \epsilon - 7\epsilon}\left|\overline{\mathcal{Y}}\right|\right) \nonumber \\
+      &< n \cdot \max\bigl(2^{W(1-K)}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + \frac{7\epsilon}{1 - 6 \sqrt \epsilon - 7\epsilon}\left|\overline{\mathcal{Y}}\right|
       \label{eq:error2}
     \end{align}
 
     Equation \eqref{eq:error2} can be approximated as  \eqref{eq:error2approx}.
-
     \begin{align}
-      |T - \overline{\mathcal{Y}}| &< n \cdot \max\bigl(2^{W  (1 - K) - 1}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + \frac{7\epsilon}{1 - 6 \sqrt \epsilon - 7\epsilon}  \left|\overline{\mathcal{Y}}\right| \nonumber \\
-      &\approx n  2^{W  (1 - K) - 1} \max|x_j|+ 7 \epsilon \left|\overline{\mathcal{Y}}\right|
+      |T - \overline{\mathcal{Y}}| &< n \cdot \max\bigl(2^{W(1-K)}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + \frac{7\epsilon}{1 - 6 \sqrt \epsilon - 7\epsilon}  \left|\overline{\mathcal{Y}}\right| \nonumber \\
+      &\approx n  2^{W(1 - K)} \max|x_j|+ 7 \epsilon \left|\overline{\mathcal{Y}}\right|
       \label{eq:error2approx}
     \end{align}
 
-    We can compare  \eqref{eq:errorapprox} to the error bound obtained if the accumulator fields were summed without extra precision. In this case, only the standard summation bound from \cite{higham} would apply and the absolute error would be bounded by
-
+    We can compare  \eqref{eq:errorapprox} to the error bound obtained if the
+    accumulator fields were summed without extra precision. In this case, only
+    the standard summation bound from \cite{higham} would apply and the
+    absolute error would be bounded by
     \begin{equation*}
-    n \cdot \max\bigl(2^{W  (1 - K) - 1}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + \left(\frac{(2  K - 1)  \epsilon}{1 - (2  K - 1)  \epsilon}\right)  \sum\limits_0^{2  K - 1}|\gamma_j|
+    n \cdot \max\bigl(2^{W(1-K)}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + \left(\frac{(2  K - 1)  \epsilon}{1 - (2  K - 1)  \epsilon}\right)  \sum\limits_0^{2  K - 1}|\gamma_j|
     \end{equation*}
     which is approximately bounded by
     \begin{equation}
-    n \cdot \max|x_j| \bigl(2^{W  (1 - K) - 1} + (2  K - 1)  \epsilon\bigr)
+    n \cdot \max|x_j| \bigl(2^{W(1-K)} + (2  K - 1)  \epsilon\bigr)
     \label{eq:baderrorapprox}
     \end{equation}
 
-    Which is not as tight a bound as \eqref{eq:errorapprox}, and grows linearly as the user increases $K$ in an attempt to increase accuracy.
+    Which is not as tight a bound as \eqref{eq:errorapprox}, and grows linearly
+    as the user increases $K$ in an attempt to increase accuracy.
 
   \subsection{Limits}
     \label{sec:primitiveops_limits}
-    As discussed previously, for a $K$-fold indexed type the minimum $K$ accepted by ReproBLAS is 2. The maximum useful $K$ is $\lfloor(e_{\max} - e_{\min} + p - 1)/W\rfloor$, as this covers all of the bins.
+    As discussed previously, for a $K$-fold indexed type the minimum $K$
+    accepted by ReproBLAS is 2. The maximum useful $K$ is
+    $\lfloor(e_{\max} - e_{\min} + p - 1)/W\rfloor$,
+    as this covers all of the bins.
 
-    As discussed in \cite{repsum}, $W < p - 2$. As discussed in section \ref{sec:indexed_overflow}, $2 W > p + 1$.
+    As discussed in \cite{repsum}, $W < p - 2$. As discussed in section
+    \ref{sec:indexed_overflow}, $2 W > p + 1$.
 
-    ReproBLAS uses the values $W = 40$ for indexed \texttt{double} and $W = 13$ for indexed \texttt{float}. $W$ is available as the \texttt{XIWIDTH} macro.
+    ReproBLAS uses the values $W = 40$ for indexed \texttt{double} and $W = 13$
+    for indexed \texttt{float}. $W$ is available as the \texttt{XIWIDTH} macro.
 
-    As discussed in section \ref{sec:indexed_underflow_gradual}, the input is rounded at best to the nearest $2^{e_{\min} - 1}$
+    As discussed in section \ref{sec:indexed_underflow_gradual}, the input is
+    rounded at best to the nearest $2^{e_{\min} - 1}$
 
-    As absolute value of individual quantities added to ${Y_k}_P$ are not in excess of $2^{b_{I + k}}$, a maximum of $0.25\epsilon^{-1}2^{-W}$ elements may be deposited into ${Y_k}_P$ between renormalizations, as discussed in section \ref{sec:primitiveops_renormalize}. For indexed \texttt{double} this number is $2^{11}$, whereas for indexed \texttt{float} this number is $2^9$. This number is supplied programmatically using the \texttt{XIENDURANCE} macro.
+    As absolute value of individual quantities added to ${Y_k}_P$ are not in
+    excess of $2^{b_{I + k}}$, a maximum of $0.25\epsilon^{-1}2^{-W}$ elements
+    may be deposited into ${Y_k}_P$ between renormalizations, as discussed in
+    section \ref{sec:primitiveops_renormalize}. For indexed \texttt{double}
+    this number is $2^{11}$, whereas for indexed \texttt{float} this number is
+    $2^9$. This number is supplied programmatically using the
+    \texttt{XIENDURANCE} macro.
 
-    By \eqref{eq:totalfreq}, an indexed sum is capable of representing the sum of at least $0.25\epsilon^{-1}2^{-W}  (\epsilon^{-1} - 1) \approx 2^{2  p - W - 2}$ floating point numbers. For indexed \texttt{double} this number is almost $2^{64}$, whereas for indexed \texttt{float} this number is almost $2^{33}$. This number is supplied programmatically using the \texttt{XICAPACITY} macro.
+    By \eqref{eq:totalfreq}, an indexed sum is capable of representing the sum
+    of at least $0.25\epsilon^{-1}2^{-W}  (\epsilon^{-1} - 1) \approx 2^{2  p - W - 2}$
+    floating point numbers. For indexed \texttt{double} this number is
+    almost $2^{64}$, whereas for indexed \texttt{float} this number is almost
+    $2^{33}$. This number is supplied programmatically using the
+    \texttt{XICAPACITY} macro.
 
     The indexed types provided by ReproBLAS will, when used correctly, avoid intermediate overflow.
 
