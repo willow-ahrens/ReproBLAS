@@ -146,13 +146,13 @@ int corroborate_rzgemm(int fold, char Order, char TransA, char TransB, int M, in
           case 'r':
           case 'R':
             if(res[i * ldc + j] != ref[i * ldc + j]){
-              printf("reproBLAS_rzgemm(A, X, Y)[num_blocks=%d,block_K=%d] = %g + %gi != %g + %gi\n", num_blocks, block_K, creal(res[i * ldc + j]), cimag(res[i * ldc + j]), creal(ref[i * ldc + j]), cimag(ref[i * ldc + j]));
+              printf("reproBLAS_rzgemm(A, X, Y)[num_blocks=%d] = %g + %gi != %g + %gi\n", num_blocks, creal(res[i * ldc + j]), cimag(res[i * ldc + j]), creal(ref[i * ldc + j]), cimag(ref[i * ldc + j]));
               return 1;
             }
             break;
           default:
             if(res[j * ldc + i] != ref[j * ldc + i]){
-              printf("reproBLAS_rzgemm(A, X, Y)[num_blocks=%d,block_K=%d] = %g + %gi != %g + %gi\n", num_blocks, block_K, creal(res[j * ldc + i]), cimag(res[j * ldc + i]), creal(ref[j * ldc + i]), cimag(ref[j * ldc + i]));
+              printf("reproBLAS_rzgemm(A, X, Y)[num_blocks=%d] = %g + %gi != %g + %gi\n", num_blocks, creal(res[j * ldc + i]), cimag(res[j * ldc + i]), creal(ref[j * ldc + i]), cimag(ref[j * ldc + i]));
               return 1;
             }
             break;

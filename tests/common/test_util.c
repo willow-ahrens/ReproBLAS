@@ -164,6 +164,20 @@ void util_ddpd(double* a, double b) {
   a[1] = t2 - (a[0] - t1);
 }
 
+double complex zmul(double complex a, double complex b){
+  double complex c = 0.0;
+  ((double*)&c)[0] = ((double*)&a)[0] * ((double*)&b)[0] - ((double*)&a)[1] * ((double*)&b)[1];
+  ((double*)&c)[1] = ((double*)&a)[0] * ((double*)&b)[1] + ((double*)&a)[1] * ((double*)&b)[0];
+  return c;
+}
+
+float complex cmul(float complex a, float complex b){
+  float complex c = 0.0;
+  ((float*)&c)[0] = ((float*)&a)[0] * ((float*)&b)[0] - ((float*)&a)[1] * ((float*)&b)[1];
+  ((float*)&c)[1] = ((float*)&a)[0] * ((float*)&b)[1] + ((float*)&a)[1] * ((float*)&b)[0];
+  return c;
+}
+
 int util_dsoftequals(double a, double b, double bound){
   if(isnan(a) && isnan(b)){
     return 1;

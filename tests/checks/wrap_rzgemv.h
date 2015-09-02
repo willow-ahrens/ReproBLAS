@@ -4,8 +4,6 @@
 
 #include "../../config.h"
 
-#include "wrap_zaugsum.h"
-
 void wrap_rzgemv(int fold, char Order, char TransA, int M, int N, double complex *alpha, double complex *A, int lda, double complex *X, int incX, double complex *beta, double complex *Y, int incY){
   if(fold == DIDEFAULTFOLD){
     reproBLAS_zgemv(Order, TransA, M, N, alpha, A, lda, X, incX, beta, Y, incY);
@@ -38,20 +36,20 @@ void wrap_ref_rzgemv(int fold, char Order, char TransA, int M, int N, double com
   YI = idxd_zialloc(fold);
   opX = (double complex*)malloc(opN * sizeof(double complex));
   for(i = 0; i < opM; i++){
-    if(beta[0] == 0.0){
+    if(*beta == 0.0){
       idxd_zisetzero(fold, YI);
-    }else if(beta[0] == 1.0){
+    }else if(*beta == 1.0){
       idxd_zizconv(fold, Y + i * incY, YI);
     }else{
-      betaY = Y[i * incY] * beta[0];
+      betaY = zmul(Y[i * incY], *beta);
       idxd_zizconv(fold, &betaY, YI);
     }
-    if(alpha[0] != 0.0){
+    if(*alpha != 0.0){
       for(j = 0; j < opN; j++){
-        if(alpha[0] == 1.0){
+        if(*alpha == 1.0){
           opX[j] = X[j * incX];
         }else{
-          opX[j] = alpha[0] * X[j * incX];
+          opX[j] = zmul(*alpha, X[j * incX]);
         }
       }
       switch(Order){
