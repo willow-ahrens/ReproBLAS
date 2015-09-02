@@ -8,9 +8,9 @@ check_dir = os.path.dirname(os.path.abspath(__file__))
 
 check_suite = checks.CheckSuite()
 
-folds = [2, 3, 4]
-inf_folds = [2]
-incs = [1, 3]
+folds = [3]
+inf_folds = [3]
+incs = [1]
 
 FLT_BIN_WIDTH=13
 FLT_MAX_EXP=128
@@ -32,6 +32,7 @@ DBL_ONES = 0
 for i in range(DBL_MANT_DIG):
   DBL_ONES += 2.0 ** -i
 
+"""
 check_suite.add_checks([checks.CorroborateRDGEMVTest(),\
                         checks.CorroborateRZGEMVTest(),\
                         ],\
@@ -456,6 +457,7 @@ for i in range(DBL_BIN_WIDTH + 2):
                            "+-big"]])
 
 
+"""
 for i in range(FLT_BIN_WIDTH + 2):
   check_suite.add_checks([checks.ValidateInternalRSSUMTest(),\
                           checks.ValidateInternalSISIADDTest(),\
@@ -560,6 +562,7 @@ for i in range(FLT_BIN_WIDTH + 2):
                            "++big",\
                            "+-big"]])
 
+"""
 check_suite.add_checks([checks.ValidateInternalDIDIADDTest(),\
                         checks.ValidateInternalDIDADDTest(),\
                         checks.ValidateInternalDIDDEPOSITTest(),\
@@ -593,6 +596,7 @@ check_suite.add_checks([checks.ValidateInternalSISIADDTest(),\
                        ["N", "fold", "incX", "RealScaleX", "ImagScaleX", "FillX"],\
                        [[1], folds, incs, [FLT_ONES * 2 **(FLT_MAX_EXP - 1), 1.0], [FLT_ONES * 2 **(FLT_MAX_EXP - 1), 1.0],\
                         ["constant",]])
+"""
 
 check_harness = harness.Harness("check")
 check_harness.add_suite(check_suite)
