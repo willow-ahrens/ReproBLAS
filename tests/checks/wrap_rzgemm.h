@@ -21,16 +21,16 @@ void wrap_ref_rzgemm(int fold, char Order, char TransA, char TransB, int M, int 
   double complex *opB = util_zmat_op(Order, TransB, K, N, B, ldb);
   double complex betaC;
   double_complex_indexed *CI = idxd_zialloc(fold);
-  if(alpha[0] != 1.0){
+  if(*alpha != 1.0){
     for(i = 0; i < M; i++){
       for(k = 0; k < K; k++){
         switch(Order){
           case 'r':
           case 'R':
-            opA[i * K + k] = opA[i * K + k] * alpha[0];
+            opA[i * K + k] = zmul(opA[i * K + k], *alpha);
             break;
           default:
-            opA[k * M + i] = opA[k * M + i] * alpha[0];
+            opA[k * M + i] = zmul(opA[k * M + i], *alpha);
             break;
         }
       }
@@ -41,29 +41,29 @@ void wrap_ref_rzgemm(int fold, char Order, char TransA, char TransB, int M, int 
       switch(Order){
         case 'r':
         case 'R':
-          if(beta[0] == 0.0){
+          if(*beta == 0.0){
             idxd_zisetzero(fold, CI);
-          }else if(beta[0] == 1.0){
+          }else if(*beta == 1.0){
             idxd_zizconv(fold, C + i * ldc + j, CI);
           }else{
-            betaC = C[i * ldc + j] * beta[0];
+            betaC = zmul(C[i * ldc + j], *beta);
             idxd_zizconv(fold, &betaC, CI);
           }
-          if(alpha[0] != 0.0){
+          if(*alpha != 0.0){
             idxdBLAS_zizdotu(fold, K, opA + i * K, 1, opB + j, N, CI);
           }
           idxd_zziconv_sub(fold, CI, C + i * ldc + j);
           break;
         default:
-          if(beta[0] == 0.0){
+          if(*beta == 0.0){
             idxd_zisetzero(fold, CI);
-          }else if(beta[0] == 1.0){
+          }else if(*beta == 1.0){
             idxd_zizconv(fold, C + j * ldc + i, CI);
           }else{
-            betaC = C[j * ldc + i] * beta[0];
+            betaC = zmul(C[j * ldc + i], *beta);
             idxd_zizconv(fold, &betaC, CI);
           }
-          if(alpha[0] != 0.0){
+          if(*alpha != 0.0){
             idxdBLAS_zizdotu(fold, K, opA + i, M, opB + j * K, 1, CI);
           }
           idxd_zziconv_sub(fold, CI, C + j * ldc + i);

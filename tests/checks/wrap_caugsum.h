@@ -319,11 +319,11 @@ float complex wrap_caugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill
           }
           return tmpX0;
         case util_Vec_Pos_Big:
-          return (N - 1) * ScaleX * small + ScaleX * big;
+          return (N - 1) * (ScaleX * small) + ScaleX * big;
         case util_Vec_Pos_Pos_Big:
-          return (N - 2) * ScaleX * small + (ScaleX * big + ScaleX * big);
+          return (N - 2) * (ScaleX * small) + (ScaleX * big + ScaleX * big);
         case util_Vec_Pos_Neg_Big:
-          return (N - 2) * ScaleX * small;
+          return (N - 2) * (ScaleX * small);
         case util_Vec_Sine:
           return 0.0;
         default:
@@ -368,10 +368,10 @@ float complex wrap_caugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill
           }
           return tmpX0_base[0] + tmpX0_base[1];
         case util_Vec_Pos_Big:
-          return (N - 1) * (fabs(RealScaleX) + fabs(ImagScaleX)) * small + (fabs(RealScaleX) + fabs(ImagScaleX)) * big;
+          return (N - 1) * ((fabs(RealScaleX) + fabs(ImagScaleX)) * small) + (fabs(RealScaleX) + fabs(ImagScaleX)) * big;
         case util_Vec_Pos_Pos_Big:
         case util_Vec_Pos_Neg_Big:
-          return (N - 2) * (fabs(RealScaleX) + fabs(ImagScaleX)) * small + ((fabs(RealScaleX) + fabs(ImagScaleX)) * big + (fabs(RealScaleX) + fabs(ImagScaleX)) * big);
+          return (N - 2) * ((fabs(RealScaleX) + fabs(ImagScaleX)) * small) + ((fabs(RealScaleX) + fabs(ImagScaleX)) * big + (fabs(RealScaleX) + fabs(ImagScaleX)) * big);
         default:
           fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi))\n", wrap_caugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX);
           exit(125);
@@ -484,13 +484,13 @@ float complex wrap_caugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill
               if(ImagScaleY == 0.0){
                 tmpY0_base[1] = 0.0;
               }
-              return tmpY0 * ScaleX;
+              return cmul(tmpY0, ScaleX);
             case util_Vec_Pos_Big:
-              return (N - 1) * ScaleX * ScaleY * small + ScaleX * ScaleY * big;
+              return (N - 1) * (ScaleX * ScaleY * small) + ScaleX * ScaleY * big;
             case util_Vec_Pos_Pos_Big:
-              return (N - 2) * ScaleX * ScaleY * small + (ScaleX * ScaleY * big + ScaleX * ScaleY * big);
+              return (N - 2) * (ScaleX * ScaleY * small) + (ScaleX * ScaleY * big + ScaleX * ScaleY * big);
             case util_Vec_Pos_Neg_Big:
-              return (N - 2) * ScaleX * ScaleY * small;
+              return (N - 2) * (ScaleX * ScaleY * small);
             case util_Vec_Sine:
               return 0.0;
             default:
@@ -545,7 +545,7 @@ float complex wrap_caugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill
           }
           switch(FillY){
             case util_Vec_Constant:
-              return tmpX0 * ScaleY + tmpX1 * ScaleY;
+              return cmul(tmpX0, ScaleY) + cmul(tmpX1, ScaleY);
             case util_Vec_Pos_Inf:
             case util_Vec_Pos_Pos_Inf:
             case util_Vec_Pos_Neg_Inf:
@@ -592,7 +592,7 @@ float complex wrap_caugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill
                 tmpY0_base[1] = 0.0;
                 tmpY1_base[1] = 0.0;
               }
-              return tmpX0 * tmpY0 + tmpX1 * tmpY1;
+              return cmul(tmpX0, tmpY0) + cmul(tmpX1, tmpY1);
             default:
               fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_caugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
               exit(125);
@@ -600,13 +600,13 @@ float complex wrap_caugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill
         case util_Vec_Pos_Big:
           switch(FillY){
             case util_Vec_Constant:
-              return (N - 1) * ScaleX * ScaleY * small + ScaleX * ScaleY * big;
+              return (N - 1) * (ScaleX * ScaleY * small) + ScaleX * ScaleY * big;
             case util_Vec_Pos_Big:
-              return (N - 1) * ScaleX * ScaleY * small * small + ScaleX * ScaleY * big * big;
+              return (N - 1) * (ScaleX * ScaleY * small * small) + ScaleX * ScaleY * big * big;
             case util_Vec_Pos_Pos_Big:
-              return ((N - 2) * ScaleX * ScaleY * small * small + ScaleX * ScaleY * big * small) + ScaleX * ScaleY * big * big;
+              return (N - 2) * (ScaleX * ScaleY * small * small) + (ScaleX * ScaleY * big * small + ScaleX * ScaleY * big * big);
             case util_Vec_Pos_Neg_Big:
-              return ((N - 2) * ScaleX * ScaleY * small * small - ScaleX * ScaleY * big * small) + ScaleX * ScaleY * big * big;
+              return (N - 2) * (ScaleX * ScaleY * small * small) - (ScaleX * ScaleY * big * small - ScaleX * ScaleY * big * big);
             default:
               fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_caugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
               exit(125);
@@ -614,13 +614,13 @@ float complex wrap_caugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill
         case util_Vec_Pos_Pos_Big:
           switch(FillY){
             case util_Vec_Constant:
-              return (N - 2) * ScaleX * ScaleY * small + (ScaleX * ScaleY * big + ScaleX * ScaleY * big);
+              return (N - 2) * (ScaleX * ScaleY * small) + (ScaleX * ScaleY * big + ScaleX * ScaleY * big);
             case util_Vec_Pos_Big:
-              return ((N - 2) * ScaleX * ScaleY * small * small + ScaleX * ScaleY * big * small) + ScaleX * ScaleY * big * big;
+              return (N - 2) * (ScaleX * ScaleY * small * small) + (ScaleX * ScaleY * big * small + ScaleX * ScaleY * big * big);
             case util_Vec_Pos_Pos_Big:
-              return (N - 2) * ScaleX * ScaleY * small * small + (ScaleX * ScaleY * big * big + ScaleX * ScaleY * big * big);
+              return (N - 2) * (ScaleX * ScaleY * small * small) + (ScaleX * ScaleY * big * big + ScaleX * ScaleY * big * big);
             case util_Vec_Pos_Neg_Big:
-              return (N - 2) * ScaleX * ScaleY * small * small;
+              return (N - 2) * (ScaleX * ScaleY * small * small);
             default:
               fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_caugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
               exit(125);
@@ -628,13 +628,13 @@ float complex wrap_caugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill
         case util_Vec_Pos_Neg_Big:
           switch(FillY){
             case util_Vec_Constant:
-              return (N - 2) * ScaleX * ScaleY * small;
+              return (N - 2) * (ScaleX * ScaleY * small);
             case util_Vec_Pos_Big:
-              return ((N - 2) * ScaleX * ScaleY * small * small - ScaleX * ScaleY * big * small) + ScaleX * ScaleY * big * big;
+              return (N - 2) * (ScaleX * ScaleY * small * small) - (ScaleX * ScaleY * big * small - ScaleX * ScaleY * big * big);
             case util_Vec_Pos_Pos_Big:
-              return (N - 2) * ScaleX * ScaleY * small * small;
+              return (N - 2) * (ScaleX * ScaleY * small * small);
             case util_Vec_Pos_Neg_Big:
-              return (N - 2) * ScaleX * ScaleY * small * small + (ScaleX * ScaleY * big * big + ScaleX * ScaleY * big * big);
+              return (N - 2) * (ScaleX * ScaleY * small * small) + (ScaleX * ScaleY * big * big + ScaleX * ScaleY * big * big);
             default:
               fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * (%g + %gi), %s * (%g + %gi))\n", wrap_caugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, ImagScaleX, util_vec_fill_descs[FillY], RealScaleY, ImagScaleY);
               exit(125);
