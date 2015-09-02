@@ -700,8 +700,8 @@ float complex wrap_caugsum_bound(int fold, int N, wrap_caugsum_func_t func, floa
         float complex bound;
         float *bound_base = (float*)&bound;
         idxdBLAS_camaxm_sub(N, X, incX, Y, incY, &amaxm);
-        bound_base[0] = idxd_sibound(fold, N, crealf(amaxm), crealf(res));
-        bound_base[1] = idxd_sibound(fold, N, cimagf(amaxm), cimagf(res));
+        bound_base[0] = idxd_sibound(fold, 2*N, crealf(amaxm), crealf(res));
+        bound_base[1] = idxd_sibound(fold, 2*N, cimagf(amaxm), cimagf(res));
         return bound;
       }
   }
