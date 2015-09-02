@@ -700,8 +700,8 @@ double complex wrap_zaugsum_bound(int fold, int N, wrap_zaugsum_func_t func, dou
         double complex bound;
         double *bound_base = (double*)&bound;
         idxdBLAS_zamaxm_sub(N, X, incX, Y, incY, &amaxm);
-        bound_base[0] = idxd_dibound(fold, N, creal(amaxm), creal(res));
-        bound_base[1] = idxd_dibound(fold, N, cimag(amaxm), cimag(res));
+        bound_base[0] = idxd_dibound(fold, 2*N, creal(amaxm), creal(res));
+        bound_base[1] = idxd_dibound(fold, 2*N, cimag(amaxm), cimag(res));
         return bound;
       }
   }
