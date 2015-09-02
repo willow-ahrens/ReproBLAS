@@ -23,5 +23,5 @@
  * @date   21 May 2015
  */
 float idxd_sibound(const int fold, const int N, const float X, const float S) {
-  return (float)(MAX(fabs((double)X), ldexp(0.5, FLT_MIN_EXP - 1)) * ldexp(0.5, (1 - fold)*SIWIDTH) * N + ((7.0 * FLT_EPSILON) / (1.0 - 6.0 * sqrt((double)FLT_EPSILON) - 7.0 * FLT_EPSILON)) * fabs((double)S));
+  return (float)(MAX(fabs((double)X), ldexp(0.5, FLT_MIN_EXP - 1)) * ldexp(0.5, (1 - fold) * SIWIDTH + 1) * N + ((7.0 * FLT_EPSILON) / (1.0 - 6.0 * sqrt((double)FLT_EPSILON) - 7.0 * FLT_EPSILON)) * fabs((double)S));
 }
