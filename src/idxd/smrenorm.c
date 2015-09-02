@@ -46,17 +46,34 @@ void idxd_smrenorm(const int fold, float* priX, const int incpriX, float* carX, 
     }
   */
   int i;
-  int_float tmp_renorm;
+  int_float tmp_renorm, tmp_c;
+  int tmp;
 
+  /*
   if(priX[0] == 0.0 || ISNANINFF(priX[0])){
     return;
   }
+  */
 
   for (i = 0; i < fold; i++, priX += incpriX, carX += inccarX) {
     tmp_renorm.f = priX[0];
+    
+    tmp_c.f = priX[0];
+    tmp_c.i &= ((1ull << (FLT_MANT_DIG - 3)) | (1ul << (FLT_MANT_DIG - 2)));
+    tmp_c.i <<= (33 - FLT_MANT_DIG);    
+    carX[0] -= 0.5 * tmp_c.f;
+    
+    tmp = tmp_renorm.i & (1ull << (FLT_MANT_DIG - 3));
+    tmp <<= 1;
+    tmp_renorm.i |= tmp;
+    tmp_renorm.i &= ~(1ul << (FLT_MANT_DIG - 3));
+    priX[0] = tmp_renorm.f;
+    
+    /*
     carX[0] += (int)((tmp_renorm.i >> (FLT_MANT_DIG - 3)) & 3) - 2;
     tmp_renorm.i &= ~(1ul << (FLT_MANT_DIG - 3));
     tmp_renorm.i |= 1ul << (FLT_MANT_DIG - 2);
     priX[0] = tmp_renorm.f;
+    */
   }
 }
