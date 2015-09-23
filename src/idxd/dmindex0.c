@@ -18,6 +18,7 @@
  */
 int idxd_dmindex0(const double *priX){
   /*
+  //reference version
   int exp;
 
   frexp(priX[0], &exp);
