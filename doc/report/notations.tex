@@ -1,6 +1,5 @@
 \section{Notation and Background}
-  Let $\R, \F, $ and $\Z$ denote the sets of real numbers, floating-point
-  numbers, and integers respectively.
+  Let $\R$ and $\Z$ denote the sets of real numbers and integers respectively.
 
   For all $r \in \R$, let $r\Z$ denote the set of all multiples of $r$, $\{rz | z \in \Z\}$.
 
@@ -30,21 +29,21 @@
     \label{eq:round}
   \end{equation}
 
+  Let $\F$ be the set of all floating-point numbers $f = sm2^e$ represented in some binary IEEE 754-2008 format \cite{ieee754} where $s \in \{1, -1\}$ is the \textbf{sign},
+  $e \in \Z$, $e_{\max} \geq e \geq e_{\min}$ is the \textbf{exponent} ($\exp(f)$ is
+  defined to be $e$), $p \in \Z, p > 1$ is the \textbf{precision},
+  and $m=m_0.m_1m_2...m_{p-1}$ where $m_0, ..., m_{p - 1} \in \{0, 1\}$ is the
+  \textbf{significand} of $f$. Assume that the representation of $f$ is made unique using the ``hidden bit'' convention, so that $f$ is represented using the smallest exponent possible. (In memory, the bit $m_0$ is not stored and assumed to be 1 unless the exponent field contains a special value signaling both that $e = e_{\min}$ and $m_0=0$).
+  $f$ is said to be \textbf{normalized} if $m_0 =1$
+  and $e \geq e_{\min}$, \textbf{unnormalized} if $m_0 = 0$, and
+  \textbf{denormalized} if $m_0 = 0$ and $e = e_{\min}$. $f = 0$ if all $m_j = 0$
+  and $e = e_{\min}$.
+
   Assume that floating point arithmetic complies with the IEEE 754-2008
   standard \cite{ieee754} in some ``to nearest'' rounding mode (no specific tie
   breaking behaviour is required) and that underflow occurs gradually, although
   methods to handle abrupt underflow will be considered in Section
   \ref{sec:indexed_underflow_abrupt}.
-
-  Let $f = sm2^e \in \F$ be a floating-point number represented in IEEE
-  754-2008 format \cite{ieee754} where $s \in \{1, -1\}$ is the \textbf{sign},
-  $e_{\max} \geq e \geq e_{\min}$ is the \textbf{exponent} ($\exp(f)$ is
-  defined to be $e$), $p$ is the \textbf{precision},
-  and $m=m_0.m_1m_2...m_{p-1}$ where $m_0, ..., m_{p - 1} \in \{0, 1\}$ is the
-  \textbf{significand} of $f$. $f$ is said to be \textbf{normalized} if $m_0 =1$
-  and $e \geq e_{\min}$, \textbf{unnormalized} if $m_0 = 0$, and
-  \textbf{denormalized} if $m_0 = 0$ and $e = e_{\min}$. $f = 0$ if all $m_j = 0$
-  and $e = e_{\min}$.
 
   $r \in \R$ is \textbf{representable} as a floating point number if there
   exists $f \in \F$ such that $r = f$ as real numbers.
