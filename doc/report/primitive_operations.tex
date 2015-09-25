@@ -232,6 +232,33 @@
       \end{alg}
       \end{samepage}
 
+      Algorithm~\ref{alg:deposit} is identical to Algorithm~\ref{alg:ddeposit} except
+      for the case of $\fct{IIndex}(Y) = 0$.
+      In that case, the first accumulator $Y_0$ will be scaled by a factor of $2^{W-p-1}$
+      so that the value of the first primary field ${Y_0}_P$ stays in the range
+      $[2^{e_{max}}, 2 \cdot 2^{e_{max}})$ to avoid overflow.
+      The slices corresponding to the first accumulator will also need to be scaled
+      by the same factor before being added.
+      %Note that if $|x| < 2^{a_0}$ then $d(x,0) = 0$, the deposit process
+      %has no effect to the first accumulator.
+      %Therefore without loss of generality, we assume here that $|x| \geq$
+      Since the scaling is by a power of 2, it does not change any mantissas
+      of both the primary field and the input value.
+      The binning process as well as the correctness analysis
+      are therefore similar to Algorithm~\ref{alg:ddeposit}.
+      If the slice $q$ is scaled back by $2^{p-W+1}$ and subtracted from $x$
+      then the rest of the algorithm doesn't change in the absence of overflow.
+      However, if $x$ is equal to the biggest value below the overflow threshhold,
+      then $d(x,0) = 2\cdot 2^{e_{max}}$,
+      scaling $q$ back by $2^{p-W+1}$ would cause overflow.
+      To handle this special case, instead of scaling $q$ back by $2^{p-W+1}$,
+      we only scale $q$ back by $2^{p-W}$ to obtain a value of $d(x,0)/2$
+      and perform twice the subtraction $x-q$ to compute $r$.
+      Note that if an FMA (Fused-Multiply Adder) is available,
+      we would not have to explicitly scale $q$ back,
+      one single FMA instruction suffcies to compute $r = x - q * 2^{p-W+1}$
+      without any overflow.
+      
       Theorem \ref{thm:ddeposit} shows that Algorithm \ref{alg:deposit} enjoys the necessary properties.
 
       \begin{samepage}
@@ -242,6 +269,7 @@
     \end{samepage}
 
       \begin{proof}
+        \begin{comment}
         We can break the proof into two cases based on the index $I$ of $Y$.
 
         If $I \neq 0$, then we execute line \ref{alg:deposit:callrestricted}. By  \eqref{eq:b}, $|x| < 2^{b_I} \leq 2^{e_{\max} + 1 - W}$. By Theorem \ref{thm:overflow}, all quantities are obviously well below the overflow threshold and Theorem \ref{thm:ddepositrestricted} applies and we are done.
@@ -272,7 +300,14 @@
 
         If $|x| \geq 2^{a_0}= 2^{e_{\max} + 1 - W}$, then there is no underflow in line \ref{alg:deposit:scaler} and $r = x / 2^{p - W + 1}$ exactly as we scale by a power of two. Therefore, $S - {Y_0}_P = \roundtonearestinfty(x/2^{p - W + 1}, a_0 - p + W) = d(x, 0)/2^{p - W + 1}$
 
-        At this point, all that remains to be shown is that $r = x - d(x, 0)$ in line \ref{alg:deposit:formragain}. In line \ref{alg:deposit:formq}, we have that $q = S - {Y_0}_P = d(x, 0)/2^{p - W + 1}$. By Theorem \ref{thm:dbound}, $d(x, 0) \leq 2 \cdot 2^{e_{\max}}$. We then have that in line \ref{alg:deposit:scaleq}, since $q = (d(x, 0)/2^{p - W + 1})2^{p - W} \leq 2^{e_{\max}}$ there is no overflow and as we scale by a power of two, $q = d(x, 0)/2$ exactly. Again we divide into two cases based on the size of $x$.
+        At this point, all that remains to be shown is that $r = x - d(x, 0)$ in line \ref{alg:deposit:formragain}. 
+        \end{comment}
+
+        As noted earlier, in order to prove the correctness of Algorithm~\ref{alg:deposit},
+        we only need to show that $r = x - d(x, 0)$ in line \ref{alg:deposit:formragain} 
+        for the case $\fct{IIndex}(Y) = 0$.
+
+        In line \ref{alg:deposit:formq}, we have that $q = S - {Y_0}_P = d(x, 0)/2^{p - W + 1}$. By Theorem \ref{thm:dbound}, $d(x, 0) \leq 2 \cdot 2^{e_{\max}}$. We then have that in line \ref{alg:deposit:scaleq}, since $q = (d(x, 0)/2^{p - W + 1})2^{p - W} \leq 2^{e_{\max}}$ there is no overflow and as we scale by a power of two, $q = d(x, 0)/2$ exactly. Again we divide into two cases based on the size of $x$.
 
         If $|x| < 2^{a_0}$, we have $d(x, 0) = 0$ by Lemma \ref{lem:dzero} and therefore $r = x - d(x, 0) = x$ exactly in both line \ref{alg:deposit:formr} and line \ref{alg:deposit:formragain}.
 
@@ -786,7 +821,8 @@
     (analyzed in \cite{repsum}). The second is from the conversion from indexed
     sum to floating point number (evaluation of  \eqref{eq:indexedvalue}).
     Because \cite{repsum} guarantees that all fields in the indexed type are
-    reproducible, as long as the fields are operated upon deterministically,
+    reproducible, as long as the fields are operated on deterministically
+    by the final conversion back to original floating-point format,
     any method to evaluate  \eqref{eq:indexedvalue} accurately and without
     unnecessary overflow is suitable.
 
@@ -806,6 +842,7 @@
       |\overline{\mathcal{Y}} - \sum_{j=0}^{n-1}x_j| \leq n 2^{W  (1 - K)}\max|x_j|  + 7 \epsilon \bigl|\sum\limits_{j = 0}^{n - 1} x_j\bigr|
       \label{eq:errorapproxdup}
     \end{equation}
+    which as we will see can be orders of magnitude smaller than the bound in \eqref{eq:baderrorapproxdup}
 
     When adding the fields it is not necessary to examine the values in the
     fields or sort them explicitly. Their ``unnormalized'' exponent does not
@@ -842,6 +879,12 @@ multiple error bounds are shown.}
 \end{center}
 \end{figure}
 
+    Next we show how to interpret the fields as unnormalized floating point numbers,
+    and sort their exponents independently of the actual values of the fields.
+    Note that, this interpretation is to support reasoning the conversion algorithm
+    presented below, and is not used to change the representation format of the data itself
+    since IEEE floating-point formats do not permit unnormalized numbers
+    beside exeptional values and subnormals.
     Consider a $K$-fold indexed type $Y$ of index $I$.
     As each value ${\mathcal{Y}_k}_P$ in a primary field ${Y_k}_P$ is represented by an offset from $1.5  \epsilon^{-1}  2^{a_{I + k}}$ and ${Y_k}_P \in (\epsilon^{-1}  2^{a_{I + k}}, 2  \epsilon^{-1}  2^{a_{I + k}})$, ${\mathcal{Y}_k}_P$ can be expressed exactly using an unnormalized floating point number ${\mathcal{Y}'_P}_k$ with an exponent of $a_{I + k} + p - 1$.
     As each carry field ${Y_k}_C$ is a count of renormalization adjustments later scaled by $0.25  \epsilon^{-1}  2^{a_{I + k}}$, ${\mathcal{Y}_k}_C$ can be expressed exactly using an unnormalized floating point number ${\mathcal{Y}'_k}_C$ with an exponent of $a_{I + k} + 2  p - 3$.
@@ -885,21 +928,24 @@ multiple error bounds are shown.}
       \exp(\gamma_0') > ... > \exp(\gamma_{2  K - 1}')
       \label{eq:gammadecreases}
     \end{equation}
-    where $\gamma_j$ denotes the normalized representations of the $\gamma'_j$.
+    where $\gamma_j$ denotes the normalized representation of the $\gamma'_j$.
     It should be noted that $\gamma_j = \gamma'_j$ as real numbers and that
     $\exp(\gamma_j) \leq \exp(\gamma'_j)$.
 
     It should be noted that if $\gamma_j$ is a primary field, then either
-    $\gamma_{j + 1}$ or $\gamma_{j + 2}$ is a primary field. If $\gamma_j$ is a
+    $\gamma_{j + 1}$ or $\gamma_{j + 2}$ is a primary field (with the exception of $\gamma_{2K-1}$).
+    If $\gamma_j$ is a
     carry field, then either $\gamma_{j + 1}$ or $\gamma_{j + 2}$ is a carry
-    field (with the exception of $\gamma_{2  K - 3}$, but in this case we have
+    field (with the exception of $\gamma_{2  K - 3}$,
+    but in this case, suppose that $p \geq 5$ which is true for both IEEE double and single precision,
+    we have
     \(
-        \exp(\gamma_{2  K - 3})
+        \exp(\gamma_{2  K - 3}')
         = a_{I + K - 1} + 2  p - 3 \geq a_{I + K - 1} + p + \lceil\frac{p + 1}{2}\rceil - 1
-        = \exp(\gamma_{2  K - 1}) + \lceil\frac{p + 1}{2}\rceil
+        = \exp(\gamma_{2  K - 1}') + \lceil\frac{p + 1}{2}\rceil
     \)
-    ). Therefore, as $2  W > p + 1$, for all $j \in \{0, ..., 2
-    K - 1\}$
+    ).
+    Therefore, as $2  W > p + 1$, for all $j \in \{0, ..., 2K - 3\}$
     \begin{equation}
       \exp(\gamma_j') \geq \exp(\gamma_{j + 2}') + W \geq \exp(\gamma_{j + 2}') + \left\lceil\frac{p + 1}{2}\right\rceil
       \label{eq:gammadecreasesfast}
@@ -939,6 +985,10 @@ multiple error bounds are shown.}
       and maximum exponent $E_{\max}$ greater than $e_{\max} - W + 2  p$
       \begin{algorithmic}[1]
         \Function{ConvertIndexedToFloat}{K, x, Y}
+          \If {${\mathcal{Y}_0}_C$ is NaN or $\pm$Inf}
+            \State $x = {\mathcal{Y}_0}_C$
+            \State \Return
+          \EndIf
           \State $z = {\mathcal{Y}_0}_C$
           \For{$k = 1 \To K - 1$}
             \State $z = z + {\mathcal{Y}_k}_C$
@@ -959,9 +1009,10 @@ multiple error bounds are shown.}
     in line \ref{alg:conv2float:conv} is reproducible.
 
     If an intermediate floating point type with exponent greater than or equal
-    to $e_{\max} - W + 2  p - 1$ is not available, the $\gamma_j$ must be
-    scaled down by some factor during addition and the sum scaled back up when
-    subsequent additions can no longer effect an overflow situation.
+    to $e_{\max} - W + 2  p - 1$ is not available and the lowest bin has index
+    0, a rare case, the $\gamma_j$ must be scaled down by some factor during
+    addition and the sum scaled back up when subsequent additions can no longer
+    effect an overflow situation.
 
     If the scaled sum is to overflow, then its unscaled value will be greater
     than or equal to $2 \cdot 2^{e_{\max}}$ and it will overflow regardless of
@@ -996,9 +1047,13 @@ multiple error bounds are shown.}
     \begin{samepage}
     \begin{alg}
       Convert a $K$-fold indexed type $Y$ of index $I$ to floating point $x$.
-      Here, $z$ is a floating point number with precision $\rho > p$
+      Here, $z$ is a floating point number with precision $\rho \geq p$
       \begin{algorithmic}[1]
-        \Function{ConvertIndexedToFloat}{K, x, Y}
+        \Function{ConvertIndexedToFloat0}{K, x, Y}
+          \If {${\mathcal{Y}_0}_C$ is NaN or $\pm$Inf}
+            \State $x = {\mathcal{Y}_0}_C$
+            \State \Return
+          \EndIf
           \State $k = 1$
           \While{$k \leq 2 K$ and $\exp(\gamma_k) \geq e_{\max} - \rho - 1$}
             \State $z = z + (\gamma_k / 2^{2 p - W - 2})$
@@ -1042,7 +1097,7 @@ multiple error bounds are shown.}
     maintaining accuracy.
       \begin{samepage}
     \begin{thm}
-      Given $n$ floating point numbers $f_0, \ldots, f_{n - 1}$ for which there
+      We are given $n$ floating point numbers $f_0, \ldots, f_{n - 1}$ for which there
       exist (possibly unnormalized) floating point numbers $f'_0, \ldots, f'_{n -1}$
       of the same precision such that
       \begin{enumerate}
@@ -1248,6 +1303,9 @@ multiple error bounds are shown.}
     the final return value of the algorithm.
 
     %It has been shown in \cite{repsum} that
+    The case of all zero input data is trivial, therefore we assume that
+    $\max|x_j|$ and $Y$ are nonzero.
+    We also assume here no overflow or underflow.
     Let $I$ be the index of $Y$, which is also the index of $\max|x_j|$,
     so that $2^{b_I} > \max|x_j| \geq 2^{a_I}$.
     Therefore for all $i < I$ the slice of any $x_j$ in bin $i$ is $d(x_j, i) = 0$.
