@@ -112,6 +112,14 @@
       To renormalize, ${Y_k}_P$ is incremented or decremented by
       $0.25 \epsilon^{-1} 2^{a_{I + k}}$ as described in Algorithm~\ref{alg:renorm},
       leaving the carry field ${Y_k}_C$ to record the number of such adjustments.
+      Depending on the data format used to store ${Y_k}_C$, the number of
+      updates to one accumulator without overflow is limited,
+      which determines the possible maximum number of inputs that can be
+      reproducibly added to one accumulator.
+      As will be explained in Section~\ref{sec:primitiveops_renormalize},
+      Equation~\eqref{eq:totalfreq}, using the same precision $p$ as the primary field
+      to store the carry field, the total number of inputs
+      that can be reproducibly added to one accumulator is $2^{2p-W-2}$.
       The numerical value ${\mathcal{Y}_k}_C$ represented by data stored in the carry field
       ${Y_k}_C$ of an indexed type $Y$ of index $I$ is expressed in
       \eqref{eq:car}
@@ -269,7 +277,11 @@
       due to the conditional scaling.
 
       A more efficient way to solve the problem would be to set the least bin
-      to have $a_{i_{\max}} = 2^{e_{\min}}$. This could be accomplished either
+      to have $a_{i_{\max}} = e_{\min}$. This means that all the values smaller
+      than $2^{e_{\min}}$ will not be accumulated,
+      i.e. similarly to zeroing out the mantissa bits of each summand
+      that correspond to values $2^{(e_min-1)}$ or smaller.
+      This could be accomplished either
       by keeping the current binning scheme and having the least bin be of a
       width not necessarily equal to $W$, or by shifting all other bins to be
       greater. The disadvantage of shifting the other bins is that it may cause

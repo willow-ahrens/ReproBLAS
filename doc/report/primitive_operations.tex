@@ -22,6 +22,7 @@
       \begin{algorithmic}[1]
         \Require
           \Statex ${Y_0}_P \in (\epsilon^{-1}  2^{a_{I}}, 2  \epsilon^{-1}  2^{a_I})$
+          where $a_I$ is defined in \eqref{eq:a}
         \Function{IIndex}{Y}
           \State \Return $\lfloor(e_{\max} + p - \exp({Y_0}_P) - W + 1)/W\rfloor$
           \Comment{Index $I$ of $Y$}
@@ -41,17 +42,24 @@
     Another useful operation is, given some $x \in \F$, to find the unique bin
     $(a_J, b_J]$ such that $2^{b_J} > |x| \geq 2^{a_J}$. Algorithm
     \ref{alg:index} yields such a $J$ in constant time.
+    Note that, for $x=0$ or very small values $x < 2^{a_{i_{max}}}$,
+    we simply return the least bin
+    since values smaller than the least bin will not be accumulated.
 
     \begin{samepage}
     \begin{alg}
       Given $x \in \F$, calculate $J$ such that $2^{b_J} > |x| \geq 2^{a_J}$.
       \begin{algorithmic}[1]
+        \Require $i_{max}$ is defined in \eqref{eq:imax},
+          $a_J$ is defined in \eqref{eq:a}.
         \Function{Index}{x}
-          \State \Return $\lfloor(e_{\max} - \exp(x))/W\rfloor$
+          \If {$x = 0$} \State \Return $i_{max}$ \EndIf
+          \State \Return $\min(i_{max}, \lfloor(e_{\max} - \exp(x))/W\rfloor)$
           \Comment{Index $J$ of $x$}
         \EndFunction
         \Ensure
-          \Statex The bin $(a_{J}, b_{J}]$ satisfies $2^{b_{J}} > |x| \geq 2^{a_{J}}$.
+          \Statex The bin $(a_{J}, b_{J}]$ satisfies $2^{b_{J}} > |x| \geq 2^{a_{J}}$ when
+          $|x| \geq 2^{a_{i_{max}}}$, and $J=i_{max}$ otherwise.
       \end{algorithmic}
       \label{alg:index}
     \end{alg}
@@ -309,12 +317,16 @@
 
   \subsection{Renormalize}
     \label{sec:primitiveops_renormalize}
-    When depositing values into a $K$-fold indexed type $Y$ of index $I$, the
-    assumption is made that ${Y_k}_P \in (\epsilon^{-1} 2^{a_{I + k}}, 2
-    \epsilon^{-1} 2^{a_{I + k}})$ throughout the routine. To enforce this
-    condition, the indexed type must be renormalized at least every $2^{p-W-2}$
-    deposit operations, as will be shown in Theorem \ref{thm:renormfreq}.
-    The renormalization procedure is shown in Algorithm \ref{alg:renorm}.
+    When depositing values into a $K$-fold indexed type $Y$ of index $I$,
+    Algorithms \ref{alg:depositrestricted} and \ref{alg:deposit}
+    assume that 
+    \(
+      {Y_k}_P \in (\epsilon^{-1} 2^{a_{I + k}}, 2 \epsilon^{-1} 2^{a_{I + k}})
+    \) throughout the routine.
+    To enforce this condition, the indexed type must be renormalized at least
+    every $2^{p-W-2}$ deposit operations, as will be shown in Theorem \ref{thm:renormfreq}.
+    The renormalization procedure is shown in Algorithm \ref{alg:renorm},
+    which works for all indices $0 \leq I \leq i_{max}$.
 
     \begin{samepage}
     \begin{alg}
@@ -345,7 +357,7 @@
     \end{alg}
     \end{samepage}
     The renormalization operation is described in the ``Carry-bit Propagation''
-    Section (lines 18-29) of Algorithm $6$ in \cite{repsum}, although it has
+    Section (lines 21 to 32) of Algorithm $6$ in \cite{repsum}, although it has
     been slightly modified so as not to include an extraneous case.
 
     To show the reasoning behind the assumptions in Algorithm \ref{alg:renorm},
@@ -366,7 +378,7 @@
     By Theorem \ref{thm:ddeposit}, the deposit operation extracts and adds the slices of $x_j$ exactly (assuming ${Y_k}_P \in (\epsilon^{-1} 2^{a_{I + k}}, 2  \epsilon^{-1} 2^{a_{I + k}})$ at each step, which will be shown),
 
     \begin{equation*}
-    \bigl|\sum \limits_{n = 0}^{j - 1} d(x_j, I + k)\bigr| \leq n  2^{b_{I + k}} = n  2^{W}  2^{a_{I + k}}
+    \bigl|\sum \limits_{n = 0}^{n - 1} d(x_j, I + k)\bigr| \leq n  2^{b_{I + k}} = n  2^{W}  2^{a_{I + k}}
     \end{equation*}
 
     If $n \leq 2^{p - W - 2}$, then after the $n^{th}$ deposit
@@ -377,7 +389,16 @@
     \end{align*}
     \end{proof}
 
-    If an indexed type $Y$ initially satisfies ${Y_k}_P \in [1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}})$ (such a condition is satisfied upon initialization of an empty $Y$) and we deposit at most $2^{p - W - 2}$ floating point numbers into it, then Theorem \ref{thm:renormfreq} shows that after all of the deposits, ${Y_k}_P \in [1.25  \epsilon^{-1} 2^{a_{I + k}}, 2  \epsilon^{-1} 2^{a_{I + k}})$. Therefore, after another renormalization, the primary fields would once again satisfy ${Y_k}_P \in [1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}})$.
+    If an indexed type $Y$ initially satisfies ${Y_k}_P \in [1.5  \epsilon^{-1}
+    2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}})$
+    (such a condition is satisfied upon initialization of a new accumulator of $Y$
+    during the updating process as will be explained in Section~\ref{sec:primitiveops_update})
+    and we deposit at most
+    $2^{p-W-2}$ floating point numbers into it, then Theorem \ref{thm:renormfreq}
+    shows that after all of the deposits, ${Y_k}_P \in [1.25  \epsilon^{-1}
+    2^{a_{I + k}}, 2  \epsilon^{-1} 2^{a_{I + k}})$. Therefore, after another
+    renormalization, the primary fields would once again satisfy ${Y_k}_P \in
+    [1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}})$.
     The limit of at most $2^{p-W-2}$ numbers can be accumulated before having to carry out a renormalization
     also requires that $p-W-2 > 0$, or 
     \begin{equation}
@@ -385,28 +406,43 @@
     \end{equation}
 
     As ${Y_k}_C$ must be able to record additions of absolute value 1 without
-    error, ${Y_k}_C$ must stay in the range $(-\epsilon^{-1}, \epsilon^{-1})$.
+    error, ${Y_k}_C$ must stay in the range $[-\epsilon^{-1}, \epsilon^{-1}]$.
     As each renormalization results in addition not in excess absolute value of
-    1 to ${Y_k}_C$, a maximum of $(\epsilon^{-1} - 1)$ renormalizations may be
+    1 to ${Y_k}_C$, a maximum of $\epsilon^{-1}$ renormalizations may be
     performed, meaning that an indexed type is capable of representing the sum
     of at least
     \begin{equation}
-      0.25\epsilon^{-1}2^{-W}  (\epsilon^{-1} - 1) \approx 2^{2  p - W - 2}
+      \epsilon^{-1} 2^{p-W-2} = 2^{2  p - W - 2}
       \label{eq:totalfreq}
     \end{equation}
-    floating point numbers. It means $2^{64}$ in double and $2^{31}$ in single precision using the values in Table~\ref{fig:bins}.
+    floating point numbers. It means $2^{64}$ in double and $2^{33}$ in single precision using the values in Table~\ref{fig:bins}.
+    Note that this value of maximum number of additions is slightly bigger
+    than that of \cite{repsum} since we exclude the extraneous case which caused
+    the increment of the carry field to at most 2 in absolute value per each renormalization.
 
   \subsection{Update}
     \label{sec:primitiveops_update}
-    As noted in Algorithm \ref{alg:deposit}, when adding $x \in \F$ to a $K$-fold indexed type $Y$ of index $I$, we make the assumption that $|x| < 2^{b_I}$. However, this is not always the case and sometimes it is necessary to adjust the index of $Y$. This adjustment is called an \textbf{update}. The process of updating $Y$ to the necessary index is summarized succinctly in Algorithm \ref{alg:update}.
+    As noted in Algorithm \ref{alg:deposit}, when adding $x \in \F$ to a $K$-fold
+    indexed type $Y$ of index $I$, we make the assumption that $|x| < 2^{b_I}$.
+    However, this is not always the case and sometimes it is necessary to adjust the index of $Y$.
+    For example, a new indexed type $Y$ is always initialized to have all primary
+    and carry fields of 0, therefore prior to adding any non-zero value to $Y$
+    it is required to adjust the primary and carry fields of $Y$ first.
+
+    This adjustment is called an \textbf{update}.    
+    The process of updating $Y$ to the necessary index is summarized succinctly
+    in Algorithm \ref{alg:update}.
 
     \begin{samepage}
     \begin{alg}
       Update $K$-fold indexed type $Y$ of index $I$ to have an index suitable to deposit $x$.
       \begin{algorithmic}[1]
         \Require
-          \Statex ${Y_0}_P \in (\epsilon^{-1}  2^{a_{I}}, 2  \epsilon^{-1}  2^{a_I})$
+          \Statex ${Y_0}_P$ is 0 or ${Y_0}_P \in (\epsilon^{-1}  2^{a_{I}}, 2  \epsilon^{-1}  2^{a_I})$
         \Function{Update}{K, x, Y}
+          \If {x=0}
+            \State \Return
+          \EndIf
           \State $I$ = \Call{IIndex}{Y}
           \State $J$ = \Call{Index}{x}
           \If{$J < I$}
@@ -417,7 +453,8 @@
           \EndIf
         \EndFunction
         \Ensure
-          \Statex The bin $(a_{J}, b_{J}]$ satisfies $2^{b_{J}} > |x| \geq 2^{a_{J}}$.
+          \Statex The bin $(a_{J}, b_{J}]$ satisfies $2^{b_{J}} > |x| \geq 2^{a_{J}}$ if $|x| \geq 2^{a_{i_{max}}}$,
+            or $J = i_{max}$ otherwise.
           \Statex The new index of $Y$, ($\min(I, J)$) is such that $2^{b_{\min(I, J)}} > |x|$.
           \Statex Existing accumulators of $Y$ are shifted towards index $0$, losing the lesser bins.
           \Statex New accumulators are shifted into $Y$ with value $0$ in ${Y_k}_C$ and $1.5  \epsilon^{-1}  2^{a_{\min(I, J) + k}}$ in ${Y_k}_P$.
@@ -426,7 +463,7 @@
     \end{alg}
     \end{samepage}
 
-    The update operation is described in the ``Update'' Section (lines 7-14) of Algorithm $6$ in \cite{repsum}.
+    The update operation is described in the ``Update'' Section (lines 7-17) of Algorithm $6$ in \cite{repsum}.
 
     If $Y$ is the $K$-fold indexed sum of some $x_0, ..., x_{n - 1}$ with index
     $I$, then the shift described by Algorithm \ref{alg:update} produces an
@@ -454,6 +491,187 @@
     \epsilon^{-1}2^{a_{i_{\max}}}$ and the values in these accumulators are
     ignored.
 
+  \subsection{Local Sum}
+  Based on the operations presented above, in this section we will describe algorithms
+  to reproducibly compute a local sum of a floating-point input vector.
+  Algorithm~\ref{alg:naive-local-sum} depicts a naive implementation of the
+  local reproducible sum, which does not require to know about the input data beforehand.
+  An improved version of this algorithm will be described shortly after.
+
+  \begin{alg}
+    Naive local reproducible sum of floating-point numbers
+    \label{alg:naive-local-sum}
+    \begin{algorithmic}[1]
+      \Require
+        $x = [x_0, ..., x_{n - 1}], x_i \in F$.
+        $Y$ is an indexed sum.
+        $K \in \Z, K > 1$ is the fold.
+      \Function{NaiveLocalSum}{x}
+        \State $[{Y_0}_P, ..., {Y_{K - 1}}_P, {Y_0}_C, ..., {Y_{K - 1}}_C] = [0, ..., 0]$
+        \Comment{Initialization}
+        \For {$i$ in ${0, \ldots, n-1}$ in any order}
+          \State \Call{Update}{K, $x_i$, $Y$}
+          \Comment{Adjust index of $Y$}
+          \State \Call{Deposit}{K, $x_i$, $Y$}
+          \Comment{Add slices of $x$ to corresponding bins}
+          \State \Call{Renorm}{K, $Y$}
+          \Comment{Carry-bit propagation}
+        \EndFor
+        \State \Return $Y$
+      \EndFunction
+      \Ensure
+        \Statex $Y$ is the $K$-fold indexed sum of $x_0, ..., x_{n - 1}$.
+    \end{algorithmic}
+  \end{alg}
+
+  We will now prove the reproducibility of Algorithm~\ref{alg:naive-local-sum}.
+  We first state the reproducibility of the index of computed result by
+  Lemma~\ref{lem:reproducible-index}.
+  \begin{lem}
+    Let $Y$ be the indexed-type computed by Algorithm~\ref{alg:naive-local-sum},
+    then
+    \(
+      \mathtt{IIndex}(Y) = \min_{i=0}^{n-1} \mathtt{Index}(x_i),
+    \)
+    and $\mathtt{IIndex}(Y)$ is reproducible.
+    \label{lem:reproducible-index}
+  \end{lem}
+  \begin{proof}
+    This lemma is the direct result of the updating process.
+    Since the \fct{Deposit} and \fct{Renorm} functions do not alter
+    the index of $Y$, after each iteration of the Algorithm~\ref{alg:naive-local-sum},
+    the index of $Y$ is updated to the value of $\min(\fct{IIndex}(Y), \fct{Index}(x_i))$.
+    Since $Y$ is first initialized to $0$, 
+    and the minimum value operation is associative, we have
+    \(
+      \fct{IIndex}(Y) = \min_{i=0}^{n-1} \fct{Index}(x_i),
+    \)
+    which is by consequence reproducible.
+  \end{proof}
+
+    Lemma~\ref{lem:reproducible-index} also means that $\fct{IIndex}(Y) = \fct{Index}(\max |x_i|)$
+    if $\max |x_i|$ is not NaN or infinity.
+
+  \begin{lem}
+    Let $Y$ be the indexed-type computed by Algorithm~\ref{alg:naive-local-sum},
+    if $n \leq 2^{2p -W - 2}$, then the accumulators of $Y$ are exactly computed.
+    \label{lem:exact-local-Y}
+  \end{lem}
+  \begin{proof}
+    Let $I$ be the index of the computed $Y$ of Algorithm~\ref{alg:naive-local-sum}.
+    According to Lemma~\ref{lem:reproducible-index}, $I$ is reproducible.
+    Moreover, $\fct{IIndex}(Y) = \min_{i=0}^{n-1} \mathtt{Index}(x_i)$,
+    therefore $|x_i| < 2^{b_I}$ for all $0 \leq i < n$.
+    Since the $\fct{Deposit}$ function takes care of adding input slices
+    to corresponding bins, in this proof, we're only interested in bins of
+    indices $I, \ldots, I+K-1$ in the final computed result.
+    For simplicity, we assume that $I+K-1 \leq i_{max}$, since values smaller
+    than $2^{a_{i_{max}}}$ won't contribute to the final result.
+
+    With the \fct{Update} function, all the accumulators of $Y$ will alays be initialized
+    with ${Y_k}_P = 1.5 \epsilon^{-1} 2^{a_{I+k}}$ and ${{Y_k}}_C = 0$.
+    Moreover, the call to \fct{Renorm} function at the end of each iteration
+    ensures that the primary field of each accumulator ${Y_k}_P$ once initialized
+    will always be in the range
+    $[1.5 \epsilon^{-1} 2^{a_{I+k}}, 1.75 \epsilon^{-1} 2^{a_{I+k}})$.
+    This is the condition for \fct{Deposit} function to be correctly performed.
+
+%    We will prove by induction that there will be no overflow in ${Y_k}_C$.
+%    It is trivial for the base case of the first iteration.
+%    Let's assume that $Y$ is exactly computed at the end of the $j$-th iteration ($0 < j < n-1$).
+    Each accumulator $Y_k$ of $Y$ accumulates slices $d(x_i, I + k)$ of input values.
+    The exact value of $Y_k$ after $j \leq n$ iterations is:
+    \begin{equation}
+        \mathcal{\hat{Y}}_k = ({\hat{Y_k}}_P - 1.5 \epsilon^{-1}2^{a_{I+k}}) + (0.25\epsilon^{-1} 2^{a_{I+k}}) \hat{Y_k}_C
+        = \sum_{i=0}^{j} d(x_i, I + k)
+        \label{eq:exact-Ykj}
+    \end{equation}
+    By Theorem \ref{thm:ddeposit}, we have 
+    \begin{equation}
+      |\mathcal{\hat{Y}}_k| \leq \sum_{i=0}^{j} |d(x_i, I + k)| \leq j 2^{b_{I+k}} < n 2^W 2^{a_{I+k}}
+      \leq 2^{2p-2} 2^{a_{I+k}}
+      \label{eq:bounded-Ykj}
+    \end{equation}
+    Moreover, ${Y_k}_P$ is always exactly computed, which means ${Y_k}_P = \hat{Y_k}_P$ and
+    \(
+        \hat{Y_k}_P - 1.5 \epsilon^{-1}2^{a_{I+k}} \in [0, 0.25 \epsilon^{-1} 2^{a_{I+k}}).
+    \)
+    Therefore
+    \begin{equation}
+        -2^{2p-2} 2^{a_{I+k}} -  0.25 \epsilon^{-1} 2^{a_{I+k}} < (0.25\epsilon^{-1} 2^{a_{I+k}}) \hat{Y_k}_C
+            \leq 2^{2p-2} 2^{a_{I+k}}.
+            \label{eq:bounded-YCkj}
+    \end{equation}
+    It means that $-2^p - 1 < \hat{Y_k}_C \leq 2^p$.
+    Since $\hat{Y_k}_C \in \Z$, we have $-2^p \leq \hat{Y_k}_C \leq 2^p$. So the exact value of the primary field
+    of each accumulator will never overflow.
+    After each renormalization, the carry field of each accumulator is only incremented or decremented by 1,
+    whose exact value does not overflow.
+    Therefore the carry fields of $Y$ are always exactly computed when $n \leq 2^{2p-W -2}$.
+    The proof is complete.
+  \end{proof}
+
+    Note that in the above proof, if $n < 2^{2p-W-1}$ then the last inequalities in equations \eqref{eq:bounded-Ykj}
+    and \eqref{eq:bounded-YCkj} are strict, which means
+    \begin{equation}
+        -2^p \leq {Y_k}_C < 2^p \quad \text{ when } n < 2^{2p-W-2}
+    \end{equation}
+
+    Lemma~\ref{lem:reproducible-index} and \ref{lem:exact-local-Y} provide the reproducibility
+    of Algorithm~\ref{alg:naive-local-sum}.
+    As mentioned in Section~\ref{sec:primitiveops_renormalize}, it is not necessary to perform
+    the renormalization for every addition. At most $2^{p-W-2}$ values can be added to each
+    accumulator before having to perform the renormalization.
+    Therefore we have an improved version of Algorithm~\ref{alg:naive-local-sum}.
+    Algorithm~\ref{alg:local-sum} summarizes the optimized version for the reproducible local sum,
+    which is implemented as functions $\mathtt{idxdBLAS\_dsum}$, $\mathtt{idxdBLAS\_ssum}$
+    in Section~\ref{sec:idxdBLAS}.
+    Similarly to Algorithm~\ref{alg:naive-local-sum}, Algorithm~\ref{alg:local-sum} can be performed
+    in any order. However, for the simplicity of presenting the algorithm, it is depicted
+    as running linearly from $0$ to $n-1$.
+
+  \begin{alg}
+    Local reproducible sum of floating-point numbers
+    \label{alg:local-sum}
+    \begin{algorithmic}[1]
+      \Require
+        $x = [x_0, ..., x_{n - 1}], x_i \in F$.
+        $Y$ is an indexed sum.
+        $K \in \Z, K > 1$ is the fold.
+      \Function{LocalSum}{x}
+        \State $[{Y_0}_P, ..., {Y_{K - 1}}_P, {Y_0}_C, ..., {Y_{K - 1}}_C] = [0, ..., 0]$
+        \Comment{Initialization}
+        \State $IB = 0$
+        \State $NB = 2^{p-W-2}$
+        \While {$IB < n$}
+          \State $m = \max_{i=IB}^{\min(IB+NB,n)-1} |x_i|$
+            \Comment{Local maximum}
+          \State \Call{Update}{K, m, $Y$}
+          \Comment{Adjust index of $Y$}
+          \For {$i$ from $IB$ \To $\min(IB+NB,n)-1$}
+              \State \Call{Deposit}{K, $x_i$, $Y$}
+              \Comment{Add slices of $x_i$ to corresponding bins}
+          \EndFor
+          \State \Call{Renorm}{K, $Y$}
+          \Comment{Carry-bit propagation}
+          \State $IB = IB + NB$
+        \EndWhile
+        \State \Return $Y$
+      \EndFunction
+      \Ensure
+        \Statex $Y$ is the $K$-fold indexed sum of $x_0, ..., x_{n - 1}$.
+    \end{algorithmic}
+  \end{alg}
+
+  \begin{thm}
+    Let $n \in \Z$ and $n \leq 2^{2p-W-2}$ then the result computed by Algorithm~\ref{alg:local-sum} is reproducible.
+  \end{thm}
+  \begin{proof}
+    The inner loop of Algorithm~\ref{alg:local-sum} (line 8--10) performs at most $NB=2^{p-W-2}$ deposits
+    before each renormalization, therefore the \fct{Deposit} function call is always exactly computed.
+    The rest of the proof is similar to the proof for the reproducibility of Algorith~\ref{alg:naive-local-sum}.
+  \end{proof}
+
   \subsection{Reduce}
     \label{sec:primitiveops_reduce}
     An operation to produce the sum of two indexed types is necessary to
@@ -466,7 +684,7 @@
       Given a $K$-fold indexed type $Y$ of index $I$ and a $K$-fold indexed
       type $Z$ of index $J$, add $Z$ to $Y$.
       \begin{algorithmic}[1]
-        \Ensure
+        \Require
           \Statex $Y$ is the indexed sum of some $x_0, ..., x_{n - 1} \in F$.
           \Statex $Z$ is the indexed sum of some $x_n, ..., x_{n + m - 1} \in F$.
           \Statex ${Y_k}_P, {Z_k}_P \in [1.5  \epsilon^{-1} 2^{a_{J + k}}, 1.75  \epsilon^{-1} 2^{a_{J + k}})$
@@ -477,13 +695,13 @@
             \State $R = Z$
             \State \Call{Reduce}{K, $R$, $Y$}
             \State $Y = R$
+            \State \Return
           \EndIf
           \State $k = J - I$
-          \While{$k < K$}
-            \State ${Y_{k}}_P = {Y_{k}}_P + {Z_{k + I - J}}_P - 1.5  \epsilon^{-1}  2^{a_{I + k}}$
+          \For{$k = J-I$ \To $K-1$}
+            \State ${Y_{k}}_P = {Y_{k}}_P + ({Z_{k + I-J}}_P - 1.5 \epsilon^{-1}  2^{a_{I+k}})$
             \State ${Y_{k}}_C = {Y_{k}}_C + {Z_{k + I - J}}_C$
-            \State $k = k + 1$
-          \EndWhile
+          \EndFor
           \State \Call{Renorm}{K, $Y$}
         \EndFunction
         \Ensure
@@ -493,6 +711,41 @@
       \label{alg:reduce}
     \end{alg}
     \end{samepage}
+
+    \begin{lem}
+      If $n+m \leq 2^{2p-W-2}$ then the updating process in Algorithm~\ref{alg:reduce} is exact.
+      \label{lem:reduce}
+    \end{lem}
+    \begin{proof}
+      In order to prove the exactness of Algorithm~\ref{alg:reduce},
+      it suffices to prove that the addition in line 12 is exact.
+      Since $J$ is the index of $Z$, the index of ${Z_{k + I-J}}_P$ is
+      $J + (k + I -J) = I + k$. It means that
+      \(
+        {Z_{k + I-J}}_P \in [1.5 \epsilon^{-1} 2^{a_{I+k}}, 1.75 \epsilon^{-1} 2^{a_{I+k}})
+      \)
+      and ${Z_{k + I-J}}_P \in 2^{a_{I+k}} \Z$.
+      Therefore ${Z_{k + I-J}}_P - 1.5 \epsilon^{-1}  2^{a_{I+k}} \in 2^{a_{I+k}} \Z$
+      and ${Z_{k + I-J}}_P - 1.5 \epsilon^{-1} \in [0, 0.25 \epsilon^{-1} 2^{a_{I+k}})$.
+      This means ${Z_{k + I-J}}_P - 1.5 \epsilon^{-1}$ is representable and is
+      exactly computed.
+      Moreover, we have ${Y_{k}}_P \in 2^{a_{I+k}} \Z$ and
+      \(
+        {Y_{k}}_P \in [1.5 \epsilon^{-1} 2^{a_{I+k}}, 1.75 \epsilon^{-1} 2^{a_{I+k}})
+      \).
+      Therefore
+      \(
+        {Y_{k}}_P + ({Z_{k + I-J}}_P - 1.5 \epsilon^{-1}  2^{a_{I+k}})
+          \in 2^{a_{I+k}} \Z,
+      \)
+      and
+      \(
+        {Y_{k}}_P + ({Z_{k + I-J}}_P - 1.5 \epsilon^{-1}  2^{a_{I+k}})
+          \in [1.5 \epsilon^{-1} 2^{a_{I+k}}, 2 \epsilon^{-1} 2^{a_{I+k}})
+      \).
+      This means ${Y_{k}}_P + ({Z_{k + I-J}}_P - 1.5 \epsilon^{-1}  2^{a_{I+k}})$
+      is representable and is exactly computed.
+    \end{proof}
 
   \subsection{Convert}
     \label{sec:primitiveops_convert}
@@ -790,7 +1043,7 @@ multiple error bounds are shown.}
       \begin{samepage}
     \begin{thm}
       Given $n$ floating point numbers $f_0, \ldots, f_{n - 1}$ for which there
-      exists (possibly unnormalized) floating point numbers $f'_0, \ldots, f'_{n -1}$
+      exist (possibly unnormalized) floating point numbers $f'_0, \ldots, f'_{n -1}$
       of the same precision such that
       \begin{enumerate}
         \item $f_j = f'_j$ for all $j \in \{0, ..., n - 1\}$
@@ -798,8 +1051,10 @@ multiple error bounds are shown.}
         \item $\exp(f'_j) \geq \exp(f'_{j + 2}) + \lceil\frac{p + 1}{2}\rceil$ for all $j \in \{0, ..., n - 3\}$
       \end{enumerate}
       \label{thm:mysortsum}
-      Let $S_0 = \overline{S_0} = f_0$, $S_j = S_{j - 1} + f_j$, and $\overline{S_j} = \fl(\overline{S_{j - 1}} + f_j)$ so that $S_{n - 1} = \sum \limits_{j = 0}^{n - 1} f_j$.
-      Then we have
+      Let $S_0 = \overline{S_0} = f_0$, $S_j = S_{j - 1} + f_j$,
+      and $\overline{S_j} = \fl(\overline{S_{j - 1}} + f_j)$ (assuming rounding to nearest)
+      so that $S_{n - 1} = \sum \limits_{j = 0}^{n - 1} f_j$.
+      Then in the absence of overflow and underflow we have
       \begin{equation*}
         \left|S_{n - 1} - \overline{S_{n - 1}}\right| < \frac{7\epsilon}{1 - 6\sqrt\epsilon}|S_{n - 1}| \approx 7 \epsilon |S_{n - 1}|
       \end{equation*}
@@ -862,7 +1117,9 @@ multiple error bounds are shown.}
 
       And by \eqref{eq:sbound} and \eqref{eq:smsrelsbound},
       \begin{equation}
-        |S_m| \leq \bigl|\sum\limits_{j = 0}^{n - 1}f_j\bigr| + \bigl|\sum\limits_{j = m + 1}^{n - 1} f_j\bigr| \leq \left(1 + \frac{1 + 4  \sqrt\epsilon}{1 - 4  \sqrt\epsilon}\right)\bigl|\sum\limits_{j = 0}^{n - 1}f_j\bigr| \leq \frac{2}{1 - 4  \sqrt\epsilon}\bigl|\sum\limits_{j = 0}^{n - 1}f_j\bigr|
+        |S_m| \leq \bigl|\sum\limits_{j = 0}^{n - 1}f_j\bigr| + \bigl|\sum\limits_{j = m + 1}^{n - 1} f_j\bigr|
+            \leq \left(1 + \frac{1 + 4\sqrt\epsilon}{1 - 4\sqrt\epsilon}\right)\bigl|\sum_{j = 0}^{n - 1}f_j\bigr|
+            = \frac{2}{1 - 4  \sqrt\epsilon}\bigl|\sum\limits_{j = 0}^{n - 1}f_j\bigr|
         \label{eq:smrelsbound}
       \end{equation}
 
@@ -888,7 +1145,7 @@ multiple error bounds are shown.}
           + \frac{4\epsilon}{1-4\epsilon} |S_{n-1}|
           + \frac{7\epsilon}{1-4\epsilon} \sum_{j=m+2}^{n-1}|f_j|.
       \end{equation*}
-      Using the Triangle Inequality we have
+      Using the triangle inequality we have
       \begin{align*}
       \left|S_{m+4} - \overline{S_{m+4}}\right|
           & = \bigl|S_m + \sum_{j=m+1}^{m+4}f_j - \overline{S_{m+4}}\bigr|
@@ -941,13 +1198,13 @@ multiple error bounds are shown.}
       \begin{align}
         \left|S_{n-1} - \overline{S_{m+4}}\right|
         & \leq |S_{n-1} - S_{m+4}| + \left|S_{m+4} - \overline{S_{m+4}}\right| \nonumber \\
-        & \leq \bigl|\sum_{j=m+4}^{n-1} f_j\bigr| + \frac{6\epsilon}{1-6\sqrt{\epsilon}} |S_{n-1}| \nonumber \\
+        & \leq \bigl|\sum_{j=m+5}^{n-1} f_j\bigr| + \frac{6\epsilon}{1-6\sqrt{\epsilon}} |S_{n-1}| \nonumber \\
         & \leq \frac{\epsilon}{1 - 4 \sqrt\epsilon}|S_{n-1}| + \frac{6\epsilon}{1-6\sqrt{\epsilon}} |S_{n-1}| \nonumber \\
         & <  \frac{7\epsilon}{1-6\sqrt{\epsilon}} |S_{n-1}|.
         \label{eq:smfiveerror-1}
       \end{align}
 
-      When combined with \eqref{eq:sbound} gives
+      When combined with \eqref{eq:sbound} this gives
       \begin{align*}
         \left|\overline{S_{m+4}}\right|
         & \geq \left(1-\frac{7 \epsilon}{1-6\sqrt{\epsilon}}\right) |S_{n-1}| \\
@@ -963,15 +1220,16 @@ multiple error bounds are shown.}
 
       Using  \eqref{eq:fmfiveexp}, for all $j \geq m + 5$ we have
       \begin{equation}
-        |f_j| < 2 \cdot 2^{\exp(f_j')} \leq 2 \cdot 2^{\exp(f_m) - p - 2} = \epsilon \cdot 2^{\exp(f_m') - 1}
+        |f_j| < 2 \cdot 2^{\exp(f_j')} \leq 2 \cdot 2^{\exp(f_m') - p - 2} = \epsilon \cdot 2^{\exp(f_m') - 1}
         \label{eq:maxfmfive}
       \end{equation}
 
       And by \eqref{eq:maxfmfive} and \eqref{eq:minsmfoursimple}, all additions
-      after $f_{m + 4}$ have no effect and we have $\overline{S_{n-1}} = \overline{S_{m+4}}$.
+      after $f_{m + 4}$ have no effect (since we are rounding to nearest)
+      and we have $\overline{S_{n-1}} = \overline{S_{m+4}}$.
       This, together with \eqref{eq:smfiveerror-1}, implies
       \begin{equation*}
-        \left|S_{n-1} - \overline{S_{n-1}}\right| \leq \frac{7\epsilon}{1-6\sqrt{\epsilon}} |S_{n-1}|
+        \left|S_{n-1} - \overline{S_{n-1}}\right| < \frac{7\epsilon}{1-6\sqrt{\epsilon}} |S_{n-1}|
       \end{equation*}
       The proof is complete.
     \end{proof}
@@ -991,13 +1249,13 @@ multiple error bounds are shown.}
 
     %It has been shown in \cite{repsum} that
     Let $I$ be the index of $Y$, which is also the index of $\max|x_j|$,
-    we have $2^{b_I} > \max|x_j| \geq 2^{a_I}$.
-    Therefore for all $i < I$ the slice of $x_j$ in bin $i$ is $d(x_j, i) = 0$.
+    so that $2^{b_I} > \max|x_j| \geq 2^{a_I}$.
+    Therefore for all $i < I$ the slice of any $x_j$ in bin $i$ is $d(x_j, i) = 0$.
     The index of the smallest bin of $Y$ is $I + K - 1$.
     According to Theorem~\ref{thm:dround}, we have
     \begin{align*}
-        |x_j - \sum_{j=I}^{I + K -1} d(x,i)|
-            & = |x_j - \sum_{j=0}^{I + K - 1}|
+        |x_j - \sum_{i=I}^{I + K -1} d(x_j,i)|
+            & = |x_j - \sum_{i=0}^{I + K - 1} d(x_j,i)|
             \leq 2^{a_{I + K -1}} 
             = 2^{a_I - (K-1)W} \\
             & \leq 2^{W(1-K)} \max|x_j|. 
@@ -1006,7 +1264,7 @@ multiple error bounds are shown.}
     Since the summation in each bin $Y_i$ is exact, we have
     \begin{align}
         |T - \mathcal{Y}| & = |\sum_{j=0}^{n-1} x_j - \sum_{i=I}^{I+K-1} \sum_{j=0}^{n-1} d(x_j, i)|
-            = |\sum_{j=0}^{n-1} (x_j - \sum_{i=I}^{I+K-1} d(x_j,i)| \nonumber \\
+            = |\sum_{j=0}^{n-1} (x_j - \sum_{i=I}^{I+K-1} d(x_j,i))| \nonumber \\
             & \leq n 2^{W(1-K)} \max|x_j|.
             \label{eq:repboundnaive}
     \end{align}
@@ -1041,7 +1299,7 @@ multiple error bounds are shown.}
       \label{eq:error}
     \end{align}
 
-    Equation \eqref{eq:error} can be approximated as \eqref{eq:errorapprox}.
+    Equation \eqref{eq:error} can be approximated as \eqref{eq:errorapprox}:
     \begin{align}
       \left|T - \overline{\mathcal{Y}}\right| &< \left(1 + \frac{7\epsilon}{1 - 6\sqrt\epsilon}\right) \Bigl(n \cdot \max\bigl(2^{W (1 - K)} \max|x_j|, 2^{e_{\min} - 1}\bigr)\Bigr) + \frac{7\epsilon}{1 - 6\sqrt\epsilon} |T| \nonumber \\
     &\approx n 2^{W  (1 - K)} \max|x_j| + 7  \epsilon |T|
@@ -1061,10 +1319,10 @@ multiple error bounds are shown.}
     \end{equation*}
 
     After simplification,
-    \begin{align*}
-      |\mathcal{Y}| &< \left(\frac{1}{1 - \frac{7\epsilon}{1 - 6\sqrt\epsilon}}\right)  \left|\overline{\mathcal{Y}}\right| \nonumber \\
-      &< \frac{1 - 6 \sqrt\epsilon}{1 - 6 \sqrt \epsilon - 7\epsilon}  \left|\overline{\mathcal{Y}}\right|
-    \end{align*}
+    \[
+      |\mathcal{Y}| < \left(\frac{1}{1 - \frac{7\epsilon}{1 - 6\sqrt\epsilon}}\right)  \left|\overline{\mathcal{Y}}\right| \nonumber 
+      = \frac{1 - 6 \sqrt\epsilon}{1 - 6 \sqrt \epsilon - 7\epsilon}  \left|\overline{\mathcal{Y}}\right|.
+    \]
 
     The above results can be used to obtain  \eqref{eq:error2}, the absolute
     error of the floating point approximation of an indexed sum $|T -
@@ -1073,11 +1331,12 @@ multiple error bounds are shown.}
       \left|T - \overline{\mathcal{Y}}\right| &\leq |T - \mathcal{Y}| + \left|\mathcal{Y} - \overline{\mathcal{Y}}\right| \nonumber \\
       &< n \cdot \max\bigl(2^{W(1-K)}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + \frac{7\epsilon}{1 - 6\sqrt\epsilon}|\mathcal{Y}| \nonumber \\
       &< n \cdot \max\bigl(2^{W(1-K)}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + \frac{7\epsilon}{1 - 6\sqrt\epsilon}\left(\frac{1 - 6 \sqrt\epsilon}{1 - 6 \sqrt \epsilon - 7\epsilon}\left|\overline{\mathcal{Y}}\right|\right) \nonumber \\
-      &< n \cdot \max\bigl(2^{W(1-K)}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + \frac{7\epsilon}{1 - 6 \sqrt \epsilon - 7\epsilon}\left|\overline{\mathcal{Y}}\right|
+      &= n \cdot \max\bigl(2^{W(1-K)}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + \frac{7\epsilon}{1 - 6 \sqrt \epsilon - 7\epsilon}\left|\overline{\mathcal{Y}}\right|
       \label{eq:error2}
     \end{align}
 
-    Equation \eqref{eq:error2} can be approximated as  \eqref{eq:error2approx}.
+    Equation \eqref{eq:error2} can be approximated as \eqref{eq:error2approx},
+    which is nearly equal to bound \eqref{eq:errorapprox}:
     \begin{align}
       |T - \overline{\mathcal{Y}}| &< n \cdot \max\bigl(2^{W(1-K)}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + \frac{7\epsilon}{1 - 6 \sqrt \epsilon - 7\epsilon}  \left|\overline{\mathcal{Y}}\right| \nonumber \\
       &\approx n  2^{W(1 - K)} \max|x_j|+ 7 \epsilon \left|\overline{\mathcal{Y}}\right|
@@ -1097,7 +1356,7 @@ multiple error bounds are shown.}
     \label{eq:baderrorapprox}
     \end{equation}
 
-    Which is not as tight a bound as \eqref{eq:errorapprox}, and grows linearly
+    This is not as tight a bound as \eqref{eq:errorapprox}, and grows linearly
     as the user increases $K$ in an attempt to increase accuracy.
 
   \subsection{Limits}

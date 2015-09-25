@@ -1,8 +1,8 @@
 \section{Notation and Background}
-  Let $\R, \F, $ and $\Z$ denote the sets of real numbers, floating-point
-  numbers, and integers respectively.
+  Let $\R$ and $\Z$ denote the sets of real numbers and integers respectively.
 
-  For all $r \in \R$, let $r\Z$ denote the set of all multiples of $r$, $\{rz | z \in \Z\}$.
+  For all $r \in \R$, let $r\Z$ denote the set of all multiples of $r$,
+  $\{rz | z \in \Z\}$.
 
   For all $r \in \R$, let $\lceil r \rceil$ be the minimum element $z \in \Z$
   such that $z \geq r$.
@@ -30,6 +30,42 @@
     \label{eq:round}
   \end{equation}
 
+  Let $\F_{b,p,e_{min},e_{max}}$ denote the set of floating-point numbers
+  of base $b \in \Z$ ($b > 1$),
+  precision $p \in Z$ ($p > 0$) and exponent range $[e_{min}, e_{max}]$
+  where $e_{min}, e_{max} \in \Z$ and $e_{min} \leq e_{max}$.
+  Each value $f \in \F_{b,p,e_{min},e_{max}}$ is represented by:
+  \[
+    f = s \cdot m_0.m_1 \ldots m_{p-1} \cdot b^e,
+  \]
+  where $s \in \{-1,1 \}$ is the sign,
+  $e \in \{\Z | e_{\min} \leq e \leq e_{\max} \}$ is the exponent
+  (also defined as $exp(f)$),
+  and $m = m_0.m_1 \ldots m_{p-1}, m_i \in \{ 0, 1, \ldots, b-1 \}$
+  is the significand (also called the mantissa) of $f$.
+
+  Although many of the below analysis can be applied to a general floating-point
+  format, in the context of this paper we assume binary floating-point formats,
+  i.e. $b=2$, complying with the IEEE 754-2008 standard \cite{ieee754}
+  in single ($p=24$) and double ($p=53$) precision which are encoded in hardware
+  using words of 32 and 64 bits respectively.
+  Specific parameters for those two formats are given in table~\ref{tbl:IEEE-754}.
+  \begin{table}
+    \caption{IEEE 754-2008 binary floating-point formats}
+    \label{tbl:IEEE-754}
+        \centering
+        \begin{tabular}{ | l | l | l | } \hline
+            Floating-Point Type & single precision & double precision \\ \hline
+            C data type & \texttt{float} & \texttt{double} \\ \hline
+            $p$ & 24 & 53 \\ \hline
+            Exponent field width & 8 & 12 \\ \hline
+            Exponent bias & 127 & 1023 \\ \hline
+            $e_{min}$ & -126 & -1022 \\ \hline
+            $e_{max}$ & 127 & 1023 \\ \hline
+        \end{tabular}
+  \end{table}
+
+  \begin{comment}
   Assume that floating point arithmetic complies with the IEEE 754-2008
   standard \cite{ieee754} in some ``to nearest'' rounding mode (no specific tie
   breaking behaviour is required) and that underflow occurs gradually, although
@@ -41,10 +77,45 @@
   $e_{\max} \geq e \geq e_{\min}$ is the \textbf{exponent} ($\exp(f)$ is
   defined to be $e$), $p$ is the \textbf{precision},
   and $m=m_0.m_1m_2...m_{p-1}$ where $m_0, ..., m_{p - 1} \in \{0, 1\}$ is the
-  \textbf{significand} of $f$. $f$ is said to be \textbf{normalized} if $m_0 =1$
-  and $e \geq e_{\min}$, \textbf{unnormalized} if $m_0 = 0$, and
-  \textbf{denormalized} if $m_0 = 0$ and $e = e_{\min}$. $f = 0$ if all $m_j = 0$
-  and $e = e_{\min}$.
+  \textbf{significand} of $f$.
+  \end{comment}
+
+  The exponent is stored in internal representation in biased form
+  using 8 bits for single precision, and 53 bits for double precision.
+  The exponent of a represented floating-point number is equal to
+  the biased exponent (the unsigned integer value stored in the exponent field)
+  minus the bias value (see table~\ref{tbl:IEEE-754}).
+  An exponent field of all 0-bit is reserved for zeros and denormalized values.
+  An exponent field of all 1-bit is reserved for infinities and NaN.
+
+  $f$ is said to be \textbf{normalized} if $m_0 =1$
+  and $e_{max} \geq e \geq e_{\min}$.
+  The first bit $m_0$ is not explicitly stored in internal representation
+  and is called hidden or implicit bit.
+  Therefore only $p-1$ bits are used to represent the mantissa of $f$.
+  $f$ is said to be \textbf{unnormalized} if $m_0 = 0$, and
+  \textbf{denormalized} if $m_0 = 0$ and $e = e_{\min} - 1$.
+  $f = 0$ if all $m_j = 0$ and $e = e_{\min} - 1$.
+
+  In binary internal representation, $f=0$ is represented by a biased exponent of $0$
+  as well as a mantissa field of all 0-bits.
+  Denormalized numbers have biased exponent of $0$ and non-zero mantissa field.
+  An exponent field of all 1-bits and a mantissa field of all 0-bits
+  represent infinities, positive or negative depending on the sign bit.
+  An exponent field of all 1-bits and a non-zero mantissa field
+  represent a NaN value.
+
+  We assume rounding mode ``to nearest'' (no specific tie
+  breaking behavior is required) and gradual underflow, although
+  methods to handle abrupt underflow will be considered in Section
+  \ref{sec:indexed_underflow_abrupt}.
+
+  For simplicity as well as for readability, throughout this paper
+  $\F_{b,p,e_{min},e_{max}}$ will be written simply as $\F$, referring to either
+  the IEEE 754-2008 single or double precision binary floating-point format,
+  i.e. $b=2$ and $m_i \in \{0, 1\}$.
+  All the analysis will be based on the corresponding parameters $p$, $e_{min}$
+  and $e_{max}$.
 
   $r \in \R$ is \textbf{representable} as a floating point number if there
   exists $f \in \F$ such that $r = f$ as real numbers.
@@ -201,8 +272,11 @@ paper (especially Algorithms \ref{alg:depositrestricted} and
     Next, notice that $d(x, i) \in 2^{a_{i} + 1}\Z$.
 
     Finally, it is possible that $d(x, 0)$ may be too large to represent as a
-    floating point number. Overflow of this type is accounted for in Section
-    \ref{sec:indexed_overflow}.
+    floating point number for example, if $x$ is the largest finite floating point
+    number then $d(x,0)=\roundtonearestinfty(x, a_0+1)$ would be $2^{e_{max}+1}$.
+    Overflow of this type is accounted for in Section \ref{sec:indexed_overflow}.
+    Technical detail of how to handle this special case during the binning process
+    will be explained in Section~\ref{sec:primitiveops_deposit}.
 
     Lemmas \ref{lem:dzero} and \ref{lem:dmiddle} follow from the definition of $d(x, i)$.
 
