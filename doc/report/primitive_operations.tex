@@ -1,4 +1,5 @@
 \section{Primitive Operations}
+    \label{sec:primitiveops}
     Here we reorganize algorithms in \cite{repsum} into a user-friendly set of
     primitive operations on an indexed type. Two simple original algorithms
     relating to the index of an indexed type are given in Section
@@ -408,7 +409,8 @@
         \Ensure
           \Statex $Y$ is the indexed sum of some $x_0, ..., x_{n - 1} \in F$.
           \Statex $Z$ is the indexed sum of some $x_n, ..., x_{n + m - 1} \in F$.
-          \Statex ${Y_k}_P, {Z_k}_P \in [1.5  \epsilon^{-1} 2^{a_{J + k}}, 1.75  \epsilon^{-1} 2^{a_{J + k}})$
+          \Statex ${Y_k}_P \in [1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}})$
+          \Statex ${Z_k}_P \in [1.5  \epsilon^{-1} 2^{a_{J + k}}, 1.75  \epsilon^{-1} 2^{a_{J + k}})$
         \Function{Reduce}{K, Y, Z}
           \State $I$ = \Call{IIndex}{Y}
           \State $J$ = \Call{IIndex}{Z}

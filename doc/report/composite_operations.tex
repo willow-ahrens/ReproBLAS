@@ -1,0 +1,55 @@
+\section{Composite Operations}
+  \label{sec:compositeops}
+  Although several reproducible summation algorithms can be built from the set of primitive operations defined in section \ref{sec:primitiveops}, it may be unclear how these operations can be composed to form such algorithms. What follows are the specifications for common summation-based algorithms in terms of the primitive operations.
+  To obtain a general completely reproducible algorithm for summation that is, one must design for reproducibility under both data permutation and reduction tree shape.
+  Section \ref{sec:compositeops_sum} details a general reproducible summation algorithm that is independent of input data ordering, providing analysis of its correctness and runtime. Section \ref{sec:compositeops_reduce} shows how the algorithm in Section \ref{sec:compositops_sum} may be extended to arbitrary reduction tree shapes, and gives another proof of correctness. Sections \ref{sec:compositeops_nrm}, \ref{sec:compositeops_dot}, \ref{sec:compositeops_gemv}, and \ref{sec:compositeops_gemm} explain how to obtain reasonably performant reproducible versions of representative operations from the BLAS.
+  Implementation details of these routines are discussed in Section \ref{sec:implementation}.
+  \subsection{Sum}
+    \label{sec:compositeops_sum}
+    Algorithm \ref{alg:sum} is an indexed summation algorithm that produces the indexed sum of a vector of floating point numbers $x_0, ..., x_{n - 1} \in \F$.
+    The indexed sum of a list of numbers is independent of the ordering of the list.
+    Algorithm \ref{alg:sum} uses only one indexed type to hold the intermediate result of the recursive summation, and the vast majority of time in the algorithm is spent in the deposit routine.
+    \begin{samepage}
+    \begin{alg}
+      Return the $K$-fold indexed sum of $x_0, ..., x_{n-1}$.
+      This is similar to Algorithm $6$ in \cite{repsum}, but requires no restrictions on the inputs $x_0, ..., x_{n - 1}$.
+      \begin{algorithmic}[1]
+        \Function{Sum}{K, [$x_0, ..., x_{n-1}$]}
+          \State $Y = 0$
+          \State $block = 0$
+          \State $j = 0$ \label{alg:sum:setj}
+          \While{$j < n$}\label{alg:sum:outerloop}
+            \State $m = \min(n, j + 0.25\epsilon^{-1}2^{-W})$
+            \State \Call{Update}{K, $\max([|x_j|, ..., |x_{m - 1}|)$, Y}\label{alg:sum:update}
+            \While{$j < m$}
+              \State \Call{Deposit}{K, $x_j$, Y}
+              \State $j = j + 1$
+            \EndWhile
+            \State \Call{Renorm}{K, Y}\label{alg:sum:renorm}
+          \EndWhile
+          \State \Return $Y$
+        \EndFunction
+        \Ensure
+        \Statex $Y$ is the unique indexed sum of $x_0, ..., x_{n - 1}$. This implies the following three statements.
+        \Statex The index $I$ of $Y$ is the maximum integer such that $\max(|x_j|) < 2^{b_I}$.
+        \Statex ${Y_k}_P \in [1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}})$
+        \Statex $\mathcal{Y}_k = \sum\limits_{j = 0}^{n - 1}d(x_j, I + k)$
+      \end{algorithmic}
+      \label{alg:sum}
+    \end{alg}
+    \end{samepage}
+    In less specific terms, what this algorithm ensures is that the fields of $Y$ represent the unique indexed sum of $Y$. If a floating point result is desired, it may be obtained from $Y$ using Algorithm \ref{alg:conv2floatoverflow}
+    \begin{samepage}
+    \begin{thm}
+      Assume that we have run Algorithm \ref{alg:sum} on $n$ floating point numbers $x_0, ..., x_{n - 1} \in \F$ with some $K$. If all requirements of the algorithm are satisfied, then the ``Ensure'' claim at the end of the algorithm holds.
+      \label{thm:sum}
+    \end{thm}
+    \end{samepage}
+    \begin{proof}
+      We show that the claim holds for all $x_1, ..., x_{j - 1}$ after each  execution of line \ref{alg:sum:renorm}.
+
+      In the first iteration of the loop on line \ref{alg:sum:outerloop}, $Y$ is set to 0, meaning all of its fields are set to zero. Therefore,  Therefore the ``Require'' statements of Algorithm \ref{alg:update} are satisfied and after executing line \ref{alg:sum:update}, the index of $Y$ is $I$ where $I$ is the greatest integer such that for all $j \in \{0, m - 1\}$, $|x_j| < 2^{b_I}$. By the ``Ensure'' claim of Algorithm \ref{alg:update}, ${Y_k}_P \in (\epsilon^{-1}  2^{a_{I + k}}, 2  \epsilon^{-1}  2^{a_{I + k}})$ (Unless $I = 0$, in which case ${Y_0}_P \in (2^{e_{\max}}, 2 \cdot 2^{e_{\max}})$).
+    \end{proof}
+
+  \subsection{Euclidean Norm}
+    \label{sec:compositeops_nrm}
