@@ -56,16 +56,16 @@
       In the first iteration of the loop on line \ref{alg:sum:outerloop}, $Y$ is set to 0, meaning all of its fields are set to zero.
       In subsequent iterations of the loop, since we have at line \ref{alg:sum:update} that $Y$ is the indexed sum of $x_0, ..., x_{j - 1}$, we know that ${Y_k}_P \in [1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}})$ unless $I + k = 0$, in which case ${Y_0}_P \in (2^{e_{\max}}, 2 \cdot 2^{e_{\max}})$.
 
-      In either case, the ``Require'' clause of Algorithm \ref{alg:update} is satisfied. After executing line \ref{alg:sum:update}, the following statements hold:
+      In either case, the ``Require'' clause of Algorithm \ref{alg:update} is satisfied. Therefore, after executing line \ref{alg:sum:update}, the following statements hold:
       \begin{enumerate}
       \item
         The index of $Y$ is $I$ where $I$ is the greatest integer such that $\max(|x_0|, ..., |x_{m - 1}|) < 2^{b_I}$
       \item
         $\mathcal{Y}_k = d(x_0, I + k) + ... + d(x_{j - 1}, I + k)$
       \item
+        \Statex ${Y_k}_P \in [1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}})$ unless $I + k = 0$, in which case ${Y_0}_P \in (2^{e_{\max}}, 2 \cdot 2^{e_{\max}})$
       \end{enumerate}
-
- By the ``Ensure'' claim of Algorithm \ref{alg:update}, ${Y_k}_P \in (\epsilon^{-1}  2^{a_{I + k}}, 2  \epsilon^{-1}  2^{a_{I + k}})$ unless $I + k = 0$, in which case ${Y_0}_P \in (2^{e_{\max}}, 2 \cdot 2^{e_{\max}})$. Between lines \ref{alg:sum:innerloop} and \ref{alg:sum:innerloopend}, at most $0.25\epsilon^{-1}2^{-W}$ calls to \ref{alg:sum:deposit} are made, and by Theorem \ref{thm:depositfreq}, the requirements of Algorithm \ref{alg:deposit} are metat each call. Therefore, after line \ref{alg:sum:innerloopend}, we have that $\mathcal{Y}_k = \Statex $\mathcal{Y}_k = \sum\limits_{j = 0}^{n - 1}d(x_j, I + k)$
+      Between lines \ref{alg:sum:innerloop} and \ref{alg:sum:innerloopend}, at most $0.25\epsilon^{-1}2^{-W}$ calls to \ref{alg:sum:deposit} are made, and by Theorem \ref{thm:depositfreq}, and the above initial properties, the requirements of Algorithm \ref{alg:deposit} are met at each call. Therefore, after line \ref{alg:sum:innerloopend}, we have that $\mathcal{Y}_k = \mathcal{Y}_k = d(x_{j-1}, I + k) + ... + d(x_{j-1}, I + k)$
     \end{proof}
 
   \subsection{Euclidean Norm}
