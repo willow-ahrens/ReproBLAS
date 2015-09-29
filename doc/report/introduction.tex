@@ -1,1 +1,13 @@
 \section{Introduction}
+  The algorithms for summation presented in \cite{repsum} were shown to enjoy the following properties:
+  \begin{enumerate}
+    \item They compute a reproducible sum independent of the order of the summands, how they are assigned to processors, or how they are aligned in memory.
+    \item They make only basic assumptions about the underlying arithmetic (A subset of IEEE Standard 754-2008).
+    \item They scale well as a performance-optimized, non-reproducible implementation, as $n$ (number of summands) and $p$ (number of processors) grow.
+    \item The user can choose the desired accuracy of the result. In particular, getting a reproducible result with about the same accurace as the performance optimized algorithm is only be a small constant times slower, but higher accuracy is possible too.
+  \end{enumerate}
+  Our goal is to modify the algorithms in \cite{repsum} so that in addition to the above properties, they enjoy the following properties:
+  \begin{enumerate}
+    \item The algorithms can be applied in any binary IEEE 754-2008 floating point format, and any valid input in such a format can be summed using the algorithms. The algorithms must be able to sum numbers close to zero, numbers close to overflow, and exceptional values.
+    \item They must be expressed as basic operations that can be applied in several applications. They must be able to be built into a user-friendly, performant library.
+  \end{enumerate}

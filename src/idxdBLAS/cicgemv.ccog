@@ -1,0 +1,200 @@
+#include <stdlib.h>
+
+#include <idxdBLAS.h>
+#include <idxd.h>
+
+#include "../common/common.h"
+
+/*[[[cog
+import cog
+import generate
+import dataTypes
+from src.common import blockSize
+from scripts import terminal
+
+cog.out(generate.generate(blockSize.BlockSize("cicgemv", "Y_BLOCK", 1, 128, 128, ["bench_rcgemv_fold_{}".format(terminal.get_sidefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("cicgemv", "X_BLOCK", 1, 2 * terminal.get_siendurance(), 2 * terminal.get_siendurance(), ["bench_rcgemv_fold_{}".format(terminal.get_sidefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("cicgemv", "YT_BLOCK", 1, 128, 128, ["bench_rcgemv_TransA_fold_{}".format(terminal.get_sidefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("cicgemv", "XT_BLOCK", 1, 2 * terminal.get_siendurance(), 2 * terminal.get_siendurance(), ["bench_rcgemv_TransA_fold_{}".format(terminal.get_sidefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("cicgemv", "T_BLOCK", 1, 32, 32, ["bench_rcgemv_TransA_fold_{}".format(terminal.get_sidefaultfold())]), cog.inFile, args, params, mode))
+]]]*/
+#define Y_BLOCK 128
+#define X_BLOCK 1024
+#define YT_BLOCK 128
+#define XT_BLOCK 1024
+#define T_BLOCK 32
+//[[[end]]]
+
+void idxdBLAS_cicgemv(const int fold, const char Order,
+                      const char TransA, const int M, const int N,
+                      const void *alpha, const void *A, const int lda,
+                      const void *X, const int incX,
+                      float_complex_indexed *Y, const int incY){
+  int i;
+  int ii;
+  int iii;
+  int j;
+  int jj;
+  int jjj;
+  float *bufX;
+  int incbufX;
+  float *bufA;
+
+  if(M == 0 || N == 0 || (((float*)alpha)[0] == 0.0 && ((float*)alpha)[1] == 0.0)){
+    return;
+  }
+
+  switch(Order){
+
+    //row major
+    case 'r':
+    case 'R':
+      switch(TransA){
+
+        //row major A not transposed
+        case 'n':
+        case 'N':
+          if(((float*)alpha)[0] == 1.0 && ((float*)alpha)[1] == 0.0){
+            bufX = (float*)X;
+            incbufX = incX;
+          }else{
+            bufX = (float*)malloc(N * 2 * sizeof(float));
+            for(j = 0; j < N; j++){
+              bufX[2 * j] = ((float*)X)[2 * j * incX] * ((float*)alpha)[0] - ((float*)X)[2 * j * incX + 1] * ((float*)alpha)[1];
+              bufX[2 * j + 1] = ((float*)X)[2 * j * incX] * ((float*)alpha)[1] + ((float*)X)[2 * j * incX + 1] * ((float*)alpha)[0];
+            }
+            incbufX = 1;
+          }
+          for(i = 0; i < M; i += Y_BLOCK){
+            for(j = 0; j < N; j += X_BLOCK){
+              for(ii = i; ii < M && ii < i + Y_BLOCK; ii++){
+                idxdBLAS_cicdotu(fold, MIN(X_BLOCK, N - j), ((float*)A) + 2 * (ii * lda + j), 1, bufX + 2 * j * incbufX, incbufX, Y + ii * incY * idxd_cinum(fold));
+              }
+            }
+          }
+          if(((float*)alpha)[0] != 1.0 || ((float*)alpha)[1] != 0.0){
+            free(bufX);
+          }
+          break;
+
+        //row major A transposed
+        case 't':
+        case 'T':
+          if(((float*)alpha)[0] == 1.0 && ((float*)alpha)[1] == 0.0){
+            bufX = (float*)X;
+            incbufX = incX;
+          }else{
+            bufX = (float*)malloc(M * 2 * sizeof(float));
+            for(j = 0; j < M; j++){
+              bufX[2 * j] = ((float*)X)[2 * j * incX] * ((float*)alpha)[0] - ((float*)X)[2 * j * incX + 1] * ((float*)alpha)[1];
+              bufX[2 * j + 1] = ((float*)X)[2 * j * incX] * ((float*)alpha)[1] + ((float*)X)[2 * j * incX + 1] * ((float*)alpha)[0];
+            }
+            incbufX = 1;
+          }
+          bufA = (float*)malloc(XT_BLOCK * YT_BLOCK * 2 * sizeof(float));
+          for(i = 0; i < N; i += YT_BLOCK){
+            for(j = 0; j < M; j += XT_BLOCK){
+              for(jj = j; jj < M && jj < j + XT_BLOCK; jj += T_BLOCK){
+                for(ii = i; ii < N && ii < i + YT_BLOCK; ii+= T_BLOCK){
+                  for(jjj = jj; jjj < M && jjj < jj + MIN(T_BLOCK, XT_BLOCK); jjj++){
+                    for(iii = ii; iii < N && iii < ii + MIN(T_BLOCK, YT_BLOCK); iii++){
+                      bufA[2 * ((iii - i) * XT_BLOCK + (jjj - j))] = ((float*)A)[2 * (jjj * lda + iii)];
+                      bufA[2 * ((iii - i) * XT_BLOCK + (jjj - j)) + 1] = ((float*)A)[2 * (jjj * lda + iii) + 1];
+                    }
+                  }
+                }
+              }
+              for(ii = i; ii < N && ii < i + YT_BLOCK; ii++){
+                idxdBLAS_cicdotu(fold, MIN(XT_BLOCK, M - j), bufA + 2 * (ii - i) * XT_BLOCK, 1, bufX + 2 * j * incbufX, incbufX, Y + ii * incY * idxd_cinum(fold));
+              }
+            }
+          }
+          free(bufA);
+          if(((float*)alpha)[0] != 1.0 || ((float*)alpha)[1] != 0.0){
+            free(bufX);
+          }
+          break;
+
+        //row major A conjugate transposed
+        default:
+          if(((float*)alpha)[0] == 1.0 && ((float*)alpha)[1] == 0.0){
+            bufX = (float*)X;
+            incbufX = incX;
+          }else{
+            bufX = (float*)malloc(M * 2 * sizeof(float));
+            for(j = 0; j < M; j++){
+              bufX[2 * j] = ((float*)X)[2 * j * incX] * ((float*)alpha)[0] - ((float*)X)[2 * j * incX + 1] * ((float*)alpha)[1];
+              bufX[2 * j + 1] = ((float*)X)[2 * j * incX] * ((float*)alpha)[1] + ((float*)X)[2 * j * incX + 1] * ((float*)alpha)[0];
+            }
+            incbufX = 1;
+          }
+          bufA = (float*)malloc(XT_BLOCK * YT_BLOCK * 2 * sizeof(float));
+          for(i = 0; i < N; i += YT_BLOCK){
+            for(j = 0; j < M; j += XT_BLOCK){
+              for(jj = j; jj < M && jj < j + XT_BLOCK; jj += T_BLOCK){
+                for(ii = i; ii < N && ii < i + YT_BLOCK; ii+= T_BLOCK){
+                  for(jjj = jj; jjj < M && jjj < jj + MIN(T_BLOCK, XT_BLOCK); jjj++){
+                    for(iii = ii; iii < N && iii < ii + MIN(T_BLOCK, YT_BLOCK); iii++){
+                      bufA[2 * ((iii - i) * XT_BLOCK + (jjj - j))] = ((float*)A)[2 * (jjj * lda + iii)];
+                      bufA[2 * ((iii - i) * XT_BLOCK + (jjj - j)) + 1] = ((float*)A)[2 * (jjj * lda + iii) + 1];
+                    }
+                  }
+                }
+              }
+              for(ii = i; ii < N && ii < i + YT_BLOCK; ii++){
+                idxdBLAS_cicdotc(fold, MIN(XT_BLOCK, M - j), bufA + 2 * (ii - i) * XT_BLOCK, 1, bufX + 2 * j * incbufX, incbufX, Y + ii * incY * idxd_cinum(fold));
+              }
+            }
+          }
+          free(bufA);
+          if(((float*)alpha)[0] != 1.0 || ((float*)alpha)[1] != 0.0){
+            free(bufX);
+          }
+          break;
+      }
+      break;
+
+    //column major
+    default:
+      switch(TransA){
+
+        //column major A not transposed
+        case 'n':
+        case 'N':
+          idxdBLAS_cicgemv(fold, 'r', 't', N, M, alpha, A, lda, X, incX, Y, incY);
+          break;
+
+        //column major A transposed
+        case 't':
+        case 'T':
+          idxdBLAS_cicgemv(fold, 'r', 'n', N, M, alpha, A, lda, X, incX, Y, incY);
+          break;
+
+        //column major A conjugate transposed
+        default:
+          if(((float*)alpha)[0] == 1.0 && ((float*)alpha)[1] == 0.0){
+            bufX = (float*)X;
+            incbufX = incX;
+          }else{
+            bufX = (float*)malloc(M * 2 * sizeof(float));
+            for(j = 0; j < M; j++){
+              bufX[2 * j] = ((float*)X)[2 * j * incX] * ((float*)alpha)[0] - ((float*)X)[2 * j * incX + 1] * ((float*)alpha)[1];
+              bufX[2 * j + 1] = ((float*)X)[2 * j * incX] * ((float*)alpha)[1] + ((float*)X)[2 * j * incX + 1] * ((float*)alpha)[0];
+            }
+            incbufX = 1;
+          }
+          for(i = 0; i < N; i += Y_BLOCK){
+            for(j = 0; j < M; j += X_BLOCK){
+              for(ii = i; ii < N && ii < i + Y_BLOCK; ii++){
+                idxdBLAS_cicdotc(fold, MIN(X_BLOCK, N - j), ((float*)A) + 2 * (ii * lda + j), 1, bufX + 2 * j * incbufX, incbufX, Y + ii * incY * idxd_cinum(fold));
+              }
+            }
+          }
+          if(((float*)alpha)[0] != 1.0 || ((float*)alpha)[1] != 0.0){
+            free(bufX);
+          }
+          break;
+      }
+      break;
+  }
+}

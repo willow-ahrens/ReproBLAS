@@ -18,6 +18,7 @@
  */
 int idxd_sindex(const float X){
   /*
+  //reference version
   int exp;
 
   if(X == 0.0){

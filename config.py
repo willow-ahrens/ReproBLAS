@@ -15,9 +15,9 @@ import time
 def status(i, n):
   n = max(n - 1, 1)
   width = 80
-  done = (i * (width - 2))//n
-  remaining = width - 2 - done
-  sys.stdout.write("\r[{}{}] {:7.3f}%".format(done * "#", remaining * " ", (100.0*i)/n))
+  done = (i * (width - 10))//n
+  remaining = width - 10 - done
+  sys.stdout.write("\r[{}{}] {:6.2f}%".format(done * "#", remaining * " ", (100.0*i)/n))
   sys.stdout.flush()
 
 def execute(command_verbose):

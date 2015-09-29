@@ -18,6 +18,7 @@
  */
 int idxd_smindex0(const float *priX){
   /*
+  //reference version
   int exp;
 
   frexpf(priX[0], &exp);

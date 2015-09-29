@@ -18,6 +18,7 @@
  */
 int idxd_dindex(const double X){
   /*
+  //reference version
   int exp;
 
   if(X == 0.0){
