@@ -37,49 +37,49 @@ libidxdblas.a_DEPS = $$(LIBIDXD)                                     \
                      samax.o samaxm.o                                \
                      camax_sub.o camaxm_sub.o                        \
                      dmdsum.o dmdasum.o dmdssq.o dmddot.o            \
+                     zmzsum.o dmzasum.o dmzssq.o zmzdotu.o zmzdotc.o \
                      smssum.o smsasum.o smsssq.o smsdot.o            \
                      cmcsum.o smcasum.o smcssq.o cmcdotu.o cmcdotc.o \
-                     zmzsum.o dmzasum.o dmzssq.o zmzdotu.o zmzdotc.o \
                      didsum.o didasum.o didssq.o diddot.o            \
+                     zizsum.o dizasum.o dizssq.o zizdotu.o zizdotc.o \
                      sissum.o sisasum.o sisssq.o sisdot.o            \
                      cicsum.o sicasum.o sicssq.o cicdotu.o cicdotc.o \
-                     zizsum.o dizasum.o dizssq.o zizdotu.o zizdotc.o \
                      didgemv.o didgemm.o                             \
-                     sisgemv.o sisgemm.o                             \
                      zizgemv.o zizgemm.o                             \
-                     cicgemv.o cicgemm.o                             \
+                     sisgemv.o sisgemm.o                             \
+                     cicgemv.o cicgemm.o
 
-damax.c_DEPS = damax.ccog
-damaxm.c_DEPS = damaxm.ccog
-zamax_sub.c_DEPS = zamax_sub.ccog
-zamaxm_sub.c_DEPS = zamaxm_sub.ccog
-samax.c_DEPS = samax.ccog
-samaxm.c_DEPS = samaxm.ccog
 camax_sub.c_DEPS = camax_sub.ccog
 camaxm_sub.c_DEPS = camaxm_sub.ccog
-dmdsum.c_DEPS = $$(GETTER) dmdsum.ccog
-dmdasum.c_DEPS = $$(GETTER) dmdasum.ccog
-dmdssq.c_DEPS = $$(GETTER) dmdssq.ccog
-dmddot.c_DEPS = $$(GETTER) dmddot.ccog
-smssum.c_DEPS = $$(GETTER) smssum.ccog
-smsasum.c_DEPS = $$(GETTER) smsasum.ccog
-smsssq.c_DEPS = $$(GETTER) smsssq.ccog
-smsdot.c_DEPS = $$(GETTER) smsdot.ccog
-cmcsum.c_DEPS = $$(GETTER) cmcsum.ccog
-smcasum.c_DEPS = $$(GETTER) smcasum.ccog
-smcssq.c_DEPS = $$(GETTER) smcssq.ccog
-cmcdotu.c_DEPS = $$(GETTER) cmcdotu.ccog
+cicgemm.c_DEPS = $$(GETTER) cicgemm.ccog
+cicgemv.c_DEPS = $$(GETTER) cicgemv.ccog
 cmcdotc.c_DEPS = $$(GETTER) cmcdotc.ccog
-zmzsum.c_DEPS = $$(GETTER) zmzsum.ccog
+cmcdotu.c_DEPS = $$(GETTER) cmcdotu.ccog
+cmcsum.c_DEPS = $$(GETTER) cmcsum.ccog
+damax.c_DEPS = damax.ccog
+damaxm.c_DEPS = damaxm.ccog
+didgemm.c_DEPS = $$(GETTER) didgemm.ccog
+didgemv.c_DEPS = $$(GETTER) didgemv.ccog
+dmdasum.c_DEPS = $$(GETTER) dmdasum.ccog
+dmddot.c_DEPS = $$(GETTER) dmddot.ccog
+dmdssq.c_DEPS = $$(GETTER) dmdssq.ccog
+dmdsum.c_DEPS = $$(GETTER) dmdsum.ccog
 dmzasum.c_DEPS = $$(GETTER) dmzasum.ccog
 dmzssq.c_DEPS = $$(GETTER) dmzssq.ccog
-zmzdotu.c_DEPS = $$(GETTER) zmzdotu.ccog
-zmzdotc.c_DEPS = $$(GETTER) zmzdotc.ccog
-didgemv.c_DEPS = $$(GETTER) didgemv.ccog
-didgemm.c_DEPS = $$(GETTER) didgemm.ccog
-sisgemv.c_DEPS = $$(GETTER) sisgemv.ccog
+samax.c_DEPS = samax.ccog
+samaxm.c_DEPS = samaxm.ccog
 sisgemm.c_DEPS = $$(GETTER) sisgemm.ccog
-zizgemv.c_DEPS = $$(GETTER) zizgemv.ccog
+sisgemv.c_DEPS = $$(GETTER) sisgemv.ccog
+smcasum.c_DEPS = $$(GETTER) smcasum.ccog
+smcssq.c_DEPS = $$(GETTER) smcssq.ccog
+smsasum.c_DEPS = $$(GETTER) smsasum.ccog
+smsdot.c_DEPS = $$(GETTER) smsdot.ccog
+smsssq.c_DEPS = $$(GETTER) smsssq.ccog
+smssum.c_DEPS = $$(GETTER) smssum.ccog
+zamax_sub.c_DEPS = zamax_sub.ccog
+zamaxm_sub.c_DEPS = zamaxm_sub.ccog
 zizgemm.c_DEPS = $$(GETTER) zizgemm.ccog
-cicgemv.c_DEPS = $$(GETTER) cicgemv.ccog
-cicgemm.c_DEPS = $$(GETTER) cicgemm.ccog
+zizgemv.c_DEPS = $$(GETTER) zizgemv.ccog
+zmzdotc.c_DEPS = $$(GETTER) zmzdotc.ccog
+zmzdotu.c_DEPS = $$(GETTER) zmzdotu.ccog
+zmzsum.c_DEPS = $$(GETTER) zmzsum.ccog
