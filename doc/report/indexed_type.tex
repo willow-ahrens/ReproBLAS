@@ -227,7 +227,7 @@
       setting the last bit of intermediate results before adding them to
       ${Y_k}_P$ in order to fix the direction of the rounding mode. However, if
       $r$ is the quantity to be added to ${Y_k}_P$, $\ulp(r)$ must be less than
-      rounding error when added to ${Y_k}_P$.
+      rounding error in ${Y_k}_P$ when added to ${Y_k}_P$.
       Mathematically, we will require $\ulp(r) < 0.5\ulp({Y_k}_P)$ in order to
       prove Theorem~\ref{thm:ddeposit} about the correctness of
       Algorithm~\ref{alg:deposit}.  This is why we must enforce $a_{i_{\max}}
@@ -328,7 +328,32 @@
 
       As the ${Y_k}_P$ are kept finite to store finite values, \texttt{Inf}, \texttt{-Inf}, and \texttt{NaN} are unused in any previously specified context and are valid sentinel values. (As the exponent of \texttt{Inf}, \texttt{-Inf}, and \texttt{NaN} is distinct from the exponent of finite values, the bijection between the index of an indexed type $Y$ and the exponent of ${Y_0}_P$ is preserved)
 
-      This behavior follows the behavior for exceptional values in IEEE 754-2008 floating point arithmetic. The result of adding some exceptional values using floating-point arithmetic therefore matches the result obtained from indexed summation. As \texttt{Inf}, \texttt{-Inf}, and \texttt{NaN} add associatively, this behavior is reproducible.
+      This behavior follows the behavior for exceptional values in IEEE
+      754-2008 floating point arithmetic. The result of adding some exceptional
+      values using floating-point arithmetic therefore matches the result
+      obtained from indexed summation. As \texttt{Inf}, \texttt{-Inf}, and
+      \texttt{NaN} add associatively, this behavior is reproducible.
 
-      It should be noted here that it is possible to achieve a final result of \texttt{Inf} or \texttt{-Inf} when ${Y_0}_P$ is finite. This is due to the fact that the indexed representation can express values outside of the range of the floating point numbers that it is composed with. More specifically, it is possible for the value $\mathcal{Y}$ represented by the indexed type $Y$ to satisfy $|\mathcal{Y}| \geq 2 \cdot 2^{e_{\max}}$. The condition that $\mathcal{Y}$ is not representable is discovered when calculating $\mathcal{Y}$ (converting $Y$ to a floating point number). The methods used to avoid overflow and correctly return the \texttt{Inf} or \texttt{-Inf} are discussed in Section \ref{sec:primitiveops_convert}.
+      Note that, as will be explained in Section~\ref{sec:primitiveops},
+      as long as the number of input is limited by $n \leq 2^{2p-W-2}$
+      and all the inputs are finite, there will be no intermediate \texttt{NaN}
+      or $\pm \texttt{Inf}$ during the computation.
+      For example, given $x \in \F$ the biggest representable value below the
+      overflow threshhold, our alogrithm will compute a result of exact $0$ for
+      the sum of input vector $[x,x,-x,-x]$ regardless of the order of evaluation.
+      Whereas, a standard recursive summation algorithm returns either
+      $((x+x)-x)-x=\texttt{Inf}$, $((-x-x)+x)+x=-\texttt{Inf}$, $((x-x)+x)-x = 0$, 
+      or $((x + x) + (-x-x)) = \texttt{NaN}$ depending on the order of evaluation.
+
+      It should also be noted here that it is possible to achieve a final result of
+      $\pm \texttt{Inf}$ when ${Y_0}_P$ is finite. This is due to
+      the fact that the indexed representation can express values outside of
+      the range of the floating point numbers that it is composed with. More
+      specifically, it is possible for the value $\mathcal{Y}$ represented by
+      the indexed type $Y$ to satisfy $|\mathcal{Y}| \geq 2 \cdot
+      2^{e_{\max}}$. The condition that $\mathcal{Y}$ is not representable is
+      discovered when calculating $\mathcal{Y}$ (converting $Y$ to a floating
+      point number). The methods used to avoid overflow and correctly return
+      the \texttt{Inf} or \texttt{-Inf} are discussed in Section
+      \ref{sec:primitiveops_convert}.
 

@@ -1,0 +1,44 @@
+\subsection{Limits}
+    \label{sec:primitiveops_limits}
+    As discussed previously, for a $K$-fold indexed type the minimum $K$
+    accepted by ReproBLAS is 2. The maximum useful $K$ is
+    $K_{max}=\lfloor(e_{\max} - e_{\min} + p - 1)/W\rfloor$,
+    as this covers all of the bins.
+
+    As discussed in \cite{repsum}, $W < p - 2$. As discussed in section
+    \ref{sec:indexed_overflow}, $2 W > p + 1$.
+
+    ReproBLAS uses the values $W = 40$ for indexed \texttt{double} and $W = 13$
+    for indexed \texttt{float}. $W$ is available as the \texttt{XIWIDTH} macro.
+
+    As discussed in section \ref{sec:indexed_underflow_gradual}, the input is
+    rounded at best to the nearest $2^{e_{\min} - 1}$
+
+    As absolute value of individual quantities added to ${Y_k}_P$ are not in
+    excess of $2^{b_{I + k}}$, a maximum of $0.25\epsilon^{-1}2^{-W}$ elements
+    may be deposited into ${Y_k}_P$ between renormalizations, as discussed in
+    section \ref{sec:primitiveops_renormalize}. For indexed \texttt{double}
+    this number is $2^{11}$, whereas for indexed \texttt{float} this number is
+    $2^9$. This number is supplied programmatically using the
+    \texttt{XIENDURANCE} macro.
+
+    By \eqref{eq:totalfreq}, an indexed sum is capable of representing the sum
+    of at least $0.25\epsilon^{-1}2^{-W}  \epsilon^{-1} = 2^{2  p - W - 2}$
+    floating point numbers. For indexed \texttt{double} this number is
+    $2^{64}$, whereas for indexed \texttt{float} this number is
+    $2^{33}$. This number is supplied programmatically using the
+    \texttt{XICAPACITY} macro.
+
+    The indexed types provided by ReproBLAS will, when used correctly, avoid intermediate overflow.
+
+    \begin{table}
+        \caption{ReproBLAS parameter limits}
+        \begin{tabular}{l | l | l}
+            Data Type & $\texttt{double}$ & $\texttt{float}$ \\ \hline
+            $W$ & 40 & 13 \\ \hline
+            $K_{min}$ & 2 & 2 \\ \hline
+            $K_{max}$ & 52 & 21 \\ \hline
+            Endurance & $2^{11}$ & $2^9$ \\ \hline
+            Capacity & $2^{64}$ & $2^{33}$ \\ \hline
+        \end{tabular}
+    \end{table}

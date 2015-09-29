@@ -1,0 +1,109 @@
+\subsection{Renormalize}
+    \label{sec:primitiveops_renormalize}
+    When depositing values into a $K$-fold indexed type $Y$ of index $I$,
+    Algorithms \ref{alg:depositrestricted} and \ref{alg:deposit}
+    assume that 
+    \(
+      {Y_k}_P \in (\epsilon^{-1} 2^{a_{I + k}}, 2 \epsilon^{-1} 2^{a_{I + k}})
+    \) throughout the routine.
+    To enforce this condition, the indexed type must be renormalized at least
+    every $2^{p-W-2}$ deposit operations, as will be shown in Theorem \ref{thm:renormfreq}.
+    The renormalization procedure is shown in Algorithm \ref{alg:renorm},
+    which works for all indices $0 \leq I \leq i_{max}$.
+
+    \begin{samepage}
+    \begin{alg}
+      For a $K$-fold indexed type $Y$ of index $I$, assuming ${Y_k}_P \in [1.25  \epsilon^{-1} 2^{a_{I + k}}, 2  \epsilon^{-1} 2^{a_{I + k}})$, renormalize $Y$ such that ${Y_k}_P \in [1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}})$.
+      \begin{algorithmic}[1]
+        \Require
+          \Statex ${Y_k}_P \in [1.25  \epsilon^{-1} 2^{a_{I + k}}, 2  \epsilon^{-1} 2^{a_{I + k}})$
+        \Function{Renorm}{K, Y}
+          \For{$k = 0 \To K - 1$}
+            \If{${Y_k}_P < 1.5 \cdot \ufp({Y_k}_P)$}
+              \State ${Y_k}_P = {Y_k}_P + 0.25 \cdot \ufp({Y_k}_P)$
+              \State ${Y_k}_C = {Y_k}_C - 1$
+            \EndIf
+            \If{${Y_k}_P \geq 1.75 \cdot \ufp({Y_k}_P)$}
+              \State ${Y_k}_P = {Y_k}_P - 0.25 \cdot \ufp({Y_k}_P)$
+              \State ${Y_k}_C = {Y_k}_C + 1$
+            \EndIf
+          \EndFor
+        \EndFunction
+        \Ensure
+          \Statex ${Y_k}_P \in [1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}})$.
+          \Statex The values $\mathcal{Y}_k$ are unchanged. Recall that by \eqref{eq:acc},
+          \begin{equation*}
+            \mathcal{Y}_k = {\mathcal{Y}_k}_P + {\mathcal{Y}_k}_C = ({Y_k}_P - 1.5 \epsilon^{-1} 2^{a_{I + k}}) + (0.25\epsilon^{-1}2^{a_{I + k}}){Y_k}_C
+          \end{equation*}
+      \end{algorithmic}
+      \label{alg:renorm}
+    \end{alg}
+    \end{samepage}
+    The renormalization operation is described in the ``Carry-bit Propagation''
+    Section (lines 21 to 32) of Algorithm $6$ in \cite{repsum}, although it has
+    been slightly modified so as not to include an extraneous case.
+    In total, Algorithm~\ref{alg:renorm} costs $3K$ FLOPs with a maximum of
+    $2K$ conditional branches.
+
+    To show the reasoning behind the assumptions in Algorithm \ref{alg:renorm},
+    we prove Theorem \ref{thm:renormfreq}.
+
+      \begin{samepage}
+    \begin{thm}
+      Assume $x_0, x_1, ... x_{n - 1} \in \F$ are successively deposited (using Algorithm \ref{alg:deposit}) in a $K$-fold indexed type $Y$ of index $I$ where $\max|x_j| < 2^{b_I}$. If $Y$ initially satisfies ${Y_k}_P \in [1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}})$ and $n \leq 2^{p - W - 2}$, then after all of the deposits, ${Y_k}_P \in [1.25  \epsilon^{-1} 2^{a_{I + k}}, 2  \epsilon^{-1} 2^{a_{I + k}})$.
+      \label{thm:renormfreq}
+    \end{thm}
+    \end{samepage}
+
+    \begin{proof}
+    First, note that $|d(x_j, I + k)| \leq 2^{b_{I + k}}$ by Theorem
+    \ref{thm:dbound}, where $d(x_j, I + k)$ is the amount added to ${Y_k}_P$ on
+    iteration $k$.
+
+    By Theorem \ref{thm:ddeposit}, the deposit operation extracts and adds the slices of $x_j$ exactly (assuming ${Y_k}_P \in (\epsilon^{-1} 2^{a_{I + k}}, 2  \epsilon^{-1} 2^{a_{I + k}})$ at each step, which will be shown),
+
+    \begin{equation*}
+    \bigl|\sum \limits_{n = 0}^{n - 1} d(x_j, I + k)\bigr| \leq n  2^{b_{I + k}} = n  2^{W}  2^{a_{I + k}}
+    \end{equation*}
+
+    If $n \leq 2^{p - W - 2}$, then after the $n^{th}$ deposit
+
+    \begin{align*}
+    {Y_k}_P &\in \bigl[(1.5  \epsilon^{-1} - n  2^W) 2^{a_{I + k}}, (1.75  \epsilon^{-1} + n  2^W) 2^{a_{I + k}}\bigr) \\
+    &\in [1.25  \epsilon^{-1} 2^{a_{I + k}}, 2  \epsilon^{-1} 2^{a_{I + k}})
+    \end{align*}
+    \end{proof}
+
+    If an indexed type $Y$ initially satisfies ${Y_k}_P \in [1.5  \epsilon^{-1}
+    2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}})$
+    (such a condition is satisfied upon initialization of a new accumulator of $Y$
+    during the updating process as will be explained in Section~\ref{sec:primitiveops_update})
+    and we deposit at most
+    $2^{p-W-2}$ floating point numbers into it, then Theorem \ref{thm:renormfreq}
+    shows that after all of the deposits, ${Y_k}_P \in [1.25  \epsilon^{-1}
+    2^{a_{I + k}}, 2  \epsilon^{-1} 2^{a_{I + k}})$. Therefore, after another
+    renormalization, the primary fields would once again satisfy ${Y_k}_P \in
+    [1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}})$.
+    The limit of at most $2^{p-W-2}$ numbers can be accumulated before having to carry out a renormalization
+    also requires that $p-W-2 > 0$, or 
+    \begin{equation}
+        W < p - 2.
+    \end{equation}
+
+    As ${Y_k}_C$ must be able to record additions of absolute value 1 without
+    error, ${Y_k}_C$ must stay in the range $[-\epsilon^{-1}, \epsilon^{-1}]$.
+    As each renormalization results in addition not in excess absolute value of
+    1 to ${Y_k}_C$, a maximum of $\epsilon^{-1}$ renormalizations may be
+    performed, meaning that an indexed type is capable of representing the sum
+    of at least
+    \begin{equation}
+      \epsilon^{-1} 2^{p-W-2} = 2^{2  p - W - 2}
+      \label{eq:totalfreq}
+    \end{equation}
+    floating point numbers. It means $2^{64}$ in double and $2^{33}$ in single precision using the values in Table~\ref{fig:bins}.
+    Note that this value of maximum number of additions is slightly bigger
+    than that of \cite{repsum} since we exclude the extraneous case which caused
+    the increment of the carry field to at most 2 in absolute value per each renormalization.
+    These bounds also exceed the largest integer that can be represented
+    in the same-sized integer format, which helps justify the choice of $W$.
+

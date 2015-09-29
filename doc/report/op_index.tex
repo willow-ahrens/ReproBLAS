@@ -1,0 +1,54 @@
+  \subsection{Index}
+    \label{sec:primitiveops_index}
+    When operating on indexed types it is sometimes necessary to compute their
+    index. Algorithm \ref{alg:iindex} yields the index of an indexed type in
+    constant time.
+
+    \begin{samepage}
+    \begin{alg}
+      Given an indexed type $Y$, calculate its index $I$
+      \begin{algorithmic}[1]
+        \Require
+          \Statex ${Y_0}_P \in (\epsilon^{-1}  2^{a_{I}}, 2  \epsilon^{-1}  2^{a_I})$
+          where $a_I$ is defined in \eqref{eq:a}
+        \Function{IIndex}{Y}
+          \State \Return $\lfloor(e_{\max} + p - \exp({Y_0}_P) - W + 1)/W\rfloor$
+          \Comment{Index $I$ of $Y$}
+        \EndFunction
+        \Ensure
+          \Statex Returned result $I$ is the index of $Y$.
+      \end{algorithmic}
+      \label{alg:iindex}
+    \end{alg}
+    \end{samepage}
+
+    Note that the floor function is necessary in Algorithm \ref{alg:iindex} to
+    account for the case of $Y$ with index $0$, which has $\exp({Y_0}_P) =
+    2^{e_{\max}}$ as discussed in Section \ref{sec:indexed_overflow}.  This
+    uses the assumption that $\frac{p+1}{2} < W < p-2$, so $3 < p - W + 1 < W.$
+
+    Another useful operation is, given some $x \in \F$, to find the unique bin
+    $(a_J, b_J]$ such that $2^{b_J} > |x| \geq 2^{a_J}$. Algorithm
+    \ref{alg:index} yields such a $J$ in constant time.
+    Note that, for $x=0$ or very small values $x < 2^{a_{i_{max}}}$,
+    we simply return the least bin
+    since values smaller than the least bin will not be accumulated.
+
+    \begin{samepage}
+    \begin{alg}
+      Given $x \in \F$, calculate $J$ such that $2^{b_J} > |x| \geq 2^{a_J}$.
+      \begin{algorithmic}[1]
+        \Require $i_{max}$ is defined in \eqref{eq:imax},
+          $a_J$ is defined in \eqref{eq:a}.
+        \Function{Index}{x}
+          \If {$x = 0$} \State \Return $i_{max}$ \EndIf
+          \State \Return $\min(i_{max}, \lfloor(e_{\max} - \exp(x))/W\rfloor)$
+          \Comment{Index $J$ of $x$}
+        \EndFunction
+        \Ensure
+          \Statex The bin $(a_{J}, b_{J}]$ satisfies $2^{b_{J}} > |x| \geq 2^{a_{J}}$ when
+          $|x| \geq 2^{a_{i_{max}}}$, and $J=i_{max}$ otherwise.
+      \end{algorithmic}
+      \label{alg:index}
+    \end{alg}
+     \end{samepage}
