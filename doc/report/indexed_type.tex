@@ -1,45 +1,128 @@
 \section{The Indexed Type}
   \label{sec:indexed}
-    The \textbf{indexed type} is used to represent the intermediate result of accumulation using Algorithms 6 and $7$ in \cite{repsum}.
-    An indexed type $Y$ is a data structure composed of several accumulator data structures $Y_0, ..., Y_{K - 1}$. An indexed type with $K$ accumulators is referred to as a \textbf{$K$-fold} indexed type. Due to their low accuracy, 1-fold indexed types are not considered.
+    The \textbf{indexed type} is used to represent the intermediate result of
+    accumulation using Algorithms 6 and $7$ in \cite{repsum}.  An indexed type
+    $Y$ is a data structure composed of several accumulator data structures
+    $Y_0, ..., Y_{K - 1}$. An indexed type with $K$ accumulators is referred to
+    as a \textbf{$K$-fold} indexed type. Due to their low accuracy, 1-fold
+    indexed types are not considered.
 
-    Let $Y$ be the indexed type corresponding to the reproducibly computed sum of $x_0, ..., x_{n - 1} \in \F$. $Y$ is referred to as the \textbf{indexed sum} of $x_0, ..., x_{n - 1}$.
+    Let $Y$ be the indexed type corresponding to the reproducibly computed sum
+    of $x_0, ..., x_{n - 1} \in \F$. $Y$ is referred to as the \textbf{indexed
+    sum} of $x_0, ..., x_{n - 1}$.
 
-    Each accumulator $Y_k$ is a data structure used to accumulate the slices of input in the bin $(a_{I + k}, b_{I + k}]$ where $I$ is the \textbf{index} of $Y$ and $k \geq 0$ as discussed below. The \textbf{width} of an indexed type is equal to the width of its bins, $W$. Recall the assumptions \eqref{eq:wupper} and \eqref{eq:wlower} made on the value of $W$.
+    Each accumulator $Y_k$ is a data structure used to accumulate the slices of
+    input in the bin $(a_{I + k}, b_{I + k}]$ where $I$ is the \textbf{index}
+    of $Y$ and $k \geq 0$ as discussed below. The \textbf{width} of an indexed
+    type is equal to the width of its bins, $W$. Recall the assumptions
+    \eqref{eq:wupper} and \eqref{eq:wlower} made on the value of $W$.
 
-    The accumulators in an indexed type correspond to contiguous bins in decreasing order. The index of $Y$ is defined as the least $I \in \Z$ such that $2^{b_I + 1} > \max(|x_0|, ..., |x_n|)$ (equivalently, the least $I \in \Z$ such that $b_I > \max(e_0, ..., e_n)$ where $e_i=\exp(x_i)$). If $Y$ has index $I$, then $Y_k, k \in \{0, ..., K - 1\}$ accumulates slices of input in the bin $(a_{I + k}, b_{I + k}]$. If $I$ is so large that $I + K > i_{\max}$, then the extra $I + K - i_{\min}$ accumulators are unused.
+    The accumulators in an indexed type correspond to contiguous bins in
+    decreasing order. The index of $Y$ is defined as the least $I \in \Z$ such
+    that $2^{b_I + 1} > \max(|x_0|, ..., |x_n|)$ (equivalently,
+    the least $I \in \Z$ such that $b_I > \max(e_0, ..., e_n)$ where $e_i=\exp(x_i)$).
+    If $Y$ has index $I$, then $Y_k, k \in \{0, ..., K - 1\}$ accumulates slices
+    of input in the bin $(a_{I + k}, b_{I + k}]$. If $I$ is so large that
+    $I + K > i_{\max}$, then the extra $I + K - i_{\min}$ accumulators are unused.
 
-    Section \ref{sec:indexed_primary_carry} elaborates on the specific fields that make up the indexed type and the values they represent. Sections \ref{sec:indexed_overflow}, \ref{sec:indexed_underflow_gradual}, \ref{sec:indexed_underflow_abrupt}, and \ref{sec:indexed_exceptions} contain extensions of the indexed type to handle overflow, underflow, and exceptional values. Section \ref{sec:indexed_sum} explains how the indexed type is used to represent the sum of floating point numbers.
+    Section \ref{sec:indexed_primary_carry} elaborates on the specific fields
+    that make up the indexed type and the values they represent. Sections
+    \ref{sec:indexed_overflow}, \ref{sec:indexed_underflow_gradual},
+    \ref{sec:indexed_underflow_abrupt}, and \ref{sec:indexed_exceptions}
+    contain extensions of the indexed type to handle overflow, underflow, and
+    exceptional values.
 
     \subsection{Primary and Carry}
       \label{sec:indexed_primary_carry}
-      As discussed in \cite{repsum}, indexed types are represented using floating point numbers to minimize traffic between floating point and integer arithmetic units.
+      As discussed in \cite{repsum}, indexed types are represented using
+      floating point numbers to minimize traffic between floating point and
+      integer arithmetic units.
 
-      In the ReproBLAS library, if an indexed type is used to sum \texttt{doubles}, then it is composed entirely of \texttt{doubles} and likewise for \texttt{floats}. ReproBLAS supports complex types as pairs of real and imaginary components (stored contiguously in memory). If an indexed type is used to sum complex \texttt{doubles} or \texttt{floats}, then it is composed of pairs (real part, imaginary part) of \texttt{doubles} or \texttt{floats} respectively. The decision to keep the real and imaginary components together (as opposed to keeping separate indexed types for real and imaginary parts of the sum) was motivated by a desire to process accumulators simultaneously with vectorized (SIMD) instructions.
+      In the ReproBLAS library, if an indexed type is used to sum
+      \texttt{doubles}, then it is composed entirely of \texttt{doubles} and
+      likewise for \texttt{floats}. ReproBLAS supports complex types as pairs
+      of real and imaginary components (stored contiguously in memory). If an
+      indexed type is used to sum complex \texttt{doubles} or \texttt{floats},
+      then it is composed of pairs (real part, imaginary part) of
+      \texttt{doubles} or \texttt{floats} respectively. The decision to keep
+      the real and imaginary components together (as opposed to keeping
+      separate indexed types for real and imaginary parts of the sum) was
+      motivated by a desire to process accumulators simultaneously with
+      vectorized (SIMD) instructions.
 
-      The accumulators $Y_k$ of an indexed type $Y$ are each implemented using two underlying floating point fields. The \textbf{primary} field ${Y_k}_P$ is used during accumulation, while the \textbf{carry} field ${Y_k}_C$ holds overflow from the primary field. Because primary fields are frequently accessed sequentially, the primary fields and carry fields are each stored contiguously in separate arrays. The notation for the primary field ${Y_k}_P$ and carry field ${Y_k}_C$ corresponds to the ``$S_j$'' and ``$C_j$'' of Algorithm $6$ in \cite{repsum}.
+      The accumulators $Y_k$ of an indexed type $Y$ are each implemented using
+      two underlying floating point fields. The \textbf{primary} field
+      ${Y_k}_P$ is used during accumulation, while the \textbf{carry} field
+      ${Y_k}_C$ holds overflow from the primary field. Because primary fields
+      are frequently accessed sequentially, the primary fields and carry fields
+      are each stored contiguously in separate arrays. The notation for the
+      primary field ${Y_k}_P$ and carry field ${Y_k}_C$ corresponds to the
+      ``$S_j$'' and ``$C_j$'' of Algorithm $6$ in \cite{repsum}.
 
-      The numerical value ${\mathcal{Y}_k}_P$ represented by data stored in the primary field ${Y_k}_P$ is an offset from $1.5\epsilon^{-1}2^{a_{I + k}}$ (corresponding to ``$M_{[i]}$'' at the beginning of Section IV.A. in \cite{repsum}), where $I$ is the index of $Y$, as shown in  \eqref{eq:pri} below.
+      The numerical value ${\mathcal{Y}_k}_P$ represented by data stored in the
+      primary field ${Y_k}_P$ is an offset from $1.5\epsilon^{-1}2^{a_{I + k}}$
+      (corresponding to ``$M_{[i]}$'' at the beginning of Section IV.A. in
+      \cite{repsum}), where $I$ is the index of $Y$, as shown in
+      \eqref{eq:pri} below.
+      Note that \eqref{eq:pri} only holds when $I+k > 0$. The special case of $I+k=0$,
+      where $1.5\epsilon^{-1}2^{a_0} > 2^{1+e_{max}}$ is not representable,
+      will be handled in Section~\ref{sec:indexed_overflow} below on Overflow.
       \begin{equation}
         {\mathcal{Y}_k}_P = {Y_k}_P - 1.5\epsilon^{-1}2^{a_{I + k}}
         \label{eq:pri}
       \end{equation}
-      This simplifies the process of extracting the slices of input in bins $(a_{I + k}, b_{I + k}]$. It will be shown in Theorem \ref{thm:ddepositrestricted} in Section~\ref{sec:primitiveops_deposit}
- that if we represent each primary value ${\mathcal{Y}_k}_P$ as in \eqref{eq:pri} and keep ${Y_k}_P$ within the range $(\epsilon^{-1} 2^{a_{I + k}}, 2 \epsilon^{-1} 2^{a_{I + k}})$, then Algorithm \ref{alg:depositrestricted} in Section~\ref{sec:primitiveops_deposit} extracts the slices of $x$ in bins $(a_I, b_I], ..., (a_{I + K - 1}, b_{I + K - 1}]$ and adds them to ${Y_0}_P, ..., {Y_{K - 1}}_P$ without error (and hence reproducibly) for all $x \in \F$, where $|x| < 2^{b_I}$.
+      This simplifies the process of extracting the slices of input in bins
+      $(a_{I + k}, b_{I + k}]$. It will be shown in Theorem
+      \ref{thm:ddepositrestricted} in Section~\ref{sec:primitiveops_deposit}
+      that if we represent each primary value ${\mathcal{Y}_k}_P$ as in
+      \eqref{eq:pri} and keep ${Y_k}_P$ within the range
+      \(
+      	(\epsilon^{-1} 2^{a_{I + k}}, 2 \epsilon^{-1} 2^{a_{I + k}}),
+      \)
+      then Algorithm
+      \ref{alg:depositrestricted} in Section~\ref{sec:primitiveops_deposit}
+      extracts the slices of $x$ in bins 
+      \(
+      	(a_I, b_I], \ldots, (a_{I + K - 1}, b_{I + K - 1}]
+      \)
+      and adds them to ${Y_0}_P, \ldots, {Y_{K - 1}}_P$ without error
+      (and hence reproducibly) for all $x \in \F$, where $|x| < 2^{b_I}$.
 
-      Because $d(x, I + k) = 0$ for bins with $|x| < 2^{a_{I + k}}$, the values in the greatest $K$ nonzero accumulators can be computed reproducibly by computing the values in the greatest $K$ accumulators needed for the largest $x$ seen so far. Upon encountering an $x \geq 2^{b_I}$, the accumulators can then be shifted towards index $0$ as necessary.
-      Since the maximum absolute value operation is always reproducible,
-      so is the index of the greatest accumulator.
+      Because $d(x, I + k) = 0$ for bins with $|x| < 2^{a_{I + k}}$, the values
+      in the greatest $K$ nonzero accumulators can be computed reproducibly by
+      computing the values in the greatest $K$ accumulators needed for the
+      largest $x$ seen so far. Upon encountering an $x \geq 2^{b_I}$, the
+      accumulators can then be shifted towards index $0$ as necessary.  Since
+      the maximum absolute value operation is always reproducible, so is the
+      index of the greatest accumulator.
       %\cite{repsum} contains further discussions of the reproducibility of the algorithm.
 
-      In order to keep the primary fields in the necessary range while the slices are accumulated and to keep the representation of $Y_k$ unique, ${Y_k}_P$ is routinely renormalized to the range $[1.5 \epsilon^{-1} 2^{a_{I + k}}, 1.75 \epsilon^{-1} 2^{a_{I + k}})$.
+      In order to keep the primary fields in the necessary range while the
+      slices are accumulated and to keep the representation of $Y_k$ unique,
+      ${Y_k}_P$ is routinely renormalized to the range 
+      \(
+        [1.5 \epsilon^{-1} 2^{a_{I + k}}, 1.75 \epsilon^{-1} 2^{a_{I + k}}).
+      \)
       As will be shown in Section~\ref{sec:primitiveops_renormalize},
       that renormalization is required every $2^{p-W-2}$ iterations,
       so $2^{11}$ in double and $2^9$ in single precision.
-      Which means the renormalization introduces a very low overhead to the overall running time.
+      This means the renormalization introduces a very low overhead
+      to the overall running time.
       %Section \ref{sec:primitiveops_renormalize} contains a discussion of how often such renormalizations are necessary.
-      To renormalize, ${Y_k}_P$ is incremented or decremented by $0.25 \epsilon^{-1} 2^{a_{I + k}}$ when necessary, leaving the carry field ${Y_k}_C$ to record the number of such adjustments.
-      The numerical value ${\mathcal{Y}_k}_C$ represented by data stored in the carry field ${Y_k}_C$ of an indexed type $Y$ of index $I$ is expressed in \eqref{eq:car}
+      To renormalize, ${Y_k}_P$ is incremented or decremented by
+      $0.25 \epsilon^{-1} 2^{a_{I + k}}$ as described in Algorithm~\ref{alg:renorm},
+      leaving the carry field ${Y_k}_C$ to record the number of such adjustments.
+      Depending on the data format used to store ${Y_k}_C$, the number of
+      updates to one accumulator without overflow is limited,
+      which determines the possible maximum number of inputs that can be
+      reproducibly added to one accumulator.
+      As will be explained in Section~\ref{sec:primitiveops_renormalize},
+      Equation~\eqref{eq:totalfreq}, using the same precision $p$ as the primary field
+      to store the carry field, the total number of inputs
+      that can be reproducibly added to one accumulator is $2^{2p-W-2}$.
+      The numerical value ${\mathcal{Y}_k}_C$ represented by data stored in the carry field
+      ${Y_k}_C$ of an indexed type $Y$ of index $I$ is expressed in
+      \eqref{eq:car}
       \begin{equation}
         {\mathcal{Y}_k}_C = (0.25\epsilon^{-1}2^{a_{I + k}}){Y_k}_C
         \label{eq:car}
@@ -54,12 +137,31 @@
         \mathcal{Y} = \sum\limits_{k = 0}^{K - 1} \mathcal{Y}_k = \sum\limits_{k = 0}^{K - 1} \bigl(({Y_k}_P - 1.5 \epsilon^{-1}2^{a_{I + k}}) + (0.25\epsilon^{-1}2^{a_{I + k}}){Y_k}_C\bigr)
         \label{eq:indexedvalue}
       \end{equation}
-      It is worth noting here that because the primary field ${Y_0}_P$ is stored with an exponent of $a_I + p$, it is unnecessary to store the index of an indexed type explicitly. 
-      As will be explained in Section~\ref{sec:primitiveops_index}, the index can be determined by simply examining the exponent of ${Y_0}_P$, as all $a_I$ are distinct and the mapping between the exponent of ${Y_0}_P$ and the index of $Y$ is bijective.
+      It is worth noting that by keeping ${Y_k}_P$ within the range
+      \(
+      	(\epsilon^{-1} 2^{a_{I + k}}, 2 \epsilon^{-1} 2^{a_{I + k}})
+      \)
+      for $I+k > 0$, the exponent of ${Y_0}_P$ is $a_I + p$ when $I > 0$.
+      The case of $I = 0$ will be explained in the below section of Overflow.
+      Therefore it is unnecessary to store the index of an indexed type explicitly.
+      As will be explained in
+      Section~\ref{sec:primitiveops_index}, the index can be determined by
+      simply examining the exponent of ${Y_0}_P$, as all $a_I$ are distinct and
+      the mapping between the exponent of ${Y_0}_P$ and the index of $Y$ is
+      bijective.
 
     \subsubsection{Overflow}
       \label{sec:indexed_overflow}
-      If an indexed type $Y$ has index 0 and the width is $W$, then the value in the primary field ${Y_0}_P$ is stored as an offset from $1.5\epsilon^{-1}2^{e_{\max} + 1 - W}$. However, $1.5\epsilon^{-1}2^{e_{\max} + 1 - W} > 2^{e_{\max} + 1 + (p - W)} > 2 \cdot 2^{e_{\max}}$ since $W < p - 2$, so it is out of the range of the floating-point system and not representable. Before discussing the solution to this overflow problem, take note of Theorem \ref{thm:overflow}.
+      If an indexed type $Y$ has index 0 and the width is $W$, then the value
+      in the primary field ${Y_0}_P$ would be stored as an offset from
+      $1.5\epsilon^{-1}2^{e_{\max} + 1 - W}$. However,
+      \(
+        1.5\epsilon^{-1}2^{e_{\max} + 1 - W} > 2^{e_{\max} + 1 + (p - W)}
+            > 2 \cdot 2^{e_{\max}}
+      \) since $W < p - 2$, so it would be out of the range of the
+      floating-point system and not representable. Before discussing the
+      solution to this overflow problem, take note of Theorem
+      \ref{thm:overflow}.
 
       \begin{samepage}
       \begin{thm}
@@ -76,17 +178,34 @@
           |{Y_k}_P| < 2 \epsilon^{-1} 2^{a_{I + k}} \leq 2^{1 + p} 2^{e_{\max} - 1 - p} = 2^{e_{\max}}
         \end{equation*}
       \end{proof}
-      By Theorem \ref{thm:overflow}, if $2 W > p + 1$ then the only primary field that could possibly overflow is a primary field corresponding to bin 0, and all other primary fields have exponent less than $e_{\max}$. Therefore, we impose $2 W > p + 1$ and express the value of the primary field corresponding to bin 0 as a scaled offset from $1.5\cdot2^{e_{\max}}$. Note that this preserves uniqueness of the exponent of the primary field corresponding to bin 0 because no other primary field has an exponent of $e_{\max}$. The value ${\mathcal{Y}_0}_P$ stored in the primary field ${Y_0}_P$ of an indexed type $Y$ of index 0 is expressed in \eqref{eq:pri0}.
+      By Theorem \ref{thm:overflow}, if $2 W > p + 1$ then the only primary
+      field that could possibly overflow is a primary field corresponding to
+      bin 0, and all other primary fields have exponent less than $e_{\max}$.
+      Therefore, we require $2 W > p + 1$ and express the value of the primary
+      field corresponding to bin 0 as a scaled offset from
+      $1.5\cdot2^{e_{\max}}$. Note that this preserves uniqueness of the
+      exponent of the primary field corresponding to bin 0 because no other
+      primary field has an exponent of $e_{\max}$. The value
+      ${\mathcal{Y}_0}_P$ stored in the primary field ${Y_0}_P$ of an indexed
+      type $Y$ of index 0 is expressed in \eqref{eq:pri0}.
       \begin{equation}
         {\mathcal{Y}_0}_P = 2^{p - W + 1}({Y_0}_P - 1.5\cdot2^{e_{\max}})
         \label{eq:pri0}
       \end{equation}
     \subsubsection{Gradual Underflow}
       \label{sec:indexed_underflow_gradual}
-      Here we consider the effects of gradual underflow on algorithms described in \cite{repsum} and how the indexed type allows these algorithms to work correctly.
+      Here we consider the effects of gradual underflow on algorithms described
+      in \cite{repsum} and how the indexed type allows these algorithms to work
+      correctly.
 
     \label{sec:primitiveops_deposit}
-      Algorithms \ref{alg:deposit} for adding a floating point input to an indexed type in Section~\ref{sec:primitiveops_deposit} and Algorithm~\ref{alg:renorm} for renormalizing an indexed type in Section~\ref{sec:primitiveops_renormalize} require that the primary fields ${Y_k}_P$ are normalized to work correctly. Theorem \ref{thm:underflowufp} shows that the primary fields should always be normalized.
+      Algorithms \ref{alg:deposit} for adding a floating point input to an
+      indexed type in Section~\ref{sec:primitiveops_deposit} and
+      Algorithm~\ref{alg:renorm} for renormalizing an indexed type in
+      Section~\ref{sec:primitiveops_renormalize} require that the primary
+      fields ${Y_k}_P$ are normalized to work correctly. Theorem
+      \ref{thm:underflowufp} shows that the primary fields should always be
+      normalized.
 
       \begin{samepage}
       \begin{thm}
@@ -97,20 +216,27 @@
 
       \begin{proof}
         By \eqref{eq:binmin},
-        \begin{equation*}
+        \[
         a_{I + k} \geq a_{i_{\max}} = e_{\min} - p + 2 + \bigl((e_{\max} - e_{\min} + p - 1) \mod W\bigr) \geq e_{\min} - p + 2
-        \end{equation*}
+        \]
 
         Because ${Y_k}_P \in (\epsilon^{-1} 2^{a_{I + k}}, 2 \epsilon^{-1} 2^{a_{I + k}})$ we have $\exp({Y_k}_P) = a_{I + k} + p > e_{\min} + 1$ so ${Y_k}_P$ is normalized.
       \end{proof}
 
-      Algorithm \ref{alg:deposit} relies on setting the last bit of intermediate results before adding them to ${Y_k}_P$ in order to fix the direction of the rounding mode. However, if $r$ is the quantity to be added to ${Y_k}_P$, $\ulp(r)$ must be less than rounding error when added to ${Y_k}_P$.
-      Mathematically, we will require $\ulp(r) < 0.5\ulp({Y_k}_P)$ in order to prove
-      Theorem~\ref{thm:ddeposit} about the correctness of Algorithm~\ref{alg:deposit}.
-      This is why we must enforce $a_{i_{\max}} \geq e_{\min} - p + 2$
-      so that the least significant bit of the least bin is larger than twice the smallest denormalized number.
+      Algorithms \ref{alg:depositrestricted} and \ref{alg:deposit} rely on
+      setting the last bit of intermediate results before adding them to
+      ${Y_k}_P$ in order to fix the direction of the rounding mode. However, if
+      $r$ is the quantity to be added to ${Y_k}_P$, $\ulp(r)$ must be less than
+      rounding error in ${Y_k}_P$ when added to ${Y_k}_P$.
+      Mathematically, we will require $\ulp(r) < 0.5\ulp({Y_k}_P)$ in order to
+      prove Theorem~\ref{thm:ddeposit} about the correctness of
+      Algorithm~\ref{alg:deposit}.  This is why we must enforce $a_{i_{\max}}
+      \geq e_{\min} - p + 2$ so that the least significant bit of the least bin
+      is larger than twice the smallest denormalized number.
 
-      Although the bins do not extend all the way to $e_{\min} - p$, the sum of the slices of some $x \in \F$ still offers a good approximation of $x$.
+      Although the bins do not extend all the way to $e_{\min} - p$, we now
+      show that the sum of the slices of some $x \in \F$ still offers a good
+      approximation of $x$.
 
       Using $W < p - 2$ and \eqref{eq:binmin},
       \begin{align*}
@@ -120,9 +246,9 @@
       \end{align*}
 
       Hence,
-      \begin{equation*}
+      \[
         a_{i_{\max}} \leq e_{\min} - 2
-      \end{equation*}
+      \]
 
       As a consequence, we can use Theorem \ref{thm:dround} to say that for any $x \in \F$,
       \begin{equation}
@@ -130,33 +256,71 @@
         \label{eq:droundunderflow}
       \end{equation}
 
-      This means that we can approximate $x$ using the sum of its slices to the nearest multiple of $2^{e_{\min}-1}$.
+      This means that we can approximate $x$ using the sum of its slices to the
+      nearest multiple of $2^{e_{\min}-1}$.
 
-      It is possible to sum the input in the denormalized range. One simple way the algorithm could be extended to denormalized inputs would be to scale the least bins up, analogously to the way we handled overflow. Due to the relatively low priority for accumulating denormalized values, this method was not implemented in ReproBLAS.
+      It is possible to sum the input in the denormalized range. One simple way
+      the algorithm could be extended to denormalized inputs would be to scale
+      the least bins up, analogously to the way we handled overflow. Due to the
+      relatively low priority for accumulating denormalized values, this method
+      was not implemented in ReproBLAS.
 
     \subsubsection{Abrupt Underflow}
       \label{sec:indexed_underflow_abrupt}
-      If underflow is abrupt, several approaches may be taken to modify the given algorithms to ensure reproducibility.
+      If underflow is abrupt, several approaches may be taken to modify the
+      given algorithms to ensure reproducibility.
 
-      The most straightforward approach would be to accumulate input in the denormalized range by scaling the smaller inputs up. This has the added advantage of increasing the accuracy of the algorithm. A major disadvantage to this approach is the additional branching cost incurred due to the conditional scaling.
+      The most straightforward approach would be to accumulate input in the
+      denormalized range by scaling the smaller inputs up. This has the added
+      advantage of increasing the accuracy of the algorithm. A major
+      disadvantage to this approach is the additional branching cost incurred
+      due to the conditional scaling.
 
-      A more efficient way to solve the problem would be to set the least bin to have $a_{i_{\max}} = 2^{e_{\min}}$. This could be accomplished either by keeping the current binning scheme and having the least bin be of a width not necessarily equal to $W$, or by shifting all other bins to be greater. The disadvantage of shifting the other bins is that it may cause multiple greatest bins to overflow, adding multiple scaling cases. Setting such a least bin would enforce the condition that no underflow occurs since all intermediate sums are either $0$ or greater than the underflow threshold. The denormal range would be discarded.
+      A more efficient way to solve the problem would be to set the least bin
+      to have $a_{i_{\max}} = e_{\min}$. This means that all the values smaller
+      than $2^{e_{\min}}$ will not be accumulated,
+      i.e. similarly to zeroing out the mantissa bits of each summand
+      that correspond to values $2^{(e_min-1)}$ or smaller.
+      This could be accomplished either
+      by keeping the current binning scheme and having the least bin be of a
+      width not necessarily equal to $W$, or by shifting all other bins to be
+      greater. The disadvantage of shifting the other bins is that it may cause
+      multiple greatest bins to overflow, adding multiple scaling cases.
+      Setting such a least bin would enforce the condition that no underflow
+      occurs since all intermediate sums are either $0$ or greater than the
+      underflow threshold. The denormal range would be discarded.
 
-    In the case that reproduciblity is desired on heterogeneous machines, where some processors may handle underflow gradually and others abruptly, the approach of setting a least bin is reccomended. The indexed sum using this scheme does not depend on whether or not underflow is handled gradually or abruptly, so the results will be the same regardless of where they are computed.
+      In the case that reproduciblity is desired on heterogeneous machines,
+      where some processors may handle underflow gradually and others abruptly,
+      the approach of setting a least bin is recommended. The indexed sum using
+      this scheme does not depend on whether or not underflow is handled
+      gradually or abruptly, so the results will be the same regardless of
+      where they are computed.
 
     \subsubsection{Exceptions}
       \label{sec:indexed_exceptions}
-      Indexed types are capable of representing exceptional cases such as \texttt{NaN} (Not a Number) and \texttt{Inf} (Infinity). An indexed type $Y$ stores its exception status in its first primary field ${Y_0}_P$.
+      Indexed types are capable of representing exceptional cases such as
+      \texttt{NaN} (Not a Number) and \texttt{Inf} (Infinity). An indexed type
+      $Y$ stores its exception status in its first primary field ${Y_0}_P$.
 
-      A value of $0$ in ${Y_0}_P$ indicates that nothing has been added to ${Y_0}_P$ yet (${Y_0}_P$ is initialized to $0$).
+      A value of $0$ in ${Y_0}_P$ indicates that nothing has been added to
+      ${Y_0}_P$ yet (${Y_0}_P$ is initialized to $0$).
 
-      Since the ${Y_k}_P$ are kept within the range $(\epsilon^{-1}  2^{a_{I + k}}, 2  \epsilon^{-1}  2^{a_{I + k}})$ (where $I$ is the index) and are normalized (by Theorem \ref{thm:underflowufp}), we have
+      Since the ${Y_k}_P$ are kept within the range
+      \(
+      	(\epsilon^{-1}  2^{a_{I + k}}, 2 \epsilon^{-1} 2^{a_{I + k}})
+      \) (where $I$ is the index) and are
+      normalized (by Theorem \ref{thm:underflowufp}), we have
 
       \begin{equation*}
         {Y_k}_P > 2^{e_{\min}}
       \end{equation*}
 
-      Therefore the value of $0$ in a primary field is unused in any previously specified context and may be used as a sentinel value. (As the exponent of $0$ is distinct from the exponent of normalized values, the bijection between the index of an indexed type $Y$ and the exponent of ${Y_0}_P$ is preserved)
+      Therefore the value of $0$ in a primary field is unused in any previously
+      specified context and may be used as a sentinel value. (As the exponent
+      of $0$ is distinct from the exponent of normalized values, the bijection
+      between the index of an indexed type $Y$ and the exponent of ${Y_0}_P$ is
+      preserved)
 
       A value of \texttt{Inf} or \texttt{-Inf} in ${Y_0}_P$ indicates that one or more \texttt{Inf} or \texttt{-Inf} (and no other exceptional values) have been added to $Y$ respectively.
 
@@ -164,10 +328,36 @@
 
       As the ${Y_k}_P$ are kept finite to store finite values, \texttt{Inf}, \texttt{-Inf}, and \texttt{NaN} are unused in any previously specified context and are valid sentinel values. (As the exponent of \texttt{Inf}, \texttt{-Inf}, and \texttt{NaN} is distinct from the exponent of finite values, the bijection between the index of an indexed type $Y$ and the exponent of ${Y_0}_P$ is preserved)
 
-      This behavior follows the behavior for exceptional values in IEEE 754-2008 floating point arithmetic. The result of adding some exceptional values using floating-point arithmetic therefore matches the result obtained from indexed summation. As \texttt{Inf}, \texttt{-Inf}, and \texttt{NaN} add associatively, this behavior is reproducible.
+      This behavior follows the behavior for exceptional values in IEEE
+      754-2008 floating point arithmetic. The result of adding some exceptional
+      values using floating-point arithmetic therefore matches the result
+      obtained from indexed summation. As \texttt{Inf}, \texttt{-Inf}, and
+      \texttt{NaN} add associatively, this behavior is reproducible.
 
-      It should be noted here that it is possible to achieve a final result of \texttt{Inf} or \texttt{-Inf} when ${Y_0}_P$ is finite. This is due to the fact that the indexed representation can express values outside of the range of the floating point numbers that it is composed with. More specifically, it is possible for the value $\mathcal{Y}$ represented by the indexed type $Y$ to satisfy $|\mathcal{Y}| \geq 2 \cdot 2^{e_{\max}}$. The condition that $\mathcal{Y}$ is not representable is discovered when calculating $\mathcal{Y}$ (converting $Y$ to a floating point number). The methods used to avoid overflow and correctly return the \texttt{Inf} or \texttt{-Inf} are discussed in Section \ref{sec:primitiveops_convert}.
+      Note that, as will be explained in Section~\ref{sec:primitiveops},
+      as long as the number of input is limited by $n \leq 2^{2p-W-2}$
+      and all the inputs are finite, there will be no intermediate \texttt{NaN}
+      or $\pm \texttt{Inf}$ during the computation.
+      For example, given $x \in \F$ the biggest representable value below the
+      overflow threshhold, our alogrithm will compute a result of exact $0$ for
+      the sum of input vector $[x,x,-x,-x]$ regardless of the order of evaluation.
+      Whereas, a standard recursive summation algorithm returns either
+      $((x+x)-x)-x=\texttt{Inf}$, $((-x-x)+x)+x=-\texttt{Inf}$, $((x-x)+x)-x = 0$, 
+      or $((x + x) + (-x-x)) = \texttt{NaN}$ depending on the order of evaluation.
 
+      It should also be noted here that it is possible to achieve a final result of
+      $\pm \texttt{Inf}$ when ${Y_0}_P$ is finite. This is due to
+      the fact that the indexed representation can express values outside of
+      the range of the floating point numbers that it is composed with. More
+      specifically, it is possible for the value $\mathcal{Y}$ represented by
+      the indexed type $Y$ to satisfy $|\mathcal{Y}| \geq 2 \cdot
+      2^{e_{\max}}$. The condition that $\mathcal{Y}$ is not representable is
+      discovered when calculating $\mathcal{Y}$ (converting $Y$ to a floating
+      point number). The methods used to avoid overflow and correctly return
+      the \texttt{Inf} or \texttt{-Inf} are discussed in Section
+      \ref{sec:primitiveops_convert}.
+
+    \begin{comment}
     \subsection{Indexed Sum}
       \label{sec:indexed_sum}
       Although we have explained the data structure of the indexed type, it is unclear how the indexed type can be used for summation. Therefore, we define a sum that can be expressed using the indexed type. The $K$-fold \textbf{indexed sum} of $x_0, ..., x_{n - 1} \in \F$ is defined to be a $K$-fold indexed type $Y$ such that:
@@ -223,5 +413,5 @@
 
         Therefore, we have that ${Y_0}_C = {Z_0}_C$. Along with the fact that $\mathcal{Y}_0 = \mathcal{Z}_0$, application of \eqref{eq:acc} together with \eqref{eq:pri0} yields that ${Y_0}_P = {Z_0}_P$.
       \end{proof}
-
     Lemma \ref{lem:indexed_sum_unique} implies that any algorithm that can compute the indexed sum of a list of floating point numbers is a reproducible summation algorithm, as the indexed sum is well-defined, unique, and independent of the ordering of the summands.
+  \end{comment}
