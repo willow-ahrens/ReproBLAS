@@ -180,7 +180,7 @@
 
       \begin{samepage}
       \begin{lem}
-        Let $Y$ be the indexed sum of some $x_0, ..., x_{n - 1} \in \F$.
+        Let $Y$ be the indexed sum of some $x_0, ..., x_{n - 1} \in \F$, where each $x_i$ is a finite value.
         Let $\sigma_0, ..., \sigma_{n - 1}$ be some permutation of the first $n$ nonnegative integers such that $\{\sigma_0, ..., \sigma_{n - 1}\} = \{0, ..., n - 1\}$ as sets.
         Let $Z$ be the indexed sum of $x_{\sigma_0}, ..., x_{\sigma_{n - 1}}$.
 
@@ -197,7 +197,7 @@
           \mathcal{Y}_k = \sum\limits_{j = 0}^{n - 1}d(x_j, I + k) = \sum\limits_{j = 0}^{n - 1}d(x_{\sigma_j}, I + k) = \mathcal{Z}_k
         \end{equation*}
 
-        Assume for contradiction that there exists some $k$, $0 \leq k < K$,$I + k > 0$, such that ${Y_k}_C \neq {Z_k}_C$. Since $\mathcal{Y}_k = \mathcal{Z}_k$, \eqref{eq:acc} yeilds
+        If $I + k \geq 1$, Assume for contradiction that there exists some $k$, $0 \leq k < K$,, such that ${Y_k}_C \neq {Z_k}_C$. Since $\mathcal{Y}_k = \mathcal{Z}_k$, \eqref{eq:acc} yeilds
         \begin{align*}
           ({Y_k}_P - 1.5 \epsilon^{-1}2^{a_{I + k}}) + (0.25\epsilon^{-1}2^{a_{I + k}}){Y_k}_C &= ({Z_k}_P - 1.5 \epsilon^{-1}2^{a_{I + k}}) + (0.25\epsilon^{-1}2^{a_{I + k}}){Z_k}_C\\
           {Y_k}_P - {Z_k}_P &= (0.25\epsilon^{-1}2^{a_{I + k}})({Z_k}_C - {Y_k}_C)\\
@@ -205,6 +205,8 @@
         \end{align*}
 
         Since ${Y_k}_P \in [1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}})$, ${Z_k}_P \not\in [1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}})$, a contradiction.
+
+        Therefore, we have that ${Y_k}_C = {Z_k}_C$. Along with the fact that $\mathcal{Y}_k = \mathcal{Z}_k$, application of \eqref{eq:acc} yields that ${Y_k}_P = {Z_k}_P$.
 
         If $I = 0$, assume for contradiction that ${Y_0}_C \neq {Z_0}_C$. Since $\mathcal{Y}_0 = \mathcal{Z}_0$, \eqref{eq:acc} and \eqref{eq:pri0} yeild
         \begin{align*}
@@ -219,5 +221,7 @@
 
         Since ${Y_0}_P \in [1.5  \cdot2^{e_{\max}}, 1.75  \cdot2^{e_{\max}})$, ${Z_k}_P \not\in [1.5  \cdot2^{e_{\max}}, \cdot2^{e_{\max}})$, a contradiction.
 
-        Therefore, we have that $Y_
+        Therefore, we have that ${Y_0}_C = {Z_0}_C$. Along with the fact that $\mathcal{Y}_0 = \mathcal{Z}_0$, application of \eqref{eq:acc} together with \eqref{eq:pri0} yields that ${Y_0}_P = {Z_0}_P$.
       \end{proof}
+
+    Lemma \ref{lem:indexed_sum_unique} implies that any algorithm that can compute the indexed sum of a list of floating point numbers is a reproducible summation algorithm, as the indexed sum is well-defined, unique, and independent of the ordering of the summands.
