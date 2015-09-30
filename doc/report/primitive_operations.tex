@@ -6,20 +6,31 @@
     \ref{sec:primitiveops_index}. Theoretical summaries of algorithms (with
     some improvements) from \cite{repsum} are provided in Sections
     \ref{sec:primitiveops_update}, \ref{sec:primitiveops_deposit},
-    \ref{sec:primitiveops_renormalize}, \ref{sec:primitiveops_reduce}. Section
-    \ref{sec:primitiveops_convert} provides an original algorithm (with an
+    \ref{sec:primitiveops_renormalize},
+    \ref{sec:primitiveops_addfloattoindexed}, \ref{sec:primitiveops_sum},
+    and \ref{sec:primitiveops_addindexedtoindexed}. To obtain a general
+    completely reproducible algorithm for summation, one must design for
+    reproducibility under both data ordering and reduction tree shape.
+    Section \ref{sec:primitiveops_addfloattoindexed} provides methods to
+    sum numbers regardless of ordering (a more efficient algorithm is presented in Section \ref{sec:primitiveops_sum}), while Section
+    \ref{sec:primitiveops_addindexedtoindexed} provides methods to sum
+    numbers regardless of reduction tree shape.
+
+    Section \ref{sec:primitiveops_conv2float} provides an original algorithm (with an
     improved error bound) to obtain the value represented by an indexed type.
+    For completeness, we state an algorithm to convert a single floating point number to an indexed type in Section \ref{sec:primitiveops_conv2indexed}.
     Sections \ref{sec:primitiveops_error} and \ref{sec:primitiveops_limits}
     extend analysis in \cite{repsum} to the new algorithms.
 
     \input{op_index}
+    \input{op_update}
     \input{op_deposit}
     \input{op_renormalize}
-    \input{op_update}
-    \input{op_add}
+    \input{op_addfloattoindexed}
     \input{op_sum}
-    \input{op_reduce}
-    \input{op_convert}
+    \input{op_addindexedtoindexed}
+    \input{op_converttofloat}
+    \input{op_converttoindexed}
     \input{op_errorbound}
     \input{op_limits}
 

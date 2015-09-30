@@ -1,5 +1,5 @@
-\subsection{Reduce}
-    \label{sec:primitiveops_reduce}
+\subsection{Add Indexed to Indexed}
+    \label{sec:primitiveops_addindexedtoindexed}
     An operation to produce the sum of two indexed types is necessary to
     perform a reduction. For completeness we include the algorithm here,
     although apart from the simplified renormalization algorithm, it is
@@ -14,7 +14,7 @@
           \Statex $Y$ is the indexed sum of some $x_0, ..., x_{n - 1} \in F$.
           \Statex $Z$ is the indexed sum of some $x_n, ..., x_{n + m - 1} \in F$.
           \Statex ${Y_k}_P, {Z_k}_P \in [1.5  \epsilon^{-1} 2^{a_{J + k}}, 1.75  \epsilon^{-1} 2^{a_{J + k}})$
-        \Function{Reduce}{K, Y, Z}
+        \Function{AddIndexedToIndexed}{K, Y, Z}
           \State $I$ = \Call{IIndex}{Y}
           \State $J$ = \Call{IIndex}{Z}
           \If{$J < I$}
@@ -23,28 +23,29 @@
             \State $Y = R$
             \State \Return
           \EndIf
-          \State $k = J - I$
-          \For{$k = J-I$ \To $K-1$}
-            \State ${Y_{k}}_P = {Y_{k}}_P + ({Z_{k + I-J}}_P - 1.5 \epsilon^{-1}  2^{a_{I+k}})$
-            \State ${Y_{k}}_C = {Y_{k}}_C + {Z_{k + I - J}}_C$
+          \For{$k = J-I$ \To $K-1$} \label{alg:addindexedtoindexed:beginfor}
+            \State ${Y_{k}}_P = {Y_{k}}_P + ({Z_{k + I-J}}_P - 1.5 \epsilon^{-1}  2^{a_{I+k}})$\label{alg:addindexedtoindexed:pri}
+            \State ${Y_{k}}_C = {Y_{k}}_C + {Z_{k + I - J}}_C$\label{alg:addindexedtoindexed:car}
           \EndFor
-          \State \Call{Renorm}{K, $Y$}
+          \State \Call{Renorm}{K, $Y$}\label{alg:addindexedtoindexed:renorm}
         \EndFunction
         \Ensure
           \Statex $Y$ is set to the indexed sum of $x_0, ..., x_{n + m - 1}$.
           \Statex ${Y_k}_P \in [1.5  \epsilon^{-1} 2^{a_{\min(I, J) + k}}, 1.75  \epsilon^{-1} 2^{a_{\min(I, J) + k}})$
       \end{algorithmic}
-      \label{alg:reduce}
+      \label{alg:addindexedtoindexed}
     \end{alg}
     \end{samepage}
+    Several exceptional cases are of note here. If either ${Y_0}_P$ or ${Z_0}_P$ is \texttt{Inf}, \texttt{-Inf}, or \texttt{NaN}, then ${Z_0}_P$ should be added to ${Y_0}_P$, which will produce the correct indexed sum. If ${Y_0}_P = 0$, then $Y$ should be set to $Z$ as $Y$ is the indexed sum of nothing. If ${Z_0}_P = 0$, then the algorithm should do nothing, as $Z$ is the indexed sum of nothing.
 
     \begin{lem}
-      If $n+m \leq 2^{2p-W-2}$ then the updating process in Algorithm~\ref{alg:reduce} is exact.
+      If the requrements of Algorithm~\ref{alg:addindexedtoindexed} are satisfied, then the ``Ensure'' claim holds.
       \label{lem:reduce}
     \end{lem}
     \begin{proof}
-      In order to prove the exactness of Algorithm~\ref{alg:reduce},
-      it suffices to prove that the addition in line 12 is exact.
+      If either $Y$ or $Z$ are exceptional or 0, then it has been specified that the algorithm follows these special cases correctly. We focus on the case where both $Y$ and $Z$ are finite.
+
+      We must first prove that the addition in line \ref{alg:addindexedtoindexed:pri} is exact.
       Since $J$ is the index of $Z$, the index of ${Z_{k + I-J}}_P$ is
       $J + (k + I -J) = I + k$. It means that
       \(

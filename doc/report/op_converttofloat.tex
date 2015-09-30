@@ -1,5 +1,5 @@
 \subsection{Convert Indexed to Float}
-    \label{sec:primitiveops_convert}
+    \label{sec:primitiveops_conv2float}
     It is necessary to provide the ability to convert between indexed and
     floating point representations of a number.
     Converting an indexed type to a single floating point number is more
@@ -296,34 +296,5 @@ multiple error bounds are shown.}
     not extend the exponent range we must use Algorithm
     \ref{alg:conv2floatoverflow} for the conversion.
 
-\subsection{Convert Float to Indexed}
-    Converting a floating point number to an indexed type should produce, for
-    transparency and reproducibility, the indexed sum of the single floating
-    point number.
-    The procedure is very simply summarized by Algorithm \ref{alg:conv2indexed}
-
-    \begin{samepage}
-    \begin{alg}
-      Convert floating point $x$ to a $K$-fold indexed type $Y$.
-      \begin{algorithmic}[1]
-        \Function{ConvertFloatToIndexed}{K, x, Y}
-          \State $Y = 0$
-          \State \Call{Update}{K, x, Y}
-          \State \Call{Deposit}{K, x, Y} \label{alg:conv2indexed:deposit}
-          \State \Call{Renorm}{K, Y}
-        \EndFunction
-        \Ensure
-          $Y$ is the indexed sum of $x$. $Y=0$ if $x=0$.
-          When $x \neq 0$, the index $I$ of $Y$ is such that $2^{b_I} > |x| \geq 2^{a_I}$
-          if $|x| \geq 2^{a_{i_max}}$, otherwise $I = i_{max}$ where $i_{max}$ is defined as \eqref{eq:imax}.
-          ${Y_k}_P \in [1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}})$
-      \end{algorithmic}
-      \label{alg:conv2indexed}
-    \end{alg}
-    \end{samepage}
-
-    We must renormalize the indexed type because $d(x, I + k)$ could be
-    negative, meaning ${Y_k}_P < 1.5  \epsilon^{-1} 2^{a_{I + k}}$ after
-    execution of line \ref{alg:conv2indexed:deposit}.
 
 
