@@ -41,7 +41,11 @@
     \end{samepage}
     The renormalization operation is described in the ``Carry-bit Propagation''
     Section (lines 21 to 32) of Algorithm $6$ in \cite{repsum}, although it has
-    been slightly modified so as not to include an extraneous case.
+    been slightly modified so as not to include an extraneous case. Note that
+    the above renormalization algorithm can be modified to tolerate
+    indexed types with exceptional values by doing nothing when such types are
+    encountered (indexed types with exceptional values do not need
+    renormalization).
     In total, Algorithm~\ref{alg:renorm} costs $3K$ FLOPs with a maximum of
     $2K$ conditional branches.
 
@@ -63,7 +67,7 @@
     By Theorem \ref{thm:ddeposit}, the deposit operation extracts and adds the slices of $x_j$ exactly (assuming ${Y_k}_P \in (\epsilon^{-1} 2^{a_{I + k}}, 2  \epsilon^{-1} 2^{a_{I + k}})$ at each step, which will be shown),
 
     \begin{equation*}
-    \bigl|\sum \limits_{n = 0}^{n - 1} d(x_j, I + k)\bigr| \leq n  2^{b_{I + k}} = n  2^{W}  2^{a_{I + k}}
+    \bigl|\sum \limits_{j = 0}^{n - 1} d(x_j, I + k)\bigr| \leq n  2^{b_{I + k}} = n  2^{W}  2^{a_{I + k}}
     \end{equation*}
 
     If $n \leq 2^{p - W - 2}$, then after the $n^{th}$ deposit
@@ -84,8 +88,9 @@
     2^{a_{I + k}}, 2  \epsilon^{-1} 2^{a_{I + k}})$. Therefore, after another
     renormalization, the primary fields would once again satisfy ${Y_k}_P \in
     [1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}})$.
-    The limit of at most $2^{p-W-2}$ numbers can be accumulated before having to carry out a renormalization
-    also requires that $p-W-2 > 0$, or 
+    The limit on the number of floating point inputs that can be accumulated
+    without executing a renormalization operation ($2^{p-W-2}$)
+    also requires that $p-W-2 > 0$, or
     \begin{equation}
         W < p - 2.
     \end{equation}
@@ -100,10 +105,11 @@
       \epsilon^{-1} 2^{p-W-2} = 2^{2  p - W - 2}
       \label{eq:totalfreq}
     \end{equation}
-    floating point numbers. It means $2^{64}$ in double and $2^{33}$ in single precision using the values in Table~\ref{fig:bins}.
+    floating point numbers. These maxima are $2^{64}$ in double and $2^{33}$ in single
+    precision using the values in Table~\ref{fig:bins}.
+
     Note that this value of maximum number of additions is slightly bigger
     than that of \cite{repsum} since we exclude the extraneous case which caused
     the increment of the carry field to at most 2 in absolute value per each renormalization.
     These bounds also exceed the largest integer that can be represented
     in the same-sized integer format, which helps justify the choice of $W$.
-

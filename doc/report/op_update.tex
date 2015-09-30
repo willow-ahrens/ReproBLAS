@@ -7,7 +7,7 @@
     and carry fields of 0, therefore prior to adding any non-zero value to $Y$
     it is required to adjust the primary and carry fields of $Y$ first.
 
-    This adjustment is called an \textbf{update}.    
+    This adjustment is called an \textbf{update}.
     The process of updating $Y$ to the necessary index is summarized succinctly
     in Algorithm \ref{alg:update}.
 
@@ -16,11 +16,8 @@
       Update $K$-fold indexed type $Y$ of index $I$ to have an index suitable to deposit $x$.
       \begin{algorithmic}[1]
         \Require
-          \Statex ${Y_0}_P$ is 0 or ${Y_0}_P \in (\epsilon^{-1}  2^{a_{I}}, 2  \epsilon^{-1}  2^{a_I})$
+          \Statex $Y$ is the indexed sum of some $x_0, ..., x_{n - 1} \in \F$
         \Function{Update}{K, x, Y}
-          \If {x=0}
-            \State \Return
-          \EndIf
           \State $I$ = \Call{IIndex}{Y}
           \State $J$ = \Call{Index}{x}
           \If{$J < I$}
@@ -31,13 +28,9 @@
           \EndIf
         \EndFunction
         \Ensure
-          \Statex $Y$ is unchanged if $x = 0$.
-            When $x \neq 0$, the bin $(a_{J}, b_{J}]$ satisfies
-            $2^{b_{J}} > |x| \geq 2^{a_{J}}$ if $|x| \geq 2^{a_{i_{max}}}$,
-            otherwise $J = i_{max}$.
-          \Statex The new index of $Y$, ($\min(I, J)$) is such that $2^{b_{\min(I, J)}} > |x|$.
-          \Statex Existing accumulators of $Y$ are shifted towards index $0$, losing the lesser bins.
-          \Statex New accumulators are shifted into $Y$ with value $0$ in ${Y_k}_C$ and $1.5  \epsilon^{-1}  2^{a_{\min(I, J) + k}}$ in ${Y_k}_P$.
+          \Statex $Y$ has index $J$ where $J$ is the greatest integer such that $|x| < 2^{a_j}$, $\max(|x_j|) < 2^{a_j}$, and $J < i_{\max}$.
+          \Statex $\mathcal{Y}_k = \sum\limits_{j = 0}^{n - 1} d(x_j, J + k)$
+          \Statex ${Y_k}_P \in \begin{cases}[1.5  \epsilon^{-1} 2^{a_{J + k}}, 1.75  \epsilon^{-1} 2^{a_{J + k}}) \text{ if } I + k > 0 \\ [1.5 \cdot 2^{e_{\max}}, 1.75 \cdot 2^{e_{\max}})\text{ otherwise}\end{cases}$
       \end{algorithmic}
       \label{alg:update}
     \end{alg}
@@ -45,23 +38,17 @@
 
     The update operation is described in the ``Update'' Section (lines 7-17) of Algorithm $6$ in \cite{repsum}.
 
-    If $Y$ is the $K$-fold indexed sum of some $x_0, ..., x_{n - 1}$ with index
-    $I$, then the shift described by Algorithm \ref{alg:update} produces an
-    indexed type of index $J < I$ with the value represented by accumulator $k$
-    satisfying
-    \begin{equation*}
-      \mathcal{Y}_k = \sum\limits_{j = 0}^{n - 1} d(x_j, J + k)
-    \end{equation*}
-
-    The new accumulators $Y_k$ with $0 \leq k < I - J$ must represent 0 because
-    $x_j < 2^{a_{J + k}} \leq 2^{a_I}$ so
-    \(
-    	\sum\limits_{j = 0}^{n - 1} d(x_j, J + k) = 0
-    \)by Lemma \ref{lem:dzero}.
-
     It should be noted that if ${Y_0}_P$ is 0, then the update is performed as
     if $I + K < J$. If ${Y_0}_P$ is \texttt{Inf}, \texttt{-Inf}, or
     \texttt{NaN}, then $Y$ is not modified by an update.
+
+    If $Y$ represents the indexed sum of finite values, then existing accumulators of $Y$ are shifted towards index $0$, losing the lesser bins. New accumulators are shifted into $Y$ with value $0$ in ${Y_k}_C$ and $1.5  \epsilon^{-1}  2^{a_{\min(I, J) + k}}$ in ${Y_k}_P$.
+
+    The new accumulators $Y_k$ with $0 \leq k < I - J$ must represent 0 because
+    $|x_j| < 2^{b_I} \leq a_{I - 1} \leq a_{J + k}$ so
+    \(
+      \sum\limits_{j = 0}^{n - 1} d(x_j, J + k) = 0
+    \) by Lemma \ref{lem:dzero}.
 
     To speed up this operation, the factors $1.5  \epsilon^{-1}  a_j$ for all
     valid $j \in Z$ are stored in a precomputed array.
@@ -70,4 +57,3 @@
     ${Y_{i_{\max} - J + 1}}_P, ...,  {Y_{J + K}}_P$ are set to $1.5
     \epsilon^{-1}2^{a_{i_{\max}}}$ and the values in these accumulators are
     ignored.
-
