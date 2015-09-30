@@ -49,7 +49,23 @@
       \label{eq:naiveerrorapproxdup}
     \end{equation}
 
-    Figure \ref{fig:conversionmotivation} compares these three approximate error bounds.
+    Figure \ref{fig:conversionmotivation} compares these three approximate error bounds
+    for $K=3$, $W=40$ and double precision $p=53$.
+    In this case, bound \eqref{eq:errorapproxdup} depends on $2^{-80}n$,
+    whereas bound \eqref{eq:baderrorapproxdup} depends on $n\epsilon = 2^{-53}n$.
+    Therefore bound \eqref{eq:errorapproxdup} is better than bound \eqref{eq:baderrorapproxdup}
+    by approximately 8 orders of magnitude.
+    Note that, in this comparison we approximate $\sum_{j=0}^{n-1} |x_j|$ by $n \max |x_j|$,
+    which is the case where the input data are almost equal in magnitude,
+    so the error bound of the standard summation \eqref{eq:naiveerrorapproxdup} depends
+    on $n^2$ instead of $n$ which is much worse than both bounds
+    \eqref{eq:errorapproxdup} and \eqref{eq:baderrorapproxdup}
+    when the number of input values $n$ is great.
+    In cases where $\sum_{j=0}^{n-1} |x_j| \approx \max |x_j|$, for example
+    when there is 1 very big value and the other are small, then bounds
+    \eqref{eq:naiveerrorapproxdup} and \eqref{eq:baderrorapproxdup} are almost
+    of the same order of magnitude, which is still worse than bound \eqref{eq:errorapproxdup}
+    by 8 orders of magnitude.
 
 \begin{figure}[H]
 \begin{center}
