@@ -13,6 +13,7 @@ In this section, we develop
 theory to concisely describe and prove correctness of algorithms throughout the
 paper (especially Algorithms \ref{alg:depositrestricted} and \ref{alg:deposit}).
 
+%TODO Perhaps this figure belongs in the introduction with a concise description of the algorithm. Also, it could use another accumulator and the Y_i_C label is right on a line making it hard to read.
 \begin{figure}[H]
 \begin{center}
 \caption{Indexed Floating-Point: binning process}
@@ -83,9 +84,9 @@ paper (especially Algorithms \ref{alg:depositrestricted} and \ref{alg:deposit}).
 
     ReproBLAS uses both \texttt{float} and \texttt{double} floating point
     types. The chosen division of exponent ranges for both types is shown in
-    Figure \ref{fig:bins}.
+    Figure \ref{tbl:bins}.
 
-    \begin{figure}[H]
+    \begin{table}[!htbp]
         \centering
         \begin{tabular}{ | l | l | l | p{5cm} |} \hline
             Floating-Point Type & \texttt{float} & \texttt{double}\\ \hline
@@ -99,18 +100,18 @@ paper (especially Algorithms \ref{alg:depositrestricted} and \ref{alg:deposit}).
             $(a_{i_{\max}}, b_{i_{\max}}]$ & $(-132, -119]$ & $(-1056, -1016]$ \\ \hline
         \end{tabular}
         \caption{ReproBLAS Binning Scheme}
-        \label{fig:bins}
-    \end{figure}
+        \label{tbl:bins}
+    \end{table}
 
     \subsection{Slices}
     \label{sec:binning_slices}
-    Throughout the text we will refer to the \textbf{slice} of some $x \in \F$
+    Throughout the text we will refer to the \textbf{slice} of some $x \in \R$
     in the bin $(a_i, b_i]$ (see Figure~\ref{fig:binning}).
     $x$ can be split into several slices, each slice
     corresponding to a bin $(a_i, b_i]$ and expressible as the (possibly
     negated) sum of a subset of $\{2^e, e \in (a_i, b_i]\}$, such that the sum
     of the slices provides a good approximation of $x$. Specifically, the slice
-    of $x \in \F$ in the bin $(a_i, b_i]$ is defined recursively as $d(x, i)$
+    of $x \in \R$ in the bin $(a_i, b_i]$ is defined recursively as $d(x, i)$
     in \eqref{eq:d}. We must define $d(x, i)$ recursively because it is not a
     simple bitwise extraction.
     \begin{equation}
@@ -129,8 +130,8 @@ paper (especially Algorithms \ref{alg:depositrestricted} and \ref{alg:deposit}).
     Next, notice that $d(x, i) \in 2^{a_{i} + 1}\Z$.
 
     Finally, it is possible that $d(x, 0)$ may be too large to represent as a
-    floating point number for example, if $x$ is the largest finite floating point
-    number then $d(x,0)=\roundtonearestinfty(x, a_0+1)$ would be $2^{e_{max}+1}$.
+    floating point number. For example, if $x$ is the largest finite floating point
+    number, then $d(x,0)=\roundtonearestinfty(x, a_0+1)$ would be $2^{e_{max}+1}$.
     Overflow of this type is accounted for in Section \ref{sec:indexed_overflow}.
     Technical detail of how to handle this special case during the binning process
     will be explained in Section~\ref{sec:primitiveops_deposit}.
@@ -139,7 +140,7 @@ paper (especially Algorithms \ref{alg:depositrestricted} and \ref{alg:deposit}).
 
     \begin{samepage}
     \begin{lem}
-      For all $i \in \{0, ..., i_{\max}\}$ and $x \in \F$ such that $|x| < 2^{a_i}$,
+      For all $i \in \{0, ..., i_{\max}\}$ and $x \in \R$ such that $|x| < 2^{a_i}$,
       $d(x, i) = 0.$
       \label{lem:dzero}
     \end{lem}
@@ -165,7 +166,7 @@ paper (especially Algorithms \ref{alg:depositrestricted} and \ref{alg:deposit}).
 
     \begin{samepage}
     \begin{lem}
-      For all $i \in \{0, ..., i_{\max}\}$ and $x \in \F$ such that $|x| < 2^{b_i}$,
+      For all $i \in \{0, ..., i_{\max}\}$ and $x \in \R$ such that $|x| < 2^{b_i}$,
       $d(x, i) = \roundtonearestinfty(x, a_i + 1)$.
       \label{lem:dmiddle}
     \end{lem}
@@ -185,7 +186,7 @@ paper (especially Algorithms \ref{alg:depositrestricted} and \ref{alg:deposit}).
 
     Lemma \ref{lem:dzero}, Lemma \ref{lem:dmiddle}, and \eqref{eq:d} can be
     combined to yield an equivalent definition of $d(x, i)$ for all $i \in \{0,
-    ..., i_{\max}\}$ and $x \in \F$.
+    ..., i_{\max}\}$ and $x \in \R$.
 
     \begin{equation}
       d(x, i) = \begin{cases}
@@ -196,12 +197,12 @@ paper (especially Algorithms \ref{alg:depositrestricted} and \ref{alg:deposit}).
       \label{eq:d2}
     \end{equation}
 
-    Theorem \ref{thm:dround} shows that sum of the slices of $x \in \F$
+    Theorem \ref{thm:dround} shows that sum of the slices of $x \in \R$
     provides a good approximation of $x$.
 
     \begin{samepage}
     \begin{thm}
-      For all $i \in \{0, ..., i_{\max}\}$ and $x \in \F$,
+      For all $i \in \{0, ..., i_{\max}\}$ and $x \in \R$,
       $|x - \sum \limits_{j = 0}^id(x, j)| \leq 2^{a_i}$.
       \label{thm:dround}
     \end{thm}
@@ -215,11 +216,36 @@ paper (especially Algorithms \ref{alg:depositrestricted} and \ref{alg:deposit}).
       \end{align*}
     \end{proof}
 
+    Although the bins do not extend all the way to $e_{\min} - p$, we now
+    show that the sum of the slices of some $x \in \F$ still offers a good
+    approximation of $x$.
+
+    Using $W < p - 2$ and \eqref{eq:binmin},
+    \begin{align*}
+      a_{i_{\max}} & = e_{\min} - p + 2 + \bigl((e_{\max} - e_{\min} + p - 1 ) \mod W \bigr) \\
+          & \leq e_{\min} - p + 2 + (W - 1) \\
+          & < e_{\min} - p + 2 + (p - 2 - 1) =  e_{\min} - 1 
+    \end{align*}
+
+    Hence,
+    \[
+      a_{i_{\max}} \leq e_{\min} - 2
+    \]
+
+    As a consequence, we can use Theorem \ref{thm:dround} to say that for any $x \in \R$,
+    \begin{equation}
+      \bigl|x - \sum\limits_{i = 0}^{i_{\max}} d(x, i)\bigr| \leq 2^{a_{i_{\max}}} \leq 2^{e_{\min} - 2}
+      \label{eq:droundunderflow}
+    \end{equation}
+
+    This means that we can approximate $x$ using the sum of its slices to the
+    nearest multiple of $2^{e_{\min}-1}$.
+
     Theorem \ref{thm:dbound} shows a bound on $d(x, i)$.
 
     \begin{samepage}
     \begin{thm}
-      For all $i \in \{0, ..., i_{\max}\}$ and $x \in \F$, $|d(x, i)| \leq 2^{b_i}$.
+      For all $i \in \{0, ..., i_{\max}\}$ and $x \in \R$, $|d(x, i)| \leq 2^{b_i}$.
       \label{thm:dbound}
     \end{thm}
     \end{samepage}

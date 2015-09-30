@@ -31,26 +31,30 @@
   \end{equation}
 
   Let $\F_{b,p,e_{min},e_{max}}$ denote the set of floating-point numbers
-  of base $b \in \Z$ ($b > 1$),
-  precision $p \in Z$ ($p > 0$) and exponent range $[e_{min}, e_{max}]$
-  where $e_{min}, e_{max} \in \Z$ and $e_{min} \leq e_{max}$.
+  of base $b \in \Z$ ($b \geq 2$),
+  precision $p \in Z$ ($p \geq 1$) and exponent range $[e_{min}, e_{max}]$
+  where $e_{min}, e_{max} \in \Z$ and $e_{min} \geq e_{max}$.
   Each value $f \in \F_{b,p,e_{min},e_{max}}$ is represented by:
   \[
     f = s \cdot m_0.m_1 \ldots m_{p-1} \cdot b^e,
   \]
   where $s \in \{-1,1 \}$ is the sign,
-  $e \in \{\Z | e_{\min} \leq e \leq e_{\max} \}$ is the exponent
+  $e \in \Z, e_{\min} \leq e \leq e_{\max}$ is the exponent
   (also defined as $exp(f)$),
   and $m = m_0.m_1 \ldots m_{p-1}, m_i \in \{ 0, 1, \ldots, b-1 \}$
-  is the significand (also called the mantissa) of $f$.
+  is the significand (also called the mantissa) of $f$. Assume that the
+  representation of $f$ is made unique using the ``hidden bit'' convention, so
+  that $f$ is represented using the smallest exponent possible.
 
-  Although many of the below analysis can be applied to a general floating-point
+  Although much of the below analysis can be applied to a general floating-point
   format, in the context of this paper we assume binary floating-point formats,
-  i.e. $b=2$, complying with the IEEE 754-2008 standard \cite{ieee754}
-  in single ($p=24$) and double ($p=53$) precision which are encoded in hardware
-  using words of 32 and 64 bits respectively.
-  Specific parameters for those two formats are given in table~\ref{tbl:IEEE-754}.
-  \begin{table}
+  i.e. $b=2$, complying with the IEEE 754-2008 standard \cite{ieee754}. 
+  While the below analysis applies for any chosen values of $p$, $e_{\min}$, and $e_{\max}$ 
+  (provided that $p << e_{\max} - e_{\min}$), our software is implemented in IEEE 754-2008
+   single and double precision.
+
+  Specific parameters for those two formats are given in Table \ref{tbl:IEEE-754}.
+  \begin{table}[!htbp]
     \caption{IEEE 754-2008 binary floating-point formats}
     \label{tbl:IEEE-754}
         \centering
@@ -95,17 +99,20 @@
   The exponent of a represented floating-point number is equal to
   the biased exponent (the unsigned integer value stored in the exponent field)
   minus the bias value (see table~\ref{tbl:IEEE-754}).
-  An exponent field of all 0-bit is reserved for zeros and denormalized values.
-  An exponent field of all 1-bit is reserved for infinities and NaN.
+  An exponent field with all bits set to 0 is reserved for zeros and denormalized values.
+  An exponent field with all bits set to 1 is reserved for infinities and NaN.
 
+  Since a floating point number is always represented using the smallest possible
+  exponent, the first bit $m_0$ is not explicitly stored in internal representation
+  and is referred to as the "hidden" or "implicit" bit.
+  Therefore only $p-1$ bits are used to represent the mantissa of $f$.
+
+  $f = 0$ if and only if all $m_j = 0$ and $e = e_{\min} - 1$.
   $f$ is said to be \textbf{normalized} if $m_0 =1$
   and $e_{max} \geq e \geq e_{\min}$.
-  The first bit $m_0$ is not explicitly stored in internal representation
-  and is called hidden or implicit bit.
-  Therefore only $p-1$ bits are used to represent the mantissa of $f$.
-  $f$ is said to be \textbf{unnormalized} if $m_0 = 0$, and
+  $f$ is said to be \textbf{unnormalized} if $m_0 = 0$ (unnormalized numbers can 
+  exist if the hidden bit convention is not followed), and
   \textbf{denormalized} if $m_0 = 0$ and $e = e_{\min} - 1$.
-  $f = 0$ if all $m_j = 0$ and $e = e_{\min} - 1$.
 
   In binary internal representation, $f=0$ is represented by a biased exponent of $0$
   as well as a mantissa field of all 0-bits.
@@ -121,8 +128,8 @@
   \ref{sec:indexed_underflow_abrupt}.
 
   For simplicity as well as for readability, throughout this paper
-  $\F_{b,p,e_{min},e_{max}}$ will be written simply as $\F$, referring to either
-  the IEEE 754-2008 single or double precision binary floating-point format,
+  $\F_{b,p,e_{min},e_{max}}$ will be written simply as $\F$, referring to
+  some IEEE 754-2008 binary floating-point format,
   i.e. $b=2$ and $m_i \in \{0, 1\}$.
   All the analysis will be based on the corresponding parameters $p$, $e_{min}$
   and $e_{max}$.
@@ -156,10 +163,10 @@
     |\fl(f_0 \text{ op } f_1) - (f_0 \text{ op } f_1)| \leq 0.5\ulp(\fl(f_0 \text{ op } f_1)).
   \)
 
+%TODO At this point, the reader does not know what ReproBLAS is
   As ReproBLAS is written in C, \texttt{float} and \texttt{double} refer to the
   floating point types specified in the 1989 C standard \cite{c89} and we
   assume that they correspond to the \texttt{binary-32} and \texttt{binary-64}
   types in the IEEE 754-2008 floating point standard \cite{ieee754}.
 
   All indices start at $0$ in correspondence with the actual ReproBLAS implementation.
-

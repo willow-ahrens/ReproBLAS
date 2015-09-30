@@ -28,15 +28,15 @@
     uses the assumption that $\frac{p+1}{2} < W < p-2$, so $3 < p - W + 1 < W.$
 
     Another useful operation is, given some $x \in \F$, to find the unique bin
-    $(a_J, b_J]$ such that $2^{b_J} > |x| \geq 2^{a_J}$. Algorithm
-    \ref{alg:index} yields such a $J$ in constant time.
+    $(a_J, b_J]$ where $J$ is the greatest integer such that $|x| < 2^{b_J}$ and $J \leq i_{\max}$.
+    Algorithm \ref{alg:index} yields such a $J$ in constant time.
     Note that, for $x=0$ or very small values $x < 2^{a_{i_{max}}}$,
     we simply return the least bin
     since values smaller than the least bin will not be accumulated.
 
     \begin{samepage}
     \begin{alg}
-      Given $x \in \F$, calculate $J$ such that $2^{b_J} > |x| \geq 2^{a_J}$.
+      Given $x \in \F$, calculate the largest integer $J$ such that $2^{b_J} > |x|$ and $J \leq i_{\max}$
       \begin{algorithmic}[1]
         \Require $i_{max}$ is defined in \eqref{eq:imax},
           $a_J$ is defined in \eqref{eq:a}.
@@ -46,8 +46,7 @@
           \Comment{Index $J$ of $x$}
         \EndFunction
         \Ensure
-          \Statex The bin $(a_{J}, b_{J}]$ satisfies $2^{b_{J}} > |x| \geq 2^{a_{J}}$ when
-          $|x| \geq 2^{a_{i_{max}}}$, and $J=i_{max}$ otherwise.
+          \Statex $J$ is the greatest integer such that $|x| < 2^{b_J}$ and $J \leq i_{\max}$.
       \end{algorithmic}
       \label{alg:index}
     \end{alg}
