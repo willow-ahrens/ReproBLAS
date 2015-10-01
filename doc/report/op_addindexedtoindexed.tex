@@ -13,7 +13,6 @@
         \Require
           \Statex $Y$ is the indexed sum of some $x_0, ..., x_{n - 1} \in F$.
           \Statex $Z$ is the indexed sum of some $x_n, ..., x_{n + m - 1} \in F$.
-          \Statex ${Y_k}_P, {Z_k}_P \in [1.5  \epsilon^{-1} 2^{a_{J + k}}, 1.75  \epsilon^{-1} 2^{a_{J + k}})$
         \Function{AddIndexedToIndexed}{K, Y, Z}
           \State $I$ = \Call{IIndex}{Y}
           \State $J$ = \Call{IIndex}{Z}
@@ -45,7 +44,7 @@
     \begin{proof}
       If either $Y$ or $Z$ are exceptional or 0, then it has been specified that the algorithm follows these special cases correctly. We focus on the case where both $Y$ and $Z$ are finite.
 
-      We must first prove that the addition in line \ref{alg:addindexedtoindexed:pri} is exact.
+      We must first prove that the addition in line \ref{alg:addindexedtoindexed:pri} is exact. As it is almost identical, we leave out the case where $I + k = 0$ and focus on the case where $I + k > 0$.
       Since $J$ is the index of $Z$, the index of ${Z_{k + I-J}}_P$ is
       $J + (k + I -J) = I + k$. It means that
       \(
@@ -71,6 +70,14 @@
           \in [1.5 \epsilon^{-1} 2^{a_{I+k}}, 2 \epsilon^{-1} 2^{a_{I+k}})
       \).
       This means ${Y_{k}}_P + ({Z_{k + I-J}}_P - 1.5 \epsilon^{-1}  2^{a_{I+k}})$
-      is representable and is exactly computed.
-    \end{proof}
+      is representable and is exactly computed, and that the requirements of the renormalization operation (Algorithm \ref{alg:renorm}) apply.
 
+      We then have that after line \ref{alg:addindexedtoindexed:renorm}, \[
+          {Y_k}_P \in \begin{cases}[1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}}) \text{ if } I + k > 0 \\ [1.5 \cdot 2^{e_{\max}}, 1.75 \cdot 2^{e_{\max}}) \text{ if } I + k = 0\end{cases}
+      \]
+
+      We assume that $n + m \leq (\epsilon^{-1} - 1)2^{p - W - 2}$ and therefore ${Y_{k}}_C + {Z_{k + I-J}}_C$ is exactly computed. We then have that $\mathcal{Y}_k = \sum\limits_{j = 0}^{m + n - 1} d(x_j, I + k)$.
+
+      It is given that $I$ is the greatest integer such that $|x_j| < 2^{b_I}$ for all $j, 0 \leq j \leq n - 1$ and that $J$ is the greatest integer such that $|x_j| < 2^{b_I}$ for all $j, n \leq j \leq n + m - 1$. It is also given that $I, J \leq i_{\max}$
+      Since $I < J$, $I$ is the greatest integer such that $|x_j| < 2^{b_I}$ for all $j, 0 \leq j \leq n + m - 1$ and $I \leq i_{\max}$.
+    \end{proof}

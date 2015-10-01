@@ -1,6 +1,6 @@
 \subsection{Sum}
   \label{sec:primitiveops_sum}
-    Algorithm \ref{alg:sum} is an indexed summation algorithm that allows the user to efficiently add a vector of floating point numbers $x_m, ..., x_{m + n - 1}$ to the indexed sum $Y$ of some $x_0, ..., x_{m - 1} \in F$.
+    Algorithm \ref{alg:sum} is an indexed summation algorithm that allows the user to efficiently add a vector of floating point numbers $x_m, ..., x_{m + n - 1} \in \F$ to the indexed sum $Y$ of some $x_0, ..., x_{m - 1} \in F$.
 
     As mentioned in Section~\ref{sec:primitiveops_renormalize}, it is not necessary to perform
     a renormalization for every deposit, as would be done if Algorithm \ref{alg:addfloattoindexed} were applied iteratively on each element of $x_m, ..., x_{m + n -1}$. At most $2^{p-W-2}$ values can be deposited in the indexed type before having to perform the renormalization.
@@ -36,10 +36,10 @@
       \label{alg:sum}
     \end{alg}
     \end{samepage}
-    If a single floating point result is desired, it may be obtained from $Y$ using Algorithm \ref{alg:conv2floatoverflow} described in Section \ref{sec:conv2float}.
+    If a single floating point result is desired, it may be obtained from $Y$ using Algorithm \ref{alg:conv2floatoverflow} described in Section \ref{sec:primitiveops_conv2float}.
     \begin{samepage}
     \begin{thm}
-      Assume that we have run Algorithm \ref{alg:sum} on the $K$-fold indexed sum $Y$ of $x_0, ..., x_{m - 1}$ and on $n$ floating point numbers $x_m, ..., x_{m + n - 1} \in \F$. If all requirements of the algorithm are satisfied, then the ``Ensure'' claim at the end of the algorithm holds.
+      Assume that we have run Algorithm \ref{alg:sum} on the $K$-fold indexed sum $Y$ of $x_0, ..., x_{m - 1} \in \F$ and on $x_m, ..., x_{m + n - 1} \in \F$. If all requirements of the algorithm are satisfied, then the ``Ensure'' claim at the end of the algorithm holds.
       \label{thm:sum}
     \end{thm}
     \end{samepage}
@@ -50,7 +50,7 @@
 
       In subsequent iterations of the loop, we assume that at line \ref{alg:sum:update}, $Y$ is the indexed sum of $x_0, ..., x_{m + j - 1}$.
 
-      In this case, the proof of Theorem \ref{thm:addfloattoindexed} appliesto lines \ref{alg:sum:update} to \ref{alg:sum:renorm} (keeping in mind that less than less than $2^{p - W - 2}$ deposits are performed and by the ``Ensure'' claim of Algorithm \ref{alg:update}, each finite $x_{m + j}$ deposited satisfies $|x_{m + j}| < 2^{b_I}$). Therefore, after line \ref{alg:sum:renorm}, $Y$ is the indexed sum of $x_0, ..., x_{m + j - 1}$
+      In this case, the proof of Theorem \ref{thm:addfloattoindexed} applies to lines \ref{alg:sum:update} to \ref{alg:sum:renorm} (keeping in mind that at most $2^{p - W - 2}$ deposits are performed and by the ``Ensure'' claim of Algorithm \ref{alg:update}, each finite $x_{m + j}$ deposited satisfies $|x_{m + j}| < 2^{b_I}$). Therefore, after line \ref{alg:sum:renorm}, $Y$ is the indexed sum of $x_0, ..., x_{m + j - 1}$
 
       \begin{comment}
         Therefore ${Y_k}_P \in [1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}})$ unless $I + k = 0$, in which case ${Y_0}_P \in (2^{e_{\max}}, 2 \cdot 2^{e_{\max}})$.
@@ -72,7 +72,7 @@
     As the indexed sum is unique and independent of the ordering of its summands (Theorem \ref{thm:indexed_sum_unique}), Algorithm \ref{alg:sum} is reproducible up to permutation of its inputs.
 
     Even in the absence of an operation for reduction, Algorithm \ref{alg:sum} is already a highly flexible operation.
-    Consider the problem of computing a reproducible dot product of vectors $\vec{x}$ and $\vec{y}$. To create an algorithm for this purpose, we need only change line \ref{alg:sum:deposit} to deposit the product of the $j^th$ entry of $\vec{x}$ and the $j^th$ entry of $\vec{y}$. More examples of how this routine can be used for reproducible operations is given in Section \ref{sec:compositeops}
+    Consider the problem of computing a reproducible dot product of vectors $\vec{x}$ and $\vec{y}$. To modify algorithm for this purpose, we need only change line \ref{alg:sum:deposit} to deposit the product of the $j^{th}$ entry of $\vec{x}$ and the $j^{th}$ entry of $\vec{y}$. More examples of how this routine can be used for reproducible operations are given in Section \ref{sec:compositeops}.
 
     At this point, an analysis of runtime should be considered. Since Algorithm~\ref{alg:sum} only performs the update and renormalization
   once for every $2^{p-W-2}$ times the deposit operation is performed (that
