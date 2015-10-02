@@ -248,7 +248,6 @@ class MetricTest(ExecutableTest):
     self.result = 0
     self.output = []
     for output_item in output_list:
-      print(output_item)
       self.output.append(json.loads(output_item[1]))
       self.result += self.parse_output(self.output[-1])
 

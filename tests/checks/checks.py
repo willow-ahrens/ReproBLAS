@@ -49,7 +49,7 @@ class CheckSuite(harness.Suite):
     return ["t", "t"]
 
   def get_cols_width(self, max_width):
-    return [max_width - 1 - 1 - 4 - 1, 4]
+    return [max_width - 2 - 3 - 4 - 2, 4]
 
   def get_rows(self):
     passed = 0

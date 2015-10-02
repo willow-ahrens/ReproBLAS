@@ -1,8 +1,8 @@
 \section{Notation and Background}
-  Let $\R, \F, $ and $\Z$ denote the sets of real numbers, floating-point
-  numbers, and integers respectively.
+  Let $\R$ and $\Z$ denote the sets of real numbers and integers respectively.
 
-  For all $r \in \R$, let $r\Z$ denote the set of all multiples of $r$, $\{rz | z \in \Z\}$.
+  For all $r \in \R$, let $r\Z$ denote the set of all multiples of $r$,
+  $\{rz | z \in \Z\}$.
 
   For all $r \in \R$, let $\lceil r \rceil$ be the minimum element $z \in \Z$
   such that $z \geq r$.
@@ -30,6 +30,52 @@
     \label{eq:round}
   \end{equation}
 
+  Let $\F_{b,p,e_{min},e_{max}}$ denote the set of floating-point numbers
+  of base $b \in \Z$ ($b > 1$),
+  precision $p \in Z$ ($p > 0$) and exponent range $[e_{min}, e_{max}]$
+  where $e_{min}, e_{max} \in \Z$ and $e_{min} \leq e_{max}$.
+  Each value $f \in \F_{b,p,e_{min},e_{max}}$ is represented by:
+  \[
+    f = s \cdot m_0.m_1 \ldots m_{p-1} \cdot b^e,
+  \]
+  where $s \in \{-1,1 \}$ is the sign,
+  $e \in \{\Z | e_{\min} \leq e \leq e_{\max} \}$ is the exponent
+  (also defined as $exp(f)$),
+  and $m = m_0.m_1 \ldots m_{p-1}, m_i \in \{ 0, 1, \ldots, b-1 \}$
+  is the significand (also called the mantissa) of $f$.
+
+  Although many of the below analysis can be applied to a general floating-point
+  format, in the context of this paper we assume binary floating-point formats,
+  i.e. $b=2$, complying with the IEEE 754-2008 standard \cite{ieee754}
+  in single ($p=24$) and double ($p=53$) precision which are encoded in hardware
+  using words of 32 and 64 bits respectively.
+  Specific parameters for those two formats are given in table~\ref{tbl:IEEE-754}.
+  \begin{table}
+    \caption{IEEE 754-2008 binary floating-point formats}
+    \label{tbl:IEEE-754}
+        \centering
+        \begin{tabular}{ | l | l | l | } \hline
+            Floating-Point Type & single precision & double precision \\ \hline
+            C data type & \texttt{float} & \texttt{double} \\ \hline
+            $p$ & 24 & 53 \\ \hline
+            Exponent field width & 8 & 12 \\ \hline
+            Exponent bias & 127 & 1023 \\ \hline
+            $e_{min}$ & -126 & -1022 \\ \hline
+            $e_{max}$ & 127 & 1023 \\ \hline
+        \end{tabular}
+  \end{table}
+
+  \begin{comment}
+  Let $\F$ be the set of all floating-point numbers $f = sm2^e$ represented in some binary IEEE 754-2008 format \cite{ieee754} where $s \in \{1, -1\}$ is the \textbf{sign},
+  $e \in \Z$, $e_{\max} \geq e \geq e_{\min}$ is the \textbf{exponent} ($\exp(f)$ is
+  defined to be $e$), $p \in \Z, p > 1$ is the \textbf{precision},
+  and $m=m_0.m_1m_2...m_{p-1}$ where $m_0, ..., m_{p - 1} \in \{0, 1\}$ is the
+  \textbf{significand} of $f$. Assume that the representation of $f$ is made unique using the ``hidden bit'' convention, so that $f$ is represented using the smallest exponent possible. (In memory, the bit $m_0$ is not stored and assumed to be 1 unless the exponent field contains a special value signaling both that $e = e_{\min}$ and $m_0=0$).
+  $f$ is said to be \textbf{normalized} if $m_0 =1$
+  and $e \geq e_{\min}$, \textbf{unnormalized} if $m_0 = 0$, and
+  \textbf{denormalized} if $m_0 = 0$ and $e = e_{\min}$. $f = 0$ if all $m_j = 0$
+  and $e = e_{\min}$.
+
   Assume that floating point arithmetic complies with the IEEE 754-2008
   standard \cite{ieee754} in some ``to nearest'' rounding mode (no specific tie
   breaking behaviour is required) and that underflow occurs gradually, although
@@ -41,10 +87,45 @@
   $e_{\max} \geq e \geq e_{\min}$ is the \textbf{exponent} ($\exp(f)$ is
   defined to be $e$), $p$ is the \textbf{precision},
   and $m=m_0.m_1m_2...m_{p-1}$ where $m_0, ..., m_{p - 1} \in \{0, 1\}$ is the
-  \textbf{significand} of $f$. $f$ is said to be \textbf{normalized} if $m_0 =1$
-  and $e \geq e_{\min}$, \textbf{unnormalized} if $m_0 = 0$, and
-  \textbf{denormalized} if $m_0 = 0$ and $e = e_{\min}$. $f = 0$ if all $m_j = 0$
-  and $e = e_{\min}$.
+  \textbf{significand} of $f$.
+  \end{comment}
+
+  The exponent is stored in internal representation in biased form
+  using 8 bits for single precision, and 53 bits for double precision.
+  The exponent of a represented floating-point number is equal to
+  the biased exponent (the unsigned integer value stored in the exponent field)
+  minus the bias value (see table~\ref{tbl:IEEE-754}).
+  An exponent field of all 0-bit is reserved for zeros and denormalized values.
+  An exponent field of all 1-bit is reserved for infinities and NaN.
+
+  $f$ is said to be \textbf{normalized} if $m_0 =1$
+  and $e_{max} \geq e \geq e_{\min}$.
+  The first bit $m_0$ is not explicitly stored in internal representation
+  and is called hidden or implicit bit.
+  Therefore only $p-1$ bits are used to represent the mantissa of $f$.
+  $f$ is said to be \textbf{unnormalized} if $m_0 = 0$, and
+  \textbf{denormalized} if $m_0 = 0$ and $e = e_{\min} - 1$.
+  $f = 0$ if all $m_j = 0$ and $e = e_{\min} - 1$.
+
+  In binary internal representation, $f=0$ is represented by a biased exponent of $0$
+  as well as a mantissa field of all 0-bits.
+  Denormalized numbers have biased exponent of $0$ and non-zero mantissa field.
+  An exponent field of all 1-bits and a mantissa field of all 0-bits
+  represent infinities, positive or negative depending on the sign bit.
+  An exponent field of all 1-bits and a non-zero mantissa field
+  represent a NaN value.
+
+  We assume rounding mode ``to nearest'' (no specific tie
+  breaking behavior is required) and gradual underflow, although
+  methods to handle abrupt underflow will be considered in Section
+  \ref{sec:indexed_underflow_abrupt}.
+
+  For simplicity as well as for readability, throughout this paper
+  $\F_{b,p,e_{min},e_{max}}$ will be written simply as $\F$, referring to either
+  the IEEE 754-2008 single or double precision binary floating-point format,
+  i.e. $b=2$ and $m_i \in \{0, 1\}$.
+  All the analysis will be based on the corresponding parameters $p$, $e_{min}$
+  and $e_{max}$.
 
   $r \in \R$ is \textbf{representable} as a floating point number if there
   exists $f \in \F$ such that $r = f$ as real numbers.
@@ -81,234 +162,4 @@
   types in the IEEE 754-2008 floating point standard \cite{ieee754}.
 
   All indices start at $0$ in correspondence with the actual ReproBLAS implementation.
-
-\section{Binning}
-\label{sec:binning}
-We achieve reproducible summation of floating point numbers through binning.
-Each number is split into several components corresponding to predefined
-exponent ranges, then the components corresponding to each range are
-accumulated separately. We begin in Section \ref{sec:binning_bins} by
-explaining the particular set of ranges (referred to as bins) used. Section
-\ref{sec:binning_slices} develops mathematical theory to describe the
-components (referred to as slices) corresponding to each bin. We develop this
-theory to concisely describe and prove correctness of algorithms throughout the
-paper (especially Algorithms \ref{alg:depositrestricted} and
-\ref{alg:deposit}).
-
-    \subsection{Bins}
-    \label{sec:binning_bins}
-    We start by dividing the exponent range $(e_{\min} - p, ..., e_{\max} + 1]$
-    into \textbf{bins} $(a_i, b_i]$ of \textbf{width} $W$ according to
-    \eqref{eq:imax}, \eqref{eq:a}, and \eqref{eq:b}. Such a range is used so
-    that the largest and smallest (denormalized) floating point numbers may be
-    approximated.
-    \begin{align}
-        i_{\max} & = \bigl\lfloor(e_{\max} - e_{\min} + p - 1)/W\bigr\rfloor - 1
-            \label{eq:imax} \\
-        a_i & = e_{\max} + 1 - (i + 1)W \text{ for } 0 \leq i \leq i_{\max}
-            \label{eq:a} \\
-        b_i & = a_i + W
-            \label{eq:b}
-    \end{align}
-
-    We say the bin $(a_{i_0}, b_{i_0}]$ is \textbf{greater} than the bin
-    $(a_{i_1}, b_{i_1}]$ if $a_{i_0} > a_{i_1}$ (which is equivalent to both
-    $b_{i_0} > b_{i_1}$ and $i_0 < i_1$).
-
-    We say the bin $(a_{i_0}, b_{i_0}]$ is \textbf{less} than the bin
-    $(a_{i_1}, b_{i_1}]$ if $a_{i_0} < a_{i_1}$ (which is equivalent to both
-    $b_{i_0} < b_{i_1}$ and $i_0 > i_1$).
-
-    We use $i \leq i_{\max} = \lfloor(e_{\max} - e_{\min} + p - 1)/W\rfloor - 1$
-    to ensure that $a_i > e_{\min} - p + 1$ as discussed in Section
-    \ref{sec:indexed_underflow_gradual}. This means that the greatest bin,
-    $(a_{0}, b_{0}]$, is
-    \begin{equation}
-      (e_{\max} + 1 - W, e_{\max} + 1]
-      \label{eq:binmax}
-    \end{equation}
-
-    and the least bin, $(a_{i_{\max}}, b_{i_{\max}}]$, is
-    \begin{equation}
-      \Bigl(e_{\min} - p + 2 + \bigl((e_{\max} - e_{\min} + p - 1)\mod W\bigr),
-      e_{\min} - p + 2 + W + \bigl((e_{\max} - e_{\min} + p - 1)\mod W\bigr)\Bigr]
-      \label{eq:binmin}
-    \end{equation}
-
-    Section \ref{sec:indexed_underflow_gradual} explains why the bottom of the exponent range
-    \begin{equation*}
-    \Bigl(e_{\min} - p, e_{\min} - p + 2 + \bigl((e_{\max} - e_{\min} + p - 1) \mod W\bigr)\Bigr]
-    \end{equation*}
-    is ignored.
-
-    As discussed in \cite{repsum}, and explained again in Section~\ref{sec:primitiveops_renormalize},
-    we must assume
-    \begin{equation}
-      W < p - 2
-      \label{eq:wupper}
-    \end{equation}
-
-    As discussed in Section \ref{sec:indexed_overflow}, we must also assume
-    \begin{equation}
-      2 W > p + 1
-      \label{eq:wlower}
-    \end{equation}
-
-    ReproBLAS uses both \texttt{float} and \texttt{double} floating point
-    types. The chosen division of exponent ranges for both types is shown in
-    Figure \ref{fig:bins}.
-
-    \begin{figure}[H]
-        \centering
-        \begin{tabular}{ | l | l | l | p{5cm} |} \hline
-            Floating-Point Type & \texttt{float} & \texttt{double}\\ \hline
-            $e_{\max}$ & 127 & 1023\\ \hline
-            $e_{\min}$ &  -126 & -1022 \\ \hline
-            $p$ & 24 & 53 \\ \hline
-            $e_{\min} - p$ & -140 & -1075 \\ \hline
-            $W$ & 13 & 40 \\ \hline
-            $i_{\max}$ & 19 & 51 \\ \hline
-            $(a_0, b_0]$ & $(115, 128]$ & $(984, 1024]$\\ \hline
-            $(a_{i_{\max}}, b_{i_{\max}}]$ & $(-132, -119]$ & $(-1056, -1016]$ \\ \hline
-        \end{tabular}
-        \caption{ReproBLAS Binning Scheme}
-        \label{fig:bins}
-    \end{figure}
-
-    \subsection{Slices}
-    \label{sec:binning_slices}
-    Throughout the text we will refer to the \textbf{slice} of some $x \in \F$
-    in the bin $(a_i, b_i]$. $x$ can be split into several slices, each slice
-    corresponding to a bin $(a_i, b_i]$ and expressible as the (possibly
-    negated) sum of a subset of $\{2^e, e \in (a_i, b_i]\}$, such that the sum
-    of the slices provides a good approximation of $x$. Specifically, the slice
-    of $x \in \F$ in the bin $(a_i, b_i]$ is defined recursively as $d(x, i)$
-    in \eqref{eq:d}. We must define $d(x, i)$ recursively because it is not a
-    simple bitwise extraction.
-    \begin{equation}
-      \begin{aligned}
-      d(x,0) & = \roundtonearestinfty(x, a_0+1) \\
-      d(x, i) & = \roundtonearestinfty\bigl(x - \sum\limits_{j=0}^{i - 1}d(x,j), a_i + 1\bigr)
-        \text{ for } i > 0.
-      \end{aligned}
-      \label{eq:d}
-    \end{equation}
-
-    We make three initial observations on the definition of $d(x, i)$. First,
-    we note that $d(x, i)$ is well defined recursively on $i$ with base case
-    $d(x, 0) = \roundtonearestinfty(x, a_0 + 1)$.
-
-    Next, notice that $d(x, i) \in 2^{a_{i} + 1}\Z$.
-
-    Finally, it is possible that $d(x, 0)$ may be too large to represent as a
-    floating point number. Overflow of this type is accounted for in Section
-    \ref{sec:indexed_overflow}.
-
-    Lemmas \ref{lem:dzero} and \ref{lem:dmiddle} follow from the definition of $d(x, i)$.
-
-    \begin{samepage}
-    \begin{lem}
-      For all $i \in \{0, ..., i_{\max}\}$ and $x \in \F$ such that $|x| < 2^{a_i}$,
-      $d(x, i) = 0.$
-      \label{lem:dzero}
-    \end{lem}
-    \end{samepage}
-
-    \begin{proof}
-      We show the claim by induction on $i$.
-
-      In the base case, $|x| < 2^{a_0}$, by \eqref{eq:round} we have
-      $d(x, 0) = \roundtonearestinfty(x, a_0 + 1) = 0$.
-
-      In the inductive step, we have $|x| < 2^{a_{i + 1}} < \ldots < 2^{a_0}$ by \eqref{eq:a}
-      and by induction $d(x, i)= ... = d(x, 0) = 0$. Thus,
-      \[
-        d(x, i + 1) = \roundtonearestinfty\bigl(x - \sum\limits_{j = 0}^{i}d(x, j), a_{i + 1} + 1\bigr)
-            = \roundtonearestinfty(x, a_{i+1} + 1)
-      \]
-      Again, since $x < 2^{a_{i+1}}$, by \eqref{eq:round} we have
-      \(
-        d(x, i + 1) = \roundtonearestinfty(x, a_{i + 1} + 1) = 0.
-      \)
-    \end{proof}
-
-    \begin{samepage}
-    \begin{lem}
-      For all $i \in \{0, ..., i_{\max}\}$ and $x \in \F$ such that $|x| < 2^{b_i}$,
-      $d(x, i) = \roundtonearestinfty(x, a_i + 1)$.
-      \label{lem:dmiddle}
-    \end{lem}
-    \end{samepage}
-
-    \begin{proof}
-      The claim is a simple consequence of Lemma \ref{lem:dzero}.
-
-      By  \eqref{eq:a} and \eqref{eq:b}, $|x| < 2^{b_i} = 2^{a_{i - 1}} < \ldots <2^{a_0}$.
-      Therefore Lemma \ref{lem:dzero} implies $d(x, 0) = ... = d(x, i - 1) = 0$
-      and we have
-      \[
-        d(x, i) = \roundtonearestinfty\bigl(x - \sum\limits_{j = 0}^{i - 1}d(x, j), a_{i} + 1\bigr)
-            = \roundtonearestinfty(x, a_{i} + 1)
-      \]
-    \end{proof}
-
-    Lemma \ref{lem:dzero}, Lemma \ref{lem:dmiddle}, and \eqref{eq:d} can be
-    combined to yield an equivalent definition of $d(x, i)$ for all $i \in \{0,
-    ..., i_{\max}\}$ and $x \in \F$.
-
-    \begin{equation}
-      d(x, i) = \begin{cases}
-        0 \text{ if } |x| < 2^{a_i}\\
-        \roundtonearestinfty(x, a_i + 1) \text{ if } 2^{a_i} \leq |x| < 2^{b_i}\\
-        \roundtonearestinfty\bigl(x - \sum\limits_{j=0}^{i - 1}d(x,j), a_i + 1\bigr) \text{ if } 2^{b_i} \leq |x|
-        \end{cases}
-      \label{eq:d2}
-    \end{equation}
-
-    Theorem \ref{thm:dround} shows that sum of the slices of $x \in \F$
-    provides a good approximation of $x$.
-
-    \begin{samepage}
-    \begin{thm}
-      For all $i \in \{0, ..., i_{\max}\}$ and $x \in \F$,
-      $|x - \sum \limits_{j = 0}^id(x, j)| \leq 2^{a_i}$.
-      \label{thm:dround}
-    \end{thm}
-    \end{samepage}
-
-    \begin{proof}
-      We apply  \eqref{eq:round} and \eqref{eq:d2}
-      \begin{align*}
-        \bigl|x - \sum \limits_{j = 0}^{i}d(x, j)\bigr| & = \Bigl|\bigl(x - \sum \limits_{j = 0}^{i - 1}d(x, j)\bigr) - d(x, i)\Bigr| \\
-         & = \Bigl|\bigl(x - \sum \limits_{j = 0}^{i - 1}d(x, j)\bigr) - \roundtonearestinfty\bigl(x - \sum \limits_{j = 0}^{i - 1}d(x, j), a_{i} + 1\bigr)\Bigr| \leq 2^{a_{i}}
-      \end{align*}
-    \end{proof}
-
-    Theorem \ref{thm:dbound} shows a bound on $d(x, i)$.
-
-    \begin{samepage}
-    \begin{thm}
-      For all $i \in \{0, ..., i_{\max}\}$ and $x \in \F$, $|d(x, i)| \leq 2^{b_i}$.
-      \label{thm:dbound}
-    \end{thm}
-    \end{samepage}
-
-    \begin{proof}
-      First, we show that $|x - \sum\limits_{j=0}^{i - 1}d(x,j)| \leq 2^{b_i}$.
-
-      If $i = 0$, then we have
-      \begin{equation*}
-        \bigl|x - \sum\limits_{j=0}^{i - 1}d(x,j)\bigr| = |x| < 2 \cdot 2^{e_{\max}} < 2^{b_0}
-      \end{equation*}
-      Otherwise, we can apply  \eqref{eq:a} and \eqref{eq:b} to Theorem \ref{thm:dround} to get
-      \begin{equation*}
-        \bigl|x - \sum \limits_{j = 0}^{i - 1}d(x, j)\bigr| \leq 2^{a_{i - 1}} = 2^{b_i}
-      \end{equation*}
-
-      As $2^{b_i} \in 2^{a_i + 1}\Z$,  \eqref{eq:d} can be used
-
-      \begin{equation*}
-        \bigl|d(x, i)\bigr| = \Bigl|\roundtonearestinfty\bigl(x - \sum\limits_{j=0}^{i - 1}d(x,j), a_i + 1\bigr)\Bigr| \leq 2^{b_i}
-      \end{equation*}
-    \end{proof}
 

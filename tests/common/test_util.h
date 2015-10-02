@@ -74,6 +74,10 @@ double util_drand48();
 
 void util_ddpd(double* a, double b);
 
+double complex zmul(double complex a, double complex b);
+
+float complex cmul(float complex a, float complex b);
+
 #ifndef MIN
   #define MIN(A, B) (((A) < (B))? (A): (B))
 #endif

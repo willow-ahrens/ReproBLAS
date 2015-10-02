@@ -17,10 +17,11 @@
  *
  * @author Peter Ahrens
  * @author Hong Diep Nguyen
- * @date   19 May 2015
+ * @date   23 Sep 2015
  */
 int idxd_smindex(const float *priX){
   /*
+  //reference version
   int exp;
 
   if(priX[0] == 0.0){
@@ -31,13 +32,6 @@ int idxd_smindex(const float *priX){
       return 0;
     }
     return (FLT_MAX_EXP + FLT_MANT_DIG - SIWIDTH + 1 - exp)/SIWIDTH;
-  }
-  */
-  /*
-  if(priX[0] == 0.0){
-    return (FLT_MAX_EXP - FLT_MIN_EXP)/SIWIDTH + SIMAXFOLD;
-  }else{
-    return ((FLT_MAX_EXP + FLT_MANT_DIG - SIWIDTH + 1 + EXPF_BIAS) - EXPF(priX[0]))/SIWIDTH;
   }
   */
   return ((FLT_MAX_EXP + FLT_MANT_DIG - SIWIDTH + 1 + EXPF_BIAS) - EXPF(priX[0]))/SIWIDTH;

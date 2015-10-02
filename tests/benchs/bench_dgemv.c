@@ -62,11 +62,14 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
     time_toc();
   }
 
+  double dN = (double)N;
+  double dM = (double)M;
+  double dNY = (double)NY;
   metric_load_double("time", time_read());
   metric_load_double("trials", (double)(trials));
-  metric_load_double("input", (double)(N * M + N + M));
-  metric_load_double("output", (double)NY);
-  metric_load_double("d_fma", (double)(N * M));
+  metric_load_double("input", dN * dM + dN + dM);
+  metric_load_double("output", dNY);
+  metric_load_double("d_fma", dN * dM);
   metric_dump();
 
   free(X);

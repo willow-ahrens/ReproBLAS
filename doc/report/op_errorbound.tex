@@ -1,0 +1,337 @@
+\subsection{Error Bound}
+    \label{sec:primitiveops_error}
+
+    We first state and prove Theorem \ref{thm:mysortsum}, as it is critical in
+    the error analysis of the algorithm. It should be noted that Theorem
+    \ref{thm:mysortsum} is similar to that of Theorem 1 from \cite{sortsum},
+    but requires less intermediate precision by exploiting additional structure
+    of the input data.
+
+    It is possible that future implementors may make modifications to the
+    indexed type (adding multiple carry fields, changing the binning scheme,
+    etc.) such that the summation of its fields cannot be reordered to satisfy
+    the assumptions of Theorem \ref{thm:mysortsum}. In such an event,
+    $\cite{sortsum}$ provides more general ways to sum the fields while still
+    maintaining accuracy.
+      \begin{samepage}
+    \begin{thm}
+      We are given $n$ floating point numbers $f_0, \ldots, f_{n - 1}$ for which there
+      exist (possibly unnormalized) floating point numbers $f'_0, \ldots, f'_{n -1}$
+      of the same precision such that
+      \begin{enumerate}
+        \item $f_j = f'_j$ for all $j \in \{0, ..., n - 1\}$
+        \item $\exp(f'_0) > ... > \exp(f'_{n - 1})$
+        \item $\exp(f'_j) \geq \exp(f'_{j + 2}) + \lceil\frac{p + 1}{2}\rceil$ for all $j \in \{0, ..., n - 3\}$
+      \end{enumerate}
+      \label{thm:mysortsum}
+      Let $S_0 = \overline{S_0} = f_0$, $S_j = S_{j - 1} + f_j$,
+      and $\overline{S_j} = \fl(\overline{S_{j - 1}} + f_j)$ (assuming rounding to nearest)
+      so that $S_{n - 1} = \sum \limits_{j = 0}^{n - 1} f_j$.
+      Then in the absence of overflow and underflow we have
+      \begin{equation*}
+        \left|S_{n - 1} - \overline{S_{n - 1}}\right| < \frac{7\epsilon}{1 - 6\sqrt\epsilon}|S_{n - 1}| \approx 7 \epsilon |S_{n - 1}|
+      \end{equation*}
+    \end{thm}
+    \end{samepage}
+
+    \begin{proof}
+
+      Throughout the proof, let $f_j = 0$ if $j > n - 1$ so that $S_{\infty} = S_{n - 1}$ and $\overline{S_{\infty}} = \overline{S_{n - 1}}$.
+
+      Let $m$ be the location of the first error such that $S_{m - 1} = \overline{S_{m - 1}}$ and $S_{m} \neq \overline{S_{m}}$.
+
+      If no such $m$ exists then the computed sum is exact ($S_{n - 1} = \overline{S_{n - 1}}$) and we are done.
+
+      If such an $m$ exists, then because $\exp(f_0') > ... > \exp(f_m')$, $f_0, ..., f_m \in \ulp(f_m')\Z$. Thus, $S_m \in \ulp(f_m')\Z$.
+
+      We now show $|S_m| > 2 \cdot 2^{\exp(f_m')}$. Assume for contradiction that $|S_m| \leq 2 \cdot 2^{\exp(f_m')}$. Because $S_m \in \ulp(f_m')\Z$, this would imply that $S_m$ is representable as a floating point number, a contradiction as $\overline{S_m} \neq S_m$. Therefore, we have
+      \begin{equation}
+        |S_m| > 2 \cdot 2^{\exp(f_m')}
+        \label{eq:smbound}
+      \end{equation}
+
+      Because $\exp(f_m') > \exp(f_{m + 1}')$,
+      \begin{equation}
+        |f_{m + 1}| < 2\cdot2^{\exp(f_m' - 1)} = 2^{\exp(f_m')}
+        \label{eq:smpbound}
+      \end{equation}
+
+      Because $\exp(f_m') \geq \exp(f_{m + 2}') + \lceil\frac{p + 1}{2}\rceil$ and $\exp(f_0') > ... > \exp(f_{n - 1}')$,
+      \begin{align}
+        \bigl|\sum \limits_{j = m + 2}^{n - 1} f_j\bigr| &\leq \sum \limits_{j = m + 2}^{n - 1} |f_j| < \sum \limits_{j = m + 2}^{n - 1} 2 \cdot 2^{\exp(f_j')} \leq \sum \limits_{j = m + 2}^{n - 1} 2 \cdot 2^{\exp(f_m') - \left\lceil\frac{p + 1}{2}\right\rceil - (m + 2 - j)} \nonumber \\
+        &< \sum \limits_{j = 0}^{\infty} \left(2 \sqrt{\epsilon}\right)2^{\exp(f_m') - j} = \left(4\sqrt\epsilon\right)2^{\exp(f_m')}
+        \label{eq:smppbound}
+      \end{align}
+
+      We can combine  \eqref{eq:smpbound} and \eqref{eq:smppbound} to obtain
+      \begin{equation}
+        \bigl|\sum\limits_{j = m + 1}^{n - 1} f_j\bigr| \leq \sum\limits_{j = m + 1}^{n - 1} |f_j| < 2^{\exp{f_m'}} + \left(4 \sqrt{\epsilon}\right) 2^{\exp(f_m')} = \left(1 + 4 \sqrt\epsilon \right)2^{\exp(f_m')}
+        \label{eq:smsbound}
+      \end{equation}
+
+      By  \eqref{eq:smbound} and \eqref{eq:smsbound},
+      \begin{align}
+        |S_{n-1}| & = \bigl|\sum\limits_{j = 0}^{n - 1} f_j\bigr| \geq \bigl|\sum\limits_{j = 0}^{m} f_j\bigr| - \bigl|\sum\limits_{j = m + 1}^{n - 1} f_j\bigr| = |S_m| - \bigl|\sum\limits_{j = m + 1}^{n - 1} f_j\bigr| \nonumber \\
+        & \geq 2 \cdot 2^{\exp(f_{m}')} - \left(1 + 4 \sqrt\epsilon\right) 2^{\exp(f_m')} = \left(1 - 4 \sqrt\epsilon\right) 2^{\exp(f_m')}
+        \label{eq:sbound}
+      \end{align}
+
+      By  \eqref{eq:sbound} and \eqref{eq:smppbound},
+      \begin{equation}
+        \bigl|\sum \limits_{j = m + 2}^{n - 1} f_j\bigr| < \left(4 \sqrt{\epsilon}\right) 2^{\exp(f_m')} \leq \frac{4 \sqrt\epsilon}{1 - 4  \sqrt\epsilon}\bigl|\sum\limits_{j = 0}^{n - 1}f_j\bigr|
+        \label{eq:smpprelsbound}
+      \end{equation}
+
+      By  \eqref{eq:sbound} and \eqref{eq:smsbound},
+      \begin{equation}
+        \bigl|\sum\limits_{j = m + 1}^{n - 1}f_j\bigr| \leq \sum\limits_{j = m + 1}^{n - 1}|f_j| \leq \left(1 + 4  \sqrt\epsilon\right)2^{\exp(f_m')}\leq \frac{1 + 4  \sqrt\epsilon}{1 - 4  \sqrt\epsilon}\bigl|\sum\limits_{j = 0}^{n - 1}f_j\bigr|
+        \label{eq:smsrelsbound}
+      \end{equation}
+
+      And by \eqref{eq:sbound} and \eqref{eq:smsrelsbound},
+      \begin{equation}
+        |S_m| \leq \bigl|\sum\limits_{j = 0}^{n - 1}f_j\bigr| + \bigl|\sum\limits_{j = m + 1}^{n - 1} f_j\bigr|
+            \leq \left(1 + \frac{1 + 4\sqrt\epsilon}{1 - 4\sqrt\epsilon}\right)\bigl|\sum_{j = 0}^{n - 1}f_j\bigr|
+            = \frac{2}{1 - 4  \sqrt\epsilon}\bigl|\sum\limits_{j = 0}^{n - 1}f_j\bigr|
+        \label{eq:smrelsbound}
+      \end{equation}
+
+      By definition, $\overline{S_{m+4}}$ is the computed sum of
+      $\overline{S_m}$, $f_{m+1}, \ldots, f_{m+4}$ using the standard recursive summation technique.
+      According to \cite[Equation 1.2, 2.4]{higham}
+      \begin{align*}
+          \bigl|\overline{S_m} + \sum_{j=m+1}^{m+4}f_j - \overline{S_{m+4}}\bigr|
+          & \leq \frac{4\epsilon}{1-4\epsilon} \left|\overline{S_m} + f_{m+1}\right| + \frac{3\epsilon}{1-3\epsilon} \sum_{j=m+2}^{m+4}|f_j| \\
+          & \leq \frac{4\epsilon}{1-4\epsilon} \bigl(\left|\overline{S_m} - S_m\right| + |S_m + f_{m+1}|\bigr)
+              + \frac{3\epsilon}{1-3\epsilon} \sum_{j=m+2}^{n-1}|f_j|.
+      \end{align*}
+      Since $S_{n-1} = S_m + f_{m+1} + \sum_{j=m+2}^{n-1} f_j$, we have
+      \begin{equation*}
+          |S_m + f_{m+1}|
+          = \bigl|S_{n-1} - \sum_{j=m+2}^{n-1}f_j\bigr|
+          \leq |S_{n-1}| + \sum_{j=m+2}^{n-1} |f_j|
+      \end{equation*}
+      Therefore
+      \begin{equation*}
+          \bigl|\overline{S_m} + \sum_{j=m+1}^{m+4}f_j - \overline{S_{m+4}}\bigr|
+          \leq \frac{4\epsilon}{1-4\epsilon} \left|S_m - \overline{S_m}\right|
+          + \frac{4\epsilon}{1-4\epsilon} |S_{n-1}|
+          + \frac{7\epsilon}{1-4\epsilon} \sum_{j=m+2}^{n-1}|f_j|.
+      \end{equation*}
+      Using the triangle inequality we have
+      \begin{align*}
+      \left|S_{m+4} - \overline{S_{m+4}}\right|
+          & = \bigl|S_m + \sum_{j=m+1}^{m+4}f_j - \overline{S_{m+4}}\bigr|
+          \leq \left|S_m - \overline{S_m} \right| + \bigl|\overline{S_m} + \sum_{j=m+1}^{m+4}f_j - \overline{S_{m+4}} \bigr| \\
+          & \leq \left(1 + \frac{4\epsilon}{1-4\epsilon}\right) \left|S_m - \overline{S_m}\right| + \frac{4\epsilon}{1-4\epsilon} |S_{n-1}|
+                  + \frac{7\epsilon}{1-4\epsilon} \sum_{j=m+2}^{n-1}|f_j| \\
+          & \leq \frac{1}{1-4\epsilon} \epsilon |S_m| + \frac{4\epsilon}{1-4\epsilon} |S_{n-1}|
+                  + \frac{7\epsilon}{1-4\epsilon} \sum_{j=m+2}^{n-1}|f_j| \\
+          & \leq \frac{\epsilon}{1-4\epsilon} \left(|S_m| + 4 |S_{n-1}|
+                  + 7 \sum_{j=m+2}^{n-1}|f_j|\right).
+      \end{align*}
+      and by \eqref{eq:smrelsbound} and \eqref{eq:smpprelsbound},
+      \begin{align}
+      \left|S_{m+4} - \overline{S_{m+4}}\right|
+          & \leq \frac{\epsilon}{1-4\epsilon}
+              \left(
+                  \frac{2}{1-4\sqrt{\epsilon}} |S_{n-1}|
+                  + 4 |S_{n-1}|
+                  + 7 \frac{4\sqrt{\epsilon}}{1-4\sqrt{\epsilon}} |S_{n-1}|
+              \right) \nonumber \\
+          & \leq \frac{\epsilon}{1-4\epsilon} \left(\frac{6+12\sqrt{\epsilon}}{1-4\sqrt{\epsilon}} |S_{n-1}|\right)
+              = \frac{6\epsilon }{(1-2\sqrt{\epsilon})(1-4\sqrt{\epsilon})} |S_{n-1}| \nonumber \\
+          & < \frac{6\epsilon}{1-6\sqrt{\epsilon}} |S_{n-1}|
+          \label{eq:smfiveerror}
+      \end{align}
+
+      Notice that
+      \begin{equation*}
+        \exp(f_m') \geq \exp(f_{m + 2}') + \left\lceil\frac{p+ 1}{2}\right\rceil \geq \exp(f_{m + 4}') + 2  \left\lceil\frac{p + 1}{2}\right\rceil > \exp(f_{m + 5}')+ 2  \left\lceil\frac{p+ 1}{2}\right\rceil
+      \end{equation*}
+      Therefore,
+      \begin{equation}
+        \exp(f_m') \geq \exp(f_{m + 5}') + p + 2
+        \label{eq:fmfiveexp}
+      \end{equation}
+
+      Because $\exp(f_0') > ... > \exp(f_{n - 1}')$, \eqref{eq:fmfiveexp} yields
+      \begin{equation}
+        \bigl|\sum\limits_{j = m + 5}^{n - 1} f_j\bigr| \leq \sum\limits_{j = m + 5}^{n - 1} |f_j| < \sum\limits_{j = m + 5}^{n - 1} 2 \cdot 2^{\exp(f_m') - p - 2 - (j - (m + 5))} < \sum\limits_{j = 0}^{\infty} 2^{\exp(f_m') - p - 1 - j} = \epsilon 2^{\exp(f_m')}
+        \label{eq:boundfmfivesum}
+      \end{equation}
+
+      Using \eqref{eq:sbound} and \eqref{eq:boundfmfivesum},
+      \begin{equation}
+        \bigl|\sum\limits_{j = m + 5}^{n - 1} f_j\bigr| \leq \sum\limits_{j = m + 5}^{n - 1} |f_j| < \frac{\epsilon}{1 - 4  \sqrt\epsilon}|S_{n - 1}|
+        \label{eq:relsboundfmfivesum}
+      \end{equation}
+
+      By \eqref{eq:smfiveerror} and \eqref{eq:relsboundfmfivesum}
+      \begin{align}
+        \left|S_{n-1} - \overline{S_{m+4}}\right|
+        & \leq |S_{n-1} - S_{m+4}| + \left|S_{m+4} - \overline{S_{m+4}}\right| \nonumber \\
+        & \leq \bigl|\sum_{j=m+5}^{n-1} f_j\bigr| + \frac{6\epsilon}{1-6\sqrt{\epsilon}} |S_{n-1}| \nonumber \\
+        & \leq \frac{\epsilon}{1 - 4 \sqrt\epsilon}|S_{n-1}| + \frac{6\epsilon}{1-6\sqrt{\epsilon}} |S_{n-1}| \nonumber \\
+        & <  \frac{7\epsilon}{1-6\sqrt{\epsilon}} |S_{n-1}|.
+        \label{eq:smfiveerror-1}
+      \end{align}
+
+      When combined with \eqref{eq:sbound} this gives
+      \begin{align*}
+        \left|\overline{S_{m+4}}\right|
+        & \geq \left(1-\frac{7 \epsilon}{1-6\sqrt{\epsilon}}\right) |S_{n-1}| \\
+        & > \left(1-\frac{7 \epsilon}{1-6\sqrt{\epsilon}}\right) \left(1-4\sqrt{\epsilon}\right) 2^{\exp(f'_m)} \\
+        & > \left(1-4\sqrt{\epsilon} - \frac{7 \epsilon \left(1-4\sqrt{\epsilon}\right)}{1-6\sqrt{\epsilon}}\right) 2^{\exp(f'_m)}
+      \end{align*}
+
+      which, assuming $\epsilon \ll 1$, can be simplified to
+      \begin{equation}
+        \left|\overline{S_{m + 4}}\right| > 2^{\exp(f_m') - 1}
+        \label{eq:minsmfoursimple}
+      \end{equation}
+
+      Using  \eqref{eq:fmfiveexp}, for all $j \geq m + 5$ we have
+      \begin{equation}
+        |f_j| < 2 \cdot 2^{\exp(f_j')} \leq 2 \cdot 2^{\exp(f_m') - p - 2} = \epsilon \cdot 2^{\exp(f_m') - 1}
+        \label{eq:maxfmfive}
+      \end{equation}
+
+      And by \eqref{eq:maxfmfive} and \eqref{eq:minsmfoursimple}, all additions
+      after $f_{m + 4}$ have no effect (since we are rounding to nearest)
+      and we have $\overline{S_{n-1}} = \overline{S_{m+4}}$.
+      This, together with \eqref{eq:smfiveerror-1}, implies
+      \begin{equation*}
+        \left|S_{n-1} - \overline{S_{n-1}}\right| < \frac{7\epsilon}{1-6\sqrt{\epsilon}} |S_{n-1}|
+      \end{equation*}
+      The proof is complete.
+    \end{proof}
+
+    Consider the $K$-fold indexed sum $Y$ of floating point numbers $x_0, \ldots, x_{n - 1}$.
+    We denote the true sum $\sum \limits_{j = 0}^{n - 1} x_j$ by $T$, the true
+    value of the indexed sum as obtained using \eqref{eq:indexedvalue} by
+    $\mathcal{Y}$, and the floating point approximation of $\mathcal{Y}$
+    obtained using an appropriate algorithm from Section
+    \ref{sec:primitiveops_convert} by $\overline{\mathcal{Y}}$.
+
+    \cite{repsum} discusses the absolute error $|T - \mathcal{Y}|$ but does not
+    give a method to construct $\overline{\mathcal{Y}}$ and therefore no error
+    bound $|T - \overline{\mathcal{Y}}|$ on the final floating point answer
+    was given. Here we extend the error bound of \cite{repsum} all the way to
+    the final return value of the algorithm.
+
+    %It has been shown in \cite{repsum} that
+    The case of all zero input data is trivial, therefore we assume that
+    $\max|x_j|$ and $Y$ are nonzero.
+    We also assume here no overflow or underflow.
+    Let $I$ be the index of $Y$, which is also the index of $\max|x_j|$,
+    so that $2^{b_I} > \max|x_j| \geq 2^{a_I}$.
+    Therefore for all $i < I$ the slice of any $x_j$ in bin $i$ is $d(x_j, i) = 0$.
+    The index of the smallest bin of $Y$ is $I + K - 1$.
+    According to Theorem~\ref{thm:dround}, we have
+    \begin{align*}
+        |x_j - \sum_{i=I}^{I + K -1} d(x_j,i)|
+            & = |x_j - \sum_{i=0}^{I + K - 1} d(x_j,i)|
+            \leq 2^{a_{I + K -1}} 
+            = 2^{a_I - (K-1)W} \\
+            & \leq 2^{W(1-K)} \max|x_j|. 
+    \end{align*}
+
+    Since the summation in each bin $Y_i$ is exact, we have
+    \begin{align}
+        |T - \mathcal{Y}| & = |\sum_{j=0}^{n-1} x_j - \sum_{i=I}^{I+K-1} \sum_{j=0}^{n-1} d(x_j, i)|
+            = |\sum_{j=0}^{n-1} (x_j - \sum_{i=I}^{I+K-1} d(x_j,i))| \nonumber \\
+            & \leq n 2^{W(1-K)} \max|x_j|.
+            \label{eq:repboundnaive}
+    \end{align}
+
+    However, this bound does not consider underflow. By
+    \eqref{eq:droundunderflow}, a small modification yields a bound that
+    considers underflow
+    \begin{equation}
+      \label{eq:repbound}
+      |T - \mathcal{Y}| < n \cdot \max\bigl(2^{W  (1 - K)} \max|x_j|, 2^{e_{\min} - 1}\bigr)
+    \end{equation}
+
+    By  \eqref{eq:gammadecreases} and \eqref{eq:gammadecreasesfast},
+    Theorem \ref{thm:mysortsum} applies to yield
+    \begin{equation*}
+      \left|\mathcal{Y} - \overline{\mathcal{Y}}\right| < \frac{7\epsilon}{1 - 6\sqrt\epsilon}|\mathcal{Y}|
+    \end{equation*}
+
+    By the triangle inequality
+    \begin{equation*}
+      |\mathcal{Y}| \leq |T| + |T - \mathcal{Y}| < n \cdot \max\bigl(2^{W(1-K)}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + |T|
+    \end{equation*}
+
+    The above results can be used to obtain  \eqref{eq:error}, the absolute
+    error of the floating point approximation of an indexed sum $|T - \overline{\mathcal{Y}}|$.
+    \begin{align}
+      \left|T - \overline{\mathcal{Y}}\right| &\leq |T - \mathcal{Y}| + \left|\mathcal{Y} - \overline{\mathcal{Y}}\right| \nonumber \\
+      &< n \cdot \max\bigl(2^{W  (1 - K)}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + \frac{7\epsilon}{1 - 6\sqrt\epsilon} |\mathcal{Y}| \nonumber \\
+      &< n \cdot \max\bigl(2^{W  (1 - K)}  \max|x_j|, 2^{e_{\min} - 1}\bigr) \nonumber \\
+      &+ \frac{7\epsilon}{1 - 6\sqrt\epsilon} \Bigl(n \cdot \max\bigl(2^{W  (1 - K) - 1}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + |T|\Bigr) \nonumber \\
+      &< \left(1 + \frac{7\epsilon}{1 - 6\sqrt\epsilon}\right) \Bigl(n \cdot \max\bigl(2^{W (1 - K)} \max|x_j|, 2^{e_{\min} - 1}\bigr)\Bigr) + \frac{7\epsilon}{1 - 6\sqrt\epsilon} |T|
+      \label{eq:error}
+    \end{align}
+
+    Equation \eqref{eq:error} can be approximated as \eqref{eq:errorapprox}:
+    \begin{align}
+      \left|T - \overline{\mathcal{Y}}\right| &< \left(1 + \frac{7\epsilon}{1 - 6\sqrt\epsilon}\right) \Bigl(n \cdot \max\bigl(2^{W (1 - K)} \max|x_j|, 2^{e_{\min} - 1}\bigr)\Bigr) + \frac{7\epsilon}{1 - 6\sqrt\epsilon} |T| \nonumber \\
+    &\approx n 2^{W  (1 - K)} \max|x_j| + 7  \epsilon |T|
+      \label{eq:errorapprox}
+    \end{align}
+
+    A perhaps more useful mathematical construction is the error expressed
+    relative to the result $\overline{\mathcal{Y}}$, and not the theoretical
+    sum $T$. Again by the triangle inequality,
+    \begin{equation*}
+      |\mathcal{Y}| \leq \left|\overline{\mathcal{Y}}\right| + \left|\mathcal{Y} - \overline{\mathcal{Y}}\right|
+    \end{equation*}
+
+    Applying the bound on $|\mathcal{Y} - \overline{\mathcal{Y}}|$ yields
+    \begin{equation*}
+      |\mathcal{Y}| < \left|\overline{\mathcal{Y}}\right| + \frac{7\epsilon}{1 - 6\sqrt\epsilon}|\mathcal{Y}|
+    \end{equation*}
+
+    After simplification,
+    \[
+      |\mathcal{Y}| < \left(\frac{1}{1 - \frac{7\epsilon}{1 - 6\sqrt\epsilon}}\right)  \left|\overline{\mathcal{Y}}\right| \nonumber 
+      = \frac{1 - 6 \sqrt\epsilon}{1 - 6 \sqrt \epsilon - 7\epsilon}  \left|\overline{\mathcal{Y}}\right|.
+    \]
+
+    The above results can be used to obtain  \eqref{eq:error2}, the absolute
+    error of the floating point approximation of an indexed sum $|T -
+    \overline{\mathcal{Y}}|$.
+    \begin{align}
+      \left|T - \overline{\mathcal{Y}}\right| &\leq |T - \mathcal{Y}| + \left|\mathcal{Y} - \overline{\mathcal{Y}}\right| \nonumber \\
+      &< n \cdot \max\bigl(2^{W(1-K)}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + \frac{7\epsilon}{1 - 6\sqrt\epsilon}|\mathcal{Y}| \nonumber \\
+      &< n \cdot \max\bigl(2^{W(1-K)}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + \frac{7\epsilon}{1 - 6\sqrt\epsilon}\left(\frac{1 - 6 \sqrt\epsilon}{1 - 6 \sqrt \epsilon - 7\epsilon}\left|\overline{\mathcal{Y}}\right|\right) \nonumber \\
+      &= n \cdot \max\bigl(2^{W(1-K)}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + \frac{7\epsilon}{1 - 6 \sqrt \epsilon - 7\epsilon}\left|\overline{\mathcal{Y}}\right|
+      \label{eq:error2}
+    \end{align}
+
+    Equation \eqref{eq:error2} can be approximated as \eqref{eq:error2approx},
+    which is nearly equal to bound \eqref{eq:errorapprox}:
+    \begin{align}
+      |T - \overline{\mathcal{Y}}| &< n \cdot \max\bigl(2^{W(1-K)}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + \frac{7\epsilon}{1 - 6 \sqrt \epsilon - 7\epsilon}  \left|\overline{\mathcal{Y}}\right| \nonumber \\
+      &\approx n  2^{W(1 - K)} \max|x_j|+ 7 \epsilon \left|\overline{\mathcal{Y}}\right|
+      \label{eq:error2approx}
+    \end{align}
+
+    We can compare  \eqref{eq:errorapprox} to the error bound obtained if the
+    accumulator fields were summed without extra precision. In this case, only
+    the standard summation bound from \cite{higham} would apply and the
+    absolute error would be bounded by
+    \begin{equation*}
+    n \cdot \max\bigl(2^{W(1-K)}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + \left(\frac{(2  K - 1)  \epsilon}{1 - (2  K - 1)  \epsilon}\right)  \sum\limits_0^{2  K - 1}|\gamma_j|
+    \end{equation*}
+    which is approximately bounded by
+    \begin{equation}
+    n \cdot \max|x_j| \bigl(2^{W(1-K)} + (2  K - 1)  \epsilon\bigr)
+    \label{eq:baderrorapprox}
+    \end{equation}
+
+    This is not as tight a bound as \eqref{eq:errorapprox}, and grows linearly
+    as the user increases $K$ in an attempt to increase accuracy.
+

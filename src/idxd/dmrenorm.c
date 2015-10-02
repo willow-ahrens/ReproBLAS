@@ -18,10 +18,11 @@
  *
  * @author Hong Diep Nguyen
  * @author Peter Ahrens
- * @date   27 Apr 2015
+ * @date   23 Sep 2015
  */
 void idxd_dmrenorm(const int fold, double* priX, const int incpriX, double* carX, const int inccarX) {
   /*
+  //reference version
   int i;
   double M;
   double priX0 = priX[0];
@@ -45,6 +46,27 @@ void idxd_dmrenorm(const int fold, double* priX, const int incpriX, double* carX
     }
   }
   */
+  /*
+  //vectorizeable version
+  int i;
+  long_double tmp_renorm, tmp_c;
+  long tmp;
+
+  for (i = 0; i < fold; i++, priX += incpriX, carX += inccarX) {
+    tmp_renorm.d = priX[0];
+    tmp_c.d = priX[0];
+
+    tmp_c.l &= ((1ull << (DBL_MANT_DIG - 3)) | (1ull << (DBL_MANT_DIG - 2)));
+    tmp_c.l <<= (65 - DBL_MANT_DIG);
+    carX[0] -= 0.5 * tmp_c.d;
+
+    tmp = tmp_renorm.l & (1ull << (DBL_MANT_DIG - 3));
+    tmp <<= 1;
+    tmp_renorm.l |= tmp;
+    tmp_renorm.l &= ~(1ull << (DBL_MANT_DIG - 3));
+    priX[0] = tmp_renorm.d;
+  }
+  */
   int i;
   long_double tmp_renorm;
 
@@ -54,7 +76,9 @@ void idxd_dmrenorm(const int fold, double* priX, const int incpriX, double* carX
 
   for (i = 0; i < fold; i++, priX += incpriX, carX += inccarX) {
     tmp_renorm.d = priX[0];
+
     carX[0] += (int)((tmp_renorm.l >> (DBL_MANT_DIG - 3)) & 3) - 2;
+
     tmp_renorm.l &= ~(1ull << (DBL_MANT_DIG - 3));
     tmp_renorm.l |= 1ull << (DBL_MANT_DIG - 2);
     priX[0] = tmp_renorm.d;

@@ -147,13 +147,13 @@ int corroborate_rdgemm(int fold, char Order, char TransA, char TransB, int M, in
           case 'r':
           case 'R':
             if(res[i * ldc + j] != ref[i * ldc + j]){
-              printf("reproBLAS_rdgemm(A, X, Y)[num_blocks=%d,block_K=%d] = %g != %g\n", num_blocks, block_K, res[i * ldc + j], ref[i * ldc + j]);
+              printf("reproBLAS_rdgemm(A, X, Y)[num_blocks=%d] = %g != %g\n", num_blocks, res[i * ldc + j], ref[i * ldc + j]);
               return 1;
             }
             break;
           default:
             if(res[j * ldc + i] != ref[j * ldc + i]){
-              printf("reproBLAS_rdgemm(A, X, Y)[num_blocks=%d,block_K=%d] = %g != %g\n", num_blocks, block_K, res[j * ldc + i], ref[j * ldc + i]);
+              printf("reproBLAS_rdgemm(A, X, Y)[num_blocks=%d] = %g != %g\n", num_blocks, res[j * ldc + i], ref[j * ldc + i]);
               return 1;
             }
             break;

@@ -53,18 +53,6 @@ double idxdBLAS_didssq(const int fold, const int N, const double *X, const int i
 double idxdBLAS_dmdssq(const int fold, const int N, const double *X, const int incX, const double scaleY, double *priY, const int incpriY, double *carY, const int inccarY);
 void idxdBLAS_diddot(const int fold, const int N, const double *X, const int incX, const double *Y, const int incY, double_indexed *Z);
 void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int incX, const double *Y, const int incY, double *manZ, const int incmanZ, double *carZ, const int inccarZ);
-void idxdBLAS_didgemv(const int fold, const char Order, const char TransA,
-             const int M, const int N,
-             const double alpha, const double *A, const int lda,
-             const double *X, const int incX,
-             double_indexed *Y, const int incY);
-
-void idxdBLAS_didgemm(const int fold, const char Order,
-             const char TransA, const char TransB,
-             const int M, const int N, const int K,
-             const double alpha, const double *A, const int lda,
-             const double *B, const int ldb,
-             double_indexed *C, const int ldc);
 
 void idxdBLAS_zizsum(const int fold, const int N, const void *X, const int incX, double_indexed *Y);
 void idxdBLAS_zmzsum(const int fold, const int N, const void *X, const int incX, double *priY, const int incpriY, double *carY, const int inccarY);
@@ -76,17 +64,6 @@ void idxdBLAS_zizdotu(const int fold, const int N, const void *X, const int incX
 void idxdBLAS_zmzdotu(const int fold, const int N, const void *X, const int incX, const void *Y, const int incY, double *manZ, const int incmanZ, double *carZ, const int inccarZ);
 void idxdBLAS_zizdotc(const int fold, const int N, const void *X, const int incX, const void *Y, const int incY, double_indexed *Z);
 void idxdBLAS_zmzdotc(const int fold, const int N, const void *X, const int incX, const void *Y, const int incY, double *manZ, const int incmanZ, double *carZ, const int inccarZ);
-void idxdBLAS_zizgemv(const int fold, const char Order, const char TransA,
-             const int M, const int N,
-             const void *alpha, const void *A, const int lda,
-             const void *X, const int incX,
-             double_complex_indexed *Y, const int incY);
-void idxdBLAS_zizgemm(const int fold, const char Order,
-             const char TransA, const char TransB,
-             const int M, const int N, const int K,
-             const void *alpha, const void *A, const int lda,
-             const void *B, const int ldb,
-             double_complex_indexed *C, const int ldc);
 
 void idxdBLAS_sissum(const int fold, const int N, const float *X, const int incX, float_indexed *Y);
 void idxdBLAS_smssum(const int fold, const int N, const float *X, const int incX, float *priY, const int incpriY, float *carY, const int inccarY);
@@ -108,6 +85,53 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
 void idxdBLAS_cicdotc(const int fold, const int N, const void *X, const int incX, const void *Y, const int incY, float_indexed *Z);
 void idxdBLAS_cmcdotc(const int fold, const int N, const void *X, const int incX, const void *Y, const int incY, float *manZ, const int incmanZ, float *carZ, const int inccarZ);
 
+void idxdBLAS_didgemv(const int fold, const char Order, const char TransA,
+             const int M, const int N,
+             const double alpha, const double *A, const int lda,
+             const double *X, const int incX,
+             double_indexed *Y, const int incY);
+void idxdBLAS_didgemm(const int fold, const char Order,
+             const char TransA, const char TransB,
+             const int M, const int N, const int K,
+             const double alpha, const double *A, const int lda,
+             const double *B, const int ldb,
+             double_indexed *C, const int ldc);
+
+void idxdBLAS_sisgemv(const int fold, const char Order, const char TransA,
+             const int M, const int N,
+             const float alpha, const float *A, const int lda,
+             const float *X, const int incX,
+             float_indexed *Y, const int incY);
+void idxdBLAS_sisgemm(const int fold, const char Order,
+             const char TransA, const char TransB,
+             const int M, const int N, const int K,
+             const float alpha, const float *A, const int lda,
+             const float *B, const int ldb,
+             float_indexed *C, const int ldc);
+
+void idxdBLAS_zizgemv(const int fold, const char Order, const char TransA,
+             const int M, const int N,
+             const void *alpha, const void *A, const int lda,
+             const void *X, const int incX,
+             double_complex_indexed *Y, const int incY);
+void idxdBLAS_zizgemm(const int fold, const char Order,
+             const char TransA, const char TransB,
+             const int M, const int N, const int K,
+             const void *alpha, const void *A, const int lda,
+             const void *B, const int ldb,
+             double_complex_indexed *C, const int ldc);
+
+void idxdBLAS_cicgemv(const int fold, const char Order, const char TransA,
+             const int M, const int N,
+             const void *alpha, const void *A, const int lda,
+             const void *X, const int incX,
+             float_complex_indexed *Y, const int incY);
+void idxdBLAS_cicgemm(const int fold, const char Order,
+             const char TransA, const char TransB,
+             const int M, const int N, const int K,
+             const void *alpha, const void *A, const int lda,
+             const void *B, const int ldb,
+             float_complex_indexed *C, const int ldc);
 /*
 
 //-==============================-//

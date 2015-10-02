@@ -51,8 +51,8 @@ static void matmat_options_initialize(void){
   TransB._named.header.help       = "transpose B?";
   TransB._named.required          = 0;
   TransB._named.n_names           = 3;
-  TransB._named.names             = (char**)TransA_names;
-  TransB._named.descs             = (char**)TransA_descs;
+  TransB._named.names             = (char**)TransB_names;
+  TransB._named.descs             = (char**)TransB_descs;
   TransB._named.value             = 0;
 
   M._int.header.type       = opt_int;

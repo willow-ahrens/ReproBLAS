@@ -1,0 +1,73 @@
+\section{Composite Operations}
+  \label{sec:compositeops}
+  Although several reproducible summation algorithms can be built from the set of primitive operations defined in section \ref{sec:primitiveops}, it may be unclear how these operations can be composed to form such algorithms. What follows are the specifications for common summation-based algorithms in terms of the primitive operations.
+  To obtain a general completely reproducible algorithm for summation that is, one must design for reproducibility under both data permutation and reduction tree shape.
+  Section \ref{sec:compositeops_sum} details a general reproducible summation algorithm that is independent of input data ordering, providing analysis of its correctness and runtime. Section \ref{sec:compositeops_reduce} shows how the algorithm in Section \ref{sec:compositops_sum} may be extended to arbitrary reduction tree shapes, and gives another proof of correctness. Sections \ref{sec:compositeops_nrm}, \ref{sec:compositeops_dot}, \ref{sec:compositeops_gemv}, and \ref{sec:compositeops_gemm} explain how to obtain reasonably performant reproducible versions of representative operations from the BLAS.
+  Implementation details of these routines are discussed in Section \ref{sec:implementation}.
+  \subsection{Sum}
+    \label{sec:compositeops_sum}
+    Algorithm \ref{alg:sum} is an indexed summation algorithm that produces the indexed sum of a vector of floating point numbers $x_0, ..., x_{n - 1} \in \F$.
+    The indexed sum of a list of numbers is independent of the ordering of the list.
+    Algorithm \ref{alg:sum} uses only one indexed type to hold the intermediate result of the recursive summation, and the vast majority of time in the algorithm is spent in the deposit routine.
+    \begin{samepage}
+    \begin{alg}
+      Return the $K$-fold indexed sum of $x_0, ..., x_{n-1} \in \F$.
+      This is similar to Algorithm $6$ in \cite{repsum}, but requires no restrictions on the inputs $x_0, ..., x_{n - 1}$.
+      \begin{algorithmic}[1]
+        \Function{Sum}{K, [$x_0, ..., x_{n-1}$]}
+          \State $Y = 0$
+          \State $block = 0$
+          \State $j = 0$ \label{alg:sum:setj}
+          \While{$j < n$}\label{alg:sum:outerloop}
+            \State $m = \min(n, j + 0.25\epsilon^{-1}2^{-W})$
+            \State \Call{Update}{K, $\max([|x_j|, ..., |x_{m - 1}|)$, Y}\label{alg:sum:update}
+            \While{$j < m$}
+              \State \Call{Deposit}{K, $x_j$, Y}\label{alg:sum:deposit}
+              \State $j = j + 1$
+            \EndWhile
+            \State \Call{Renorm}{K, Y}\label{alg:sum:renorm}
+          \EndWhile
+          \State \Return $Y$
+        \EndFunction
+        \Ensure
+        \Statex $Y$ is the unique indexed sum of $x_0, ..., x_{n - 1}$. This is equivalent to the following three statements.
+        \Statex The index $I$ of $Y$ is the greatest integer such that $\max(|x_j|) < 2^{b_I}$.
+        \Statex ${Y_k}_P \in [1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}})$ unless $I + k = 0$, in which case ${Y_0}_P \in (2^{e_{\max}}, 2 \cdot 2^{e_{\max}})$
+        \Statex $\mathcal{Y}_k = \sum\limits_{j = 0}^{n - 1}d(x_j, I + k)$
+      \end{algorithmic}
+      \label{alg:sum}
+    \end{alg}
+    \end{samepage}
+    In less specific terms, what this algorithm ensures is that the fields of $Y$ represent the indexed sum of $x_0, ..., x_{n - 1}$. If a single floating point result is desired, it may be obtained from $Y$ using Algorithm \ref{alg:conv2floatoverflow}
+    \begin{samepage}
+    \begin{thm}
+      Assume that we have run Algorithm \ref{alg:sum} on $n$ floating point numbers $x_0, ..., x_{n - 1} \in \F$ with some $K$. If all requirements of the algorithm are satisfied, then the ``Ensure'' claim at the end of the algorithm holds.
+      \label{thm:sum}
+    \end{thm}
+    \end{samepage}
+    \begin{proof}
+      We show inductively that after each execution of line \ref{alg:sum:renorm}, $Y$ is the indexed sum of $x_0, ..., x_{j - 1}$. Throughout the proof, assume that the value of all variables are specific to the given stage of execution.
+
+      In the first iteration of the loop on line \ref{alg:sum:outerloop}, $Y$ is 0, meaning all of its fields are set to zero.
+      In subsequent iterations of the loop, we assume that at line \ref{alg:sum:update}, $Y$ is the indexed sum of $x_0, ..., x_{j - 1}$. Therefore ${Y_k}_P \in [1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}})$ unless $I + k = 0$, in which case ${Y_0}_P \in (2^{e_{\max}}, 2 \cdot 2^{e_{\max}})$.
+
+      In either case, the ``Require'' clause of Algorithm \ref{alg:update} is satisfied. Therefore, after executing line \ref{alg:sum:update}, the following statements hold:
+      \begin{enumerate}
+      \item
+        The index of $Y$ is $I$ where $I$ is the greatest integer such that $\max(|x_0|, ..., |x_{m - 1}|) < 2^{b_I}$
+      \item
+        $\mathcal{Y}_k = d(x_0, I + k) + ... + d(x_{j - 1}, I + k)$
+      \item
+        \Statex ${Y_k}_P \in [1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}})$ unless $I + k = 0$, in which case ${Y_0}_P \in (2^{e_{\max}}, 2 \cdot 2^{e_{\max}})$
+      \end{enumerate}
+      Between lines \ref{alg:sum:innerloop} and \ref{alg:sum:innerloopend}, at most $0.25\epsilon^{-1}2^{-W}$ calls to \ref{alg:sum:deposit} are made, and by Theorem \ref{thm:depositfreq}, and the above initial properties, the requirements of Algorithm \ref{alg:deposit} are met at each call. Therefore, after line \ref{alg:sum:innerloopend}, we have that $\mathcal{Y}_k = d(x_0, I + k) + ... + d(x_{j-1}, I + k)$.
+
+      Again by Theorem \ref{thm:depositfreq}, the requirements of Algorithm \ref{alg:renorm} are met in line \ref{alg:sum:renorm}. Therefore, after execution of line \ref{alg:sum:renorm}, we have that ${Y_k}_P \in [1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}})$ unless $I + k = 0$, in which case ${Y_0}_P \in (1.5 \cdot 2^{e_{\max}}, 1.75 \cdot 2^{e_{\max}})$. Therefore, $Y$ is the indexed sum of $x_0, ..., x_{j - 1}$ after line \ref{alg:sum:renorm}, completing the induction.
+    \end{proof}
+    As the indexed sum is unique and independent of the ordering of its summands, Algorithm \ref{alg:sum} is reproducible up to permutation of its inputs.
+    Even in the absence of an operation for reduction, this is already a highly flexible algorithm.
+    Consider the problem of computing a reproducible dot product of vectors $\vec{X}$ and $\vec{Y}$. By changing line \ref{alg:sum:deposit} to read
+ the This can be achieved by simply applying \ref{alg:sum} to each multiple from $\vec{X}$ and $\vec{Y}$.
+    At this point, an analysis of runtime should be considered. 
+  \subsection{Euclidean Norm}
+    \label{sec:compositeops_nrm}
