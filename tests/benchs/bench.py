@@ -3,7 +3,7 @@ import tests.harness.harness as harness
 
 bench_harness = harness.Harness("bench")
 params = [("N", "M", "K"), "TransA", "TransB", "a", "FillA", "FillB", "FillC","fold", "preN"]
-ranges = [[(2048, 2048, 2048), (256, 256, 256)], ["Trans", "NoTrans"], ["Trans", "NoTrans"], [1], ["rand"], ["rand"], ["rand"], [3], [1024]]
+ranges = [[(2048, 2048, 2048)], ["Trans", "NoTrans"], ["Trans", "NoTrans"], [1], ["rand"], ["rand"], ["rand"], [3], [1024]]
 attribute = "%peak"
 #attribute = "time"
 #attribute = "freq"
