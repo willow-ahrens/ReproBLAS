@@ -53,6 +53,10 @@
   extern void cblas_dgemm (char, char,char,int,int,int,double,double*,int,double*,int,double,double*,int);
   extern void cblas_zgemv (char, char,int,int,double complex*,double complex*,int,double complex*,int,double complex*,double complex*,int);
   extern void cblas_zgemm (char, char,char,int,int,int,double complex*,double complex*,int,double complex*,int,double complex*,double complex*,int);
+  extern void cblas_sgemv (char, char,int,int,float,float*,int,float*,int,float,float*,int);
+  extern void cblas_sgemm (char, char,char,int,int,int,float,float*,int,float*,int,float,float*,int);
+  extern void cblas_cgemv (char, char,int,int,float complex*,float complex*,int,float complex*,int,float complex*,float complex*,int);
+  extern void cblas_cgemm (char, char,char,int,int,int,float complex*,float complex*,int,float complex*,int,float complex*,float complex*,int);
 
 #	define CALL_IDAMAX(R, N, V, INC) R = cblas_idamax(N, V, INC)
 #	define CALL_ISAMAX(R, N, V, INC) R = cblas_isamax(N, V, INC)
@@ -80,10 +84,18 @@
   cblas_dgemv(cblasorder(ORDER), cblastrans(TRANS),M,N,ALPHA,A,LDA,X,INCX,BETA,Y,INCY);
 #	define CALL_ZGEMV(ORDER, TRANS,M,N,ALPHA,A,LDA,X,INCX,BETA,Y,INCY) \
   cblas_zgemv(cblasorder(ORDER), cblastrans(TRANS),M,N,ALPHA,A,LDA,X,INCX,BETA,Y,INCY);
+#	define CALL_SGEMV(ORDER, TRANS,M,N,ALPHA,A,LDA,X,INCX,BETA,Y,INCY) \
+  cblas_sgemv(cblasorder(ORDER), cblastrans(TRANS),M,N,ALPHA,A,LDA,X,INCX,BETA,Y,INCY);
+#	define CALL_CGEMV(ORDER, TRANS,M,N,ALPHA,A,LDA,X,INCX,BETA,Y,INCY) \
+  cblas_cgemv(cblasorder(ORDER), cblastrans(TRANS),M,N,ALPHA,A,LDA,X,INCX,BETA,Y,INCY);
 #	define CALL_DGEMM(ORDER, TRANSA,TRANSB,M,N,K,ALPHA,A,LDA,B,LDB,BETA,C,LDC) \
   cblas_dgemm(cblasorder(ORDER), cblastrans(TRANSA), cblastrans(TRANSB),M,N,K,ALPHA,A,LDA,B,LDB,BETA,C,LDC);
 #	define CALL_ZGEMM(ORDER, TRANSA,TRANSB,M,N,K,ALPHA,A,LDA,B,LDB,BETA,C,LDC) \
   cblas_zgemm(cblasorder(ORDER), cblastrans(TRANSA), cblastrans(TRANSB),M,N,K,ALPHA,A,LDA,B,LDB,BETA,C,LDC);
+#	define CALL_SGEMM(ORDER, TRANSA,TRANSB,M,N,K,ALPHA,A,LDA,B,LDB,BETA,C,LDC) \
+  cblas_sgemm(cblasorder(ORDER), cblastrans(TRANSA), cblastrans(TRANSB),M,N,K,ALPHA,A,LDA,B,LDB,BETA,C,LDC);
+#	define CALL_CGEMM(ORDER, TRANSA,TRANSB,M,N,K,ALPHA,A,LDA,B,LDB,BETA,C,LDC) \
+  cblas_cgemm(cblasorder(ORDER), cblastrans(TRANSA), cblastrans(TRANSB),M,N,K,ALPHA,A,LDA,B,LDB,BETA,C,LDC);
 
 #elif defined (BLAS)
 
