@@ -131,7 +131,6 @@ def run(apis):
 
 def main():
   print("tuning {}".format(terminal.get_vectorization()))
-  """
   apis = [create_benchmark_api(benchmark) for benchmark in ["bench_damax",
                                                             "bench_damaxm",
                                                             "bench_zamax",
@@ -191,8 +190,17 @@ def main():
                                                             "bench_rzgemv_fold_{}".format(terminal.get_didefaultfold()),
                                                             "bench_rzgemv_TransA_fold_{}".format(terminal.get_didefaultfold()),
                                                             "bench_rzgemm_TransA_fold_{}".format(terminal.get_didefaultfold()),
-                                                            "bench_rzgemm_TransB_fold_{}".format(terminal.get_didefaultfold())]]
+                                                            "bench_rzgemm_TransB_fold_{}".format(terminal.get_didefaultfold()),
+                                                            "bench_rsgemv_fold_{}".format(terminal.get_didefaultfold()),
+                                                            "bench_rsgemv_TransA_fold_{}".format(terminal.get_didefaultfold()),
+                                                            "bench_rsgemm_TransA_fold_{}".format(terminal.get_didefaultfold()),
+                                                            "bench_rsgemm_TransB_fold_{}".format(terminal.get_didefaultfold()),
+                                                            "bench_rcgemv_fold_{}".format(terminal.get_didefaultfold()),
+                                                            "bench_rcgemv_TransA_fold_{}".format(terminal.get_didefaultfold()),
+                                                            "bench_rcgemm_TransA_fold_{}".format(terminal.get_didefaultfold()),
+                                                            "bench_rcgemm_TransB_fold_{}".format(terminal.get_didefaultfold())]]]
   run(apis)
+"""
 
 if __name__ == '__main__':
   opentuner.init_logging()
