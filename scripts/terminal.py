@@ -180,11 +180,24 @@ get_siendurance.siendurance = None
 
 def get_cpu_freq(verbose="false"):
   info = cpuinfo.get_cpu_info()
-  return info["hz_actual_raw"][0] * 10**(info["hz_actual_raw"][1])
+  if info:
+    return info["hz_actual_raw"][0] * 10**(info["hz_actual_raw"][1])
+  else:
+    return config.cpu_info()["freq"]
 
 def get_fma(verbose="false"):
   info = cpuinfo.get_cpu_info()
-  return "fma" in info["flags"]
+  if info:
+    return "fma" in info["flags"]
+  else:
+    return config.cpu_info()["fma"]
+
+def get_cache(verbose="false"):
+  info = cpuinfo.get_cpu_info()
+  if info:
+    return int(info['l2_cache_size']) * 1024
+  else:
+    return config.cpu_info()["cache"]
 
 def get_peak_time(output, verbose="false"):
   data = {}
@@ -205,4 +218,3 @@ def get_peak_time(output, verbose="false"):
     if key in output:
       data[key] = output[key]
   return config.peak_time(data)
-

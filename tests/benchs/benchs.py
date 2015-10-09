@@ -235,41 +235,81 @@ class BenchRDGEMVTest(BenchTest):
   name = "RDGEMV"
   executable = "tests/benchs/bench_rdgemv"
 
-class BenchRDGEMMTest(BenchTest):
-  name = "RDGEMM"
-  executable = "tests/benchs/bench_rdgemm"
-
-class BenchDGEMMTest(BenchTest):
-  name = "DGEMM"
-  executable = "tests/benchs/bench_dgemm"
-
-class BenchDGEMVTest(BenchTest):
-  name = "DGEMV"
-  executable = "tests/benchs/bench_dgemv"
-
 class BenchRZGEMVTest(BenchTest):
   name = "RZGEMV"
   executable = "tests/benchs/bench_rzgemv"
+
+class BenchRSGEMVTest(BenchTest):
+  name = "RSGEMV"
+  executable = "tests/benchs/bench_rsgemv"
+
+class BenchRCGEMVTest(BenchTest):
+  name = "RCGEMV"
+  executable = "tests/benchs/bench_rcgemv"
+
+class BenchRDGEMMTest(BenchTest):
+  name = "RDGEMM"
+  executable = "tests/benchs/bench_rdgemm"
 
 class BenchRZGEMMTest(BenchTest):
   name = "RZGEMM"
   executable = "tests/benchs/bench_rzgemm"
 
+class BenchRSGEMMTest(BenchTest):
+  name = "RSGEMM"
+  executable = "tests/benchs/bench_rsgemm"
+
+class BenchRCGEMMTest(BenchTest):
+  name = "RCGEMM"
+  executable = "tests/benchs/bench_rcgemm"
+
+class BenchDGEMVTest(BenchTest):
+  name = "DGEMV"
+  executable = "tests/benchs/bench_dgemv"
+
+class BenchZGEMVTest(BenchTest):
+  name = "ZGEMV"
+  executable = "tests/benchs/bench_zgemv"
+
+class BenchSGEMVTest(BenchTest):
+  name = "SGEMV"
+  executable = "tests/benchs/bench_sgemv"
+
+class BenchCGEMVTest(BenchTest):
+  name = "CGEMV"
+  executable = "tests/benchs/bench_cgemv"
+
+class BenchDGEMMTest(BenchTest):
+  name = "DGEMM"
+  executable = "tests/benchs/bench_dgemm"
+
 class BenchZGEMMTest(BenchTest):
   name = "ZGEMM"
   executable = "tests/benchs/bench_zgemm"
+
+class BenchSGEMMTest(BenchTest):
+  name = "SGEMM"
+  executable = "tests/benchs/bench_sgemm"
+
+class BenchCGEMMTest(BenchTest):
+  name = "CGEMM"
+  executable = "tests/benchs/bench_cgemm"
 
 all_benchs = {"bench_camax": (BenchCAMAXTest, [""]),\
               "bench_camaxm": (BenchCAMAXMTest, [""]),\
               "bench_cciconv": (BenchCCICONVTest, [""]),\
               "bench_cdotc": (BenchCDOTCTest, [""]),\
               "bench_cdotu": (BenchCDOTUTest, [""]),\
+              "bench_cgemm": (BenchCGEMVTest, [""]),\
+              "bench_cgemv": (BenchCGEMVTest, [""]),\
               "bench_ciciadd": (BenchCICIADDTest, [""]),\
               "bench_damax": (BenchDAMAXTest, [""]),\
               "bench_damaxm": (BenchDAMAXMTest, [""]),\
               "bench_dasum": (BenchDASUMTest, [""]),\
               "bench_ddiconv": (BenchDDICONVTest, [""]),\
               "bench_ddot": (BenchDDOTTest, [""]),\
+              "bench_dgemm": (BenchDGEMVTest, [""]),\
+              "bench_dgemv": (BenchDGEMVTest, [""]),\
               "bench_didiadd": (BenchDIDIADDTest, [""]),\
               "bench_dnrm2": (BenchDNRM2Test, [""]),\
               "bench_dzasum": (BenchDZASUMTest, [""]),\
@@ -284,6 +324,8 @@ all_benchs = {"bench_camax": (BenchCAMAXTest, [""]),\
               "bench_scasum": (BenchSCASUMTest, [""]),\
               "bench_scnrm2": (BenchSCNRM2Test, [""]),\
               "bench_sdot": (BenchSDOTTest, [""]),\
+              "bench_sgemm": (BenchSGEMVTest, [""]),\
+              "bench_sgemv": (BenchSGEMVTest, [""]),\
               "bench_sisiadd": (BenchSISIADDTest, [""]),\
               "bench_snrm2": (BenchSNRM2Test, [""]),\
               "bench_ssiconv": (BenchSSICONVTest, [""]),\
@@ -291,12 +333,10 @@ all_benchs = {"bench_camax": (BenchCAMAXTest, [""]),\
               "bench_zamaxm": (BenchZAMAXMTest, [""]),\
               "bench_zdotc": (BenchZDOTCTest, [""]),\
               "bench_zdotu": (BenchZDOTUTest, [""]),\
+              "bench_zgemm": (BenchZGEMVTest, [""]),\
+              "bench_zgemv": (BenchZGEMVTest, [""]),\
               "bench_ziziadd": (BenchZIZIADDTest, [""]),\
               "bench_zziconv": (BenchZZICONVTest, [""]),\
-              "bench_dgemv": (BenchDGEMVTest, [""]),\
-              "bench_zgemv": (BenchZGEMVTest, [""]),\
-              "bench_dgemm": (BenchDGEMVTest, [""]),\
-              "bench_zgemm": (BenchZGEMVTest, [""]),\
              }
 
 for i in range(1, terminal.get_simaxfold() + 1):
@@ -305,15 +345,27 @@ for i in range(1, terminal.get_simaxfold() + 1):
     flagss = ["--fold {}".format(j) for j in range(2, terminal.get_simaxfold() + 1)]
   else:
     flagss = ["--fold {}".format(i)]
-  all_benchs.update({"bench_rcdotc_fold_{}".format(i): (BenchRCDOTCTest, flagss),\
-                     "bench_rcdotu_fold_{}".format(i): (BenchRCDOTUTest, flagss),\
-                     "bench_rcsum_fold_{}".format(i): (BenchRCSUMTest, flagss),\
+  all_benchs.update({"bench_rssum_fold_{}".format(i): (BenchRSSUMTest, flagss),\
                      "bench_rsasum_fold_{}".format(i): (BenchRSASUMTest, flagss),\
+                     "bench_rsnrm2_fold_{}".format(i): (BenchRSNRM2Test, flagss),\
+                     "bench_rsdot_fold_{}".format(i): (BenchRSDOTTest, flagss),\
+                     "bench_rsgemv_fold_{}".format(i): (BenchRSGEMVTest, flagss),\
+                     "bench_rsgemv_TransA_fold_{}".format(i): (BenchRSGEMVTest, ["--TransA Trans " + flags for flags in flagss]),\
+                     "bench_rsgemm_fold_{}".format(i): (BenchRSGEMMTest, flagss),\
+                     "bench_rsgemm_TransB_fold_{}".format(i): (BenchRSGEMMTest, ["--TransB Trans " + flags for flags in flagss]),\
+                     "bench_rsgemm_TransA_fold_{}".format(i): (BenchRSGEMMTest, ["--TransA Trans " + flags for flags in flagss]),\
+                     "bench_rsgemm_TransA_TransB_fold_{}".format(i): (BenchRSGEMMTest, ["--TransA Trans --TransB Trans " + flags for flags in flagss]),\
+                     "bench_rcsum_fold_{}".format(i): (BenchRCSUMTest, flagss),\
                      "bench_rscasum_fold_{}".format(i): (BenchRSCASUMTest, flagss),\
                      "bench_rscnrm2_fold_{}".format(i): (BenchRSCNRM2Test, flagss),\
-                     "bench_rsdot_fold_{}".format(i): (BenchRSDOTTest, flagss),\
-                     "bench_rsnrm2_fold_{}".format(i): (BenchRSNRM2Test, flagss),\
-                     "bench_rssum_fold_{}".format(i): (BenchRSSUMTest, flagss),\
+                     "bench_rcdotu_fold_{}".format(i): (BenchRCDOTUTest, flagss),\
+                     "bench_rcdotc_fold_{}".format(i): (BenchRCDOTCTest, flagss),\
+                     "bench_rcgemv_fold_{}".format(i): (BenchRCGEMVTest, flagss),\
+                     "bench_rcgemv_TransA_fold_{}".format(i): (BenchRCGEMVTest, ["--TransA Trans " + flags for flags in flagss]),\
+                     "bench_rcgemm_fold_{}".format(i): (BenchRCGEMMTest, flagss),\
+                     "bench_rcgemm_TransB_fold_{}".format(i): (BenchRCGEMMTest, ["--TransB Trans " + flags for flags in flagss]),\
+                     "bench_rcgemm_TransA_fold_{}".format(i): (BenchRCGEMMTest, ["--TransA Trans " + flags for flags in flagss]),\
+                     "bench_rcgemm_TransA_TransB_fold_{}".format(i): (BenchRCGEMMTest, ["--TransA Trans --TransB Trans " + flags for flags in flagss]),\
                     })
 
 for i in range(1, terminal.get_dimaxfold() + 1):
@@ -322,21 +374,21 @@ for i in range(1, terminal.get_dimaxfold() + 1):
     flagss = ["--fold {}".format(j) for j in range(2, terminal.get_dimaxfold() + 1)]
   else:
     flagss = ["--fold {}".format(i)]
-  all_benchs.update({"bench_rdasum_fold_{}".format(i): (BenchRDASUMTest, flagss),\
-                     "bench_rddot_fold_{}".format(i): (BenchRDDOTTest, flagss),\
+  all_benchs.update({"bench_rdsum_fold_{}".format(i): (BenchRDSUMTest, flagss),\
+                     "bench_rdasum_fold_{}".format(i): (BenchRDASUMTest, flagss),\
                      "bench_rdnrm2_fold_{}".format(i): (BenchRDNRM2Test, flagss),\
-                     "bench_rdsum_fold_{}".format(i): (BenchRDSUMTest, flagss),\
+                     "bench_rddot_fold_{}".format(i): (BenchRDDOTTest, flagss),\
                      "bench_rdgemv_fold_{}".format(i): (BenchRDGEMVTest, flagss),\
                      "bench_rdgemv_TransA_fold_{}".format(i): (BenchRDGEMVTest, ["--TransA Trans " + flags for flags in flagss]),\
                      "bench_rdgemm_fold_{}".format(i): (BenchRDGEMMTest, flagss),\
                      "bench_rdgemm_TransB_fold_{}".format(i): (BenchRDGEMMTest, ["--TransB Trans " + flags for flags in flagss]),\
                      "bench_rdgemm_TransA_fold_{}".format(i): (BenchRDGEMMTest, ["--TransA Trans " + flags for flags in flagss]),\
                      "bench_rdgemm_TransA_TransB_fold_{}".format(i): (BenchRDGEMMTest, ["--TransA Trans --TransB Trans " + flags for flags in flagss]),\
+                     "bench_rzsum_fold_{}".format(i): (BenchRZSUMTest, flagss),\
                      "bench_rdzasum_fold_{}".format(i): (BenchRDZASUMTest, flagss),\
                      "bench_rdznrm2_fold_{}".format(i): (BenchRDZNRM2Test, flagss),\
                      "bench_rzdotc_fold_{}".format(i): (BenchRZDOTCTest, flagss),\
                      "bench_rzdotu_fold_{}".format(i): (BenchRZDOTUTest, flagss),\
-                     "bench_rzsum_fold_{}".format(i): (BenchRZSUMTest, flagss),\
                      "bench_rzgemv_fold_{}".format(i): (BenchRZGEMVTest, flagss),\
                      "bench_rzgemv_TransA_fold_{}".format(i): (BenchRZGEMVTest, ["--TransA Trans " + flags for flags in flagss]),\
                      "bench_rzgemm_fold_{}".format(i): (BenchRZGEMMTest, flagss),\

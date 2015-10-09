@@ -129,9 +129,30 @@ def peak_time(data):
     data["s_add"] += data["s_fma"]
     data["s_mul"] += data["s_fma"]
     data["s_fma"] = 0
-  d_ops = max(data["d_add"] + data["d_mul"] + data["d_fma"], data["d_orb"])
-  s_ops = max(data["s_add"] + data["s_mul"] + data["s_fma"], data["s_orb"])
+  #d_ops = max(data["d_add"] + data["d_mul"] + data["d_fma"], data["d_orb"])
+  #s_ops = max(data["s_add"] + data["s_mul"] + data["s_fma"], data["s_orb"])
+  d_ops = max(data["d_add"], data["d_mul"], data["d_fma"], data["d_orb"])
+  s_ops = max(data["s_add"], data["s_mul"], data["s_fma"], data["s_orb"])
   return float(d_ops/vec_d_ops + s_ops/vec_s_ops)/data["freq"];
+
+##
+#  @brief clarify information about host machine
+#
+#  If the cpu info cannot be found, specify it here
+#
+#  @return a dictionary containing the following keys:
+#                cache - size of l2 (or equivalent) cache (bytes)
+#                freq  - frequency of cpu (Hz)
+#                fma   - is fma available (True, False)
+#
+#  @author Peter Ahrens
+#  @date   8 Oct 2015
+#
+def cpu_info():
+  print("ReproBLAS Warning: cpu info not found, using defaults in config.py")
+  return {"cache": 2**20,
+          "fma": False,
+          "freq": 2.6e9}
 
 ##
 #  @brief version number

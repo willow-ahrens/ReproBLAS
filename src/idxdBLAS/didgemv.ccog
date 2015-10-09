@@ -12,18 +12,24 @@ import dataTypes
 from src.common import blockSize
 from scripts import terminal
 
-cog.out(generate.generate(blockSize.BlockSize("didgemv", "Y_BLOCK", 1, 128, 128, ["bench_rdgemv_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
-cog.out(generate.generate(blockSize.BlockSize("didgemv", "X_BLOCK", 1, 2 * terminal.get_diendurance(), 2 * terminal.get_diendurance(), ["bench_rdgemv_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
-cog.out(generate.generate(blockSize.BlockSize("didgemv", "YT_BLOCK", 1, 128, 128, ["bench_rdgemv_fold_TransA_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
-cog.out(generate.generate(blockSize.BlockSize("didgemv", "XT_BLOCK", 1, 2 * terminal.get_diendurance(), 2 * terminal.get_diendurance(), ["bench_rdgemv_fold_TransA_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+rounded_cache = 2**(int(terminal.get_cache()).bit_length() - 1)
+xy_block = rounded_cache//dataTypes.Double.byte_size
+y_block = max(xy_block//256, 1)
+
+cog.out(generate.generate(blockSize.BlockSize("didgemv", "Y_BLOCK", 1, y_block, y_block, ["bench_rdgemv_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("didgemv", "XY_BLOCK", y_block, xy_block, xy_block, ["bench_rdgemv_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("didgemv", "YT_BLOCK", 1, y_block, y_block, ["bench_rdgemv_fold_TransA_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("didgemv", "XYT_BLOCK", y_block, xy_block, xy_block, ["bench_rdgemv_fold_TransA_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
 cog.out(generate.generate(blockSize.BlockSize("didgemv", "T_BLOCK", 1, 32, 32, ["bench_rdgemv_TransA_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
 ]]]*/
 #define Y_BLOCK 128
-#define X_BLOCK 4096
+#define XY_BLOCK 32768
 #define YT_BLOCK 128
-#define XT_BLOCK 4096
+#define XYT_BLOCK 32768
 #define T_BLOCK 32
 //[[[end]]]
+#define X_BLOCK (XY_BLOCK/Y_BLOCK)
+#define XT_BLOCK (XYT_BLOCK/YT_BLOCK)
 
 void idxdBLAS_didgemv(const int fold, const char Order,
                       const char TransA, const int M, const int N,

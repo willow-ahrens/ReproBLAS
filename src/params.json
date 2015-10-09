@@ -315,10 +315,10 @@
     "cdepositSum_max_unroll_width_SSE_fold_4": [
       "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/cmcsum.ccog"
     ],
-    "cicgemm_block_size_XT_BLOCK": [
+    "cicgemm_block_size_XYT_BLOCK": [
       "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/cicgemm.ccog"
     ],
-    "cicgemm_block_size_X_BLOCK": [
+    "cicgemm_block_size_XY_BLOCK": [
       "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/cicgemm.ccog"
     ],
     "cicgemm_block_size_YT_BLOCK": [
@@ -330,10 +330,10 @@
     "cicgemv_block_size_T_BLOCK": [
       "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/cicgemv.ccog"
     ],
-    "cicgemv_block_size_XT_BLOCK": [
+    "cicgemv_block_size_XYT_BLOCK": [
       "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/cicgemv.ccog"
     ],
-    "cicgemv_block_size_X_BLOCK": [
+    "cicgemv_block_size_XY_BLOCK": [
       "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/cicgemv.ccog"
     ],
     "cicgemv_block_size_YT_BLOCK": [
@@ -765,10 +765,10 @@
     "ddepositSum_max_unroll_width_SSE_fold_4": [
       "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/dmdsum.ccog"
     ],
-    "didgemm_block_size_XT_BLOCK": [
+    "didgemm_block_size_XYT_BLOCK": [
       "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/didgemm.ccog"
     ],
-    "didgemm_block_size_X_BLOCK": [
+    "didgemm_block_size_XY_BLOCK": [
       "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/didgemm.ccog"
     ],
     "didgemm_block_size_YT_BLOCK": [
@@ -780,10 +780,10 @@
     "didgemv_block_size_T_BLOCK": [
       "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/didgemv.ccog"
     ],
-    "didgemv_block_size_XT_BLOCK": [
+    "didgemv_block_size_XYT_BLOCK": [
       "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/didgemv.ccog"
     ],
-    "didgemv_block_size_X_BLOCK": [
+    "didgemv_block_size_XY_BLOCK": [
       "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/didgemv.ccog"
     ],
     "didgemv_block_size_YT_BLOCK": [
@@ -1620,10 +1620,10 @@
     "sdepositSum_max_unroll_width_SSE_fold_4": [
       "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/smssum.ccog"
     ],
-    "sisgemm_block_size_XT_BLOCK": [
+    "sisgemm_block_size_XYT_BLOCK": [
       "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/sisgemm.ccog"
     ],
-    "sisgemm_block_size_X_BLOCK": [
+    "sisgemm_block_size_XY_BLOCK": [
       "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/sisgemm.ccog"
     ],
     "sisgemm_block_size_YT_BLOCK": [
@@ -1635,10 +1635,10 @@
     "sisgemv_block_size_T_BLOCK": [
       "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/sisgemv.ccog"
     ],
-    "sisgemv_block_size_XT_BLOCK": [
+    "sisgemv_block_size_XYT_BLOCK": [
       "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/sisgemv.ccog"
     ],
-    "sisgemv_block_size_X_BLOCK": [
+    "sisgemv_block_size_XY_BLOCK": [
       "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/sisgemv.ccog"
     ],
     "sisgemv_block_size_YT_BLOCK": [
@@ -1980,10 +1980,10 @@
     "zdepositSum_max_unroll_width_SSE_fold_4": [
       "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/zmzsum.ccog"
     ],
-    "zizgemm_block_size_XT_BLOCK": [
+    "zizgemm_block_size_XYT_BLOCK": [
       "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/zizgemm.ccog"
     ],
-    "zizgemm_block_size_X_BLOCK": [
+    "zizgemm_block_size_XY_BLOCK": [
       "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/zizgemm.ccog"
     ],
     "zizgemm_block_size_YT_BLOCK": [
@@ -1995,10 +1995,10 @@
     "zizgemv_block_size_T_BLOCK": [
       "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/zizgemv.ccog"
     ],
-    "zizgemv_block_size_XT_BLOCK": [
+    "zizgemv_block_size_XYT_BLOCK": [
       "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/zizgemv.ccog"
     ],
-    "zizgemv_block_size_X_BLOCK": [
+    "zizgemv_block_size_XY_BLOCK": [
       "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/zizgemv.ccog"
     ],
     "zizgemv_block_size_YT_BLOCK": [
@@ -2333,25 +2333,25 @@
     "cdepositSum_max_unroll_width_SSE_fold_4": [
       "bench_rcsum_fold_4"
     ],
-    "cicgemm_block_size_XT_BLOCK": [
-      "bench_rzgemm_TransA_fold_3"
+    "cicgemm_block_size_XYT_BLOCK": [
+      "bench_rcgemm_TransA_fold_3"
     ],
-    "cicgemm_block_size_X_BLOCK": [
-      "bench_rzgemm_TransB_fold_3"
+    "cicgemm_block_size_XY_BLOCK": [
+      "bench_rcgemm_TransB_fold_3"
     ],
     "cicgemm_block_size_YT_BLOCK": [
-      "bench_rzgemm_TransA_fold_3"
+      "bench_rcgemm_TransA_fold_3"
     ],
     "cicgemm_block_size_Y_BLOCK": [
-      "bench_rzgemm_TransB_fold_3"
+      "bench_rcgemm_TransB_fold_3"
     ],
     "cicgemv_block_size_T_BLOCK": [
       "bench_rcgemv_TransA_fold_3"
     ],
-    "cicgemv_block_size_XT_BLOCK": [
+    "cicgemv_block_size_XYT_BLOCK": [
       "bench_rcgemv_TransA_fold_3"
     ],
-    "cicgemv_block_size_X_BLOCK": [
+    "cicgemv_block_size_XY_BLOCK": [
       "bench_rcgemv_fold_3"
     ],
     "cicgemv_block_size_YT_BLOCK": [
@@ -2783,10 +2783,10 @@
     "ddepositSum_max_unroll_width_SSE_fold_4": [
       "bench_rdsum_fold_4"
     ],
-    "didgemm_block_size_XT_BLOCK": [
+    "didgemm_block_size_XYT_BLOCK": [
       "bench_rdgemm_TransA_fold_3"
     ],
-    "didgemm_block_size_X_BLOCK": [
+    "didgemm_block_size_XY_BLOCK": [
       "bench_rdgemm_TransB_fold_3"
     ],
     "didgemm_block_size_YT_BLOCK": [
@@ -2798,10 +2798,10 @@
     "didgemv_block_size_T_BLOCK": [
       "bench_rdgemv_TransA_fold_3"
     ],
-    "didgemv_block_size_XT_BLOCK": [
+    "didgemv_block_size_XYT_BLOCK": [
       "bench_rdgemv_fold_TransA_3"
     ],
-    "didgemv_block_size_X_BLOCK": [
+    "didgemv_block_size_XY_BLOCK": [
       "bench_rdgemv_fold_3"
     ],
     "didgemv_block_size_YT_BLOCK": [
@@ -3638,10 +3638,10 @@
     "sdepositSum_max_unroll_width_SSE_fold_4": [
       "bench_rssum_fold_4"
     ],
-    "sisgemm_block_size_XT_BLOCK": [
+    "sisgemm_block_size_XYT_BLOCK": [
       "bench_rsgemm_TransA_fold_3"
     ],
-    "sisgemm_block_size_X_BLOCK": [
+    "sisgemm_block_size_XY_BLOCK": [
       "bench_rsgemm_TransB_fold_3"
     ],
     "sisgemm_block_size_YT_BLOCK": [
@@ -3653,10 +3653,10 @@
     "sisgemv_block_size_T_BLOCK": [
       "bench_rsgemv_TransA_fold_3"
     ],
-    "sisgemv_block_size_XT_BLOCK": [
+    "sisgemv_block_size_XYT_BLOCK": [
       "bench_rsgemv_fold_TransA_3"
     ],
-    "sisgemv_block_size_X_BLOCK": [
+    "sisgemv_block_size_XY_BLOCK": [
       "bench_rsgemv_fold_3"
     ],
     "sisgemv_block_size_YT_BLOCK": [
@@ -3998,10 +3998,10 @@
     "zdepositSum_max_unroll_width_SSE_fold_4": [
       "bench_rzsum_fold_4"
     ],
-    "zizgemm_block_size_XT_BLOCK": [
+    "zizgemm_block_size_XYT_BLOCK": [
       "bench_rzgemm_TransA_fold_3"
     ],
-    "zizgemm_block_size_X_BLOCK": [
+    "zizgemm_block_size_XY_BLOCK": [
       "bench_rzgemm_TransB_fold_3"
     ],
     "zizgemm_block_size_YT_BLOCK": [
@@ -4013,10 +4013,10 @@
     "zizgemv_block_size_T_BLOCK": [
       "bench_rzgemv_TransA_fold_3"
     ],
-    "zizgemv_block_size_XT_BLOCK": [
+    "zizgemv_block_size_XYT_BLOCK": [
       "bench_rzgemv_TransA_fold_3"
     ],
-    "zizgemv_block_size_X_BLOCK": [
+    "zizgemv_block_size_XY_BLOCK": [
       "bench_rzgemv_fold_3"
     ],
     "zizgemv_block_size_YT_BLOCK": [
@@ -4037,135 +4037,135 @@
   },
   "forward_dependencies": {
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/camax_sub.ccog": [
-      "camax_max_unroll_width_AVX",
       "camax_max_unroll_width_SSE",
-      "camax_max_unroll_width_SISD"
+      "camax_max_unroll_width_SISD",
+      "camax_max_unroll_width_AVX"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/camaxm_sub.ccog": [
-      "camaxm_max_unroll_width_SISD",
+      "camaxm_max_unroll_width_AVX",
       "camaxm_max_unroll_width_SSE",
-      "camaxm_max_unroll_width_AVX"
+      "camaxm_max_unroll_width_SISD"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/cicgemm.ccog": [
-      "cicgemm_block_size_X_BLOCK",
       "cicgemm_block_size_Y_BLOCK",
-      "cicgemm_block_size_XT_BLOCK",
+      "cicgemm_block_size_XYT_BLOCK",
+      "cicgemm_block_size_XY_BLOCK",
       "cicgemm_block_size_YT_BLOCK"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/cicgemv.ccog": [
-      "cicgemv_block_size_T_BLOCK",
+      "cicgemv_block_size_XY_BLOCK",
       "cicgemv_block_size_YT_BLOCK",
+      "cicgemv_block_size_T_BLOCK",
       "cicgemv_block_size_Y_BLOCK",
-      "cicgemv_block_size_XT_BLOCK",
-      "cicgemv_block_size_X_BLOCK"
+      "cicgemv_block_size_XYT_BLOCK"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/cmcdotc.ccog": [
-      "cdepositDotC_max_unroll_width_SISD_fold_3",
-      "cdepositDotC_expand_AVX_fold_4",
-      "cdepositDotC_expand_SSE_fold_2",
-      "cdepositDotC_max_unroll_width_SSE_fold_4",
-      "cdepositDotC_max_pipe_width_AVX_fold_2",
-      "cdepositDotC_max_unroll_width_AVX_fold_3",
-      "cdepositDotC_max_pipe_width_AVX_fold_0",
-      "cdepositDotC_max_pipe_width_SSE_fold_0",
-      "cdepositDotC_max_pipe_width_SSE_fold_4",
-      "cdepositDotC_max_unroll_width_SISD_fold_0",
-      "cdepositDotC_expand_AVX_fold_3",
-      "cdepositDotC_expand_SSE_fold_4",
-      "cdepositDotC_max_pipe_width_SSE_fold_2",
-      "cdepositDotC_max_pipe_width_SISD_fold_4",
-      "cdepositDotC_expand_SISD_fold_3",
-      "cdepositDotC_expand_SISD_fold_4",
-      "cdepositDotC_expand_AVX_fold_2",
-      "cdepositDotC_max_unroll_width_SSE_fold_2",
-      "cdepositDotC_max_unroll_width_SSE_fold_3",
-      "cdepositDotC_max_pipe_width_SISD_fold_2",
-      "cdepositDotC_max_pipe_width_AVX_fold_4",
-      "cdepositDotC_expand_SISD_fold_2",
-      "cdepositDotC_max_unroll_width_SSE_fold_0",
-      "cmcdotc_block_size_N_block_MAX",
       "cdepositDotC_expand_SSE_fold_3",
-      "cdepositDotC_max_pipe_width_AVX_fold_3",
-      "cdepositDotC_max_unroll_width_AVX_fold_4",
-      "cdepositDotC_max_unroll_width_SISD_fold_2",
-      "cdepositDotC_max_unroll_width_AVX_fold_0",
-      "cdepositDotC_max_pipe_width_SISD_fold_3",
+      "cdepositDotC_max_pipe_width_SSE_fold_2",
       "cdepositDotC_max_pipe_width_SISD_fold_0",
+      "cdepositDotC_max_unroll_width_AVX_fold_2",
+      "cdepositDotC_expand_SSE_fold_2",
+      "cdepositDotC_max_pipe_width_SSE_fold_4",
       "cdepositDotC_max_pipe_width_SSE_fold_3",
+      "cdepositDotC_expand_SSE_fold_4",
+      "cdepositDotC_expand_AVX_fold_3",
+      "cdepositDotC_expand_SISD_fold_3",
+      "cdepositDotC_max_pipe_width_SSE_fold_0",
+      "cdepositDotC_max_pipe_width_AVX_fold_3",
+      "cdepositDotC_max_pipe_width_SISD_fold_2",
+      "cdepositDotC_max_pipe_width_SISD_fold_3",
       "cdepositDotC_max_unroll_width_SISD_fold_4",
-      "cdepositDotC_max_unroll_width_AVX_fold_2"
+      "cdepositDotC_max_unroll_width_SSE_fold_0",
+      "cdepositDotC_max_pipe_width_SISD_fold_4",
+      "cdepositDotC_max_pipe_width_AVX_fold_2",
+      "cdepositDotC_max_pipe_width_AVX_fold_4",
+      "cdepositDotC_max_unroll_width_SSE_fold_3",
+      "cdepositDotC_max_unroll_width_AVX_fold_4",
+      "cdepositDotC_max_pipe_width_AVX_fold_0",
+      "cdepositDotC_max_unroll_width_SSE_fold_2",
+      "cdepositDotC_expand_AVX_fold_4",
+      "cdepositDotC_expand_AVX_fold_2",
+      "cdepositDotC_max_unroll_width_SISD_fold_2",
+      "cdepositDotC_expand_SISD_fold_2",
+      "cmcdotc_block_size_N_block_MAX",
+      "cdepositDotC_max_unroll_width_AVX_fold_3",
+      "cdepositDotC_expand_SISD_fold_4",
+      "cdepositDotC_max_unroll_width_AVX_fold_0",
+      "cdepositDotC_max_unroll_width_SSE_fold_4",
+      "cdepositDotC_max_unroll_width_SISD_fold_3",
+      "cdepositDotC_max_unroll_width_SISD_fold_0"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/cmcdotu.ccog": [
-      "cdepositDotU_max_unroll_width_AVX_fold_3",
-      "cmcdotu_block_size_N_block_MAX",
-      "cdepositDotU_max_pipe_width_AVX_fold_2",
-      "cdepositDotU_expand_SISD_fold_2",
-      "cdepositDotU_expand_SISD_fold_4",
-      "cdepositDotU_max_unroll_width_SSE_fold_2",
-      "cdepositDotU_max_unroll_width_SSE_fold_4",
-      "cdepositDotU_max_unroll_width_SISD_fold_2",
-      "cdepositDotU_max_pipe_width_AVX_fold_3",
-      "cdepositDotU_max_unroll_width_SISD_fold_3",
-      "cdepositDotU_max_unroll_width_SISD_fold_4",
       "cdepositDotU_max_unroll_width_AVX_fold_4",
-      "cdepositDotU_expand_SSE_fold_3",
-      "cdepositDotU_expand_SSE_fold_4",
-      "cdepositDotU_max_unroll_width_SSE_fold_3",
-      "cdepositDotU_max_unroll_width_SISD_fold_0",
-      "cdepositDotU_expand_AVX_fold_2",
-      "cdepositDotU_max_pipe_width_SISD_fold_2",
-      "cdepositDotU_max_pipe_width_SSE_fold_0",
-      "cdepositDotU_max_pipe_width_SSE_fold_2",
-      "cdepositDotU_max_pipe_width_AVX_fold_4",
-      "cdepositDotU_max_pipe_width_SSE_fold_3",
-      "cdepositDotU_max_pipe_width_AVX_fold_0",
-      "cdepositDotU_max_pipe_width_SISD_fold_4",
-      "cdepositDotU_expand_SISD_fold_3",
-      "cdepositDotU_max_pipe_width_SISD_fold_3",
-      "cdepositDotU_max_pipe_width_SISD_fold_0",
-      "cdepositDotU_expand_SSE_fold_2",
-      "cdepositDotU_max_unroll_width_AVX_fold_2",
-      "cdepositDotU_max_pipe_width_SSE_fold_4",
-      "cdepositDotU_expand_AVX_fold_3",
-      "cdepositDotU_max_unroll_width_SSE_fold_0",
+      "cdepositDotU_expand_SISD_fold_4",
+      "cdepositDotU_max_unroll_width_AVX_fold_0",
       "cdepositDotU_expand_AVX_fold_4",
-      "cdepositDotU_max_unroll_width_AVX_fold_0"
+      "cdepositDotU_max_pipe_width_AVX_fold_0",
+      "cdepositDotU_expand_SSE_fold_4",
+      "cdepositDotU_max_unroll_width_AVX_fold_2",
+      "cdepositDotU_expand_SISD_fold_2",
+      "cdepositDotU_expand_AVX_fold_2",
+      "cdepositDotU_max_unroll_width_SSE_fold_3",
+      "cdepositDotU_max_unroll_width_SISD_fold_4",
+      "cdepositDotU_max_unroll_width_SISD_fold_3",
+      "cdepositDotU_expand_SSE_fold_2",
+      "cdepositDotU_expand_AVX_fold_3",
+      "cdepositDotU_max_unroll_width_AVX_fold_3",
+      "cdepositDotU_max_unroll_width_SISD_fold_2",
+      "cdepositDotU_max_pipe_width_AVX_fold_4",
+      "cdepositDotU_max_pipe_width_SISD_fold_3",
+      "cdepositDotU_max_pipe_width_SSE_fold_0",
+      "cdepositDotU_max_unroll_width_SSE_fold_0",
+      "cmcdotu_block_size_N_block_MAX",
+      "cdepositDotU_max_pipe_width_SISD_fold_4",
+      "cdepositDotU_max_pipe_width_SSE_fold_3",
+      "cdepositDotU_max_pipe_width_AVX_fold_2",
+      "cdepositDotU_max_pipe_width_SISD_fold_2",
+      "cdepositDotU_max_pipe_width_SISD_fold_0",
+      "cdepositDotU_max_pipe_width_SSE_fold_2",
+      "cdepositDotU_max_unroll_width_SISD_fold_0",
+      "cdepositDotU_expand_SSE_fold_3",
+      "cdepositDotU_max_pipe_width_AVX_fold_3",
+      "cdepositDotU_max_unroll_width_SSE_fold_2",
+      "cdepositDotU_expand_SISD_fold_3",
+      "cdepositDotU_max_pipe_width_SSE_fold_4",
+      "cdepositDotU_max_unroll_width_SSE_fold_4"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/cmcsum.ccog": [
-      "cdepositSum_max_pipe_width_SSE_fold_3",
-      "cdepositSum_max_unroll_width_SISD_fold_2",
-      "cdepositSum_expand_AVX_fold_3",
-      "cdepositSum_max_unroll_width_SSE_fold_2",
-      "cdepositSum_max_pipe_width_SISD_fold_4",
-      "cdepositSum_max_unroll_width_SSE_fold_3",
-      "cdepositSum_max_unroll_width_SISD_fold_3",
-      "cdepositSum_max_pipe_width_SISD_fold_3",
-      "cdepositSum_max_pipe_width_SSE_fold_4",
-      "cdepositSum_max_pipe_width_SSE_fold_2",
-      "cdepositSum_expand_SISD_fold_2",
-      "cdepositSum_max_pipe_width_AVX_fold_0",
       "cdepositSum_max_unroll_width_SISD_fold_4",
-      "cdepositSum_expand_SISD_fold_4",
-      "cdepositSum_max_pipe_width_SSE_fold_0",
-      "cdepositSum_max_unroll_width_AVX_fold_0",
       "cdepositSum_max_pipe_width_AVX_fold_4",
       "cdepositSum_expand_SSE_fold_3",
-      "cdepositSum_expand_SISD_fold_3",
-      "cdepositSum_max_pipe_width_SISD_fold_2",
-      "cdepositSum_expand_SSE_fold_2",
-      "cdepositSum_max_pipe_width_AVX_fold_2",
-      "cdepositSum_max_pipe_width_AVX_fold_3",
-      "cdepositSum_expand_SSE_fold_4",
-      "cdepositSum_max_unroll_width_SSE_fold_0",
-      "cdepositSum_max_unroll_width_SISD_fold_0",
-      "cmcsum_block_size_N_block_MAX",
-      "cdepositSum_max_unroll_width_AVX_fold_3",
-      "cdepositSum_expand_AVX_fold_2",
-      "cdepositSum_max_pipe_width_SISD_fold_0",
       "cdepositSum_expand_AVX_fold_4",
-      "cdepositSum_max_unroll_width_AVX_fold_4",
+      "cdepositSum_max_unroll_width_AVX_fold_3",
+      "cdepositSum_max_pipe_width_SISD_fold_0",
       "cdepositSum_max_unroll_width_SSE_fold_4",
-      "cdepositSum_max_unroll_width_AVX_fold_2"
+      "cdepositSum_max_pipe_width_SSE_fold_3",
+      "cdepositSum_max_pipe_width_SISD_fold_2",
+      "cdepositSum_max_unroll_width_SSE_fold_3",
+      "cdepositSum_max_pipe_width_SSE_fold_4",
+      "cdepositSum_expand_AVX_fold_2",
+      "cdepositSum_max_unroll_width_AVX_fold_2",
+      "cdepositSum_max_unroll_width_AVX_fold_4",
+      "cdepositSum_expand_SSE_fold_2",
+      "cdepositSum_expand_AVX_fold_3",
+      "cdepositSum_max_pipe_width_SISD_fold_3",
+      "cmcsum_block_size_N_block_MAX",
+      "cdepositSum_expand_SISD_fold_2",
+      "cdepositSum_max_pipe_width_SSE_fold_0",
+      "cdepositSum_max_unroll_width_SISD_fold_0",
+      "cdepositSum_max_pipe_width_AVX_fold_0",
+      "cdepositSum_max_pipe_width_SSE_fold_2",
+      "cdepositSum_max_unroll_width_SISD_fold_3",
+      "cdepositSum_max_unroll_width_AVX_fold_0",
+      "cdepositSum_max_pipe_width_AVX_fold_3",
+      "cdepositSum_max_unroll_width_SSE_fold_0",
+      "cdepositSum_expand_SSE_fold_4",
+      "cdepositSum_max_unroll_width_SSE_fold_2",
+      "cdepositSum_max_pipe_width_AVX_fold_2",
+      "cdepositSum_expand_SISD_fold_3",
+      "cdepositSum_expand_SISD_fold_4",
+      "cdepositSum_max_pipe_width_SISD_fold_4",
+      "cdepositSum_max_unroll_width_SISD_fold_2"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/damax.ccog": [
       "damax_max_unroll_width_SISD",
@@ -4173,620 +4173,620 @@
       "damax_max_unroll_width_AVX"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/damaxm.ccog": [
-      "damaxm_max_unroll_width_AVX",
+      "damaxm_max_unroll_width_SSE",
       "damaxm_max_unroll_width_SISD",
-      "damaxm_max_unroll_width_SSE"
+      "damaxm_max_unroll_width_AVX"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/didgemm.ccog": [
-      "didgemm_block_size_X_BLOCK",
-      "didgemm_block_size_YT_BLOCK",
-      "didgemm_block_size_XT_BLOCK",
-      "didgemm_block_size_Y_BLOCK"
+      "didgemm_block_size_Y_BLOCK",
+      "didgemm_block_size_XYT_BLOCK",
+      "didgemm_block_size_XY_BLOCK",
+      "didgemm_block_size_YT_BLOCK"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/didgemv.ccog": [
+      "didgemv_block_size_YT_BLOCK",
       "didgemv_block_size_T_BLOCK",
-      "didgemv_block_size_X_BLOCK",
+      "didgemv_block_size_XY_BLOCK",
       "didgemv_block_size_Y_BLOCK",
-      "didgemv_block_size_XT_BLOCK",
-      "didgemv_block_size_YT_BLOCK"
+      "didgemv_block_size_XYT_BLOCK"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/dmdasum.ccog": [
-      "ddepositASum_max_pipe_width_SISD_fold_2",
-      "ddepositASum_expand_AVX_fold_2",
-      "ddepositASum_max_unroll_width_SSE_fold_2",
-      "ddepositASum_max_pipe_width_AVX_fold_2",
-      "ddepositASum_expand_SISD_fold_2",
-      "ddepositASum_max_pipe_width_AVX_fold_0",
-      "ddepositASum_max_unroll_width_SSE_fold_3",
-      "ddepositASum_expand_SSE_fold_2",
-      "ddepositASum_max_pipe_width_SSE_fold_4",
-      "ddepositASum_max_unroll_width_SISD_fold_4",
-      "ddepositASum_max_unroll_width_SISD_fold_3",
-      "ddepositASum_max_pipe_width_SSE_fold_3",
-      "ddepositASum_max_unroll_width_SSE_fold_4",
-      "ddepositASum_max_unroll_width_AVX_fold_3",
-      "ddepositASum_expand_AVX_fold_3",
-      "ddepositASum_max_pipe_width_AVX_fold_4",
-      "ddepositASum_max_unroll_width_SISD_fold_0",
-      "ddepositASum_max_unroll_width_SSE_fold_0",
-      "ddepositASum_max_unroll_width_AVX_fold_0",
-      "ddepositASum_max_unroll_width_AVX_fold_2",
-      "ddepositASum_expand_SSE_fold_4",
-      "ddepositASum_expand_SISD_fold_4",
-      "ddepositASum_max_pipe_width_SSE_fold_0",
       "ddepositASum_expand_SISD_fold_3",
-      "ddepositASum_max_unroll_width_SISD_fold_2",
-      "ddepositASum_max_pipe_width_AVX_fold_3",
-      "ddepositASum_expand_AVX_fold_4",
-      "ddepositASum_expand_SSE_fold_3",
-      "ddepositASum_max_unroll_width_AVX_fold_4",
+      "ddepositASum_max_unroll_width_AVX_fold_0",
       "ddepositASum_max_pipe_width_SISD_fold_0",
-      "ddepositASum_max_pipe_width_SISD_fold_3",
+      "ddepositASum_max_unroll_width_SSE_fold_3",
+      "ddepositASum_expand_AVX_fold_4",
+      "ddepositASum_max_unroll_width_AVX_fold_4",
+      "ddepositASum_expand_AVX_fold_2",
+      "ddepositASum_max_pipe_width_SSE_fold_2",
+      "ddepositASum_max_pipe_width_SISD_fold_2",
+      "ddepositASum_max_unroll_width_SISD_fold_4",
+      "ddepositASum_max_unroll_width_SISD_fold_0",
+      "ddepositASum_expand_AVX_fold_3",
+      "ddepositASum_max_pipe_width_SSE_fold_3",
+      "ddepositASum_expand_SSE_fold_3",
+      "ddepositASum_max_unroll_width_AVX_fold_3",
+      "ddepositASum_expand_SSE_fold_2",
+      "ddepositASum_expand_SSE_fold_4",
       "dmdasum_block_size_N_block_MAX",
+      "ddepositASum_max_unroll_width_AVX_fold_2",
       "ddepositASum_max_pipe_width_SISD_fold_4",
-      "ddepositASum_max_pipe_width_SSE_fold_2"
+      "ddepositASum_max_pipe_width_SSE_fold_0",
+      "ddepositASum_max_pipe_width_AVX_fold_2",
+      "ddepositASum_max_pipe_width_AVX_fold_3",
+      "ddepositASum_max_unroll_width_SISD_fold_3",
+      "ddepositASum_expand_SISD_fold_4",
+      "ddepositASum_max_pipe_width_SSE_fold_4",
+      "ddepositASum_max_pipe_width_AVX_fold_4",
+      "ddepositASum_max_unroll_width_SISD_fold_2",
+      "ddepositASum_expand_SISD_fold_2",
+      "ddepositASum_max_unroll_width_SSE_fold_2",
+      "ddepositASum_max_pipe_width_SISD_fold_3",
+      "ddepositASum_max_unroll_width_SSE_fold_4",
+      "ddepositASum_max_pipe_width_AVX_fold_0",
+      "ddepositASum_max_unroll_width_SSE_fold_0"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/dmddot.ccog": [
-      "ddepositDot_max_unroll_width_SSE_fold_3",
-      "ddepositDot_max_pipe_width_SISD_fold_4",
-      "ddepositDot_expand_SISD_fold_4",
-      "ddepositDot_expand_AVX_fold_3",
-      "ddepositDot_expand_AVX_fold_2",
-      "ddepositDot_max_pipe_width_AVX_fold_3",
-      "ddepositDot_max_unroll_width_AVX_fold_4",
-      "ddepositDot_expand_SSE_fold_4",
-      "ddepositDot_max_pipe_width_SSE_fold_0",
-      "ddepositDot_max_unroll_width_AVX_fold_0",
-      "ddepositDot_expand_SISD_fold_2",
-      "ddepositDot_max_pipe_width_SSE_fold_2",
-      "ddepositDot_max_unroll_width_SISD_fold_0",
-      "ddepositDot_max_pipe_width_SSE_fold_4",
-      "ddepositDot_max_unroll_width_AVX_fold_2",
-      "ddepositDot_max_unroll_width_SISD_fold_3",
-      "ddepositDot_max_pipe_width_AVX_fold_0",
-      "ddepositDot_max_unroll_width_AVX_fold_3",
-      "ddepositDot_max_pipe_width_AVX_fold_4",
       "ddepositDot_expand_SSE_fold_2",
+      "ddepositDot_max_pipe_width_SISD_fold_2",
+      "ddepositDot_max_pipe_width_SSE_fold_3",
+      "ddepositDot_expand_SSE_fold_3",
+      "ddepositDot_max_unroll_width_AVX_fold_0",
       "ddepositDot_expand_SISD_fold_3",
+      "ddepositDot_expand_AVX_fold_4",
+      "ddepositDot_max_unroll_width_SISD_fold_0",
+      "ddepositDot_max_unroll_width_AVX_fold_3",
+      "ddepositDot_expand_AVX_fold_3",
       "ddepositDot_max_unroll_width_SSE_fold_2",
       "ddepositDot_max_unroll_width_SSE_fold_0",
-      "ddepositDot_expand_AVX_fold_4",
-      "ddepositDot_expand_SSE_fold_3",
+      "ddepositDot_max_pipe_width_SISD_fold_4",
+      "dmddot_block_size_N_block_MAX",
+      "ddepositDot_expand_SISD_fold_2",
+      "ddepositDot_max_pipe_width_SSE_fold_2",
+      "ddepositDot_expand_SSE_fold_4",
+      "ddepositDot_max_pipe_width_SSE_fold_4",
       "ddepositDot_max_unroll_width_SISD_fold_4",
       "ddepositDot_max_pipe_width_AVX_fold_2",
-      "ddepositDot_max_pipe_width_SISD_fold_0",
-      "ddepositDot_max_pipe_width_SSE_fold_3",
-      "ddepositDot_max_unroll_width_SSE_fold_4",
-      "dmddot_block_size_N_block_MAX",
-      "ddepositDot_max_pipe_width_SISD_fold_3",
+      "ddepositDot_max_unroll_width_AVX_fold_2",
+      "ddepositDot_max_pipe_width_SSE_fold_0",
+      "ddepositDot_expand_SISD_fold_4",
+      "ddepositDot_max_pipe_width_AVX_fold_4",
+      "ddepositDot_max_unroll_width_SISD_fold_3",
+      "ddepositDot_max_unroll_width_SSE_fold_3",
+      "ddepositDot_expand_AVX_fold_2",
+      "ddepositDot_max_pipe_width_AVX_fold_3",
       "ddepositDot_max_unroll_width_SISD_fold_2",
-      "ddepositDot_max_pipe_width_SISD_fold_2"
+      "ddepositDot_max_unroll_width_AVX_fold_4",
+      "ddepositDot_max_unroll_width_SSE_fold_4",
+      "ddepositDot_max_pipe_width_AVX_fold_0",
+      "ddepositDot_max_pipe_width_SISD_fold_3",
+      "ddepositDot_max_pipe_width_SISD_fold_0"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/dmdssq.ccog": [
-      "ddepositSSq_max_unroll_width_AVX_fold_4",
-      "ddepositSSq_expand_SISD_fold_4",
-      "dmdssq_block_size_N_block_MAX",
-      "ddepositSSq_max_unroll_width_SSE_fold_2",
-      "ddepositSSq_max_pipe_width_AVX_fold_2",
-      "ddepositSSq_max_pipe_width_SSE_fold_0",
-      "ddepositSSq_expand_SISD_fold_2",
-      "ddepositSSq_max_pipe_width_SSE_fold_2",
-      "ddepositSSq_max_pipe_width_SISD_fold_2",
-      "ddepositSSq_max_unroll_width_SISD_fold_0",
-      "ddepositSSq_max_pipe_width_SSE_fold_4",
-      "ddepositSSq_expand_SSE_fold_2",
-      "ddepositSSq_max_pipe_width_SSE_fold_3",
       "ddepositSSq_max_pipe_width_AVX_fold_0",
       "ddepositSSq_expand_SISD_fold_3",
-      "ddepositSSq_max_unroll_width_SSE_fold_4",
-      "ddepositSSq_max_pipe_width_SISD_fold_0",
-      "ddepositSSq_max_unroll_width_AVX_fold_2",
-      "ddepositSSq_max_unroll_width_AVX_fold_3",
-      "ddepositSSq_expand_SSE_fold_3",
-      "ddepositSSq_max_unroll_width_SSE_fold_3",
-      "ddepositSSq_max_pipe_width_AVX_fold_3",
-      "ddepositSSq_max_unroll_width_SISD_fold_3",
-      "ddepositSSq_max_unroll_width_AVX_fold_0",
-      "ddepositSSq_expand_SSE_fold_4",
-      "ddepositSSq_expand_AVX_fold_2",
-      "ddepositSSq_max_unroll_width_SISD_fold_2",
       "ddepositSSq_max_unroll_width_SISD_fold_4",
       "ddepositSSq_max_pipe_width_SISD_fold_3",
-      "ddepositSSq_max_unroll_width_SSE_fold_0",
-      "ddepositSSq_expand_AVX_fold_4",
-      "ddepositSSq_max_pipe_width_SISD_fold_4",
+      "ddepositSSq_max_pipe_width_SISD_fold_2",
       "ddepositSSq_max_pipe_width_AVX_fold_4",
-      "ddepositSSq_expand_AVX_fold_3"
+      "ddepositSSq_max_unroll_width_SSE_fold_0",
+      "ddepositSSq_max_pipe_width_SSE_fold_2",
+      "ddepositSSq_max_pipe_width_SSE_fold_3",
+      "ddepositSSq_max_unroll_width_SSE_fold_4",
+      "ddepositSSq_max_pipe_width_SSE_fold_0",
+      "ddepositSSq_expand_SISD_fold_2",
+      "ddepositSSq_max_unroll_width_SISD_fold_3",
+      "ddepositSSq_max_unroll_width_SSE_fold_2",
+      "ddepositSSq_max_unroll_width_AVX_fold_2",
+      "ddepositSSq_max_pipe_width_AVX_fold_2",
+      "ddepositSSq_expand_SSE_fold_4",
+      "ddepositSSq_expand_SISD_fold_4",
+      "ddepositSSq_max_unroll_width_AVX_fold_4",
+      "ddepositSSq_max_pipe_width_SISD_fold_0",
+      "ddepositSSq_expand_SSE_fold_2",
+      "ddepositSSq_max_unroll_width_AVX_fold_0",
+      "ddepositSSq_max_unroll_width_SSE_fold_3",
+      "ddepositSSq_expand_AVX_fold_2",
+      "ddepositSSq_max_pipe_width_SSE_fold_4",
+      "ddepositSSq_max_unroll_width_AVX_fold_3",
+      "ddepositSSq_expand_AVX_fold_3",
+      "ddepositSSq_max_unroll_width_SISD_fold_0",
+      "ddepositSSq_max_pipe_width_SISD_fold_4",
+      "ddepositSSq_expand_SSE_fold_3",
+      "ddepositSSq_max_pipe_width_AVX_fold_3",
+      "dmdssq_block_size_N_block_MAX",
+      "ddepositSSq_max_unroll_width_SISD_fold_2",
+      "ddepositSSq_expand_AVX_fold_4"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/dmdsum.ccog": [
+      "ddepositSum_max_pipe_width_SSE_fold_3",
       "ddepositSum_max_unroll_width_SSE_fold_4",
-      "ddepositSum_max_pipe_width_SSE_fold_0",
-      "ddepositSum_expand_SISD_fold_4",
-      "ddepositSum_max_pipe_width_SSE_fold_2",
-      "ddepositSum_max_unroll_width_AVX_fold_3",
-      "ddepositSum_max_unroll_width_SISD_fold_4",
+      "ddepositSum_expand_SISD_fold_2",
+      "ddepositSum_max_unroll_width_SISD_fold_2",
       "ddepositSum_expand_SSE_fold_2",
+      "ddepositSum_max_unroll_width_SSE_fold_2",
+      "ddepositSum_expand_AVX_fold_4",
+      "ddepositSum_max_pipe_width_SSE_fold_4",
+      "ddepositSum_max_unroll_width_AVX_fold_4",
+      "ddepositSum_max_pipe_width_SISD_fold_4",
+      "ddepositSum_expand_AVX_fold_2",
+      "ddepositSum_max_unroll_width_SISD_fold_3",
+      "dmdsum_block_size_N_block_MAX",
+      "ddepositSum_max_pipe_width_SSE_fold_2",
       "ddepositSum_max_pipe_width_AVX_fold_2",
       "ddepositSum_expand_SISD_fold_3",
-      "ddepositSum_expand_AVX_fold_2",
-      "ddepositSum_max_unroll_width_SSE_fold_3",
-      "ddepositSum_max_unroll_width_AVX_fold_2",
-      "ddepositSum_max_unroll_width_AVX_fold_0",
-      "ddepositSum_expand_AVX_fold_3",
-      "ddepositSum_expand_SSE_fold_3",
-      "ddepositSum_max_pipe_width_AVX_fold_0",
-      "ddepositSum_max_pipe_width_AVX_fold_3",
-      "ddepositSum_expand_SISD_fold_2",
-      "ddepositSum_max_pipe_width_AVX_fold_4",
-      "ddepositSum_max_unroll_width_SSE_fold_2",
-      "ddepositSum_max_unroll_width_SISD_fold_2",
       "ddepositSum_max_pipe_width_SISD_fold_3",
-      "dmdsum_block_size_N_block_MAX",
-      "ddepositSum_max_unroll_width_SSE_fold_0",
+      "ddepositSum_max_unroll_width_AVX_fold_3",
+      "ddepositSum_expand_AVX_fold_3",
       "ddepositSum_expand_SSE_fold_4",
-      "ddepositSum_max_unroll_width_SISD_fold_0",
-      "ddepositSum_expand_AVX_fold_4",
-      "ddepositSum_max_pipe_width_SISD_fold_4",
       "ddepositSum_max_pipe_width_SISD_fold_0",
+      "ddepositSum_max_pipe_width_AVX_fold_4",
+      "ddepositSum_max_unroll_width_SISD_fold_4",
+      "ddepositSum_max_unroll_width_SSE_fold_0",
+      "ddepositSum_max_unroll_width_AVX_fold_2",
+      "ddepositSum_max_unroll_width_SSE_fold_3",
+      "ddepositSum_max_unroll_width_AVX_fold_0",
+      "ddepositSum_expand_SISD_fold_4",
+      "ddepositSum_max_pipe_width_AVX_fold_0",
+      "ddepositSum_max_unroll_width_SISD_fold_0",
+      "ddepositSum_max_pipe_width_AVX_fold_3",
+      "ddepositSum_max_pipe_width_SSE_fold_0",
       "ddepositSum_max_pipe_width_SISD_fold_2",
-      "ddepositSum_max_unroll_width_AVX_fold_4",
-      "ddepositSum_max_unroll_width_SISD_fold_3",
-      "ddepositSum_max_pipe_width_SSE_fold_4",
-      "ddepositSum_max_pipe_width_SSE_fold_3"
+      "ddepositSum_expand_SSE_fold_3"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/dmzasum.ccog": [
-      "dzdepositASum_max_pipe_width_SSE_fold_4",
-      "dzdepositASum_max_pipe_width_AVX_fold_3",
       "dzdepositASum_max_pipe_width_AVX_fold_4",
-      "dzdepositASum_max_unroll_width_SISD_fold_2",
-      "dmzasum_block_size_N_block_MAX",
-      "dzdepositASum_max_unroll_width_AVX_fold_0",
-      "dzdepositASum_max_pipe_width_SISD_fold_3",
       "dzdepositASum_expand_SISD_fold_4",
-      "dzdepositASum_expand_AVX_fold_3",
-      "dzdepositASum_max_unroll_width_SISD_fold_4",
-      "dzdepositASum_max_unroll_width_SISD_fold_0",
-      "dzdepositASum_expand_AVX_fold_4",
-      "dzdepositASum_max_unroll_width_SSE_fold_3",
-      "dzdepositASum_expand_AVX_fold_2",
-      "dzdepositASum_max_pipe_width_SSE_fold_2",
-      "dzdepositASum_max_unroll_width_AVX_fold_4",
-      "dzdepositASum_max_unroll_width_AVX_fold_3",
-      "dzdepositASum_max_unroll_width_SSE_fold_4",
-      "dzdepositASum_max_unroll_width_AVX_fold_2",
-      "dzdepositASum_max_pipe_width_AVX_fold_0",
-      "dzdepositASum_max_unroll_width_SSE_fold_2",
-      "dzdepositASum_max_pipe_width_AVX_fold_2",
-      "dzdepositASum_max_pipe_width_SISD_fold_0",
-      "dzdepositASum_expand_SSE_fold_3",
-      "dzdepositASum_max_unroll_width_SSE_fold_0",
-      "dzdepositASum_expand_SSE_fold_4",
-      "dzdepositASum_max_pipe_width_SSE_fold_3",
-      "dzdepositASum_max_pipe_width_SISD_fold_4",
-      "dzdepositASum_max_pipe_width_SSE_fold_0",
       "dzdepositASum_max_pipe_width_SISD_fold_2",
+      "dzdepositASum_max_pipe_width_SISD_fold_0",
+      "dzdepositASum_max_unroll_width_SISD_fold_0",
+      "dzdepositASum_max_pipe_width_SSE_fold_2",
+      "dzdepositASum_max_unroll_width_SSE_fold_3",
+      "dzdepositASum_max_unroll_width_SSE_fold_4",
+      "dzdepositASum_max_pipe_width_SSE_fold_0",
+      "dzdepositASum_max_pipe_width_SISD_fold_4",
+      "dzdepositASum_max_unroll_width_AVX_fold_3",
+      "dzdepositASum_max_unroll_width_AVX_fold_0",
+      "dzdepositASum_max_pipe_width_AVX_fold_2",
+      "dzdepositASum_expand_SSE_fold_3",
+      "dzdepositASum_expand_AVX_fold_4",
+      "dzdepositASum_max_pipe_width_SSE_fold_4",
       "dzdepositASum_expand_SISD_fold_3",
+      "dzdepositASum_max_unroll_width_SSE_fold_2",
+      "dzdepositASum_max_unroll_width_SISD_fold_3",
       "dzdepositASum_expand_SSE_fold_2",
+      "dzdepositASum_max_pipe_width_SISD_fold_3",
+      "dmzasum_block_size_N_block_MAX",
+      "dzdepositASum_max_pipe_width_AVX_fold_3",
+      "dzdepositASum_max_unroll_width_SISD_fold_2",
+      "dzdepositASum_expand_AVX_fold_3",
+      "dzdepositASum_expand_AVX_fold_2",
+      "dzdepositASum_max_unroll_width_SSE_fold_0",
+      "dzdepositASum_max_pipe_width_AVX_fold_0",
+      "dzdepositASum_expand_SSE_fold_4",
       "dzdepositASum_expand_SISD_fold_2",
-      "dzdepositASum_max_unroll_width_SISD_fold_3"
+      "dzdepositASum_max_pipe_width_SSE_fold_3",
+      "dzdepositASum_max_unroll_width_SISD_fold_4",
+      "dzdepositASum_max_unroll_width_AVX_fold_4",
+      "dzdepositASum_max_unroll_width_AVX_fold_2"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/dmzssq.ccog": [
-      "dzdepositSSq_max_unroll_width_SSE_fold_0",
-      "dzdepositSSq_max_unroll_width_AVX_fold_2",
-      "dzdepositSSq_max_pipe_width_SSE_fold_3",
-      "dzdepositSSq_expand_AVX_fold_3",
-      "dzdepositSSq_expand_SSE_fold_3",
-      "dzdepositSSq_expand_AVX_fold_4",
-      "dzdepositSSq_max_pipe_width_SSE_fold_4",
-      "dzdepositSSq_expand_SSE_fold_2",
-      "dzdepositSSq_max_pipe_width_SISD_fold_3",
-      "dzdepositSSq_max_pipe_width_SISD_fold_0",
-      "dzdepositSSq_max_unroll_width_AVX_fold_4",
-      "dzdepositSSq_expand_AVX_fold_2",
-      "dzdepositSSq_expand_SISD_fold_3",
-      "dzdepositSSq_max_pipe_width_AVX_fold_4",
-      "dzdepositSSq_max_unroll_width_SISD_fold_4",
-      "dzdepositSSq_max_unroll_width_SSE_fold_2",
-      "dzdepositSSq_max_unroll_width_SISD_fold_2",
+      "dzdepositSSq_max_pipe_width_SISD_fold_4",
       "dzdepositSSq_max_pipe_width_SSE_fold_2",
       "dmzssq_block_size_N_block_MAX",
-      "dzdepositSSq_max_pipe_width_AVX_fold_0",
-      "dzdepositSSq_expand_SISD_fold_4",
       "dzdepositSSq_max_pipe_width_AVX_fold_2",
-      "dzdepositSSq_max_unroll_width_AVX_fold_3",
-      "dzdepositSSq_max_pipe_width_SISD_fold_4",
-      "dzdepositSSq_max_pipe_width_SISD_fold_2",
       "dzdepositSSq_expand_SSE_fold_4",
-      "dzdepositSSq_max_unroll_width_SISD_fold_3",
-      "dzdepositSSq_max_unroll_width_SSE_fold_3",
+      "dzdepositSSq_expand_SSE_fold_3",
+      "dzdepositSSq_max_pipe_width_AVX_fold_3",
+      "dzdepositSSq_expand_SSE_fold_2",
+      "dzdepositSSq_expand_SISD_fold_3",
       "dzdepositSSq_max_unroll_width_SSE_fold_4",
-      "dzdepositSSq_max_unroll_width_SISD_fold_0",
-      "dzdepositSSq_max_unroll_width_AVX_fold_0",
       "dzdepositSSq_expand_SISD_fold_2",
+      "dzdepositSSq_max_pipe_width_SISD_fold_0",
+      "dzdepositSSq_expand_AVX_fold_2",
+      "dzdepositSSq_max_unroll_width_SISD_fold_2",
+      "dzdepositSSq_max_unroll_width_SSE_fold_3",
+      "dzdepositSSq_max_unroll_width_SSE_fold_2",
+      "dzdepositSSq_max_pipe_width_SISD_fold_3",
+      "dzdepositSSq_max_pipe_width_SSE_fold_4",
+      "dzdepositSSq_max_pipe_width_SSE_fold_3",
+      "dzdepositSSq_max_unroll_width_AVX_fold_2",
+      "dzdepositSSq_max_unroll_width_AVX_fold_0",
+      "dzdepositSSq_expand_SISD_fold_4",
       "dzdepositSSq_max_pipe_width_SSE_fold_0",
-      "dzdepositSSq_max_pipe_width_AVX_fold_3"
+      "dzdepositSSq_max_unroll_width_AVX_fold_3",
+      "dzdepositSSq_max_unroll_width_SISD_fold_3",
+      "dzdepositSSq_expand_AVX_fold_3",
+      "dzdepositSSq_max_unroll_width_SSE_fold_0",
+      "dzdepositSSq_max_unroll_width_AVX_fold_4",
+      "dzdepositSSq_expand_AVX_fold_4",
+      "dzdepositSSq_max_unroll_width_SISD_fold_0",
+      "dzdepositSSq_max_pipe_width_AVX_fold_0",
+      "dzdepositSSq_max_pipe_width_SISD_fold_2",
+      "dzdepositSSq_max_pipe_width_AVX_fold_4",
+      "dzdepositSSq_max_unroll_width_SISD_fold_4"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/samax.ccog": [
-      "samax_max_unroll_width_SISD",
       "samax_max_unroll_width_SSE",
+      "samax_max_unroll_width_SISD",
       "samax_max_unroll_width_AVX"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/samaxm.ccog": [
-      "samaxm_max_unroll_width_SSE",
+      "samaxm_max_unroll_width_SISD",
       "samaxm_max_unroll_width_AVX",
-      "samaxm_max_unroll_width_SISD"
+      "samaxm_max_unroll_width_SSE"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/sisgemm.ccog": [
-      "sisgemm_block_size_XT_BLOCK",
       "sisgemm_block_size_Y_BLOCK",
       "sisgemm_block_size_YT_BLOCK",
-      "sisgemm_block_size_X_BLOCK"
+      "sisgemm_block_size_XY_BLOCK",
+      "sisgemm_block_size_XYT_BLOCK"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/sisgemv.ccog": [
-      "sisgemv_block_size_Y_BLOCK",
+      "sisgemv_block_size_XYT_BLOCK",
       "sisgemv_block_size_T_BLOCK",
-      "sisgemv_block_size_YT_BLOCK",
-      "sisgemv_block_size_X_BLOCK",
-      "sisgemv_block_size_XT_BLOCK"
+      "sisgemv_block_size_XY_BLOCK",
+      "sisgemv_block_size_Y_BLOCK",
+      "sisgemv_block_size_YT_BLOCK"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/smcasum.ccog": [
-      "scdepositASum_max_pipe_width_SISD_fold_0",
-      "scdepositASum_max_pipe_width_SISD_fold_3",
-      "scdepositASum_max_pipe_width_AVX_fold_2",
-      "scdepositASum_expand_SISD_fold_4",
-      "scdepositASum_max_unroll_width_AVX_fold_2",
-      "scdepositASum_max_pipe_width_SSE_fold_4",
-      "scdepositASum_max_unroll_width_SSE_fold_4",
-      "scdepositASum_max_pipe_width_AVX_fold_3",
-      "scdepositASum_expand_AVX_fold_3",
-      "scdepositASum_max_pipe_width_AVX_fold_0",
-      "scdepositASum_max_unroll_width_SSE_fold_0",
-      "scdepositASum_max_pipe_width_SISD_fold_2",
-      "scdepositASum_max_unroll_width_AVX_fold_4",
-      "scdepositASum_max_unroll_width_SSE_fold_3",
-      "smcasum_block_size_N_block_MAX",
-      "scdepositASum_max_pipe_width_SISD_fold_4",
-      "scdepositASum_max_unroll_width_SSE_fold_2",
-      "scdepositASum_expand_AVX_fold_2",
-      "scdepositASum_max_unroll_width_SISD_fold_3",
-      "scdepositASum_expand_SISD_fold_2",
-      "scdepositASum_max_unroll_width_AVX_fold_3",
-      "scdepositASum_expand_AVX_fold_4",
-      "scdepositASum_max_pipe_width_SSE_fold_2",
-      "scdepositASum_max_unroll_width_SISD_fold_2",
-      "scdepositASum_expand_SSE_fold_2",
-      "scdepositASum_max_unroll_width_SISD_fold_4",
       "scdepositASum_expand_SSE_fold_4",
-      "scdepositASum_max_unroll_width_SISD_fold_0",
-      "scdepositASum_expand_SSE_fold_3",
-      "scdepositASum_max_pipe_width_AVX_fold_4",
-      "scdepositASum_max_unroll_width_AVX_fold_0",
-      "scdepositASum_max_pipe_width_SSE_fold_0",
+      "scdepositASum_max_pipe_width_SSE_fold_4",
+      "scdepositASum_expand_SSE_fold_2",
+      "scdepositASum_max_unroll_width_AVX_fold_3",
+      "scdepositASum_max_pipe_width_SISD_fold_4",
+      "scdepositASum_max_unroll_width_SSE_fold_3",
       "scdepositASum_expand_SISD_fold_3",
-      "scdepositASum_max_pipe_width_SSE_fold_3"
+      "scdepositASum_max_unroll_width_SSE_fold_4",
+      "scdepositASum_max_pipe_width_AVX_fold_2",
+      "scdepositASum_max_unroll_width_AVX_fold_0",
+      "scdepositASum_max_unroll_width_AVX_fold_2",
+      "scdepositASum_max_unroll_width_SISD_fold_0",
+      "scdepositASum_expand_AVX_fold_4",
+      "scdepositASum_max_unroll_width_SISD_fold_2",
+      "scdepositASum_expand_AVX_fold_2",
+      "scdepositASum_max_unroll_width_SSE_fold_0",
+      "scdepositASum_max_unroll_width_SISD_fold_4",
+      "scdepositASum_max_pipe_width_SSE_fold_2",
+      "scdepositASum_expand_SISD_fold_2",
+      "scdepositASum_max_pipe_width_AVX_fold_4",
+      "scdepositASum_expand_SSE_fold_3",
+      "scdepositASum_max_pipe_width_SSE_fold_3",
+      "scdepositASum_max_unroll_width_AVX_fold_4",
+      "scdepositASum_max_unroll_width_SISD_fold_3",
+      "scdepositASum_max_unroll_width_SSE_fold_2",
+      "scdepositASum_expand_AVX_fold_3",
+      "scdepositASum_max_pipe_width_AVX_fold_3",
+      "scdepositASum_max_pipe_width_SISD_fold_3",
+      "scdepositASum_expand_SISD_fold_4",
+      "scdepositASum_max_pipe_width_SISD_fold_0",
+      "scdepositASum_max_pipe_width_SSE_fold_0",
+      "smcasum_block_size_N_block_MAX",
+      "scdepositASum_max_pipe_width_AVX_fold_0",
+      "scdepositASum_max_pipe_width_SISD_fold_2"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/smcssq.ccog": [
-      "scdepositSSq_max_unroll_width_AVX_fold_4",
-      "scdepositSSq_max_pipe_width_AVX_fold_0",
+      "scdepositSSq_max_pipe_width_SISD_fold_2",
+      "scdepositSSq_expand_AVX_fold_4",
+      "scdepositSSq_max_unroll_width_SSE_fold_3",
+      "scdepositSSq_max_unroll_width_SISD_fold_0",
+      "scdepositSSq_expand_SSE_fold_2",
+      "scdepositSSq_max_pipe_width_SSE_fold_0",
+      "scdepositSSq_max_unroll_width_AVX_fold_3",
+      "scdepositSSq_max_unroll_width_SISD_fold_3",
+      "scdepositSSq_max_unroll_width_SSE_fold_2",
       "scdepositSSq_max_pipe_width_SSE_fold_2",
       "scdepositSSq_max_pipe_width_SISD_fold_3",
-      "scdepositSSq_expand_AVX_fold_2",
-      "scdepositSSq_max_pipe_width_AVX_fold_2",
-      "scdepositSSq_max_unroll_width_SISD_fold_2",
-      "scdepositSSq_max_pipe_width_AVX_fold_3",
-      "scdepositSSq_max_pipe_width_SISD_fold_4",
-      "scdepositSSq_max_pipe_width_SISD_fold_2",
-      "scdepositSSq_max_unroll_width_AVX_fold_3",
-      "scdepositSSq_max_pipe_width_SSE_fold_3",
-      "scdepositSSq_expand_SISD_fold_2",
-      "scdepositSSq_max_unroll_width_SSE_fold_0",
-      "scdepositSSq_max_unroll_width_SSE_fold_3",
-      "scdepositSSq_max_unroll_width_SSE_fold_2",
       "scdepositSSq_max_unroll_width_SISD_fold_4",
-      "scdepositSSq_max_pipe_width_AVX_fold_4",
-      "scdepositSSq_expand_SSE_fold_3",
-      "scdepositSSq_expand_SISD_fold_3",
-      "scdepositSSq_expand_SSE_fold_4",
+      "scdepositSSq_max_pipe_width_AVX_fold_0",
+      "scdepositSSq_expand_AVX_fold_2",
+      "smcssq_block_size_N_block_MAX",
+      "scdepositSSq_max_pipe_width_AVX_fold_2",
       "scdepositSSq_max_unroll_width_AVX_fold_0",
-      "scdepositSSq_expand_AVX_fold_4",
       "scdepositSSq_max_pipe_width_SSE_fold_4",
-      "scdepositSSq_max_unroll_width_SISD_fold_3",
       "scdepositSSq_max_pipe_width_SISD_fold_0",
-      "scdepositSSq_expand_SISD_fold_4",
-      "scdepositSSq_max_unroll_width_SISD_fold_0",
-      "scdepositSSq_max_unroll_width_SSE_fold_4",
-      "scdepositSSq_max_pipe_width_SSE_fold_0",
-      "scdepositSSq_expand_AVX_fold_3",
+      "scdepositSSq_max_unroll_width_SSE_fold_0",
+      "scdepositSSq_max_pipe_width_AVX_fold_4",
+      "scdepositSSq_max_pipe_width_SISD_fold_4",
+      "scdepositSSq_expand_SSE_fold_4",
+      "scdepositSSq_max_pipe_width_SSE_fold_3",
+      "scdepositSSq_expand_SSE_fold_3",
+      "scdepositSSq_max_pipe_width_AVX_fold_3",
       "scdepositSSq_max_unroll_width_AVX_fold_2",
-      "scdepositSSq_expand_SSE_fold_2",
-      "smcssq_block_size_N_block_MAX"
+      "scdepositSSq_expand_SISD_fold_4",
+      "scdepositSSq_max_unroll_width_SISD_fold_2",
+      "scdepositSSq_max_unroll_width_AVX_fold_4",
+      "scdepositSSq_expand_SISD_fold_3",
+      "scdepositSSq_expand_AVX_fold_3",
+      "scdepositSSq_max_unroll_width_SSE_fold_4",
+      "scdepositSSq_expand_SISD_fold_2"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/smsasum.ccog": [
-      "sdepositASum_max_unroll_width_SSE_fold_3",
-      "smsasum_block_size_N_block_MAX",
-      "sdepositASum_max_pipe_width_SISD_fold_4",
-      "sdepositASum_max_unroll_width_SISD_fold_2",
-      "sdepositASum_max_unroll_width_SISD_fold_4",
-      "sdepositASum_max_unroll_width_SSE_fold_0",
-      "sdepositASum_max_pipe_width_SSE_fold_4",
-      "sdepositASum_max_unroll_width_AVX_fold_2",
-      "sdepositASum_max_pipe_width_SISD_fold_2",
-      "sdepositASum_max_pipe_width_SISD_fold_0",
-      "sdepositASum_expand_SSE_fold_4",
-      "sdepositASum_max_pipe_width_SSE_fold_3",
-      "sdepositASum_expand_SISD_fold_3",
-      "sdepositASum_max_unroll_width_SISD_fold_3",
-      "sdepositASum_max_pipe_width_SISD_fold_3",
-      "sdepositASum_max_pipe_width_AVX_fold_4",
-      "sdepositASum_max_pipe_width_AVX_fold_3",
-      "sdepositASum_max_unroll_width_SISD_fold_0",
       "sdepositASum_expand_SISD_fold_4",
-      "sdepositASum_max_unroll_width_SSE_fold_2",
-      "sdepositASum_max_pipe_width_AVX_fold_0",
+      "sdepositASum_max_pipe_width_SISD_fold_3",
+      "sdepositASum_max_pipe_width_SSE_fold_3",
       "sdepositASum_max_unroll_width_SSE_fold_4",
-      "sdepositASum_max_unroll_width_AVX_fold_4",
-      "sdepositASum_max_unroll_width_AVX_fold_0",
-      "sdepositASum_expand_AVX_fold_2",
-      "sdepositASum_max_pipe_width_SSE_fold_0",
+      "sdepositASum_max_pipe_width_AVX_fold_2",
       "sdepositASum_expand_AVX_fold_4",
-      "sdepositASum_expand_SSE_fold_3",
-      "sdepositASum_expand_AVX_fold_3",
-      "sdepositASum_max_pipe_width_SSE_fold_2",
+      "sdepositASum_expand_SISD_fold_3",
+      "sdepositASum_max_pipe_width_SSE_fold_0",
+      "sdepositASum_max_pipe_width_AVX_fold_3",
+      "sdepositASum_max_pipe_width_AVX_fold_4",
+      "sdepositASum_max_unroll_width_SISD_fold_4",
+      "sdepositASum_max_pipe_width_SISD_fold_4",
+      "sdepositASum_expand_SSE_fold_4",
+      "sdepositASum_max_unroll_width_SSE_fold_3",
+      "sdepositASum_max_unroll_width_AVX_fold_2",
+      "sdepositASum_max_unroll_width_SSE_fold_2",
       "sdepositASum_expand_SSE_fold_2",
-      "sdepositASum_max_unroll_width_AVX_fold_3",
       "sdepositASum_expand_SISD_fold_2",
-      "sdepositASum_max_pipe_width_AVX_fold_2"
+      "sdepositASum_max_pipe_width_AVX_fold_0",
+      "sdepositASum_max_unroll_width_SSE_fold_0",
+      "sdepositASum_max_unroll_width_AVX_fold_0",
+      "sdepositASum_max_unroll_width_SISD_fold_0",
+      "sdepositASum_max_unroll_width_SISD_fold_3",
+      "sdepositASum_max_pipe_width_SISD_fold_0",
+      "smsasum_block_size_N_block_MAX",
+      "sdepositASum_max_pipe_width_SSE_fold_2",
+      "sdepositASum_max_unroll_width_SISD_fold_2",
+      "sdepositASum_max_pipe_width_SSE_fold_4",
+      "sdepositASum_expand_SSE_fold_3",
+      "sdepositASum_max_pipe_width_SISD_fold_2",
+      "sdepositASum_max_unroll_width_AVX_fold_4",
+      "sdepositASum_max_unroll_width_AVX_fold_3",
+      "sdepositASum_expand_AVX_fold_3",
+      "sdepositASum_expand_AVX_fold_2"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/smsdot.ccog": [
-      "sdepositDot_expand_AVX_fold_3",
-      "sdepositDot_max_unroll_width_SSE_fold_2",
-      "sdepositDot_expand_SSE_fold_3",
-      "sdepositDot_expand_AVX_fold_2",
-      "sdepositDot_expand_SISD_fold_4",
-      "sdepositDot_expand_SISD_fold_3",
-      "sdepositDot_max_pipe_width_SISD_fold_3",
       "sdepositDot_max_unroll_width_SISD_fold_3",
-      "sdepositDot_max_unroll_width_SISD_fold_2",
-      "sdepositDot_max_pipe_width_SISD_fold_4",
-      "sdepositDot_max_pipe_width_SISD_fold_0",
-      "sdepositDot_max_pipe_width_AVX_fold_0",
-      "sdepositDot_max_pipe_width_SSE_fold_2",
-      "sdepositDot_expand_SSE_fold_2",
-      "sdepositDot_max_pipe_width_AVX_fold_3",
-      "sdepositDot_expand_SSE_fold_4",
-      "sdepositDot_max_pipe_width_AVX_fold_2",
+      "sdepositDot_max_unroll_width_AVX_fold_2",
+      "sdepositDot_max_pipe_width_SISD_fold_2",
       "sdepositDot_max_unroll_width_SSE_fold_3",
-      "smsdot_block_size_N_block_MAX",
-      "sdepositDot_max_unroll_width_AVX_fold_4",
+      "sdepositDot_max_unroll_width_SISD_fold_0",
+      "sdepositDot_expand_SISD_fold_2",
+      "sdepositDot_max_pipe_width_SISD_fold_3",
+      "sdepositDot_max_pipe_width_AVX_fold_4",
+      "sdepositDot_max_pipe_width_SSE_fold_3",
+      "sdepositDot_max_pipe_width_SSE_fold_4",
+      "sdepositDot_max_pipe_width_AVX_fold_3",
+      "sdepositDot_max_unroll_width_SSE_fold_2",
+      "sdepositDot_max_pipe_width_AVX_fold_2",
+      "sdepositDot_max_pipe_width_SISD_fold_0",
+      "sdepositDot_expand_SISD_fold_4",
       "sdepositDot_max_unroll_width_AVX_fold_3",
       "sdepositDot_max_unroll_width_SSE_fold_0",
-      "sdepositDot_max_pipe_width_AVX_fold_4",
       "sdepositDot_expand_AVX_fold_4",
-      "sdepositDot_max_unroll_width_SISD_fold_4",
-      "sdepositDot_max_unroll_width_SSE_fold_4",
-      "sdepositDot_max_unroll_width_SISD_fold_0",
+      "sdepositDot_max_pipe_width_SSE_fold_2",
+      "sdepositDot_max_pipe_width_AVX_fold_0",
       "sdepositDot_max_unroll_width_AVX_fold_0",
-      "sdepositDot_expand_SISD_fold_2",
-      "sdepositDot_max_pipe_width_SSE_fold_3",
-      "sdepositDot_max_unroll_width_AVX_fold_2",
-      "sdepositDot_max_pipe_width_SSE_fold_4",
-      "sdepositDot_max_pipe_width_SISD_fold_2",
-      "sdepositDot_max_pipe_width_SSE_fold_0"
+      "sdepositDot_expand_SISD_fold_3",
+      "sdepositDot_expand_AVX_fold_3",
+      "sdepositDot_max_unroll_width_SSE_fold_4",
+      "sdepositDot_expand_SSE_fold_3",
+      "sdepositDot_max_pipe_width_SISD_fold_4",
+      "sdepositDot_expand_SSE_fold_2",
+      "sdepositDot_expand_AVX_fold_2",
+      "sdepositDot_expand_SSE_fold_4",
+      "sdepositDot_max_pipe_width_SSE_fold_0",
+      "sdepositDot_max_unroll_width_SISD_fold_4",
+      "smsdot_block_size_N_block_MAX",
+      "sdepositDot_max_unroll_width_AVX_fold_4",
+      "sdepositDot_max_unroll_width_SISD_fold_2"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/smsssq.ccog": [
-      "sdepositSSq_max_unroll_width_SSE_fold_3",
+      "sdepositSSq_max_pipe_width_SSE_fold_2",
+      "sdepositSSq_max_pipe_width_AVX_fold_0",
       "sdepositSSq_expand_SISD_fold_2",
+      "sdepositSSq_max_unroll_width_SISD_fold_4",
+      "sdepositSSq_expand_AVX_fold_3",
+      "sdepositSSq_expand_AVX_fold_4",
       "sdepositSSq_expand_SISD_fold_3",
       "sdepositSSq_max_pipe_width_SSE_fold_0",
+      "sdepositSSq_max_unroll_width_SISD_fold_2",
+      "sdepositSSq_max_unroll_width_SSE_fold_4",
+      "sdepositSSq_expand_SISD_fold_4",
+      "sdepositSSq_expand_AVX_fold_2",
+      "sdepositSSq_max_pipe_width_AVX_fold_2",
+      "sdepositSSq_max_pipe_width_SISD_fold_2",
+      "sdepositSSq_max_pipe_width_SISD_fold_0",
+      "sdepositSSq_max_unroll_width_AVX_fold_3",
       "sdepositSSq_max_pipe_width_AVX_fold_4",
-      "sdepositSSq_max_pipe_width_SSE_fold_3",
-      "sdepositSSq_max_unroll_width_SSE_fold_2",
+      "sdepositSSq_max_pipe_width_AVX_fold_3",
+      "sdepositSSq_max_unroll_width_AVX_fold_0",
+      "sdepositSSq_expand_SSE_fold_4",
       "sdepositSSq_max_unroll_width_SSE_fold_0",
       "sdepositSSq_max_pipe_width_SSE_fold_4",
-      "sdepositSSq_expand_AVX_fold_4",
-      "sdepositSSq_max_pipe_width_SISD_fold_4",
-      "sdepositSSq_max_pipe_width_AVX_fold_2",
-      "sdepositSSq_max_unroll_width_AVX_fold_2",
-      "sdepositSSq_max_pipe_width_AVX_fold_3",
-      "sdepositSSq_max_pipe_width_SSE_fold_2",
-      "sdepositSSq_max_unroll_width_AVX_fold_3",
-      "sdepositSSq_expand_SISD_fold_4",
-      "sdepositSSq_expand_SSE_fold_4",
-      "sdepositSSq_max_pipe_width_SISD_fold_2",
-      "sdepositSSq_expand_AVX_fold_2",
-      "sdepositSSq_max_pipe_width_SISD_fold_3",
-      "sdepositSSq_max_unroll_width_SISD_fold_2",
-      "sdepositSSq_expand_SSE_fold_2",
-      "sdepositSSq_max_pipe_width_AVX_fold_0",
-      "sdepositSSq_max_unroll_width_AVX_fold_0",
-      "smsssq_block_size_N_block_MAX",
+      "sdepositSSq_max_unroll_width_SSE_fold_3",
       "sdepositSSq_max_unroll_width_SISD_fold_3",
+      "sdepositSSq_expand_SSE_fold_2",
+      "sdepositSSq_max_pipe_width_SSE_fold_3",
       "sdepositSSq_max_unroll_width_SISD_fold_0",
-      "sdepositSSq_max_unroll_width_SSE_fold_4",
-      "sdepositSSq_expand_AVX_fold_3",
+      "sdepositSSq_max_unroll_width_SSE_fold_2",
+      "sdepositSSq_max_pipe_width_SISD_fold_4",
+      "sdepositSSq_max_pipe_width_SISD_fold_3",
       "sdepositSSq_max_unroll_width_AVX_fold_4",
-      "sdepositSSq_max_pipe_width_SISD_fold_0",
+      "smsssq_block_size_N_block_MAX",
       "sdepositSSq_expand_SSE_fold_3",
-      "sdepositSSq_max_unroll_width_SISD_fold_4"
+      "sdepositSSq_max_unroll_width_AVX_fold_2"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/smssum.ccog": [
+      "sdepositSum_max_pipe_width_SISD_fold_2",
+      "sdepositSum_max_pipe_width_SISD_fold_0",
+      "sdepositSum_max_pipe_width_SISD_fold_3",
       "sdepositSum_max_pipe_width_SSE_fold_0",
+      "sdepositSum_max_pipe_width_SSE_fold_4",
+      "sdepositSum_max_unroll_width_SISD_fold_0",
+      "sdepositSum_max_unroll_width_SSE_fold_0",
+      "sdepositSum_max_pipe_width_AVX_fold_4",
+      "sdepositSum_max_pipe_width_SISD_fold_4",
+      "sdepositSum_expand_SSE_fold_2",
+      "sdepositSum_max_pipe_width_SSE_fold_3",
+      "sdepositSum_max_unroll_width_SISD_fold_3",
+      "sdepositSum_expand_SISD_fold_3",
+      "sdepositSum_max_unroll_width_AVX_fold_0",
+      "sdepositSum_max_unroll_width_AVX_fold_4",
+      "sdepositSum_expand_AVX_fold_2",
+      "sdepositSum_max_unroll_width_SISD_fold_4",
+      "sdepositSum_max_pipe_width_AVX_fold_2",
+      "sdepositSum_max_unroll_width_AVX_fold_2",
+      "sdepositSum_expand_AVX_fold_3",
+      "sdepositSum_max_unroll_width_SSE_fold_3",
       "sdepositSum_max_unroll_width_SISD_fold_2",
       "sdepositSum_max_unroll_width_SSE_fold_4",
-      "sdepositSum_expand_SISD_fold_4",
-      "sdepositSum_max_pipe_width_AVX_fold_4",
-      "sdepositSum_max_pipe_width_SISD_fold_0",
-      "sdepositSum_max_unroll_width_AVX_fold_3",
-      "sdepositSum_max_pipe_width_SISD_fold_3",
-      "sdepositSum_max_unroll_width_SSE_fold_0",
-      "sdepositSum_max_pipe_width_AVX_fold_3",
       "sdepositSum_expand_SSE_fold_3",
-      "sdepositSum_expand_AVX_fold_3",
-      "sdepositSum_max_pipe_width_SISD_fold_2",
-      "sdepositSum_max_unroll_width_SSE_fold_3",
-      "sdepositSum_expand_SSE_fold_2",
-      "sdepositSum_max_pipe_width_SSE_fold_2",
       "smssum_block_size_N_block_MAX",
-      "sdepositSum_max_pipe_width_SISD_fold_4",
-      "sdepositSum_max_pipe_width_SSE_fold_4",
-      "sdepositSum_expand_SISD_fold_3",
-      "sdepositSum_max_unroll_width_SISD_fold_0",
-      "sdepositSum_max_unroll_width_SISD_fold_4",
-      "sdepositSum_max_unroll_width_SISD_fold_3",
-      "sdepositSum_max_unroll_width_AVX_fold_0",
-      "sdepositSum_max_unroll_width_AVX_fold_2",
+      "sdepositSum_expand_SSE_fold_4",
+      "sdepositSum_max_pipe_width_SSE_fold_2",
       "sdepositSum_expand_AVX_fold_4",
-      "sdepositSum_max_unroll_width_SSE_fold_2",
-      "sdepositSum_max_pipe_width_SSE_fold_3",
-      "sdepositSum_max_unroll_width_AVX_fold_4",
       "sdepositSum_expand_SISD_fold_2",
       "sdepositSum_max_pipe_width_AVX_fold_0",
-      "sdepositSum_max_pipe_width_AVX_fold_2",
-      "sdepositSum_expand_AVX_fold_2",
-      "sdepositSum_expand_SSE_fold_4"
+      "sdepositSum_max_pipe_width_AVX_fold_3",
+      "sdepositSum_max_unroll_width_SSE_fold_2",
+      "sdepositSum_expand_SISD_fold_4",
+      "sdepositSum_max_unroll_width_AVX_fold_3"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/zamax_sub.ccog": [
-      "zamax_max_unroll_width_SISD",
       "zamax_max_unroll_width_AVX",
+      "zamax_max_unroll_width_SISD",
       "zamax_max_unroll_width_SSE"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/zamaxm_sub.ccog": [
+      "zamaxm_max_unroll_width_AVX",
       "zamaxm_max_unroll_width_SISD",
-      "zamaxm_max_unroll_width_SSE",
-      "zamaxm_max_unroll_width_AVX"
+      "zamaxm_max_unroll_width_SSE"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/zizgemm.ccog": [
-      "zizgemm_block_size_Y_BLOCK",
-      "zizgemm_block_size_X_BLOCK",
       "zizgemm_block_size_YT_BLOCK",
-      "zizgemm_block_size_XT_BLOCK"
+      "zizgemm_block_size_XY_BLOCK",
+      "zizgemm_block_size_XYT_BLOCK",
+      "zizgemm_block_size_Y_BLOCK"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/zizgemv.ccog": [
+      "zizgemv_block_size_XY_BLOCK",
+      "zizgemv_block_size_T_BLOCK",
       "zizgemv_block_size_Y_BLOCK",
-      "zizgemv_block_size_XT_BLOCK",
-      "zizgemv_block_size_YT_BLOCK",
-      "zizgemv_block_size_X_BLOCK",
-      "zizgemv_block_size_T_BLOCK"
+      "zizgemv_block_size_XYT_BLOCK",
+      "zizgemv_block_size_YT_BLOCK"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/zmzdotc.ccog": [
-      "zdepositDotC_max_pipe_width_SSE_fold_4",
-      "zdepositDotC_max_pipe_width_SISD_fold_4",
-      "zdepositDotC_max_unroll_width_SISD_fold_2",
-      "zdepositDotC_max_pipe_width_SISD_fold_3",
-      "zdepositDotC_max_pipe_width_AVX_fold_4",
-      "zdepositDotC_max_pipe_width_AVX_fold_2",
-      "zdepositDotC_expand_SISD_fold_3",
       "zdepositDotC_expand_SSE_fold_3",
-      "zdepositDotC_expand_SISD_fold_4",
-      "zdepositDotC_expand_SSE_fold_4",
-      "zdepositDotC_max_unroll_width_AVX_fold_2",
-      "zmzdotc_block_size_N_block_MAX",
-      "zdepositDotC_max_unroll_width_AVX_fold_0",
-      "zdepositDotC_max_pipe_width_SISD_fold_2",
-      "zdepositDotC_max_unroll_width_SSE_fold_3",
-      "zdepositDotC_max_unroll_width_AVX_fold_3",
-      "zdepositDotC_max_unroll_width_SISD_fold_0",
-      "zdepositDotC_max_unroll_width_SISD_fold_4",
-      "zdepositDotC_expand_AVX_fold_3",
-      "zdepositDotC_max_pipe_width_SISD_fold_0",
-      "zdepositDotC_max_pipe_width_AVX_fold_3",
-      "zdepositDotC_max_pipe_width_AVX_fold_0",
-      "zdepositDotC_expand_AVX_fold_4",
       "zdepositDotC_expand_SSE_fold_2",
-      "zdepositDotC_max_unroll_width_AVX_fold_4",
-      "zdepositDotC_expand_SISD_fold_2",
-      "zdepositDotC_max_pipe_width_SSE_fold_0",
-      "zdepositDotC_max_pipe_width_SSE_fold_2",
-      "zdepositDotC_expand_AVX_fold_2",
-      "zdepositDotC_max_pipe_width_SSE_fold_3",
-      "zdepositDotC_max_unroll_width_SISD_fold_3",
+      "zdepositDotC_max_pipe_width_SISD_fold_0",
+      "zdepositDotC_max_unroll_width_SISD_fold_0",
+      "zdepositDotC_expand_AVX_fold_4",
       "zdepositDotC_max_unroll_width_SSE_fold_2",
+      "zdepositDotC_max_unroll_width_AVX_fold_4",
+      "zdepositDotC_max_pipe_width_SSE_fold_2",
+      "zdepositDotC_max_unroll_width_SSE_fold_0",
+      "zdepositDotC_expand_AVX_fold_3",
+      "zdepositDotC_max_unroll_width_SISD_fold_3",
+      "zdepositDotC_max_unroll_width_SISD_fold_4",
+      "zdepositDotC_max_pipe_width_SISD_fold_4",
+      "zdepositDotC_max_unroll_width_AVX_fold_0",
+      "zdepositDotC_expand_SISD_fold_4",
+      "zdepositDotC_max_pipe_width_SISD_fold_3",
+      "zdepositDotC_expand_SISD_fold_2",
+      "zdepositDotC_max_pipe_width_SSE_fold_4",
+      "zdepositDotC_max_pipe_width_AVX_fold_0",
+      "zmzdotc_block_size_N_block_MAX",
+      "zdepositDotC_max_unroll_width_SSE_fold_3",
       "zdepositDotC_max_unroll_width_SSE_fold_4",
-      "zdepositDotC_max_unroll_width_SSE_fold_0"
+      "zdepositDotC_max_pipe_width_AVX_fold_2",
+      "zdepositDotC_max_unroll_width_AVX_fold_2",
+      "zdepositDotC_expand_SISD_fold_3",
+      "zdepositDotC_expand_AVX_fold_2",
+      "zdepositDotC_max_pipe_width_SSE_fold_0",
+      "zdepositDotC_expand_SSE_fold_4",
+      "zdepositDotC_max_unroll_width_AVX_fold_3",
+      "zdepositDotC_max_pipe_width_AVX_fold_3",
+      "zdepositDotC_max_pipe_width_AVX_fold_4",
+      "zdepositDotC_max_unroll_width_SISD_fold_2",
+      "zdepositDotC_max_pipe_width_SSE_fold_3",
+      "zdepositDotC_max_pipe_width_SISD_fold_2"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/zmzdotu.ccog": [
-      "zdepositDotU_max_pipe_width_SSE_fold_2",
-      "zdepositDotU_max_pipe_width_AVX_fold_4",
-      "zdepositDotU_expand_AVX_fold_3",
-      "zdepositDotU_max_pipe_width_SSE_fold_0",
-      "zdepositDotU_expand_SISD_fold_4",
+      "zdepositDotU_expand_AVX_fold_2",
+      "zdepositDotU_max_unroll_width_SISD_fold_0",
+      "zdepositDotU_max_pipe_width_AVX_fold_0",
       "zdepositDotU_expand_SISD_fold_2",
-      "zdepositDotU_max_unroll_width_AVX_fold_0",
-      "zdepositDotU_max_unroll_width_SSE_fold_2",
-      "zdepositDotU_max_unroll_width_SSE_fold_3",
-      "zdepositDotU_expand_SISD_fold_3",
-      "zdepositDotU_max_pipe_width_SISD_fold_4",
-      "zdepositDotU_expand_AVX_fold_4",
-      "zdepositDotU_expand_SSE_fold_4",
-      "zdepositDotU_expand_SSE_fold_3",
-      "zdepositDotU_max_unroll_width_SSE_fold_4",
-      "zdepositDotU_max_pipe_width_SSE_fold_3",
-      "zdepositDotU_max_pipe_width_SISD_fold_2",
+      "zdepositDotU_max_pipe_width_SSE_fold_4",
       "zdepositDotU_max_unroll_width_AVX_fold_3",
-      "zdepositDotU_expand_SSE_fold_2",
-      "zdepositDotU_max_unroll_width_AVX_fold_2",
-      "zdepositDotU_max_pipe_width_AVX_fold_3",
-      "zdepositDotU_max_unroll_width_SISD_fold_4",
-      "zdepositDotU_max_unroll_width_SSE_fold_0",
-      "zdepositDotU_max_pipe_width_SISD_fold_3",
+      "zdepositDotU_max_unroll_width_SSE_fold_3",
+      "zdepositDotU_expand_SSE_fold_3",
+      "zdepositDotU_expand_SISD_fold_4",
+      "zdepositDotU_max_pipe_width_SSE_fold_2",
+      "zdepositDotU_max_unroll_width_SSE_fold_4",
       "zmzdotu_block_size_N_block_MAX",
       "zdepositDotU_max_unroll_width_SISD_fold_2",
-      "zdepositDotU_max_pipe_width_SISD_fold_0",
-      "zdepositDotU_max_unroll_width_SISD_fold_0",
+      "zdepositDotU_max_pipe_width_AVX_fold_3",
       "zdepositDotU_max_pipe_width_AVX_fold_2",
+      "zdepositDotU_max_unroll_width_AVX_fold_2",
+      "zdepositDotU_expand_SSE_fold_2",
+      "zdepositDotU_max_pipe_width_SISD_fold_3",
+      "zdepositDotU_max_pipe_width_SISD_fold_2",
+      "zdepositDotU_max_pipe_width_SISD_fold_4",
+      "zdepositDotU_max_unroll_width_SISD_fold_4",
+      "zdepositDotU_max_pipe_width_SSE_fold_0",
+      "zdepositDotU_expand_AVX_fold_4",
+      "zdepositDotU_max_pipe_width_AVX_fold_4",
+      "zdepositDotU_max_unroll_width_SSE_fold_0",
+      "zdepositDotU_max_unroll_width_SSE_fold_2",
+      "zdepositDotU_expand_SISD_fold_3",
+      "zdepositDotU_expand_SSE_fold_4",
+      "zdepositDotU_max_unroll_width_SISD_fold_3",
+      "zdepositDotU_max_unroll_width_AVX_fold_0",
       "zdepositDotU_max_unroll_width_AVX_fold_4",
-      "zdepositDotU_max_pipe_width_SSE_fold_4",
-      "zdepositDotU_max_pipe_width_AVX_fold_0",
-      "zdepositDotU_expand_AVX_fold_2",
-      "zdepositDotU_max_unroll_width_SISD_fold_3"
+      "zdepositDotU_max_pipe_width_SSE_fold_3",
+      "zdepositDotU_expand_AVX_fold_3",
+      "zdepositDotU_max_pipe_width_SISD_fold_0"
     ],
     "/Users/Peter/Projects/ReproBLAS2/src/idxdBLAS/zmzsum.ccog": [
-      "zdepositSum_expand_SSE_fold_2",
-      "zdepositSum_max_pipe_width_SSE_fold_4",
-      "zdepositSum_max_unroll_width_SISD_fold_0",
-      "zdepositSum_max_unroll_width_SISD_fold_4",
-      "zdepositSum_max_pipe_width_SISD_fold_2",
+      "zdepositSum_max_unroll_width_AVX_fold_0",
       "zdepositSum_max_pipe_width_AVX_fold_2",
+      "zmzsum_block_size_N_block_MAX",
+      "zdepositSum_max_unroll_width_SISD_fold_2",
+      "zdepositSum_max_pipe_width_SSE_fold_4",
+      "zdepositSum_expand_SSE_fold_4",
+      "zdepositSum_expand_SISD_fold_3",
+      "zdepositSum_max_unroll_width_SISD_fold_3",
+      "zdepositSum_max_pipe_width_SSE_fold_2",
+      "zdepositSum_expand_AVX_fold_4",
+      "zdepositSum_max_pipe_width_SISD_fold_2",
+      "zdepositSum_expand_SISD_fold_4",
+      "zdepositSum_expand_SSE_fold_2",
+      "zdepositSum_max_pipe_width_SISD_fold_3",
+      "zdepositSum_expand_SISD_fold_2",
+      "zdepositSum_max_unroll_width_SISD_fold_4",
+      "zdepositSum_max_pipe_width_AVX_fold_3",
+      "zdepositSum_max_pipe_width_SSE_fold_3",
+      "zdepositSum_max_unroll_width_SSE_fold_4",
+      "zdepositSum_max_unroll_width_SISD_fold_0",
       "zdepositSum_expand_AVX_fold_3",
-      "zdepositSum_max_unroll_width_SSE_fold_0",
+      "zdepositSum_max_unroll_width_SSE_fold_2",
       "zdepositSum_max_pipe_width_AVX_fold_0",
       "zdepositSum_max_pipe_width_SISD_fold_4",
-      "zdepositSum_max_pipe_width_SSE_fold_2",
-      "zdepositSum_max_pipe_width_SSE_fold_3",
-      "zdepositSum_max_unroll_width_AVX_fold_4",
-      "zdepositSum_expand_SISD_fold_4",
       "zdepositSum_max_unroll_width_SSE_fold_3",
-      "zdepositSum_max_unroll_width_SSE_fold_2",
-      "zdepositSum_expand_SSE_fold_4",
-      "zdepositSum_max_unroll_width_SSE_fold_4",
-      "zdepositSum_max_pipe_width_SISD_fold_3",
-      "zdepositSum_max_pipe_width_AVX_fold_3",
+      "zdepositSum_max_unroll_width_AVX_fold_2",
+      "zdepositSum_max_pipe_width_SSE_fold_0",
+      "zdepositSum_max_pipe_width_AVX_fold_4",
       "zdepositSum_max_unroll_width_AVX_fold_3",
-      "zdepositSum_expand_SISD_fold_3",
+      "zdepositSum_max_pipe_width_SISD_fold_0",
       "zdepositSum_expand_SSE_fold_3",
       "zdepositSum_expand_AVX_fold_2",
-      "zdepositSum_max_pipe_width_SSE_fold_0",
-      "zdepositSum_max_pipe_width_SISD_fold_0",
-      "zdepositSum_max_pipe_width_AVX_fold_4",
-      "zdepositSum_max_unroll_width_SISD_fold_2",
-      "zdepositSum_max_unroll_width_AVX_fold_2",
-      "zdepositSum_max_unroll_width_SISD_fold_3",
-      "zdepositSum_max_unroll_width_AVX_fold_0",
-      "zdepositSum_expand_AVX_fold_4",
-      "zmzsum_block_size_N_block_MAX",
-      "zdepositSum_expand_SISD_fold_2"
+      "zdepositSum_max_unroll_width_AVX_fold_4",
+      "zdepositSum_max_unroll_width_SSE_fold_0"
     ]
   },
   "forward_metrics": {
     "bench_camax": [
-      "camax_max_unroll_width_AVX",
       "camax_max_unroll_width_SSE",
-      "camax_max_unroll_width_SISD"
+      "camax_max_unroll_width_SISD",
+      "camax_max_unroll_width_AVX"
     ],
     "bench_camaxm": [
-      "camaxm_max_unroll_width_SISD",
+      "camaxm_max_unroll_width_AVX",
       "camaxm_max_unroll_width_SSE",
-      "camaxm_max_unroll_width_AVX"
+      "camaxm_max_unroll_width_SISD"
     ],
     "bench_damax": [
       "damax_max_unroll_width_SISD",
@@ -4794,853 +4794,857 @@
       "damax_max_unroll_width_AVX"
     ],
     "bench_damaxm": [
-      "damaxm_max_unroll_width_AVX",
+      "damaxm_max_unroll_width_SSE",
       "damaxm_max_unroll_width_SISD",
-      "damaxm_max_unroll_width_SSE"
+      "damaxm_max_unroll_width_AVX"
     ],
     "bench_rcdotc_fold_0": [
-      "cdepositDotC_max_unroll_width_SISD_fold_0",
-      "cdepositDotC_max_unroll_width_SSE_fold_0",
+      "cdepositDotC_max_pipe_width_SSE_fold_0",
       "cdepositDotC_max_unroll_width_AVX_fold_0",
-      "cdepositDotC_max_pipe_width_AVX_fold_0",
       "cdepositDotC_max_pipe_width_SISD_fold_0",
-      "cdepositDotC_max_pipe_width_SSE_fold_0"
+      "cdepositDotC_max_pipe_width_AVX_fold_0",
+      "cdepositDotC_max_unroll_width_SSE_fold_0",
+      "cdepositDotC_max_unroll_width_SISD_fold_0"
     ],
     "bench_rcdotc_fold_2": [
-      "cdepositDotC_expand_SISD_fold_2",
-      "cdepositDotC_expand_SSE_fold_2",
-      "cdepositDotC_expand_AVX_fold_2",
-      "cdepositDotC_max_unroll_width_SSE_fold_2",
-      "cdepositDotC_max_unroll_width_SISD_fold_2",
       "cdepositDotC_max_pipe_width_AVX_fold_2",
       "cdepositDotC_max_pipe_width_SSE_fold_2",
+      "cdepositDotC_max_unroll_width_AVX_fold_2",
       "cdepositDotC_max_pipe_width_SISD_fold_2",
-      "cdepositDotC_max_unroll_width_AVX_fold_2"
+      "cdepositDotC_max_unroll_width_SSE_fold_2",
+      "cdepositDotC_expand_SSE_fold_2",
+      "cdepositDotC_expand_AVX_fold_2",
+      "cdepositDotC_max_unroll_width_SISD_fold_2",
+      "cdepositDotC_expand_SISD_fold_2"
     ],
     "bench_rcdotc_fold_3": [
-      "cdepositDotC_max_unroll_width_SISD_fold_3",
-      "cdepositDotC_expand_AVX_fold_3",
-      "cdepositDotC_expand_SISD_fold_3",
-      "cmcdotc_block_size_N_block_MAX",
-      "cdepositDotC_max_pipe_width_AVX_fold_3",
       "cdepositDotC_expand_SSE_fold_3",
-      "cdepositDotC_max_unroll_width_SSE_fold_3",
+      "cmcdotc_block_size_N_block_MAX",
       "cdepositDotC_max_unroll_width_AVX_fold_3",
+      "cdepositDotC_expand_AVX_fold_3",
+      "cdepositDotC_max_unroll_width_SSE_fold_3",
+      "cdepositDotC_expand_SISD_fold_3",
+      "cdepositDotC_max_pipe_width_AVX_fold_3",
       "cdepositDotC_max_pipe_width_SISD_fold_3",
+      "cdepositDotC_max_unroll_width_SISD_fold_3",
       "cdepositDotC_max_pipe_width_SSE_fold_3"
     ],
     "bench_rcdotc_fold_4": [
-      "cdepositDotC_max_pipe_width_SSE_fold_4",
-      "cdepositDotC_expand_AVX_fold_4",
-      "cdepositDotC_expand_SSE_fold_4",
+      "cdepositDotC_max_pipe_width_AVX_fold_4",
       "cdepositDotC_expand_SISD_fold_4",
-      "cdepositDotC_max_unroll_width_AVX_fold_4",
       "cdepositDotC_max_unroll_width_SSE_fold_4",
-      "cdepositDotC_max_pipe_width_SISD_fold_4",
+      "cdepositDotC_max_unroll_width_AVX_fold_4",
       "cdepositDotC_max_unroll_width_SISD_fold_4",
-      "cdepositDotC_max_pipe_width_AVX_fold_4"
+      "cdepositDotC_expand_AVX_fold_4",
+      "cdepositDotC_max_pipe_width_SSE_fold_4",
+      "cdepositDotC_max_pipe_width_SISD_fold_4",
+      "cdepositDotC_expand_SSE_fold_4"
     ],
     "bench_rcdotu_fold_0": [
-      "cdepositDotU_max_pipe_width_SISD_fold_0",
       "cdepositDotU_max_pipe_width_SSE_fold_0",
-      "cdepositDotU_max_pipe_width_AVX_fold_0",
       "cdepositDotU_max_unroll_width_SSE_fold_0",
       "cdepositDotU_max_unroll_width_SISD_fold_0",
-      "cdepositDotU_max_unroll_width_AVX_fold_0"
+      "cdepositDotU_max_unroll_width_AVX_fold_0",
+      "cdepositDotU_max_pipe_width_AVX_fold_0",
+      "cdepositDotU_max_pipe_width_SISD_fold_0"
     ],
     "bench_rcdotu_fold_2": [
-      "cdepositDotU_max_pipe_width_SISD_fold_2",
-      "cdepositDotU_expand_SSE_fold_2",
-      "cdepositDotU_max_unroll_width_AVX_fold_2",
-      "cdepositDotU_max_pipe_width_AVX_fold_2",
       "cdepositDotU_max_pipe_width_SSE_fold_2",
+      "cdepositDotU_expand_SSE_fold_2",
+      "cdepositDotU_max_pipe_width_AVX_fold_2",
+      "cdepositDotU_max_pipe_width_SISD_fold_2",
+      "cdepositDotU_max_unroll_width_AVX_fold_2",
+      "cdepositDotU_max_unroll_width_SSE_fold_2",
       "cdepositDotU_expand_SISD_fold_2",
       "cdepositDotU_max_unroll_width_SISD_fold_2",
-      "cdepositDotU_max_unroll_width_SSE_fold_2",
       "cdepositDotU_expand_AVX_fold_2"
     ],
     "bench_rcdotu_fold_3": [
-      "cdepositDotU_expand_SISD_fold_3",
+      "cdepositDotU_max_unroll_width_SSE_fold_3",
       "cdepositDotU_max_pipe_width_SISD_fold_3",
-      "cmcdotu_block_size_N_block_MAX",
-      "cdepositDotU_max_unroll_width_AVX_fold_3",
       "cdepositDotU_max_unroll_width_SISD_fold_3",
+      "cmcdotu_block_size_N_block_MAX",
       "cdepositDotU_max_pipe_width_SSE_fold_3",
       "cdepositDotU_expand_AVX_fold_3",
       "cdepositDotU_expand_SSE_fold_3",
-      "cdepositDotU_max_unroll_width_SSE_fold_3",
-      "cdepositDotU_max_pipe_width_AVX_fold_3"
+      "cdepositDotU_max_pipe_width_AVX_fold_3",
+      "cdepositDotU_expand_SISD_fold_3",
+      "cdepositDotU_max_unroll_width_AVX_fold_3"
     ],
     "bench_rcdotu_fold_4": [
-      "cdepositDotU_max_unroll_width_SISD_fold_4",
       "cdepositDotU_max_unroll_width_AVX_fold_4",
-      "cdepositDotU_max_pipe_width_SSE_fold_4",
-      "cdepositDotU_max_pipe_width_AVX_fold_4",
-      "cdepositDotU_expand_SSE_fold_4",
+      "cdepositDotU_expand_SISD_fold_4",
+      "cdepositDotU_max_unroll_width_SISD_fold_4",
       "cdepositDotU_expand_AVX_fold_4",
       "cdepositDotU_max_pipe_width_SISD_fold_4",
-      "cdepositDotU_expand_SISD_fold_4",
-      "cdepositDotU_max_unroll_width_SSE_fold_4"
+      "cdepositDotU_expand_SSE_fold_4",
+      "cdepositDotU_max_pipe_width_SSE_fold_4",
+      "cdepositDotU_max_unroll_width_SSE_fold_4",
+      "cdepositDotU_max_pipe_width_AVX_fold_4"
+    ],
+    "bench_rcgemm_TransA_fold_3": [
+      "cicgemm_block_size_XYT_BLOCK",
+      "cicgemm_block_size_YT_BLOCK"
+    ],
+    "bench_rcgemm_TransB_fold_3": [
+      "cicgemm_block_size_Y_BLOCK",
+      "cicgemm_block_size_XY_BLOCK"
     ],
     "bench_rcgemv_TransA_fold_3": [
-      "cicgemv_block_size_T_BLOCK",
       "cicgemv_block_size_YT_BLOCK",
-      "cicgemv_block_size_XT_BLOCK"
+      "cicgemv_block_size_T_BLOCK",
+      "cicgemv_block_size_XYT_BLOCK"
     ],
     "bench_rcgemv_fold_3": [
-      "cicgemv_block_size_Y_BLOCK",
-      "cicgemv_block_size_X_BLOCK"
+      "cicgemv_block_size_XY_BLOCK",
+      "cicgemv_block_size_Y_BLOCK"
     ],
     "bench_rcsum_fold_0": [
-      "cdepositSum_max_pipe_width_SISD_fold_0",
-      "cdepositSum_max_pipe_width_AVX_fold_0",
-      "cdepositSum_max_unroll_width_SSE_fold_0",
       "cdepositSum_max_unroll_width_SISD_fold_0",
-      "cdepositSum_max_pipe_width_SSE_fold_0",
-      "cdepositSum_max_unroll_width_AVX_fold_0"
+      "cdepositSum_max_unroll_width_SSE_fold_0",
+      "cdepositSum_max_pipe_width_AVX_fold_0",
+      "cdepositSum_max_unroll_width_AVX_fold_0",
+      "cdepositSum_max_pipe_width_SISD_fold_0",
+      "cdepositSum_max_pipe_width_SSE_fold_0"
     ],
     "bench_rcsum_fold_2": [
-      "cdepositSum_max_pipe_width_SSE_fold_2",
-      "cdepositSum_expand_AVX_fold_2",
-      "cdepositSum_max_unroll_width_SISD_fold_2",
-      "cdepositSum_expand_SISD_fold_2",
-      "cdepositSum_max_unroll_width_SSE_fold_2",
       "cdepositSum_max_pipe_width_SISD_fold_2",
-      "cdepositSum_expand_SSE_fold_2",
+      "cdepositSum_expand_AVX_fold_2",
+      "cdepositSum_max_pipe_width_SSE_fold_2",
+      "cdepositSum_max_unroll_width_AVX_fold_2",
+      "cdepositSum_max_unroll_width_SSE_fold_2",
       "cdepositSum_max_pipe_width_AVX_fold_2",
-      "cdepositSum_max_unroll_width_AVX_fold_2"
+      "cdepositSum_expand_SSE_fold_2",
+      "cdepositSum_expand_SISD_fold_2",
+      "cdepositSum_max_unroll_width_SISD_fold_2"
     ],
     "bench_rcsum_fold_3": [
       "cdepositSum_max_pipe_width_SSE_fold_3",
-      "cdepositSum_expand_AVX_fold_3",
-      "cdepositSum_expand_SSE_fold_3",
-      "cdepositSum_expand_SISD_fold_3",
+      "cdepositSum_max_pipe_width_AVX_fold_3",
       "cdepositSum_max_unroll_width_SSE_fold_3",
       "cdepositSum_max_unroll_width_SISD_fold_3",
-      "cdepositSum_max_pipe_width_AVX_fold_3",
+      "cdepositSum_expand_SSE_fold_3",
+      "cdepositSum_expand_SISD_fold_3",
+      "cdepositSum_max_unroll_width_AVX_fold_3",
+      "cdepositSum_expand_AVX_fold_3",
       "cdepositSum_max_pipe_width_SISD_fold_3",
-      "cmcsum_block_size_N_block_MAX",
-      "cdepositSum_max_unroll_width_AVX_fold_3"
+      "cmcsum_block_size_N_block_MAX"
     ],
     "bench_rcsum_fold_4": [
-      "cdepositSum_max_pipe_width_AVX_fold_4",
+      "cdepositSum_max_pipe_width_SSE_fold_4",
       "cdepositSum_max_unroll_width_SISD_fold_4",
-      "cdepositSum_max_pipe_width_SISD_fold_4",
+      "cdepositSum_expand_SSE_fold_4",
+      "cdepositSum_max_pipe_width_AVX_fold_4",
+      "cdepositSum_max_unroll_width_AVX_fold_4",
       "cdepositSum_expand_AVX_fold_4",
       "cdepositSum_expand_SISD_fold_4",
-      "cdepositSum_max_unroll_width_AVX_fold_4",
-      "cdepositSum_expand_SSE_fold_4",
-      "cdepositSum_max_pipe_width_SSE_fold_4",
+      "cdepositSum_max_pipe_width_SISD_fold_4",
       "cdepositSum_max_unroll_width_SSE_fold_4"
     ],
     "bench_rdasum_fold_0": [
-      "ddepositASum_max_unroll_width_SSE_fold_0",
-      "ddepositASum_max_pipe_width_SISD_fold_0",
-      "ddepositASum_max_unroll_width_SISD_fold_0",
-      "ddepositASum_max_pipe_width_AVX_fold_0",
       "ddepositASum_max_unroll_width_AVX_fold_0",
-      "ddepositASum_max_pipe_width_SSE_fold_0"
+      "ddepositASum_max_pipe_width_SSE_fold_0",
+      "ddepositASum_max_pipe_width_SISD_fold_0",
+      "ddepositASum_max_pipe_width_AVX_fold_0",
+      "ddepositASum_max_unroll_width_SISD_fold_0",
+      "ddepositASum_max_unroll_width_SSE_fold_0"
     ],
     "bench_rdasum_fold_2": [
-      "ddepositASum_max_pipe_width_SISD_fold_2",
-      "ddepositASum_expand_AVX_fold_2",
-      "ddepositASum_max_unroll_width_SSE_fold_2",
+      "ddepositASum_max_unroll_width_SISD_fold_2",
       "ddepositASum_max_pipe_width_AVX_fold_2",
       "ddepositASum_expand_SISD_fold_2",
-      "ddepositASum_max_unroll_width_AVX_fold_2",
+      "ddepositASum_expand_AVX_fold_2",
       "ddepositASum_expand_SSE_fold_2",
+      "ddepositASum_max_unroll_width_SSE_fold_2",
       "ddepositASum_max_pipe_width_SSE_fold_2",
-      "ddepositASum_max_unroll_width_SISD_fold_2"
+      "ddepositASum_max_unroll_width_AVX_fold_2",
+      "ddepositASum_max_pipe_width_SISD_fold_2"
     ],
     "bench_rdasum_fold_3": [
-      "ddepositASum_max_pipe_width_SSE_fold_3",
-      "ddepositASum_max_unroll_width_AVX_fold_3",
-      "ddepositASum_expand_AVX_fold_3",
-      "ddepositASum_expand_SSE_fold_3",
-      "ddepositASum_max_pipe_width_SISD_fold_3",
-      "ddepositASum_max_unroll_width_SSE_fold_3",
-      "dmdasum_block_size_N_block_MAX",
       "ddepositASum_expand_SISD_fold_3",
+      "ddepositASum_max_unroll_width_SSE_fold_3",
+      "ddepositASum_max_pipe_width_SSE_fold_3",
+      "ddepositASum_expand_SSE_fold_3",
       "ddepositASum_max_pipe_width_AVX_fold_3",
-      "ddepositASum_max_unroll_width_SISD_fold_3"
+      "ddepositASum_max_unroll_width_AVX_fold_3",
+      "ddepositASum_max_unroll_width_SISD_fold_3",
+      "ddepositASum_max_pipe_width_SISD_fold_3",
+      "dmdasum_block_size_N_block_MAX",
+      "ddepositASum_expand_AVX_fold_3"
     ],
     "bench_rdasum_fold_4": [
-      "ddepositASum_max_unroll_width_SSE_fold_4",
-      "ddepositASum_expand_AVX_fold_4",
       "ddepositASum_max_pipe_width_AVX_fold_4",
+      "ddepositASum_expand_AVX_fold_4",
       "ddepositASum_max_unroll_width_AVX_fold_4",
+      "ddepositASum_expand_SSE_fold_4",
       "ddepositASum_expand_SISD_fold_4",
+      "ddepositASum_max_unroll_width_SSE_fold_4",
       "ddepositASum_max_pipe_width_SISD_fold_4",
-      "ddepositASum_max_pipe_width_SSE_fold_4",
       "ddepositASum_max_unroll_width_SISD_fold_4",
-      "ddepositASum_expand_SSE_fold_4"
+      "ddepositASum_max_pipe_width_SSE_fold_4"
     ],
     "bench_rddot_fold_0": [
-      "ddepositDot_max_unroll_width_SISD_fold_0",
-      "ddepositDot_max_pipe_width_SSE_fold_0",
-      "ddepositDot_max_pipe_width_SISD_fold_0",
       "ddepositDot_max_unroll_width_AVX_fold_0",
+      "ddepositDot_max_unroll_width_SSE_fold_0",
+      "ddepositDot_max_pipe_width_SSE_fold_0",
       "ddepositDot_max_pipe_width_AVX_fold_0",
-      "ddepositDot_max_unroll_width_SSE_fold_0"
+      "ddepositDot_max_pipe_width_SISD_fold_0",
+      "ddepositDot_max_unroll_width_SISD_fold_0"
     ],
     "bench_rddot_fold_2": [
-      "ddepositDot_max_pipe_width_AVX_fold_2",
-      "ddepositDot_max_unroll_width_AVX_fold_2",
-      "ddepositDot_expand_SISD_fold_2",
-      "ddepositDot_max_unroll_width_SISD_fold_2",
-      "ddepositDot_max_pipe_width_SISD_fold_2",
-      "ddepositDot_expand_SSE_fold_2",
-      "ddepositDot_max_unroll_width_SSE_fold_2",
       "ddepositDot_max_pipe_width_SSE_fold_2",
-      "ddepositDot_expand_AVX_fold_2"
+      "ddepositDot_expand_AVX_fold_2",
+      "ddepositDot_expand_SSE_fold_2",
+      "ddepositDot_max_pipe_width_SISD_fold_2",
+      "ddepositDot_max_unroll_width_SSE_fold_2",
+      "ddepositDot_max_unroll_width_SISD_fold_2",
+      "ddepositDot_max_unroll_width_AVX_fold_2",
+      "ddepositDot_max_pipe_width_AVX_fold_2",
+      "ddepositDot_expand_SISD_fold_2"
     ],
     "bench_rddot_fold_3": [
-      "ddepositDot_max_pipe_width_AVX_fold_3",
-      "ddepositDot_expand_SSE_fold_3",
       "ddepositDot_max_unroll_width_SSE_fold_3",
-      "ddepositDot_max_pipe_width_SSE_fold_3",
-      "dmddot_block_size_N_block_MAX",
-      "ddepositDot_expand_AVX_fold_3",
-      "ddepositDot_max_unroll_width_SISD_fold_3",
-      "ddepositDot_max_pipe_width_SISD_fold_3",
+      "ddepositDot_max_pipe_width_AVX_fold_3",
       "ddepositDot_max_unroll_width_AVX_fold_3",
-      "ddepositDot_expand_SISD_fold_3"
+      "ddepositDot_expand_AVX_fold_3",
+      "ddepositDot_max_pipe_width_SSE_fold_3",
+      "ddepositDot_expand_SSE_fold_3",
+      "ddepositDot_expand_SISD_fold_3",
+      "ddepositDot_max_unroll_width_SISD_fold_3",
+      "dmddot_block_size_N_block_MAX",
+      "ddepositDot_max_pipe_width_SISD_fold_3"
     ],
     "bench_rddot_fold_4": [
-      "ddepositDot_expand_AVX_fold_4",
-      "ddepositDot_max_unroll_width_AVX_fold_4",
       "ddepositDot_expand_SSE_fold_4",
       "ddepositDot_max_pipe_width_SSE_fold_4",
       "ddepositDot_max_unroll_width_SISD_fold_4",
+      "ddepositDot_max_unroll_width_AVX_fold_4",
+      "ddepositDot_expand_AVX_fold_4",
+      "ddepositDot_max_unroll_width_SSE_fold_4",
       "ddepositDot_max_pipe_width_SISD_fold_4",
       "ddepositDot_expand_SISD_fold_4",
-      "ddepositDot_max_unroll_width_SSE_fold_4",
       "ddepositDot_max_pipe_width_AVX_fold_4"
     ],
     "bench_rdgemm_TransA_fold_3": [
-      "didgemm_block_size_YT_BLOCK",
-      "didgemm_block_size_XT_BLOCK"
+      "didgemm_block_size_XYT_BLOCK",
+      "didgemm_block_size_YT_BLOCK"
     ],
     "bench_rdgemm_TransB_fold_3": [
-      "didgemm_block_size_X_BLOCK",
-      "didgemm_block_size_Y_BLOCK"
+      "didgemm_block_size_Y_BLOCK",
+      "didgemm_block_size_XY_BLOCK"
     ],
     "bench_rdgemv_TransA_fold_3": [
       "didgemv_block_size_T_BLOCK"
     ],
     "bench_rdgemv_fold_3": [
-      "didgemv_block_size_X_BLOCK",
+      "didgemv_block_size_XY_BLOCK",
       "didgemv_block_size_Y_BLOCK"
     ],
     "bench_rdgemv_fold_TransA_3": [
-      "didgemv_block_size_XT_BLOCK",
-      "didgemv_block_size_YT_BLOCK"
+      "didgemv_block_size_YT_BLOCK",
+      "didgemv_block_size_XYT_BLOCK"
     ],
     "bench_rdnrm2_fold_0": [
-      "ddepositSSq_max_unroll_width_SSE_fold_0",
-      "ddepositSSq_max_pipe_width_AVX_fold_0",
       "ddepositSSq_max_pipe_width_SSE_fold_0",
       "ddepositSSq_max_unroll_width_SISD_fold_0",
+      "ddepositSSq_max_pipe_width_SISD_fold_0",
+      "ddepositSSq_max_unroll_width_SSE_fold_0",
       "ddepositSSq_max_unroll_width_AVX_fold_0",
-      "ddepositSSq_max_pipe_width_SISD_fold_0"
+      "ddepositSSq_max_pipe_width_AVX_fold_0"
     ],
     "bench_rdnrm2_fold_2": [
-      "ddepositSSq_expand_SSE_fold_2",
-      "ddepositSSq_max_unroll_width_SSE_fold_2",
-      "ddepositSSq_max_unroll_width_AVX_fold_2",
-      "ddepositSSq_max_pipe_width_AVX_fold_2",
       "ddepositSSq_expand_SISD_fold_2",
+      "ddepositSSq_max_pipe_width_AVX_fold_2",
       "ddepositSSq_max_pipe_width_SISD_fold_2",
+      "ddepositSSq_max_unroll_width_SSE_fold_2",
+      "ddepositSSq_max_unroll_width_SISD_fold_2",
+      "ddepositSSq_max_unroll_width_AVX_fold_2",
+      "ddepositSSq_expand_SSE_fold_2",
       "ddepositSSq_max_pipe_width_SSE_fold_2",
-      "ddepositSSq_expand_AVX_fold_2",
-      "ddepositSSq_max_unroll_width_SISD_fold_2"
+      "ddepositSSq_expand_AVX_fold_2"
     ],
     "bench_rdnrm2_fold_3": [
-      "ddepositSSq_max_pipe_width_SISD_fold_3",
-      "dmdssq_block_size_N_block_MAX",
-      "ddepositSSq_max_pipe_width_SSE_fold_3",
-      "ddepositSSq_max_unroll_width_AVX_fold_3",
-      "ddepositSSq_expand_SSE_fold_3",
-      "ddepositSSq_max_unroll_width_SSE_fold_3",
-      "ddepositSSq_max_pipe_width_AVX_fold_3",
       "ddepositSSq_expand_SISD_fold_3",
+      "ddepositSSq_expand_AVX_fold_3",
+      "ddepositSSq_expand_SSE_fold_3",
+      "ddepositSSq_max_pipe_width_SISD_fold_3",
+      "ddepositSSq_max_pipe_width_AVX_fold_3",
+      "dmdssq_block_size_N_block_MAX",
       "ddepositSSq_max_unroll_width_SISD_fold_3",
-      "ddepositSSq_expand_AVX_fold_3"
+      "ddepositSSq_max_pipe_width_SSE_fold_3",
+      "ddepositSSq_max_unroll_width_SSE_fold_3",
+      "ddepositSSq_max_unroll_width_AVX_fold_3"
     ],
     "bench_rdnrm2_fold_4": [
-      "ddepositSSq_max_unroll_width_AVX_fold_4",
-      "ddepositSSq_max_unroll_width_SISD_fold_4",
-      "ddepositSSq_expand_SISD_fold_4",
-      "ddepositSSq_expand_AVX_fold_4",
       "ddepositSSq_max_pipe_width_SISD_fold_4",
-      "ddepositSSq_max_pipe_width_AVX_fold_4",
-      "ddepositSSq_max_unroll_width_SSE_fold_4",
+      "ddepositSSq_max_unroll_width_SISD_fold_4",
       "ddepositSSq_expand_SSE_fold_4",
-      "ddepositSSq_max_pipe_width_SSE_fold_4"
+      "ddepositSSq_expand_SISD_fold_4",
+      "ddepositSSq_max_unroll_width_AVX_fold_4",
+      "ddepositSSq_max_pipe_width_AVX_fold_4",
+      "ddepositSSq_max_pipe_width_SSE_fold_4",
+      "ddepositSSq_max_unroll_width_SSE_fold_4",
+      "ddepositSSq_expand_AVX_fold_4"
     ],
     "bench_rdsum_fold_0": [
-      "ddepositSum_max_pipe_width_SISD_fold_0",
       "ddepositSum_max_pipe_width_SSE_fold_0",
-      "ddepositSum_max_unroll_width_AVX_fold_0",
-      "ddepositSum_max_pipe_width_AVX_fold_0",
+      "ddepositSum_max_unroll_width_SISD_fold_0",
+      "ddepositSum_max_pipe_width_SISD_fold_0",
       "ddepositSum_max_unroll_width_SSE_fold_0",
-      "ddepositSum_max_unroll_width_SISD_fold_0"
+      "ddepositSum_max_unroll_width_AVX_fold_0",
+      "ddepositSum_max_pipe_width_AVX_fold_0"
     ],
     "bench_rdsum_fold_2": [
-      "ddepositSum_max_unroll_width_SSE_fold_2",
-      "ddepositSum_max_unroll_width_SISD_fold_2",
-      "ddepositSum_max_unroll_width_AVX_fold_2",
       "ddepositSum_max_pipe_width_SISD_fold_2",
-      "ddepositSum_max_pipe_width_SSE_fold_2",
       "ddepositSum_expand_SISD_fold_2",
+      "ddepositSum_max_unroll_width_SISD_fold_2",
       "ddepositSum_expand_SSE_fold_2",
-      "ddepositSum_max_pipe_width_AVX_fold_2",
-      "ddepositSum_expand_AVX_fold_2"
+      "ddepositSum_expand_AVX_fold_2",
+      "ddepositSum_max_unroll_width_SSE_fold_2",
+      "ddepositSum_max_unroll_width_AVX_fold_2",
+      "ddepositSum_max_pipe_width_SSE_fold_2",
+      "ddepositSum_max_pipe_width_AVX_fold_2"
     ],
     "bench_rdsum_fold_3": [
+      "ddepositSum_max_pipe_width_SSE_fold_3",
       "ddepositSum_max_pipe_width_SISD_fold_3",
-      "ddepositSum_max_unroll_width_SSE_fold_3",
-      "ddepositSum_expand_SSE_fold_3",
-      "ddepositSum_expand_AVX_fold_3",
-      "ddepositSum_max_unroll_width_AVX_fold_3",
-      "ddepositSum_max_unroll_width_SISD_fold_3",
-      "dmdsum_block_size_N_block_MAX",
       "ddepositSum_max_pipe_width_AVX_fold_3",
+      "ddepositSum_max_unroll_width_AVX_fold_3",
+      "ddepositSum_expand_AVX_fold_3",
+      "ddepositSum_max_unroll_width_SISD_fold_3",
+      "ddepositSum_max_unroll_width_SSE_fold_3",
+      "dmdsum_block_size_N_block_MAX",
       "ddepositSum_expand_SISD_fold_3",
-      "ddepositSum_max_pipe_width_SSE_fold_3"
+      "ddepositSum_expand_SSE_fold_3"
     ],
     "bench_rdsum_fold_4": [
       "ddepositSum_max_unroll_width_SSE_fold_4",
-      "ddepositSum_expand_SISD_fold_4",
       "ddepositSum_max_unroll_width_AVX_fold_4",
-      "ddepositSum_max_unroll_width_SISD_fold_4",
       "ddepositSum_expand_SSE_fold_4",
-      "ddepositSum_max_pipe_width_SSE_fold_4",
       "ddepositSum_max_pipe_width_SISD_fold_4",
       "ddepositSum_max_pipe_width_AVX_fold_4",
-      "ddepositSum_expand_AVX_fold_4"
+      "ddepositSum_max_unroll_width_SISD_fold_4",
+      "ddepositSum_expand_AVX_fold_4",
+      "ddepositSum_max_pipe_width_SSE_fold_4",
+      "ddepositSum_expand_SISD_fold_4"
     ],
     "bench_rdzasum_fold_0": [
-      "dzdepositASum_max_pipe_width_SISD_fold_0",
-      "dzdepositASum_max_unroll_width_SSE_fold_0",
-      "dzdepositASum_max_pipe_width_SSE_fold_0",
-      "dzdepositASum_max_unroll_width_AVX_fold_0",
       "dzdepositASum_max_pipe_width_AVX_fold_0",
-      "dzdepositASum_max_unroll_width_SISD_fold_0"
+      "dzdepositASum_max_pipe_width_SISD_fold_0",
+      "dzdepositASum_max_unroll_width_SISD_fold_0",
+      "dzdepositASum_max_unroll_width_AVX_fold_0",
+      "dzdepositASum_max_pipe_width_SSE_fold_0",
+      "dzdepositASum_max_unroll_width_SSE_fold_0"
     ],
     "bench_rdzasum_fold_2": [
-      "dzdepositASum_expand_AVX_fold_2",
-      "dzdepositASum_max_pipe_width_SSE_fold_2",
-      "dzdepositASum_max_unroll_width_AVX_fold_2",
-      "dzdepositASum_max_unroll_width_SISD_fold_2",
+      "dzdepositASum_max_unroll_width_SSE_fold_2",
       "dzdepositASum_max_pipe_width_SISD_fold_2",
       "dzdepositASum_expand_SSE_fold_2",
       "dzdepositASum_expand_SISD_fold_2",
-      "dzdepositASum_max_unroll_width_SSE_fold_2",
-      "dzdepositASum_max_pipe_width_AVX_fold_2"
+      "dzdepositASum_max_unroll_width_SISD_fold_2",
+      "dzdepositASum_max_pipe_width_AVX_fold_2",
+      "dzdepositASum_max_pipe_width_SSE_fold_2",
+      "dzdepositASum_expand_AVX_fold_2",
+      "dzdepositASum_max_unroll_width_AVX_fold_2"
     ],
     "bench_rdzasum_fold_3": [
-      "dzdepositASum_max_pipe_width_AVX_fold_3",
-      "dzdepositASum_expand_SSE_fold_3",
-      "dzdepositASum_max_pipe_width_SSE_fold_3",
-      "dmzasum_block_size_N_block_MAX",
-      "dzdepositASum_expand_SISD_fold_3",
-      "dmzssq_block_size_N_block_MAX",
       "dzdepositASum_max_pipe_width_SISD_fold_3",
-      "dzdepositASum_expand_AVX_fold_3",
-      "dzdepositASum_max_unroll_width_AVX_fold_3",
       "dzdepositASum_max_unroll_width_SISD_fold_3",
-      "dzdepositASum_max_unroll_width_SSE_fold_3"
+      "dmzasum_block_size_N_block_MAX",
+      "dzdepositASum_max_pipe_width_SSE_fold_3",
+      "dzdepositASum_max_unroll_width_AVX_fold_3",
+      "dzdepositASum_max_pipe_width_AVX_fold_3",
+      "dmzssq_block_size_N_block_MAX",
+      "dzdepositASum_expand_AVX_fold_3",
+      "dzdepositASum_max_unroll_width_SSE_fold_3",
+      "dzdepositASum_expand_SSE_fold_3",
+      "dzdepositASum_expand_SISD_fold_3"
     ],
     "bench_rdzasum_fold_4": [
-      "dzdepositASum_max_pipe_width_SSE_fold_4",
+      "dzdepositASum_max_pipe_width_SISD_fold_4",
+      "dzdepositASum_max_pipe_width_AVX_fold_4",
+      "dzdepositASum_expand_SISD_fold_4",
+      "dzdepositASum_expand_SSE_fold_4",
+      "dzdepositASum_max_unroll_width_SISD_fold_4",
+      "dzdepositASum_expand_AVX_fold_4",
       "dzdepositASum_max_unroll_width_SSE_fold_4",
       "dzdepositASum_max_unroll_width_AVX_fold_4",
-      "dzdepositASum_max_pipe_width_AVX_fold_4",
-      "dzdepositASum_expand_SSE_fold_4",
-      "dzdepositASum_max_pipe_width_SISD_fold_4",
-      "dzdepositASum_expand_SISD_fold_4",
-      "dzdepositASum_max_unroll_width_SISD_fold_4",
-      "dzdepositASum_expand_AVX_fold_4"
+      "dzdepositASum_max_pipe_width_SSE_fold_4"
     ],
     "bench_rdznrm2_fold_0": [
+      "dzdepositSSq_max_pipe_width_SSE_fold_0",
+      "dzdepositSSq_max_pipe_width_SISD_fold_0",
       "dzdepositSSq_max_unroll_width_SSE_fold_0",
       "dzdepositSSq_max_unroll_width_SISD_fold_0",
-      "dzdepositSSq_max_pipe_width_SISD_fold_0",
-      "dzdepositSSq_max_unroll_width_AVX_fold_0",
-      "dzdepositSSq_max_pipe_width_SSE_fold_0",
-      "dzdepositSSq_max_pipe_width_AVX_fold_0"
+      "dzdepositSSq_max_pipe_width_AVX_fold_0",
+      "dzdepositSSq_max_unroll_width_AVX_fold_0"
     ],
     "bench_rdznrm2_fold_2": [
-      "dzdepositSSq_max_unroll_width_SSE_fold_2",
-      "dzdepositSSq_expand_SSE_fold_2",
-      "dzdepositSSq_max_pipe_width_SISD_fold_2",
-      "dzdepositSSq_max_unroll_width_AVX_fold_2",
-      "dzdepositSSq_max_unroll_width_SISD_fold_2",
-      "dzdepositSSq_expand_AVX_fold_2",
-      "dzdepositSSq_max_pipe_width_SSE_fold_2",
       "dzdepositSSq_expand_SISD_fold_2",
-      "dzdepositSSq_max_pipe_width_AVX_fold_2"
+      "dzdepositSSq_expand_AVX_fold_2",
+      "dzdepositSSq_max_unroll_width_SISD_fold_2",
+      "dzdepositSSq_max_pipe_width_SSE_fold_2",
+      "dzdepositSSq_expand_SSE_fold_2",
+      "dzdepositSSq_max_pipe_width_AVX_fold_2",
+      "dzdepositSSq_max_unroll_width_SSE_fold_2",
+      "dzdepositSSq_max_unroll_width_AVX_fold_2",
+      "dzdepositSSq_max_pipe_width_SISD_fold_2"
     ],
     "bench_rdznrm2_fold_3": [
       "dzdepositSSq_max_unroll_width_AVX_fold_3",
       "dzdepositSSq_max_unroll_width_SISD_fold_3",
-      "dzdepositSSq_max_unroll_width_SSE_fold_3",
-      "dzdepositSSq_max_pipe_width_SISD_fold_3",
-      "dzdepositSSq_max_pipe_width_SSE_fold_3",
       "dzdepositSSq_expand_AVX_fold_3",
-      "dzdepositSSq_expand_SSE_fold_3",
+      "dzdepositSSq_max_pipe_width_AVX_fold_3",
+      "dzdepositSSq_max_unroll_width_SSE_fold_3",
       "dzdepositSSq_expand_SISD_fold_3",
-      "dzdepositSSq_max_pipe_width_AVX_fold_3"
+      "dzdepositSSq_max_pipe_width_SISD_fold_3",
+      "dzdepositSSq_expand_SSE_fold_3",
+      "dzdepositSSq_max_pipe_width_SSE_fold_3"
     ],
     "bench_rdznrm2_fold_4": [
       "dzdepositSSq_max_pipe_width_SISD_fold_4",
-      "dzdepositSSq_expand_SSE_fold_4",
-      "dzdepositSSq_max_unroll_width_SSE_fold_4",
       "dzdepositSSq_max_unroll_width_AVX_fold_4",
-      "dzdepositSSq_expand_SISD_fold_4",
-      "dzdepositSSq_max_pipe_width_SSE_fold_4",
       "dzdepositSSq_expand_AVX_fold_4",
+      "dzdepositSSq_max_unroll_width_SSE_fold_4",
+      "dzdepositSSq_max_pipe_width_SSE_fold_4",
+      "dzdepositSSq_expand_SSE_fold_4",
       "dzdepositSSq_max_pipe_width_AVX_fold_4",
+      "dzdepositSSq_expand_SISD_fold_4",
       "dzdepositSSq_max_unroll_width_SISD_fold_4"
     ],
     "bench_rsasum_fold_0": [
-      "sdepositASum_max_unroll_width_AVX_fold_0",
+      "sdepositASum_max_pipe_width_AVX_fold_0",
       "sdepositASum_max_pipe_width_SSE_fold_0",
-      "sdepositASum_max_unroll_width_SISD_fold_0",
       "sdepositASum_max_unroll_width_SSE_fold_0",
-      "sdepositASum_max_pipe_width_SISD_fold_0",
-      "sdepositASum_max_pipe_width_AVX_fold_0"
+      "sdepositASum_max_unroll_width_AVX_fold_0",
+      "sdepositASum_max_unroll_width_SISD_fold_0",
+      "sdepositASum_max_pipe_width_SISD_fold_0"
     ],
     "bench_rsasum_fold_2": [
+      "sdepositASum_max_pipe_width_SISD_fold_2",
+      "sdepositASum_max_unroll_width_AVX_fold_2",
+      "sdepositASum_max_unroll_width_SSE_fold_2",
+      "sdepositASum_max_pipe_width_SSE_fold_2",
       "sdepositASum_expand_SSE_fold_2",
       "sdepositASum_expand_SISD_fold_2",
-      "sdepositASum_expand_AVX_fold_2",
       "sdepositASum_max_unroll_width_SISD_fold_2",
-      "sdepositASum_max_pipe_width_AVX_fold_2",
-      "sdepositASum_max_unroll_width_AVX_fold_2",
-      "sdepositASum_max_pipe_width_SSE_fold_2",
-      "sdepositASum_max_pipe_width_SISD_fold_2",
-      "sdepositASum_max_unroll_width_SSE_fold_2"
+      "sdepositASum_expand_AVX_fold_2",
+      "sdepositASum_max_pipe_width_AVX_fold_2"
     ],
     "bench_rsasum_fold_3": [
-      "sdepositASum_max_unroll_width_SSE_fold_3",
-      "sdepositASum_max_pipe_width_SSE_fold_3",
-      "sdepositASum_max_unroll_width_AVX_fold_3",
-      "smsasum_block_size_N_block_MAX",
+      "sdepositASum_expand_SSE_fold_3",
       "sdepositASum_expand_SISD_fold_3",
-      "sdepositASum_max_unroll_width_SISD_fold_3",
       "sdepositASum_max_pipe_width_SISD_fold_3",
       "sdepositASum_max_pipe_width_AVX_fold_3",
-      "sdepositASum_expand_SSE_fold_3",
-      "sdepositASum_expand_AVX_fold_3"
+      "sdepositASum_max_pipe_width_SSE_fold_3",
+      "sdepositASum_max_unroll_width_AVX_fold_3",
+      "sdepositASum_max_unroll_width_SSE_fold_3",
+      "sdepositASum_max_unroll_width_SISD_fold_3",
+      "sdepositASum_expand_AVX_fold_3",
+      "smsasum_block_size_N_block_MAX"
     ],
     "bench_rsasum_fold_4": [
-      "sdepositASum_max_unroll_width_SSE_fold_4",
-      "sdepositASum_max_unroll_width_AVX_fold_4",
-      "sdepositASum_max_pipe_width_SISD_fold_4",
-      "sdepositASum_max_pipe_width_AVX_fold_4",
-      "sdepositASum_max_unroll_width_SISD_fold_4",
-      "sdepositASum_expand_AVX_fold_4",
-      "sdepositASum_max_pipe_width_SSE_fold_4",
       "sdepositASum_expand_SISD_fold_4",
-      "sdepositASum_expand_SSE_fold_4"
+      "sdepositASum_expand_AVX_fold_4",
+      "sdepositASum_max_pipe_width_AVX_fold_4",
+      "sdepositASum_max_pipe_width_SISD_fold_4",
+      "sdepositASum_max_unroll_width_SISD_fold_4",
+      "sdepositASum_max_unroll_width_AVX_fold_4",
+      "sdepositASum_expand_SSE_fold_4",
+      "sdepositASum_max_unroll_width_SSE_fold_4",
+      "sdepositASum_max_pipe_width_SSE_fold_4"
     ],
     "bench_rscasum_fold_0": [
-      "scdepositASum_max_pipe_width_SISD_fold_0",
-      "scdepositASum_max_pipe_width_AVX_fold_0",
-      "scdepositASum_max_unroll_width_SISD_fold_0",
-      "scdepositASum_max_unroll_width_SSE_fold_0",
       "scdepositASum_max_unroll_width_AVX_fold_0",
-      "scdepositASum_max_pipe_width_SSE_fold_0"
+      "scdepositASum_max_unroll_width_SISD_fold_0",
+      "scdepositASum_max_pipe_width_SISD_fold_0",
+      "scdepositASum_max_pipe_width_SSE_fold_0",
+      "scdepositASum_max_pipe_width_AVX_fold_0",
+      "scdepositASum_max_unroll_width_SSE_fold_0"
     ],
     "bench_rscasum_fold_2": [
       "scdepositASum_max_unroll_width_SSE_fold_2",
-      "scdepositASum_expand_AVX_fold_2",
       "scdepositASum_max_pipe_width_AVX_fold_2",
+      "scdepositASum_max_pipe_width_SSE_fold_2",
+      "scdepositASum_max_unroll_width_AVX_fold_2",
       "scdepositASum_expand_SISD_fold_2",
       "scdepositASum_expand_SSE_fold_2",
-      "scdepositASum_max_unroll_width_AVX_fold_2",
-      "scdepositASum_max_pipe_width_SISD_fold_2",
-      "scdepositASum_max_pipe_width_SSE_fold_2",
-      "scdepositASum_max_unroll_width_SISD_fold_2"
+      "scdepositASum_max_unroll_width_SISD_fold_2",
+      "scdepositASum_expand_AVX_fold_2",
+      "scdepositASum_max_pipe_width_SISD_fold_2"
     ],
     "bench_rscasum_fold_3": [
-      "scdepositASum_max_pipe_width_SISD_fold_3",
-      "scdepositASum_max_unroll_width_SISD_fold_3",
-      "scdepositASum_max_pipe_width_AVX_fold_3",
       "scdepositASum_expand_AVX_fold_3",
-      "scdepositASum_max_unroll_width_AVX_fold_3",
+      "scdepositASum_max_pipe_width_AVX_fold_3",
+      "scdepositASum_max_pipe_width_SISD_fold_3",
       "scdepositASum_expand_SSE_fold_3",
-      "scdepositASum_max_unroll_width_SSE_fold_3",
-      "scdepositASum_expand_SISD_fold_3",
       "smcasum_block_size_N_block_MAX",
-      "scdepositASum_max_pipe_width_SSE_fold_3"
+      "scdepositASum_max_pipe_width_SSE_fold_3",
+      "scdepositASum_max_unroll_width_AVX_fold_3",
+      "scdepositASum_max_unroll_width_SSE_fold_3",
+      "scdepositASum_max_unroll_width_SISD_fold_3",
+      "scdepositASum_expand_SISD_fold_3"
     ],
     "bench_rscasum_fold_4": [
       "scdepositASum_max_unroll_width_SSE_fold_4",
-      "scdepositASum_expand_SISD_fold_4",
-      "scdepositASum_expand_AVX_fold_4",
-      "scdepositASum_max_unroll_width_SISD_fold_4",
-      "scdepositASum_max_pipe_width_AVX_fold_4",
       "scdepositASum_expand_SSE_fold_4",
-      "scdepositASum_max_unroll_width_AVX_fold_4",
+      "scdepositASum_max_unroll_width_SISD_fold_4",
       "scdepositASum_max_pipe_width_SSE_fold_4",
+      "scdepositASum_expand_SISD_fold_4",
+      "scdepositASum_max_pipe_width_AVX_fold_4",
+      "scdepositASum_expand_AVX_fold_4",
+      "scdepositASum_max_unroll_width_AVX_fold_4",
       "scdepositASum_max_pipe_width_SISD_fold_4"
     ],
     "bench_rscnrm2_fold_0": [
-      "scdepositSSq_max_pipe_width_SISD_fold_0",
       "scdepositSSq_max_pipe_width_AVX_fold_0",
-      "scdepositSSq_max_unroll_width_SSE_fold_0",
+      "scdepositSSq_max_unroll_width_AVX_fold_0",
+      "scdepositSSq_max_pipe_width_SISD_fold_0",
       "scdepositSSq_max_unroll_width_SISD_fold_0",
       "scdepositSSq_max_pipe_width_SSE_fold_0",
-      "scdepositSSq_max_unroll_width_AVX_fold_0"
+      "scdepositSSq_max_unroll_width_SSE_fold_0"
     ],
     "bench_rscnrm2_fold_2": [
-      "scdepositSSq_max_pipe_width_SISD_fold_2",
-      "scdepositSSq_expand_SISD_fold_2",
-      "scdepositSSq_max_pipe_width_SSE_fold_2",
       "scdepositSSq_expand_AVX_fold_2",
       "scdepositSSq_max_pipe_width_AVX_fold_2",
+      "scdepositSSq_max_pipe_width_SISD_fold_2",
+      "scdepositSSq_expand_SSE_fold_2",
+      "scdepositSSq_expand_SISD_fold_2",
+      "scdepositSSq_max_unroll_width_AVX_fold_2",
       "scdepositSSq_max_unroll_width_SSE_fold_2",
       "scdepositSSq_max_unroll_width_SISD_fold_2",
-      "scdepositSSq_max_unroll_width_AVX_fold_2",
-      "scdepositSSq_expand_SSE_fold_2"
+      "scdepositSSq_max_pipe_width_SSE_fold_2"
     ],
     "bench_rscnrm2_fold_3": [
-      "scdepositSSq_expand_SSE_fold_3",
-      "scdepositSSq_expand_SISD_fold_3",
-      "scdepositSSq_max_unroll_width_AVX_fold_3",
-      "scdepositSSq_max_pipe_width_SSE_fold_3",
-      "scdepositSSq_max_pipe_width_SISD_fold_3",
-      "scdepositSSq_max_unroll_width_SSE_fold_3",
       "scdepositSSq_expand_AVX_fold_3",
-      "scdepositSSq_max_pipe_width_AVX_fold_3",
+      "scdepositSSq_expand_SISD_fold_3",
       "smcssq_block_size_N_block_MAX",
-      "scdepositSSq_max_unroll_width_SISD_fold_3"
+      "scdepositSSq_max_unroll_width_SSE_fold_3",
+      "scdepositSSq_max_pipe_width_SSE_fold_3",
+      "scdepositSSq_expand_SSE_fold_3",
+      "scdepositSSq_max_pipe_width_AVX_fold_3",
+      "scdepositSSq_max_unroll_width_AVX_fold_3",
+      "scdepositSSq_max_unroll_width_SISD_fold_3",
+      "scdepositSSq_max_pipe_width_SISD_fold_3"
     ],
     "bench_rscnrm2_fold_4": [
-      "scdepositSSq_max_unroll_width_AVX_fold_4",
+      "scdepositSSq_max_unroll_width_SISD_fold_4",
+      "scdepositSSq_max_unroll_width_SSE_fold_4",
+      "scdepositSSq_max_pipe_width_SSE_fold_4",
+      "scdepositSSq_expand_AVX_fold_4",
+      "scdepositSSq_max_pipe_width_AVX_fold_4",
+      "scdepositSSq_max_pipe_width_SISD_fold_4",
       "scdepositSSq_expand_SISD_fold_4",
       "scdepositSSq_expand_SSE_fold_4",
-      "scdepositSSq_max_unroll_width_SSE_fold_4",
-      "scdepositSSq_max_unroll_width_SISD_fold_4",
-      "scdepositSSq_expand_AVX_fold_4",
-      "scdepositSSq_max_pipe_width_SSE_fold_4",
-      "scdepositSSq_max_pipe_width_SISD_fold_4",
-      "scdepositSSq_max_pipe_width_AVX_fold_4"
+      "scdepositSSq_max_unroll_width_AVX_fold_4"
     ],
     "bench_rsdot_fold_0": [
+      "sdepositDot_max_pipe_width_SSE_fold_0",
+      "sdepositDot_max_unroll_width_AVX_fold_0",
       "sdepositDot_max_pipe_width_SISD_fold_0",
       "sdepositDot_max_unroll_width_SISD_fold_0",
-      "sdepositDot_max_unroll_width_AVX_fold_0",
-      "sdepositDot_max_pipe_width_AVX_fold_0",
       "sdepositDot_max_unroll_width_SSE_fold_0",
-      "sdepositDot_max_pipe_width_SSE_fold_0"
+      "sdepositDot_max_pipe_width_AVX_fold_0"
     ],
     "bench_rsdot_fold_2": [
       "sdepositDot_max_unroll_width_SSE_fold_2",
-      "sdepositDot_max_pipe_width_SSE_fold_2",
-      "sdepositDot_expand_SSE_fold_2",
-      "sdepositDot_expand_SISD_fold_2",
       "sdepositDot_max_unroll_width_AVX_fold_2",
-      "sdepositDot_expand_AVX_fold_2",
-      "sdepositDot_max_pipe_width_AVX_fold_2",
       "sdepositDot_max_pipe_width_SISD_fold_2",
-      "sdepositDot_max_unroll_width_SISD_fold_2"
+      "sdepositDot_expand_SISD_fold_2",
+      "sdepositDot_expand_SSE_fold_2",
+      "sdepositDot_expand_AVX_fold_2",
+      "sdepositDot_max_unroll_width_SISD_fold_2",
+      "sdepositDot_max_pipe_width_SSE_fold_2",
+      "sdepositDot_max_pipe_width_AVX_fold_2"
     ],
     "bench_rsdot_fold_3": [
-      "sdepositDot_expand_AVX_fold_3",
-      "smsdot_block_size_N_block_MAX",
-      "sdepositDot_max_unroll_width_AVX_fold_3",
-      "sdepositDot_expand_SSE_fold_3",
-      "sdepositDot_max_pipe_width_SSE_fold_3",
-      "sdepositDot_max_pipe_width_AVX_fold_3",
-      "sdepositDot_max_unroll_width_SSE_fold_3",
-      "sdepositDot_expand_SISD_fold_3",
       "sdepositDot_max_unroll_width_SISD_fold_3",
-      "sdepositDot_max_pipe_width_SISD_fold_3"
+      "sdepositDot_expand_SSE_fold_3",
+      "sdepositDot_expand_AVX_fold_3",
+      "sdepositDot_expand_SISD_fold_3",
+      "sdepositDot_max_unroll_width_SSE_fold_3",
+      "smsdot_block_size_N_block_MAX",
+      "sdepositDot_max_pipe_width_SISD_fold_3",
+      "sdepositDot_max_unroll_width_AVX_fold_3",
+      "sdepositDot_max_pipe_width_SSE_fold_3",
+      "sdepositDot_max_pipe_width_AVX_fold_3"
     ],
     "bench_rsdot_fold_4": [
+      "sdepositDot_expand_SSE_fold_4",
+      "sdepositDot_max_unroll_width_SISD_fold_4",
+      "sdepositDot_max_unroll_width_SSE_fold_4",
+      "sdepositDot_expand_SISD_fold_4",
       "sdepositDot_max_pipe_width_SISD_fold_4",
-      "sdepositDot_max_unroll_width_AVX_fold_4",
       "sdepositDot_max_pipe_width_AVX_fold_4",
       "sdepositDot_expand_AVX_fold_4",
-      "sdepositDot_max_pipe_width_SSE_fold_4",
-      "sdepositDot_max_unroll_width_SISD_fold_4",
-      "sdepositDot_expand_SSE_fold_4",
-      "sdepositDot_expand_SISD_fold_4",
-      "sdepositDot_max_unroll_width_SSE_fold_4"
+      "sdepositDot_max_unroll_width_AVX_fold_4",
+      "sdepositDot_max_pipe_width_SSE_fold_4"
     ],
     "bench_rsgemm_TransA_fold_3": [
-      "sisgemm_block_size_XT_BLOCK",
-      "sisgemm_block_size_YT_BLOCK"
+      "sisgemm_block_size_YT_BLOCK",
+      "sisgemm_block_size_XYT_BLOCK"
     ],
     "bench_rsgemm_TransB_fold_3": [
       "sisgemm_block_size_Y_BLOCK",
-      "sisgemm_block_size_X_BLOCK"
+      "sisgemm_block_size_XY_BLOCK"
     ],
     "bench_rsgemv_TransA_fold_3": [
       "sisgemv_block_size_T_BLOCK"
     ],
     "bench_rsgemv_fold_3": [
-      "sisgemv_block_size_Y_BLOCK",
-      "sisgemv_block_size_X_BLOCK"
+      "sisgemv_block_size_XY_BLOCK",
+      "sisgemv_block_size_Y_BLOCK"
     ],
     "bench_rsgemv_fold_TransA_3": [
-      "sisgemv_block_size_YT_BLOCK",
-      "sisgemv_block_size_XT_BLOCK"
+      "sisgemv_block_size_XYT_BLOCK",
+      "sisgemv_block_size_YT_BLOCK"
     ],
     "bench_rsnrm2_fold_0": [
-      "sdepositSSq_max_unroll_width_SISD_fold_0",
-      "sdepositSSq_max_pipe_width_SSE_fold_0",
-      "sdepositSSq_max_unroll_width_SSE_fold_0",
       "sdepositSSq_max_unroll_width_AVX_fold_0",
+      "sdepositSSq_max_pipe_width_AVX_fold_0",
       "sdepositSSq_max_pipe_width_SISD_fold_0",
-      "sdepositSSq_max_pipe_width_AVX_fold_0"
+      "sdepositSSq_max_unroll_width_SISD_fold_0",
+      "sdepositSSq_max_unroll_width_SSE_fold_0",
+      "sdepositSSq_max_pipe_width_SSE_fold_0"
     ],
     "bench_rsnrm2_fold_2": [
-      "sdepositSSq_expand_SISD_fold_2",
-      "sdepositSSq_max_pipe_width_SISD_fold_2",
-      "sdepositSSq_max_pipe_width_AVX_fold_2",
-      "sdepositSSq_expand_AVX_fold_2",
-      "sdepositSSq_max_unroll_width_AVX_fold_2",
       "sdepositSSq_max_pipe_width_SSE_fold_2",
+      "sdepositSSq_expand_AVX_fold_2",
+      "sdepositSSq_expand_SISD_fold_2",
+      "sdepositSSq_max_pipe_width_AVX_fold_2",
+      "sdepositSSq_expand_SSE_fold_2",
+      "sdepositSSq_max_pipe_width_SISD_fold_2",
       "sdepositSSq_max_unroll_width_SSE_fold_2",
       "sdepositSSq_max_unroll_width_SISD_fold_2",
-      "sdepositSSq_expand_SSE_fold_2"
+      "sdepositSSq_max_unroll_width_AVX_fold_2"
     ],
     "bench_rsnrm2_fold_3": [
-      "sdepositSSq_max_unroll_width_SISD_fold_3",
-      "sdepositSSq_max_unroll_width_SSE_fold_3",
       "sdepositSSq_max_pipe_width_AVX_fold_3",
-      "sdepositSSq_expand_SISD_fold_3",
-      "sdepositSSq_max_unroll_width_AVX_fold_3",
-      "sdepositSSq_max_pipe_width_SISD_fold_3",
-      "sdepositSSq_max_pipe_width_SSE_fold_3",
       "sdepositSSq_expand_AVX_fold_3",
+      "sdepositSSq_max_pipe_width_SSE_fold_3",
+      "sdepositSSq_expand_SISD_fold_3",
+      "sdepositSSq_max_unroll_width_SSE_fold_3",
+      "sdepositSSq_max_pipe_width_SISD_fold_3",
+      "sdepositSSq_max_unroll_width_SISD_fold_3",
       "smsssq_block_size_N_block_MAX",
-      "sdepositSSq_expand_SSE_fold_3"
+      "sdepositSSq_expand_SSE_fold_3",
+      "sdepositSSq_max_unroll_width_AVX_fold_3"
     ],
     "bench_rsnrm2_fold_4": [
-      "sdepositSSq_max_pipe_width_SISD_fold_4",
-      "sdepositSSq_max_unroll_width_SSE_fold_4",
-      "sdepositSSq_max_pipe_width_AVX_fold_4",
       "sdepositSSq_expand_SISD_fold_4",
+      "sdepositSSq_max_pipe_width_AVX_fold_4",
       "sdepositSSq_expand_SSE_fold_4",
-      "sdepositSSq_max_pipe_width_SSE_fold_4",
-      "sdepositSSq_max_unroll_width_AVX_fold_4",
+      "sdepositSSq_max_unroll_width_SISD_fold_4",
       "sdepositSSq_expand_AVX_fold_4",
-      "sdepositSSq_max_unroll_width_SISD_fold_4"
+      "sdepositSSq_max_pipe_width_SSE_fold_4",
+      "sdepositSSq_max_pipe_width_SISD_fold_4",
+      "sdepositSSq_max_unroll_width_AVX_fold_4",
+      "sdepositSSq_max_unroll_width_SSE_fold_4"
     ],
     "bench_rssum_fold_0": [
-      "sdepositSum_max_pipe_width_SSE_fold_0",
-      "sdepositSum_max_unroll_width_AVX_fold_0",
-      "sdepositSum_max_unroll_width_SSE_fold_0",
       "sdepositSum_max_pipe_width_AVX_fold_0",
+      "sdepositSum_max_pipe_width_SISD_fold_0",
+      "sdepositSum_max_pipe_width_SSE_fold_0",
       "sdepositSum_max_unroll_width_SISD_fold_0",
-      "sdepositSum_max_pipe_width_SISD_fold_0"
+      "sdepositSum_max_unroll_width_SSE_fold_0",
+      "sdepositSum_max_unroll_width_AVX_fold_0"
     ],
     "bench_rssum_fold_2": [
-      "sdepositSum_max_unroll_width_SISD_fold_2",
-      "sdepositSum_max_unroll_width_AVX_fold_2",
-      "sdepositSum_max_unroll_width_SSE_fold_2",
-      "sdepositSum_expand_SISD_fold_2",
-      "sdepositSum_max_pipe_width_AVX_fold_2",
+      "sdepositSum_expand_SSE_fold_2",
       "sdepositSum_max_pipe_width_SISD_fold_2",
       "sdepositSum_expand_AVX_fold_2",
-      "sdepositSum_expand_SSE_fold_2",
-      "sdepositSum_max_pipe_width_SSE_fold_2"
+      "sdepositSum_max_pipe_width_SSE_fold_2",
+      "sdepositSum_max_pipe_width_AVX_fold_2",
+      "sdepositSum_expand_SISD_fold_2",
+      "sdepositSum_max_unroll_width_AVX_fold_2",
+      "sdepositSum_max_unroll_width_SSE_fold_2",
+      "sdepositSum_max_unroll_width_SISD_fold_2"
     ],
     "bench_rssum_fold_3": [
-      "sdepositSum_max_unroll_width_SISD_fold_3",
-      "smssum_block_size_N_block_MAX",
-      "sdepositSum_max_unroll_width_AVX_fold_3",
-      "sdepositSum_max_pipe_width_SISD_fold_3",
-      "sdepositSum_max_pipe_width_SSE_fold_3",
-      "sdepositSum_max_pipe_width_AVX_fold_3",
       "sdepositSum_expand_SSE_fold_3",
-      "sdepositSum_expand_SISD_fold_3",
+      "sdepositSum_max_pipe_width_SSE_fold_3",
+      "smssum_block_size_N_block_MAX",
+      "sdepositSum_max_pipe_width_SISD_fold_3",
+      "sdepositSum_max_pipe_width_AVX_fold_3",
+      "sdepositSum_max_unroll_width_SISD_fold_3",
       "sdepositSum_expand_AVX_fold_3",
-      "sdepositSum_max_unroll_width_SSE_fold_3"
+      "sdepositSum_max_unroll_width_SSE_fold_3",
+      "sdepositSum_expand_SISD_fold_3",
+      "sdepositSum_max_unroll_width_AVX_fold_3"
     ],
     "bench_rssum_fold_4": [
+      "sdepositSum_max_unroll_width_AVX_fold_4",
+      "sdepositSum_expand_SSE_fold_4",
+      "sdepositSum_max_unroll_width_SISD_fold_4",
+      "sdepositSum_expand_AVX_fold_4",
+      "sdepositSum_max_pipe_width_SSE_fold_4",
+      "sdepositSum_expand_SISD_fold_4",
       "sdepositSum_max_pipe_width_SISD_fold_4",
       "sdepositSum_max_unroll_width_SSE_fold_4",
-      "sdepositSum_expand_AVX_fold_4",
-      "sdepositSum_expand_SISD_fold_4",
-      "sdepositSum_max_unroll_width_AVX_fold_4",
-      "sdepositSum_max_pipe_width_SSE_fold_4",
-      "sdepositSum_max_pipe_width_AVX_fold_4",
-      "sdepositSum_expand_SSE_fold_4",
-      "sdepositSum_max_unroll_width_SISD_fold_4"
+      "sdepositSum_max_pipe_width_AVX_fold_4"
     ],
     "bench_rzdotc_fold_0": [
-      "zdepositDotC_max_unroll_width_AVX_fold_0",
-      "zdepositDotC_max_unroll_width_SISD_fold_0",
-      "zdepositDotC_max_pipe_width_SISD_fold_0",
-      "zdepositDotC_max_pipe_width_AVX_fold_0",
       "zdepositDotC_max_pipe_width_SSE_fold_0",
+      "zdepositDotC_max_pipe_width_AVX_fold_0",
+      "zdepositDotC_max_pipe_width_SISD_fold_0",
+      "zdepositDotC_max_unroll_width_SISD_fold_0",
+      "zdepositDotC_max_unroll_width_AVX_fold_0",
       "zdepositDotC_max_unroll_width_SSE_fold_0"
     ],
     "bench_rzdotc_fold_2": [
-      "zdepositDotC_max_pipe_width_SSE_fold_2",
-      "zdepositDotC_max_pipe_width_SISD_fold_2",
-      "zdepositDotC_expand_AVX_fold_2",
-      "zdepositDotC_max_unroll_width_SISD_fold_2",
-      "zdepositDotC_max_pipe_width_AVX_fold_2",
       "zdepositDotC_expand_SISD_fold_2",
       "zdepositDotC_expand_SSE_fold_2",
       "zdepositDotC_max_unroll_width_SSE_fold_2",
-      "zdepositDotC_max_unroll_width_AVX_fold_2"
+      "zdepositDotC_max_unroll_width_SISD_fold_2",
+      "zdepositDotC_max_pipe_width_SSE_fold_2",
+      "zdepositDotC_max_pipe_width_AVX_fold_2",
+      "zdepositDotC_max_pipe_width_SISD_fold_2",
+      "zdepositDotC_max_unroll_width_AVX_fold_2",
+      "zdepositDotC_expand_AVX_fold_2"
     ],
     "bench_rzdotc_fold_3": [
+      "zdepositDotC_max_unroll_width_SISD_fold_3",
       "zdepositDotC_expand_SSE_fold_3",
-      "zdepositDotC_max_unroll_width_SSE_fold_3",
       "zdepositDotC_max_unroll_width_AVX_fold_3",
+      "zdepositDotC_max_pipe_width_AVX_fold_3",
+      "zmzdotc_block_size_N_block_MAX",
       "zdepositDotC_max_pipe_width_SSE_fold_3",
+      "zdepositDotC_max_unroll_width_SSE_fold_3",
       "zdepositDotC_max_pipe_width_SISD_fold_3",
       "zdepositDotC_expand_AVX_fold_3",
-      "zdepositDotC_max_pipe_width_AVX_fold_3",
-      "zdepositDotC_expand_SISD_fold_3",
-      "zdepositDotC_max_unroll_width_SISD_fold_3",
-      "zmzdotc_block_size_N_block_MAX"
+      "zdepositDotC_expand_SISD_fold_3"
     ],
     "bench_rzdotc_fold_4": [
-      "zdepositDotC_expand_SISD_fold_4",
-      "zdepositDotC_expand_SSE_fold_4",
       "zdepositDotC_max_pipe_width_SSE_fold_4",
-      "zdepositDotC_max_pipe_width_SISD_fold_4",
+      "zdepositDotC_expand_SSE_fold_4",
       "zdepositDotC_max_unroll_width_SISD_fold_4",
-      "zdepositDotC_max_pipe_width_AVX_fold_4",
+      "zdepositDotC_max_pipe_width_SISD_fold_4",
       "zdepositDotC_expand_AVX_fold_4",
+      "zdepositDotC_max_pipe_width_AVX_fold_4",
       "zdepositDotC_max_unroll_width_AVX_fold_4",
+      "zdepositDotC_expand_SISD_fold_4",
       "zdepositDotC_max_unroll_width_SSE_fold_4"
     ],
     "bench_rzdotu_fold_0": [
-      "zdepositDotU_max_unroll_width_SISD_fold_0",
       "zdepositDotU_max_pipe_width_SSE_fold_0",
-      "zdepositDotU_max_unroll_width_SSE_fold_0",
-      "zdepositDotU_max_pipe_width_AVX_fold_0",
       "zdepositDotU_max_unroll_width_AVX_fold_0",
+      "zdepositDotU_max_unroll_width_SISD_fold_0",
+      "zdepositDotU_max_pipe_width_AVX_fold_0",
+      "zdepositDotU_max_unroll_width_SSE_fold_0",
       "zdepositDotU_max_pipe_width_SISD_fold_0"
     ],
     "bench_rzdotu_fold_2": [
-      "zdepositDotU_max_unroll_width_SSE_fold_2",
+      "zdepositDotU_expand_AVX_fold_2",
       "zdepositDotU_max_pipe_width_SSE_fold_2",
-      "zdepositDotU_max_pipe_width_SISD_fold_2",
+      "zdepositDotU_expand_SISD_fold_2",
+      "zdepositDotU_max_unroll_width_SISD_fold_2",
       "zdepositDotU_max_pipe_width_AVX_fold_2",
       "zdepositDotU_max_unroll_width_AVX_fold_2",
       "zdepositDotU_expand_SSE_fold_2",
-      "zdepositDotU_expand_AVX_fold_2",
-      "zdepositDotU_expand_SISD_fold_2",
-      "zdepositDotU_max_unroll_width_SISD_fold_2"
+      "zdepositDotU_max_unroll_width_SSE_fold_2",
+      "zdepositDotU_max_pipe_width_SISD_fold_2"
     ],
     "bench_rzdotu_fold_3": [
-      "zdepositDotU_max_pipe_width_SSE_fold_3",
-      "zdepositDotU_max_unroll_width_SSE_fold_3",
-      "zdepositDotU_expand_SISD_fold_3",
-      "zdepositDotU_max_unroll_width_AVX_fold_3",
-      "zdepositDotU_expand_AVX_fold_3",
+      "zdepositDotU_max_unroll_width_SISD_fold_3",
+      "zmzdotu_block_size_N_block_MAX",
       "zdepositDotU_max_pipe_width_AVX_fold_3",
+      "zdepositDotU_max_pipe_width_SSE_fold_3",
+      "zdepositDotU_max_unroll_width_AVX_fold_3",
+      "zdepositDotU_max_unroll_width_SSE_fold_3",
       "zdepositDotU_expand_SSE_fold_3",
       "zdepositDotU_max_pipe_width_SISD_fold_3",
-      "zdepositDotU_max_unroll_width_SISD_fold_3",
-      "zmzdotu_block_size_N_block_MAX"
+      "zdepositDotU_expand_AVX_fold_3",
+      "zdepositDotU_expand_SISD_fold_3"
     ],
     "bench_rzdotu_fold_4": [
-      "zdepositDotU_max_pipe_width_SISD_fold_4",
-      "zdepositDotU_max_pipe_width_AVX_fold_4",
-      "zdepositDotU_expand_AVX_fold_4",
-      "zdepositDotU_max_unroll_width_AVX_fold_4",
-      "zdepositDotU_max_unroll_width_SISD_fold_4",
       "zdepositDotU_expand_SSE_fold_4",
-      "zdepositDotU_max_pipe_width_SSE_fold_4",
+      "zdepositDotU_expand_AVX_fold_4",
       "zdepositDotU_max_unroll_width_SSE_fold_4",
-      "zdepositDotU_expand_SISD_fold_4"
+      "zdepositDotU_max_pipe_width_AVX_fold_4",
+      "zdepositDotU_max_pipe_width_SSE_fold_4",
+      "zdepositDotU_max_unroll_width_AVX_fold_4",
+      "zdepositDotU_expand_SISD_fold_4",
+      "zdepositDotU_max_unroll_width_SISD_fold_4",
+      "zdepositDotU_max_pipe_width_SISD_fold_4"
     ],
     "bench_rzgemm_TransA_fold_3": [
-      "zizgemm_block_size_XT_BLOCK",
-      "cicgemm_block_size_XT_BLOCK",
-      "cicgemm_block_size_YT_BLOCK",
+      "zizgemm_block_size_XYT_BLOCK",
       "zizgemm_block_size_YT_BLOCK"
     ],
     "bench_rzgemm_TransB_fold_3": [
-      "cicgemm_block_size_X_BLOCK",
-      "zizgemm_block_size_Y_BLOCK",
-      "zizgemm_block_size_X_BLOCK",
-      "cicgemm_block_size_Y_BLOCK"
+      "zizgemm_block_size_XY_BLOCK",
+      "zizgemm_block_size_Y_BLOCK"
     ],
     "bench_rzgemv_TransA_fold_3": [
-      "zizgemv_block_size_XT_BLOCK",
-      "zizgemv_block_size_YT_BLOCK",
-      "zizgemv_block_size_T_BLOCK"
+      "zizgemv_block_size_T_BLOCK",
+      "zizgemv_block_size_XYT_BLOCK",
+      "zizgemv_block_size_YT_BLOCK"
     ],
     "bench_rzgemv_fold_3": [
-      "zizgemv_block_size_Y_BLOCK",
-      "zizgemv_block_size_X_BLOCK"
+      "zizgemv_block_size_XY_BLOCK",
+      "zizgemv_block_size_Y_BLOCK"
     ],
     "bench_rzsum_fold_0": [
-      "zdepositSum_max_pipe_width_AVX_fold_0",
-      "zdepositSum_max_pipe_width_SSE_fold_0",
-      "zdepositSum_max_pipe_width_SISD_fold_0",
       "zdepositSum_max_unroll_width_SISD_fold_0",
+      "zdepositSum_max_pipe_width_SISD_fold_0",
       "zdepositSum_max_unroll_width_AVX_fold_0",
-      "zdepositSum_max_unroll_width_SSE_fold_0"
+      "zdepositSum_max_pipe_width_AVX_fold_0",
+      "zdepositSum_max_unroll_width_SSE_fold_0",
+      "zdepositSum_max_pipe_width_SSE_fold_0"
     ],
     "bench_rzsum_fold_2": [
-      "zdepositSum_expand_AVX_fold_2",
-      "zdepositSum_expand_SSE_fold_2",
-      "zdepositSum_max_unroll_width_SISD_fold_2",
-      "zdepositSum_max_unroll_width_SSE_fold_2",
-      "zdepositSum_max_unroll_width_AVX_fold_2",
       "zdepositSum_max_pipe_width_SSE_fold_2",
       "zdepositSum_max_pipe_width_SISD_fold_2",
+      "zdepositSum_expand_AVX_fold_2",
+      "zdepositSum_max_pipe_width_AVX_fold_2",
       "zdepositSum_expand_SISD_fold_2",
-      "zdepositSum_max_pipe_width_AVX_fold_2"
+      "zdepositSum_expand_SSE_fold_2",
+      "zdepositSum_max_unroll_width_SSE_fold_2",
+      "zdepositSum_max_unroll_width_SISD_fold_2",
+      "zdepositSum_max_unroll_width_AVX_fold_2"
     ],
     "bench_rzsum_fold_3": [
       "zdepositSum_expand_SISD_fold_3",
       "zdepositSum_max_unroll_width_SISD_fold_3",
-      "zdepositSum_max_pipe_width_SSE_fold_3",
+      "zdepositSum_max_unroll_width_AVX_fold_3",
+      "zdepositSum_expand_AVX_fold_3",
+      "zdepositSum_expand_SSE_fold_3",
       "zmzsum_block_size_N_block_MAX",
       "zdepositSum_max_pipe_width_SISD_fold_3",
       "zdepositSum_max_pipe_width_AVX_fold_3",
       "zdepositSum_max_unroll_width_SSE_fold_3",
-      "zdepositSum_max_unroll_width_AVX_fold_3",
-      "zdepositSum_expand_AVX_fold_3",
-      "zdepositSum_expand_SSE_fold_3"
+      "zdepositSum_max_pipe_width_SSE_fold_3"
     ],
     "bench_rzsum_fold_4": [
+      "zdepositSum_max_unroll_width_SSE_fold_4",
+      "zdepositSum_max_pipe_width_AVX_fold_4",
+      "zdepositSum_expand_AVX_fold_4",
+      "zdepositSum_expand_SISD_fold_4",
+      "zdepositSum_max_unroll_width_AVX_fold_4",
+      "zdepositSum_max_unroll_width_SISD_fold_4",
       "zdepositSum_max_pipe_width_SISD_fold_4",
       "zdepositSum_max_pipe_width_SSE_fold_4",
-      "zdepositSum_max_pipe_width_AVX_fold_4",
-      "zdepositSum_expand_SSE_fold_4",
-      "zdepositSum_expand_AVX_fold_4",
-      "zdepositSum_max_unroll_width_SSE_fold_4",
-      "zdepositSum_max_unroll_width_AVX_fold_4",
-      "zdepositSum_expand_SISD_fold_4",
-      "zdepositSum_max_unroll_width_SISD_fold_4"
+      "zdepositSum_expand_SSE_fold_4"
     ],
     "bench_samax": [
-      "samax_max_unroll_width_SISD",
       "samax_max_unroll_width_SSE",
+      "samax_max_unroll_width_SISD",
       "samax_max_unroll_width_AVX"
     ],
     "bench_samaxm": [
-      "samaxm_max_unroll_width_SSE",
+      "samaxm_max_unroll_width_SISD",
       "samaxm_max_unroll_width_AVX",
-      "samaxm_max_unroll_width_SISD"
+      "samaxm_max_unroll_width_SSE"
     ],
     "bench_zamax": [
-      "zamax_max_unroll_width_SISD",
       "zamax_max_unroll_width_AVX",
+      "zamax_max_unroll_width_SISD",
       "zamax_max_unroll_width_SSE"
     ],
     "bench_zamaxm": [
+      "zamaxm_max_unroll_width_AVX",
       "zamaxm_max_unroll_width_SISD",
-      "zamaxm_max_unroll_width_SSE",
-      "zamaxm_max_unroll_width_AVX"
+      "zamaxm_max_unroll_width_SSE"
     ]
   },
   "parameters": {
@@ -6997,20 +7001,20 @@
         ]
       ]
     },
-    "cicgemm_block_size_XT_BLOCK": {
-      "default": 1024,
+    "cicgemm_block_size_XYT_BLOCK": {
+      "default": 32768,
       "flavor": "poweroftwo",
-      "maximum": 1024,
-      "minimum": 1,
-      "name": "cicgemm_block_size_XT_BLOCK",
+      "maximum": 32768,
+      "minimum": 128,
+      "name": "cicgemm_block_size_XYT_BLOCK",
       "tags": []
     },
-    "cicgemm_block_size_X_BLOCK": {
-      "default": 1024,
+    "cicgemm_block_size_XY_BLOCK": {
+      "default": 32768,
       "flavor": "poweroftwo",
-      "maximum": 1024,
-      "minimum": 1,
-      "name": "cicgemm_block_size_X_BLOCK",
+      "maximum": 32768,
+      "minimum": 128,
+      "name": "cicgemm_block_size_XY_BLOCK",
       "tags": []
     },
     "cicgemm_block_size_YT_BLOCK": {
@@ -7037,20 +7041,20 @@
       "name": "cicgemv_block_size_T_BLOCK",
       "tags": []
     },
-    "cicgemv_block_size_XT_BLOCK": {
-      "default": 1024,
+    "cicgemv_block_size_XYT_BLOCK": {
+      "default": 32768,
       "flavor": "poweroftwo",
-      "maximum": 1024,
-      "minimum": 1,
-      "name": "cicgemv_block_size_XT_BLOCK",
+      "maximum": 32768,
+      "minimum": 128,
+      "name": "cicgemv_block_size_XYT_BLOCK",
       "tags": []
     },
-    "cicgemv_block_size_X_BLOCK": {
-      "default": 1024,
+    "cicgemv_block_size_XY_BLOCK": {
+      "default": 32768,
       "flavor": "poweroftwo",
-      "maximum": 1024,
-      "minimum": 1,
-      "name": "cicgemv_block_size_X_BLOCK",
+      "maximum": 32768,
+      "minimum": 128,
+      "name": "cicgemv_block_size_XY_BLOCK",
       "tags": []
     },
     "cicgemv_block_size_YT_BLOCK": {
@@ -8869,20 +8873,20 @@
         ]
       ]
     },
-    "didgemm_block_size_XT_BLOCK": {
-      "default": 4096,
+    "didgemm_block_size_XYT_BLOCK": {
+      "default": 32768,
       "flavor": "poweroftwo",
-      "maximum": 4096,
-      "minimum": 1,
-      "name": "didgemm_block_size_XT_BLOCK",
+      "maximum": 32768,
+      "minimum": 128,
+      "name": "didgemm_block_size_XYT_BLOCK",
       "tags": []
     },
-    "didgemm_block_size_X_BLOCK": {
-      "default": 4096,
+    "didgemm_block_size_XY_BLOCK": {
+      "default": 32768,
       "flavor": "poweroftwo",
-      "maximum": 4096,
-      "minimum": 1,
-      "name": "didgemm_block_size_X_BLOCK",
+      "maximum": 32768,
+      "minimum": 128,
+      "name": "didgemm_block_size_XY_BLOCK",
       "tags": []
     },
     "didgemm_block_size_YT_BLOCK": {
@@ -8909,20 +8913,20 @@
       "name": "didgemv_block_size_T_BLOCK",
       "tags": []
     },
-    "didgemv_block_size_XT_BLOCK": {
-      "default": 4096,
+    "didgemv_block_size_XYT_BLOCK": {
+      "default": 32768,
       "flavor": "poweroftwo",
-      "maximum": 4096,
-      "minimum": 1,
-      "name": "didgemv_block_size_XT_BLOCK",
+      "maximum": 32768,
+      "minimum": 128,
+      "name": "didgemv_block_size_XYT_BLOCK",
       "tags": []
     },
-    "didgemv_block_size_X_BLOCK": {
-      "default": 4096,
+    "didgemv_block_size_XY_BLOCK": {
+      "default": 32768,
       "flavor": "poweroftwo",
-      "maximum": 4096,
-      "minimum": 1,
-      "name": "didgemv_block_size_X_BLOCK",
+      "maximum": 32768,
+      "minimum": 128,
+      "name": "didgemv_block_size_XY_BLOCK",
       "tags": []
     },
     "didgemv_block_size_YT_BLOCK": {
@@ -12457,34 +12461,34 @@
         ]
       ]
     },
-    "sisgemm_block_size_XT_BLOCK": {
-      "default": 1024,
+    "sisgemm_block_size_XYT_BLOCK": {
+      "default": 65536,
       "flavor": "poweroftwo",
-      "maximum": 1024,
-      "minimum": 1,
-      "name": "sisgemm_block_size_XT_BLOCK",
+      "maximum": 65536,
+      "minimum": 256,
+      "name": "sisgemm_block_size_XYT_BLOCK",
       "tags": []
     },
-    "sisgemm_block_size_X_BLOCK": {
-      "default": 1024,
+    "sisgemm_block_size_XY_BLOCK": {
+      "default": 65536,
       "flavor": "poweroftwo",
-      "maximum": 1024,
-      "minimum": 1,
-      "name": "sisgemm_block_size_X_BLOCK",
+      "maximum": 65536,
+      "minimum": 256,
+      "name": "sisgemm_block_size_XY_BLOCK",
       "tags": []
     },
     "sisgemm_block_size_YT_BLOCK": {
-      "default": 128,
+      "default": 256,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 256,
       "minimum": 1,
       "name": "sisgemm_block_size_YT_BLOCK",
       "tags": []
     },
     "sisgemm_block_size_Y_BLOCK": {
-      "default": 128,
+      "default": 256,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 256,
       "minimum": 1,
       "name": "sisgemm_block_size_Y_BLOCK",
       "tags": []
@@ -12497,34 +12501,34 @@
       "name": "sisgemv_block_size_T_BLOCK",
       "tags": []
     },
-    "sisgemv_block_size_XT_BLOCK": {
-      "default": 1024,
+    "sisgemv_block_size_XYT_BLOCK": {
+      "default": 65536,
       "flavor": "poweroftwo",
-      "maximum": 1024,
-      "minimum": 1,
-      "name": "sisgemv_block_size_XT_BLOCK",
+      "maximum": 65536,
+      "minimum": 256,
+      "name": "sisgemv_block_size_XYT_BLOCK",
       "tags": []
     },
-    "sisgemv_block_size_X_BLOCK": {
-      "default": 1024,
+    "sisgemv_block_size_XY_BLOCK": {
+      "default": 65536,
       "flavor": "poweroftwo",
-      "maximum": 1024,
-      "minimum": 1,
-      "name": "sisgemv_block_size_X_BLOCK",
+      "maximum": 65536,
+      "minimum": 256,
+      "name": "sisgemv_block_size_XY_BLOCK",
       "tags": []
     },
     "sisgemv_block_size_YT_BLOCK": {
-      "default": 128,
+      "default": 256,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 256,
       "minimum": 1,
       "name": "sisgemv_block_size_YT_BLOCK",
       "tags": []
     },
     "sisgemv_block_size_Y_BLOCK": {
-      "default": 128,
+      "default": 256,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 256,
       "minimum": 1,
       "name": "sisgemv_block_size_Y_BLOCK",
       "tags": []
@@ -13930,34 +13934,34 @@
         ]
       ]
     },
-    "zizgemm_block_size_XT_BLOCK": {
-      "default": 4096,
+    "zizgemm_block_size_XYT_BLOCK": {
+      "default": 16384,
       "flavor": "poweroftwo",
-      "maximum": 4096,
-      "minimum": 1,
-      "name": "zizgemm_block_size_XT_BLOCK",
+      "maximum": 16384,
+      "minimum": 64,
+      "name": "zizgemm_block_size_XYT_BLOCK",
       "tags": []
     },
-    "zizgemm_block_size_X_BLOCK": {
-      "default": 4096,
+    "zizgemm_block_size_XY_BLOCK": {
+      "default": 16384,
       "flavor": "poweroftwo",
-      "maximum": 4096,
-      "minimum": 1,
-      "name": "zizgemm_block_size_X_BLOCK",
+      "maximum": 16384,
+      "minimum": 64,
+      "name": "zizgemm_block_size_XY_BLOCK",
       "tags": []
     },
     "zizgemm_block_size_YT_BLOCK": {
-      "default": 128,
+      "default": 64,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 64,
       "minimum": 1,
       "name": "zizgemm_block_size_YT_BLOCK",
       "tags": []
     },
     "zizgemm_block_size_Y_BLOCK": {
-      "default": 128,
+      "default": 64,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 64,
       "minimum": 1,
       "name": "zizgemm_block_size_Y_BLOCK",
       "tags": []
@@ -13970,34 +13974,34 @@
       "name": "zizgemv_block_size_T_BLOCK",
       "tags": []
     },
-    "zizgemv_block_size_XT_BLOCK": {
-      "default": 4096,
+    "zizgemv_block_size_XYT_BLOCK": {
+      "default": 16384,
       "flavor": "poweroftwo",
-      "maximum": 4096,
-      "minimum": 1,
-      "name": "zizgemv_block_size_XT_BLOCK",
+      "maximum": 16384,
+      "minimum": 64,
+      "name": "zizgemv_block_size_XYT_BLOCK",
       "tags": []
     },
-    "zizgemv_block_size_X_BLOCK": {
-      "default": 4096,
+    "zizgemv_block_size_XY_BLOCK": {
+      "default": 16384,
       "flavor": "poweroftwo",
-      "maximum": 4096,
-      "minimum": 1,
-      "name": "zizgemv_block_size_X_BLOCK",
+      "maximum": 16384,
+      "minimum": 64,
+      "name": "zizgemv_block_size_XY_BLOCK",
       "tags": []
     },
     "zizgemv_block_size_YT_BLOCK": {
-      "default": 128,
+      "default": 64,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 64,
       "minimum": 1,
       "name": "zizgemv_block_size_YT_BLOCK",
       "tags": []
     },
     "zizgemv_block_size_Y_BLOCK": {
-      "default": 128,
+      "default": 64,
       "flavor": "poweroftwo",
-      "maximum": 128,
+      "maximum": 64,
       "minimum": 1,
       "name": "zizgemv_block_size_Y_BLOCK",
       "tags": []

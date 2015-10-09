@@ -122,13 +122,14 @@ class Suite(object):
 
 class MetricSuite(Suite):
 
-  def __init__(self, metrics, params, ranges, attribute):
+  def __init__(self, metrics, params, ranges, attribute, silent_flags=""):
     self.params = params
     self.ranges = ranges
     self.attribute = attribute
     self.metric_rows = []
     self.argss = []
     self.metrics = []
+    self.silent_flags = silent_flags
     for args in itertools.product(*ranges):
       self.argss.append(args)
       row = [copy.deepcopy(metric) for metric in metrics]
@@ -139,7 +140,7 @@ class MetricSuite(Suite):
   def setup(self, **kwargs):
     for (metric_row, args) in zip(self.metric_rows, self.argss):
       for metric in metric_row:
-        metric.setup(attribute = self.attribute, flagss = [terminal.flags(self.params, args)],**kwargs)
+        metric.setup(attribute = self.attribute, flagss = [terminal.flags(self.params, args)], silent_flags = self.silent_flags, **kwargs)
 
   def get_command_list(self):
     command_list = []
@@ -223,12 +224,13 @@ class Test(object):
 class ExecutableTest(Test):
   base_flags = ""
 
-  def setup(self, flagss=[""], **kwargs):
+  def setup(self, flagss=[""], silent_flags="", **kwargs):
+    self.silent_flags = silent_flags
     self.flagss = flagss
     self.executable_output = terminal.make(self.executable, **kwargs)
 
   def get_command_list(self):
-    return ["{} {} {}".format(self.executable_output, self.base_flags, flags) for flags in self.flagss]
+    return ["{} {} {} {}".format(self.executable_output, self.base_flags, self.silent_flags, flags) for flags in self.flagss]
 
   def get_num_commands(self):
     return 1
