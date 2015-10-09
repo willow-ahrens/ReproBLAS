@@ -63,7 +63,7 @@ ENDIAN := $(shell perl -le 'print unpack(N,pack(L,0x01020304)) == 0x01020304 ? b
 #BLAS := REF
 #BLAS := ATLAS
 #BLAS := MKL
-BLAS := ACCELERATE
+#BLAS := ACCELERATE
 #BLAS := CUSTOM
 
 # select CUSTOM BLAS LDFLAGS (if BLAS == CUSTOM)
