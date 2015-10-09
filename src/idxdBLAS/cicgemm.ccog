@@ -13,18 +13,18 @@ from src.common import blockSize
 from scripts import terminal
 
 rounded_cache = 2**(int(terminal.get_cache()).bit_length() - 1)
-xy_block = (rounded_cache//2)//dataTypes.FloatComplex.byte_size
-y_block = min((rounded_cache//2), 256)//dataTypes.FloatComplex.byte_size
+xy_block = rounded_cache//dataTypes.FloatComplex.byte_size
+y_block = max(xy_block//256, 1)
 
 cog.out(generate.generate(blockSize.BlockSize("cicgemm", "Y_BLOCK", 1, y_block, y_block, ["bench_rcgemm_TransB_fold_{}".format(terminal.get_sidefaultfold())]), cog.inFile, args, params, mode))
 cog.out(generate.generate(blockSize.BlockSize("cicgemm", "XY_BLOCK", y_block, xy_block, xy_block, ["bench_rcgemm_TransB_fold_{}".format(terminal.get_sidefaultfold())]), cog.inFile, args, params, mode))
 cog.out(generate.generate(blockSize.BlockSize("cicgemm", "YT_BLOCK", 1, y_block, y_block, ["bench_rcgemm_TransA_fold_{}".format(terminal.get_sidefaultfold())]), cog.inFile, args, params, mode))
 cog.out(generate.generate(blockSize.BlockSize("cicgemm", "XYT_BLOCK", y_block, xy_block, xy_block, ["bench_rcgemm_TransA_fold_{}".format(terminal.get_sidefaultfold())]), cog.inFile, args, params, mode))
 ]]]*/
-#define Y_BLOCK 16
-#define XY_BLOCK 16
-#define YT_BLOCK 16
-#define XYT_BLOCK 16
+#define Y_BLOCK 128
+#define XY_BLOCK 32768
+#define YT_BLOCK 128
+#define XYT_BLOCK 32768
 //[[[end]]]
 #define X_BLOCK (XY_BLOCK/Y_BLOCK)
 #define XT_BLOCK (XYT_BLOCK/YT_BLOCK)

@@ -195,7 +195,7 @@ def get_fma(verbose="false"):
 def get_cache(verbose="false"):
   info = cpuinfo.get_cpu_info()
   if info:
-    return info['l2_cache_size']
+    return int(info['l2_cache_size']) * 1024
   else:
     return config.cpu_info()["cache"]
 
@@ -218,4 +218,3 @@ def get_peak_time(output, verbose="false"):
     if key in output:
       data[key] = output[key]
   return config.peak_time(data)
-
