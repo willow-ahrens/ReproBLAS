@@ -84,15 +84,23 @@ class IntegerParameter(Parameter):
     self.minimum = minimum
     self.maximum = maximum
     self.step = step
-    assert minimum % step == 0, "ReproBLAS error: integer parameter minimum must be multiple of step"
-    assert maximum % step == 0, "ReproBLAS error: integer parameter maximum must be multiple of step"
+    assert step > 0, "ReproBLAS error: integer parameter {} step {} must be greater than zero".format(self.name, self.step)
+    assert minimum % step == 0, "ReproBLAS error: integer parameter {} minimum {} must be multiple of step {}".format(self.name, self.minimum, self.step)
+    assert maximum % step == 0, "ReproBLAS error: integer parameter {} maximum {} must be multiple of step {}".format(self.name, self.minimum, self.step)
+    assert minimum <= maximum, "ReproBLAS error: integer parameter {} maximum {} must be >= minimum {}".format(self.name, self.maximum, self.minimum)
     self.default = self.parse_value(default)
 
   def parse_value(self, value):
     value = int(value)
-    assert value >= self.minimum, "ReproBLAS error: integer parameter must be >= min"
-    assert value <= self.maximum, "ReproBLAS error: integer parameter must be <= max"
-    assert value % self.step == 0, "ReproBLAS error: integer parameter value must be multiple of step"
+    if value % self.step != 0:
+      print("ReproBLAS warning: integer parameter {} = {} must be multiple of {}".format(self.name, value, self.step))
+      value = round(value/float(self.step))*self.step
+    if value < self.minimum:
+      print("ReproBLAS warning: integer parameter {} = {} must be >= {}".format(self.name, value, self.minimum))
+      value = self.minimum
+    if value > self.maximum:
+      print("ReproBLAS warning: integer parameter {} = {} must be <= {}".format(self.name, value, self.maximum))
+      value = self.maximum
     return value
 
   def encode(self):
@@ -107,16 +115,23 @@ class PowerOfTwoParameter(Parameter):
   def __init__(self, name, tags, minimum, maximum, default):
     super(PowerOfTwoParameter, self).__init__(name, tags)
     self.flavor = "poweroftwo"
-    self.minimum = minimum
-    self.maximum = maximum
-    assert math.log(minimum, 2) % 1 == 0, "ReproBLAS error: power of two parameter minimum must be power of two"
-    assert math.log(maximum, 2) % 1 == 0, "ReproBLAS error: power of two parameter maximum must be power of two"
+    self.minimum = int(minimum)
+    self.maximum = int(maximum)
+    assert self.minimum == 2**(self.minimum.bit_length() - 1), "ReproBLAS error: power of two parameter {} minimum {} must be power of two".format(self.name, self.minimum)
+    assert self.maximum == 2**(self.maximum.bit_length() - 1), "ReproBLAS error: power of two parameter {} maximum {} must be power of two".format(self.name, self.maximum)
     self.default = self.parse_value(default)
 
   def parse_value(self, value):
-    assert math.log(value, 2) % 1 == 0, "ReproBLAS error: power of two parameter value must be power of two"
-    assert value >= self.minimum, "ReproBLAS error: power of two parameter must be >= min"
-    assert value <= self.maximum, "ReproBLAS error: power of two parameter must be <= max"
+    value = int(value)
+    if value != 2**(value.bit_length() - 1):
+      print("ReproBLAS warning: power of two parameter {} = {} must be power of two".format(self.name, value))
+      value = 2**(value.bit_length())
+    if value < self.minimum:
+      print("ReproBLAS warning: power of two parameter {} = {} must be >= {}".format(self.name, value, self.minimum))
+      value = self.minimum
+    if value > self.maximum:
+      print("ReproBLAS warning: power of two parameter {} = {} must be <= {}".format(self.name, value, self.maximum))
+      value = self.maximum
     return value
 
   def encode(self):
