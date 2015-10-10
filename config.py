@@ -13,7 +13,9 @@ import sys
 import time
 
 def status(i, n):
-  n = max(n - 1, 1)
+  if n == 0 and i == 0:
+    n = 1
+    i = 1
   width = 80
   done = (i * (width - 10))//n
   remaining = width - 10 - done
@@ -58,7 +60,7 @@ def run(command_list, verbose="false"):
   for (i, command) in enumerate(command_list):
     result_list.append(execute((command, verbose)))
     if verbose != "true":
-      status(i, len(command_list));
+      status(i + 1, len(command_list));
   if verbose != "true":
     print("")
   return result_list
@@ -82,7 +84,7 @@ def run_parallel(command_list, verbose="false"):
     status(0, len(command_list));
   for (i, result) in enumerate(p.imap(execute, [(command, verbose) for command in command_list], chunksize=multiprocessing.cpu_count() * 8)):
     if verbose != "true":
-      status(i, len(command_list));
+      status(i + 1, len(command_list));
     result_list.append(result)
   if verbose != "true":
     print()

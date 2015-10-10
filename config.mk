@@ -47,7 +47,7 @@ PYTHON = python
 #SSE4_2 := true
 #SSE4_2 := false
 #AVX := true
-AVX := false
+#AVX := false
 #AVX2 := true
 #AVX2 := false
 
@@ -63,7 +63,7 @@ ENDIAN := $(shell perl -le 'print unpack(N,pack(L,0x01020304)) == 0x01020304 ? b
 #BLAS := REF
 #BLAS := ATLAS
 #BLAS := MKL
-#BLAS := ACCELERATE
+BLAS := ACCELERATE
 #BLAS := CUSTOM
 
 # select CUSTOM BLAS LDFLAGS (if BLAS == CUSTOM)
