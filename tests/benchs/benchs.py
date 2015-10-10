@@ -351,10 +351,16 @@ for i in range(1, terminal.get_simaxfold() + 1):
                      "bench_rsdot_fold_{}".format(i): (BenchRSDOTTest, flagss),\
                      "bench_rsgemv_fold_{}".format(i): (BenchRSGEMVTest, flagss),\
                      "bench_rsgemv_TransA_fold_{}".format(i): (BenchRSGEMVTest, ["--TransA Trans " + flags for flags in flagss]),\
+                     "bench_rsgemv_AvgTransA_fold_{}".format(i): (BenchRSGEMVTest, flagss + \
+                                                                                   ["--TransA Trans " + flags for flags in flagss]),\
                      "bench_rsgemm_fold_{}".format(i): (BenchRSGEMMTest, flagss),\
                      "bench_rsgemm_TransB_fold_{}".format(i): (BenchRSGEMMTest, ["--TransB Trans " + flags for flags in flagss]),\
                      "bench_rsgemm_TransA_fold_{}".format(i): (BenchRSGEMMTest, ["--TransA Trans " + flags for flags in flagss]),\
                      "bench_rsgemm_TransA_TransB_fold_{}".format(i): (BenchRSGEMMTest, ["--TransA Trans --TransB Trans " + flags for flags in flagss]),\
+                     "bench_rsgemm_AvgTransA_AvgTransB_fold_{}".format(i): (BenchRSGEMMTest, flagss + \
+                                                                                             ["--TransB Trans " + flags for flags in flagss] + \
+                                                                                             ["--TransA Trans " + flags for flags in flagss] + \
+                                                                                             ["--TransA Trans --TransB Trans " + flags for flags in flagss]),\
                      "bench_rcsum_fold_{}".format(i): (BenchRCSUMTest, flagss),\
                      "bench_rscasum_fold_{}".format(i): (BenchRSCASUMTest, flagss),\
                      "bench_rscnrm2_fold_{}".format(i): (BenchRSCNRM2Test, flagss),\
@@ -362,10 +368,16 @@ for i in range(1, terminal.get_simaxfold() + 1):
                      "bench_rcdotc_fold_{}".format(i): (BenchRCDOTCTest, flagss),\
                      "bench_rcgemv_fold_{}".format(i): (BenchRCGEMVTest, flagss),\
                      "bench_rcgemv_TransA_fold_{}".format(i): (BenchRCGEMVTest, ["--TransA Trans " + flags for flags in flagss]),\
+                     "bench_rcgemv_AvgTransA_fold_{}".format(i): (BenchRCGEMVTest, flagss + \
+                                                                                   ["--TransA Trans " + flags for flags in flagss]),\
                      "bench_rcgemm_fold_{}".format(i): (BenchRCGEMMTest, flagss),\
                      "bench_rcgemm_TransB_fold_{}".format(i): (BenchRCGEMMTest, ["--TransB Trans " + flags for flags in flagss]),\
                      "bench_rcgemm_TransA_fold_{}".format(i): (BenchRCGEMMTest, ["--TransA Trans " + flags for flags in flagss]),\
                      "bench_rcgemm_TransA_TransB_fold_{}".format(i): (BenchRCGEMMTest, ["--TransA Trans --TransB Trans " + flags for flags in flagss]),\
+                     "bench_rcgemm_AvgTransA_AvgTransB_fold_{}".format(i): (BenchRCGEMMTest, flagss + \
+                                                                                             ["--TransB Trans " + flags for flags in flagss] + \
+                                                                                             ["--TransA Trans " + flags for flags in flagss] + \
+                                                                                             ["--TransA Trans --TransB Trans " + flags for flags in flagss]),\
                     })
 
 for i in range(1, terminal.get_dimaxfold() + 1):
@@ -380,7 +392,16 @@ for i in range(1, terminal.get_dimaxfold() + 1):
                      "bench_rddot_fold_{}".format(i): (BenchRDDOTTest, flagss),\
                      "bench_rdgemv_fold_{}".format(i): (BenchRDGEMVTest, flagss),\
                      "bench_rdgemv_TransA_fold_{}".format(i): (BenchRDGEMVTest, ["--TransA Trans " + flags for flags in flagss]),\
+                     "bench_rdgemv_AvgTransA_fold_{}".format(i): (BenchRDGEMVTest, flagss + \
+                                                                                   ["--TransA Trans " + flags for flags in flagss]),\
                      "bench_rdgemm_fold_{}".format(i): (BenchRDGEMMTest, flagss),\
+                     "bench_rdgemm_TransB_fold_{}".format(i): (BenchRDGEMMTest, ["--TransB Trans " + flags for flags in flagss]),\
+                     "bench_rdgemm_TransA_fold_{}".format(i): (BenchRDGEMMTest, ["--TransA Trans " + flags for flags in flagss]),\
+                     "bench_rdgemm_TransA_TransB_fold_{}".format(i): (BenchRDGEMMTest, ["--TransA Trans --TransB Trans " + flags for flags in flagss]),\
+                     "bench_rdgemm_AvgTransA_AvgTransB_fold_{}".format(i): (BenchRDGEMMTest, flagss + \
+                                                                                             ["--TransB Trans " + flags for flags in flagss] + \
+                                                                                             ["--TransA Trans " + flags for flags in flagss] + \
+                                                                                             ["--TransA Trans --TransB Trans " + flags for flags in flagss]),\
                      "bench_rdgemm_TransB_fold_{}".format(i): (BenchRDGEMMTest, ["--TransB Trans " + flags for flags in flagss]),\
                      "bench_rdgemm_TransA_fold_{}".format(i): (BenchRDGEMMTest, ["--TransA Trans " + flags for flags in flagss]),\
                      "bench_rdgemm_TransA_TransB_fold_{}".format(i): (BenchRDGEMMTest, ["--TransA Trans --TransB Trans " + flags for flags in flagss]),\
@@ -391,8 +412,14 @@ for i in range(1, terminal.get_dimaxfold() + 1):
                      "bench_rzdotu_fold_{}".format(i): (BenchRZDOTUTest, flagss),\
                      "bench_rzgemv_fold_{}".format(i): (BenchRZGEMVTest, flagss),\
                      "bench_rzgemv_TransA_fold_{}".format(i): (BenchRZGEMVTest, ["--TransA Trans " + flags for flags in flagss]),\
+                     "bench_rzgemv_AvgTransA_fold_{}".format(i): (BenchRZGEMVTest, flagss + \
+                                                                                   ["--TransA Trans " + flags for flags in flagss]),\
                      "bench_rzgemm_fold_{}".format(i): (BenchRZGEMMTest, flagss),\
                      "bench_rzgemm_TransB_fold_{}".format(i): (BenchRZGEMMTest, ["--TransB Trans " + flags for flags in flagss]),\
                      "bench_rzgemm_TransA_fold_{}".format(i): (BenchRZGEMMTest, ["--TransA Trans " + flags for flags in flagss]),\
                      "bench_rzgemm_TransA_TransB_fold_{}".format(i): (BenchRZGEMMTest, ["--TransA Trans --TransB Trans " + flags for flags in flagss]),\
+                     "bench_rzgemm_AvgTransA_AvgTransB_fold_{}".format(i): (BenchRZGEMMTest, flagss + \
+                                                                                             ["--TransB Trans " + flags for flags in flagss] + \
+                                                                                             ["--TransA Trans " + flags for flags in flagss] + \
+                                                                                             ["--TransA Trans --TransB Trans " + flags for flags in flagss]),\
                     })

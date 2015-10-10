@@ -135,7 +135,7 @@ def peak_time(data):
   #s_ops = max(data["s_add"] + data["s_mul"] + data["s_fma"], data["s_orb"])
   d_ops = max(data["d_add"], data["d_mul"], data["d_fma"], data["d_orb"])
   s_ops = max(data["s_add"], data["s_mul"], data["s_fma"], data["s_orb"])
-  return float(d_ops/vec_d_ops + s_ops/vec_s_ops)/data["freq"];
+  return float((d_ops + vec_d_ops - 1)//vec_d_ops + (s_ops + vec_s_ops - 1)//vec_s_ops)/data["freq"];
 
 ##
 #  @brief clarify information about host machine

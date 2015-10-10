@@ -5,6 +5,7 @@ bench_harness = harness.Harness("bench")
 attribute = "%peak"
 #attribute = "time"
 #attribute = "freq"
+
 bench_harness.add_suite(benchs.BenchSuite([benchs.BenchRDSUMTest(), benchs.BenchRDASUMTest(), benchs.BenchRDNRM2Test(), benchs.BenchRDDOTTest()], ["N", "fold"], [[4096], [3]], attribute, silent_flags="--FillA rand"))
 bench_harness.add_suite(benchs.BenchSuite([benchs.BenchRZSUMTest(), benchs.BenchRDZASUMTest(), benchs.BenchRDZNRM2Test(), benchs.BenchRZDOTUTest(), benchs.BenchRZDOTCTest()], ["N", "fold"], [[4096], [3]], attribute, silent_flags="--FillA rand"))
 bench_harness.add_suite(benchs.BenchSuite([benchs.BenchRSSUMTest(), benchs.BenchRSASUMTest(), benchs.BenchRSNRM2Test(), benchs.BenchRSDOTTest()], ["N", "fold"], [[4096], [3]], attribute, silent_flags="--FillA rand"))

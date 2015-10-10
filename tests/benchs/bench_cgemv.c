@@ -68,7 +68,7 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
   metric_load_double("trials", (double)(trials));
   metric_load_double("input", dN * dM + dN + dM);
   metric_load_double("output", dNY);
-  metric_load_double("f_fma", 4.0 * dN * dM);
+  metric_load_double("s_fma", 4.0 * dN * dM);
   metric_dump();
 
   free(X);

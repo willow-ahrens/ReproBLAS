@@ -30,7 +30,7 @@ LDFLAGS +=
 #MPICFLAGS =
 
 # select python (comment all for auto)
-PYTHON = python
+#PYTHON = python
 #PYTHON = python3
 
 # select vectorization (comment all for auto)
