@@ -63,7 +63,7 @@ ENDIAN := $(shell perl -le 'print unpack(N,pack(L,0x01020304)) == 0x01020304 ? b
 #BLAS := REF
 #BLAS := ATLAS
 #BLAS := MKL
-BLAS := ACCELERATE
+#BLAS := ACCELERATE
 #BLAS := CUSTOM
 
 # select CUSTOM BLAS LDFLAGS (if BLAS == CUSTOM)
@@ -83,7 +83,7 @@ BLAS := ACCELERATE
 # library. One can give this parameter on the command line as well. If you have
 # run the autotuner, you can point this at the output file to use the tuned
 # arguments)
-ARGS = $(TOP)/src/default_args.json
+ARGS = $(TOP)/src/tuned_args.json
 
 # select parameters file (contains all tuning parameters in the library. This 
 # parameter likely does not need modification)
