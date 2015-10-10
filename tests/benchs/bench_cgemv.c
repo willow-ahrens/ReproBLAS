@@ -43,15 +43,15 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
     break;
   }
 
-  float complex *A  = util_zmat_alloc(Order, M, N, lda);
-  float complex *X  = util_zvec_alloc(NX, incX);
-  float complex *Y  = util_zvec_alloc(NY, incY);
+  float complex *A  = util_cmat_alloc(Order, M, N, lda);
+  float complex *X  = util_cvec_alloc(NX, incX);
+  float complex *Y  = util_cvec_alloc(NY, incY);
   float complex alpha = RealAlpha + I * ImagBeta;
   float complex beta = RealBeta + I * ImagBeta;
 
-  util_zmat_fill(Order, 'n', M, N, A, lda, FillA, RealScaleA, ImagScaleA);
-  util_zvec_fill(NX, X, incX, FillX, RealScaleX, ImagScaleX);
-  util_zvec_fill(NY, Y, incY, FillY, RealScaleY, ImagScaleY);
+  util_cmat_fill(Order, 'n', M, N, A, lda, FillA, RealScaleA, ImagScaleA);
+  util_cvec_fill(NX, X, incX, FillX, RealScaleX, ImagScaleX);
+  util_cvec_fill(NY, Y, incY, FillY, RealScaleY, ImagScaleY);
   float complex *res  = (float complex*)malloc(NY * incY * sizeof(float complex));
 
   for(i = 0; i < trials; i++){
