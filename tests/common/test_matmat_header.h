@@ -62,7 +62,7 @@ static void matmat_options_initialize(void){
   M._int.required          = 0;
   M._int.min               = 0;
   M._int.max               = INT_MAX;
-  M._int.value             = 2048;
+  M._int.value             = 512;
 
   N._int.header.type       = opt_int;
   N._int.header.short_name = 'N';
@@ -71,7 +71,7 @@ static void matmat_options_initialize(void){
   N._int.required          = 0;
   N._int.min               = 0;
   N._int.max               = INT_MAX;
-  N._int.value             = 2048;
+  N._int.value             = 512;
 
   K._int.header.type       = opt_int;
   K._int.header.short_name = 'K';
@@ -80,7 +80,7 @@ static void matmat_options_initialize(void){
   K._int.required          = 0;
   K._int.min               = 0;
   K._int.max               = INT_MAX;
-  K._int.value             = 2048;
+  K._int.value             = 4096;
 
   lda._int.header.type       = opt_int;
   lda._int.header.short_name = '\0';

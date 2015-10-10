@@ -55,16 +55,48 @@ int bench_matmat_fill_test(int argc, char** argv, char Order, char TransA, char 
 
   util_random_seed();
 
-  double *A  = util_dmat_alloc(Order, M, K, lda);
-  double *B  = util_dmat_alloc(Order, K, N, ldb);
+  char NTransA;
+  int opAM;
+  int opAK;
+  int opBK;
+  int opBN;
+
+  switch(TransA){
+    case 'n':
+    case 'N':
+      opAM = M;
+      opAK = K;
+      NTransA = 't';
+      break;
+    default:
+      opAM = K;
+      opAK = M;
+      NTransA = 'n';
+      break;
+  }
+
+  switch(TransB){
+    case 'n':
+    case 'N':
+      opBK = K;
+      opBN = N;
+      break;
+    default:
+      opBK = N;
+      opBN = K;
+      break;
+  }
+
+  double *A  = util_dmat_alloc(Order, opAM, opAK, lda);
+  double *B  = util_dmat_alloc(Order, opBK, opBN, ldb);
   double *C  = util_dmat_alloc(Order, M, N, ldc);
   double *res  = util_dmat_alloc(Order, M, N, ldc);
   double alpha = RealAlpha;
   double beta = RealBeta;
 
-  util_dmat_fill(Order, TransA, M, N, A, lda, FillA, RealScaleA, ImagScaleA);
-  util_dmat_fill(Order, TransB, M, N, A, ldb, FillB, RealScaleB, ImagScaleB);
-  util_dmat_fill(Order, 'n', M, N, A, ldc, FillC, RealScaleC, ImagScaleC);
+  util_dmat_fill(Order, NTransA, opAM, opAK, A, lda, FillA, RealScaleA, ImagScaleA);
+  util_dmat_fill(Order, TransB, opBK, opBN, B, ldb, FillB, RealScaleB, ImagScaleB);
+  util_dmat_fill(Order, 'n', M, N, C, ldc, FillC, RealScaleC, ImagScaleC);
 
   for(i = 0; i < trials; i++){
     switch(Order){
