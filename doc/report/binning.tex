@@ -241,7 +241,12 @@ paper (especially Algorithms \ref{alg:depositrestricted} and \ref{alg:deposit}).
     This means that we can approximate $x$ using the sum of its slices to the
     nearest multiple of $2^{e_{\min}-1}$.
 
-    Theorem \ref{thm:dbound} shows a bound on $d(x, i)$.
+    As the slices of $x$ provide a good approximation of $x$, the sum of the slices of some $x_0, ..., x_{n - 1} \in \R$ provide a good approximation of $\sum\limits_{j = 0}^{n - 1} x_j$. This is the main idea behind the reproducible summation algorithm presented here.
+    Since the largest nonzero slices of $x$ provide the best approximation to $x$, we compute the sum of the slices of each $x_0, ..., x_{n - 1}$ corresponding to the largest $K$ bins such that at least one slice in the largest bin is nonzero. If such an approximation can be computed exactly, then it is necessarily reproducibile.
+
+    If the sums of slices corresponding to each bin are kept separate, we can compute the reproducible sum iteratively, only storing sums of nonzero slices in the $K$ largest bins seen so far. When a summand is encountered with nonzero slices in a larger bin that what has been seen previously, we abandon sums of slices in smaller bins to store the sums of slices in the larger ones.
+
+    Before moving on to discussions of how to store and compute the slices and sums of slices, we must show a bound on their size. Theorem \ref{thm:dbound} shows a bound on $d(x, i)$.
 
     \begin{samepage}
     \begin{thm}
