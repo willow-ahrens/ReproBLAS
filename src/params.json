@@ -2334,16 +2334,16 @@
       "bench_rcsum_fold_4"
     ],
     "cicgemm_block_size_XYT_BLOCK": [
-      "bench_rcgemm_TransA_fold_3"
+      "bench_rcgemm_AvgTransA_AvgTransB_fold_3"
     ],
     "cicgemm_block_size_XY_BLOCK": [
-      "bench_rcgemm_TransB_fold_3"
+      "bench_rcgemm_AvgTransA_AvgTransB_fold_3"
     ],
     "cicgemm_block_size_YT_BLOCK": [
-      "bench_rcgemm_TransA_fold_3"
+      "bench_rcgemm_AvgTransA_AvgTransB_fold_3"
     ],
     "cicgemm_block_size_Y_BLOCK": [
-      "bench_rcgemm_TransB_fold_3"
+      "bench_rcgemm_AvgTransA_AvgTransB_fold_3"
     ],
     "cicgemv_block_size_T_BLOCK": [
       "bench_rcgemv_TransA_fold_3"
@@ -2784,16 +2784,16 @@
       "bench_rdsum_fold_4"
     ],
     "didgemm_block_size_XYT_BLOCK": [
-      "bench_rdgemm_TransA_fold_3"
+      "bench_rdgemm_AvgTransA_AvgTransB_fold_3"
     ],
     "didgemm_block_size_XY_BLOCK": [
-      "bench_rdgemm_TransB_fold_3"
+      "bench_rdgemm_AvgTransA_AvgTransB_fold_3"
     ],
     "didgemm_block_size_YT_BLOCK": [
-      "bench_rdgemm_TransA_fold_3"
+      "bench_rdgemm_AvgTransA_AvgTransB_fold_3"
     ],
     "didgemm_block_size_Y_BLOCK": [
-      "bench_rdgemm_TransB_fold_3"
+      "bench_rdgemm_AvgTransA_AvgTransB_fold_3"
     ],
     "didgemv_block_size_T_BLOCK": [
       "bench_rdgemv_TransA_fold_3"
@@ -3639,16 +3639,16 @@
       "bench_rssum_fold_4"
     ],
     "sisgemm_block_size_XYT_BLOCK": [
-      "bench_rsgemm_TransA_fold_3"
+      "bench_rsgemm_AvgTransA_AvgTransB_fold_3"
     ],
     "sisgemm_block_size_XY_BLOCK": [
-      "bench_rsgemm_TransB_fold_3"
+      "bench_rsgemm_AvgTransA_AvgTransB_fold_3"
     ],
     "sisgemm_block_size_YT_BLOCK": [
-      "bench_rsgemm_TransA_fold_3"
+      "bench_rsgemm_AvgTransA_AvgTransB_fold_3"
     ],
     "sisgemm_block_size_Y_BLOCK": [
-      "bench_rsgemm_TransB_fold_3"
+      "bench_rsgemm_AvgTransA_AvgTransB_fold_3"
     ],
     "sisgemv_block_size_T_BLOCK": [
       "bench_rsgemv_TransA_fold_3"
@@ -3999,16 +3999,16 @@
       "bench_rzsum_fold_4"
     ],
     "zizgemm_block_size_XYT_BLOCK": [
-      "bench_rzgemm_TransA_fold_3"
+      "bench_rzgemm_AvgTransA_AvgTransB_fold_3"
     ],
     "zizgemm_block_size_XY_BLOCK": [
-      "bench_rzgemm_TransB_fold_3"
+      "bench_rzgemm_AvgTransA_AvgTransB_fold_3"
     ],
     "zizgemm_block_size_YT_BLOCK": [
-      "bench_rzgemm_TransA_fold_3"
+      "bench_rzgemm_AvgTransA_AvgTransB_fold_3"
     ],
     "zizgemm_block_size_Y_BLOCK": [
-      "bench_rzgemm_TransB_fold_3"
+      "bench_rzgemm_AvgTransA_AvgTransB_fold_3"
     ],
     "zizgemv_block_size_T_BLOCK": [
       "bench_rzgemv_TransA_fold_3"
@@ -4882,13 +4882,11 @@
       "cdepositDotU_max_unroll_width_SSE_fold_4",
       "cdepositDotU_expand_AVX_fold_4"
     ],
-    "bench_rcgemm_TransA_fold_3": [
-      "cicgemm_block_size_XYT_BLOCK",
-      "cicgemm_block_size_YT_BLOCK"
-    ],
-    "bench_rcgemm_TransB_fold_3": [
+    "bench_rcgemm_AvgTransA_AvgTransB_fold_3": [
       "cicgemm_block_size_XY_BLOCK",
-      "cicgemm_block_size_Y_BLOCK"
+      "cicgemm_block_size_Y_BLOCK",
+      "cicgemm_block_size_YT_BLOCK",
+      "cicgemm_block_size_XYT_BLOCK"
     ],
     "bench_rcgemv_TransA_fold_3": [
       "cicgemv_block_size_XYT_BLOCK",
@@ -5025,13 +5023,11 @@
       "ddepositDot_max_unroll_width_SSE_fold_4",
       "ddepositDot_max_unroll_width_SISD_fold_4"
     ],
-    "bench_rdgemm_TransA_fold_3": [
-      "didgemm_block_size_XYT_BLOCK",
-      "didgemm_block_size_YT_BLOCK"
-    ],
-    "bench_rdgemm_TransB_fold_3": [
+    "bench_rdgemm_AvgTransA_AvgTransB_fold_3": [
       "didgemm_block_size_XY_BLOCK",
-      "didgemm_block_size_Y_BLOCK"
+      "didgemm_block_size_Y_BLOCK",
+      "didgemm_block_size_YT_BLOCK",
+      "didgemm_block_size_XYT_BLOCK"
     ],
     "bench_rdgemv_TransA_fold_3": [
       "didgemv_block_size_T_BLOCK"
@@ -5380,13 +5376,11 @@
       "sdepositDot_expand_SSE_fold_4",
       "sdepositDot_max_unroll_width_AVX_fold_4"
     ],
-    "bench_rsgemm_TransA_fold_3": [
-      "sisgemm_block_size_XYT_BLOCK",
-      "sisgemm_block_size_YT_BLOCK"
-    ],
-    "bench_rsgemm_TransB_fold_3": [
+    "bench_rsgemm_AvgTransA_AvgTransB_fold_3": [
       "sisgemm_block_size_XY_BLOCK",
-      "sisgemm_block_size_Y_BLOCK"
+      "sisgemm_block_size_Y_BLOCK",
+      "sisgemm_block_size_YT_BLOCK",
+      "sisgemm_block_size_XYT_BLOCK"
     ],
     "bench_rsgemv_TransA_fold_3": [
       "sisgemv_block_size_T_BLOCK"
@@ -5567,13 +5561,11 @@
       "zdepositDotU_max_unroll_width_AVX_fold_4",
       "zdepositDotU_expand_SSE_fold_4"
     ],
-    "bench_rzgemm_TransA_fold_3": [
+    "bench_rzgemm_AvgTransA_AvgTransB_fold_3": [
       "zizgemm_block_size_YT_BLOCK",
-      "zizgemm_block_size_XYT_BLOCK"
-    ],
-    "bench_rzgemm_TransB_fold_3": [
       "zizgemm_block_size_XY_BLOCK",
-      "zizgemm_block_size_Y_BLOCK"
+      "zizgemm_block_size_Y_BLOCK",
+      "zizgemm_block_size_XYT_BLOCK"
     ],
     "bench_rzgemv_TransA_fold_3": [
       "zizgemv_block_size_XYT_BLOCK",
