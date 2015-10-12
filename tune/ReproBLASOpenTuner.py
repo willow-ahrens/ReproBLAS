@@ -72,8 +72,6 @@ def run(apis):
 
   for i in range(args.trials):
     print("{}/{}".format(i, args.trials))
-    #delete old source files
-    terminal.make_clean("src/")
 
     #create a new argument file
     test_arguments = copy.deepcopy(arguments)
@@ -81,7 +79,7 @@ def run(apis):
     desired_results = []
     for api in apis:
       desired_result = api.get_next_desired_result()
-      if desired_result is None:
+      if not desired_result:
         continue
       desired_results.append(desired_result)
       for (parameter, argument) in desired_result.configuration.data.items():
@@ -93,26 +91,29 @@ def run(apis):
         if type(parameter) == generate.PowerOfTwoParameter:
           test_arguments[parameter.name] = argument
       apis_to_run.append(api)
-    generate.serialize_arguments(test_arguments, arguments_file_name)
 
-    #build with these arguments
-    bench_tests = []
-    command_list = []
-    for api in apis_to_run:
-      bench_test = benchs.all_benchs[api.measurement_interface.benchmark]
-      bench_tests.append(bench_test[0]())
-      bench_tests[-1].setup(flagss = bench_test[1], attribute="%peak", args=arguments_file_name, remake=True, verbose=args.verbose)
-      command_list += bench_tests[-1].get_command_list()
+    if apis_to_run:
+      #build with these arguments
+      generate.serialize_arguments(test_arguments, arguments_file_name)
+      terminal.make_clean("./")
 
-    #run with these arguments
-    output_list = config.run(command_list, verbose=args.verbose)
+      bench_tests = []
+      command_list = []
+      for api in apis_to_run:
+        bench_test = benchs.all_benchs[api.measurement_interface.benchmark]
+        bench_tests.append(bench_test[0]())
+        bench_tests[-1].setup(flagss = bench_test[1], attribute="%peak", args=arguments_file_name, remake=True, verbose=args.verbose)
+        command_list += bench_tests[-1].get_command_list()
 
-    #return the results to the apis
-    for api, desired_result, bench_test in zip(apis_to_run, desired_results, bench_tests):
-      bench_test.parse_output_list(output_list[:len(bench_test.get_command_list())])
-      output_list = output_list[len(bench_test.get_command_list()):]
-      result = Result(time=(100.0/bench_test.get_result()))
-      api.report_result(desired_result, result)
+      #run with these arguments
+      output_list = config.run(command_list, verbose=args.verbose)
+
+      #return the results to the apis
+      for api, desired_result, bench_test in zip(apis_to_run, desired_results, bench_tests):
+        bench_test.parse_output_list(output_list[:len(bench_test.get_command_list())])
+        output_list = output_list[len(bench_test.get_command_list()):]
+        result = Result(time=(100.0/bench_test.get_result()))
+        api.report_result(desired_result, result)
 
   #parse the best configurations
   best_arguments = copy.deepcopy(arguments)
@@ -183,15 +184,19 @@ def main():
                                                                "bench_rcdotu_fold_{}".format(fold),
                                                                "bench_rcdotc_fold_{}".format(fold)]]
   run(apis)
-  """
+"""
   apis = [create_benchmark_api(benchmark) for benchmark in ["bench_rdgemv_fold_{}".format(terminal.get_didefaultfold()),
                                                             "bench_rdgemv_TransA_fold_{}".format(terminal.get_didefaultfold()),
-                                                            "bench_rdgemm_TransA_fold_{}".format(terminal.get_didefaultfold()),
-                                                            "bench_rdgemm_TransB_fold_{}".format(terminal.get_didefaultfold()),
+                                                            "bench_rdgemm_AvgTransA_AvgTransB_fold_{}".format(terminal.get_didefaultfold()),
                                                             "bench_rzgemv_fold_{}".format(terminal.get_didefaultfold()),
                                                             "bench_rzgemv_TransA_fold_{}".format(terminal.get_didefaultfold()),
-                                                            "bench_rzgemm_TransA_fold_{}".format(terminal.get_didefaultfold()),
-                                                            "bench_rzgemm_TransB_fold_{}".format(terminal.get_didefaultfold())]]
+                                                            "bench_rzgemm_AvgTransA_AvgTransB_fold_{}".format(terminal.get_didefaultfold()),
+                                                            "bench_rsgemv_fold_{}".format(terminal.get_didefaultfold()),
+                                                            "bench_rsgemv_TransA_fold_{}".format(terminal.get_didefaultfold()),
+                                                            "bench_rsgemm_AvgTransA_AvgTransB_fold_{}".format(terminal.get_didefaultfold()),
+                                                            "bench_rcgemv_fold_{}".format(terminal.get_didefaultfold()),
+                                                            "bench_rcgemv_TransA_fold_{}".format(terminal.get_didefaultfold()),
+                                                            "bench_rcgemm_AvgTransA_AvgTransB_fold_{}".format(terminal.get_didefaultfold())]]
   run(apis)
 
 if __name__ == '__main__':

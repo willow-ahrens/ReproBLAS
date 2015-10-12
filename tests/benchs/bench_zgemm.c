@@ -30,16 +30,48 @@ int bench_matmat_fill_test(int argc, char** argv, char Order, char TransA, char 
 
   util_random_seed();
 
-  double complex *A  = util_zmat_alloc(Order, M, K, lda);
-  double complex *B  = util_zmat_alloc(Order, K, N, ldb);
+  char NTransA;
+  int opAM;
+  int opAK;
+  int opBK;
+  int opBN;
+
+  switch(TransA){
+    case 'n':
+    case 'N':
+      opAM = M;
+      opAK = K;
+      NTransA = 't';
+      break;
+    default:
+      opAM = K;
+      opAK = M;
+      NTransA = 'n';
+      break;
+  }
+
+  switch(TransB){
+    case 'n':
+    case 'N':
+      opBK = K;
+      opBN = N;
+      break;
+    default:
+      opBK = N;
+      opBN = K;
+      break;
+  }
+
+  double complex *A  = util_zmat_alloc(Order, opAM, opAK, lda);
+  double complex *B  = util_zmat_alloc(Order, opBK, opBN, ldb);
   double complex *C  = util_zmat_alloc(Order, M, N, ldc);
   double complex *res  = util_zmat_alloc(Order, M, N, ldc);
   double complex alpha = RealAlpha + I * ImagAlpha;
   double complex beta = RealBeta + I * ImagBeta;
 
-  util_zmat_fill(Order, TransA, M, N, A, lda, FillA, RealScaleA, ImagScaleA);
-  util_zmat_fill(Order, TransB, M, N, A, ldb, FillB, RealScaleB, ImagScaleB);
-  util_zmat_fill(Order, 'n', M, N, A, ldc, FillC, RealScaleC, ImagScaleC);
+  util_zmat_fill(Order, NTransA, opAM, opAK, A, lda, FillA, RealScaleA, ImagScaleA);
+  util_zmat_fill(Order, TransB, opBK, opBN, B, ldb, FillB, RealScaleB, ImagScaleB);
+  util_zmat_fill(Order, 'n', M, N, C, ldc, FillC, RealScaleC, ImagScaleC);
 
   for(i = 0; i < trials; i++){
     switch(Order){

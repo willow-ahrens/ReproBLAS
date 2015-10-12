@@ -33,7 +33,7 @@ install-doc: $(call get_subtree,INSTALL_DOC,$(TOP))
 
 # tunes
 tune:# update
-	$(CALL_PYTHON) $(TOP)/tune/ReproBLASOpenTuner.py --params $(TOP)/src/params.json --args $(TOP)/src/tuned_args.json --database $(TOP)/tune/ReproBLASOpenTuner.db --trials 50 --no-dups --verbose $(VERBOSE)
+	$(CALL_PYTHON) $(TOP)/tune/ReproBLASOpenTuner.py --params $(TOP)/src/params.json --args $(TOP)/src/tuned_args.json --database $(TOP)/tune/ReproBLASOpenTuner.db --trials 100 --no-dups --verbose $(VERBOSE) --bail-threshold 7
 
 # Removes generated code from code generators
 excise:
