@@ -19,8 +19,14 @@
   \end{enumerate}
   The algorithms of \cite{repsum} did not, however, work for all ranges of floating-point input nor did they contain all of the functional components necessary to be deployed in an existing application (they lacked an algorithm to convert from a reproducible type back to floating point format while maintaining accuracy). Our goal is to modify the algorithms in \cite{repsum} so that in addition to the above properties, they enjoy the following properties:
   \begin{enumerate}
-    \item The algorithms can be applied in any binary IEEE 754-2008 floating point format, and any valid input in such a format can be summed using the algorithms. The algorithms must be able to sum numbers close to zero, numbers close to overflow, and exceptional values such as \texttt{NaN} and \texttt{Inf}, mimiking the behavior of IEEE floating point wherever possible.
+    \item The algorithms can be applied in any binary IEEE 754-2008 floating point format, and any valid input in such a format can be summed using the algorithms. The algorithms must be able to sum numbers close to zero, numbers close to overflow, and exceptional values such as \texttt{NaN} and \texttt{Inf}, mimicking the behavior of IEEE floating point wherever possible.
     \item They must be expressed as basic operations that can be applied in several applications. They must be able to be built into a user-friendly, performant library.
   \end{enumerate}
 
-  %TODO insert here a summary of what is to come in each section.
+  Section \ref{sec:notation} begins by explaining some of the notation necessary to express the mathematical and software concepts discussed in this work.
+  Section \ref{sec:binning} gives a formal discussion of the binning scheme. In short, a floating point number $x$ is split along predefined boundaries (called \textbf{bins}) into a sum of separate numbers (\textbf{slices}) such that the sum of slices approximates $x$. Our reproducible summation algorithm operates by keeping track of the sum of slices of summands for each bin separately.
+  Section \ref{sec:indexed} describes the data structure (the \textbf{indexed type}) used to store the sums of the slices. 
+  Section \ref{sec:primitiveops} contains several algorithms for basic manipulations of an indexed type. These algorithms allow the user to, for instance, extract the slices of a floating point number and add them to the indexed type, to add two indexed types together, or to convert from the indexed type to a floating point number. An error bound on the final summation algorithm is given in this section as well.
+  Section \ref{sec:compositeops} gives several descriptions of algorithms that can be built from the basic operations described in Section \ref{sec:primitiveops}. In particular, several sequential reproducible algorithms from the BLAS (Basic Linear Algebra Subroutines) are given.
+  Throughout the text, several mentions of functions from ReproBLAS (the C library accompanying this work from which these algorithms are taken) are mentioned. A short description of ReproBLAS is given in Section \ref{sec:primitiveops}.
+  Timing data from ReproBLAS is given in Section \ref{sec:timing}. A description of testing strategies employed in ReproBLAS is given in Section \ref{sec:testing}.
