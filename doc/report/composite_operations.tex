@@ -1,7 +1,8 @@
 \section{Composite Operations}
   \label{sec:compositeops}
   Although several reproducible summation algorithms can be built from the set of primitive operations defined in section \ref{sec:primitiveops}, it may be unclear how these operations can be composed to form such algorithms. What follows are the specifications for common summation-based algorithms in terms of the primitive operations.
-  To obtain a general completely reproducible algorithm for summation that is, one must design for reproducibility under both data permutation and reduction tree shape.
+
+  %We make here an important distinction with respect to parallel reproducibility. If the summation algorithm needs only to be reproducible with respect to If the only source of nonreproducibility in a computation is the reduction tree shape, then only the reduction step must be reproducible for the entire computation to be reproducible. To obtain a general completely reproducible algorithm for summation that is, one must design for reproducibility under both data permutation and reduction tree shape.
   Section \ref{sec:compositeops_reduce} shows how the summation algorithm in Section \ref{sec:primitiveops_sum} may be extended to arbitrary reduction tree shapes. Sections \ref{sec:compositeops_dot}, \ref{sec:compositeops_nrm}, \ref{sec:compositeops_gemv}, and \ref{sec:compositeops_gemm} explain how to obtain reasonably performant reproducible versions of representative operations from the BLAS.
     \input{op_reduce}
     \input{op_dot}

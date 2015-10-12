@@ -1,3 +1,33 @@
 \subsection{Matrix-Vector Product}
   \label{sec:compositeops_gemv}
-  The matrix-vector product $y \in \R^m$ of an $m \times n$ matrix $A$ and a vector $x \in \R^n$ is defined as follows (where $A_{i, j}$ is the entry in the $i^{th}$ .
+  The matrix-vector product $y \in \R^m$ of an $m \times n$ matrix $A$ and a vector $x \in \R^n$ (denoted by $y = Ax$ and computed in the BLAS by \texttt{xgemv} \cite{BLAS}) is defined as follows (where $A_{i, j}$ is the entry in the $i^{th}$ row and $j^{th}$ column, indexing from zero for consistency):
+  \[
+    y_i = \sum\limits_{j = 0}^{n - 1} A_{i, j}x_j
+  \]
+  Before we get into disucussions of reproducibility in this situation, we must first discuss what it means for a matrix-vector product to be reproducible.
+  It is clear that computation of the matrix vector product is easily distributed along different values of $i$, as rows of $A$ and copies of $x$ can be distributed among $p$ processors so that entries of $y$ may be calculated independently.
+  However, in the case where $n$ is quite large compared to $m/p$, it may be necessary to parallelize calculation of the sums of each $y_i$ so that the entirety of $x$ does not need to be communicated.
+  As the local sums would be computed separately and then combined, different blocking patterns or reduction tree shapes could lead to different results.
+  Although the reproducible reduction discussed in Section \ref{compositeops_reduce} would gurantee reproducibility with respect to reduction tree shape, it would not guarantee reproducibility with respect to blocking pattern. This stronger guarantee can be obtained if each sum $y_i$ is calculated as an indexed sum.
+  It is for this reason that we need a local version of \texttt{xgemv} that returns a vector of indexed sums, the matrix-vector product with all sums calculated using indexed summation.
+
+  A consequence of calculating the indexed matrix-vector product using indexed sums is that it will be reproducible with respect to permutation of the columns of $A$ together with entries of $x$.
+  Let $\sigma_0, ..., \sigma_{n - 1}$ be some permutation of the first $n$ nonnegative integers such that $\{\sigma_0, ..., \sigma_{n - 1}\} = \{0, ..., n - 1\}$ as sets. Then we have
+  \[
+    y_i = \sum\limits_{j = 0}^{n - 1} A_{i, j}x_j = \sum\limits_{j = 0}^{n - 1} A_{i, \sigma_j}x_{\sigma_j}
+  \]
+
+  More imporantly, the matrix-vector product should remain reproducible under any reduction tree shape.
+  If $A = [A_{(0)}, A_{(1)}]$ where $A_{(0)}$ and $A_{(1)}$ are submatricies of size $m \times n_{(0)}$ and $m \times n_{(1)}$ and if $x = [x_{(0)}, x_{(1)}]$ where $x_{(0)}$ and $x_{(1)}$ are subvectors of size $n_{(0)}$ and $n_{(1)}$ then we have 
+  \[
+    Ax = A_{(0)}x_{(0)} + A_{(1)}x_{(1)}
+  \]
+
+  It is clear from Theorems \ref{thm:indexed_sum_unique} and the ``Ensure'' claim of Algorithm \ref{alg:addindexedtoindexed} that if the matrix-vector product is computed using indexed summation, the necessary properties hold.
+
+  Actually computing the matrix-vector product using indexed summation is not difficult. In ReproBLAS, we mirror the function definition of \text{xgemv} in the BLAS as closely as possible, adding two additional parameters $\alpha$ and $\beta$ so that the entire operation performs the update $y \gets \alphaAx + \betay$ (we also add the standard parameters for transposing the matrix and selecting ordering of the matrix).
+
+  At the core, ReproBLAS provides the function \texttt{idxdBLAS_xixgemv(fold, Order, TransA, M, N, alpha, A, lda, X, incX, Y, incY)} in the header file \texttt{idxdBLAS.h}. This version of the function adds to the vector of indexed sums $y$ the previously mentioned indexed matrix vector product of the floating point $A$ and $x$, where $x$ is first scaled by $\alpha$ as is done in the reference BLAS implementation \cite{netlib}. It is important to notice that the parameter $\beta$ is excluded, as we do not yet know how to scale indexed types by different values while maintaining reproducibility.
+  It is of note that because the reproducible dot product is so compute-heavy, we can get good performance implementing the matrix-vector product using the \texttt{idxdBLAS_diddot} routine at the core. We must use a rectangular blocking strategy to ensure good caching behavior, and because we are making calls to the dot product routine, it is sometimes (depending on the transpose and row-major vs. column-major parameters) necessary to transpose each block of $A$ before computing the dot product. These considerations ensure that the dot product can compute quickly on sequential sections of cached data.
+
+  Built on top of \texttt{idxdBLAS_xixgemv} is the routine \texttt{reproBLAS_rxgemv} in the header file \texttt{reproBLAS.h}, which takes as input floating point $A$, $x$, $y$, $\alpha$, and $\beta$. $y$ is scaled by $\beta$, then converted to a vector of indexed types. The matrix-vector product is computed using indexed summation with a user specified number of accumulators, and the output is then converted back to floating point and returned. The routine \texttt{reproBLAS_xgemv} uses the default number of accumulators.
