@@ -132,7 +132,6 @@ def run(apis):
 
 def main():
   print("tuning {}".format(terminal.get_vectorization()))
-  """
   apis = [create_benchmark_api(benchmark) for benchmark in ["bench_damax",
                                                             "bench_damaxm",
                                                             "bench_zamax",
@@ -184,7 +183,6 @@ def main():
                                                                "bench_rcdotu_fold_{}".format(fold),
                                                                "bench_rcdotc_fold_{}".format(fold)]]
   run(apis)
-"""
   apis = [create_benchmark_api(benchmark) for benchmark in ["bench_rdgemv_fold_{}".format(terminal.get_didefaultfold()),
                                                             "bench_rdgemv_TransA_fold_{}".format(terminal.get_didefaultfold()),
                                                             "bench_rdgemm_AvgTransA_AvgTransB_fold_{}".format(terminal.get_didefaultfold()),
