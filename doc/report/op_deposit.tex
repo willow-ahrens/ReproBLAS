@@ -186,7 +186,7 @@
       \end{alg}
       \end{samepage}
 
-      Algorithm~\ref{alg:deposit} is identical to Algorithm~\ref{alg:ddeposit} except
+      Algorithm~\ref{alg:deposit} is identical to Algorithm~\ref{alg:depositrestricted} except
       for the case of $\fct{IIndex}(Y) = 0$, which is rare.
       In that case, the first accumulator $Y_0$ will be scaled by a factor of $2^{W-p-1}$
       so that the value of the first primary field ${Y_0}_P$ stays in the range
@@ -199,7 +199,7 @@
       Since the scaling is by a power of 2, it does not change any mantissas
       of both the primary field and the input value.
       The binning process as well as the correctness analysis
-      are therefore similar to Algorithm~\ref{alg:ddeposit}.
+      are therefore similar to Algorithm~\ref{alg:depositrestricted}.
       If the slice $q$ is scaled back by $2^{p-W+1}$ and subtracted from $x$
       then the rest of the algorithm doesn't change in the absence of overflow.
       However, if $x$ is equal to the biggest value below the overflow threshhold,
@@ -325,7 +325,7 @@
       normally.
       Although checking for exceptional values explicitly is expensive, the
       cost can be reduced if several values are to be summed in the same method
-      (for example, using the methods discussed in Section \ref{sec:idxdBLAS}).
+      (all methods in ReproBLAS that sum several numbers at a time use this trick).
 
       Note that if we ignore the explicit check for exceptional values,
       even though Algorithm \ref{alg:deposit} does not correctly propagate 

@@ -1,6 +1,12 @@
-.PHONY: all
+.PHONY: all clean
 
 all: report.pdf
 
-report.pdf: *.tex
+clean:
+	rm report.pdf
+
+report.pdf: *.tex *.bib
+	pdflatex report
+	bibtex report
+	pdflatex report
 	pdflatex report
