@@ -19,15 +19,15 @@
     may be deposited into ${Y_k}_P$ between renormalizations, as discussed in
     section \ref{sec:primitiveops_renormalize}. For indexed \texttt{double}
     this number is $2^{11}$, whereas for indexed \texttt{float} this number is
-    $2^9$. This number is supplied programmatically using the
-    \texttt{XIENDURANCE} macro.
+    $2^9$. This number is supplied in ReproBLAS using the
+    \texttt{XIENDURANCE} macro in \texttt{idxd.h}.
 
     By \eqref{eq:totalfreq}, an indexed type is capable of representing the sum
     of at least $0.25\epsilon^{-1}2^{-W}  \epsilon^{-1} = 2^{2  p - W - 2}$
     floating point numbers. For indexed \texttt{double} this number is
     $2^{64}$, whereas for indexed \texttt{float} this number is
-    $2^{33}$. This number is supplied programmatically using the
-    \texttt{XICAPACITY} macro.
+    $2^{33}$. This number is supplied in ReproBLAS using the
+    \texttt{XICAPACITY} macro in \texttt{idxd.h}.
 
     The indexed types provided by ReproBLAS will, when used correctly, avoid intermediate overflow.
 

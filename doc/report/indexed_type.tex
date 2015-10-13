@@ -23,6 +23,8 @@
     of input in the bin $(a_{I + k}, b_{I + k}]$. If $I$ is so large that
     $I + K > i_{\max}$, then the extra $I + K - i_{\min}$ accumulators are unused.
 
+    In ReproBLAS, the datatype used to sum \texttt{double} is named \texttt{double_indexed}, and likewise for \texttt{double complex}, \texttt{float}, and \texttt{float complex}. A $K$-fold indexed type can be allocated with the \texttt{idxd_xialloc} method, and set to zero with the \texttt{idxd_xisetzero} method. Both of these methods are defined in \texttt{idxd.h}
+
     Section \ref{sec:indexed_primary_carry} elaborates on the specific fields
     that make up the indexed type and the values they represent. Sections
     \ref{sec:indexed_overflow}, \ref{sec:indexed_underflow_gradual},

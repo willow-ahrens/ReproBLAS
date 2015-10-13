@@ -3,7 +3,8 @@
   Algorithm~\ref{alg:addfloattoindexed} allows the user to add a single floating
   point number to an indexed sum. By running this algorithm iteratively on each
   element of a vector, the user can make a naive local sum. However, a more
-  efficient summation algorithm is presented in Section \ref{alg:sum}, making this method more useful for small sums or sums where the summands are not gathered into a vector.
+  efficient summation algorithm is presented in Section \ref{alg:sum}, making this method more useful for small sums or sums where the summands are not gathered into a vector. 
+  This method is available in ReproBLAS as \texttt{idxd_xixadd} in \texttt{idxd.h}
 
   \begin{alg}
     Add floating point $x_n \in F$ to $K$-fold indexed sum $Y$

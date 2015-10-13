@@ -165,9 +165,33 @@
   \)
 
 %TODO At this point, the reader does not know what ReproBLAS is
+
+  ReproBLAS is the library implementation of the algorithms defined later on in this work.
+
   As ReproBLAS is written in C, \texttt{float} and \texttt{double} refer to the
   floating point types specified in the 1989 C standard \cite{c89} and we
   assume that they correspond to the \texttt{binary-32} and \texttt{binary-64}
   types in the IEEE 754-2008 floating point standard \cite{ieee754}.
+
+  The functions in ReproBLAS are named after their BLAS counterparts.
+  As such, function names are prefixed by a one or two character code indicating the datatype of their inputs and outputs. If a function's input and output datatypes differ, the function name is prefixed by the output datatype code followed by the input datatype code.
+  The codes used are enumerated in Table \ref{tbl:blas_naming_codes}. The indexed type is a reproducible floating point datatype that will be described later in Section \ref{sec:indexed}
+  \begin{table}[!htbp]
+    \caption{ReproBLAS naming convention character codes}
+    \label{tbl:blas_naming_codes}
+        \centering
+        \begin{tabular}{ | l | l | } \hline
+            Data Type & Code \\ \hline
+            \texttt{double} & d \\ \hline
+            \texttt{double complex} & z \\ \hline
+            \texttt{float} & s \\ \hline
+            \texttt{float complex} & c \\ \hline
+            \texttt{double_indexed} & di \\ \hline
+            \texttt{double_complex_indexed} & zi \\ \hline
+            \texttt{float_indexed} & si \\ \hline
+            \texttt{float_complex_indexed} & ci \\ \hline
+        \end{tabular}
+  \end{table}
+  As an example, an absolute sum routine \texttt{asum} that returns a \texttt{double_indexed} and takes as input an array of \texttt{complex double} would be named \texttt{dizasum}. To be generic when referring to a routine, we will use the special character \texttt{x}, so that all \texttt{asum} routines that take floating point inputs and return indexed types can be referred to as \texttt{xixasum}
 
   All indices start at $0$ in correspondence with the actual ReproBLAS implementation.
