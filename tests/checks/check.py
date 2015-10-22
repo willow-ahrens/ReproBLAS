@@ -32,8 +32,15 @@ DBL_ONES = 0
 for i in range(DBL_MANT_DIG):
   DBL_ONES += 2.0 ** -i
 
+"""
 check_suite.add_checks([checks.CorroborateRDGEMVTest(),\
                         checks.CorroborateRZGEMVTest(),\
+                        checks.CorroborateRSGEMVTest(),\
+                        checks.CorroborateRCGEMVTest(),\
+                        ],\
+"""
+check_suite.add_checks([checks.CorroborateRSGEMVTest(),\
+                        checks.CorroborateRCGEMVTest(),\
                         ],\
                        ["O", "T", "M", "N", "lda", ("incX", "incY"), "FillA", "FillX", "FillY", ("RealAlpha", "ImagAlpha"), ("RealBeta", "ImagBeta"), "fold"],\
                        [["RowMajor", "ColMajor"], ["Trans", "NoTrans"], [255, 512], [255, 512], [0, -15], list(zip(incs, incs)),\
@@ -47,8 +54,15 @@ check_suite.add_checks([checks.CorroborateRDGEMVTest(),\
                         folds])
 
 
+"""
 check_suite.add_checks([checks.CorroborateRDGEMMTest(),
                         checks.CorroborateRZGEMMTest(),\
+                        checks.CorroborateRSGEMMTest(),\
+                        checks.CorroborateRCGEMMTest(),\
+                        ],\
+"""
+check_suite.add_checks([ checks.CorroborateRSGEMMTest(),\
+                        checks.CorroborateRCGEMMTest(),\
                         ],\
                        ["O", "TransA", "TransB", "M", "N", "K", ("lda", "ldb", "ldc"), "FillA", "FillB", "FillC", ("RealAlpha", "ImagAlpha"), ("RealBeta", "ImagBeta"), "fold"],\
                        [["RowMajor", "ColMajor"], ["ConjTrans", "Trans", "NoTrans"], ["ConjTrans", "Trans", "NoTrans"], [32, 64], [32, 64], [32, 64], [(0, 0, 0), (-63, -63, -63)], \
@@ -60,6 +74,7 @@ check_suite.add_checks([checks.CorroborateRDGEMMTest(),
                         [(0.0, 0.0), (1.0, 0.0), (2.0, 2.0)],\
                         [(0.0, 0.0), (1.0, 0.0), (2.0, 2.0)],\
                         folds])
+"""
 
 check_suite.add_checks([checks.ValidateInternalDSCALETest(),\
                         checks.ValidateInternalSSCALETest()],\
@@ -592,6 +607,7 @@ check_suite.add_checks([checks.ValidateInternalSISIADDTest(),\
                        ["N", "fold", "incX", "RealScaleX", "ImagScaleX", "FillX"],\
                        [[1], folds, incs, [FLT_ONES * 2 **(FLT_MAX_EXP - 1), 1.0], [FLT_ONES * 2 **(FLT_MAX_EXP - 1), 1.0],\
                         ["constant",]])
+"""
 
 check_harness = harness.Harness("check")
 check_harness.add_suite(check_suite)

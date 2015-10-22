@@ -559,6 +559,16 @@ class CorroborateRZGEMVTest(CheckTest):
   executable = "tests/checks/corroborate_rzgemv"
   name = "corroborate_rzgemv"
 
+class CorroborateRSGEMVTest(CheckTest):
+  base_flags = ""
+  executable = "tests/checks/corroborate_rsgemv"
+  name = "corroborate_rsgemv"
+
+class CorroborateRCGEMVTest(CheckTest):
+  base_flags = ""
+  executable = "tests/checks/corroborate_rcgemv"
+  name = "corroborate_rcgemv"
+
 class CorroborateRDGEMMTest(CheckTest):
   base_flags = ""
   executable = "tests/checks/corroborate_rdgemm"
@@ -568,6 +578,16 @@ class CorroborateRZGEMMTest(CheckTest):
   base_flags = ""
   executable = "tests/checks/corroborate_rzgemm"
   name = "corroborate_rzgemm"
+
+class CorroborateRSGEMMTest(CheckTest):
+  base_flags = ""
+  executable = "tests/checks/corroborate_rsgemm"
+  name = "corroborate_rsgemm"
+
+class CorroborateRCGEMMTest(CheckTest):
+  base_flags = ""
+  executable = "tests/checks/corroborate_rcgemm"
+  name = "corroborate_rcgemm"
 
 class ValidateInternalDSCALETest(CheckTest):
   base_flags = ""
