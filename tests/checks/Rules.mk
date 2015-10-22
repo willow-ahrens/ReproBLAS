@@ -10,6 +10,10 @@ TARGETS := validate_internal_damax$(EXE) validate_internal_zamax$(EXE) validate_
            corroborate_rdgemm$(EXE) \
            corroborate_rzgemv$(EXE) \
            corroborate_rzgemm$(EXE) \
+           corroborate_rsgemv$(EXE) \
+           corroborate_rsgemm$(EXE) \
+           corroborate_rcgemv$(EXE) \
+           corroborate_rcgemm$(EXE) \
 
 SUBDIRS :=
 
@@ -44,6 +48,10 @@ corroborate_rdgemv$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) corroborate_rdgemv.
 corroborate_rdgemm$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) corroborate_rdgemm.o
 corroborate_rzgemv$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) corroborate_rzgemv.o
 corroborate_rzgemm$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) corroborate_rzgemm.o
+corroborate_rsgemv$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) corroborate_rsgemv.o
+corroborate_rsgemm$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) corroborate_rsgemm.o
+corroborate_rcgemv$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) corroborate_rcgemv.o
+corroborate_rcgemm$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) corroborate_rcgemm.o
 
 validate_internal_damax$(EXE)_LIBS = -lm
 validate_internal_zamax$(EXE)_LIBS = -lm
@@ -73,3 +81,7 @@ corroborate_rdgemv$(EXE)_LIBS = -lm
 corroborate_rdgemm$(EXE)_LIBS = -lm
 corroborate_rzgemv$(EXE)_LIBS = -lm
 corroborate_rzgemm$(EXE)_LIBS = -lm
+corroborate_rsgemv$(EXE)_LIBS = -lm
+corroborate_rsgemm$(EXE)_LIBS = -lm
+corroborate_rcgemv$(EXE)_LIBS = -lm
+corroborate_rcgemm$(EXE)_LIBS = -lm

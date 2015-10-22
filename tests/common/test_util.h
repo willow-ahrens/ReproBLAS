@@ -171,5 +171,7 @@ void util_cimat_row_permute(int num, char Order, char TransA, int M, int N, floa
 
 double *util_dmat_op(char Order, char TransA, int opM, int opN, double *A, int lda);
 double complex *util_zmat_op(char Order, char TransA, int opM, int opN, double complex *A, int lda);
+float *util_smat_op(char Order, char TransA, int opM, int opN, float *A, int lda);
+float complex *util_cmat_op(char Order, char TransA, int opM, int opN, float complex *A, int lda);
 
 #endif
