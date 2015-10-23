@@ -6,7 +6,7 @@
 #include "../common/test_opt.h"
 #include "../common/test_time.h"
 #include "../common/test_metric.h"
-#include "../common/test_blas.h"
+#include "../common/test_BLAS.h"
 
 #include "../../config.h"
 
