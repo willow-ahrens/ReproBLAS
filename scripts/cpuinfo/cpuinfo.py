@@ -1217,6 +1217,13 @@ def get_cpu_info():
 	if not info:
 		info = get_cpu_info_from_cpuid()
 
+	if info and info.get('l2_cache_size') and type(info['l2_cache_size']) is str:
+		cache_size_info = info['l2_cache_size'].lower().strip().split()
+		if len(cache_size_info) == 2 and cache_size_info[1] == 'kb':
+			info['l2_cache_size'] = cache_size_info[0]
+		if len(cache_size_info) == 2 and cache_size_info[1] == 'mb':
+			info['l2_cache_size'] = str(1024 * int(cache_size_info[0]))
+        
 	return info
 
 def main():
