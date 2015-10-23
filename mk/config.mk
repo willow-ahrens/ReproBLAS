@@ -158,21 +158,6 @@ ifeq ($(MMX)$(SSE)$(SSE1)$(SSE2)$(SSE3)$(SSE4_1)$(SSE4_2)$(AVX)$(AVX2),)
   endif
 endif
 
-# Determine BLAS link
-ifeq ($(strip $(BLAS)),REF)
-  LDFLAGS += -lblas
-  CPPFLAGS += -DBLAS=1
-else ifeq ($(strip $(BLAS)),MKL)
-  LDFLAGS += -lmkl_sequential
-  CPPFLAGS += -DCBLAS=1
-else ifeq ($(strip $(BLAS)),ATLAS)
-  LDFLAGS += -latlas
-  CPPFLAGS += -DCBLAS=1
-else ifeq ($(strip $(BLAS)),ACCELERATE)
-  LDFLAGS += -framework Accelerate
-  CPPFLAGS += -DCBLAS=1
-endif
-
 CALL_PYTHON = PYTHONPATH=$(TOP) $(PYTHON)
 
 # Create cog compiler

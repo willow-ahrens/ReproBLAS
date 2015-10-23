@@ -116,14 +116,14 @@ def run_parallel(command_list, verbose="false"):
 #
 def peak_time(data):
   if data["vec"] == "SISD":
-    vec_d_ops = 1
-    vec_s_ops = 1
+    vec_d_ops = 1.0
+    vec_s_ops = 1.0
   elif data["vec"] == "SSE":
-    vec_d_ops = 2
-    vec_s_ops = 4
+    vec_d_ops = 2.0
+    vec_s_ops = 4.0
   elif data["vec"] == "AVX":
-    vec_d_ops = 4
-    vec_s_ops = 8
+    vec_d_ops = 4.0
+    vec_s_ops = 8.0
   if not data['fma']:
     data["d_add"] += data["d_fma"]
     data["d_mul"] += data["d_fma"]
@@ -131,11 +131,11 @@ def peak_time(data):
     data["s_add"] += data["s_fma"]
     data["s_mul"] += data["s_fma"]
     data["s_fma"] = 0
-  #d_ops = max(data["d_add"] + data["d_mul"] + data["d_fma"], data["d_orb"])
-  #s_ops = max(data["s_add"] + data["s_mul"] + data["s_fma"], data["s_orb"])
+  #d_ops = max(data["d_add"] + data["d_mul"] + data["d_fma"]) + data["d_orb"]
+  #s_ops = max(data["s_add"] + data["s_mul"] + data["s_fma"]) + data["s_orb"]
   d_ops = max(data["d_add"], data["d_mul"], data["d_fma"], data["d_orb"])
   s_ops = max(data["s_add"], data["s_mul"], data["s_fma"], data["s_orb"])
-  return float((d_ops + vec_d_ops - 1)//vec_d_ops + (s_ops + vec_s_ops - 1)//vec_s_ops)/data["freq"];
+  return float(d_ops/vec_d_ops + s_ops/vec_s_ops)/data["freq"]
 
 ##
 #  @brief clarify information about host machine

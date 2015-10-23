@@ -58,17 +58,30 @@ OPTFLAGS := -O3 -funroll-loops
 # building - if you're cross compiling then you should set this manually)
 ENDIAN := $(shell perl -le 'print unpack(N,pack(L,0x01020304)) == 0x01020304 ? big : little')
 
-# select BLAS library from preconfigured or CUSTOM options. (comment all to not
-# use external BLAS library. Corresponding parts of ReproBLAS won't build)
-#BLAS := REF
-#BLAS := ATLAS
-#BLAS := MKL
-BLAS := ACCELERATE
-#BLAS := CUSTOM
+# select whether or not to use of BLAS library (if BLAS is not defined or set to value other that "true" an external BLAS library will not be used and corresponding parts of ReproBLAS won't build)
+BLAS := true
 
-# select CUSTOM BLAS LDFLAGS (if BLAS == CUSTOM)
+# select BLAS library from preconfigured or custom options (if BLAS=true)
+
+# reference BLAS
 #LDFLAGS += -lblas
-# select CUSTOM BLAS interface (reference fortran or cblas) (if BLAS == CUSTOM)
+#CPPFLAGS += -DBLAS=1
+
+# Intel MKL Sequential BLAS
+LDFLAGS += ${MKLROOT}/lib/libmkl_intel_lp64.a ${MKLROOT}/lib/libmkl_core.a ${MKLROOT}/lib/libmkl_sequential.a -lpthread -lm
+CPPFLAGS += -DCBLAS=1
+
+# Atlas BLAS
+#LDFLAGS += -latlas
+#CPPFLAGS += -DCBLAS=1
+
+# Mac OS Accelerate BLAS
+#LDFLAGS += -framework Accelerate
+#CPPFLAGS += -DCBLAS=1
+
+# custom BLAS LDFLAGS
+#LDFLAGS += -lblas
+# custom BLAS interface (reference fortran or cblas)
 #CPPFLAGS += -DBLAS=1
 #CPPFLAGS += -DCBLAS=1
 

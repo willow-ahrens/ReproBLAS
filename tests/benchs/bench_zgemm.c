@@ -95,8 +95,7 @@ int bench_matmat_fill_test(int argc, char** argv, char Order, char TransA, char 
   metric_load_double("trials", (double)(trials));
   metric_load_double("input", dM * dK + dK * dN + dM * dN);
   metric_load_double("output", dN * dM);
-  metric_load_double("d_mul", 4.0 * dN * dM * dK);
-  metric_load_double("d_add", 4.0 * dN * dM * dK);
+  metric_load_double("d_fma", 4.0 * dN * dM * dK);
   metric_dump();
 
   free(A);
