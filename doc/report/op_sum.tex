@@ -5,7 +5,7 @@
     As mentioned in Section~\ref{sec:primitiveops_renormalize}, it is not necessary to perform
     a renormalization for every deposit, as would be done if Algorithm \ref{alg:addfloattoindexed} were applied iteratively on each element of $x_m, ..., x_{m + n -1}$. At most $2^{p-W-2}$ values can be deposited in the indexed type before having to perform the renormalization.
     Therefore we have an improved version of Algorithm~\ref{alg:addfloattoindexed} when we need to sum a vector of floating point numbers.
-    Algorithm~\ref{alg:sum} summarizes the optimized version for the reproducible local sum. It is available as \texttt{idxdBLAS_xixsum} in \texttt{idxdBLAS.h} in ReproBLAS.
+    Algorithm~\ref{alg:sum} summarizes the optimized version for the reproducible local sum. It is available as \texttt{idxdBLAS\_xixsum} in \texttt{idxdBLAS.h} in ReproBLAS.
     As Algorithm~\ref{alg:sum} computes an indexed sum, it can be performed on the $x_m, ..., x_{m + n - 1}$ in any order. However, for the simplicity of presenting the algorithm, it is depicted as running linearly from $m$ to $m-1$.
     Algorithm \ref{alg:sum} uses only one indexed type to hold the intermediate result of the recursive summation, and the vast majority of time in the algorithm is spent in the deposit routine.
     \begin{samepage}
