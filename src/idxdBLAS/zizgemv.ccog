@@ -22,8 +22,8 @@ cog.out(generate.generate(blockSize.BlockSize("zizgemv", "YT_BLOCK", 1, y_block,
 cog.out(generate.generate(blockSize.BlockSize("zizgemv", "XYT_BLOCK", y_block, xy_block, xy_block, ["bench_rzgemv_TransA_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
 cog.out(generate.generate(blockSize.BlockSize("zizgemv", "T_BLOCK", 1, 32, 32, ["bench_rzgemv_TransA_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
 ]]]*/
-#define Y_BLOCK 1
-#define XY_BLOCK 8192
+#define Y_BLOCK 2
+#define XY_BLOCK 16384
 #define YT_BLOCK 64
 #define XYT_BLOCK 8192
 #define T_BLOCK 4
