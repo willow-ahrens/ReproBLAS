@@ -131,8 +131,17 @@ def peak_time(data):
     data["s_add"] += data["s_fma"]
     data["s_mul"] += data["s_fma"]
     data["s_fma"] = 0
-  #d_ops = max(data["d_add"] + data["d_mul"] + data["d_fma"]) + data["d_orb"]
-  #s_ops = max(data["s_add"] + data["s_mul"] + data["s_fma"]) + data["s_orb"]
+  else:
+    if max(data["d_add"], data["d_mul"]) < data["d_fma"]:
+      delta = data["d_fma"] - max(data["d_add"], data["d_mul"]) 
+      data["d_add"] += delta/2
+      data["d_mul"] += delta/2
+      data["d_fma"] -= delta/2
+    if max(data["s_add"], data["s_mul"]) < data["s_fma"]:
+      delta = data["s_fma"] - max(data["s_add"], data["s_mul"]) 
+      data["s_add"] += delta/2
+      data["s_mul"] += delta/2
+      data["s_fma"] -= delta/2
   d_ops = max(data["d_add"], data["d_mul"], data["d_fma"], data["d_orb"])
   s_ops = max(data["s_add"], data["s_mul"], data["s_fma"], data["s_orb"])
   return float(d_ops/vec_d_ops + s_ops/vec_s_ops)/data["freq"]

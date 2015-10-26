@@ -21,7 +21,7 @@ cog.out(generate.generate(blockSize.BlockSize("sisgemm", "XY_BLOCK", y_block, xy
 cog.out(generate.generate(blockSize.BlockSize("sisgemm", "YT_BLOCK", 1, y_block, y_block, ["bench_rsgemm_AvgTransA_AvgTransB_fold_{}".format(terminal.get_sidefaultfold())]), cog.inFile, args, params, mode))
 cog.out(generate.generate(blockSize.BlockSize("sisgemm", "XYT_BLOCK", y_block, xy_block, xy_block, ["bench_rsgemm_AvgTransA_AvgTransB_fold_{}".format(terminal.get_sidefaultfold())]), cog.inFile, args, params, mode))
 ]]]*/
-#define Y_BLOCK 8
+#define Y_BLOCK 64
 #define XY_BLOCK 65536
 #define YT_BLOCK 64
 #define XYT_BLOCK 65536

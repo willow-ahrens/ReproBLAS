@@ -1,4 +1,8 @@
 \subsection{Timing}
+  \subsubsection{Difficult Input}
+    Because the reproducible summation algorithm needs to perform additional operations (Algorithm \ref{alg:update}) if the maximum absolute value of the data increases during summation, the runtime depends (marginally) upon the input. To show the differences in runtime, we show the time it takes to reproducibly sum $2^20$ \texttt{double} and \texttt{float} from two different datasets. The first data set is an easy case, the uniform distribution from 0 to 1. The second data set is the most difficult possible case, numbers increasing exponentially starting at the minimum positive floating point value and ending with the largest positive finite floating point value. The timings are displayed in Figure \ref{fig:easyhardtimings}
   \subsubsection{BLAS1}
+    We show how our reproducible summation stacks up against a simple $C$ \texttt{for}-loop in Figure \ref{fig:forloop}. Performance (measured in input numbers processed per second) is shown for each method. It should be noted that for several reasons (lack of vectorization, lack of loop unrolling, etc.) the \texttt{for}-loop is not running at peak.
+    To give a comparison to a BLAS function, we show in Figure \ref{fig:dot} the performance of the reproducible dot product versus the Intel Math Kernel Library \cite{MKL} BLAS dot product.
   \subsubsection{BLAS2}
   \subsubsection{BLAS3}

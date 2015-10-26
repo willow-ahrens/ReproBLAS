@@ -21,7 +21,7 @@ cog.out(generate.generate(blockSize.BlockSize("zizgemm", "XY_BLOCK", y_block, xy
 cog.out(generate.generate(blockSize.BlockSize("zizgemm", "YT_BLOCK", 1, y_block, y_block, ["bench_rzgemm_AvgTransA_AvgTransB_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
 cog.out(generate.generate(blockSize.BlockSize("zizgemm", "XYT_BLOCK", y_block, xy_block, xy_block, ["bench_rzgemm_AvgTransA_AvgTransB_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
 ]]]*/
-#define Y_BLOCK 8
+#define Y_BLOCK 32
 #define XY_BLOCK 16384
 #define YT_BLOCK 32
 #define XYT_BLOCK 16384

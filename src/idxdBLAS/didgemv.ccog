@@ -23,7 +23,7 @@ cog.out(generate.generate(blockSize.BlockSize("didgemv", "XYT_BLOCK", y_block, x
 cog.out(generate.generate(blockSize.BlockSize("didgemv", "T_BLOCK", 1, 32, 32, ["bench_rdgemv_TransA_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
 ]]]*/
 #define Y_BLOCK 1
-#define XY_BLOCK 32768
+#define XY_BLOCK 16384
 #define YT_BLOCK 128
 #define XYT_BLOCK 32768
 #define T_BLOCK 8
