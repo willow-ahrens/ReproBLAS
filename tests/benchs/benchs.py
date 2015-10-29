@@ -12,8 +12,10 @@ class BenchTest(harness.MetricTest):
   def parse_output(self, output):
     if self.attribute == "freq":
       return (output["trials"] * output["input"]) / max(output["time"], sys.float_info.min)
-    elif self.attribute == "peak_freq":
+    elif self.attribute == "peak_time":
       return terminal.get_peak_time(output)
+    elif self.attribute == "peak_freq":
+      return (output["trials"] * output["input"]) / max(terminal.get_peak_time(output), sys.float_info.min)
     elif self.attribute == "peak":
       return (terminal.get_peak_time(output) * output["trials"])/max(output["time"], sys.float_info.min)
     elif self.attribute == "%peak":

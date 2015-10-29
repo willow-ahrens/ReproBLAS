@@ -250,7 +250,10 @@ class MetricTest(ExecutableTest):
     self.result = 0
     self.output = []
     for output_item in output_list:
-      self.output.append(json.loads(output_item[1]))
+      output_item = output_item[1].split(",")
+      output_item = [entry.strip("\n\t ,{}").split(":") for entry in output_item]
+      output_item = {str(key.strip('"')):float(val) for key, val in output_item}
+      self.output.append(output_item)
       self.result += self.parse_output(self.output[-1])
 
   def parse_output(self, output):

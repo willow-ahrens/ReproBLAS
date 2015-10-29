@@ -3,6 +3,7 @@
 #include <string.h>
 #include <sys/time.h>
 #include <math.h>
+#include <float.h>
 
 #include "test_util.h"
 
@@ -28,6 +29,7 @@ const char *util_vec_fill_names[] = {"constant",
                                      "rand_cond",
                                      "N_cond",
                                      "N_cond+rand",
+                                     "full_range",
                                      "constant[drop]",
                                      "rand[drop]",
                                      "2*rand-1[drop]",
@@ -55,6 +57,7 @@ const char *util_vec_fill_descs[] = {"Constant",
                                      "RandomConditioned",
                                      "NConditioned",
                                      "NConditioned+Rand",
+                                     "FullRange",
                                      "Constant[drop]",
                                      "Random[drop]",
                                      "2*Random-1[drop]",
@@ -84,6 +87,7 @@ const char *util_mat_fill_names[] = {"constant",
                                      "rand_cond",
                                      "N_cond",
                                      "N_cond+rand",
+                                     "full_range",
                                      "constant[drop]",
                                      "rand[drop]",
                                      "2*rand-1[drop]",
@@ -112,6 +116,7 @@ const char *util_mat_fill_descs[] = {"Constant",
                                      "RandomConditioned",
                                      "NConditioned",
                                      "NConditioned+Rand",
+                                     "FullRange",
                                      "Constant[drop]",
                                      "Random[drop]",
                                      "2*Random-1[drop]",
@@ -1344,9 +1349,14 @@ void util_dvec_fill(int N, double* V, int incV, util_vec_fill_t Fill, double Rea
         V[(N - 1) * incV] = util_drand48();
       }
       break;
+    case util_Vec_Full_Range:
+      for (i = 0; i < N; i++) {
+        V[i*incV] = (1 - (i % 2) * 2) * MIN(exp(log(DBL_MIN) + (log(DBL_MAX) - log(DBL_MIN)) * ((double)i / (double)N)), DBL_MAX);
+      }
+      break;
     case util_Vec_Small_Plus_Increasing_Big:
       for (i = 0; i < N; i++) {
-        V[i*incV] = small + (big - small) * i / N;
+        V[i*incV] = small + (big - small) * ((double)i / (double)N);
       }
       break;
     case util_Vec_Small_Plus_Rand_Big:
@@ -1545,9 +1555,14 @@ void util_svec_fill(int N, float* V, int incV, util_vec_fill_t Fill, float RealS
         V[(N - 1) * incV] = util_drand48();
       }
       break;
+    case util_Vec_Full_Range:
+      for (i = 0; i < N; i++) {
+        V[i*incV] = (1 - (i % 2) * 2) * MIN(exp(log(FLT_MIN) + (log(FLT_MAX) - log(FLT_MIN)) * ((double)i / (double)N)), FLT_MAX);
+      }
+      break;
     case util_Vec_Small_Plus_Increasing_Big:
       for (i = 0; i < N; i++) {
-        V[i*incV] = small + (big - small) * i / N;
+        V[i*incV] = small + (big - small) * ((double)i / (double)N);
       }
       break;
     case util_Vec_Small_Plus_Rand_Big:
@@ -1590,6 +1605,7 @@ void util_zvec_fill(int N, double complex* V, int incV, util_vec_fill_t Fill, do
     case util_Vec_Rand:
     case util_Vec_N_Cond:
     case util_Vec_N_Cond_Plus_Rand:
+    case util_Vec_Full_Range:
     case util_Vec_2_Times_Rand_Minus_1_Drop:
     case util_Vec_2_Times_Rand_Minus_1:
     case util_Vec_Rand_Plus_Rand_Minus_1_Drop:
@@ -1657,6 +1673,7 @@ void util_cvec_fill(int N, float complex* V, int incV, util_vec_fill_t Fill, flo
     case util_Vec_Rand:
     case util_Vec_N_Cond:
     case util_Vec_N_Cond_Plus_Rand:
+    case util_Vec_Full_Range:
     case util_Vec_2_Times_Rand_Minus_1_Drop:
     case util_Vec_2_Times_Rand_Minus_1:
     case util_Vec_Rand_Plus_Rand_Minus_1_Drop:
@@ -1796,6 +1813,9 @@ void util_dmat_fill(char Order, char TransA, int M, int N, double* A, int lda, u
     case util_Mat_Row_N_Cond_Plus_Rand:
       row_fill = util_Vec_N_Cond_Plus_Rand;
       break;
+    case util_Mat_Row_Full_Range:
+      row_fill = util_Vec_Full_Range;
+      break;
     case util_Mat_Row_Small_Plus_Increasing_Big:
       row_fill = util_Vec_Small_Plus_Increasing_Big;
       break;
@@ -1924,6 +1944,9 @@ void util_smat_fill(char Order, char TransA, int M, int N, float* A, int lda, ut
       break;
     case util_Mat_Row_N_Cond_Plus_Rand:
       row_fill = util_Vec_N_Cond_Plus_Rand;
+      break;
+    case util_Mat_Row_Full_Range:
+      row_fill = util_Vec_Full_Range;
       break;
     case util_Mat_Row_Small_Plus_Increasing_Big:
       row_fill = util_Vec_Small_Plus_Increasing_Big;
@@ -2054,6 +2077,9 @@ void util_zmat_fill(char Order, char TransA, int M, int N, double complex* A, in
       break;
     case util_Mat_Row_N_Cond_Plus_Rand:
       row_fill = util_Vec_N_Cond_Plus_Rand;
+      break;
+    case util_Mat_Row_Full_Range:
+      row_fill = util_Vec_Full_Range;
       break;
     case util_Mat_Row_Small_Plus_Increasing_Big:
       row_fill = util_Vec_Small_Plus_Increasing_Big;
@@ -2194,6 +2220,9 @@ void util_cmat_fill(char Order, char TransA, int M, int N, float complex* A, int
       break;
     case util_Mat_Row_N_Cond_Plus_Rand:
       row_fill = util_Vec_N_Cond_Plus_Rand;
+      break;
+    case util_Mat_Row_Full_Range:
+      row_fill = util_Vec_Full_Range;
       break;
     case util_Mat_Row_Small_Plus_Increasing_Big:
       row_fill = util_Vec_Small_Plus_Increasing_Big;
