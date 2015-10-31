@@ -2,6 +2,10 @@ TARGETS := bench_damax$(EXE) bench_damaxm$(EXE)                     \
            bench_zamax$(EXE) bench_zamaxm$(EXE)                     \
            bench_samax$(EXE) bench_samaxm$(EXE)                     \
            bench_camax$(EXE) bench_camaxm$(EXE)                     \
+           bench_dsum$(EXE)                                         \
+           bench_zsum$(EXE)                                         \
+           bench_ssum$(EXE)                                         \
+           bench_csum$(EXE)                                         \
            bench_rdasum$(EXE)  bench_rdnrm2$(EXE) bench_rdsum$(EXE) \
              bench_rddot$(EXE)                                      \
            bench_rzsum$(EXE) bench_rdzasum$(EXE) bench_rdznrm2$(EXE)\
@@ -51,6 +55,7 @@ bench_cdotu$(EXE)_DEPS = $$(LIBTEST) bench_cdotu.o
 bench_cgemm$(EXE)_DEPS = $$(LIBTEST) bench_cgemm.o
 bench_cgemv$(EXE)_DEPS = $$(LIBTEST) bench_cgemv.o
 bench_ciciadd$(EXE)_DEPS = $$(LIBTEST) $$(LIBIDXDBLAS) bench_ciciadd.o
+bench_csum$(EXE)_DEPS = $$(LIBTEST) bench_csum.o
 bench_damax$(EXE)_DEPS = $$(LIBTEST) $$(LIBIDXDBLAS) bench_damax.o
 bench_damaxm$(EXE)_DEPS = $$(LIBTEST) $$(LIBIDXDBLAS) bench_damaxm.o
 bench_dasum$(EXE)_DEPS = $$(LIBTEST) bench_dasum.o
@@ -60,6 +65,7 @@ bench_dgemm$(EXE)_DEPS = $$(LIBTEST) bench_dgemm.o
 bench_dgemv$(EXE)_DEPS = $$(LIBTEST) bench_dgemv.o
 bench_didiadd$(EXE)_DEPS = $$(LIBTEST) $$(LIBIDXDBLAS) bench_didiadd.o
 bench_dnrm2$(EXE)_DEPS = $$(LIBTEST) bench_dnrm2.o
+bench_dsum$(EXE)_DEPS = $$(LIBTEST) bench_dsum.o
 bench_dzasum$(EXE)_DEPS = $$(LIBTEST) bench_dzasum.o
 bench_dznrm2$(EXE)_DEPS = $$(LIBTEST) bench_dznrm2.o
 bench_icamax$(EXE)_DEPS = $$(LIBTEST) bench_icamax.o
@@ -103,6 +109,7 @@ bench_sgemv$(EXE)_DEPS = $$(LIBTEST) bench_sgemv.o
 bench_sisiadd$(EXE)_DEPS = $$(LIBTEST) $$(LIBIDXDBLAS) bench_sisiadd.o
 bench_snrm2$(EXE)_DEPS = $$(LIBTEST) bench_snrm2.o
 bench_ssiconv$(EXE)_DEPS = $$(LIBTEST) $$(LIBIDXDBLAS) bench_ssiconv.o
+bench_ssum$(EXE)_DEPS = $$(LIBTEST) bench_ssum.o
 bench_zamax$(EXE)_DEPS = $$(LIBTEST) $$(LIBIDXDBLAS) bench_zamax.o
 bench_zamaxm$(EXE)_DEPS = $$(LIBTEST) $$(LIBIDXDBLAS) bench_zamaxm.o
 bench_zdotc$(EXE)_DEPS = $$(LIBTEST) bench_zdotc.o
@@ -110,6 +117,7 @@ bench_zdotu$(EXE)_DEPS = $$(LIBTEST) bench_zdotu.o
 bench_zgemm$(EXE)_DEPS = $$(LIBTEST) bench_zgemm.o
 bench_zgemv$(EXE)_DEPS = $$(LIBTEST) bench_zgemv.o
 bench_ziziadd$(EXE)_DEPS = $$(LIBTEST) $$(LIBIDXDBLAS) bench_ziziadd.o
+bench_zsum$(EXE)_DEPS = $$(LIBTEST) bench_zsum.o
 bench_zziconv$(EXE)_DEPS = $$(LIBTEST) $$(LIBIDXDBLAS) bench_zziconv.o
 
 bench_camax$(EXE)_LIBS = -lm
@@ -120,6 +128,7 @@ bench_cdotu$(EXE)_LIBS = -lm
 bench_cgemm$(EXE)_LIBS = -lm
 bench_cgemv$(EXE)_LIBS = -lm
 bench_ciciadd$(EXE)_LIBS = -lm
+bench_csum$(EXE)_LIBS = -lm
 bench_damax$(EXE)_LIBS = -lm
 bench_damaxm$(EXE)_LIBS = -lm
 bench_dasum$(EXE)_LIBS = -lm
@@ -129,6 +138,7 @@ bench_dgemm$(EXE)_LIBS = -lm
 bench_dgemv$(EXE)_LIBS = -lm
 bench_didiadd$(EXE)_LIBS = -lm
 bench_dnrm2$(EXE)_LIBS = -lm
+bench_dsum$(EXE)_LIBS = -lm
 bench_dzasum$(EXE)_LIBS = -lm
 bench_dznrm2$(EXE)_LIBS = -lm
 bench_icamax$(EXE)_LIBS = -lm
@@ -172,6 +182,7 @@ bench_sgemv$(EXE)_LIBS = -lm
 bench_sisiadd$(EXE)_LIBS = -lm
 bench_snrm2$(EXE)_LIBS = -lm
 bench_ssiconv$(EXE)_LIBS = -lm
+bench_ssum$(EXE)_LIBS = -lm
 bench_zamax$(EXE)_LIBS = -lm
 bench_zamaxm$(EXE)_LIBS = -lm
 bench_zdotc$(EXE)_LIBS = -lm
@@ -179,4 +190,5 @@ bench_zdotu$(EXE)_LIBS = -lm
 bench_zgemm$(EXE)_LIBS = -lm
 bench_zgemv$(EXE)_LIBS = -lm
 bench_ziziadd$(EXE)_LIBS = -lm
+bench_zsum$(EXE)_LIBS = -lm
 bench_zziconv$(EXE)_LIBS = -lm

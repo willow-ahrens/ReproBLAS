@@ -23,6 +23,7 @@ class Harness(object):
     parser.add_argument('-f', '--format', default="term", choices=["term", "csv"], help='output format')
     parser.add_argument('-r', '--runmode', default="sequential", choices=["sequential", "parallel"], help='run mode')
     parser.add_argument('-v', '--verbose', default="false", type=str, nargs="?", help='verbose if "true"')
+    parser.add_argument('-o', '--output', default="", type=str, help='output filename')
     self.args = parser.parse_args()
     if self.args.format == "term":
       self.table = texttable.Texttable(max_width = 80)
@@ -52,6 +53,8 @@ class Harness(object):
     for suite in self.suites:
       suite.parse_output_list(output_list[i:i + len(suite.get_command_list())])
       i += len(suite.get_command_list())
+    if self.args.output != '':
+      o = open(self.args.output, "w")
     for suite in self.suites:
       tablecopy = copy.deepcopy(self.table)
       tablecopy.set_cols_align(suite.get_align())
@@ -60,7 +63,13 @@ class Harness(object):
         if suite.get_cols_width(80):
           tablecopy.set_cols_width(suite.get_cols_width(80))
       tablecopy.add_rows([suite.get_header()] + suite.get_rows())
+      if self.args.output != '':
+        o.write(tablecopy.draw())
+        o.write("\n")
+        o.write("\n")
       print(tablecopy.draw())
+    if self.args.output != '':
+      o.close()
 
 class Suite(object):
 

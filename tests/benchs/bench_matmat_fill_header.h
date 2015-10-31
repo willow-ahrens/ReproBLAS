@@ -15,7 +15,7 @@ static void bench_matmat_fill_options_initialize(void){
   trials._int.header.long_name  = "trials";
   trials._int.header.help       = "number of trials";
   trials._int.required          = 0;
-  trials._int.min               = 1;
+  trials._int.min               = 0;
   trials._int.max               = INT_MAX;
   trials._int.value             = 1;
 }

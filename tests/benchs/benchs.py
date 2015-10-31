@@ -31,6 +31,10 @@ class BenchCAMAXMTest(BenchTest):
   name = "CAMAXM"
   executable = "tests/benchs/bench_camaxm"
 
+class BenchCSUMTest(BenchTest):
+  name = "CSUM"
+  executable = "tests/benchs/bench_csum"
+
 class BenchCDOTCTest(BenchTest):
   name = "CDOTC"
   executable = "tests/benchs/bench_cdotc"
@@ -46,6 +50,10 @@ class BenchDAMAXTest(BenchTest):
 class BenchDAMAXMTest(BenchTest):
   name = "DAMAXM"
   executable = "tests/benchs/bench_damaxm"
+
+class BenchDSUMTest(BenchTest):
+  name = "DSUM"
+  executable = "tests/benchs/bench_dsum"
 
 class BenchDASUMTest(BenchTest):
   name = "DASUM"
@@ -163,6 +171,10 @@ class BenchSAMAXMTest(BenchTest):
   name = "SAMAXM"
   executable = "tests/benchs/bench_samaxm"
 
+class BenchSSUMTest(BenchTest):
+  name = "SSUM"
+  executable = "tests/benchs/bench_ssum"
+
 class BenchSASUMTest(BenchTest):
   name = "SASUM"
   executable = "tests/benchs/bench_sasum"
@@ -190,6 +202,10 @@ class BenchZAMAXTest(BenchTest):
 class BenchZAMAXMTest(BenchTest):
   name = "ZAMAXM"
   executable = "tests/benchs/bench_zamaxm"
+
+class BenchZSUMTest(BenchTest):
+  name = "ZSUM"
+  executable = "tests/benchs/bench_zsum"
 
 class BenchZDOTCTest(BenchTest):
   name = "ZDOTC"
