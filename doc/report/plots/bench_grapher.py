@@ -1,5 +1,5 @@
 import matplotlib
-matplotlib.use("PDF")
+matplotlib.use("svg")
 import matplotlib.pyplot as plt
 import numpy as np
 import csv
@@ -27,26 +27,26 @@ for row in r:
     tables.append([])
 tables = tables[:-1]
 
+plt.close("all")
+
 #Easy Vs Hard Sums
 n_groups = 2
-
-#fig, ax = plt.subplots()
 
 index = np.arange(2)
 bar_width = 0.35
 
-opacity = 0.4
+opacity = 0.8
 
 rects1 = plt.bar(index, np.array(tables[0][1][-2:]), bar_width,
                  alpha=opacity,
-                 hatch='//',
-                 color='b',
+                 hatch='',
+                 color='red',
                  label='Uniform Random [0, 1) Distribution')
 
 rects2 = plt.bar(index + bar_width, np.array(tables[0][2][-2:]), bar_width,
                  alpha=opacity,
-                 hatch='',
-                 color='r',
+                 hatch='//',
+                 color='blue',
                  label='Full Exponent Range Distribution')
 
 plt.xlabel('Reproducible Summation Function')
@@ -56,7 +56,8 @@ plt.xticks(index + bar_width, ('rdsum (double)', 'rssum (float)'))
 plt.legend(loc="lower right")
 
 plt.tight_layout()
-plt.savefig("easy_vs_hard")
+plt.show()
+plt.savefig("easy_vs_hard.svg", format='svg', dpi=1200)
 plt.close("all")
 
 t = 1
@@ -75,7 +76,7 @@ plt.title("Summation Time (Normalized To Theoretical Peak) Vs. N")
 plt.xlabel("N (Vector Size N)")
 plt.ylabel("Time (Normalized to Theoretical Recursive Summation Peak")
 plt.legend(loc="best")
-plt.savefig("sum_comparison")
+plt.savefig("sum_comparison.svg", format='svg', dpi=1200)
 plt.close("all")
 
 t = 3
@@ -113,7 +114,7 @@ plt.title("Square Matrix-Vector Product Time (Normalized To Theoretical Peak) Vs
 plt.xlabel("N (Matrix Size NxN)")
 plt.ylabel("Time (Normalized to Theoretical Matrix-Vector Product Peak")
 plt.legend(loc="best")
-plt.savefig("gemv_comparison")
+plt.savefig("gemv_comparison.svg", format='svg', dpi=1200)
 plt.close("all")
 
 t = 7
@@ -132,7 +133,7 @@ plt.title("Square Transposed Matrix-Vector Product Time (Normalized To Theoretic
 plt.xlabel("N (Matrix Size NxN)")
 plt.ylabel("Time (Normalized to Theoretical Matrix-Vector Product Peak")
 plt.legend(loc="best")
-plt.savefig("gemv_trans_comparison")
+plt.savefig("gemv_trans_comparison.svg", format='svg', dpi=1200)
 plt.close("all")
 
 t = 9
@@ -151,7 +152,7 @@ plt.title("Square Matrix-Matrix Product Time (Normalized To Theoretical Peak) Vs
 plt.xlabel("N (Matrix Size NxN)")
 plt.ylabel("Time (Normalized to Theoretical Matrix-Matrix Product Peak")
 plt.legend(loc="best")
-plt.savefig("gemm_comparison")
+plt.savefig("gemm_comparison.svg", format='svg', dpi=1200)
 plt.close("all")
 
 f.close()
