@@ -1,18 +1,43 @@
 \subsection{Testing}
   In understanding the testing methodology behind ReproBLAS, is important to distinguish between the matrics of reproducibility and accuracy. Although high accuracy can sometimes result in reproducibility, it is not a guarantee. For this reason, we test the accuracy and the reproducibility of the ReproBLAS methods separately.
 
-  Testing in ReproBLAS starts with the BLAS1 methods (\textt{sum}, \textt{asum}, \textt{nrm2}, \textt{dot}). These methods are first checked to see that their results are accurate, then checked to see if the results are reproducible.
+  Testing in ReproBLAS starts with the BLAS1 methods (\texttt{sum}, \texttt{asum}, \texttt{nrm2}, \texttt{dot}). These methods are first checked to see that their results are accurate, then checked to see if the results are reproducible.
 
-  The accuracy of the reproducible BLAS1 methods is validated by checking to see if the results of each method are within the error margin specified by \eqref{} from the true results. Because the true summation result must be known, these tests are performed on distributions with known sums. The input vectors used are shown in Table \ref{}. 
-  \begin{enumerate}
-    \item A full period of a sine wave (this sums to zero).
-    \item 
-  \end{enumerate}
+  The accuracy of the reproducible BLAS1 methods is validated by checking to see if the results of each method are within the error margin specified by \eqref{eq:error2} from the true results. Because the true summation result must be known, these tests are performed on distributions with known sums. The input vectors used are shown in Table \ref{tbl:validateblas1data}.
+
+    \begin{table}[!htbp]
+        \centering
+        \begin{tabular}{ | l |  l |} \hline
+            Name & Value\\ \hline
+            $sine$ & $X_j = \sin(2 \pi j/n)$ \\ \hline
+            $small + big$ & $X_j = \begin{cases} 2^{\lfloor p/2\rfloor + 1} \text{ if } j == 0 \\ 2^{-\lfloor p/2\rfloor - 1} \text{ otherwise} \end{cases}$ \\ \hline
+            $small + big + big$ & $X_j = \begin{cases} 2^{\lfloor p/2\rfloor + 1} \text{ if } j == 0 \text{ or } j == n - 1 \\ 2^{-\lfloor p/2\rfloor - 1} \text{ otherwise} \end{cases}$\\ \hline
+            $small + big - big$ & $X_j = \begin{cases} 2^{\lfloor p/2\rfloor + 1} \text{ if } j == 0\\-2^{\lfloor p/2\rfloor + 1} \text{ if } j == n - 1\\ 2^{-\lfloor p/2\rfloor - 1} \text{ otherwise} \end{cases}$\\ \hline
+        \end{tabular}
+        \caption{ReproBLAS Accuracy Validation Vectors $X \in \F^n$}
+        \label{tbl:validateblas1data}
+    \end{table}
+
   Because the reproducible summation methods operate on bins, we repeat the accuracy tests on scaled versions of the input data set $W$ times, each time increasing the scale by a factor of two. This allows us to test many different cases where sums are split across bin boundaries. This is performed on data very close to overflow to test cases where the data is split between bin 0 and bin 1. This is also performed on data very close to underfow to test cases where some data is lost due to underflow.
 
-  To validate the accuracy of the methods in the presence of \texttt{Inf}, \texttt{-Inf}, and \texttt{NaN}, the reproducible BLAS1 methods are tested on the vectors shown in Table \ref{}.
+  To validate the accuracy of the methods in the presence of \texttt{Inf}, \texttt{-Inf}, and \texttt{NaN}, the reproducible BLAS1 methods are tested on the vectors (scaled by $1$ and $-1$) shown in Table \ref{tbl:validateinfblas1data}.
+    \begin{table}[!htbp]
+        \centering
+        \begin{tabular}{ | l |  l |} \hline
+            Name & Value\\ \hline
+            $\texttt{Inf}$ & $X_j = \begin{cases} \texttt{Inf} \text{ if } j == 0 \\ 0 \text{ otherwise} \end{cases}$ \\ \hline
+            $\texttt{Inf} + \texttt{Inf}$ & $X_j = \begin{cases} \texttt{Inf} \text{ if } j == 0 \text{ or } j == n - 1 \\ 0 \text{ otherwise} \end{cases}$\\ \hline
+            $\texttt{Inf} - \texttt{Inf}$ & $X_j = \begin{cases} \texttt{Inf} \text{ if } j == 0 \\ -\texttt{Inf} \text{ if } j == n - 1 \\ 0 \text{ otherwise} \end{cases}$\\ \hline
+            $\texttt{NaN}$ & $X_j = \begin{cases} \texttt{NaN} \text{ if } j == 0 \\ 0 \text{ otherwise} \end{cases}$\\ \hline
+            $\texttt{Inf} + \texttt{NaN}$ & $X_j = \begin{cases} \texttt{Inf} \text{ if } j == 0 \\ \texttt{NaN} \text{ if } j == n - 1 \\ 0 \text{ otherwise} \end{cases}$\\ \hline
+            $\texttt{Inf} + \texttt{NaN} + \texttt{Inf}$ & $X_j = \begin{cases} \texttt{Inf} \text{ if } j == 0 \\ \texttt{NaN} \text{ if } j == \lfloor n/2 \rfloor \\ \texttt{Inf} \text{ if } j == n - 1 \\ 0 \text{ otherwise} \end{cases}$\\ \hline
+            $\texttt{Inf} + \texttt{NaN} - \texttt{Inf}$ & $X_j = \begin{cases} \texttt{Inf} \text{ if } j == 0 \\ \texttt{NaN} \text{ if } j == \lfloor n/2 \rfloor \\ -\texttt{Inf} \text{ if } j == n - 1 \\ 0 \text{ otherwise} \end{cases}$\\ \hline
+        \end{tabular}
+        \caption{ReproBLAS Exception Validation Vectors $X \in \F^n$}
+        \label{tbl:validateinfblas1data}
+    \end{table}
 
-  After validating the accuracy of the reproducible BLAS1 methods, their reproducibility is verified. Each method is checked to see if it produces the same result under several different permutations of data.The data is permuted by reversing, sorting (in ascending or descending order of value or absolute value), or random shuffling. To check that the result is independent of blocking, the data is grouped into several blocks and each block is operated on separately, then the results for each block are combined using the appropriate function. Several different block sizes are tested for each permutation of the data.
+  After validating the accuracy of the reproducible BLAS1 methods, their reproducibility is verified. Each method is checked to see if it produces the same result under several different permutations of data. Because we do not need to know the true sum of the data, several other vectors are tested here, such as a normal random distribution, a uniform random distribution, and a conditioned random distribution. The data is permuted by reversing, sorting (in ascending or descending order of value or absolute value), or random shuffling. To check that the result is independent of blocking, the data is grouped into several blocks and each block is operated on separately, then the results for each block are combined using the appropriate function. Several different block sizes are tested for each permutation of the data.
 
   Once the BLAS1 methods are tested, the results of BLAS2 and BLAS3 (\texttt{gemv} and \texttt{gemm}) methods are tested against reference versions. These reference versions use no blocking and are simple to understand and code.
 

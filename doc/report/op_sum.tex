@@ -84,7 +84,8 @@ s $2^{53-40-2}=2^{11}$ times for double precision and $2^{24-13-2} = 2^9$ times 
   total cost of Algorithm~\ref{alg:sum} to $\approx (3K+2)n$ FLOPs.
 
   Finally, we make the observation that it is possible to implement a reproducible dot product or absolute sum by applying Algorithm~\ref{alg:sum} to the elements of the pointwise product of input vectors or to the absolute values of entries of an input vector.
-  %TODO mention that when summing (a + bi)(c + di), we sum ac and -bd separately.
+  A few implementation details should be covered regarding our implementation of the complex dot product. When multiplying the complex numbers $(a + bi)$ and $(c + di)$, we assume that the product is obtained by evaluating $(ac - bd) + (ad + bc)i$ literally. This means that $(\texttt{Inf} + \texttt{Inf}i)(\texttt{Inf} + 0i)$ produces $\texttt{NaN} + \texttt{NaN}i$.
+  This is the Fortran convention for complex multiplication, not the C convention. In C, complex multiplication is implemented with a function call to catch the exceptional cases and give more sensible results. In the example above, we get $\texttt{Inf} + \texttt{Inf}i$. We refer the curious reader to part G.5.1 of the C99 standard \cite{c99} where this issue is discussed. We choose the Fortran definition of multiplication because the Reference BLAS is written in Fortran. We also mention here that we increase the accuracy of the dot product by reproducibly summing the pairs of products in a complex multiplication ($ac$ and $-bd$ for real, $ad$ and $bc$ for imaginary) separately. For example, we reproducibly sum $ac$ before reproducibly summing $-bd$, as opposed to reproducibly summing $ac - bd$.
 
 
 
