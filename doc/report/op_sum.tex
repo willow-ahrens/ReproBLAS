@@ -83,10 +83,8 @@ s $2^{53-40-2}=2^{11}$ times for double precision and $2^{24-13-2} = 2^9$ times 
   needs to be scaled down to avoid overflow, which increases the
   total cost of Algorithm~\ref{alg:sum} to $\approx (3K+2)n$ FLOPs.
 
-
-
-
-
+  Finally, we make the observation that it is possible to implement a reproducible dot product or absolute sum by applying Algorithm~\ref{alg:sum} to the elements of the pointwise product of input vectors or to the absolute values of entries of an input vector.
+  %TODO mention that when summing (a + bi)(c + di), we sum ac and -bd separately.
 
 
 
@@ -287,4 +285,5 @@ s $2^{53-40-2}=2^{11}$ times for double precision and $2^{24-13-2} = 2^9$ times 
   needs to be scaled down to avoid overflow, which increases the
   total cost of Algorithm~\ref{alg:local-sum} to $\approx (3K+2)n$ FLOPs.
 \end{comment}
+
 

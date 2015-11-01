@@ -16,4 +16,4 @@
 
   Once the BLAS1 methods are tested, the results of BLAS2 and BLAS3 (\texttt{gemv} and \texttt{gemm}) methods are tested against reference versions. These reference versions use no blocking and are simple to understand and code.
 
-  Several parameters must be tested in the BLAS, including the increment between elements of a vector, row or column major ordering of matricies, whether or not to transpose matricies, and scaling factors on vectors and matricies. Because there are several parameters that need testing, a Python test harness was created to easily test each combination of values for these parameters.
+  Several parameters must be tested for the reproducible BLAS functions, including $K$ (where the indexed types used are $K$-fold), the increment between elements of a vector, row or column major ordering of matricies, whether or not to transpose matricies, and scaling factors on vectors and matricies. Because there are several parameters that need testing, a Python test harness was created to easily test each combination of values for these parameters.
