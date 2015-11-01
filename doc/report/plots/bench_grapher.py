@@ -1,5 +1,4 @@
 import matplotlib
-matplotlib.use("svg")
 import matplotlib.pyplot as plt
 import numpy as np
 import csv
@@ -39,7 +38,6 @@ opacity = 0.8
 
 rects1 = plt.bar(index, np.array(tables[0][1][-2:]), bar_width,
                  alpha=opacity,
-                 hatch='',
                  color='red',
                  label='Uniform Random [0, 1) Distribution')
 
@@ -56,8 +54,7 @@ plt.xticks(index + bar_width, ('rdsum (double)', 'rssum (float)'))
 plt.legend(loc="lower right")
 
 plt.tight_layout()
-plt.show()
-plt.savefig("easy_vs_hard.svg", format='svg', dpi=1200)
+plt.savefig("easy_vs_hard.eps", format='eps', dpi=1200)
 plt.close("all")
 
 t = 1
@@ -72,11 +69,11 @@ plt.plot(N, blas_sum_peak, ':', label = "for loop theoretical peak")
 plt.plot(N, rblas_sum_peak, '-.', label = "rdsum theoretical peak")
 plt.plot(N, blas_sum, '--', label = "for loop")
 plt.plot(N, rblas_sum, '-', label = "rdsum")
-plt.title("Summation Time (Normalized To Theoretical Peak) Vs. N")
+plt.title("Summation Time (Normalized To Peak) Vs. N")
 plt.xlabel("N (Vector Size N)")
-plt.ylabel("Time (Normalized to Theoretical Recursive Summation Peak")
+plt.ylabel("Time (Normalized to Theoretical Recursive Summation Peak)")
 plt.legend(loc="best")
-plt.savefig("sum_comparison.svg", format='svg', dpi=1200)
+plt.savefig("sum_comparison.eps", format='eps', dpi=1200)
 plt.close("all")
 
 t = 3
@@ -91,9 +88,9 @@ plt.plot(N, blas_sum_peak, ':', label = "ddot theoretical peak")
 plt.plot(N, rblas_sum_peak, '-.', label = "rddot theoretical peak")
 plt.plot(N, blas_sum, '--', label = "ddot")
 plt.plot(N, rblas_sum, '-', label = "rddot")
-plt.title("Dot Product Time (Normalized To Theoretical Peak) Vs. N")
+plt.title("Dot Product Time (Normalized To Peak) Vs. N")
 plt.xlabel("N (Vector Size N)")
-plt.ylabel("Time (Normalized to Theoretical Dot Product Peak")
+plt.ylabel("Time (Normalized to Theoretical Dot Product Peak)")
 plt.legend(loc="best")
 plt.savefig("dot_comparison")
 plt.close("all")
@@ -110,11 +107,11 @@ plt.plot(N, blas_sum_peak, ':', label = "dgemv theoretical peak")
 plt.plot(N, rblas_sum_peak, '-.', label = "rdgemv theoretical peak")
 plt.plot(N, blas_sum, '--', label = "dgemv")
 plt.plot(N, rblas_sum, '-', label = "rdgemv")
-plt.title("Square Matrix-Vector Product Time (Normalized To Theoretical Peak) Vs. N")
+plt.title("Matrix-Vector Product Time (Normalized To Peak) Vs. N")
 plt.xlabel("N (Matrix Size NxN)")
-plt.ylabel("Time (Normalized to Theoretical Matrix-Vector Product Peak")
+plt.ylabel("Time (Normalized to Theoretical Matrix-Vector Product Peak)")
 plt.legend(loc="best")
-plt.savefig("gemv_comparison.svg", format='svg', dpi=1200)
+plt.savefig("gemv_comparison.eps", format='eps', dpi=1200)
 plt.close("all")
 
 t = 7
@@ -129,11 +126,11 @@ plt.plot(N, blas_sum_peak, ':', label = "dgemv theoretical peak")
 plt.plot(N, rblas_sum_peak, '-.', label = "rdgemv theoretical peak")
 plt.plot(N, blas_sum, '--', label = "dgemv")
 plt.plot(N, rblas_sum, '-', label = "rdgemv")
-plt.title("Square Transposed Matrix-Vector Product Time (Normalized To Theoretical Peak) Vs. N")
+plt.title("Transposed Matrix-Vector Product Time (Normalized To Peak) Vs. N")
 plt.xlabel("N (Matrix Size NxN)")
-plt.ylabel("Time (Normalized to Theoretical Matrix-Vector Product Peak")
+plt.ylabel("Time (Normalized to Theoretical Matrix-Vector Product Peak)")
 plt.legend(loc="best")
-plt.savefig("gemv_trans_comparison.svg", format='svg', dpi=1200)
+plt.savefig("gemv_trans_comparison.eps", format='eps', dpi=1200)
 plt.close("all")
 
 t = 9
@@ -148,11 +145,11 @@ plt.plot(N, blas_sum_peak, ':', label = "dgemm theoretical peak")
 plt.plot(N, rblas_sum_peak, '-.', label = "rdgemm theoretical peak")
 plt.plot(N, blas_sum, '--', label = "dgemm")
 plt.plot(N, rblas_sum, '-', label = "rdgemm")
-plt.title("Square Matrix-Matrix Product Time (Normalized To Theoretical Peak) Vs. N")
+plt.title("Matrix-Matrix Product Time (Normalized To Peak) Vs. N")
 plt.xlabel("N (Matrix Size NxN)")
-plt.ylabel("Time (Normalized to Theoretical Matrix-Matrix Product Peak")
+plt.ylabel("Time (Normalized to Theoretical Matrix-Matrix Product Peak)")
 plt.legend(loc="best")
-plt.savefig("gemm_comparison.svg", format='svg', dpi=1200)
+plt.savefig("gemm_comparison.eps", format='eps', dpi=1200)
 plt.close("all")
 
 f.close()

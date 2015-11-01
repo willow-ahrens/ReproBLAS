@@ -1,5 +1,4 @@
 import matplotlib
-matplotlib.use("svg")
 import matplotlib.pyplot as plot
 
 eps = 2.0**(-53.0)
@@ -36,4 +35,4 @@ plot.yscale("log")
 plot.xlabel("Condition Number")
 plot.ylabel("Relative Error Bound")
 plot.legend(loc='upper left')
-plot.savefig("error_comparison.svg", format='svg', dpi=1200)
+plot.savefig("error_comparison.eps", format='eps', dpi=1200)
