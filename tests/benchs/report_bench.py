@@ -14,7 +14,7 @@ bench_harness.add_suite(benchs.BenchSuite([benchs.BenchDSUMTest(), benchs.BenchR
 bench_harness.add_suite(benchs.BenchSuite([benchs.BenchDDOTTest(), benchs.BenchRDDOTTest()], ["N", "fold", "FillX", "FillY"], [[2**i for i in range(6, 13)], [fold], ["normal"], ["normal"]], "peak_time"))
 bench_harness.add_suite(benchs.BenchSuite([benchs.BenchDDOTTest(), benchs.BenchRDDOTTest()], ["N", "fold", "FillX", "FillY"], [[2**i for i in range(6, 13)], [fold], ["normal"], ["normal"]], "time"))
 
-trials = 10
+trials = 100
 
 bench_harness.add_suite(benchs.BenchSuite([benchs.BenchDGEMVTest(), benchs.BenchRDGEMVTest()], [("N", "M"), "TransA", "fold", "FillA", "FillX", "FillY", 'a'], [[(2**i, 2**i) for i in range(6, 13)], ["NoTrans"], [3], ["normal"], ["constant"], ["constant"], [0]], "peak_time", silent_flags="--Order ColMajor"))
 bench_harness.add_suite(benchs.BenchSuite([benchs.BenchDGEMVTest(), benchs.BenchRDGEMVTest()], [("N", "M"), "TransA", "fold", "FillA", "FillX", "FillY", 'a'], [[(2**i, 2**i) for i in range(6, 13)], ["NoTrans"], [3], ["normal"], ["constant"], ["constant"], [trials]], "time", silent_flags="--Order ColMajor"))
