@@ -1,4 +1,19 @@
 \subsection{Testing}
-  \subsubsection{Reproducibility And Accuracy}
-  \subsubsection{Methodology}
-  \subsubsection{Test Harness}
+  In understanding the testing methodology behind ReproBLAS, is important to distinguish between the matrics of reproducibility and accuracy. Although high accuracy can sometimes result in reproducibility, it is not a guarantee. For this reason, we test the accuracy and the reproducibility of the ReproBLAS methods separately.
+
+  Testing in ReproBLAS starts with the BLAS1 methods (\textt{sum}, \textt{asum}, \textt{nrm2}, \textt{dot}). These methods are first checked to see that their results are accurate, then checked to see if the results are reproducible.
+
+  The accuracy of the reproducible BLAS1 methods is validated by checking to see if the results of each method are within the error margin specified by \eqref{} from the true results. Because the true summation result must be known, these tests are performed on distributions with known sums. The input vectors used are shown in Table \ref{}. 
+  \begin{enumerate}
+    \item A full period of a sine wave (this sums to zero).
+    \item 
+  \end{enumerate}
+  Because the reproducible summation methods operate on bins, we repeat the accuracy tests on scaled versions of the input data set $W$ times, each time increasing the scale by a factor of two. This allows us to test many different cases where sums are split across bin boundaries. This is performed on data very close to overflow to test cases where the data is split between bin 0 and bin 1. This is also performed on data very close to underfow to test cases where some data is lost due to underflow.
+
+  To validate the accuracy of the methods in the presence of \texttt{Inf}, \texttt{-Inf}, and \texttt{NaN}, the reproducible BLAS1 methods are tested on the vectors shown in Table \ref{}.
+
+  After validating the accuracy of the reproducible BLAS1 methods, their reproducibility is verified. Each method is checked to see if it produces the same result under several different permutations of data.The data is permuted by reversing, sorting (in ascending or descending order of value or absolute value), or random shuffling. To check that the result is independent of blocking, the data is grouped into several blocks and each block is operated on separately, then the results for each block are combined using the appropriate function. Several different block sizes are tested for each permutation of the data.
+
+  Once the BLAS1 methods are tested, the results of BLAS2 and BLAS3 (\texttt{gemv} and \texttt{gemm}) methods are tested against reference versions. These reference versions use no blocking and are simple to understand and code.
+
+  Several parameters must be tested in the BLAS, including the increment between elements of a vector, row or column major ordering of matricies, whether or not to transpose matricies, and scaling factors on vectors and matricies. Because there are several parameters that need testing, a Python test harness was created to easily test each combination of values for these parameters.
