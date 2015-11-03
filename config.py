@@ -147,6 +147,30 @@ def peak_time(data):
   return float(d_ops/vec_d_ops + s_ops/vec_s_ops)/data["freq"]
 
 ##
+#  @brief total count of flops
+#
+#
+#  @param data a dictionary containing the following keys:
+#                d_add - number of double precision additions
+#                d_mul - number of double precision multiplications
+#                d_fma - number of single precision fused multiply additions
+#                d_cmp - number of double precision comparisons
+#                d_orb  - number of double precision bitwise or
+#                s_add - number of single precision additions
+#                s_mul - number of single precision multiplications
+#                s_fma - number of single precision fused multiply additions
+#                s_cmp - number of single precision comparisons
+#                s_orb  - number of single precision bitwise or
+#                fma   - is fma available (True, False)
+#  @return total count of flops
+#
+#  @author Peter Ahrens
+#  @date   28 May 2015
+#
+def flop_count(data):
+  return data["d_add"] + data["d_mul"] + data["d_orb"] + 2 * data["d_fma"] + data["s_add"] + data["s_mul"] + data["s_orb"] + 2 * data["s_fma"]
+
+##
 #  @brief clarify information about host machine
 #
 #  If the cpu info cannot be found, specify it here

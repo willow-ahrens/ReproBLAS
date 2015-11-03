@@ -1,7 +1,7 @@
 # select compiler (comment all for auto)
-CC = cc
+#CC = cc
 #CC = gcc
-#CC = icc
+CC = icc
 #CC = pgcc
 #CC = craycc
 #CC = clang
@@ -69,6 +69,7 @@ BLAS := true
 
 # Intel MKL Sequential BLAS
 LDFLAGS += ${MKLROOT}/lib/libmkl_intel_lp64.a ${MKLROOT}/lib/libmkl_core.a ${MKLROOT}/lib/libmkl_sequential.a -lpthread -lm
+#LDFLAGS += -lmkl_intel_lp64 -lmkl_core -lmkl_sequential -lpthread -lm
 CPPFLAGS += -DCBLAS=1
 
 # Atlas BLAS

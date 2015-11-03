@@ -3,7 +3,8 @@ import tests.harness.harness as harness
 
 bench_harness = harness.Harness("bench")
 #attribute = "%peak"
-attribute = "time"
+#attribute = "time"
+attribute = "perf"
 #attribute = "freq"
 
 bench_harness.add_suite(benchs.BenchSuite([benchs.BenchRDSUMTest(), benchs.BenchRDASUMTest(), benchs.BenchRDNRM2Test(), benchs.BenchRDDOTTest()], ["N", "fold"], [[4096], [3]], attribute, silent_flags="--FillA rand"))

@@ -218,3 +218,21 @@ def get_peak_time(output, verbose="false"):
     if key in output:
       data[key] = output[key]
   return config.peak_time(data)
+
+def get_flop_count(output, verbose="false"):
+  data = {}
+  data["s_add"] = 0;
+  data["s_mul"] = 0;
+  data["s_fma"] = 0;
+  data["s_cmp"] = 0;
+  data["s_orb"] = 0;
+  data["d_add"] = 0;
+  data["d_mul"] = 0;
+  data["d_fma"] = 0;
+  data["d_cmp"] = 0;
+  data["d_orb"] = 0;
+  data["fma"] = get_fma(verbose=verbose);
+  for key in data:
+    if key in output:
+      data[key] = output[key]
+  return config.flop_count(data)
