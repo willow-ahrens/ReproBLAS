@@ -23,7 +23,7 @@
     of input in the bin $(a_{I + k}, b_{I + k}]$. If $I$ is so large that
     $I + K > i_{\max}$, then the extra $I + K - i_{\min}$ accumulators are unused.
 
-    In ReproBLAS, the datatype used to sum \texttt{double} is named \texttt{double\_indexed}, and likewise for \texttt{double complex}, \texttt{float}, and \texttt{float complex}. A $K$-fold indexed type can be allocated with the \texttt{idxd\_xialloc} method, and set to zero with the \texttt{idxd\_xisetzero} method. Both of these methods are defined in \texttt{idxd.h}
+    In ReproBLAS, the data type used to sum \texttt{double} is named \texttt{double\_indexed}, and likewise for \texttt{double complex}, \texttt{float}, and \texttt{float complex}. A $K$-fold indexed type can be allocated with the \texttt{idxd\_xialloc} method, and set to zero with the \texttt{idxd\_xisetzero} method. Both of these methods are defined in \texttt{idxd.h}
 
     Section \ref{sec:indexed_primary_carry} elaborates on the specific fields
     that make up the indexed type and the values they represent. Sections
@@ -268,7 +268,7 @@
       such a bitwise manipulation would likely be more computationally intensive
       and would not map as intuitively to our binning process.
 
-      In the case that reproduciblity is desired on heterogeneous machines,
+      In the case that reproducibility is desired on heterogeneous machines,
       where some processors may handle underflow gradually and others abruptly,
       the approach of setting a least bin is recommended. The indexed sum using
       this scheme does not depend on whether or not underflow is handled
@@ -317,7 +317,7 @@
       and all the inputs are finite, there will be no intermediate \texttt{NaN}
       or $\pm \texttt{Inf}$ during the computation.
       For example, given $x \in \F$ the biggest representable value below the
-      overflow threshhold, our algorithm will compute a result of exactly $0$ for
+      overflow threshold, our algorithm will compute a result of exactly $0$ for
       the sum of input vector $[x,x,-x,-x]$ regardless of the order of evaluation.
       On the other hand, a standard recursive summation algorithm returns either
       $((x+x)-x)-x=\texttt{Inf}$, $((-x-x)+x)+x=-\texttt{Inf}$, $((x-x)+x)-x = 0$, 
@@ -374,7 +374,7 @@
           \mathcal{Y}_k = \sum\limits_{j = 0}^{n - 1}d(x_j, I + k) = \sum\limits_{j = 0}^{n - 1}d(x_{\sigma_j}, I + k) = \mathcal{Z}_k
         \end{equation*}
 
-        If $I + k \geq 1$, Assume for contradiction that there exists some $k$, $0 \leq k < K$,, such that ${Y_k}_C \neq {Z_k}_C$. Since $\mathcal{Y}_k = \mathcal{Z}_k$, \eqref{eq:acc} yeilds
+        If $I + k \geq 1$, Assume for contradiction that there exists some $k$, $0 \leq k < K$,, such that ${Y_k}_C \neq {Z_k}_C$. Since $\mathcal{Y}_k = \mathcal{Z}_k$, \eqref{eq:acc} yields
         \begin{align*}
           ({Y_k}_P - 1.5 \epsilon^{-1}2^{a_{I + k}}) + (0.25\epsilon^{-1}2^{a_{I + k}}){Y_k}_C &= ({Z_k}_P - 1.5 \epsilon^{-1}2^{a_{I + k}}) + (0.25\epsilon^{-1}2^{a_{I + k}}){Z_k}_C\\
           {Y_k}_P - {Z_k}_P &= (0.25\epsilon^{-1}2^{a_{I + k}})({Z_k}_C - {Y_k}_C)\\
@@ -385,7 +385,7 @@
 
         Therefore, we have that ${Y_k}_C = {Z_k}_C$. Along with the fact that $\mathcal{Y}_k = \mathcal{Z}_k$, application of \eqref{eq:acc} yields that ${Y_k}_P = {Z_k}_P$.
 
-        If $I = 0$, assume for contradiction that ${Y_0}_C \neq {Z_0}_C$. Since $\mathcal{Y}_0 = \mathcal{Z}_0$, \eqref{eq:acc} and \eqref{eq:pri0} yeild
+        If $I = 0$, assume for contradiction that ${Y_0}_C \neq {Z_0}_C$. Since $\mathcal{Y}_0 = \mathcal{Z}_0$, \eqref{eq:acc} and \eqref{eq:pri0} yield
         \begin{align*}
           2^{p - W + 1}({Y_0}_P - 1.5\cdot2^{e_{\max}}) + (0.25\epsilon^{-1}2^{a_{0}}){Y_0}_C &= 2^{p - W + 1}({Z_0}_P - 1.5\cdot2^{e_{\max}}) + (0.25\epsilon^{-1}2^{a_{0}}){Z_0}_C\\
           {Y_0}_P - {Z_0}_P &= 2^{W - p - 1}(0.25\epsilon^{-1}2^{a_{0}})({Z_0}_C - {Y_0}_C)\\

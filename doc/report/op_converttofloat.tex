@@ -87,7 +87,7 @@ multiple error bounds are shown.}
     Note that, this interpretation is to support reasoning the conversion algorithm
     presented below, and is not used to change the representation format of the data itself
     since IEEE floating-point formats do not permit unnormalized numbers
-    beside exeptional values and subnormals.
+    beside exceptional values and denormalized numbers.
     Consider a $K$-fold indexed type $Y$ of index $I$.
     As each value ${\mathcal{Y}_k}_P$ in a primary field ${Y_k}_P$ is represented by an offset from $1.5  \epsilon^{-1}  2^{a_{I + k}}$ and ${Y_k}_P \in (\epsilon^{-1}  2^{a_{I + k}}, 2  \epsilon^{-1}  2^{a_{I + k}})$, ${\mathcal{Y}_k}_P$ can be expressed exactly using an unnormalized floating point number ${\mathcal{Y}'_P}_k$ with an exponent of $a_{I + k} + p - 1$.
     As each carry field ${Y_k}_C$ is a count of renormalization adjustments later scaled by $0.25  \epsilon^{-1}  2^{a_{I + k}}$, ${\mathcal{Y}_k}_C$ can be expressed exactly using an unnormalized floating point number ${\mathcal{Y}'_k}_C$ with an exponent of $a_{I + k} + 2  p - 3$.
@@ -296,4 +296,4 @@ multiple error bounds are shown.}
     not extend the exponent range we must use Algorithm
     \ref{alg:conv2floatoverflow} for the conversion.
 
-    In ReproBLAS, the appropriate conversion for the given datatype is available as \texttt{idxd\_xxiconv} in \texttt{idxd.h}
+    In ReproBLAS, the appropriate conversion for the given data type is available as \texttt{idxd\_xxiconv} in \texttt{idxd.h}

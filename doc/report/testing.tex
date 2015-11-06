@@ -1,5 +1,5 @@
 \subsection{Testing}
-  In understanding the testing methodology behind ReproBLAS, is important to distinguish between the matrics of reproducibility and accuracy. Although high accuracy can sometimes result in reproducibility, it is not a guarantee. For this reason, we test the accuracy and the reproducibility of the ReproBLAS methods separately.
+  In understanding the testing methodology behind ReproBLAS, is important to distinguish between the metrics of reproducibility and accuracy. Although high accuracy can sometimes result in reproducibility, it is not a guarantee. For this reason, we test the accuracy and the reproducibility of the ReproBLAS methods separately.
 
   Testing in ReproBLAS starts with the BLAS1 methods (\texttt{sum}, \texttt{asum}, \texttt{nrm2}, \texttt{dot}). These methods are first checked to see that their results are accurate, then checked to see if the results are reproducible.
 
@@ -18,7 +18,7 @@
         \label{tbl:validateblas1data}
     \end{table}
 
-  Because the reproducible summation methods operate on bins, we repeat the accuracy tests on scaled versions of the input data set $W$ times, each time increasing the scale by a factor of two. This allows us to test many different cases where sums are split across bin boundaries. This is performed on data very close to overflow to test cases where the data is split between bin 0 and bin 1. This is also performed on data very close to underfow to test cases where some data is lost due to underflow.
+  Because the reproducible summation methods operate on bins, we repeat the accuracy tests on scaled versions of the input data set $W$ times, each time increasing the scale by a factor of two. This allows us to test many different cases where sums are split across bin boundaries. This is performed on data very close to overflow to test cases where the data is split between bin 0 and bin 1. This is also performed on data very close to underflow to test cases where some data is lost due to underflow.
 
   To validate the accuracy of the methods in the presence of \texttt{Inf}, \texttt{-Inf}, and \texttt{NaN}, the reproducible BLAS1 methods are tested on the vectors (scaled by $1$ and $-1$) shown in Table \ref{tbl:validateinfblas1data}.
     \begin{table}[!htbp]
@@ -41,4 +41,4 @@
 
   Once the BLAS1 methods are tested, the results of BLAS2 and BLAS3 (\texttt{gemv} and \texttt{gemm}) methods are tested against reference versions. These reference versions use no blocking and are simple to understand and code.
 
-  Several parameters must be tested for the reproducible BLAS functions, including $K$ (where the indexed types used are $K$-fold), the increment between elements of a vector, row or column major ordering of matricies, whether or not to transpose matricies, and scaling factors on vectors and matricies. Because there are several parameters that need testing, a Python test harness was created to easily test each combination of values for these parameters.
+  Several parameters must be tested for the reproducible BLAS functions, including $K$ (where the indexed types used are $K$-fold), the increment between elements of a vector, row or column major ordering of matrices, whether or not to transpose matrices, and scaling factors on vectors and matrices. Because there are several parameters that need testing, a Python test harness was created to easily test each combination of values for these parameters.

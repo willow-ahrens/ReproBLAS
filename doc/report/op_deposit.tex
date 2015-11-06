@@ -45,7 +45,7 @@
       The last bit of $r$ is set to break ties when rounding ``to nearest'' so
       that the amount added to ${Y_k}_P$ does not depend on the size of
       ${Y_k}_P$ so far.
-      Algorithm~\ref{alg:depositrestricted} costs $3(K-1)+1=3K-2$ FLOPs,
+      Algorithm~\ref{alg:depositrestricted} costs $3(K-1)+1=3K-2$ FLOPS,
       not counting the or-bit operation.
       The following theorem proves the ``Ensure'' claim at
       the end of Algorithm \ref{alg:depositrestricted}.
@@ -202,7 +202,7 @@
       are therefore similar to Algorithm~\ref{alg:depositrestricted}.
       If the slice $q$ is scaled back by $2^{p-W+1}$ and subtracted from $x$
       then the rest of the algorithm doesn't change in the absence of overflow.
-      However, if $x$ is equal to the biggest value below the overflow threshhold,
+      However, if $x$ is equal to the biggest value below the overflow threshold,
       then $d(x,0) = 2\cdot 2^{e_{max}}$,
       scaling $q$ back by $2^{p-W+1}$ would cause overflow.
       To handle this special case, instead of scaling $q$ back by $2^{p-W+1}$,
@@ -210,12 +210,12 @@
       and perform twice the subtraction $x-q$ to compute $r$.
       Note that if an FMA (Fused-Multiply Adder) is available,
       we would not have to explicitly scale $q$ back,
-      one single FMA instruction suffcies to compute $r = x - q * 2^{p-W+1}$
+      one single FMA instruction suffices to compute $r = x - q * 2^{p-W+1}$
       without any overflow.
 
       In the rare case of $\fct{IIndex}(Y) = 0$, Algorithm~\ref{alg:deposit}
-      costs $3 * (K-2) + 7 = 3K+1$ FLOPs. Otherwise it has the same cost
-      of $3K-2$ FLOPs as Algorithm~\ref{alg:depositrestricted}.
+      costs $3 * (K-2) + 7 = 3K+1$ FLOPS. Otherwise it has the same cost
+      of $3K-2$ FLOPS as Algorithm~\ref{alg:depositrestricted}.
       Theorem \ref{thm:ddeposit} shows that Algorithm \ref{alg:deposit}
       enjoys the necessary properties.
 
