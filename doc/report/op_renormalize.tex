@@ -10,7 +10,7 @@
     To enforce this condition, the indexed type must be renormalized at least
     every $2^{p-W-2}$ deposit operations, as will be shown in Theorem \ref{thm:renormfreq}.
     The renormalization procedure is shown in Algorithm \ref{alg:renorm},
-    which works for all indices $0 \leq I \leq i_{max}$. Algorithm \ref{alg:renorm} is available in ReproBLAS as \texttt{idxd\_xirenorm} in \texttt{idxd.h}
+    which works for all indices $0 \leq I \leq i_{max}$. Algorithm \ref{alg:renorm} is available in ReproBLAS as \texttt{idxd\_xirenorm} in \texttt{idxd.h} (see Section \ref{sec:reproBLAS} for details).
 
     \begin{samepage}
     \begin{alg}
@@ -42,11 +42,11 @@
     \end{samepage}
     The renormalization operation is described in the ``Carry-bit Propagation''
     Section (lines 21 to 32) of Algorithm $6$ in \cite{repsum}, although it has
-    been slightly modified so as not to include an extraneous case. Note that
-    the above renormalization algorithm can be modified to tolerate
-    indexed types with exceptional values by doing nothing when such types are
-    encountered (indexed types with exceptional values do not need
-    renormalization).
+    been slightly modified so as not to include an extraneous case. Indexed 
+    types with exceptional values do not need renormalization. 
+    Algorithm \ref{alg:renorm} can be modified to handle indexed 
+    types with exceptional values by doing nothing when such types are
+    encountered (depending on how $\ufp()$ behaves when given exceptional values, Algorithm \ref{alg:renorm} could change $\pm\texttt{Inf}$ to \texttt{NaN}).
     In total, Algorithm~\ref{alg:renorm} costs $3K$ FLOPS with a maximum of
     $2K$ conditional branches.
 
@@ -68,7 +68,7 @@
     \end{samepage}
 
     \begin{proof}
-    As the proof is almost identical to the case where $I + k > 0$, we consider here only the case that $I + k > 0$.
+    As the proof when $I + k = 0$ is almost identical to the case where $I + k > 0$, we consider here only the case that $I + k > 0$.
     First, note that $|d(x_j, I + k)| \leq 2^{b_{I + k}}$ by Theorem
     \ref{thm:dbound}, where $d(x_j, I + k)$ is the amount added to ${Y_k}_P$ on
     iteration $k$.
@@ -114,7 +114,7 @@
       (\epsilon^{-1} - 1) 2^{p-W-2} \approx 2^{2  p - W - 2}
       \label{eq:totalfreq}
     \end{equation}
-    floating point numbers. These maxima are approximately $2^{64}$ in double and $2^{33}$ in single
+    floating point numbers. The value of $(\epsilon^{-1} - 1)2^{p-W-2}$ is approximately $2^{64}$ in double and $2^{33}$ in single
     precision using the values in Table~\ref{tbl:bins}.
 
     Note that this value of maximum number of additions is slightly bigger

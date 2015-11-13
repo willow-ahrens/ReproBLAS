@@ -25,7 +25,7 @@ def one(n):
 
 relerrs = [standard_relerr(1000), standard_relerr(100), indexed_naive_relerr, indexed_careful_relerr, one]
 linestyles = ["-", "-", "-", "-", "--"]
-names = ["Standard Sum n=1000", "Standard Sum n=100", "Indexed Sum (Naive) n=100,1000", "Indexed Sum (Careful) n=100,1000", "Relative Error 1"]
+names = ["Standard Sum n=1000", "Standard Sum n=100", "Indexed Sum (Naive) n=100,1000", "Indexed Sum (Careful) n=100,1000", "Relative Error=1"]
 conds = [10.0**e for e in samples(0, 22, 10000)]
 for (relerr, name, style) in zip(relerrs, names, linestyles):
   plot.plot(conds, [relerr(cond) for cond in conds], label="{}".format(name), linestyle=style)

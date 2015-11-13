@@ -21,9 +21,9 @@
     The accumulators in an indexed type correspond to contiguous bins in
     decreasing order.     If $Y$ has index $I$, then $Y_k, k \in \{0, ..., K - 1\}$ accumulates slices
     of input in the bin $(a_{I + k}, b_{I + k}]$. If $I$ is so large that
-    $I + K > i_{\max}$, then the extra $I + K - i_{\min}$ accumulators are unused.
+    $I + K > i_{\max}$, then the extra $I + K - i_{\max}$ accumulators are unused.
 
-    In ReproBLAS, the data type used to sum \texttt{double} is named \texttt{double\_indexed}, and likewise for \texttt{double complex}, \texttt{float}, and \texttt{float complex}. A $K$-fold indexed type can be allocated with the \texttt{idxd\_xialloc} method, and set to zero with the \texttt{idxd\_xisetzero} method. Both of these methods are defined in \texttt{idxd.h}
+    In ReproBLAS, the data type used to sum \texttt{double} is named \texttt{double\_indexed}, and likewise for \texttt{double complex}, \texttt{float}, and \texttt{float complex}. A $K$-fold indexed type can be allocated with the \texttt{idxd\_xialloc} method, and set to zero with the \texttt{idxd\_xisetzero} method. Both of these methods are defined in \texttt{idxd.h} (see Section \ref{sec:reproBLAS} for details).
 
     Section \ref{sec:indexed_primary_carry} elaborates on the specific fields
     that make up the indexed type and the values they represent. Sections
@@ -71,7 +71,7 @@
         {\mathcal{Y}_k}_P = {Y_k}_P - 1.5\epsilon^{-1}2^{a_{I + k}}
         \label{eq:pri}
       \end{equation}
-      This simplifies the process of extracting the slices of input in bins
+      Representing the primary field value as an offset from $1.5\epsilon^{-1}2^{a_{I + k}}$ simplifies the process of extracting the slices of input in bins
       $(a_{I + k}, b_{I + k}]$. It will be shown in Theorem
       \ref{thm:ddepositrestricted} in Section~\ref{sec:primitiveops_deposit}
       that if we represent each primary value ${\mathcal{Y}_k}_P$ as in
@@ -119,7 +119,10 @@
       As will be explained in Section~\ref{sec:primitiveops_renormalize},
       Equation~\eqref{eq:totalfreq}, using the same precision $p$ as the primary field
       to store the carry field, the total number of inputs
-      that can be reproducibly added to one accumulator is $2^{2p-W-2}$.
+      that can be reproducibly added to one accumulator is 
+      $(\epsilon - 1)2^{p-W-2}$. This is approximately $2^{64}$ for 
+      \texttt{double} and $2^{33}$ for \texttt{float}. See Section 
+      \ref{sec:primitiveops_restrictions} for a summary of restrictions.
       The numerical value ${\mathcal{Y}_k}_C$ represented by data stored in the carry field
       ${Y_k}_C$ of an indexed type $Y$ of index $I$ is expressed in
       \eqref{eq:car}
@@ -192,11 +195,14 @@
         {\mathcal{Y}_0}_P = 2^{p - W + 1}({Y_0}_P - 1.5\cdot2^{e_{\max}})
         \label{eq:pri0}
       \end{equation}
+
+      Although the primary field corresponding to bin 0 is scaled, the same restriction \eqref{eq:totalfreq} on $n$ applies here as it does in the normal case. Therefore, the partial sums in reproducible summation can grow much larger ($(\epsilon^{-1} - 1)2^{p - W - 1}$ times larger) than the overflow threshold and then cancel back down. In fact, as long as the sum itself is below overflow (beyond the margin of error), the summands are finite, and $n \leq (\epsilon^{-1} - 1)2^{p - W - 2}$, the reproducible summation won't overflow. However, if the inputs to summation are already infinite, the summation will overflow. In the case of a dot product, overflow does not occur due to partial sums, but will occur if the pairwise products themselves overflow (overflow only occurs during multiplication).
+
     \subsubsection{Gradual Underflow}
       \label{sec:indexed_underflow_gradual}
       Here we consider the effects of gradual underflow on algorithms described
       in \cite{repsum} and how the indexed type allows these algorithms to work
-      correctly.
+      correctly. Although we will discuss abrupt underflow briefly in the next section, we will consider only gradual underflow in the remainder of the work.
 
       Algorithms \ref{alg:deposit} for adding a floating point input to an
       indexed type in Section~\ref{sec:primitiveops_deposit} and
@@ -222,7 +228,7 @@
         Because ${Y_k}_P \in (\epsilon^{-1} 2^{a_{I + k}}, 2 \epsilon^{-1} 2^{a_{I + k}})$ we have $\exp({Y_k}_P) = a_{I + k} + p > e_{\min} + 1$ so ${Y_k}_P$ is normalized.
       \end{proof}
 
-      Algorithms \ref{alg:depositrestricted} and \ref{alg:deposit} rely on
+      Algorithms \ref{alg:depositrestricted} and \ref{alg:deposit} in Section \ref{sec:primitiveops_deposit} rely on
       setting the last bit of intermediate results before adding them to
       ${Y_k}_P$ in order to fix the direction of the rounding mode. However, if
       $r$ is the quantity to be added to ${Y_k}_P$, $\ulp(r)$ must be less than
@@ -242,7 +248,7 @@
     \subsubsection{Abrupt Underflow}
       \label{sec:indexed_underflow_abrupt}
       If underflow is abrupt, several approaches may be taken to modify the
-      given algorithms to ensure reproducibility.
+      given algorithms to ensure reproducibility. We discuss these approaches in this section, but the rest of the work will consider only gradual underflow.
 
       The most straightforward approach would be to accumulate input in the
       denormalized range by scaling the smaller inputs up. This has the added
@@ -302,7 +308,7 @@
 
       A value of \texttt{Inf} or \texttt{-Inf} in ${Y_0}_P$ indicates that one or more \texttt{Inf} or \texttt{-Inf} (and no other exceptional values) have been added to $Y$ respectively.
 
-      A value of \texttt{NaN} in ${Y_0}_P$ indicates that one or more \texttt{NaN}s have been added to $Y$ or one or more of both \texttt{Inf} and \texttt{-Inf} have been added to $Y$.
+      A value of \texttt{NaN} in ${Y_0}_P$ indicates that one or more \texttt{NaN}s have been added to $Y$ or one or more of both \texttt{Inf} and \texttt{-Inf} have been added to $Y$. Note that there are several types of \texttt{NaN}. We do not differentiate among them. We consider all types \texttt{NaN} as identically \texttt{NaN}.
 
       As the ${Y_k}_P$ are kept finite to store finite values, \texttt{Inf}, \texttt{-Inf}, and \texttt{NaN} are unused in any previously specified context and are valid sentinel values. (As the exponent of \texttt{Inf}, \texttt{-Inf}, and \texttt{NaN} is distinct from the exponent of finite values, the bijection between the index of an indexed type $Y$ and the exponent of ${Y_0}_P$ is preserved)
 
@@ -313,7 +319,7 @@
       \texttt{NaN} add associatively, this behavior is reproducible.
 
       Note that, as will be explained in Section~\ref{sec:primitiveops},
-      as long as the number of input is limited by $n \leq 2^{2p-W-2}$
+      as long as the number of inputs is limited by $n \leq (\epsilon^{-1} - 1)2^{p-W-2}$ (approximately $2^{64}$ for \texttt{double} and $2^{33}$ for \texttt{float})
       and all the inputs are finite, there will be no intermediate \texttt{NaN}
       or $\pm \texttt{Inf}$ during the computation.
       For example, given $x \in \F$ the biggest representable value below the
@@ -335,13 +341,17 @@
       the \texttt{Inf} or \texttt{-Inf} are discussed in Section
       \ref{sec:primitiveops_conv2float}.
 
+      There are several ways that \texttt{Inf}, \texttt{-Inf}, and \texttt{NaN} could be handled reproducibly. We have chosen to handle these values analagously to how they are handled in standard recursive summation. This results in an additional performance cost due to special branches for these special values. Another way to handle these values would be to always return \texttt{NaN} when any summand is \texttt{Inf}, \texttt{-Inf}, or \texttt{NaN}. This would result in less branching.
+
     \subsection{Indexed Sum}
       \label{sec:indexed_sum}
-      Now that we have explained the data structure of the indexed type, we can define a sum that can be expressed using the indexed type. The $K$-fold \textbf{indexed sum} of finite $x_0, ..., x_{n - 1} \in \F$ is defined to be a $K$-fold indexed type $Y$ such that:
+      We have previously explained the indexed type, a data structure we will use for reproducible summation. We now define a quantity that can be expressed using the indexed type, called the \textbf{indexed sum}. The goal for Section \ref{sec:primitiveops} will be to show that we can indeed compute this quantity. Ultimately, Theorems \ref{thm:addfloattoindexed} and \ref{thm:sum} will prove that Algorithms \ref{alg:addfloattoindexed} and \ref{alg:sum} (respectively) can indeed compute the indexed sum. Here we focus on the definition of an indexed sum. As further motivation for computing the indexed sum, we show that if an algorithm returns the indexed sum of its inputs, it is reproducible.
+      \begin{definition}
+      Assume $n \leq (\epsilon^{-1} - 1)2^{p - W - 2}$. The $K$-fold \textbf{indexed sum} of finite $x_0, ..., x_{n - 1} \in \F$ is defined to be a $K$-fold indexed type $Y$ such that:
       \begin{align}
         &{Y_k}_P \in \begin{cases}[1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}}) \text{ if } I + k > 0 \\ [1.5 \cdot 2^{e_{\max}}, 1.75 \cdot 2^{e_{\max}}) \text{ if } I + k = 0\end{cases} \nonumber\\
         &\mathcal{Y}_k = \sum\limits_{j = 0}^{n - 1}d(x_j, I + k)\nonumber\\
-        & I\text{ is the greatest integer such that }\max(|x_j|) < 2^{b_I} \text{ and } I \leq i_{\max}\label{eq:indexed_sum}
+        & I\text{ is the greatest integer such that }\max(|x_j|) < 2^{b_I} \text{ and } I \leq i_{\max}\nonumber\\\label{eq:indexed_sum}
       \end{align}
       The $K$-fold indexed sum of $x_0, ..., x_{n - 1} \in \F$ (with at least one exceptional value \texttt{Inf}, \texttt{-Inf}, or \texttt{NaN}) is defined to be a $K$-fold indexed type such that
       \begin{equation}
@@ -350,11 +360,13 @@
       And the $K$-fold indexed sum of no numbers (the empty sum) is defined to be the $K$-fold indexed type such that
       \begin{align}
         {Y_k}_P = 0\nonumber\\
-        {Y_k}_C = 0
+        {Y_k}_C = 0\nonumber\\
         \label{eq:indexed_sum_zero}
       \end{align}
-      It is clear that, due to the associativity of addition, the values $\mathcal{Y}_k$ of the indexed sum are independent of the ordering of the summands. What remains to be shown is that each field in the indexed type corresponding to the summands $x_0, ..., x_{n - 1}$ (in any order) is unique. We show this in Lemma \ref{lem:indexed_sum_unique}.
+      \end{definition}
+      Notice that in \eqref{eq:indexed_sum}, the value of ${Y_k}_C$ is specified implicitly, because $\mathcal{Y}_k$ is expressed in terms of both ${Y_k}_P$ and ${Y_k}_C$ in \eqref{eq:acc}.
 
+      We now show that the indexed sum is well-defined for finite summands and that each field in the indexed type corresponding to the summands $x_0, ..., x_{n - 1}$ (in any order) is unique. We show this in Lemma \ref{lem:indexed_sum_unique}.
       \begin{samepage}
       \begin{lem}
         Let $Y$ be the indexed sum of some $x_0, ..., x_{n - 1} \in \F$, where each $x_i$ is a finite value and $n \geq 1$.
@@ -421,4 +433,3 @@ for all $k$, $0 \leq k < K$, ${Y_k}_P = {Z_k}_P = 0$ and ${Y_k}_C = {Z_k}_C = 0$
       \end{proof}
 
     Theorem \ref{thm:indexed_sum_unique} implies that any algorithm that can compute the indexed sum of a list of floating point numbers is a reproducible summation algorithm, as the indexed sum is well-defined, unique, and independent of the ordering of the summands.
-

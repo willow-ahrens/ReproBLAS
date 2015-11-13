@@ -142,7 +142,7 @@
       components of a floating point number to an indexed type $Y$ of index 0,
       i.e. when overflow is an issue. Algorithm \ref{alg:deposit} shows the
       adaptation of Algorithm $\ref{alg:depositrestricted}$ for indexed types
-      of index 0. Algorithm \ref{alg:deposit} is available in ReproBLAS as \texttt{idxd\_xixdeposit} in \texttt{idxd.h}
+      of index 0. Algorithm \ref{alg:deposit} is available in ReproBLAS as \texttt{idxd\_xixdeposit} in \texttt{idxd.h} (see Section \ref{sec:reproBLAS} for details).
 
       \begin{samepage}
       \begin{alg}
@@ -323,9 +323,6 @@
       one of $x$ or ${Y_0}_P$ is indeed exceptional, we add $x$ to the
       (possibly finite) ${Y_0}_P$. Otherwise, we deposit the finite value
       normally.
-      Although checking for exceptional values explicitly is expensive, the
-      cost can be reduced if several values are to be summed in the same method
-      (all methods in ReproBLAS that sum several numbers at a time use this trick).
 
       Note that if we ignore the explicit check for exceptional values,
       even though Algorithm \ref{alg:deposit} does not correctly propagate 
@@ -334,5 +331,8 @@
       at line 5 of Algorithm~\ref{alg:deposit} will return a \texttt{NaN},
       which in turn will be propagated and results in a \texttt{NaN} value for ${Y_0}_P$.
       It means that if there is any exceptional value in input data,
-      the final computed result will be a $NaN$, which is also reproducible.
+      the final computed result will be a \texttt{NaN}, which is also reproducible.
 
+      Although checking for exceptional values explicitly is expensive, the
+      cost can be reduced if several values are to be summed in the same method.
+      We can run a block of summation assuming that there are no exceptional values, and then check at the end of the block if the final computed result is \texttt{NaN}. If it is indeed \texttt{NaN}, we can compute the exceptional result directly, without using any of the primitive operations.

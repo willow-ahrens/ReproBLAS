@@ -5,19 +5,19 @@
     As mentioned in Section~\ref{sec:primitiveops_renormalize}, it is not necessary to perform
     a renormalization for every deposit, as would be done if Algorithm \ref{alg:addfloattoindexed} were applied iteratively on each element of $x_m, ..., x_{m + n -1}$. At most $2^{p-W-2}$ values can be deposited in the indexed type before having to perform the renormalization.
     Therefore we have an improved version of Algorithm~\ref{alg:addfloattoindexed} when we need to sum a vector of floating point numbers.
-    Algorithm~\ref{alg:sum} summarizes the optimized version for the reproducible local sum. It is available as \texttt{idxdBLAS\_xixsum} in \texttt{idxdBLAS.h} in ReproBLAS.
-    As Algorithm~\ref{alg:sum} computes an indexed sum, it can be performed on the $x_m, ..., x_{m + n - 1}$ in any order. However, for the simplicity of presenting the algorithm, it is depicted as running linearly from $m$ to $m-1$.
+    Algorithm~\ref{alg:sum} summarizes the optimized version for the reproducible local sum. It is available as \texttt{idxdBLAS\_xixsum} in \texttt{idxdBLAS.h} (see Section \ref{sec:reproBLAS} for details).
+    As Algorithm~\ref{alg:sum} computes an indexed sum, it can be performed on the $x_m, ..., x_{m + n - 1}$ in any order. However, for the simplicity of presenting the algorithm, it is depicted as running linearly from $m$ to $m + n -1$.
     Algorithm \ref{alg:sum} uses only one indexed type to hold the intermediate result of the recursive summation, and the vast majority of time in the algorithm is spent in the deposit routine.
     \begin{samepage}
     \begin{alg}
-      If $Y$ is the $K$-fold indexed sum of some $x_0, ..., x_{m - 1} \in \F$, produce the $K$-fold indexed sum of $x_0, ..., x_{m + n - 1} \in \F$.
+      If $Y$ is the $K$-fold indexed sum of some $x_0, ..., x_{m - 1} \in \F$, produce the $K$-fold indexed sum of $x_0, ..., x_{m + n - 1} \in \F$. (If $m = 0$, this implies that all fields of $Y$ are 0 and $Y$ will be initialized in line \ref{alg:sum:update})
       This is similar to Algorithm $6$ in \cite{repsum}, but requires no restrictions on the size or type (exceptional or finite) of inputs $x_0, ..., x_{m + n - 1}$.
       \begin{algorithmic}[1]
         \Function{Sum}{$K$, [$x_m, ..., x_{m + n-1}$], $Y$}
           \State $j = 0$ \label{alg:sum:setj}
           \While{$j < n$}\label{alg:sum:outerloop}
-            \State $nb = \min(n, j + 2^{p - W - 2})$
-            \State \Call{Update}{$K$, $\max([|x_{m + j}|, ..., |x_{m + nb - 1}|)$, Y}\label{alg:sum:update}
+            \State $nb = \min(n, j + 2^{p - W - 2})$ \label{alg:sum:nb}
+            \State \Call{Update}{$K$, $\max(|x_{m + j}|, ..., |x_{m + nb - 1}|)$, Y}\label{alg:sum:update}
             \While{$j < nb$}
               \State \Call{Deposit}{$K$, $x_{m + j}$, $Y$}\label{alg:sum:deposit}
               \State $j = j + 1$
@@ -65,28 +65,29 @@
       Again by Theorem \ref{thm:depositfreq}, the requirements of Algorithm \ref{alg:renorm} are met in line \ref{alg:sum:renorm}. Therefore, after execution of line \ref{alg:sum:renorm}, we have that ${Y_k}_P \in [1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}})$ unless $I + k = 0$, in which case ${Y_0}_P \in (1.5 \cdot 2^{e_{\max}}, 1.75 \cdot 2^{e_{\max}})$. Therefore, $Y$ is the indexed sum of $x_0, ..., x_{j - 1}$ after line \ref{alg:sum:renorm}, completing the induction.
       \end{comment}
     \end{proof}
-    As the indexed sum is unique and independent of the ordering of its summands (Theorem \ref{thm:indexed_sum_unique}), Algorithm \ref{alg:sum} is reproducible up to permutation of its inputs.
+    Note that after computing $\max()$ in line \ref{alg:sum:update}, we know whether or not the indexed type will have index 0, and can call either \textproc{Deposit} or \textproc{DepositRestricted} accordingly (the latter being a faster routine). We also know from the max whether or not an \texttt{Inf}, \texttt{-Inf}, or \texttt{NaN} is present, and can skip the \textproc{Deposit} and \textproc{Renorm} procedures and compute the exceptional result directly. Also note that the constant $2^{p - W - 2}$ in line \ref{alg:sum:nb} is at its maximum value, and smaller values may be used to fit data into a cache. In ReproBLAS, this constant is autotuned (as discussed in Section \ref{sec:reproBLAS}).
 
-    Even in the absence of an operation for reduction, Algorithm \ref{alg:sum} is already a highly flexible operation.
-    Consider the problem of computing a reproducible dot product of vectors $\vec{x}$ and $\vec{y}$. To modify algorithm for this purpose, we need only change line \ref{alg:sum:deposit} to deposit the product of the $j^{th}$ entry of $\vec{x}$ and the $j^{th}$ entry of $\vec{y}$. More examples of how this routine can be used for reproducible operations are given in Section \ref{sec:compositeops}.
+    As the indexed sum is unique and independent of the ordering of its summands (Theorem \ref{thm:indexed_sum_unique}), Algorithm \ref{alg:sum} is reproducible for any permutation of its inputs.
 
-    At this point, an analysis of run time should be considered. Since Algorithm~\ref{alg:sum} only performs the update and renormalization
+    At this point, an operation count should be considered. Since Algorithm~\ref{alg:sum} only performs the update and renormalization
   once for every $2^{p-W-2}$ times the deposit operation is performed (that
-s $2^{53-40-2}=2^{11}$ times for double precision and $2^{24-13-2} = 2^9$ times for single precision in the current implementation of
+is $2^{53-40-2}=2^{11}$ times for double precision and $2^{24-13-2} = 2^9$ times for single precision in the current implementation of
   ReproBLAS), the cost of Algorithm~\ref{alg:sum} is mostly due to the
   deposit operation.
   Therefore, in the absence of overflow, Algorithm~\ref{alg:sum} costs
   $\approx (3K-1)n$ FLOPS counting the maximum absolute value operation as 1 FLOP,
-  which is $\approx 7Kn$ FLOPS for the default value of $K$ ($K=3$) used by ReproBLAS.
+  which is $\approx 8n$ FLOPS for the default value of $K$ ($K=3$) used by ReproBLAS.
   In the rare case of index 0 for the first bin,
   the cost is slightly higher since the first bin
   needs to be scaled down to avoid overflow, which increases the
   total cost of Algorithm~\ref{alg:sum} to $\approx (3K+2)n$ FLOPS.
 
-  Finally, we make the observation that it is possible to implement a reproducible dot product or absolute sum by applying Algorithm~\ref{alg:sum} to the elements of the pointwise product of input vectors or to the absolute values of entries of an input vector.
-  A few implementation details should be covered regarding our implementation of the complex dot product. When multiplying the complex numbers $(a + bi)$ and $(c + di)$, we assume that the product is obtained by evaluating $(ac - bd) + (ad + bc)i$ literally. This means that $(\texttt{Inf} + \texttt{Inf}i)(\texttt{Inf} + 0i)$ produces $\texttt{NaN} + \texttt{NaN}i$.
-  This is the Fortran convention for complex multiplication, not the C convention. In C, complex multiplication is implemented with a function call to catch the exceptional cases and give more sensible results. In the example above, we get $\texttt{Inf} + \texttt{Inf}i$. We refer the curious reader to part G.5.1 of the C99 standard \cite{c99} where this issue is discussed. We choose the Fortran definition of multiplication because the Reference BLAS is written in Fortran. We also mention here that we increase the accuracy of the dot product by reproducibly summing the pairs of products in a complex multiplication ($ac$ and $-bd$ for real, $ad$ and $bc$ for imaginary) separately. For example, we reproducibly sum $ac$ before reproducibly summing $-bd$, as opposed to reproducibly summing $ac - bd$.
+  We make the observation that it is possible to implement a reproducible absolute sum by applying Algorithm~\ref{alg:sum} to the the absolute values of entries of an input vector.
 
+  It is also possible to compute a reproducible dot product of vectors $\vec{x}$ and $\vec{y}$. To modify Algorithm \ref{alg:sum} for this purpose, we need only to change line  \ref{alg:sum:deposit} to deposit the product of the $j^{th}$ entry of $\vec{x}$ and the $j^{th}$ entry of $\vec{y}$ and line \ref{alg:sum:update} to calculate the maximum absolute value of these products. More examples of how this routine can be used for reproducible operations are given in Section \ref{sec:compositeops}.
+
+  A few implementation details should be covered regarding our implementation of the complex dot product. When multiplying the complex numbers $(a + bi)$ and $(c + di)$, we assume that the product is obtained by evaluating $(ac - bd) + (ad + bc)i$ straightforwardly. This means that $(\texttt{Inf} + \texttt{Inf}i)(\texttt{Inf} + 0i)$ produces $\texttt{NaN} + \texttt{NaN}i$.
+  This is the Fortran convention for complex multiplication, not the C convention. In C, complex multiplication is implemented with a function call to catch the exceptional cases and give more sensible results. In the example above, we get $\texttt{Inf} + \texttt{Inf}i$. We refer the curious reader to part G.5.1 of the C99 standard \cite{c99} where this issue is discussed. We choose the Fortran definition of multiplication because the Reference BLAS is written in Fortran. We also mention here that we increase the accuracy of the dot product by reproducibly summing the pairs of products in a complex multiplication ($ac$ and $-bd$ for real, $ad$ and $bc$ for imaginary) separately. For example, we reproducibly sum $ac$ before reproducibly summing $-bd$, as opposed to reproducibly summing $ac - bd$ (which might result in cancellation during the standard floating point computation of the difference $ac - bd$).
 
 
 

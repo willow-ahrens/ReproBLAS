@@ -1,7 +1,9 @@
 \section{Primitive Operations}
     \label{sec:primitiveops}
-    Here we reorganize algorithms in \cite{repsum} into a user-friendly set of
-    primitive operations on an indexed type. Two simple original algorithms
+    Here we reorganize algorithms in \cite{repsum} into a set of
+    primitive operations on an indexed type. This set of operations is 
+    intended to make it easy to build higher level operations on different
+    platforms, accomodating different sources of nonreproducibility. Two simple original algorithms
     relating to the index of an indexed type are given in Section
     \ref{sec:primitiveops_index}. Theoretical summaries of algorithms (with
     some improvements) from \cite{repsum} are provided in Sections
@@ -16,11 +18,10 @@
     \ref{sec:primitiveops_addindexedtoindexed} provides methods to sum
     numbers regardless of reduction tree shape.
 
-    Section \ref{sec:primitiveops_conv2float} provides an original algorithm (with an
+    Section \ref{sec:primitiveops_conv2float} provides an original algorithm (with a greatly
     improved error bound) to obtain the value represented by an indexed type.
     For completeness, we state an algorithm to convert a single floating point number to an indexed type in Section \ref{sec:primitiveops_conv2indexed}.
-    Sections \ref{sec:primitiveops_error} and \ref{sec:primitiveops_limits}
-    extend analysis in \cite{repsum} to the new algorithms.
+    Section \ref{sec:primitiveops_error} presents an original theorem regarding the sum of a decreasing sequence of floating point numbers and utilizes this theorem to obtain error bounds for reproducible summation algorithms. We summarize the restrictions governing the indexed type and these algorithms in Section \ref{sec:primitiveops_restrictions}.
 
     \input{op_index}
     \input{op_update}
@@ -32,5 +33,5 @@
     \input{op_converttofloat}
     \input{op_converttoindexed}
     \input{op_errorbound}
-    \input{op_limits}
+    \input{op_restrictions}
 

@@ -26,34 +26,41 @@
   \begin{equation}
     \begin{aligned}
     \bigl|r - \roundtonearestinfty(r, e)\bigr| & \leq 2^{e - 1} \\
-    \roundtonearestinfty(r,e) & = 0 \text{ if } r < 2^{e-1}.
+    \roundtonearestinfty(r,e) & = 0 \text{ if } |r| < 2^{e-1}.
     \end{aligned}
     \label{eq:round}
   \end{equation}
 
   Let $\F_{b,p,e_{min},e_{max}}$ denote the set of floating-point numbers
-  of base $b \in \Z$ ($b \geq 2$),
-  precision $p \in Z$ ($p \geq 1$) and exponent range $[e_{min}, e_{max}]$
+  of \textbf{base} $b \in \Z$ ($b \geq 2$),
+  \textbf{precision} $p \in Z$ ($p \geq 1$) and \textbf{exponent range} $[e_{min}, e_{max}]$
   where $e_{min}, e_{max} \in \Z$ and $e_{min} \geq e_{max}$.
   Each value $f \in \F_{b,p,e_{min},e_{max}}$ is represented by:
   \[
     f = s \cdot m_0.m_1 \ldots m_{p-1} \cdot b^e,
   \]
-  where $s \in \{-1,1 \}$ is the sign,
-  $e \in \Z, e_{\min} \leq e \leq e_{\max}$ is the exponent
-  (also defined as $exp(f)$),
+  where $s \in \{-1,1 \}$ is the \textbf{sign},
+  $e \in \Z, e_{\min} \leq e \leq e_{\max}$ is the \textbf{exponent}
+  (also defined as $\exp(f)$),
   and $m = m_0.m_1 \ldots m_{p-1}, m_i \in \{ 0, 1, \ldots, b-1 \}$
-  is the significand (also called the mantissa) of $f$. Assume that the
-  representation of $f$ is made unique using the ``hidden bit'' convention, so
-  that $f$ is represented using the smallest exponent possible.
+  is the \textbf{significand} (also called the \textbf{mantissa}) of $f$. Assume that $f$ is represented using the smallest exponent possible.
 
-  Although much of the below analysis can be applied to a general floating-point
-  format, in the context of this paper we assume binary floating-point formats,
-  i.e. $b=2$, complying with the IEEE 754-2008 standard \cite{ieee754}. 
-  While the below analysis applies for any chosen values of $p$, $e_{\min}$, and $e_{\max}$ 
-  (provided that $p << e_{\max} - e_{\min}$), our software is implemented in IEEE 754-2008
-   single and double precision.
+  Although much of the analysis below can be applied to a general floating-point
+  format, in the context of this paper we assume binary floating-point formats complying with the IEEE 754-2008 standard \cite{ieee754}.
+  For simplicity as well as for readability, throughout this paper
+  $\F_{b,p,e_{min},e_{max}}$ will be written simply as $\F$, referring to
+  some IEEE 754-2008 binary floating-point format,
+  i.e. $b=2$ and $m_i \in \{0, 1\}$.
+  All the analysis will be based on the corresponding parameters $p$, $e_{min}$
+  and $e_{max}$.
 
+  \begin{comment}
+    While the analysis below applies for any chosen values of $p$, $e_{\min}$, and $e_{\max}$ 
+    (provided that $p << e_{\max} - e_{\min}$), our software is implemented in IEEE 754-2008
+     single and double precision.
+  \end{comment}
+
+  \begin{comment}
   Specific parameters for those two formats are given in Table \ref{tbl:IEEE-754}.
   \begin{table}[!htbp]
     \caption{IEEE 754-2008 binary floating-point formats}
@@ -63,45 +70,21 @@
             Floating-Point Type & single precision & double precision \\ \hline
             C data type & \texttt{float} & \texttt{double} \\ \hline
             $p$ & 24 & 53 \\ \hline
-            Exponent field width & 8 & 12 \\ \hline
+            Exponent field width & 8 & 11 \\ \hline
             Exponent bias & 127 & 1023 \\ \hline
             $e_{min}$ & -126 & -1022 \\ \hline
             $e_{max}$ & 127 & 1023 \\ \hline
         \end{tabular}
   \end{table}
 
-  \begin{comment}
-  Let $\F$ be the set of all floating-point numbers $f = sm2^e$ represented in some binary IEEE 754-2008 format \cite{ieee754} where $s \in \{1, -1\}$ is the \textbf{sign},
-  $e \in \Z$, $e_{\max} \geq e \geq e_{\min}$ is the \textbf{exponent} ($\exp(f)$ is
-  defined to be $e$), $p \in \Z, p > 1$ is the \textbf{precision},
-  and $m=m_0.m_1m_2...m_{p-1}$ where $m_0, ..., m_{p - 1} \in \{0, 1\}$ is the
-  \textbf{significand} of $f$. Assume that the representation of $f$ is made unique using the ``hidden bit'' convention, so that $f$ is represented using the smallest exponent possible. (In memory, the bit $m_0$ is not stored and assumed to be 1 unless the exponent field contains a special value signaling both that $e = e_{\min}$ and $m_0=0$).
-  $f$ is said to be \textbf{normalized} if $m_0 =1$
-  and $e \geq e_{\min}$, \textbf{unnormalized} if $m_0 = 0$, and
-  \textbf{denormalized} if $m_0 = 0$ and $e = e_{\min}$. $f = 0$ if all $m_j = 0$
-  and $e = e_{\min}$.
-
-  Assume that floating point arithmetic complies with the IEEE 754-2008
-  standard \cite{ieee754} in some ``to nearest'' rounding mode (no specific tie
-  breaking behavior is required) and that underflow occurs gradually, although
-  methods to handle abrupt underflow will be considered in Section
-  \ref{sec:indexed_underflow_abrupt}.
-
-  Let $f = sm2^e \in \F$ be a floating-point number represented in IEEE
-  754-2008 format \cite{ieee754} where $s \in \{1, -1\}$ is the \textbf{sign},
-  $e_{\max} \geq e \geq e_{\min}$ is the \textbf{exponent} ($\exp(f)$ is
-  defined to be $e$), $p$ is the \textbf{precision},
-  and $m=m_0.m_1m_2...m_{p-1}$ where $m_0, ..., m_{p - 1} \in \{0, 1\}$ is the
-  \textbf{significand} of $f$.
-  \end{comment}
-
   The exponent is stored in internal representation in biased form
-  using 8 bits for single precision, and 53 bits for double precision.
+  using 8 bits for single precision, and 11 bits for double precision.
   The exponent of a represented floating-point number is equal to
   the biased exponent (the unsigned integer value stored in the exponent field)
   minus the bias value (see table~\ref{tbl:IEEE-754}).
   An exponent field with all bits set to 0 is reserved for zeros and denormalized values.
   An exponent field with all bits set to 1 is reserved for infinities and NaN.
+  \end{comment}
 
   Since a floating point number is always represented using the smallest possible
   exponent, the first bit $m_0$ is not explicitly stored in internal representation
@@ -115,6 +98,7 @@
   exist if the hidden bit convention is not followed), and
   \textbf{denormalized} if $m_0 = 0$ and $e = e_{\min} - 1$.
 
+  \begin{comment}
   In binary internal representation, $f=0$ is represented by a biased exponent of $0$
   as well as a mantissa field of all 0-bits.
   Denormalized numbers have biased exponent of $0$ and non-zero mantissa field.
@@ -122,18 +106,12 @@
   represent infinities, positive or negative depending on the sign bit.
   An exponent field of all 1-bits and a non-zero mantissa field
   represent a NaN value.
+  \end{comment}
 
   We assume rounding mode ``to nearest'' (no specific tie
   breaking behavior is required) and gradual underflow, although
   methods to handle abrupt underflow will be considered in Section
   \ref{sec:indexed_underflow_abrupt}.
-
-  For simplicity as well as for readability, throughout this paper
-  $\F_{b,p,e_{min},e_{max}}$ will be written simply as $\F$, referring to
-  some IEEE 754-2008 binary floating-point format,
-  i.e. $b=2$ and $m_i \in \{0, 1\}$.
-  All the analysis will be based on the corresponding parameters $p$, $e_{min}$
-  and $e_{max}$.
 
   $r \in \R$ is \textbf{representable} as a floating point number if there
   exists $f \in \F$ such that $r = f$ as real numbers.

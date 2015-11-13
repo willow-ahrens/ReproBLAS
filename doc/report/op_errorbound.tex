@@ -220,9 +220,8 @@
     was given. Here we extend the error bound of \cite{repsum} all the way to
     the final return value of the algorithm.
 
-    %It has been shown in \cite{repsum} that
     The case of all zero input data is trivial, therefore we assume that
-    $\max|x_j|$ and $Y$ are nonzero.
+    $\max|x_j|$ is nonzero.
     We also assume here no overflow or underflow.
     Let $I$ be the index of $Y$, which is also the index of $\max|x_j|$,
     so that $2^{b_I} > \max|x_j| \geq 2^{a_I}$.
@@ -310,8 +309,7 @@
       &= n \cdot \max\bigl(2^{W(1-K)}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + \frac{7\epsilon}{1 - 6 \sqrt \epsilon - 7\epsilon}\left|\overline{\mathcal{Y}}\right|
       \label{eq:error2}
     \end{align}
-    \eqref{eq:error2} can be queried in ReproBLAS with the \texttt{idxd\_xibound} function in \texttt{idxd.h}
-
+    \eqref{eq:error2} can be evaluated in ReproBLAS with the \texttt{idxd\_xibound} function in \texttt{idxd.h} (see Section \ref{sec:reproBLAS} for details).
 
     Equation \eqref{eq:error2} can be approximated as \eqref{eq:error2approx},
     which is nearly equal to bound \eqref{eq:errorapprox}:

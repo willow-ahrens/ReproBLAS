@@ -3,17 +3,17 @@
   Algorithm~\ref{alg:addfloattoindexed} allows the user to add a single floating
   point number to an indexed sum. By running this algorithm iteratively on each
   element of a vector, the user can make a naive local sum. However, a more
-  efficient summation algorithm is presented in Section \ref{alg:sum}, making this method more useful for small sums or sums where the summands are not gathered into a vector. 
-  This method is available in ReproBLAS as \texttt{idxd\_xixadd} in \texttt{idxd.h}
+  efficient summation algorithm is presented in Section \ref{alg:sum}, making Algorithm \ref{alg:addfloattoindexed} more useful for small sums or sums where the summands are not gathered into a vector.
+  This method is available in ReproBLAS as \texttt{idxd\_xixadd} in \texttt{idxd.h} (see Section \ref{sec:reproBLAS} for details).
 
   \begin{alg}
     Add floating point $x_n \in F$ to $K$-fold indexed sum $Y$
     \label{alg:addfloattoindexed}
     \begin{algorithmic}[1]
       \Require
-        $Y$ is the indexed sum of $x_0, ..., x_{n - 1} \in F$.
+        $Y$ is the indexed sum of $x_0, ..., x_{n - 1} \in F$. (If $n = 0$, this implies that all fields of $Y$ are 0 and $Y$ will be initialized in line \ref{alg:addfloattoindexed:update})
       \Function{Add Float To Indexed}{$K$, $x_n$, $Y$}
-        \State \Call{Update}{$K$, $x_n$, $Y$}
+        \State \Call{Update}{$K$, $x_n$, $Y$} \label{alg:addfloattoindexed:update}
         \State \Call{Deposit}{$K$, $x_n$, $Y$}
         \State \Call{Renorm}{$K$, $Y$}
       \EndFunction
@@ -48,7 +48,7 @@
   \end{equation}
   (Unless ${Y_0}_P$ was \texttt{Inf}, \texttt{-Inf}, or \texttt{NaN} before the update operation, in which case ${Y_0}_P$ should reflect the correct value. Since the renormalization step does not act on exceptional indexed types, we are done in this case.)
 
-  Finally, since \eqref{eq:addfloattoindexedupdatestep} held before the deposit operation, Theorem \ref{thm:renormfreq} holds and after the 1 deposit (in section \ref{sec:primitiveops_sum} we will use the fact that up to $2^{p - W - 2}$ deposits may be performed here as long as each new $x_j$ is such that $|x_j| < 2^{b_I}$), the requirements of the renormalization operation (Algorithm \ref{alg:renorm}) hold and we have that once again
+  Finally, since \eqref{eq:addfloattoindexedupdatestep} held before the deposit operation, Theorem \ref{thm:renormfreq} holds and after the deposit (in section \ref{sec:primitiveops_sum} we will use the fact that up to $2^{p - W - 2}$ deposits may be performed here as long as each new $x_j$ is such that $|x_j| < 2^{b_I}$), the requirements of the renormalization operation (Algorithm \ref{alg:renorm}) hold and we have that once again
   \[
   {Y_k}_P \in \begin{cases}[1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}}) \text{ if } I + k > 0 \\ [1.5 \cdot 2^{e_{\max}}, 1.75 \cdot 2^{e_{\max}})\text{ otherwise}\end{cases}
   \]

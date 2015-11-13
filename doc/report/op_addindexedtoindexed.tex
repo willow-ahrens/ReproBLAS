@@ -4,7 +4,7 @@
     perform a reduction. For completeness we include the algorithm here,
     although apart from the simplified renormalization algorithm, it is
     equivalent to Algorithm $7$ in \cite{repsum}.
-    This method is available in ReproBLAS as \texttt{idxd\_xixiadd} in \texttt{idxd.h}
+    This method is available in ReproBLAS as \texttt{idxd\_xixiadd} in \texttt{idxd.h} (see Section \ref{sec:reproBLAS} for details).
 
     \begin{samepage}
     \begin{alg}
@@ -15,16 +15,27 @@
           \Statex $Y$ is the indexed sum of some $x_0, ..., x_{n - 1} \in F$.
           \Statex $Z$ is the indexed sum of some $x_n, ..., x_{n + m - 1} \in F$.
         \Function{AddIndexedToIndexed}{K, Y, Z}
+          \If{${Y_0}_P = 0$}
+            \State $Y = Z$
+            \State \Return
+          \EndIf
+          \If{${Z_0}_P = 0$}
+            \State \Return
+          \EndIf
           \State $I$ = \Call{IIndex}{Y}
           \State $J$ = \Call{IIndex}{Z}
           \If{$J < I$}
             \State $R = Z$
-            \State \Call{Reduce}{K, $R$, $Y$}
+            \State \Call{AddIndexedToIndexed}{K, $R$, $Y$}
             \State $Y = R$
             \State \Return
           \EndIf
           \For{$k = J-I$ \To $K-1$} \label{alg:addindexedtoindexed:beginfor}
-            \State ${Y_{k}}_P = {Y_{k}}_P + ({Z_{k + I-J}}_P - 1.5 \epsilon^{-1}  2^{a_{I+k}})$\label{alg:addindexedtoindexed:pri}
+            \If{$k = J = 0$}
+              \State ${Y_{0}}_P = {Y_{0}}_P + ({Z_{0}}_P - 1.5 \cdot 2^{e_{\max}})$\label{alg:addindexedtoindexed:pri0}
+            \Else
+              \State ${Y_{k}}_P = {Y_{k}}_P + ({Z_{k + I-J}}_P - 1.5 \epsilon^{-1}  2^{a_{I+k}})$\label{alg:addindexedtoindexed:pri}
+            \EndIf
             \State ${Y_{k}}_C = {Y_{k}}_C + {Z_{k + I - J}}_C$\label{alg:addindexedtoindexed:car}
           \EndFor
           \State \Call{Renorm}{K, $Y$}\label{alg:addindexedtoindexed:renorm}
@@ -36,14 +47,19 @@
       \label{alg:addindexedtoindexed}
     \end{alg}
     \end{samepage}
-    Several exceptional cases are of note here. If either ${Y_0}_P$ or ${Z_0}_P$ is \texttt{Inf}, \texttt{-Inf}, or \texttt{NaN}, then ${Z_0}_P$ should be added to ${Y_0}_P$, which will produce the correct indexed sum. If ${Y_0}_P = 0$, then $Y$ should be set to $Z$ as $Y$ is the indexed sum of nothing. If ${Z_0}_P = 0$, then the algorithm should do nothing, as $Z$ is the indexed sum of nothing.
 
     \begin{lem}
       If the requirements of Algorithm~\ref{alg:addindexedtoindexed} are satisfied, then the ``Ensure'' claim holds.
       \label{lem:reduce}
     \end{lem}
     \begin{proof}
-      If either $Y$ or $Z$ are exceptional or 0, then it has been specified that the algorithm follows these special cases correctly. We focus on the case where both $Y$ and $Z$ are finite.
+      If $Y$ or $Z$ are 0, then the algorithm correctly sets $Y$ to the value of $Z$ or $Y$ (respectively).
+
+      If both $Y$ and $Z$ are exceptional, then Algorithm \ref{alg:iindex} will return $I = J = i_{\min}$. The first iteration of the loop of line \ref{alg:addindexedtoindexed} will then set ${Y_{0}}_P$ to ${Y_{0}}_P + {Z_{0}}_P + 1.5 \cdot 2^{e_{\max}}$, which (since $1.5 \cdot 2^{e_{\max}}$ is finite) is equal to ${Y_{0}}_P + {Z_{0}}_P$, as desired.
+
+      If only one of $Y$ or $Z$ is exceptional, then Algorithm \ref{alg:iindex} will return $I = i_{\min}$ or $J = i_{\min}$ (respectively). The first iteration of the loop of line \ref{alg:addindexedtoindexed} will set ${Y_{0}}_P$ to the sum of the exceptional ${Y_0}_P$ or ${Z_0}_P$ (respectively) and some finite values. This sum is equal to the exceptional value. Therefore, if only one of $Y$ or $Z$ is exceptional, $Y$ is set to $Y$ or $Z$ (respectively), as desired.
+
+      We now focus on the case where both $Y$ and $Z$ are finite.
 
       We must first prove that the addition in line \ref{alg:addindexedtoindexed:pri} is exact. As it is almost identical, we leave out the case where $I + k = 0$ and focus on the case where $I + k > 0$.
       Since $J$ is the index of $Z$, the index of ${Z_{k + I-J}}_P$ is

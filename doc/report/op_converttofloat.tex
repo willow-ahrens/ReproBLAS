@@ -1,9 +1,8 @@
 \subsection{Convert Indexed to Float}
     \label{sec:primitiveops_conv2float}
-    It is necessary to provide the ability to convert between indexed and
-    floating point representations of a number.
-    Converting an indexed type to a single floating point number is more
-    difficult. There are two sources of error in the final floating point sum
+    After computing a reproducible indexed sum, we need to reproducibly and
+    accurately convert the result to a single floating point number. There
+    are two sources of error in the final floating point sum
     produced by ReproBLAS. The first is from the creation of the indexed sum
     (analyzed in \cite{repsum}). The second is from the conversion from indexed
     sum to floating point number (evaluation of  \eqref{eq:indexedvalue}).
@@ -11,9 +10,9 @@
     reproducible, as long as the fields are operated on deterministically
     by the final conversion back to original floating-point format,
     any method to evaluate  \eqref{eq:indexedvalue} accurately and without
-    unnecessary overflow is suitable.
+    unnecessary overflow or underflow is suitable.
 
-    Assume that $Y$ is the indexed sum of some $x_0, ..., x_{n - 1} \in \F$. If
+    Assume that $Y$ is the indexed sum of some $x_0, ..., x_{n - 1} \in \F$ (for now, assume no exceptional values). If
     we simply evaluate \eqref{eq:indexedvalue} in an arbitrary order and apply
     the standard summation error bound given by \cite{higham}, the error in the
     final answer $\overline{\mathcal{Y}}$ (the computed floating point
@@ -23,7 +22,7 @@
       |\overline{\mathcal{Y}} - \sum_{j=0}^{n-1}x_j| \leq n \bigl(2^{W  (1 - K)} + (2  K - 1)  \epsilon\bigr)\max|x_j|
       \label{eq:baderrorapproxdup}
     \end{equation}
-    However, if we sum the fields in order of decreasing ``unnormalized''
+    However, if we sum the primary and carry fields in order of decreasing ``unnormalized''
     exponent, the error is bounded by (using  \eqref{eq:errorapprox})
     \begin{equation}
       |\overline{\mathcal{Y}} - \sum_{j=0}^{n-1}x_j| \leq n 2^{W  (1 - K)}\max|x_j|  + 7 \epsilon \bigl|\sum\limits_{j = 0}^{n - 1} x_j\bigr|
@@ -31,13 +30,12 @@
     \end{equation}
     which as we will see can be orders of magnitude smaller than the bound in \eqref{eq:baderrorapproxdup}
 
-    When adding the fields it is not necessary to examine the values in the
+    When adding the primary and carry fields it is not necessary to examine the values in the
     fields or sort them explicitly. Their ``unnormalized'' exponent does not
     depend on their values, and their ``unnormalized'' exponents have a
-    predetermined order. There is therefore little difference in computational
-    cost between the two methods (they both require the same number of
-    additions, namely $2 K$, using the same precision), but showing that the
-    fields have a certain ordering and that the stronger bound applies requires
+    predetermined order. There is therefore little difference in computational cost between the two methods. They require the same number of
+    additions (namely $2 K$), but summing in order requires more conditional branches. However, showing that the
+    fields have a certain ordering and that the stronger bound \eqref{eq:errorapproxdup} applies requires
     extensive analysis.
 
     To further motivate the new conversion algorithm, we compare both the above
@@ -51,21 +49,20 @@
 
     Figure \ref{fig:conversionmotivation} compares these three approximate error bounds
     for $K=3$, $W=40$ and double precision $p=53$.
-    In this case, bound \eqref{eq:errorapproxdup} depends on $2^{-80}n$,
-    whereas bound \eqref{eq:baderrorapproxdup} depends on $n\epsilon = 2^{-53}n$.
-    Therefore bound \eqref{eq:errorapproxdup} is better than bound \eqref{eq:baderrorapproxdup}
-    by approximately 8 orders of magnitude.
-    Note that, in this comparison we approximate $\sum_{j=0}^{n-1} |x_j|$ by $n \max |x_j|$,
+    Note that the term $7 \epsilon |\sum\limits_{j = 0}^{n - 1}x_j|$ is only
+    $7$ times larger than the smallest possible error from rounding the
+    exact sum of the $x_j$ to the nearest floating point value. To compare the other terms, bound \eqref{eq:errorapproxdup} grows like $2^{-80}n\max|x_j|$,
+    whereas bound \eqref{eq:baderrorapproxdup} grows like $5\epsilon n \max|x_j| = 5 \cdot 2^{-53}n\max|x_j|$, which is approximately $8$ orders of magnitude larger.
+    Note that in this comparison we bound $\sum_{j=0}^{n-1} |x_j|$ by $n \max |x_j|$,
     which is the case where the input data are almost equal in magnitude,
-    so the error bound of the standard summation \eqref{eq:naiveerrorapproxdup} depends
-    on $n^2$ instead of $n$ which is much worse than both bounds
+    so the error bound of the standard summation \eqref{eq:naiveerrorapproxdup} can grow like $n^2$ instead of $n$ which is much worse than both bounds
     \eqref{eq:errorapproxdup} and \eqref{eq:baderrorapproxdup}
     when the number of input values $n$ is great.
-    In cases where $\sum_{j=0}^{n-1} |x_j| \approx \max |x_j|$, for example
-    when there is 1 very big value and the other are small, then bounds
+    In cases where $\sum_{j=0}^{n-1} |x_j| \approx n \max |x_j|$, for example
+    when there are just a few large values and the others are small, then bounds
     \eqref{eq:naiveerrorapproxdup} and \eqref{eq:baderrorapproxdup} are almost
     of the same order of magnitude, which is still worse than bound \eqref{eq:errorapproxdup}
-    by 8 orders of magnitude.
+    by 8 orders of magnitude when the true sum is tiny.
 
 \begin{figure}[H]
 \begin{center}
@@ -84,12 +81,12 @@ multiple error bounds are shown.}
 
     Next we show how to interpret the fields as unnormalized floating point numbers,
     and sort their exponents independently of the actual values of the fields.
-    Note that, this interpretation is to support reasoning the conversion algorithm
-    presented below, and is not used to change the representation format of the data itself
+    Note that this interpretation is to support reasoning about the conversion algorithm
+    presented below, and does not affect the representation format of the data itself
     since IEEE floating-point formats do not permit unnormalized numbers
     beside exceptional values and denormalized numbers.
     Consider a $K$-fold indexed type $Y$ of index $I$.
-    As each value ${\mathcal{Y}_k}_P$ in a primary field ${Y_k}_P$ is represented by an offset from $1.5  \epsilon^{-1}  2^{a_{I + k}}$ and ${Y_k}_P \in (\epsilon^{-1}  2^{a_{I + k}}, 2  \epsilon^{-1}  2^{a_{I + k}})$, ${\mathcal{Y}_k}_P$ can be expressed exactly using an unnormalized floating point number ${\mathcal{Y}'_P}_k$ with an exponent of $a_{I + k} + p - 1$.
+    Each value ${\mathcal{Y}_k}_P$ in a primary field ${Y_k}_P$ is represented by an offset from $1.5  \epsilon^{-1}  2^{a_{I + k}}$ and ${Y_k}_P \in (\epsilon^{-1}  2^{a_{I + k}}, 2  \epsilon^{-1}  2^{a_{I + k}})$, ${\mathcal{Y}_k}_P$ can be expressed exactly using an unnormalized floating point number ${\mathcal{Y}'_P}_k$ with an exponent of $a_{I + k} + p - 1$.
     As each carry field ${Y_k}_C$ is a count of renormalization adjustments later scaled by $0.25  \epsilon^{-1}  2^{a_{I + k}}$, ${\mathcal{Y}_k}_C$ can be expressed exactly using an unnormalized floating point number ${\mathcal{Y}'_k}_C$ with an exponent of $a_{I + k} + 2  p - 3$.
 
     First, we have $\exp({\mathcal{Y}'_k}_P) > \exp({\mathcal{Y}'_{k+1}}_P)$ and $\exp({\mathcal{Y}'_{k}}_C) > \exp({\mathcal{Y}'_{k+1}}_C)$ because $a_{I + k} > a_{I + k+1}$.
@@ -176,7 +173,7 @@ multiple error bounds are shown.}
     \end{equation}
 
     If the intermediate floating point type has a maximum exponent greater than
-    or equal to $e_{\max} - W + 2  p - 1$, then no special cases to guard
+    or equal to $e_{\max} - W + 2  p - 1 > e_{\max}$, then no special cases to guard
     against overflow are needed.
 
     Algorithm \ref{alg:conv2float} represents a conversion routine in such a case.
@@ -206,17 +203,17 @@ multiple error bounds are shown.}
     \end{samepage}
 
     As explained in Section~\ref{sec:indexed}, a value of $0$ in the primary field
-    of the first bin means that all the input values are zero.
+    of the first bin means that no numbers have been added to $Y$.
     In addition, as explained in Section~\ref{sec:primitiveops_deposit}, exceptional values
     (\texttt{NaN}, $\pm \texttt{Inf}$) are added directly to the primary field
     of the first bin ${Y_0}_P$. Therefore, exceptional values are reproducibly
     propagated through ${Y_0}_P$, which will be returned as the computed
     result after the final conversion.
     More precisely, a result of \texttt{NaN} means that there is at least
-    1 \texttt{NaN} in the input or there are both \texttt{Inf} and \texttt{-Inf}
+    one \texttt{NaN} in the input or there are both \texttt{Inf} and \texttt{-Inf}
     in the input. A result of $\pm \texttt{Inf}$ means that there is 
-    1 or more values of $\pm \texttt{Inf}$ of the same sign in the input,
-    the rest are finite value.
+    one or more values of $\pm \texttt{Inf}$ of the same sign in the input,
+    the rest are of finite value.
 
     Note that an overflow situation in Algorithm \ref{alg:conv2float} is
     reproducible as the fields in $Y$ are reproducible. $z$ is
@@ -244,7 +241,7 @@ multiple error bounds are shown.}
     As the maximum absolute value of the true sum is strictly smaller than
     $2^{e_{\max} - W + 2 p}$, a sufficient scaling factor is $2^{2p-W-2}$,
     meaning that the maximum absolute value of the true scaled sum is
-    strictly smaller $2 \cdot 2^{e_{\max} - 1}$ (and since it will be shown
+    strictly smaller than $2^{e_{\max}}$ (and since it will be shown
     later that the computed sum is accurate to within a small factor of the
     true sum, the computed sum will stay strictly smaller than $2 \cdot
     2^{e_{\max}}$ and will not overflow.)
@@ -258,14 +255,14 @@ multiple error bounds are shown.}
     If the sum is not going to overflow, then the smaller $y'_j$ must be added
     as unscaled numbers to avoid underflow.
 
-    Algorithm \ref{alg:conv2floatoverflow} represents a conversion routine in such a case.
+    Algorithm \ref{alg:conv2floatoverflow} represents a conversion routine in the case where a floating point type without an expanded exponent is available.
 
     \begin{samepage}
     \begin{alg}
       Convert a $K$-fold indexed type $Y$ of index $I$ to floating point $x$.
       Here, $z$ is a floating point number with precision $\rho \geq p$
       \begin{algorithmic}[1]
-        \Function{ConvertIndexedToFloat0}{K, x, Y}
+        \Function{ConvertIndexedToFloatNative}{K, x, Y}
           \If {${\mathcal{Y}_0}_C$ is NaN or $\pm$Inf}
             \State $x = {\mathcal{Y}_0}_C$
             \State \Return
@@ -296,4 +293,4 @@ multiple error bounds are shown.}
     not extend the exponent range we must use Algorithm
     \ref{alg:conv2floatoverflow} for the conversion.
 
-    In ReproBLAS, the appropriate conversion for the given data type is available as \texttt{idxd\_xxiconv} in \texttt{idxd.h}
+    In ReproBLAS, the appropriate conversion for the given data type is available as \texttt{idxd\_xxiconv} in \texttt{idxd.h} (see Section \ref{sec:reproBLAS} for details). This conversion routine sums \texttt{float} with \texttt{double} (using Algorithm \ref{alg:conv2float}) and sums \texttt{double} with \texttt{double} (using Algorithm \ref{alg:conv2floatoverflow}).
