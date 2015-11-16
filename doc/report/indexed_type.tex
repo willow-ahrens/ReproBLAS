@@ -243,7 +243,8 @@
       the algorithm could be extended to denormalized inputs would be to scale
       the least bins up, analogously to the way we handled overflow. Due to the
       relatively low priority for accumulating denormalized values, this method
-      was not implemented in ReproBLAS.
+      was not implemented in ReproBLAS. With respect to taking a reproducible dot product, we do not extend the underflow threshold to ensure the products of tiny values do not underflow. The underflow threshold is the same as in normal reproducible summation. Others may implement these features if they think it is important.
+
 
     \subsubsection{Abrupt Underflow}
       \label{sec:indexed_underflow_abrupt}

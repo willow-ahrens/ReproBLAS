@@ -1,9 +1,39 @@
 \section{Composite Operations}
   \label{sec:compositeops}
-  Although several reproducible summation algorithms can be built from the set of primitive operations defined in section \ref{sec:primitiveops}, it may be unclear how these operations can be composed to form such algorithms. What follows are the specifications for common summation-based algorithms in terms of the primitive operations.
+  The ultimate goal of the ReproBLAS library is to support reproducible linear algebra functions on many widely-used architectures.
 
-  %We make here an important distinction with respect to parallel reproducibility. If the summation algorithm needs only to be reproducible with respect to If the only source of nonreproducibility in a computation is the reduction tree shape, then only the reduction step must be reproducible for the entire computation to be reproducible. To obtain a general completely reproducible algorithm for summation that is, one must design for reproducibility under both data permutation and reduction tree shape.
-  Section \ref{sec:compositeops_reduce} shows how the summation algorithm in Section \ref{sec:primitiveops_sum} may be extended to arbitrary reduction tree shapes. Sections \ref{sec:compositeops_nrm}, \ref{sec:compositeops_gemv}, and \ref{sec:compositeops_gemm} explain how to obtain reasonably performant reproducible versions of representative operations from the BLAS.
+  We must account for any combination of several sources of
+  nonreproduciblilty. These sources include arbitrary data
+  permutation or layout, differing numbers of processors, and arbitrary
+  reduction tree shape. The methods we will describe can be used to
+  account for all of these sources of nonreproducibility.
+
+  Reproducibility is a concern for several parallel architectures. Apart from the typical sequential environment, linear algebra packages can be implemented on shared-memory systems (where multiple processors operate independently and share the same memory space), distributed memory systems (where each processor has its own private memory), or even cloud computing systems (remote internet-based computing where resources are provided to user on-demand).
+
+  The Basic Linear Algebra Subroutines (BLAS) \cite{BLAS} are widely
+  used as an efficient, portable, and reliable sequential linear algebra library.
+  The BLAS is divided into three categories.
+  \begin{enumerate}
+    \item The Level 1 BLAS (BLAS1) is a set of vector operations on
+      strided arrays. Several of these operations are already
+      reproducible, such as vector addition. Other operations, such as
+      the dot product or vector norm, are not already reproducible with
+      respect to data permutation, and must be modified to have this quality. These operations
+      are \texttt{asum}, \texttt{nrm2}, and 
+      \texttt{dot}.
+    \item The Level 2 BLAS (BLAS2) is a set of matrix-vector operations
+      including matrix-vector multiplication and a solver for $\vec{x}$ in $T\vec{x} = \vec{y}$ where $\vec{x}$ and $\vec{y}$ are vectors and $T$ is a triangular matrix. These operations can all be made reproducible, but for brevity we discuss only the representative operation \texttt{gemv}, matrix-vector multiplication.
+    \item The Level 3 BLAS (BLAS3) is a set of matrix-matrix operations
+      including matrix-matrix multiplication and routines to perform $B = \alpha T^{-1}B$ where $\alpha$ is a scalar, $B$ is a matrix, and $T$ is a triangular matrix. These operations can all be made reproducible, but for brevity we discuss only the representative operation \texttt{gemm}, matrix-matrix multiplication.
+  \end{enumerate}
+
+  The Linear Algebra Package (LAPACK), is a set of higher-level
+  routines for linear algebra, providing routines for operations like solving linear equations, linear least squares, eigenvalue problems, and singular value decomposition.
+
+  The BLAS and LAPACK have been extendend to distributed-memory systems in the PBLAS and SCALAPACK libraries. While most PBLAS operations can clearly be made reproducible, it is an open question as to which SCALAPACK routines can be made reproducible and how this would be done. 
+
+  Out of the large design space outlined above, we describe in this paper and implement in ReproBLAS sequential versions of key operations from the BLAS, and a distributed-memory reduction operation which can be used to parallelize these sequential operations in a reproducible configuration. We described the BLAS1 operations \texttt{asum} and \texttt{dot} at the end of Section \ref{sec:primitiveops_sum} previously. The BLAS1 operation \texttt{nrm2} is discussed in Section \ref{sec:compositeops_nrm2}. The BLAS2 and BLAS3 operations \texttt{gemv} and \texttt{gemm} are discussed in Sections \ref{sec:compositeops_gemv} and \ref{sec:compositeops_gemm} respectively. Eventually, we hope to extend ReproBLAS to contain reproducible versions of all BLAS and PBLAS routines.
+
     \input{op_reduce}
     \input{op_nrm}
     \input{op_gemv}

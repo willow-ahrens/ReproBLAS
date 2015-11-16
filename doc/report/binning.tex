@@ -115,11 +115,13 @@ paper (especially Algorithms \ref{alg:depositrestricted} and \ref{alg:deposit}).
     simple bitwise extraction. The extraction is more complicated 
     because the splitting is performed using floating-point 
     instructions. There are many ways to implement the splitting 
-    (using all integer instructions, all floating point instructions, 
+    (using only integer instructions, only floating point instructions, 
     a mix of the two, or even special purpose hardware). This paper 
     focuses on using a majority of floating point instructions for portability and 
-    for efficiency on architectures with different register 
-    sets for fixed and floating point operands (such as x86).
+    for efficiency on architectures with different register
+    sets for fixed and floating point operands.
+    Floating point instructions also allow us to take advantage of the 
+    rounding operations built in to floating point arithmetic.
     \begin{equation}
       \begin{aligned}
       d(x,0) & = \roundtonearestinfty(x, a_0+1) \\
