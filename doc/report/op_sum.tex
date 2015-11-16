@@ -8,6 +8,7 @@
     Algorithm~\ref{alg:sum} summarizes the optimized version for the reproducible local sum. It is available as \texttt{idxdBLAS\_xixsum} in \texttt{idxdBLAS.h} (see Section \ref{sec:reproBLAS} for details).
     As Algorithm~\ref{alg:sum} computes an indexed sum, it can be performed on the $x_m, ..., x_{m + n - 1}$ in any order. However, for the simplicity of presenting the algorithm, it is depicted as running linearly from $m$ to $m + n -1$.
     Algorithm \ref{alg:sum} uses only one indexed type to hold the intermediate result of the recursive summation, and the vast majority of time in the algorithm is spent in the deposit routine.
+
     \begin{samepage}
     \begin{alg}
       If $Y$ is the $K$-fold indexed sum of some $x_0, ..., x_{m - 1} \in \F$, produce the $K$-fold indexed sum of $x_0, ..., x_{m + n - 1} \in \F$. (If $m = 0$, this implies that all fields of $Y$ are 0 and $Y$ will be initialized in line \ref{alg:sum:update})
@@ -32,6 +33,7 @@
       \label{alg:sum}
     \end{alg}
     \end{samepage}
+
     If a single floating point result is desired, it may be obtained from $Y$ using Algorithm \ref{alg:conv2floatoverflow} described in Section \ref{sec:primitiveops_conv2float}.
     \begin{samepage}
     \begin{thm}

@@ -29,6 +29,8 @@ paper (especially Algorithms \ref{alg:depositrestricted} and \ref{alg:deposit}).
     \eqref{eq:imax}, \eqref{eq:a}, and \eqref{eq:b}. Such a range is used so
     that the largest and smallest (denormalized) floating point numbers may be
     approximated.
+    \begin{samepage}
+    \begin{definition}
     \begin{align}
         i_{\max} & = \bigl\lfloor(e_{\max} - e_{\min} + p - 1)/W\bigr\rfloor - 1
             \label{eq:imax} \\
@@ -37,6 +39,8 @@ paper (especially Algorithms \ref{alg:depositrestricted} and \ref{alg:deposit}).
         b_i & = a_i + W
             \label{eq:b}
     \end{align}
+    \end{definition}
+    \end{samepage}
 
     We say the bin $(a_{i_0}, b_{i_0}]$ is \textbf{greater} than the bin
     $(a_{i_1}, b_{i_1}]$ if $a_{i_0} > a_{i_1}$ (which is equivalent to both
@@ -122,14 +126,18 @@ paper (especially Algorithms \ref{alg:depositrestricted} and \ref{alg:deposit}).
     sets for fixed and floating point operands.
     Floating point instructions also allow us to take advantage of the 
     rounding operations built in to floating point arithmetic.
+    \begin{samepage}
+    \begin{definition}
     \begin{equation}
-      \begin{aligned}
-      d(x,0) & = \roundtonearestinfty(x, a_0+1) \\
+    \begin{aligned}
+      d(x,0) & = \roundtonearestinfty(x, a_0+1)\\
       d(x, i) & = \roundtonearestinfty\bigl(x - \sum\limits_{j=0}^{i - 1}d(x,j), a_i + 1\bigr)
         \text{ for } i > 0.
-      \end{aligned}
+    \end{aligned}
       \label{eq:d}
     \end{equation}
+    \end{definition}
+    \end{samepage}
 
     We make three initial observations on the definition of $d(x, i)$. First,
     we note that $d(x, i)$ is well defined recursively on $i$ with base case

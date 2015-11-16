@@ -48,16 +48,16 @@
     \end{alg}
     \end{samepage}
 
-    \begin{lem}
+    \begin{thm}
       If the requirements of Algorithm~\ref{alg:addindexedtoindexed} are satisfied, then the ``Ensure'' claim holds.
-      \label{lem:reduce}
-    \end{lem}
+      \label{thm:addindexedtoindexed}
+    \end{thm}
     \begin{proof}
       If $Y$ or $Z$ are 0, then the algorithm correctly sets $Y$ to the value of $Z$ or $Y$ (respectively).
 
-      If both $Y$ and $Z$ are exceptional, then Algorithm \ref{alg:iindex} will return $I = J = i_{\min}$. The first iteration of the loop of line \ref{alg:addindexedtoindexed} will then set ${Y_{0}}_P$ to ${Y_{0}}_P + {Z_{0}}_P + 1.5 \cdot 2^{e_{\max}}$, which (since $1.5 \cdot 2^{e_{\max}}$ is finite) is equal to ${Y_{0}}_P + {Z_{0}}_P$, as desired.
+      If both $Y$ and $Z$ are exceptional, then Algorithm \ref{alg:iindex} will return $I = J = 0$. The first iteration of the loop of line \ref{alg:addindexedtoindexed} will then set ${Y_{0}}_P$ to ${Y_{0}}_P + {Z_{0}}_P + 1.5 \cdot 2^{e_{\max}}$, which (since $1.5 \cdot 2^{e_{\max}}$ is finite) is equal to ${Y_{0}}_P + {Z_{0}}_P$, as desired.
 
-      If only one of $Y$ or $Z$ is exceptional, then Algorithm \ref{alg:iindex} will return $I = i_{\min}$ or $J = i_{\min}$ (respectively). The first iteration of the loop of line \ref{alg:addindexedtoindexed} will set ${Y_{0}}_P$ to the sum of the exceptional ${Y_0}_P$ or ${Z_0}_P$ (respectively) and some finite values. This sum is equal to the exceptional value. Therefore, if only one of $Y$ or $Z$ is exceptional, $Y$ is set to $Y$ or $Z$ (respectively), as desired.
+      If only one of $Y$ or $Z$ is exceptional, then Algorithm \ref{alg:iindex} will return $I = 0$ or $J = 0$ (respectively). The first iteration of the loop of line \ref{alg:addindexedtoindexed} will set ${Y_{0}}_P$ to the sum of the exceptional ${Y_0}_P$ or ${Z_0}_P$ (respectively) and some finite values. This sum is equal to the exceptional value. Therefore, if only one of $Y$ or $Z$ is exceptional, $Y$ is set to $Y$ or $Z$ (respectively), as desired.
 
       We now focus on the case where both $Y$ and $Z$ are finite.
 

@@ -72,8 +72,8 @@
         \label{eq:pri}
       \end{equation}
       Representing the primary field value as an offset from $1.5\epsilon^{-1}2^{a_{I + k}}$ simplifies the process of extracting the slices of input in bins
-      $(a_{I + k}, b_{I + k}]$. It will be shown in Theorem
-      \ref{thm:ddepositrestricted} in Section~\ref{sec:primitiveops_deposit}
+      $(a_{I + k}, b_{I + k}]$. It will be shown in Lemma
+      \ref{lem:ddepositrestricted} in Section~\ref{sec:primitiveops_deposit}
       that if we represent each primary value ${\mathcal{Y}_k}_P$ as in
       \eqref{eq:pri} and keep ${Y_k}_P$ within the range
       \(
@@ -347,13 +347,18 @@
     \subsection{Indexed Sum}
       \label{sec:indexed_sum}
       We have previously explained the indexed type, a data structure we will use for reproducible summation. We now define a quantity that can be expressed using the indexed type, called the \textbf{indexed sum}. The goal for Section \ref{sec:primitiveops} will be to show that we can indeed compute this quantity. Ultimately, Theorems \ref{thm:addfloattoindexed} and \ref{thm:sum} will prove that Algorithms \ref{alg:addfloattoindexed} and \ref{alg:sum} (respectively) can indeed compute the indexed sum. Here we focus on the definition of an indexed sum. As further motivation for computing the indexed sum, we show that if an algorithm returns the indexed sum of its inputs, it is reproducible.
+
+      \begin{samepage}
       \begin{definition}
       Assume $n \leq (\epsilon^{-1} - 1)2^{p - W - 2}$. The $K$-fold \textbf{indexed sum} of finite $x_0, ..., x_{n - 1} \in \F$ is defined to be a $K$-fold indexed type $Y$ such that:
-      \begin{align}
-        &{Y_k}_P \in \begin{cases}[1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}}) \text{ if } I + k > 0 \\ [1.5 \cdot 2^{e_{\max}}, 1.75 \cdot 2^{e_{\max}}) \text{ if } I + k = 0\end{cases} \nonumber\\
-        &\mathcal{Y}_k = \sum\limits_{j = 0}^{n - 1}d(x_j, I + k)\nonumber\\
-        & I\text{ is the greatest integer such that }\max(|x_j|) < 2^{b_I} \text{ and } I \leq i_{\max}\nonumber\\\label{eq:indexed_sum}
-      \end{align}
+      \begin{equation}
+      \begin{aligned}
+        &{Y_k}_P \in \begin{cases}[1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}}) \text{ if } I + k > 0 \\ [1.5 \cdot 2^{e_{\max}}, 1.75 \cdot 2^{e_{\max}}) \text{ if } I + k = 0\end{cases}\\
+        &\mathcal{Y}_k = \sum\limits_{j = 0}^{n - 1}d(x_j, I + k)\\
+        & I\text{ is the greatest integer such that }\max(|x_j|) < 2^{b_I} \text{ and } I \leq i_{\max}
+      \end{aligned}
+      \label{eq:indexed_sum}
+      \end{equation}
       The $K$-fold indexed sum of $x_0, ..., x_{n - 1} \in \F$ (with at least one exceptional value \texttt{Inf}, \texttt{-Inf}, or \texttt{NaN}) is defined to be a $K$-fold indexed type such that
       \begin{equation}
         {Y_0}_P = \begin{cases}\texttt{Inf} \text{ if there is at least one \texttt{Inf} and no other exceptional values}\\ \texttt{-Inf} \text{ if there is at least one \texttt{-Inf} and no other exceptional values}\\ \texttt{NaN}\text{ otherwise}\end{cases} \label{eq:indexed_sum_exceptional}
@@ -365,6 +370,8 @@
         \label{eq:indexed_sum_zero}
       \end{align}
       \end{definition}
+      \end{samepage}
+
       Notice that in \eqref{eq:indexed_sum}, the value of ${Y_k}_C$ is specified implicitly, because $\mathcal{Y}_k$ is expressed in terms of both ${Y_k}_P$ and ${Y_k}_C$ in \eqref{eq:acc}.
 
       We now show that the indexed sum is well-defined for finite summands and that each field in the indexed type corresponding to the summands $x_0, ..., x_{n - 1}$ (in any order) is unique. We show this in Lemma \ref{lem:indexed_sum_unique}.

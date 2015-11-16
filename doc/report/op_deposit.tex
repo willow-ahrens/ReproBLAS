@@ -51,13 +51,13 @@
       the end of Algorithm \ref{alg:depositrestricted}.
 
     \begin{samepage}
-      \begin{thm}
+      \begin{lem}
         Let $Y$ be an $K$-fold indexed type of index $I$. Assume that we run
         Algorithm \ref{alg:depositrestricted} on $Y$ and some $x \in \F$, $|x|
         < 2^{b_I}$. If all requirements of the algorithm are satisfied, then
         the amount added to ${Y_k}_P$ is exactly $d(x, I + k)$.
-        \label{thm:ddepositrestricted}
-      \end{thm}
+        \label{lem:ddepositrestricted}
+      \end{lem}
     \end{samepage}
 
       \begin{proof}
@@ -233,7 +233,7 @@
         \begin{comment}
         We can break the proof into two cases based on the index $I$ of $Y$.
 
-        If $I \neq 0$, then we execute line \ref{alg:deposit:callrestricted}. By  \eqref{eq:b}, $|x| < 2^{b_I} \leq 2^{e_{\max} + 1 - W}$. By Theorem \ref{thm:overflow}, all quantities are obviously well below the overflow threshold and Theorem \ref{thm:ddepositrestricted} applies and we are done.
+        If $I \neq 0$, then we execute line \ref{alg:deposit:callrestricted}. By  \eqref{eq:b}, $|x| < 2^{b_I} \leq 2^{e_{\max} + 1 - W}$. By Theorem \ref{thm:overflow}, all quantities are obviously well below the overflow threshold and Lemma \ref{lem:ddepositrestricted} applies and we are done.
 
         If $I = 0$, more work is needed.
 
@@ -313,7 +313,7 @@
         At this point, since $r = x - d(x, 0)$ and $|r| \leq 2^{a_0}$, no more
         overflow can occur in the algorithm and since the algorithm at this
         point is identical to Algorithm \ref{alg:depositrestricted}, the proof
-        of Theorem \ref{thm:ddepositrestricted} applies.
+        of Lemma \ref{lem:ddepositrestricted} applies.
       \end{proof}
 
       Modifying Algorithm \ref{alg:deposit} to correctly handle exceptional
