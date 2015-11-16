@@ -36,19 +36,19 @@ bar_width = 0.35
 
 opacity = 0.8
 
-rects1 = plt.bar(index, np.array(tables[0][1][-2:]), bar_width,
+rects1 = plt.bar(index, np.array(tables[0][1][-2:]) * 1000000.0, bar_width,
                  alpha=opacity,
                  color='red',
                  label='Uniform Random [0, 1) Distribution')
 
-rects2 = plt.bar(index + bar_width, np.array(tables[0][2][-2:]), bar_width,
+rects2 = plt.bar(index + bar_width, np.array(tables[0][2][-2:]) * 1000000.0, bar_width,
                  alpha=opacity,
                  hatch='//',
                  color='blue',
                  label='Full Exponent Range Distribution')
 
 plt.xlabel('Reproducible Summation Function')
-plt.ylabel('Time (seconds)')
+plt.ylabel('Time (microseconds)')
 plt.title('Reproducible Summation Time Vs. Distribution ({} Values)'.format(int(tables[0][1][0])))
 plt.xticks(index + bar_width, ('rdsum (double)', 'rssum (float)'))
 plt.legend(loc="lower right")

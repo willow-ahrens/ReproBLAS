@@ -1,8 +1,29 @@
 \subsection{Timing}
   In addition to giving a count of floating point operations in our algorithms, we show that they can be implemented as a BLAS library comparable to commercially available optimized non-reproducible versions.
-  All timings are performed on a 2012 MacBook Pro with an Intel\textregistered Core i7-3720QM CPU operating at 2.60 GHz and 256 MB L2 Cache. Every test is run at least 100 times successively to amortize the data loading time and warm up the cache. We compare our BLAS routines against the sequential Intel\textregistered Math Kernel Library (MKL) BLAS routines \cite{MKL}. All matrices are represented in column-major order.
+
+  All timings are performed with an Intel\textregistered Core i7-2600 CPU operating at 3.4 GHz and 8192 MB L2 Cache. The code was compiled with \textt{gcc} version ??? using the highest level ``\texttt{-O3}'' level of optimization. Every test is run at least 100 times successively to amortize the data loading time and warm up the cache. The theoretical peak time is calculated as the idealized theoretical time in which the cpu could complete the given instructions (in any order). We compare our BLAS routines against the sequential Intel\textregistered Math Kernel Library (MKL) BLAS routines \cite{MKL}. All matrices are represented in column-major order.
+
   \subsubsection{Difficult Input}
-    Because the reproducible summation algorithm needs to perform additional operations (Algorithm \ref{alg:update}) if the maximum absolute value of the data increases during summation, the run time depends (up to a constant factor) upon the input. To show the differences in run time, we show the time it takes to reproducibly sum $2^14$ \texttt{double} and \texttt{float} from two different data sets. The first data set is an easy case, the uniform distribution from 0 to 1. The second data set is the most difficult possible case, numbers (alternating in sign to avoid infinities) increasing in absolute value exponentially starting at the minimum positive floating point value and ending with the largest positive finite floating point value. This data set is difficult because the exponent of the maximum absolute value increases linearly from its minimum to its maximum possible value. Therefore, the Update operation (Algorithm \ref{alg:update}) must be performed more frequently to adjust the index of the indexed type. We can compare this to the uniform distribution in $[0, 1)$, which very quickly achieves a number (greater than $0.5$) that has the largest floating point exponent possible from the distribution. After such a number is seen, no more updates need to be performed. The timings are displayed in Figure \ref{fig:easy_vs_hard_timings}.
+    Because the reproducible summation algorithm needs to perform additional
+    operations (Algorithm \ref{alg:update}) if the maximum absolute value
+    of the data increases during summation, the run time depends (up to a
+    constant factor) upon the input. To show the differences in run time,
+    we show the time it takes to reproducibly sum $2^{14}$ \texttt{double}
+    and \texttt{float} from two different data sets. The first data set is
+    an easy case, the uniform distribution from 0 to 1. The second data set
+    is the most difficult possible case, numbers (alternating in sign to
+    avoid infinities) increasing in absolute value exponentially starting
+    at the minimum positive floating point value and ending with the
+    largest positive finite floating point value. This data set is difficult
+    because the exponent of the maximum absolute value increases linearly
+    from its minimum to its maximum possible value. Therefore, the
+    \textproc{Update} operation (Algorithm \ref{alg:update}) must be
+    performed more frequently to adjust the index of the indexed type. We
+    can compare this to the uniform distribution in $[0, 1)$, which very
+    quickly achieves a number (greater than $0.5$) that has the largest
+    floating point exponent possible from the distribution. After such a
+    number is seen, no more updates need to be performed. The timings are
+    displayed in Figure \ref{fig:easy_vs_hard_timings}.
   \begin{figure}[H]
   \begin{center}
   \includegraphics[width=\textwidth]{plots/easy_vs_hard}
