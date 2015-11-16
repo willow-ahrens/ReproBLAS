@@ -1,0 +1,94 @@
+  N   , fold ,   FillX    ,  a   ,   RDSUM   ,   RSSUM   
+16384 , 3    , rand       , 1000 , 1.298e-05 , 7.809e-06 
+16384 , 3    , full_range , 1000 , 1.327e-05 , 8.191e-06 
+
+ N   , fold , FillX  ,   DSUM    ,   RDSUM   
+64   , 3    , normal , 4.706e-09 , 3.294e-08 
+128  , 3    , normal , 9.412e-09 , 6.588e-08 
+256  , 3    , normal , 1.882e-08 , 1.318e-07 
+512  , 3    , normal , 3.765e-08 , 2.635e-07 
+1024 , 3    , normal , 7.529e-08 , 5.271e-07 
+2048 , 3    , normal , 1.506e-07 , 1.054e-06 
+4096 , 3    , normal , 3.012e-07 , 2.108e-06 
+
+ N   , fold , FillX  ,   DSUM    ,   RDSUM   
+64   , 3    , normal , 9.190e-09 , 1.705e-07 
+128  , 3    , normal , 1.781e-08 , 2.130e-07 
+256  , 3    , normal , 3.438e-08 , 3.082e-07 
+512  , 3    , normal , 6.745e-08 , 5.018e-07 
+1024 , 3    , normal , 1.336e-07 , 8.823e-07 
+2048 , 3    , normal , 2.685e-07 , 1.672e-06 
+4096 , 3    , normal , 5.419e-07 , 3.291e-06 
+
+ N   , fold , FillX  , FillY  ,   DDOT    ,   RDDOT   
+64   , 3    , normal , normal , 4.706e-09 , 3.294e-08 
+128  , 3    , normal , normal , 9.412e-09 , 6.588e-08 
+256  , 3    , normal , normal , 1.882e-08 , 1.318e-07 
+512  , 3    , normal , normal , 3.765e-08 , 2.635e-07 
+1024 , 3    , normal , normal , 7.529e-08 , 5.271e-07 
+2048 , 3    , normal , normal , 1.506e-07 , 1.054e-06 
+4096 , 3    , normal , normal , 3.012e-07 , 2.108e-06 
+
+ N   , fold , FillX  , FillY  ,   DDOT    ,   RDDOT   
+64   , 3    , normal , normal , 3.647e-08 , 1.939e-07 
+128  , 3    , normal , normal , 4.736e-08 , 2.470e-07 
+256  , 3    , normal , normal , 7.014e-08 , 3.530e-07 
+512  , 3    , normal , normal , 1.252e-07 , 5.639e-07 
+1024 , 3    , normal , normal , 2.259e-07 , 9.861e-07 
+2048 , 3    , normal , normal , 4.565e-07 , 1.999e-06 
+4096 , 3    , normal , normal , 1.178e-06 , 4.022e-06 
+
+ ('N', 'M')  , TransA  , fold , FillA  ,  FillX   ,  FillY   , a ,   DGEMV   ,  RDGEMV   
+(64, 64)     , NoTrans , 3    , normal , constant , constant , 0 , 3.012e-07 , 2.108e-06 
+(128, 128)   , NoTrans , 3    , normal , constant , constant , 0 , 1.205e-06 , 8.433e-06 
+(256, 256)   , NoTrans , 3    , normal , constant , constant , 0 , 4.819e-06 , 3.373e-05 
+(512, 512)   , NoTrans , 3    , normal , constant , constant , 0 , 1.928e-05 , 1.349e-04 
+(1024, 1024) , NoTrans , 3    , normal , constant , constant , 0 , 7.710e-05 , 5.397e-04 
+(2048, 2048) , NoTrans , 3    , normal , constant , constant , 0 , 3.084e-04 , 2.159e-03 
+(4096, 4096) , NoTrans , 3    , normal , constant , constant , 0 , 1.234e-03 , 8.635e-03 
+
+ ('N', 'M')  , TransA  , fold , FillA  ,  FillX   ,  FillY   ,  a  ,   DGEMV   ,  RDGEMV   
+(64, 64)     , NoTrans , 3    , normal , constant , constant , 100 , 8.250e-06 , 1.885e-05 
+(128, 128)   , NoTrans , 3    , normal , constant , constant , 100 , 9.430e-06 , 5.556e-05 
+(256, 256)   , NoTrans , 3    , normal , constant , constant , 100 , 2.245e-05 , 1.798e-04 
+(512, 512)   , NoTrans , 3    , normal , constant , constant , 100 , 7.638e-05 , 6.816e-04 
+(1024, 1024) , NoTrans , 3    , normal , constant , constant , 100 , 3.635e-04 , 2.975e-03 
+(2048, 2048) , NoTrans , 3    , normal , constant , constant , 100 , 2.033e-03 , 1.344e-02 
+(4096, 4096) , NoTrans , 3    , normal , constant , constant , 100 , 8.647e-03 , 5.241e-02 
+
+ ('N', 'M')  , TransA , fold , FillA  ,  FillB   ,  FillC   , a ,   DGEMV   ,  RDGEMV   
+(64, 64)     , Trans  , 3    , normal , constant , constant , 0 , 3.012e-07 , 2.108e-06 
+(128, 128)   , Trans  , 3    , normal , constant , constant , 0 , 1.205e-06 , 8.433e-06 
+(256, 256)   , Trans  , 3    , normal , constant , constant , 0 , 4.819e-06 , 3.373e-05 
+(512, 512)   , Trans  , 3    , normal , constant , constant , 0 , 1.928e-05 , 1.349e-04 
+(1024, 1024) , Trans  , 3    , normal , constant , constant , 0 , 7.710e-05 , 5.397e-04 
+(2048, 2048) , Trans  , 3    , normal , constant , constant , 0 , 3.084e-04 , 2.159e-03 
+(4096, 4096) , Trans  , 3    , normal , constant , constant , 0 , 1.234e-03 , 8.635e-03 
+
+ ('N', 'M')  , TransA , fold , FillA  ,  FillB   ,  FillC   ,  a  ,   DGEMV   ,  RDGEMV   
+(64, 64)     , Trans  , 3    , normal , constant , constant , 100 , 8.230e-06 , 1.353e-05 
+(128, 128)   , Trans  , 3    , normal , constant , constant , 100 , 9.910e-06 , 3.354e-05 
+(256, 256)   , Trans  , 3    , normal , constant , constant , 100 , 2.342e-05 , 9.880e-05 
+(512, 512)   , Trans  , 3    , normal , constant , constant , 100 , 7.984e-05 , 3.156e-04 
+(1024, 1024) , Trans  , 3    , normal , constant , constant , 100 , 3.771e-04 , 1.225e-03 
+(2048, 2048) , Trans  , 3    , normal , constant , constant , 100 , 2.031e-03 , 5.103e-03 
+(4096, 4096) , Trans  , 3    , normal , constant , constant , 100 , 8.668e-03 , 1.931e-02 
+
+ ('N', 'M', 'K')   ,  ('TransA', 'TransB')  , fold , FillA  , a ,   DGEMM   ,  RDGEMM   
+(64, 64, 64)       , ('NoTrans', 'NoTrans') , 3    , normal , 0 , 1.928e-05 , 1.349e-04 
+(128, 128, 128)    , ('NoTrans', 'NoTrans') , 3    , normal , 0 , 1.542e-04 , 1.079e-03 
+(256, 256, 256)    , ('NoTrans', 'NoTrans') , 3    , normal , 0 , 1.234e-03 , 8.635e-03 
+(512, 512, 512)    , ('NoTrans', 'NoTrans') , 3    , normal , 0 , 9.869e-03 , 6.908e-02 
+(1024, 1024, 1024) , ('NoTrans', 'NoTrans') , 3    , normal , 0 , 7.895e-02 , 5.527e-01 
+(2048, 2048, 2048) , ('NoTrans', 'NoTrans') , 3    , normal , 0 , 6.316e-01 , 4.421e+00 
+(4096, 4096, 4096) , ('NoTrans', 'NoTrans') , 3    , normal , 0 , 5.053e+00 , 3.537e+01 
+
+ ('N', 'M', 'K')   ,  ('TransA', 'TransB')  , fold , FillA  ,  a  ,   DGEMM   ,  RDGEMM   
+(64, 64, 64)       , ('NoTrans', 'NoTrans') , 3    , normal , 100 , 3.199e-05 , 8.988e-04 
+(128, 128, 128)    , ('NoTrans', 'NoTrans') , 3    , normal , 100 , 1.988e-04 , 4.333e-03 
+(256, 256, 256)    , ('NoTrans', 'NoTrans') , 3    , normal , 100 , 1.434e-03 , 2.472e-02 
+(512, 512, 512)    , ('NoTrans', 'NoTrans') , 3    , normal , 100 , 1.134e-02 , 1.597e-01 
+(1024, 1024, 1024) , ('NoTrans', 'NoTrans') , 3    , normal , 100 , 8.807e-02 , 1.191e+00 
+(2048, 2048, 2048) , ('NoTrans', 'NoTrans') , 3    , normal , 100 , 6.879e-01 , 9.224e+00 
+(4096, 4096, 4096) , ('NoTrans', 'NoTrans') , 3    , normal , 100 , 5.966e+00 , 7.269e+01 
+
