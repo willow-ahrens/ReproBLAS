@@ -1,7 +1,7 @@
 # select compiler (comment all for auto)
-#CC = cc
+CC = cc
 #CC = gcc
-CC = icc
+#CC = icc
 #CC = pgcc
 #CC = craycc
 #CC = clang
@@ -52,14 +52,14 @@ LDFLAGS +=
 #AVX2 := false
 
 # select optimization flags (comment for auto)
-OPTFLAGS := -O3 -funroll-loops
+OPTFLAGS := -O3
 
 # select endianness (by default we are running on the same architecture we are
 # building - if you're cross compiling then you should set this manually)
 ENDIAN := $(shell perl -le 'print unpack(N,pack(L,0x01020304)) == 0x01020304 ? big : little')
 
 # select whether or not to use of BLAS library (if BLAS is not defined or set to value other that "true" an external BLAS library will not be used and corresponding parts of ReproBLAS won't build)
-BLAS := true
+BLAS := false
 
 # select BLAS library from preconfigured or custom options (if BLAS=true)
 
@@ -67,10 +67,14 @@ BLAS := true
 #LDFLAGS += -lblas
 #CPPFLAGS += -DBLAS=1
 
+# Intel MKL BLAS
+#LDFLAGS += -mkl
+#CPPFLAGS += -DCBLAS=1
+
 # Intel MKL Sequential BLAS
-LDFLAGS += ${MKLROOT}/lib/libmkl_intel_lp64.a ${MKLROOT}/lib/libmkl_core.a ${MKLROOT}/lib/libmkl_sequential.a -lpthread -lm
-#LDFLAGS += -lmkl_intel_lp64 -lmkl_core -lmkl_sequential -lpthread -lm
-CPPFLAGS += -DCBLAS=1
+#LDFLAGS += -mkl=sequential
+#LDFLAGS += ${MKLROOT}/lib/libmkl_intel_lp64.a ${MKLROOT}/lib/libmkl_core.a ${MKLROOT}/lib/libmkl_sequential.a -lpthread -lm
+#CPPFLAGS += -DCBLAS=1
 
 # Atlas BLAS
 #LDFLAGS += -latlas
@@ -82,6 +86,7 @@ CPPFLAGS += -DCBLAS=1
 
 # custom BLAS LDFLAGS
 #LDFLAGS += -lblas
+
 # custom BLAS interface (reference fortran or cblas)
 #CPPFLAGS += -DBLAS=1
 #CPPFLAGS += -DCBLAS=1

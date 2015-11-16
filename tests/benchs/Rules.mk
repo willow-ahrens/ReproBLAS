@@ -27,7 +27,7 @@ TARGETS := bench_damax$(EXE) bench_damaxm$(EXE)                     \
            bench_sisiadd$(EXE)                                      \
            bench_ciciadd$(EXE)
 
-ifneq ($(BLAS),)
+ifeq ($(BLAS),true)
 
 TARGETS += bench_idamax$(EXE)                                  \
            bench_izamax$(EXE)                                  \
