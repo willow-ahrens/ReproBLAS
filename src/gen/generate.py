@@ -9,6 +9,7 @@
 import os,json
 from utils import *
 from vectorizations import *
+import scripts.terminal
 
 def serialize_arguments(arguments, arguments_file_name):
   assert type(arguments) == dict, "ReproBLAS error: invalid argument file format"
@@ -256,6 +257,8 @@ def generate(target, file_name, args, params, mode):
   cog.outl(generate.generate(<target>, args, params, mode))
   """
   code_block = CodeBlock()
+
+  file_name = os.path.relpath(file_name, scripts.terminal.top)
 
   if mode == "generate":
     target.set_arguments(deserialize_arguments(args), deserialize_parameter_space(params))
