@@ -3,7 +3,7 @@
   The ultimate goal of the ReproBLAS library is to support reproducible linear algebra functions on many widely-used architectures.
 
   We must account for any combination of several sources of
-  nonreproduciblilty. These sources include arbitrary data
+  nonreproducibility. These sources include arbitrary data
   permutation or layout, differing numbers of processors, and arbitrary
   reduction tree shape. The methods we will describe can be used to
   account for all of these sources of nonreproducibility.
@@ -30,7 +30,7 @@
   The Linear Algebra Package (LAPACK), is a set of higher-level
   routines for linear algebra, providing routines for operations like solving linear equations, linear least squares, eigenvalue problems, and singular value decomposition.
 
-  The BLAS and LAPACK have been extendend to distributed-memory systems in the PBLAS and SCALAPACK libraries. While most PBLAS operations can clearly be made reproducible, it is an open question as to which SCALAPACK routines can be made reproducible and how this would be done. 
+  The BLAS and LAPACK have been extended to distributed-memory systems in the PBLAS and SCALAPACK libraries. While most PBLAS operations can clearly be made reproducible, it is an open question as to which SCALAPACK routines can be made reproducible and how this would be done. 
 
   Out of the large design space outlined above, we describe in this paper and implement in ReproBLAS sequential versions of key operations from the BLAS, and a distributed-memory reduction operation which can be used to parallelize these sequential operations in a reproducible configuration. We described the BLAS1 operations \texttt{asum} and \texttt{dot} at the end of Section \ref{sec:primitiveops_sum} previously. The BLAS1 operation \texttt{nrm2} is discussed in Section \ref{sec:compositeops_nrm2}. The BLAS2 and BLAS3 operations \texttt{gemv} and \texttt{gemm} are discussed in Sections \ref{sec:compositeops_gemv} and \ref{sec:compositeops_gemm} respectively. Eventually, we hope to extend ReproBLAS to contain reproducible versions of all BLAS and PBLAS routines.
 

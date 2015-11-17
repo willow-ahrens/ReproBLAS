@@ -1,7 +1,7 @@
 \subsection{Timing}
   In addition to giving a count of floating point operations in our algorithms, we show that they can be implemented as a BLAS library comparable to commercially available optimized non-reproducible versions.
 
-  All timings are performed with an Intel\textregistered Core i7-2600 CPU operating at 3.4 GHz and 8192 MB L2 Cache. The code was compiled with \textt{gcc} version 4.8.4 using the highest level ``\texttt{-O3}'' of optimization (and no other optimization flags). Every test is run at least 100 times successively to amortize the data loading time and warm up the cache. The theoretical peak time is calculated as the idealized theoretical time in which the cpu could complete the given instructions (in any order). We compare our BLAS routines against the sequential Intel\textregistered Math Kernel Library (MKL) BLAS routines \cite{MKL}. All matrices are represented in column-major order.
+  All timings are performed with an Intel\textregistered Core i7-2600 CPU operating at 3.4 GHz and 8192 MB L2 Cache. The code was compiled with \textt{gcc} version 4.8.4 using the highest level ``\texttt{-O3}'' of optimization (and no other optimization flags). Every test is run at least 100 times successively to amortize the data loading time and warm up the cache. The theoretical peak time is calculated as the idealized theoretical time in which the CPU could complete the given instructions (in any order). We compare our BLAS routines against the sequential Intel\textregistered Math Kernel Library (MKL) BLAS routines \cite{MKL}. All matrices are represented in column-major order.
 
   \subsubsection{Difficult Input}
     Because the reproducible summation algorithm needs to perform additional

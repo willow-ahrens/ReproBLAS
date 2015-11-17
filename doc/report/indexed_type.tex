@@ -342,7 +342,7 @@
       the \texttt{Inf} or \texttt{-Inf} are discussed in Section
       \ref{sec:primitiveops_conv2float}.
 
-      There are several ways that \texttt{Inf}, \texttt{-Inf}, and \texttt{NaN} could be handled reproducibly. We have chosen to handle these values analagously to how they are handled in standard recursive summation. This results in an additional performance cost due to special branches for these special values. Another way to handle these values would be to always return \texttt{NaN} when any summand is \texttt{Inf}, \texttt{-Inf}, or \texttt{NaN}. This would result in less branching.
+      There are several ways that \texttt{Inf}, \texttt{-Inf}, and \texttt{NaN} could be handled reproducibly. We have chosen to handle these values analogously to how they are handled in standard recursive summation. This results in an additional performance cost due to special branches for these special values. Another way to handle these values would be to always return \texttt{NaN} when any summand is \texttt{Inf}, \texttt{-Inf}, or \texttt{NaN}. This would result in less branching.
 
     \subsection{Indexed Sum}
       \label{sec:indexed_sum}

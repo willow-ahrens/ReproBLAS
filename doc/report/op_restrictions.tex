@@ -28,12 +28,12 @@
     of at least $0.25\epsilon^{-1}2^{-W}  \epsilon^{-1} = 2^{2  p - W - 2}$
     floating point numbers. For indexed \texttt{double} this number is
     $2^{64}$, whereas for indexed \texttt{float} this number is
-    $2^{33}$. This number is reffered to as the \textbf{capacity} of the indexed type and supplied in ReproBLAS using the
+    $2^{33}$. This number is referred to as the \textbf{capacity} of the indexed type and supplied in ReproBLAS using the
     \texttt{XICAPACITY} macro in \texttt{idxd.h}.
 
     The indexed types provided by ReproBLAS will, when used correctly, avoid intermediate overflow assuming the restrictions in the previous paragraph..
 
-    As discussed in Section \ref{sec:indexed_underflow_gradual}, we assume gradual underflow and ReproBLAS will round the sum at best to the nearest $2^{e_{\min} - 1}$. However, Sections \ref{sec:indexed_underflow_gradual} and \ref{sec:indexed_underflow_abrupt} disucss ways that reproducible summation could be implemented and improved in the presence of both gradual and abrupt underflow.
+    As discussed in Section \ref{sec:indexed_underflow_gradual}, we assume gradual underflow and ReproBLAS will round the sum at best to the nearest $2^{e_{\min} - 1}$. However, Sections \ref{sec:indexed_underflow_gradual} and \ref{sec:indexed_underflow_abrupt} discuss ways that reproducible summation could be implemented and improved in the presence of both gradual and abrupt underflow.
 
     \begin{table}[!htbp]
         \centering
