@@ -18,15 +18,15 @@ COGGED = DIDIADD.ccog \
          CICIADD.ccog \
          SISIADDSQ.ccog
 
-libidxdmpi.a_DEPS = $$(LIBINDEXED) DOUBLE_INDEXED.o \
-                                   DOUBLE_COMPLEX_INDEXED.o \
-                                   DOUBLE_INDEXED_SCALED.o \
-                                   FLOAT_INDEXED.o \
-                                   FLOAT_COMPLEX_INDEXED.o \
-                                   FLOAT_INDEXED_SCALED.o \
-                                   DIDIADD.o \
-                                   ZIZIADD.o \
-                                   DIDIADDSQ.o \
-                                   SISIADD.o \
-                                   CICIADD.o \
-                                   SISIADDSQ.o
+libidxdmpi.a_DEPS = $$(LIBIDXD) DOUBLE_INDEXED.o \
+                                DOUBLE_COMPLEX_INDEXED.o \
+                                DOUBLE_INDEXED_SCALED.o \
+                                FLOAT_INDEXED.o \
+                                FLOAT_COMPLEX_INDEXED.o \
+                                FLOAT_INDEXED_SCALED.o \
+                                DIDIADD.o \
+                                ZIZIADD.o \
+                                DIDIADDSQ.o \
+                                SISIADD.o \
+                                CICIADD.o \
+                                SISIADDSQ.o
