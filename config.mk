@@ -15,8 +15,7 @@ CPPFLAGS +=
 # add LDFLAGS
 LDFLAGS +=
 
-# select whether or not to build mpi (comment not to build mpi. Corresponding
-# parts of ReproBLAS won't build)
+# select whether or not to build mpi (if BUILD_MPI is not defined or set to value other that "true" MPI will not be used and corresponding parts of ReproBLAS won't build)
 #BUILD_MPI = true
 
 # select MPI compiler flags (comment all for auto)
@@ -58,8 +57,8 @@ OPTFLAGS := -O3
 # building - if you're cross compiling then you should set this manually)
 ENDIAN := $(shell perl -le 'print unpack(N,pack(L,0x01020304)) == 0x01020304 ? big : little')
 
-# select whether or not to use of BLAS library (if BLAS is not defined or set to value other that "true" an external BLAS library will not be used and corresponding parts of ReproBLAS won't build)
-BLAS := false
+# select whether or not to use of BLAS library (if BUILD_BLAS is not defined or set to value other that "true" an external BLAS library will not be used and corresponding parts of ReproBLAS won't build)
+#BUILD_BLAS := true
 
 # select BLAS library from preconfigured or custom options (if BLAS=true)
 
