@@ -65,7 +65,6 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   (void)incY;
   int rc = 0;
   int i;
-  int j;
   int k;
   float res = 0.0;
   float_indexed *ires;
@@ -81,55 +80,30 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   //fill x
   util_svec_fill(N * preN._int.value, preX, incX, FillX, RealScaleX, ImagScaleX);
 
-  if(fold._int.value == 0){
-    for(j = 1; j <= SIMAXFOLD; j++){
-      X = (float_indexed*)util_svec_alloc(N * idxd_sinum(j), 1);
-      for(i = 0; i < N; i++){
-        idxd_sisetzero(j, X + idxd_sinum(j));
-        idxdBLAS_sissum(j, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_sinum(j));
-      }
-      ires = idxd_sialloc(j);
-      time_tic();
-      for(i = 0; i < trials; i++){
-        idxd_sisetzero(j, ires);
-        for(k = 0; k < N; k++){
-          idxd_sisiadd(j, X + k * idxd_sinum(j), ires);
-        }
-        res = idxd_ssiconv(j, ires);
-      }
-      time_toc();
-      free(ires);
-      free(X);
-    }
-  }else{
-    X = (float_indexed*)util_svec_alloc(N * idxd_sinum(fold._int.value), 1);
-    for(i = 0; i < N; i++){
-      idxdBLAS_sissum(fold._int.value, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_sinum(fold._int.value));
-    }
-    ires = idxd_sialloc(fold._int.value);
-    time_tic();
-    for(i = 0; i < trials; i++){
-      idxd_sisetzero(fold._int.value, ires);
-      for(k = 0; k < N; k++){
-        idxd_sisiadd(fold._int.value, X + k * idxd_sinum(fold._int.value), ires);
-      }
-      res = idxd_ssiconv(fold._int.value, ires);
-    }
-    time_toc();
-    free(ires);
-    free(X);
+  X = (float_indexed*)util_svec_alloc(N * idxd_sinum(fold._int.value), 1);
+  for(i = 0; i < N; i++){
+    idxdBLAS_sissum(fold._int.value, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_sinum(fold._int.value));
   }
+  ires = idxd_sialloc(fold._int.value);
+  time_tic();
+  for(i = 0; i < trials; i++){
+    idxd_sisetzero(fold._int.value, ires);
+    for(k = 0; k < N; k++){
+      idxd_sisiadd(fold._int.value, X + k * idxd_sinum(fold._int.value), ires);
+    }
+    res = idxd_ssiconv(fold._int.value, ires);
+  }
+  time_toc();
+  free(ires);
+  free(X);
 
+  double dN = (double)N;
   metric_load_double("time", time_read());
   metric_load_float("res", res);
   metric_load_double("trials", (double)trials);
-  metric_load_double("input", (double)N);
-  metric_load_double("output", (double)1);
-  if(fold._int.value == 0){
-    ;
-  }else{
-    ;
-  }
+  metric_load_double("input", dN);
+  metric_load_double("output", 1.0);
+  metric_load_double("normalizer", dN);
   metric_dump();
 
   free(preX);

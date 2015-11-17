@@ -65,7 +65,6 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   (void)incY;
   int rc = 0;
   int i;
-  int j;
   int k;
   float complex res = 0.0;
   float_complex_indexed *ires;
@@ -81,56 +80,31 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   //fill x
   util_cvec_fill(N * preN._int.value, preX, incX, FillX, RealScaleX, ImagScaleX);
 
-  if(fold._int.value == 0){
-    for(j = 1; j <= SIMAXFOLD; j++){
-      X = (float_complex_indexed*)util_cvec_alloc(N * idxd_cinum(j), 1);
-      for(i = 0; i < N; i++){
-        idxd_cisetzero(j, X + idxd_cinum(j));
-        idxdBLAS_cicsum(j, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_cinum(j));
-      }
-      ires = idxd_cialloc(j);
-      time_tic();
-      for(i = 0; i < trials; i++){
-        idxd_cisetzero(j, ires);
-        for(k = 0; k < N; k++){
-          idxd_ciciadd(j, X + k * idxd_cinum(j), ires);
-        }
-        idxd_cciconv_sub(j, ires, &res);
-      }
-      time_toc();
-      free(ires);
-      free(X);
-    }
-  }else{
-    X = (float_complex_indexed*)util_cvec_alloc(N * idxd_cinum(fold._int.value), 1);
-    for(i = 0; i < N; i++){
-      idxdBLAS_cicsum(fold._int.value, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_cinum(fold._int.value));
-    }
-    ires = idxd_cialloc(fold._int.value);
-    time_tic();
-    for(i = 0; i < trials; i++){
-      idxd_cisetzero(fold._int.value, ires);
-      for(k = 0; k < N; k++){
-        idxd_ciciadd(fold._int.value, X + k * idxd_cinum(fold._int.value), ires);
-      }
-      idxd_cciconv_sub(fold._int.value, ires, &res);
-    }
-    time_toc();
-    free(ires);
-    free(X);
+  X = (float_complex_indexed*)util_cvec_alloc(N * idxd_cinum(fold._int.value), 1);
+  for(i = 0; i < N; i++){
+    idxdBLAS_cicsum(fold._int.value, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_cinum(fold._int.value));
   }
+  ires = idxd_cialloc(fold._int.value);
+  time_tic();
+  for(i = 0; i < trials; i++){
+    idxd_cisetzero(fold._int.value, ires);
+    for(k = 0; k < N; k++){
+      idxd_ciciadd(fold._int.value, X + k * idxd_cinum(fold._int.value), ires);
+    }
+    idxd_cciconv_sub(fold._int.value, ires, &res);
+  }
+  time_toc();
+  free(ires);
+  free(X);
 
+  double dN = (double)N;
   metric_load_double("time", time_read());
   metric_load_float("res_real", crealf(res));
   metric_load_float("res_imag", cimagf(res));
   metric_load_double("trials", (double)trials);
-  metric_load_double("input", (double)N);
-  metric_load_double("output", (double)1);
-  if(fold._int.value == 0){
-    ;
-  }else{
-    ;
-  }
+  metric_load_double("input", dN);
+  metric_load_double("output", 1.0);
+  metric_load_double("normalizer", dN);
   metric_dump();
 
   free(preX);

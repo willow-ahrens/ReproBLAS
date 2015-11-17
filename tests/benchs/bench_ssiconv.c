@@ -54,7 +54,6 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   (void)incY;
   int rc = 0;
   int i;
-  int j;
   float res = 0.0;
   float_indexed *ires;
 
@@ -68,39 +67,22 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   //fill x
   util_svec_fill(N, X, incX, FillX, RealScaleX, ImagScaleX);
 
-  if(fold._int.value == 0){
-    ires = idxd_sialloc(SIMAXFOLD);
-    idxd_sisetzero(SIMAXFOLD, ires);
-    idxdBLAS_sissum(SIMAXFOLD, N, X, incX, ires);
-    time_tic();
-    for(j = 1; j <= SIMAXFOLD; j++){
-      for(i = 0; i < trials; i++){
-        res = idxd_ssiconv(j, ires);
-      }
-    }
-    time_toc();
-    free(ires);
-  }else{
-    ires = idxd_sialloc(fold._int.value);
-    idxd_sisetzero(fold._int.value, ires);
-    idxdBLAS_sissum(fold._int.value, N, X, incX, ires);
-    time_tic();
-    for(i = 0; i < trials; i++){
-      res = idxd_ssiconv(fold._int.value, ires);
-    }
-    time_toc();
-    free(ires);
+  ires = idxd_sialloc(fold._int.value);
+  idxd_sisetzero(fold._int.value, ires);
+  idxdBLAS_sissum(fold._int.value, N, X, incX, ires);
+  time_tic();
+  for(i = 0; i < trials; i++){
+    res = idxd_ssiconv(fold._int.value, ires);
   }
+  time_toc();
+  free(ires);
 
   metric_load_double("time", time_read());
   metric_load_float("res", res);
   metric_load_double("trials", (double)trials);
-  if(fold._int.value == 0){
-    metric_load_double("input", (double)SIMAXFOLD);
-  }else{
-    metric_load_double("input", (double)1);
-  }
-  metric_load_double("output", (double)1);
+  metric_load_double("input", 1.0);
+  metric_load_double("output", 1.0);
+  metric_load_double("normalizer", 1.0);
   metric_dump();
 
   free(X);

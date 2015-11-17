@@ -78,6 +78,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   metric_load_double("trials", (double)trials);
   metric_load_double("input", 2.0 * dN);
   metric_load_double("output", 1.0);
+  metric_load_double("normalizer", dN);
   metric_load_double("s_mul", 4.0 * dN);
   metric_load_double("s_add", (3 * fold._int.value - 2) * 4.0 * dN);
   metric_load_double("s_orb", fold._int.value * 4.0 * dN);

@@ -94,9 +94,10 @@ int bench_matmat_fill_test(int argc, char** argv, char Order, char TransA, char 
   double dK = (double)K;
   metric_load_double("time", time_read());
   metric_load_double("trials", (double)(trials));
-  metric_load_double("input", (double)(dM * dK + dK * dN + dM * dN));
-  metric_load_double("output", (double)dN * dM);
-  metric_load_double("d_fma", (double)(dN * dM * dK));
+  metric_load_double("input", dM * dK + dK * dN + dM * dN);
+  metric_load_double("output", dN * dM);
+  metric_load_double("normalizer", dN * dM * dK);
+  metric_load_double("d_fma", dN * dM * dK);
   metric_dump();
 
   free(A);

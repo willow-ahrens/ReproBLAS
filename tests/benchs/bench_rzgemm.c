@@ -120,6 +120,7 @@ int bench_matmat_fill_test(int argc, char** argv, char Order, char TransA, char 
   metric_load_double("trials", (double)(trials));
   metric_load_double("input", dM * dK + dK * dN + dM * dN);
   metric_load_double("output", dN * dM);
+  metric_load_double("normalizer", dN * dM * dK);
   metric_load_double("d_mul", 4.0 * dN * dM * dK);
   metric_load_double("d_add", 4.0 * (3 * fold._int.value - 2) * dN * dM * dK);
   metric_load_double("d_orb", 4.0 * fold._int.value * dN * dM * dK);

@@ -43,15 +43,17 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   }
   time_toc();
 
+  double dN = (double)N;
   metric_load_double("time", time_read());
   metric_load_float("res_real", crealf(res));
   metric_load_float("res_imag", cimagf(res));
-  metric_load_long_long("trials", (long long)trials);
-  metric_load_long_long("input", (long long)2 * N);
-  metric_load_long_long("output", (long long)1);
-  metric_load_long_long("s_mul", (long long)4 * N);
-  metric_load_long_long("s_cmp", (long long)4 * N);
-  metric_load_long_long("s_orb", (long long)4 * N);
+  metric_load_double("trials", (double)trials);
+  metric_load_double("input", 2.0 * dN);
+  metric_load_double("output", 1.0);
+  metric_load_double("normalizer", dN);
+  metric_load_double("s_mul", 4.0 * dN);
+  metric_load_double("s_cmp", 4.0 * dN);
+  metric_load_double("s_orb", 4.0 * dN);
   metric_dump();
 
   free(X);

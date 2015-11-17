@@ -54,7 +54,6 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   (void)incY;
   int rc = 0;
   int i;
-  int j;
   double complex res = 0.0;
   double_complex_indexed *ires;
 
@@ -68,40 +67,23 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   //fill x
   util_zvec_fill(N, X, incX, FillX, RealScaleX, ImagScaleX);
 
-  if(fold._int.value == 0){
-    ires = idxd_zialloc(DIMAXFOLD);
-    idxd_zisetzero(DIMAXFOLD, ires);
-    idxdBLAS_zizsum(DIMAXFOLD, N, X, incX, ires);
-    time_tic();
-    for(j = 1; j <= DIMAXFOLD; j++){
-      for(i = 0; i < trials; i++){
-        idxd_zziconv_sub(j, ires, &res);
-      }
-    }
-    time_toc();
-    free(ires);
-  }else{
-    ires = idxd_zialloc(fold._int.value);
-    idxd_zisetzero(fold._int.value, ires);
-    idxdBLAS_zizsum(fold._int.value, N, X, incX, ires);
-    time_tic();
-    for(i = 0; i < trials; i++){
-      idxd_zziconv_sub(fold._int.value, ires, &res);
-    }
-    time_toc();
-    free(ires);
+  ires = idxd_zialloc(fold._int.value);
+  idxd_zisetzero(fold._int.value, ires);
+  idxdBLAS_zizsum(fold._int.value, N, X, incX, ires);
+  time_tic();
+  for(i = 0; i < trials; i++){
+    idxd_zziconv_sub(fold._int.value, ires, &res);
   }
+  time_toc();
+  free(ires);
 
   metric_load_double("time", time_read());
   metric_load_double("res_real", crealf(res));
   metric_load_double("res_imag", cimagf(res));
   metric_load_double("trials", (double)trials);
-  if(fold._int.value == 0){
-    metric_load_double("input", (double)DIMAXFOLD);
-  }else{
-    metric_load_double("input", (double)1);
-  }
-  metric_load_double("output", (double)1);
+  metric_load_double("input", 1.0);
+  metric_load_double("output", 1.0);
+  metric_load_double("normalizer", 1.0);
   metric_dump();
 
   free(X);

@@ -65,7 +65,6 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   (void)incY;
   int rc = 0;
   int i;
-  int j;
   int k;
   double res = 0.0;
   double_indexed *ires;
@@ -81,55 +80,30 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   //fill x
   util_dvec_fill(N * preN._int.value, preX, incX, FillX, RealScaleX, ImagScaleX);
 
-  if(fold._int.value == 0){
-    for(j = 1; j <= DIMAXFOLD; j++){
-      X = (double_indexed*)util_dvec_alloc(N * idxd_dinum(j), 1);
-      for(i = 0; i < N; i++){
-        idxd_disetzero(j, X + idxd_dinum(j));
-        idxdBLAS_didsum(j, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_dinum(j));
-      }
-      ires = idxd_dialloc(j);
-      time_tic();
-      for(i = 0; i < trials; i++){
-        idxd_disetzero(j, ires);
-        for(k = 0; k < N; k++){
-          idxd_didiadd(j, X + k * idxd_dinum(j), ires);
-        }
-        res = idxd_ddiconv(j, ires);
-      }
-      time_toc();
-      free(ires);
-      free(X);
-    }
-  }else{
-    X = (double_indexed*)util_dvec_alloc(N * idxd_dinum(fold._int.value), 1);
-    for(i = 0; i < N; i++){
-      idxdBLAS_didsum(fold._int.value, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_dinum(fold._int.value));
-    }
-    ires = idxd_dialloc(fold._int.value);
-    time_tic();
-    for(i = 0; i < trials; i++){
-      idxd_disetzero(fold._int.value, ires);
-      for(k = 0; k < N; k++){
-        idxd_didiadd(fold._int.value, X + k * idxd_dinum(fold._int.value), ires);
-      }
-      res = idxd_ddiconv(fold._int.value, ires);
-    }
-    time_toc();
-    free(ires);
-    free(X);
+  X = (double_indexed*)util_dvec_alloc(N * idxd_dinum(fold._int.value), 1);
+  for(i = 0; i < N; i++){
+    idxdBLAS_didsum(fold._int.value, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_dinum(fold._int.value));
   }
+  ires = idxd_dialloc(fold._int.value);
+  time_tic();
+  for(i = 0; i < trials; i++){
+    idxd_disetzero(fold._int.value, ires);
+    for(k = 0; k < N; k++){
+      idxd_didiadd(fold._int.value, X + k * idxd_dinum(fold._int.value), ires);
+    }
+    res = idxd_ddiconv(fold._int.value, ires);
+  }
+  time_toc();
+  free(ires);
+  free(X);
 
+  double dN = (double)N;
   metric_load_double("time", time_read());
   metric_load_double("res", res);
   metric_load_double("trials", (double)trials);
-  metric_load_double("input", (double)N);
-  metric_load_double("output", (double)1);
-  if(fold._int.value == 0){
-    ;
-  }else{
-    ;
-  }
+  metric_load_double("input", dN);
+  metric_load_double("output", 1.0);
+  metric_load_double("normalizer", dN);
   metric_dump();
 
   free(preX);

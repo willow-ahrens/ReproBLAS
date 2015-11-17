@@ -93,6 +93,7 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
   metric_load_double("trials", (double)trials);
   metric_load_double("input", dN * dM + dN + dM);
   metric_load_double("output", dNY);
+  metric_load_double("normalizer", dN * dM);
   metric_load_double("s_mul", dN * dM);
   metric_load_double("s_add", (3 * fold._int.value - 2) * dN * dM);
   metric_load_double("s_orb", fold._int.value * dN * dM);
