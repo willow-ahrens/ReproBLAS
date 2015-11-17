@@ -18,6 +18,10 @@ class BenchTest(harness.MetricTest):
       return (output["trials"] * terminal.get_flop_count(output)) / max(output["time"], sys.float_info.min)
     elif self.attribute == "peak_perf":
       return (output["trials"] * terminal.get_flop_count(output)) / max(terminal.get_peak_time(output), sys.float_info.min)
+    elif self.attribute == "norm":
+      return (output["trials"] * output["normalizer"]) / max(output["time"], sys.float_info.min)
+    elif self.attribute == "peak_norm":
+      return (output["trials"] * output["normalizer"]) / max(terminal.get_peak_time(output), sys.float_info.min)
     if self.attribute == "freq":
       return (output["trials"] * output["input"]) / max(output["time"], sys.float_info.min)
     elif self.attribute == "peak_freq":
