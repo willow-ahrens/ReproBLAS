@@ -5,7 +5,7 @@
     As discussed previously, for a $K$-fold indexed type the minimum $K$
     accepted by ReproBLAS is 2. The maximum useful $K$ is
     $K_{max}=\lfloor(e_{\max} - e_{\min} + p - 1)/W\rfloor$,
-    as this covers all of the bins and computes the exact sum (to within a relative error of $7 \epsilon$, subject to overflow and underflow as discussed in Section \ref{eq:errorbound}).
+    as this covers all of the bins and computes the exact sum (to within a relative error of $7 \epsilon$, subject to overflow and underflow as discussed in Section \ref{sec:primitiveops_error}).
 
     As discussed in \cite{repsum}, $W < p - 2$. As discussed in Section
     \ref{sec:indexed_overflow}, $2 W > p + 1$.
