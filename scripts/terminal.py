@@ -180,23 +180,26 @@ get_siendurance.siendurance = None
 
 def get_cpu_freq(verbose="false"):
   info = cpuinfo.get_cpu_info()
-  if info:
+  if info and "freq" not in config.cpu_info(verbose="false"):
     return info["hz_actual_raw"][0] * 10**(info["hz_actual_raw"][1])
   else:
+    assert "freq" in config.cpu_info(verbose=verbose), "ReproBLAS error: CPU frequency not found. Clarify in cpu_info() in config.py"
     return config.cpu_info()["freq"]
 
 def get_fma(verbose="false"):
   info = cpuinfo.get_cpu_info()
-  if info:
+  if info and "fma" not in config.cpu_info(verbose="false"):
     return "fma" in info["flags"]
   else:
+    assert "fma" in config.cpu_info(verbose=verbose), "ReproBLAS error: fma status not found. Clarify in cpu_info() in config.py"
     return config.cpu_info()["fma"]
 
 def get_cache(verbose="false"):
   info = cpuinfo.get_cpu_info()
-  if info:
+  if info and "cache" not in config.cpu_info(verbose="false"):
     return int(info['l2_cache_size']) * 1024
   else:
+    assert "cache" in config.cpu_info(verbose=verbose), "ReproBLAS error: cache size not found. Clarify in cpu_info() in config.py"
     return config.cpu_info()["cache"]
 
 def get_peak_time(output, verbose="false"):
