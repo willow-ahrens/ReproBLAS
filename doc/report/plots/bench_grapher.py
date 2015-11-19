@@ -76,6 +76,24 @@ plt.legend(loc="best")
 plt.savefig("sum_comparison.eps", format='eps', dpi=1200)
 plt.close("all")
 
+##begin hack
+N = np.array([row[0] for row in tables[t][1:]])
+blas_sum_peak = N/np.array([row[-2] for row in tables[t][1:]])
+rblas_sum_peak = N/np.array([row[-1] for row in tables[t][1:]])
+blas_sum = N/np.array([row[-2] for row in tables[t + 1][1:]])
+rblas_sum = N/np.array([row[-1] for row in tables[t + 1][1:]])
+plt.plot(N, blas_sum_peak, ':', label = "for loop theoretical peak")
+plt.plot(N, rblas_sum_peak, '-.', label = "rdsum theoretical peak")
+plt.plot(N, blas_sum, '--', label = "for loop")
+plt.plot(N, rblas_sum, '-', label = "rdsum")
+plt.title("Summation Normalized Performance Vs. N")
+plt.xlabel("N (Vector Size N)")
+plt.ylabel("Normalized Performance (N/Running Time) (Hz)")
+plt.legend(loc="best")
+plt.savefig("sum_comparison_perf.eps", format='eps', dpi=1200)
+plt.close("all")
+###end hack
+
 t = 3
 
 N = np.array([row[0] for row in tables[t][1:]])

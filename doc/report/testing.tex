@@ -1,7 +1,7 @@
 \subsection{Testing}
   In understanding the testing methodology behind ReproBLAS, is important to distinguish between the metrics of reproducibility and accuracy. Although high accuracy can sometimes result in reproducibility, it is not a guarantee. For this reason, we test the accuracy and the reproducibility of the ReproBLAS methods separately.
 
-  Testing in ReproBLAS starts with the BLAS1 methods (\texttt{sum}, \texttt{asum}, \texttt{nrm2}, \texttt{dot}). These methods are first checked to see that their results are accurate, then checked to see if the results are reproducible.
+  Testing in ReproBLAS starts with the BLAS1 methods (\texttt{xsum}, \texttt{xasum}, \texttt{xnrm2}, and \texttt{xdot}). These methods are first checked to see that their results are accurate, then checked to see if the results are reproducible.
 
   The accuracy of the reproducible BLAS1 methods is validated by checking to see if the results of each method are within the error margin specified by \eqref{eq:error2} from the true results. Because the true summation result must be known, these tests are performed on distributions with known sums. The input vectors used are shown in Table \ref{tbl:validateblas1data}.
 
@@ -39,6 +39,6 @@
 
   After validating the accuracy of the reproducible BLAS1 methods, their reproducibility is verified. Each method is checked to see if it produces the same result under several different permutations of data. Because we do not need to know the true sum of the data, several other vectors are tested here, such as a normal random distribution, a uniform random distribution, and a conditioned random distribution. The data is permuted by reversing, sorting (in ascending or descending order of value or absolute value), or random shuffling. To check that the result is independent of blocking, the data is grouped into several blocks and each block is operated on separately, then the results for each block are combined using the appropriate function. Several different block sizes are tested for each permutation of the data.
 
-  Once the BLAS1 methods are tested, the results of BLAS2 and BLAS3 (\texttt{gemv} and \texttt{gemm}) methods are tested against ``reference'' reproducible versions. These reference versions are simply naive implementations of \texttt{gemv} and \texttt{gemm} in terms of the reproducible dot product. They use no blocking and are simple to understand and code.
+  Once the BLAS1 methods are tested, the results of BLAS2 and BLAS3 (\texttt{xgemv} and \texttt{xgemm}) methods are tested against ``reference'' reproducible versions. These reference versions are simply naive implementations of \texttt{xgemv} and \texttt{xgemm} in terms of the reproducible dot product. They use no blocking and are simple to understand and code.
 
   Each test described above must be performed with different values for several parameters, including $K$ (where the indexed types used are $K$-fold), the increment between elements of a vector, row or column major ordering of matrices, whether or not to transpose matrices, and scaling factors on vectors and matrices. To handle this software complexity, a Python test harness was created to exhaustively test each combination of values for these parameters.

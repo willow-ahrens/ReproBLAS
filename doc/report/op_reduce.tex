@@ -1,11 +1,11 @@
 \subsection{Reduce}
   \label{sec:compositeops_reduce}
-  Perhaps the most important function to make reproducible, the parallel reduction computes the sum of $p$ floating point numbers, each number residing on a separate processor. The numbers are added pairwise in a tree. As different processors may have their number available at slightly different times, the shape of the tree may change from run to run. If a standard reduction is used, the results may differ depending on the shape of the reduction tree.
+  Perhaps the most important function to make reproducible, the parallel reduction computes the sum of $P$ floating point numbers, each number residing on a separate processor. The numbers are added pairwise in a tree. As different processors may have their number available at slightly different times, the shape of the tree may change from run to run. If a standard reduction is used, the results may differ depending on the shape of the reduction tree.
 
   A parallel reduction can be accomplished reproducibly by converting the floating point numbers to indexed types with the \textproc{ConvertFloatToIndexed} procedure (Algorithm \ref{alg:conv2indexed}), reducing the indexed types reproducibly using the \textproc{AddIndexedToIndexed} procedure (Algorithm \ref{alg:addindexedtoindexed}) at each node of the reduction tree, and then converting the resulting indexed sum to a floating point number with the \textproc{ConvertIndexedToFloat} procedure (Algorithm \ref{alg:conv2floatoverflow}). 
 
-  If there are several summands on every processor, then each processor should first compute the indexed sum of the local summands using the \textproc{Sum} procedure (Algorithm \ref{alg:sum}). The $p$ resultant indexed sums can be reduced and converted to a floating point number as described above.
+  If there are several summands on every processor, then each processor should first compute the indexed sum of the local summands using the \textproc{Sum} procedure (Algorithm \ref{alg:sum}). The $P$ resultant indexed sums can be reduced and converted to a floating point number as described above.
 
-  It is easy to see that the previously described reduction operations produce the indexed sum of their summands by inductively applying the ``Ensure'' claim of Algorithm{alg:addindexedtoindexed}.
+  It is easy to see that the previously described reduction operations produce the indexed sum of their summands by inductively applying the ``Ensure'' claim of Algorithm \ref{alg:addindexedtoindexed}.
 
   An MPI data type that holds an indexed type can be created (creation is only performed once, subsequent calls return the same copy) and returned using the \texttt{idxdMPI\_DOUBLE\_COMPLEX\_INDEXED}, etc. function of \texttt{idxdMPI.h}. \texttt{idxdMPI.h} also contains the \texttt{XIXIADD} method, an MPI reduction operator that can reduce the data types in parallel. See Section \ref{sec:reproBLAS} for details.

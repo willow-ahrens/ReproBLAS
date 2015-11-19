@@ -19,20 +19,20 @@
       reproducible, such as vector addition. Other operations, such as
       the dot product or vector norm, are not already reproducible with
       respect to data permutation, and must be modified to have this quality. These operations
-      are \texttt{asum}, \texttt{nrm2}, and 
-      \texttt{dot}.
+      are \texttt{xasum}, \texttt{xnrm2}, and 
+      \texttt{xdot}.
     \item The Level 2 BLAS (BLAS2) is a set of matrix-vector operations
-      including matrix-vector multiplication and a solver for $\vec{x}$ in $T\vec{x} = \vec{y}$ where $\vec{x}$ and $\vec{y}$ are vectors and $T$ is a triangular matrix. These operations can all be made reproducible, but for brevity we discuss only the representative operation \texttt{gemv}, matrix-vector multiplication.
+      including matrix-vector multiplication and a solver for $\vec{x}$ in $T\vec{x} = \vec{y}$ where $\vec{x}$ and $\vec{y}$ are vectors and $T$ is a triangular matrix. These operations can all be made reproducible, but for brevity we discuss only the representative operation \texttt{xgemv}, matrix-vector multiplication.
     \item The Level 3 BLAS (BLAS3) is a set of matrix-matrix operations
-      including matrix-matrix multiplication and routines to perform $B = \alpha T^{-1}B$ where $\alpha$ is a scalar, $B$ is a matrix, and $T$ is a triangular matrix. These operations can all be made reproducible, but for brevity we discuss only the representative operation \texttt{gemm}, matrix-matrix multiplication.
+      including matrix-matrix multiplication and routines to perform $B = \alpha T^{-1}B$ where $\alpha$ is a scalar, $B$ is a matrix, and $T$ is a triangular matrix. These operations can all be made reproducible, but for brevity we discuss only the representative operation \texttt{xgemm}, matrix-matrix multiplication.
   \end{enumerate}
 
-  The Linear Algebra Package (LAPACK), is a set of higher-level
+  The Linear Algebra PACKage (LAPACK) \cite{LAPACK}, is a set of higher-level
   routines for linear algebra, providing routines for operations like solving linear equations, linear least squares, eigenvalue problems, and singular value decomposition.
 
-  The BLAS and LAPACK have been extended to distributed-memory systems in the PBLAS and SCALAPACK libraries. While most PBLAS operations can clearly be made reproducible, it is an open question as to which SCALAPACK routines can be made reproducible and how this would be done. 
+  The BLAS and LAPACK have been extended to distributed-memory systems in the PBLAS \cite{PBLAS} and SCALAPACK \cite{SCALAPACK} libraries. While most PBLAS operations can clearly be made reproducible, it is an open question as to which SCALAPACK routines can be made reproducible and how this would be done.
 
-  Out of the large design space outlined above, we describe in this paper and implement in ReproBLAS sequential versions of key operations from the BLAS, and a distributed-memory reduction operation which can be used to parallelize these sequential operations in a reproducible configuration. We described the BLAS1 operations \texttt{asum} and \texttt{dot} at the end of Section \ref{sec:primitiveops_sum} previously. The BLAS1 operation \texttt{nrm2} is discussed in Section \ref{sec:compositeops_nrm}. The BLAS2 and BLAS3 operations \texttt{gemv} and \texttt{gemm} are discussed in Sections \ref{sec:compositeops_gemv} and \ref{sec:compositeops_gemm} respectively. Eventually, we hope to extend ReproBLAS to contain reproducible versions of all BLAS and PBLAS routines.
+  Out of the large design space outlined above, we describe in this paper and implement in ReproBLAS sequential versions of key operations from the BLAS, and a distributed-memory reduction operation which can be used to parallelize these sequential operations in a reproducible configuration. We described the BLAS1 operations \texttt{xasum} and \texttt{xdot} at the end of Section \ref{sec:primitiveops_sum} previously. The BLAS1 operation \texttt{xnrm2} is discussed in Section \ref{sec:compositeops_nrm}. The BLAS2 and BLAS3 operations \texttt{xgemv} and \texttt{xgemm} are discussed in Sections \ref{sec:compositeops_gemv} and \ref{sec:compositeops_gemm} respectively. Eventually, we hope to extend ReproBLAS to contain reproducible versions of all BLAS and PBLAS routines.
 
     \input{op_reduce}
     \input{op_nrm}

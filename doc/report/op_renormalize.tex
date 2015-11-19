@@ -7,7 +7,7 @@
       {Y_k}_P \in \begin{cases}[1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}}) \text{ if } I + k > 0 \\ [1.5 \cdot 2^{e_{\max}}, 1.75 \cdot 2^{e_{\max}}) \text{ if } I + k = 0\end{cases}
     \] 
     throughout the routine.
-    To enforce this condition, the indexed type must be renormalized at least
+    To enforce this condition, the indexed type must be \textbf{renormalized} at least
     every $2^{p-W-2}$ deposit operations, as will be shown in Theorem \ref{thm:renormfreq}.
     The renormalization procedure is shown in Algorithm \ref{alg:renorm},
     which works for all indices $0 \leq I \leq i_{max}$. Algorithm \ref{alg:renorm} is available in ReproBLAS as \texttt{idxd\_xirenorm} in \texttt{idxd.h} (see Section \ref{sec:reproBLAS} for details).
@@ -73,7 +73,7 @@
     \ref{thm:dbound}, where $d(x_j, I + k)$ is the amount added to ${Y_k}_P$ on
     iteration $k$.
 
-    By Theorem \ref{thm:ddeposit}, the deposit operation extracts and adds the slices of $x_j$ exactly (assuming ${Y_k}_P \in (\epsilon^{-1} 2^{a_{I + k}}, 2  \epsilon^{-1} 2^{a_{I + k}})$ at each step, which will be shown),
+    By Theorem \ref{thm:ddeposit}, \textproc{Deposit} (Algorithm \ref{alg:deposit}) extracts and adds the slices of $x_j$ exactly (assuming ${Y_k}_P \in (\epsilon^{-1} 2^{a_{I + k}}, 2  \epsilon^{-1} 2^{a_{I + k}})$ at each step, which will be shown),
 
     \begin{equation*}
     \bigl|\sum \limits_{j = 0}^{n - 1} d(x_j, I + k)\bigr| \leq n  2^{b_{I + k}} = n  2^{W}  2^{a_{I + k}}

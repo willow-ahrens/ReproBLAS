@@ -23,10 +23,10 @@
     \end{samepage}
 
     Note that the floor function is necessary in Algorithm \ref{alg:iindex} to
-    account for the case of $Y$ with index $0$, which has $\exp({Y_0}_P) =
+    account for the case where $Y$ has index $0$, which has $\exp({Y_0}_P) =
     2^{e_{\max}}$ as discussed in Section \ref{sec:indexed_overflow}.  This
     uses the assumption that $\frac{p+1}{2} < W < p-2$, so $3 < p - W + 1 < W.$ 
-    Note also that the function $\exp()$ used above is assumed to return the biased exponent of ${Y_0}_P$, so that the index function returns 0 when ${Y_0}_P$ is \texttt{Inf}, \texttt{-Inf}, or \texttt{NaN} and $i_{\max}$ when ${Y_0}_P$ is 0 or denormalized.
+    Note also that the function $\exp()$ used above is assumed to return the biased exponent of ${Y_0}_P$, so that \textproc{IIndex} returns 0 when ${Y_0}_P$ is \texttt{Inf}, \texttt{-Inf}, or \texttt{NaN} and $i_{\max}$ when ${Y_0}_P$ is 0 or denormalized.
 
     Another useful operation is, given some $x \in \F$, to find the unique bin
     $(a_J, b_J]$ where $J$ is the greatest integer such that $|x| < 2^{b_J}$ and $J \leq i_{\max}$.
@@ -51,5 +51,5 @@
     \end{alg}
      \end{samepage}
 
-    Note again that the function $\exp()$ used above is assumed to return the biased exponent of $x$, so that the index function returns 0 when $x$ is \texttt{Inf}, \texttt{-Inf}, or \texttt{NaN} and $i_{\max}$ when $x < 2^{a_{i_{\max}}}$.
+    Note again that the function $\exp()$ used above is assumed to return the biased exponent of $x$, so that \textproc{Index} returns 0 when $x$ is \texttt{Inf}, \texttt{-Inf}, or \texttt{NaN} and $i_{\max}$ when $x < 2^{a_{i_{\max}}}$.
     This behavior is consistent with the following algorithms since values smaller than the least bin will not be accumulated. Algorithms \ref{alg:iindex} and \ref{alg:index} are used infrequently, usually being called once at the beginning of a routine.
