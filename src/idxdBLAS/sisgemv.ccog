@@ -22,8 +22,8 @@ cog.out(generate.generate(blockSize.BlockSize("sisgemv", "YT_BLOCK", 1, y_block,
 cog.out(generate.generate(blockSize.BlockSize("sisgemv", "XYT_BLOCK", y_block, xy_block, xy_block, ["bench_rsgemv_fold_TransA_{}".format(terminal.get_sidefaultfold())]), cog.inFile, args, params, mode))
 cog.out(generate.generate(blockSize.BlockSize("sisgemv", "T_BLOCK", 1, 32, 32, ["bench_rsgemv_TransA_fold_{}".format(terminal.get_sidefaultfold())]), cog.inFile, args, params, mode))
 ]]]*/
-#define Y_BLOCK 1
-#define XY_BLOCK 8192
+#define Y_BLOCK 32
+#define XY_BLOCK 65536
 #define YT_BLOCK 256
 #define XYT_BLOCK 65536
 #define T_BLOCK 16

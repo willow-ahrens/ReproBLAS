@@ -48,13 +48,13 @@ double idxdBLAS_damax(const int N, const double *X, const int incX){
 
     int i;
 
-    __m256d X_0, X_1, X_2, X_3, X_4, X_5, X_6;
+    __m256d X_0, X_1, X_2, X_3, X_4, X_5, X_6, X_7;
     __m256d m_0;
     m_0 = _mm256_setzero_pd();
 
     if(incX == 1){
 
-      for(i = 0; i + 28 <= N; i += 28, X += 28){
+      for(i = 0; i + 32 <= N; i += 32, X += 32){
         X_0 = _mm256_and_pd(_mm256_loadu_pd(X), abs_mask_tmp);
         X_1 = _mm256_and_pd(_mm256_loadu_pd(X + 4), abs_mask_tmp);
         X_2 = _mm256_and_pd(_mm256_loadu_pd(X + 8), abs_mask_tmp);
@@ -62,6 +62,7 @@ double idxdBLAS_damax(const int N, const double *X, const int incX){
         X_4 = _mm256_and_pd(_mm256_loadu_pd(X + 16), abs_mask_tmp);
         X_5 = _mm256_and_pd(_mm256_loadu_pd(X + 20), abs_mask_tmp);
         X_6 = _mm256_and_pd(_mm256_loadu_pd(X + 24), abs_mask_tmp);
+        X_7 = _mm256_and_pd(_mm256_loadu_pd(X + 28), abs_mask_tmp);
         m_0 = _mm256_max_pd(m_0, X_0);
         m_0 = _mm256_max_pd(m_0, X_1);
         m_0 = _mm256_max_pd(m_0, X_2);
@@ -69,6 +70,7 @@ double idxdBLAS_damax(const int N, const double *X, const int incX){
         m_0 = _mm256_max_pd(m_0, X_4);
         m_0 = _mm256_max_pd(m_0, X_5);
         m_0 = _mm256_max_pd(m_0, X_6);
+        m_0 = _mm256_max_pd(m_0, X_7);
       }
       if(i + 16 <= N){
         X_0 = _mm256_and_pd(_mm256_loadu_pd(X), abs_mask_tmp);
@@ -100,7 +102,7 @@ double idxdBLAS_damax(const int N, const double *X, const int incX){
       }
     }else{
 
-      for(i = 0; i + 28 <= N; i += 28, X += (incX * 28)){
+      for(i = 0; i + 32 <= N; i += 32, X += (incX * 32)){
         X_0 = _mm256_and_pd(_mm256_set_pd(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), abs_mask_tmp);
         X_1 = _mm256_and_pd(_mm256_set_pd(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), abs_mask_tmp);
         X_2 = _mm256_and_pd(_mm256_set_pd(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), abs_mask_tmp);
@@ -108,6 +110,7 @@ double idxdBLAS_damax(const int N, const double *X, const int incX){
         X_4 = _mm256_and_pd(_mm256_set_pd(X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), abs_mask_tmp);
         X_5 = _mm256_and_pd(_mm256_set_pd(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)]), abs_mask_tmp);
         X_6 = _mm256_and_pd(_mm256_set_pd(X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), abs_mask_tmp);
+        X_7 = _mm256_and_pd(_mm256_set_pd(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)]), abs_mask_tmp);
         m_0 = _mm256_max_pd(m_0, X_0);
         m_0 = _mm256_max_pd(m_0, X_1);
         m_0 = _mm256_max_pd(m_0, X_2);
@@ -115,6 +118,7 @@ double idxdBLAS_damax(const int N, const double *X, const int incX){
         m_0 = _mm256_max_pd(m_0, X_4);
         m_0 = _mm256_max_pd(m_0, X_5);
         m_0 = _mm256_max_pd(m_0, X_6);
+        m_0 = _mm256_max_pd(m_0, X_7);
       }
       if(i + 16 <= N){
         X_0 = _mm256_and_pd(_mm256_set_pd(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), abs_mask_tmp);
