@@ -126,7 +126,7 @@
   The unit in the last place of $f \in \F$, $\ulp(f)$, is the spacing between
   two consecutive floating point numbers of the same exponent as $f$. If $f$ is
   normalized, $\ulp(f) = 2^{\exp(f) - p + 1} = 2  \epsilon  2^{\exp(f)}$ and
-  $\ulp(f) \leq 2^{p - 1}|f|$.
+  $\ulp(f) \leq 2^{1 - p}|f|$.
 
   The unit in the first place of $f \in F$, $\ufp(f)$, is the value of the
   first significant bit of $f$. If $f$ is normalized, $\ufp(f) = 2^{\exp(f)}$.
@@ -137,12 +137,13 @@
   \(
     \fl(f_0 \text{ op } f_1) = (f_0 \text{ op } f_1).
   \)
-  If rounding is ``to nearest,'' then we have that
+  If rounding is ``to nearest,'' and there is no overflow, then we have that
   \(
     |\fl(f_0 \text{ op } f_1) - (f_0 \text{ op } f_1)| \leq 0.5\ulp(\fl(f_0 \text{ op } f_1)).
   \)
+  This bound accounts for underflow as the magnitude of $\ulp(f)$ reflects the appropriate loss of accuracy when $f$ is in the denormal range.
 
-  ReproBLAS is the library implementation of the algorithms defined later on in this work.
+  ReproBLAS is the library implementation of the algorithms defined later in this work.
 
   As ReproBLAS is written in C, \texttt{float} and \texttt{double} refer to the
   floating point types specified in the 1989 C standard \cite{c89} and we
@@ -151,7 +152,7 @@
 
   The functions in ReproBLAS are named after their BLAS counterparts.
   As such, function names are prefixed by a one or two character code indicating the data type of their inputs and outputs. If a function's input and output data types differ, the function name is prefixed by the output data type code followed by the input data type code.
-  The codes used are enumerated in Table \ref{tbl:blas_naming_codes}. The indexed type is a reproducible floating point data type that will be described later in Section \ref{sec:indexed}
+  The codes used are enumerated in Table \ref{tbl:blas_naming_codes}. The indexed type is a reproducible floating point data type that will be described later in Section \ref{sec:indexed}.
   \begin{table}[!htbp]
     \caption{ReproBLAS naming convention character codes}
     \label{tbl:blas_naming_codes}

@@ -23,12 +23,12 @@
       \label{eq:baderrorapproxdup}
     \end{equation}
     However, if we sum the primary and carry fields in order of decreasing ``unnormalized''
-    exponent, the error is bounded by (using  \eqref{eq:errorapprox})
+    exponent (as is done in Algorithms \ref{alg:conv2float} and \ref{alg:conv2floatoverflow}) the error is bounded by (using  \eqref{eq:errorapprox})
     \begin{equation}
       |\overline{\mathcal{Y}} - \sum_{j=0}^{n-1}x_j| \leq n 2^{W  (1 - K)}\max|x_j|  + 7 \epsilon \bigl|\sum\limits_{j = 0}^{n - 1} x_j\bigr|
       \label{eq:errorapproxdup}
     \end{equation}
-    which as we will see can be orders of magnitude smaller than the bound in \eqref{eq:baderrorapproxdup}
+    which as we will see can be orders of magnitude smaller than the bound in \eqref{eq:baderrorapproxdup}.
 
     When adding the primary and carry fields it is not necessary to examine the values in the
     fields or sort them explicitly. Their ``unnormalized'' exponent does not
@@ -58,7 +58,7 @@
     so the error bound of the standard summation \eqref{eq:naiveerrorapproxdup} can grow like $n^2$ instead of $n$ which is much worse than both bounds
     \eqref{eq:errorapproxdup} and \eqref{eq:baderrorapproxdup}
     when the number of input values $n$ is great.
-    In cases where $\sum_{j=0}^{n-1} |x_j| \approx n \max |x_j|$, for example
+    In cases where $\sum_{j=0}^{n-1} |x_j| \approx \max |x_j|$, for example
     when there are just a few large values and the others are small, then bounds
     \eqref{eq:naiveerrorapproxdup} and \eqref{eq:baderrorapproxdup} are almost
     of the same order of magnitude, which is still worse than bound \eqref{eq:errorapproxdup}
@@ -255,7 +255,7 @@ multiple error bounds are shown.}
     If the sum is not going to overflow, then the smaller $y'_j$ must be added
     as unscaled numbers to avoid underflow.
 
-    Algorithm \ref{alg:conv2floatoverflow} represents a conversion routine in the case where a floating point type without an expanded exponent is available.
+    Algorithm \ref{alg:conv2floatoverflow} represents a conversion routine in the case where a floating point type without a wider exponent is available.
 
     \begin{samepage}
     \begin{alg}

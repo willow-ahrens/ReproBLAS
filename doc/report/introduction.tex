@@ -1,37 +1,73 @@
 \section{Introduction}
   Reproducibility is important for several reasons. Primarily, bitwise identical results are useful and sometimes required for testing and debugging. It is difficult to write tests for a function when the output of the function is not well-defined. Debugging a program becomes very difficult when runs with errors cannot be examined because they cannot be reproduced.
 
-  Reproducibility is also important in normal operations of programs. Simulations looking rare events must be reproducible so that when a rare event is found it may be replayed and studied in more detail. Similarly, forward unstable simulations (such as N-body simulation or climate and weather modeling) must be reproducible as small changes at initial time steps can lead to big changes at later time steps. Reproducibility is also required for contractual reasons, when multiple parties must agree on the result of a simulation. Such a situation can arise when multiple runs of a simulation must agree (to ensure that no errors have occurred during a run). This situation also arises in the case of multiplayer gaming, when minimal data is sent between computers (to reduce network delays) but all players must agree on the state of the game (so the computation on each players machine must be exact).
+%TODO citations
+  Reproducibility is also important in normal, correct operations of programs. Simulations looking rare events must be reproducible so that when a rare event is found it may be replayed and studied in more detail. Similarly, forward unstable simulations (such as N-body simulation or climate and weather modeling) must be reproducible as small changes at initial time steps can lead to big changes at later time steps. Reproducibility may also be required for contractual reasons, when multiple parties must agree on the result of a simulation. 
+%TODO citation?
+Such a situation can arise when multiple runs of a simulation must agree (to ensure that no errors have occurred during a run). This situation also arises in the case of multiplayer gaming, when minimal data is sent between computers (to reduce network delays) but all players must agree on the state of the game (so the computation on each players machine must be close to exact).
 
   %note: an alternate definition of reproducibility can be used here. We can say that a procedure that computes the result of some function is "reproducible" if the procedure produces equivalent results when the function does.
-  At this point is is important to define clearly what we mean by reproducibility. A computation is \textbf{reproducible} if it achieves bitwise identical results from the same computation when given equivalent inputs. The term ``equivalent inputs'' is intentionally vague, as what constitutes equivalence of inputs depends on the context and computation in question. In this work, we focus on equivalence under the associativity of addition (as this tends to be the main source of non-reproducibility in most computations). 
+  At this point is is important to define clearly what we mean by reproducibility. A computation is \textbf{reproducible} if it achieves bitwise identical results from the same computation when given equivalent inputs. The term ``equivalent inputs'' is intentionally vague, as what constitutes equivalence of inputs depends on the context and computation in question. In this work, we focus on equivalence under the associativity of addition (as this tends to be a significant source of non-reproducibility in many computations). 
 
-  Many have already promised flavors of numerical reproducibility. The Intel\textregistered Math Kernel Library (MKL) introduced a feature called Conditional Numerical Reproducibility (CNR) in version 11.0. \cite{MKL} When enabled, the code returns the same results from run-to-run as long as calls to MKL come from the same executable and the number of computational threads used by MKL is constant. Performance is degraded by these features by at most a factor of 2. However, these routines cannot offer reproducible results if the data ordering or the number of processors changes.
+  Some developers have already promised flavors of numerical reproducibility. The Intel\textregistered Math Kernel Library (MKL) introduced a feature called Conditional Numerical Reproducibility (CNR) in version 11.0. \cite{MKL} When enabled, the code returns the same results from run-to-run as long as calls to MKL come from the same executable and the number of computational threads used by MKL is constant. Performance is degraded by these features by at most a factor of 2. However, these routines cannot offer reproducible results if the data ordering or the number of processors changes.
   %A computation is \textbf{completely reproducibile} if it produces bitwise identical output when given any two inputs equivalent up to permutation with regard to the associativity of addition. A computation is \textbf{block reproducible} if it produces bitwise identical output given any
 
-  Reproducibility is not the same as accuracy, but they are related. Increasing the accuracy of a computation can reduce the probability of nonreproducibility, but it does not guarantee reproducibility, especially for ill-conditioned inputs or when the result is half-way between two floating point numbers in the output precision \cite{taufer}. Ill-conditioned inputs (a tiny sum resulting from extensive cancellation) may be the most common case in many applications. For example, when solving $Ax = b$ using an iterative method, the goal is to get as much cancellation in the residual $r = Ax - b$ as possible.
+  Reproducibility is not the same as accuracy, but they are related. Increasing the accuracy of a computation can reduce the probability of nonreproducibility, but it does not guarantee reproducibility, especially for ill-conditioned inputs or when the result is half-way between two floating point numbers in the output precision (the well-known Table Maker's Dilemma)\cite{taufer}. Ill-conditioned inputs (e.g., a tiny sum resulting from extensive cancellation) may be the most common case in many applications. For example, when solving $Ax = b$ using an iterative method, the goal is to get as much cancellation in the residual $r = Ax - b$ as possible.
 
   With these considerations in mind, reproducible algorithms for summations were presented in \cite{repsum}. The algorithms were shown to enjoy the following properties:
   \begin{enumerate}
     \item They compute a reproducible sum independent of the order of the summands, how they are assigned to processors, or how they are aligned in memory.
-    \item They make only basic assumptions about the underlying arithmetic (A subset of IEEE Standard 754-2008).
-    \item They scale well as a performance-optimized, non-reproducible implementation, as $n$ (number of summands) and $p$ (number of processors) grow.
-    \item The user can choose the desired accuracy of the result. In particular, getting a reproducible result with about the same accuracy as the performance optimized algorithm is only be a small constant times slower, but higher accuracy is possible too.
+    \item They make only basic assumptions about the underlying arithmetic (a subset of IEEE Standard 754-2008).
+    \item They scale well as a performance-optimized, non-reproducible implementation, as $n$ (number of summands) and $p$ (number of processors) grow, performing one pass over the data, and requiring just one reduction operation in the parallel case.
+    \item The user can choose the desired accuracy of the result. In particular, getting a reproducible result with about the same accuracy as the performance optimized algorithm is only a small constant times slower, but higher accuracy is possible too.
   \end{enumerate}
-  The algorithms of \cite{repsum} did not, however, work for all ranges of floating-point input nor did they contain all of the functional components necessary to be deployed in an existing application (they lacked an algorithm to convert from a reproducible type back to floating point format while maintaining accuracy. We have improved the error bound of \cite{repsum} by over 8 orders of magnitude in a typical configuration, as discussed in Section \ref{sec:primitiveops_conv2float}). Our goal is to modify the algorithms in \cite{repsum} so that in addition to the above properties, they enjoy the following properties:
+  The algorithms of \cite{repsum} did not, however, work for all ranges of floating-point input (because of over/underflow) nor did they contain all of the functional components necessary to be deployed in an existing application (they lacked an algorithm to convert from a reproducible type back to floating point format while maintaining accuracy).
+   We have improved the error bound of \cite{repsum} by over 8 orders of magnitude in a typical configuration, as discussed in Section \ref{sec:primitiveops_conv2float}. Our goal is to modify the algorithms in \cite{repsum} so that in addition to the above properties, they enjoy the following properties:
   \begin{enumerate}
-    \item The algorithms can be applied in any binary IEEE 754-2008 floating point format, and any valid input in such a format can be summed using the algorithms. The algorithms must be able to sum numbers close to zero, numbers close to overflow, and exceptional values such as \texttt{NaN} and \texttt{Inf}, mimicking the behavior of IEEE floating point wherever possible.
-    \item They must be expressed as basic operations that can be applied in several applications. They must be able to be built into a user-friendly, performant library. This includes the ability to produce a floating-point result of comparable accuracy to the (intermediate) reproducible type.
+    \item The algorithms can be applied in any binary IEEE 754-2008 floating point format, and any valid input in such a format can be summed using the algorithms. The algorithms must be able to reproducibly sum numbers numbers close to underflow or overflow and exceptional values such as \texttt{NaN} and \texttt{Inf}, mimicking the behavior of IEEE floating point wherever possible.
+    \item The algorithms must be expressed in terms of basic operations that can be applied in several applications. They must be able to be built into a user-friendly, performant library. This includes the ability to produce a floating-point result of comparable accuracy to the (intermediate) reproducible type.
   \end{enumerate}
 
+We summarize the algorithm informally as follows.
+The simplest approach would be to
+\begin{enumerate}
+\item compute the maximum absolute value $M$ of all the
+summands (this is exact and so reproducible),
+\item round all the summands to 1 ulp (unit in the last
+place) of $M$ (this introduces error, but not worse than
+the usual error bound), and then
+\item add the rounded summands (since their nonzero bits
+are aligned, they behave like fixed point numbers, so
+summation is exact and so reproducible, assuming we
+have $\log_2 n$ extra bits for carries).
+\end{enumerate}
+The trouble with this simple approach is that it requires
+2 or 3 passes over the data, or 3 communication steps in parallel.
+We can in fact do it in one pass over the data, or one communication
+step, essentially by interleaving the 3 steps above:
+We break the floating point exponent range into fixed \textbf{bins} all of
+some width $W$ (see Figure \ref{fig:binning}). Each summand is then rewritten as the
+exact sum of a small number of \textbf{slices}, where each slice corresponds
+to the significant bits of the summand lying (roughly) in a bin. We can then sum
+all slices corresponding the same bin exactly, again because we are
+(implicitly) doing fixed point arithmetic.  But we do not need
+to sum the slices in all bins, only the bins corresponding to the largest
+few exponent ranges (the number of bins summed can be chosen based on
+the desired precision). Slices lying in bins with smaller exponents are
+discarded or not computed in the first place. Independent of the order
+of summation, we end up with the same sums of slices in the same bins, all computed exactly and
+so reproducibly, which we then convert to a standard floating point number.
+As we will see, this idea, while it sounds simple, requires significant effort
+to implement and prove correct.
+
   Section \ref{sec:notation} begins by explaining some of the notation necessary to express the mathematical and software concepts discussed in this work.
-  Section \ref{sec:binning} gives a formal discussion of the binning scheme. In short, a floating point number $x$ is split along predefined boundaries (called \textbf{bins}) into a sum of separate numbers (\textbf{slices}) such that the sum of slices approximates $x$. Our reproducible summation algorithm operates by keeping track of the sum of slices of summands for each bin separately. 
+  Section \ref{sec:binning} gives a formal discussion of the binning scheme. As described above, a floating point number $x$ is split along predefined boundaries (bins) into a sum of separate numbers (slices) such that the sum of slices equals (or approximates) $x$. We sum the slices corresponding to each bin separately and exactly.
   Section \ref{sec:indexed} describes the data structure (the \textbf{indexed type}) used to store the sums of the slices.
-  Section \ref{sec:primitiveops} contains several algorithms for basic manipulations of an indexed type.  These algorithms allow the user to, for instance, extract the slices of a floating point number and add them to the indexed type, to add two indexed types together, or to convert from the indexed type to a floating point number. We show that the absolute error of the reproducibly computed sum of double-precision floating point $x_1, ..., x_n$ in a typical use case is bound bounded by
+  Section \ref{sec:primitiveops} contains several algorithms for basic manipulations of an indexed type.  These algorithms allow the user to, for instance, extract the slices of a floating point number and add them to the indexed type, to add two indexed types together, or to convert from the indexed type to a floating point number. We show that the absolute error of the reproducibly computed sum of double-precision floating point $x_1, ..., x_n$ in a typical use case is bounded by
   \[
     n* 2^{-80} * \max|x_j| + 7 \epsilon|\sum\limits_{j = 0}^{n - 1} x_j|
   \]
   Details regarding the error bound are given in Sections \ref{sec:primitiveops_conv2float} and \ref{sec:primitiveops_error}.
-  As discussed in Section \ref{sec:primitiveops_restrictions}, the indexed types are capable of summing approximately $2^{64}$ \texttt{double} or $2^{33}$ \texttt{float}.
-  Section \ref{sec:compositeops} gives several descriptions of algorithms that can be built from the basic operations described in Section \ref{sec:primitiveops}. In particular, several sequential reproducible algorithms from the BLAS (Basic Linear Algebra Subroutines) are given.
-  Throughout the text, several functions from ReproBLAS (the C library accompanying this work from which these algorithms are taken) are mentioned. A short description of ReproBLAS, including timing data and testing methods, is given in Section \ref{sec:reproBLAS}.
+  As discussed in Section \ref{sec:primitiveops_restrictions}, the indexed types are capable of summing approximately $2^{64}$ \texttt{double}s or $2^{33}$ \texttt{float}s.
+  Section \ref{sec:compositeops} gives several descriptions of algorithms that can be built from the basic operations described in Section \ref{sec:primitiveops}. In particular, several sequential reproducible algorithms from the BLAS (Basic Linear Algebra Subprograms) are given.
+  Throughout the text, relevant functions from ReproBLAS (the C library accompanying this work from which these algorithms are taken) are mentioned. A short description of ReproBLAS, including timing data and testing methods, is given in Section \ref{sec:reproBLAS}.
