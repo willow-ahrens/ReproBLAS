@@ -5,8 +5,8 @@
     C_{i, j} = \beta C_{i, j} + \sum\limits_{l = 0}^{k - 1} \alpha A_{i, l}B_{l, j}
   \]
   The matrix-matrix product is a similar construction to the matrix-vector product, and discussion of reproducibility proceeds similarly.
-  Computation of the matrix-matrix product can be distributed in a myriad of ways. SUMMA (Scalable Universal Matrix Multiply Algorithm) \cite{SUMMA} is used in the PBLAS, the most popular parallel BLAS implementation. In SUMMA and almost all other parallel matrix-matrix algorithm, the computation is broken up into rectangular blocks of A, B, and C. Although SUMMA has a static reduction tree (assuming a fixed number of processors), this cannot be assumed for all parallel matrix multiply algorithms, so it may be necessary to use a reproducible reduction step (discussed in Section \ref{sec:compositeops_reduce}).
-  Even if the reduction tree is reproducible for a particular blocking pattern, the blocking pattern may not be reproducible (for instance, if more or less processors are used). Therefore, we must compute the matrix-matrix product using indexed summation.
+  Computation of the matrix-matrix product can be distributed in a myriad of ways. SUMMA (Scalable Universal Matrix Multiply Algorithm) \cite{SUMMA} is used in the PBLAS, the most popular parallel BLAS implementation. In SUMMA and almost all other parallel matrix-matrix algorithms, the computation is broken up into rectangular blocks of A, B, and C. Although SUMMA has a static reduction tree (assuming a fixed number of processors), this cannot be assumed for all parallel matrix multiply algorithms, so it may be necessary to use a reproducible reduction step (discussed in Section \ref{sec:compositeops_reduce}).
+  Even if the reduction tree is reproducible for a particular blocking pattern, the blocking pattern may not be reproducible (for instance, if more or fewer processors are used). Therefore, we must compute the matrix-matrix product using indexed summation.
 
   It is for this reason that we need a local version of \texttt{xgemm} that returns a matrix of indexed sums, the matrix-matrix product with all sums calculated using indexed summation.
 
