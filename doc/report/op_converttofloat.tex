@@ -12,18 +12,18 @@
     any method to evaluate  \eqref{eq:indexedvalue} accurately and without
     unnecessary overflow or underflow is suitable.
 
-    Assume that $Y$ is the indexed sum of some $x_0, ..., x_{n - 1} \in \F$ (for now, assume no exceptional values). If
+    To provide motivation for our intricate conversion routines, we forward-reference several results from Section \ref{sec:primitiveops_error}. Assume that $Y$ is the indexed sum of some $x_0, ..., x_{n - 1} \in \F$ (for now, assume no exceptional values).  If
     we simply evaluate \eqref{eq:indexedvalue} in an arbitrary order and apply
     the standard summation error bound given by \cite{higham}, the error in the
     final answer $\overline{\mathcal{Y}}$ (the computed floating point
-    approximation of $\mathcal{Y}$) is only bounded by (using
-    \eqref{eq:baderrorapprox})
+    approximation of $\mathcal{Y}$) is only bounded by (here we state
+    \eqref{eq:baderrorapprox}, which will be shown in Section \ref{sec:primitiveops_error})
     \begin{equation}
       |\overline{\mathcal{Y}} - \sum_{j=0}^{n-1}x_j| \leq n \bigl(2^{W  (1 - K)} + (2  K - 1)  \epsilon\bigr)\max|x_j|
       \label{eq:baderrorapproxdup}
     \end{equation}
-    However, if we sum the primary and carry fields in order of decreasing ``unnormalized''
-    exponent (as is done in Algorithms \ref{alg:conv2float} and \ref{alg:conv2floatoverflow}) the error is bounded by (using  \eqref{eq:errorapprox})
+    However, according to Theorem \ref{thm:mysortsum} which will be proven in Section \ref{sec:primitiveops_error}, if we sum the primary and carry fields in order of decreasing ``unnormalized''
+    exponent (as is done in Algorithms \ref{alg:conv2float} and \ref{alg:conv2floatoverflow}) the error is bounded by (here we state \eqref{eq:errorapprox}, which will be shown in Section \ref{sec:primitiveops_error})
     \begin{equation}
       |\overline{\mathcal{Y}} - \sum_{j=0}^{n-1}x_j| \leq n 2^{W  (1 - K)}\max|x_j|  + 7 \epsilon \bigl|\sum\limits_{j = 0}^{n - 1} x_j\bigr|
       \label{eq:errorapproxdup}
