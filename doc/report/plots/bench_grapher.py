@@ -36,12 +36,12 @@ bar_width = 0.35
 
 opacity = 0.8
 
-rects1 = plt.bar(index, np.array(tables[0][1][-2:]) * 1000000.0, bar_width,
+rects1 = plt.bar(index, np.array(tables[1][1][-2:]) * 1000000.0, bar_width,
                  alpha=opacity,
                  color='red',
                  label='Uniform Random [0, 1) Distribution')
 
-rects2 = plt.bar(index + bar_width, np.array(tables[0][2][-2:]) * 1000000.0, bar_width,
+rects2 = plt.bar(index + bar_width, np.array(tables[1][2][-2:]) * 1000000.0, bar_width,
                  alpha=opacity,
                  hatch='//',
                  color='blue',
@@ -49,7 +49,7 @@ rects2 = plt.bar(index + bar_width, np.array(tables[0][2][-2:]) * 1000000.0, bar
 
 plt.xlabel('Reproducible Summation Function')
 plt.ylabel('Time (microseconds)')
-plt.title('Reproducible Summation Time Vs. Distribution ({} Values)'.format(int(tables[0][1][0])))
+plt.title('Reproducible Summation Time Vs. Distribution ({} Values)'.format(int(tables[1][1][0])))
 plt.xticks(index + bar_width, ('rdsum (double)', 'rssum (float)'))
 plt.legend(loc="lower right")
 
@@ -57,7 +57,7 @@ plt.tight_layout()
 plt.savefig("easy_vs_hard.eps", format='eps', dpi=1200)
 plt.close("all")
 
-t = 1
+t = 2
 
 N = np.array([row[0] for row in tables[t][1:]])
 blas_sum_peak = np.array([row[-2] for row in tables[t][1:]])
@@ -76,25 +76,7 @@ plt.legend(loc="best")
 plt.savefig("sum_comparison.eps", format='eps', dpi=1200)
 plt.close("all")
 
-##begin hack
-N = np.array([row[0] for row in tables[t][1:]])
-blas_sum_peak = N/np.array([row[-2] for row in tables[t][1:]])
-rblas_sum_peak = N/np.array([row[-1] for row in tables[t][1:]])
-blas_sum = N/np.array([row[-2] for row in tables[t + 1][1:]])
-rblas_sum = N/np.array([row[-1] for row in tables[t + 1][1:]])
-plt.plot(N, blas_sum_peak, ':', label = "for loop theoretical peak")
-plt.plot(N, rblas_sum_peak, '-.', label = "rdsum theoretical peak")
-plt.plot(N, blas_sum, '--', label = "for loop")
-plt.plot(N, rblas_sum, '-', label = "rdsum")
-plt.title("Summation Normalized Performance Vs. N")
-plt.xlabel("N (Vector Size N)")
-plt.ylabel("Normalized Performance (N/Running Time) (Hz)")
-plt.legend(loc="best")
-plt.savefig("sum_comparison_perf.eps", format='eps', dpi=1200)
-plt.close("all")
-###end hack
-
-t = 3
+t = 4
 
 N = np.array([row[0] for row in tables[t][1:]])
 blas_sum_peak = np.array([row[-2] for row in tables[t][1:]])
@@ -110,10 +92,10 @@ plt.title("Dot Product Time (Normalized To Peak) Vs. N")
 plt.xlabel("N (Vector Size N)")
 plt.ylabel("Time (Normalized to Theoretical Dot Product Peak)")
 plt.legend(loc="best")
-plt.savefig("dot_comparison")
+plt.savefig("dot_comparison.eps", format='eps', dpi=1200)
 plt.close("all")
 
-t = 5
+t = 6
 
 N = np.array([row[0] for row in tables[t][1:]])
 blas_sum_peak = np.array([row[-2] for row in tables[t][1:]])
@@ -132,7 +114,7 @@ plt.legend(loc="best")
 plt.savefig("gemv_comparison.eps", format='eps', dpi=1200)
 plt.close("all")
 
-t = 7
+t = 8
 
 N = np.array([row[0] for row in tables[t][1:]])
 blas_sum_peak = np.array([row[-2] for row in tables[t][1:]])
@@ -151,7 +133,7 @@ plt.legend(loc="best")
 plt.savefig("gemv_trans_comparison.eps", format='eps', dpi=1200)
 plt.close("all")
 
-t = 9
+t = 10
 
 N = np.array([row[0] for row in tables[t][1:]])
 blas_sum_peak = np.array([row[-2] for row in tables[t][1:]])

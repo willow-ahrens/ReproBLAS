@@ -2,11 +2,15 @@
     \label{sec:primitiveops_error}
 
     We first state and prove Theorem \ref{thm:mysortsum}, as it is critical in
-    the error analysis of the algorithm. It should be noted that Theorem
+    the error analysis of Algorithms \ref{alg:conv2float} and \ref{alg:conv2floatoverflow}. It should be noted that Theorem
     \ref{thm:mysortsum} is similar to that of Theorem 1 from \cite{sortsum},
     but requires less intermediate precision by exploiting additional structure
     of the input data.
 
+    As discussed in Section \ref{sec:primitiveops_conv2float}, to convert an
+    indexed type to a floating point number, one must evaluate equation
+    \ref{eq:indexedvalue} accurately and without unnecessary overflow. This amounts
+    to summing the fields of the indexed type.
     It is possible that future implementers may make modifications to the
     indexed type (adding multiple carry fields, changing the binning scheme,
     etc.) such that the summation of its fields cannot be reordered to satisfy
@@ -207,72 +211,81 @@
       The proof is complete.
     \end{proof}
 
-    Consider the $K$-fold indexed sum $Y$ of floating point numbers $x_0, \ldots, x_{n - 1}$.
-    We denote the true sum $\sum \limits_{j = 0}^{n - 1} x_j$ by $T$, the true
-    value of the indexed sum as obtained using \eqref{eq:indexedvalue} by
-    $\mathcal{Y}$, and the floating point approximation of $\mathcal{Y}$
-    obtained using an appropriate algorithm from Section
-    \ref{sec:primitiveops_conv2float} by $\overline{\mathcal{Y}}$.
-
-    \cite{repsum} discusses the absolute error $|T - \mathcal{Y}|$ but does not
-    give a method to construct $\overline{\mathcal{Y}}$ and therefore no error
-    bound $|T - \overline{\mathcal{Y}}|$ on the final floating point answer
-    was given. Here we extend the error bound of \cite{repsum} all the way to
+    \cite{repsum} discusses the absolute error between the indexed sum and the true sum, but does not
+    give a method to compute a floating point approximation of the indexed sum. No error
+    bound on the final floating point answer
+    was given. Theorem \ref{thm:error} extends the error bound of \cite{repsum} all the way to
     the final return value of the algorithm.
 
-    The case of all zero input data is trivial, therefore we assume that
-    $\max|x_j|$ is nonzero.
-    We also assume here no overflow or underflow.
-    Let $I$ be the index of $Y$, which is also the index of $\max|x_j|$,
-    so that $2^{b_I} > \max|x_j| \geq 2^{a_I}$.
-    Therefore for all $i < I$ the slice of any $x_j$ in bin $i$ is $d(x_j, i) = 0$.
-    The index of the smallest bin of $Y$ is $I + K - 1$.
-    According to Theorem~\ref{thm:dround}, we have
-    \begin{align*}
-        |x_j - \sum_{i=I}^{I + K -1} d(x_j,i)|
-            & = |x_j - \sum_{i=0}^{I + K - 1} d(x_j,i)|
-            \leq 2^{a_{I + K -1}} 
-            = 2^{a_I - (K-1)W} \\
-            & \leq 2^{W(1-K)} \max|x_j|. 
-    \end{align*}
+    \begin{thm}
+      Consider the $K$-fold indexed sum $Y$ of finite floating point numbers $x_0, \ldots, x_{n - 1}$.
+      We denote the true sum $\sum \limits_{j = 0}^{n - 1} x_j$ by $T$, the true
+      value of the indexed sum as obtained using \eqref{eq:indexedvalue} by
+      $\mathcal{Y}$, and the floating point approximation of $\mathcal{Y}$
+      obtained using an appropriate algorithm from Section
+      \ref{sec:primitiveops_conv2float} (Algorithm \ref{alg:conv2float} or \ref{alg:conv2floatoverflow}) by $\overline{\mathcal{Y}}$. Assuming the final answer does not overflow,
 
-    Since the summation in each bin $Y_i$ is exact, we have
-    \begin{align}
-        |T - \mathcal{Y}| & = |\sum_{j=0}^{n-1} x_j - \sum_{i=I}^{I+K-1} \sum_{j=0}^{n-1} d(x_j, i)|
-            = |\sum_{j=0}^{n-1} (x_j - \sum_{i=I}^{I+K-1} d(x_j,i))| \nonumber \\
-            & \leq n 2^{W(1-K)} \max|x_j|.
-            \label{eq:repboundnaive}
-    \end{align}
+      \begin{equation}
+        \left|T - \overline{\mathcal{Y}}\right| < \left(1 + \frac{7\epsilon}{1 - 6\sqrt\epsilon}\right) \Bigl(n \cdot \max\bigl(2^{W (1 - K)} \max|x_j|, 2^{e_{\min} - 1}\bigr)\Bigr) + \frac{7\epsilon}{1 - 6\sqrt\epsilon} |T|
+        \label{eq:error}
+      \end{equation}
+      \label{thm:error}
+    \end{thm}
 
-    However, this bound does not consider underflow. By
-    \eqref{eq:droundunderflow}, a small modification yields a bound that
-    considers underflow
-    \begin{equation}
-      \label{eq:repbound}
-      |T - \mathcal{Y}| < n \cdot \max\bigl(2^{W  (1 - K)} \max|x_j|, 2^{e_{\min} - 1}\bigr)
-    \end{equation}
+    \begin{proof}
+      The case of all zero input data is trivial, therefore we assume that
+      $\max|x_j|$ is nonzero.
+      We also assume here no overflow or underflow.
+      Let $I$ be the index of $Y$, which is also the index of $\max|x_j|$,
+      so that $2^{b_I} > \max|x_j| \geq 2^{a_I}$.
+      Therefore for all $i < I$ the slice of any $x_j$ in bin $i$ is $d(x_j, i) = 0$.
+      The index of the smallest bin of $Y$ is $I + K - 1$.
+      According to Theorem~\ref{thm:dround}, we have
+      \begin{align*}
+          |x_j - \sum_{i=I}^{I + K -1} d(x_j,i)|
+              & = |x_j - \sum_{i=0}^{I + K - 1} d(x_j,i)|
+              \leq 2^{a_{I + K -1}} 
+              = 2^{a_I - (K-1)W} \\
+              & \leq 2^{W(1-K)} \max|x_j|. 
+      \end{align*}
 
-    By  \eqref{eq:gammadecreases} and \eqref{eq:gammadecreasesfast},
-    Theorem \ref{thm:mysortsum} applies to yield
-    \begin{equation*}
-      \left|\mathcal{Y} - \overline{\mathcal{Y}}\right| < \frac{7\epsilon}{1 - 6\sqrt\epsilon}|\mathcal{Y}|
-    \end{equation*}
+      Since the summation in each bin $Y_i$ is exact, we have
+      \begin{align}
+          |T - \mathcal{Y}| & = |\sum_{j=0}^{n-1} x_j - \sum_{i=I}^{I+K-1} \sum_{j=0}^{n-1} d(x_j, i)|
+              = |\sum_{j=0}^{n-1} (x_j - \sum_{i=I}^{I+K-1} d(x_j,i))| \nonumber \\
+              & \leq n 2^{W(1-K)} \max|x_j|.
+              \label{eq:repboundnaive}
+      \end{align}
 
-    By the triangle inequality
-    \begin{equation*}
-      |\mathcal{Y}| \leq |T| + |T - \mathcal{Y}| < n \cdot \max\bigl(2^{W(1-K)}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + |T|
-    \end{equation*}
+      However, this bound does not consider underflow. By
+      \eqref{eq:droundunderflow}, a small modification yields a bound that
+      considers underflow
+      \begin{equation}
+        \label{eq:repbound}
+        |T - \mathcal{Y}| < n \cdot \max\bigl(2^{W  (1 - K)} \max|x_j|, 2^{e_{\min} - 1}\bigr)
+      \end{equation}
 
-    The above results can be used to obtain  \eqref{eq:error}, the absolute
-    error of the floating point approximation of an indexed sum $|T - \overline{\mathcal{Y}}|$.
-    \begin{align}
-      \left|T - \overline{\mathcal{Y}}\right| &\leq |T - \mathcal{Y}| + \left|\mathcal{Y} - \overline{\mathcal{Y}}\right| \nonumber \\
-      &< n \cdot \max\bigl(2^{W  (1 - K)}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + \frac{7\epsilon}{1 - 6\sqrt\epsilon} |\mathcal{Y}| \nonumber \\
-      &< n \cdot \max\bigl(2^{W  (1 - K)}  \max|x_j|, 2^{e_{\min} - 1}\bigr) \nonumber \\
-      &+ \frac{7\epsilon}{1 - 6\sqrt\epsilon} \Bigl(n \cdot \max\bigl(2^{W  (1 - K) - 1}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + |T|\Bigr) \nonumber \\
-      &< \left(1 + \frac{7\epsilon}{1 - 6\sqrt\epsilon}\right) \Bigl(n \cdot \max\bigl(2^{W (1 - K)} \max|x_j|, 2^{e_{\min} - 1}\bigr)\Bigr) + \frac{7\epsilon}{1 - 6\sqrt\epsilon} |T|
-      \label{eq:error}
-    \end{align}
+      By  \eqref{eq:gammadecreases} and \eqref{eq:gammadecreasesfast},
+      Theorem \ref{thm:mysortsum} applies to yield
+      \begin{equation*}
+        \left|\mathcal{Y} - \overline{\mathcal{Y}}\right| < \frac{7\epsilon}{1 - 6\sqrt\epsilon}|\mathcal{Y}|
+      \end{equation*}
+
+      By the triangle inequality
+      \begin{equation*}
+        |\mathcal{Y}| \leq |T| + |T - \mathcal{Y}| < n \cdot \max\bigl(2^{W(1-K)}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + |T|
+      \end{equation*}
+
+      The above results can be used to obtain  \eqref{eq:error}, the absolute
+      error of the floating point approximation of an indexed sum $|T - \overline{\mathcal{Y}}|$.
+      \begin{align}
+        \left|T - \overline{\mathcal{Y}}\right| &\leq |T - \mathcal{Y}| + \left|\mathcal{Y} - \overline{\mathcal{Y}}\right| \nonumber \\
+        &< n \cdot \max\bigl(2^{W  (1 - K)}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + \frac{7\epsilon}{1 - 6\sqrt\epsilon} |\mathcal{Y}| \nonumber \\
+        &< n \cdot \max\bigl(2^{W  (1 - K)}  \max|x_j|, 2^{e_{\min} - 1}\bigr) \nonumber \\
+        &+ \frac{7\epsilon}{1 - 6\sqrt\epsilon} \Bigl(n \cdot \max\bigl(2^{W  (1 - K) - 1}  \max|x_j|, 2^{e_{\min} - 1}\bigr) + |T|\Bigr) \nonumber \\
+        &< \left(1 + \frac{7\epsilon}{1 - 6\sqrt\epsilon}\right) \Bigl(n \cdot \max\bigl(2^{W (1 - K)} \max|x_j|, 2^{e_{\min} - 1}\bigr)\Bigr) + \frac{7\epsilon}{1 - 6\sqrt\epsilon} |T| \nonumber
+      \end{align}
+    \end{proof}
 
     Equation \eqref{eq:error} can be approximated as \eqref{eq:errorapprox}:
     \begin{align}
@@ -337,4 +350,3 @@
     As depicted in Figure~\ref{fig:conversionmotivation},
     bound \eqref{eq:errorapprox} can be better by over 8 orders of magnitude
     in default configuration for double precision, where $K=3$ and $W = 40$.
-

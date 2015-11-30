@@ -68,6 +68,7 @@ check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
                        ["N", "fold", "incX", "RealScaleX", "FillX"],\
                        [[4095], folds, incs, [1.0, -1.0],\
                         ["constant",\
+                         "mountain",\
                          "+big",\
                          "++big",\
                          "+-big",\
@@ -84,6 +85,7 @@ check_suite.add_checks([checks.ValidateInternalRZSUMTest(),\
                        ["N", "fold", "incX", "RealScaleX", "ImagScaleX", "FillX"],\
                        [[4095], folds, incs, [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0],\
                         ["constant",\
+                         "mountain",\
                          "+big",\
                          "++big",\
                          "+-big",\
@@ -128,6 +130,22 @@ check_suite.add_checks([checks.ValidateInternalRDDOTTest(),\
                          "++big",\
                          "+-big"]])
 
+check_suite.add_checks([checks.ValidateInternalRDDOTTest(),\
+                        checks.ValidateInternalRSDOTTest(),\
+                        ],\
+                       ["N", "fold", "incX", "RealScaleX", "RealScaleY", ("FillX", "FillY")],\
+                       [[4095], folds, incs, [1.0, -1.0], [1.0, -1.0],\
+                        [("constant", "sine"),\
+                         ("sine", "constant")]])
+
+check_suite.add_checks([checks.ValidateInternalRDDOTTest(),\
+                        checks.ValidateInternalRSDOTTest(),\
+                        ],\
+                       ["N", "fold", "incX", "RealScaleX", "RealScaleY", ("FillX", "FillY")],\
+                       [[4095], folds, incs, [1.0, -1.0], [1.0, -1.0],\
+                        [("constant", "mountain"),\
+                         ("mountain", "constant")]])
+
 check_suite.add_checks([checks.ValidateInternalRZDOTUTest(),\
                         checks.ValidateInternalRZDOTCTest(),\
                         checks.ValidateInternalRCDOTUTest(),\
@@ -153,6 +171,16 @@ check_suite.add_checks([checks.ValidateInternalRZDOTUTest(),\
                        [[4095], folds, incs, [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0],\
                         [("constant", "sine"),\
                          ("sine", "constant")]])
+
+check_suite.add_checks([checks.ValidateInternalRZDOTUTest(),\
+                        checks.ValidateInternalRZDOTCTest(),\
+                        checks.ValidateInternalRCDOTUTest(),\
+                        checks.ValidateInternalRCDOTCTest(),\
+                        ],\
+                       ["N", "fold", "incX", "RealScaleX", "ImagScaleX", "RealScaleY", "ImagScaleY", ("FillX", "FillY")],\
+                       [[4095], folds, incs, [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0],\
+                        [("constant", "mountain"),\
+                         ("mountain", "constant")]])
 
 check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
                         checks.ValidateInternalRDASUMTest(),\
