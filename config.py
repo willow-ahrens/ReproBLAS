@@ -186,12 +186,12 @@ def flop_count(data):
 def cpu_info(verbose="false"):
   if verbose == "true":
     print("ReproBLAS Warning: using cpu_info in config.py")
-  """
   return {"cache": 256 * 1024,
           "fma": False,
           "freq": 2.6e9}
   """
   return {}
+  """
 
 ##
 #  @brief version number

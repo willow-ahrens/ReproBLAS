@@ -240,6 +240,8 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
       switch(FillX){
         case util_Vec_Constant:
           return N * RealScaleX;
+        case util_Vec_Mountain:
+          return 0;
         case util_Vec_Pos_Inf:
         case util_Vec_Pos_Pos_Inf:
           return RealScaleX * INFINITY;
@@ -325,10 +327,20 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
 
     case wrap_daugsum_RDDOT:
       switch(FillX){
+        case util_Vec_Mountain:
+          switch(FillY){
+            case util_Vec_Constant:
+              return 0;
+            default:
+              fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g, %s * %g)\n", wrap_daugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, util_vec_fill_descs[FillY], RealScaleY);
+              exit(125);
+          }
         case util_Vec_Constant:
           switch(FillY){
             case util_Vec_Constant:
               return N * (RealScaleX * RealScaleY);
+            case util_Vec_Mountain:
+              return 0;
             case util_Vec_Pos_Inf:
             case util_Vec_Pos_Pos_Inf:
               return (RealScaleX * RealScaleY) * INFINITY;

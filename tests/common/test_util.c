@@ -31,6 +31,7 @@ const char *util_vec_fill_names[] = {"constant",
                                      "N_cond+rand",
                                      "full_range",
                                      "half_range",
+                                     "mountain",
                                      "constant[drop]",
                                      "rand[drop]",
                                      "2*rand-1[drop]",
@@ -60,6 +61,7 @@ const char *util_vec_fill_descs[] = {"Constant",
                                      "NConditioned+Rand",
                                      "FullRange",
                                      "HalfRange",
+                                     "Mountain",
                                      "Constant[drop]",
                                      "Random[drop]",
                                      "2*Random-1[drop]",
@@ -91,6 +93,7 @@ const char *util_mat_fill_names[] = {"constant",
                                      "N_cond+rand",
                                      "full_range",
                                      "half_range",
+                                     "mountain",
                                      "constant[drop]",
                                      "rand[drop]",
                                      "2*rand-1[drop]",
@@ -121,6 +124,7 @@ const char *util_mat_fill_descs[] = {"Constant",
                                      "NConditioned+Rand",
                                      "FullRange",
                                      "HalfRange",
+                                     "Mountain",
                                      "Constant[drop]",
                                      "Random[drop]",
                                      "2*Random-1[drop]",
@@ -1373,6 +1377,8 @@ void util_dvec_fill(int N, double* V, int incV, util_vec_fill_t Fill, double Rea
         V[i*incV] = small + (big - small) * util_drand48() * (1+1e-9);
       }
       break;
+    case util_Vec_Mountain:
+      break;
   }
 
   for (i = 0; i < N; i++) {
@@ -1388,6 +1394,17 @@ void util_dvec_fill(int N, double* V, int incV, util_vec_fill_t Fill, double Rea
     case util_Vec_Sine_Drop:
       for (i = N/2; i < N; i++) {
         V[i*incV] *= 1e-12;
+      }
+      break;
+    case util_Vec_Mountain:
+      {
+        V[(N + 1)/2] = 0.0;
+        double s = util_drand48() * RealScale;
+        for (i = 0; i < N/2; i++) {
+          V[i*incV] = s;
+          V[(N - i - 1)*incV] = -s;
+          s = s * ldexp(0.5, 1 - (DBL_MANT_DIG/2));
+        }
       }
       break;
     default:
@@ -1584,6 +1601,8 @@ void util_svec_fill(int N, float* V, int incV, util_vec_fill_t Fill, float RealS
         V[i*incV] = small + (big - small) * (float)util_drand48() * (1+1e-4);
       }
       break;
+    case util_Vec_Mountain:
+      break;
   }
 
   for (i = 0; i < N; i++) {
@@ -1599,6 +1618,17 @@ void util_svec_fill(int N, float* V, int incV, util_vec_fill_t Fill, float RealS
     case util_Vec_Sine_Drop:
       for (i = N/2; i < N; i++) {
         V[i*incV] *= 1e-12;
+      }
+      break;
+    case util_Vec_Mountain:
+      {
+        V[(N + 1)/2] = 0.0;
+        double s = util_drand48() * RealScale;
+        for (i = 0; i < N/2; i++) {
+          V[i*incV] = s;
+          V[(N - i - 1)*incV] = -s;
+          s = s * ldexpf(0.5, 1 - (FLT_MANT_DIG/2));
+        }
       }
       break;
     default:
@@ -1621,6 +1651,7 @@ void util_zvec_fill(int N, double complex* V, int incV, util_vec_fill_t Fill, do
     case util_Vec_N_Cond_Plus_Rand:
     case util_Vec_Full_Range:
     case util_Vec_Half_Range:
+    case util_Vec_Mountain:
     case util_Vec_2_Times_Rand_Minus_1_Drop:
     case util_Vec_2_Times_Rand_Minus_1:
     case util_Vec_Rand_Plus_Rand_Minus_1_Drop:
@@ -1690,6 +1721,7 @@ void util_cvec_fill(int N, float complex* V, int incV, util_vec_fill_t Fill, flo
     case util_Vec_N_Cond_Plus_Rand:
     case util_Vec_Full_Range:
     case util_Vec_Half_Range:
+    case util_Vec_Mountain:
     case util_Vec_2_Times_Rand_Minus_1_Drop:
     case util_Vec_2_Times_Rand_Minus_1:
     case util_Vec_Rand_Plus_Rand_Minus_1_Drop:
@@ -1835,6 +1867,9 @@ void util_dmat_fill(char Order, char TransA, int M, int N, double* A, int lda, u
     case util_Mat_Row_Half_Range:
       row_fill = util_Vec_Half_Range;
       break;
+    case util_Mat_Row_Mountain:
+      row_fill = util_Vec_Mountain;
+      break;
     case util_Mat_Row_Small_Plus_Increasing_Big:
       row_fill = util_Vec_Small_Plus_Increasing_Big;
       break;
@@ -1969,6 +2004,9 @@ void util_smat_fill(char Order, char TransA, int M, int N, float* A, int lda, ut
       break;
     case util_Mat_Row_Half_Range:
       row_fill = util_Vec_Half_Range;
+      break;
+    case util_Mat_Row_Mountain:
+      row_fill = util_Vec_Mountain;
       break;
     case util_Mat_Row_Small_Plus_Increasing_Big:
       row_fill = util_Vec_Small_Plus_Increasing_Big;
@@ -2105,6 +2143,9 @@ void util_zmat_fill(char Order, char TransA, int M, int N, double complex* A, in
       break;
     case util_Mat_Row_Half_Range:
       row_fill = util_Vec_Half_Range;
+      break;
+    case util_Mat_Row_Mountain:
+      row_fill = util_Vec_Mountain;
       break;
     case util_Mat_Row_Small_Plus_Increasing_Big:
       row_fill = util_Vec_Small_Plus_Increasing_Big;
@@ -2251,6 +2292,9 @@ void util_cmat_fill(char Order, char TransA, int M, int N, float complex* A, int
       break;
     case util_Mat_Row_Half_Range:
       row_fill = util_Vec_Half_Range;
+      break;
+    case util_Mat_Row_Mountain:
+      row_fill = util_Vec_Mountain;
       break;
     case util_Mat_Row_Small_Plus_Increasing_Big:
       row_fill = util_Vec_Small_Plus_Increasing_Big;
