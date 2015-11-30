@@ -23,7 +23,7 @@ cog.out(generate.generate(blockSize.BlockSize("cicgemm", "XYT_BLOCK", y_block, x
 ]]]*/
 #define Y_BLOCK 64
 #define XY_BLOCK 32768
-#define YT_BLOCK 64
+#define YT_BLOCK 32
 #define XYT_BLOCK 32768
 //[[[end]]]
 #define X_BLOCK (XY_BLOCK/Y_BLOCK)

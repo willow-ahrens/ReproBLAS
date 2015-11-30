@@ -49,19 +49,40 @@ void idxdBLAS_zamax_sub(const int N, const void *X, const int incX, void *amax){
 
     int i;
 
-    __m256d x_0, x_1, x_2;
+    __m256d x_0, x_1, x_2, x_3, x_4, x_5, x_6, x_7;
     __m256d m_0;
     m_0 = _mm256_setzero_pd();
 
     if(incX == 1){
 
-      for(i = 0; i + 6 <= N; i += 6, x += 12){
+      for(i = 0; i + 16 <= N; i += 16, x += 32){
         x_0 = _mm256_and_pd(_mm256_loadu_pd(((double*)x)), abs_mask_tmp);
         x_1 = _mm256_and_pd(_mm256_loadu_pd(((double*)x) + 4), abs_mask_tmp);
         x_2 = _mm256_and_pd(_mm256_loadu_pd(((double*)x) + 8), abs_mask_tmp);
+        x_3 = _mm256_and_pd(_mm256_loadu_pd(((double*)x) + 12), abs_mask_tmp);
+        x_4 = _mm256_and_pd(_mm256_loadu_pd(((double*)x) + 16), abs_mask_tmp);
+        x_5 = _mm256_and_pd(_mm256_loadu_pd(((double*)x) + 20), abs_mask_tmp);
+        x_6 = _mm256_and_pd(_mm256_loadu_pd(((double*)x) + 24), abs_mask_tmp);
+        x_7 = _mm256_and_pd(_mm256_loadu_pd(((double*)x) + 28), abs_mask_tmp);
         m_0 = _mm256_max_pd(m_0, x_0);
         m_0 = _mm256_max_pd(m_0, x_1);
         m_0 = _mm256_max_pd(m_0, x_2);
+        m_0 = _mm256_max_pd(m_0, x_3);
+        m_0 = _mm256_max_pd(m_0, x_4);
+        m_0 = _mm256_max_pd(m_0, x_5);
+        m_0 = _mm256_max_pd(m_0, x_6);
+        m_0 = _mm256_max_pd(m_0, x_7);
+      }
+      if(i + 8 <= N){
+        x_0 = _mm256_and_pd(_mm256_loadu_pd(((double*)x)), abs_mask_tmp);
+        x_1 = _mm256_and_pd(_mm256_loadu_pd(((double*)x) + 4), abs_mask_tmp);
+        x_2 = _mm256_and_pd(_mm256_loadu_pd(((double*)x) + 8), abs_mask_tmp);
+        x_3 = _mm256_and_pd(_mm256_loadu_pd(((double*)x) + 12), abs_mask_tmp);
+        m_0 = _mm256_max_pd(m_0, x_0);
+        m_0 = _mm256_max_pd(m_0, x_1);
+        m_0 = _mm256_max_pd(m_0, x_2);
+        m_0 = _mm256_max_pd(m_0, x_3);
+        i += 8, x += 16;
       }
       if(i + 4 <= N){
         x_0 = _mm256_and_pd(_mm256_loadu_pd(((double*)x)), abs_mask_tmp);
@@ -82,13 +103,34 @@ void idxdBLAS_zamax_sub(const int N, const void *X, const int incX, void *amax){
       }
     }else{
 
-      for(i = 0; i + 6 <= N; i += 6, x += (incX * 12)){
+      for(i = 0; i + 16 <= N; i += 16, x += (incX * 32)){
         x_0 = _mm256_and_pd(_mm256_set_pd(((double*)x)[((incX * 2) + 1)], ((double*)x)[(incX * 2)], ((double*)x)[1], ((double*)x)[0]), abs_mask_tmp);
         x_1 = _mm256_and_pd(_mm256_set_pd(((double*)x)[((incX * 6) + 1)], ((double*)x)[(incX * 6)], ((double*)x)[((incX * 4) + 1)], ((double*)x)[(incX * 4)]), abs_mask_tmp);
         x_2 = _mm256_and_pd(_mm256_set_pd(((double*)x)[((incX * 10) + 1)], ((double*)x)[(incX * 10)], ((double*)x)[((incX * 8) + 1)], ((double*)x)[(incX * 8)]), abs_mask_tmp);
+        x_3 = _mm256_and_pd(_mm256_set_pd(((double*)x)[((incX * 14) + 1)], ((double*)x)[(incX * 14)], ((double*)x)[((incX * 12) + 1)], ((double*)x)[(incX * 12)]), abs_mask_tmp);
+        x_4 = _mm256_and_pd(_mm256_set_pd(((double*)x)[((incX * 18) + 1)], ((double*)x)[(incX * 18)], ((double*)x)[((incX * 16) + 1)], ((double*)x)[(incX * 16)]), abs_mask_tmp);
+        x_5 = _mm256_and_pd(_mm256_set_pd(((double*)x)[((incX * 22) + 1)], ((double*)x)[(incX * 22)], ((double*)x)[((incX * 20) + 1)], ((double*)x)[(incX * 20)]), abs_mask_tmp);
+        x_6 = _mm256_and_pd(_mm256_set_pd(((double*)x)[((incX * 26) + 1)], ((double*)x)[(incX * 26)], ((double*)x)[((incX * 24) + 1)], ((double*)x)[(incX * 24)]), abs_mask_tmp);
+        x_7 = _mm256_and_pd(_mm256_set_pd(((double*)x)[((incX * 30) + 1)], ((double*)x)[(incX * 30)], ((double*)x)[((incX * 28) + 1)], ((double*)x)[(incX * 28)]), abs_mask_tmp);
         m_0 = _mm256_max_pd(m_0, x_0);
         m_0 = _mm256_max_pd(m_0, x_1);
         m_0 = _mm256_max_pd(m_0, x_2);
+        m_0 = _mm256_max_pd(m_0, x_3);
+        m_0 = _mm256_max_pd(m_0, x_4);
+        m_0 = _mm256_max_pd(m_0, x_5);
+        m_0 = _mm256_max_pd(m_0, x_6);
+        m_0 = _mm256_max_pd(m_0, x_7);
+      }
+      if(i + 8 <= N){
+        x_0 = _mm256_and_pd(_mm256_set_pd(((double*)x)[((incX * 2) + 1)], ((double*)x)[(incX * 2)], ((double*)x)[1], ((double*)x)[0]), abs_mask_tmp);
+        x_1 = _mm256_and_pd(_mm256_set_pd(((double*)x)[((incX * 6) + 1)], ((double*)x)[(incX * 6)], ((double*)x)[((incX * 4) + 1)], ((double*)x)[(incX * 4)]), abs_mask_tmp);
+        x_2 = _mm256_and_pd(_mm256_set_pd(((double*)x)[((incX * 10) + 1)], ((double*)x)[(incX * 10)], ((double*)x)[((incX * 8) + 1)], ((double*)x)[(incX * 8)]), abs_mask_tmp);
+        x_3 = _mm256_and_pd(_mm256_set_pd(((double*)x)[((incX * 14) + 1)], ((double*)x)[(incX * 14)], ((double*)x)[((incX * 12) + 1)], ((double*)x)[(incX * 12)]), abs_mask_tmp);
+        m_0 = _mm256_max_pd(m_0, x_0);
+        m_0 = _mm256_max_pd(m_0, x_1);
+        m_0 = _mm256_max_pd(m_0, x_2);
+        m_0 = _mm256_max_pd(m_0, x_3);
+        i += 8, x += (incX * 16);
       }
       if(i + 4 <= N){
         x_0 = _mm256_and_pd(_mm256_set_pd(((double*)x)[((incX * 2) + 1)], ((double*)x)[(incX * 2)], ((double*)x)[1], ((double*)x)[0]), abs_mask_tmp);

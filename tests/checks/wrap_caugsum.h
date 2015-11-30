@@ -286,6 +286,8 @@ float complex wrap_caugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill
       switch(FillX){
         case util_Vec_Constant:
           return N * ScaleX;
+        case util_Vec_Mountain:
+          return 0;
         case util_Vec_Pos_Inf:
         case util_Vec_Pos_Pos_Inf:
         case util_Vec_Pos_Neg_Inf:
@@ -449,10 +451,20 @@ float complex wrap_caugsum_result(int N, wrap_caugsum_func_t func, util_vec_fill
 
     case wrap_caugsum_RCDOTU:
       switch(FillX){
+        case util_Vec_Mountain:
+          switch(FillY){
+            case util_Vec_Constant:
+              return 0;
+            default:
+              fprintf(stderr, "ReproBLAS error: unknown result for %s(%s * %g, %s * %g)\n", wrap_caugsum_func_descs[func], util_vec_fill_descs[FillX], RealScaleX, util_vec_fill_descs[FillY], RealScaleY);
+              exit(125);
+          }
         case util_Vec_Constant:
           switch(FillY){
             case util_Vec_Constant:
               return N * (ScaleX * ScaleY);
+            case util_Vec_Mountain:
+              return 0;
             case util_Vec_Pos_Inf:
             case util_Vec_Pos_Pos_Inf:
             case util_Vec_Pos_Neg_Inf:

@@ -48,25 +48,29 @@ float idxdBLAS_samax(const int N, const float *X, const int incX){
 
     int i;
 
-    __m256 X_0, X_1, X_2, X_3, X_4, X_5;
+    __m256 X_0, X_1, X_2, X_3, X_4, X_5, X_6, X_7;
     __m256 m_0;
     m_0 = _mm256_setzero_ps();
 
     if(incX == 1){
 
-      for(i = 0; i + 48 <= N; i += 48, X += 48){
+      for(i = 0; i + 64 <= N; i += 64, X += 64){
         X_0 = _mm256_and_ps(_mm256_loadu_ps(X), abs_mask_tmp);
         X_1 = _mm256_and_ps(_mm256_loadu_ps(X + 8), abs_mask_tmp);
         X_2 = _mm256_and_ps(_mm256_loadu_ps(X + 16), abs_mask_tmp);
         X_3 = _mm256_and_ps(_mm256_loadu_ps(X + 24), abs_mask_tmp);
         X_4 = _mm256_and_ps(_mm256_loadu_ps(X + 32), abs_mask_tmp);
         X_5 = _mm256_and_ps(_mm256_loadu_ps(X + 40), abs_mask_tmp);
+        X_6 = _mm256_and_ps(_mm256_loadu_ps(X + 48), abs_mask_tmp);
+        X_7 = _mm256_and_ps(_mm256_loadu_ps(X + 56), abs_mask_tmp);
         m_0 = _mm256_max_ps(m_0, X_0);
         m_0 = _mm256_max_ps(m_0, X_1);
         m_0 = _mm256_max_ps(m_0, X_2);
         m_0 = _mm256_max_ps(m_0, X_3);
         m_0 = _mm256_max_ps(m_0, X_4);
         m_0 = _mm256_max_ps(m_0, X_5);
+        m_0 = _mm256_max_ps(m_0, X_6);
+        m_0 = _mm256_max_ps(m_0, X_7);
       }
       if(i + 32 <= N){
         X_0 = _mm256_and_ps(_mm256_loadu_ps(X), abs_mask_tmp);
@@ -98,19 +102,23 @@ float idxdBLAS_samax(const int N, const float *X, const int incX){
       }
     }else{
 
-      for(i = 0; i + 48 <= N; i += 48, X += (incX * 48)){
+      for(i = 0; i + 64 <= N; i += 64, X += (incX * 64)){
         X_0 = _mm256_and_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), abs_mask_tmp);
         X_1 = _mm256_and_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), abs_mask_tmp);
         X_2 = _mm256_and_ps(_mm256_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)], X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), abs_mask_tmp);
         X_3 = _mm256_and_ps(_mm256_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)], X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), abs_mask_tmp);
         X_4 = _mm256_and_ps(_mm256_set_ps(X[(incX * 39)], X[(incX * 38)], X[(incX * 37)], X[(incX * 36)], X[(incX * 35)], X[(incX * 34)], X[(incX * 33)], X[(incX * 32)]), abs_mask_tmp);
         X_5 = _mm256_and_ps(_mm256_set_ps(X[(incX * 47)], X[(incX * 46)], X[(incX * 45)], X[(incX * 44)], X[(incX * 43)], X[(incX * 42)], X[(incX * 41)], X[(incX * 40)]), abs_mask_tmp);
+        X_6 = _mm256_and_ps(_mm256_set_ps(X[(incX * 55)], X[(incX * 54)], X[(incX * 53)], X[(incX * 52)], X[(incX * 51)], X[(incX * 50)], X[(incX * 49)], X[(incX * 48)]), abs_mask_tmp);
+        X_7 = _mm256_and_ps(_mm256_set_ps(X[(incX * 63)], X[(incX * 62)], X[(incX * 61)], X[(incX * 60)], X[(incX * 59)], X[(incX * 58)], X[(incX * 57)], X[(incX * 56)]), abs_mask_tmp);
         m_0 = _mm256_max_ps(m_0, X_0);
         m_0 = _mm256_max_ps(m_0, X_1);
         m_0 = _mm256_max_ps(m_0, X_2);
         m_0 = _mm256_max_ps(m_0, X_3);
         m_0 = _mm256_max_ps(m_0, X_4);
         m_0 = _mm256_max_ps(m_0, X_5);
+        m_0 = _mm256_max_ps(m_0, X_6);
+        m_0 = _mm256_max_ps(m_0, X_7);
       }
       if(i + 32 <= N){
         X_0 = _mm256_and_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), abs_mask_tmp);

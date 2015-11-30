@@ -173,9 +173,9 @@ def flop_count(data):
 ##
 #  @brief clarify information about host machine
 #
-#  If the cpu info cannot be found, specify it here
+#  If the cpu info cannot be found or is incorrect, specify it here
 #
-#  @return a dictionary containing the following keys:
+#  @return a dictionary containing any of the following keys:
 #                cache - size of l2 (or equivalent) cache (bytes)
 #                freq  - frequency of cpu (Hz)
 #                fma   - is fma available (True, False)
@@ -183,11 +183,15 @@ def flop_count(data):
 #  @author Peter Ahrens
 #  @date   8 Oct 2015
 #
-def cpu_info():
-  print("ReproBLAS Warning: cpu info not found, using defaults in config.py")
-  return {"cache": 2**20,
+def cpu_info(verbose="false"):
+  if verbose == "true":
+    print("ReproBLAS Warning: using cpu_info in config.py")
+  return {"cache": 256 * 1024,
           "fma": False,
           "freq": 2.6e9}
+  """
+  return {}
+  """
 
 ##
 #  @brief version number

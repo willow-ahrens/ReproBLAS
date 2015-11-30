@@ -6,7 +6,9 @@ bench_harness = harness.Harness("bench")
 
 fold = 3
 
-bench_harness.add_suite(benchs.BenchSuite([benchs.BenchRDSUMTest(), benchs.BenchRSSUMTest()], ["N", "fold", "FillX", "a"], [[16 * 1024], [fold], ["rand", "full_range"], [1000]], "time"))
+bench_harness.add_suite(benchs.BenchSuite([benchs.BenchRDSUMTest(), benchs.BenchRSSUMTest()], ["N", "fold", "FillX", "a"], [[8 * 1024], [fold], ["rand", "half_range"], [1000]], "time"))
+
+bench_harness.add_suite(benchs.BenchSuite([benchs.BenchRDSUMTest(), benchs.BenchRSSUMTest()], ["N", "fold", "FillX", "a"], [[8 * 1024], [fold], ["rand", "half_range"], [1000]], "peak"))
 
 bench_harness.add_suite(benchs.BenchSuite([benchs.BenchDSUMTest(), benchs.BenchRDSUMTest()], ["N", "fold", "FillX"], [[2**i for i in range(6, 13)], [fold], ["normal"]], "peak_time"))
 bench_harness.add_suite(benchs.BenchSuite([benchs.BenchDSUMTest(), benchs.BenchRDSUMTest()], ["N", "fold", "FillX"], [[2**i for i in range(6, 13)], [fold], ["normal"]], "time"))

@@ -1,7 +1,7 @@
 \subsection{Timing}
-  In addition to giving a count of floating point operations in our algorithms, we show that they can be implemented as a BLAS library comparable to commercially available optimized non-reproducible versions.
+  In addition to giving a count of floating point operations in our algorithms, we show that they can be implemented as a BLAS library comparable in speed to commercially available optimized non-reproducible versions.
 
-  All timings are performed with an Intel\textregistered Core i7-2600 CPU operating at 3.4 GHz and 256 KB L2 Cache. The code was compiled with \texttt{gcc} version 4.8.4 using the highest level ``\texttt{-O3}'' of optimization (and no other optimization flags). Every test is run at least 100 times successively to amortize the data loading time and warm up the cache. The theoretical peak time is calculated as the idealized theoretical time in which the CPU could complete the given instructions (in any order). We compare our BLAS routines against the sequential Intel\textregistered Math Kernel Library (MKL) BLAS routines \cite{MKL}. All matrices are represented in column-major order.
+  All timings are performed with an Intel\textregistered Core i7-2600 CPU operating at 3.4 GHz with 32 KB L1 Cache, 256 KB L2 Cache. The code was compiled with \texttt{gcc} version 4.8.4 using the highest level ``\texttt{-O3}'' of optimization (and no other optimization flags). Every test is run at least 100 times successively to amortize the data loading time and warm up the cache. The theoretical peak time is calculated as the idealized theoretical time in which the CPU could complete the given instructions (in any order). We compare our BLAS routines against the sequential Intel\textregistered Math Kernel Library (MKL) BLAS routines \cite{MKL}. All matrices are represented in column-major order.
 
   \subsubsection{Difficult Input}
     Because the reproducible summation algorithm needs to perform additional
@@ -33,7 +33,16 @@
   \end{figure}
   \subsubsection{BLAS1}
 
-    We show how our reproducible summation stacks up against a simple $C$ \texttt{for}-loop in Figure \ref{fig:forloop_timings}. Time (measured relative to the peak theoretical time for recursive summation) is shown for each method. The double-precision floating point numbers to be summed are normally distributed with mean $0$ and variance $1$. For several good reasons (lack of vectorization, lack of loop unrolling, etc.) the \texttt{for}-loop is not running at peak. With this in mind, reproducible summation is competitive with a simple \texttt{for}-loop.
+    We show how our reproducible summation compares to a simple $C$ \texttt{for}-loop in Figure \ref{fig:forloop_timings}. The \texttt{for}-loop is as follows (where \texttt{X} is the input vector, \texttt{res} is the resulting sum, and $\texttt{incX} = 1$ is the increment between successive elements of \texttt{X}.):
+    \begin{lstlisting}
+
+    res = 0;
+    for(j = 0; j < N; j++){
+      res += X[j * incX];
+    }
+    \end{lstlisting}
+
+  Time (measured relative to the peak theoretical time for recursive summation) is shown for each method. The double-precision floating point numbers to be summed are normally distributed with mean $0$ and variance $1$. For several good reasons (lack of vectorization, lack of loop unrolling, etc.) the \texttt{for}-loop is not running at peak. With this in mind, reproducible summation is competitive with a simple \texttt{for}-loop.
   \begin{figure}[H]
   \begin{center}
   \includegraphics[width=\textwidth]{plots/sum_comparison}
@@ -58,7 +67,7 @@
   \label{fig:gemv_timings}
   \end{center}
   \end{figure}
-  The non-transposed matrix-vector product is the only case where composition of BLAS2 and BLAS3 functions did not achieve close to optimal results. Because the reproducible dot product operates most efficiently on contiguous sections of memory, the matrix must be transposed so that memory can be read contiguously. This causes the reproducible matrix-vector product to perform poorly due to the extra cost of matrix transposition in an already memory-bound routine. In future versions of the library, this method could be improved by writing a custom inner-loop kernel that does not make calls to \texttt{xixdot}. The kernel would operate on the primary fields of several indexed types at the same time using vectorized operations.
+  The non-transposed matrix-vector product is the only case where composition of BLAS2 and BLAS3 functions did not achieve results within a factor of 2 of theoretical peak. Because the reproducible dot product operates most efficiently on contiguous sections of memory, the matrix must be transposed so that memory can be read contiguously. This causes the reproducible matrix-vector product to perform poorly due to the extra cost of matrix transposition in an already memory-bound routine. In future versions of the library, this method could be improved by writing a custom inner-loop kernel that does not make calls to \texttt{xixdot}. The kernel would operate on the primary fields of several indexed types at the same time using vectorized operations.
 
   The transposed matrix-vector product performs better than the non-transposed case. Timings are shown in Figure \ref{fig:gemv_trans_timings}. The reader should notice that in this case, the reproducible routine is only about a factor of two times slower than the optimized BLAS routine.
   \begin{figure}[H]
@@ -70,7 +79,7 @@
   \end{figure}
 
   \subsubsection{BLAS3}
-    We show in Figure \ref{fig:gemm_timings} timings of the reproducible matrix-matrix product versus the MKL BLAS matrix-matrix product. The double-precision floating point data is distributed such that the products of elements of one input matrix and the other are normally distributed with mean $0$ and variance $1$. Because the timings for each transposition case (transposing or not transposing $A$ or $B$) are similar, we show only the standard case for brevity. In this case, since both routines are running close to peak, the reproducible routine is about a factor of 8 times slower than the optimized BLAS routine.
+    We show in Figure \ref{fig:gemm_timings} timings of the reproducible matrix-matrix product versus the MKL BLAS matrix-matrix product. The double-precision floating point data is distributed such that the products of elements of one input matrix and the other are normally distributed with mean $0$ and variance $1$. Because the timings for each transposition case (transposing or not transposing $A$ or $B$) are similar, we show only the standard case for brevity. In this case, since both routines are running close to peak, the reproducible routine is about a factor of 15 times slower than the optimized BLAS routine.
   \begin{figure}[H]
   \begin{center}
   \includegraphics[width=\textwidth]{plots/gemm_comparison}

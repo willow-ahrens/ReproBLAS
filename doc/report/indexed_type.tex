@@ -120,7 +120,7 @@
       Equation~\eqref{eq:totalfreq}, using the same precision $p$ as the primary field
       to store the carry field, the total number of inputs
       that can be reproducibly added to one accumulator is 
-      $(\epsilon - 1)2^{p-W-2}$. This is approximately $2^{64}$ for 
+      $(\epsilon^{-1} - 1)2^{p-W-2}$. This is approximately $2^{64}$ for 
       \texttt{double} and $2^{33}$ for \texttt{float}. See Section 
       \ref{sec:primitiveops_restrictions} for a summary of restrictions.
       The numerical value ${\mathcal{Y}_k}_C$ represented by data stored in the carry field
@@ -196,7 +196,7 @@
         \label{eq:pri0}
       \end{equation}
 
-      Although the primary field corresponding to bin 0 is scaled, the same restriction \eqref{eq:totalfreq} on $n$ applies here as it does in the normal case. Therefore, the partial sums in reproducible summation can grow much larger ($(\epsilon^{-1} - 1)2^{p - W - 1}$ times larger) than the overflow threshold and then cancel back down. In fact, as long as the sum itself is below overflow (beyond the margin of error), the summands are finite, and $n \leq (\epsilon^{-1} - 1)2^{p - W - 2}$, the reproducible summation won't overflow. However, if the inputs to summation are already infinite, the summation will overflow. In the case of a dot product, overflow does not occur due to partial sums, but will occur if the pairwise products themselves overflow (overflow only occurs during multiplication).
+      Although the primary field corresponding to bin 0 is scaled, the same restriction \eqref{eq:totalfreq} on $n$ applies here as it does in the normal case. Therefore, the partial sums in reproducible summation can grow much larger ($(\epsilon^{-1} - 1)2^{p - W - 1}$ times larger) than the overflow threshold and then cancel back down. In fact, as long as the sum itself is below overflow (beyond the margin of error), the summands are finite, and $n \leq (\epsilon^{-1} - 1)2^{p - W - 2}$, the reproducible summation won't overflow. However, if the inputs to summation are already infinite, the summation will overflow. In the case of a dot product, overflow will occur if the pairwise products themselves overflow (overflow only occurs during multiplication).
 
     \subsubsection{Gradual Underflow}
       \label{sec:indexed_underflow_gradual}
@@ -243,7 +243,7 @@
       the algorithm could be extended to denormalized inputs would be to scale
       the least bins up, analogously to the way we handled overflow. Due to the
       relatively low priority for accumulating denormalized values, this method
-      was not implemented in ReproBLAS. With respect to taking a reproducible dot product, we do not extend the underflow threshold to ensure the products of tiny values do not underflow. The underflow threshold is the same as in normal reproducible summation. Others may implement these features if they think it is important.
+      was not implemented in ReproBLAS. With respect to computing a reproducible dot product, we do not extend the underflow threshold to ensure the products of tiny values do not underflow. The underflow threshold is the same as in normal reproducible summation. Others may implement these features if they think it is important.
 
 
     \subsubsection{Abrupt Underflow}
@@ -342,11 +342,11 @@
       the \texttt{Inf} or \texttt{-Inf} are discussed in Section
       \ref{sec:primitiveops_conv2float}.
 
-      There are several ways that \texttt{Inf}, \texttt{-Inf}, and \texttt{NaN} could be handled reproducibly. We have chosen to handle these values analogously to how they are handled in standard recursive summation. This results in an additional performance cost due to special branches for these special values. Another way to handle these values would be to always return \texttt{NaN} when any summand is \texttt{Inf}, \texttt{-Inf}, or \texttt{NaN}. This would result in less branching.
+      There are several ways that \texttt{Inf}, \texttt{-Inf}, and \texttt{NaN} could be handled reproducibly. We have chosen to handle these values analogously to how they are handled in standard recursive summation. This results in a small additional performance cost due to special branches for exceptional values. Another way to handle these values would be to always return \texttt{NaN} when any summand is \texttt{Inf}, \texttt{-Inf}, or \texttt{NaN}. This would result in less branching because no explicit checks for exceptional values would be necessary (this is a side effect of the algorithm due to \texttt{NaN} propagation). We did not choose this option because there are ways to reduce the number of branches such that the additional cost of the branches is negligible when compared to the computational cost of the reproducible algorithm. These two approaches to handling exceptional values are discussed in more detail at the end of Section \ref{sec:primitiveops_deposit}.
 
     \subsection{Indexed Sum}
       \label{sec:indexed_sum}
-      We have previously explained the indexed type, a data structure we will use for reproducible summation. We now define a quantity that can be expressed using the indexed type, called the \textbf{indexed sum}. The goal for Section \ref{sec:primitiveops} will be to show that we can indeed compute this quantity. Ultimately, Theorems \ref{thm:addfloattoindexed} and \ref{thm:sum} will prove that Algorithms \ref{alg:addfloattoindexed} and \ref{alg:sum} (respectively) can indeed compute the indexed sum. Here we focus on the definition of an indexed sum. As further motivation for computing the indexed sum, we show that if an algorithm returns the indexed sum of its inputs, it is reproducible.
+      We have previously explained the indexed type, a data structure we will use for reproducible summation. We now define a quantity that can be expressed using the indexed type, called the \textbf{indexed sum}. The goal for Section \ref{sec:primitiveops} will be to show that we can indeed compute this quantity. Ultimately, Theorems \ref{thm:addfloattoindexed}, \ref{thm:sum}, and \ref{thm:addindexedtoindexed} will prove that Algorithms \ref{alg:addfloattoindexed}, \ref{alg:sum}, and \ref{alg:addindexedtoindexed} (respectively) can indeed compute the indexed sum. Here we focus on the definition of an indexed sum. As further motivation for computing the indexed sum, we show that if an algorithm returns the indexed sum of its inputs, it is reproducible.
 
       \begin{samepage}
       \begin{definition}
@@ -354,11 +354,14 @@
       \begin{equation}
       \begin{aligned}
         &{Y_k}_P \in \begin{cases}[1.5  \epsilon^{-1} 2^{a_{I + k}}, 1.75  \epsilon^{-1} 2^{a_{I + k}}) \text{ if } I + k > 0 \\ [1.5 \cdot 2^{e_{\max}}, 1.75 \cdot 2^{e_{\max}}) \text{ if } I + k = 0\end{cases}\\
+        &\mathcal{Y}_k = ({Y_k}_P - 1.5 \epsilon^{-1}2^{a_{I + k}}) + (0.25\epsilon^{-1}2^{a_{I + k}}){Y_k}_C\\
         &\mathcal{Y}_k = \sum\limits_{j = 0}^{n - 1}d(x_j, I + k)\\
         & I\text{ is the greatest integer such that }\max(|x_j|) < 2^{b_I} \text{ and } I \leq i_{\max}
       \end{aligned}
       \label{eq:indexed_sum}
       \end{equation}
+      We have repeated \eqref{eq:acc} as a requirement above for clarity.
+
       The $K$-fold indexed sum of $x_0, ..., x_{n - 1} \in \F$ (with at least one exceptional value \texttt{Inf}, \texttt{-Inf}, or \texttt{NaN}) is defined to be a $K$-fold indexed type such that
       \begin{equation}
         {Y_0}_P = \begin{cases}\texttt{Inf} \text{ if there is at least one \texttt{Inf} and no other exceptional values}\\ \texttt{-Inf} \text{ if there is at least one \texttt{-Inf} and no other exceptional values}\\ \texttt{NaN}\text{ otherwise}\end{cases} \label{eq:indexed_sum_exceptional}
@@ -371,8 +374,6 @@
       \end{align}
       \end{definition}
       \end{samepage}
-
-      Notice that in \eqref{eq:indexed_sum}, the value of ${Y_k}_C$ is specified implicitly, because $\mathcal{Y}_k$ is expressed in terms of both ${Y_k}_P$ and ${Y_k}_C$ in \eqref{eq:acc}.
 
       We now show that the indexed sum is well-defined for finite summands and that each field in the indexed type corresponding to the summands $x_0, ..., x_{n - 1}$ (in any order) is unique. We show this in Lemma \ref{lem:indexed_sum_unique}.
       \begin{samepage}

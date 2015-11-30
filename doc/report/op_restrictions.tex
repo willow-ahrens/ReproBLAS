@@ -11,7 +11,7 @@
     \ref{sec:indexed_overflow}, $2 W > p + 1$.
 
     By \eqref{eq:error}, we see that increasing $W$ and $K$ will increase
-    the accuracy of reproducible summation. However, increases to $K$ drastically increase the number of flops necessary to compute an indexed sum and increases to $W$ decrease the number of deposits that can be performed between renormalizations (discussed in Section \ref{sec:primitiveops_renormalize}).
+    the accuracy of reproducible summation. However, increases to $K$ increase the number of flops necessary to compute an indexed sum and increases to $W$ decrease the number of deposits that can be performed between renormalizations (discussed in Section \ref{sec:primitiveops_renormalize}).
     We have chosen default values for $W$ and $K$ that give good performance while maintaining better accuracy than standard recursive summation.
     ReproBLAS uses the values $W = 40$ for indexed \texttt{double} and $W = 13$
     for indexed \texttt{float}. $W$ is configurable as the \texttt{XIWIDTH} macro in \texttt{config.h}.
@@ -31,7 +31,7 @@
     $2^{33}$. This number is referred to as the \textbf{capacity} of the indexed type and supplied in ReproBLAS using the
     \texttt{XICAPACITY} macro in \texttt{idxd.h}.
 
-    The indexed types provided by ReproBLAS will, when used correctly, avoid intermediate overflow assuming the restrictions in the previous paragraph..
+    The indexed types provided by ReproBLAS will, when used correctly, avoid intermediate overflow assuming the restrictions in the previous paragraph.
 
     As discussed in Section \ref{sec:indexed_underflow_gradual}, we assume gradual underflow and ReproBLAS will round the sum at best to the nearest $2^{e_{\min} - 1}$. However, Sections \ref{sec:indexed_underflow_gradual} and \ref{sec:indexed_underflow_abrupt} discuss ways that reproducible summation could be implemented and improved in the presence of both gradual and abrupt underflow.
 

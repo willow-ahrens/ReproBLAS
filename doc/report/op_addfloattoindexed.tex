@@ -55,3 +55,22 @@
   Since the renormalization step does not affect the values of the accumulators or the index of the indexed type, \eqref{eq:addfloattoindexedaccumvalue} still holds and all of the properties of the indexed sum are satisfied.
   \end{proof}
 
+  A special usage of Algorithm \ref{alg:addfloattoindexed} is to convert a single floating point number to an indexed type. Converting a floating point number to an indexed type should produce, for
+  transparency and reproducibility, the indexed sum of the single floating
+  point number.
+  The procedure is very simply summarized by Algorithm \ref{alg:conv2indexed}, and is available in ReproBLAS as \texttt{idxd\_xixconv} in \texttt{idxd.h} (see Section \ref{sec:reproBLAS} for details).
+
+  \begin{samepage}
+  \begin{alg}
+    Convert floating point $x$ to a $K$-fold indexed type $Y$.
+    \begin{algorithmic}[1]
+      \Function{ConvertFloatToIndexed}{$K$, $x$, $Y$}
+        \State $Y = 0$
+        \State \Call{Add Float To Indexed}{$K$, $x$, $Y$}
+      \EndFunction
+      \Ensure
+        $Y$ is the indexed sum of $x$.
+    \end{algorithmic}
+    \label{alg:conv2indexed}
+  \end{alg}
+  \end{samepage}
