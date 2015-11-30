@@ -1,2 +1,134 @@
 \subsection{Euclidean Norm}
   \label{sec:compositeops_nrm}
+    
+    The Euclidean Norm operation computes
+    \begin{equation}
+        \texttt{nrm2}(x) = \sqrt{\sum_{j=0}^{n-1} x_j^2}, \quad x_j \in \F.
+        \label{eq:nrm2}
+    \end{equation}
+
+    Since the addends in the summation of \eqref{eq:nrm2} are all non-negative,
+    there is no cancellation, the euclidean norm operation
+    is usually of high accuracy.
+    It can be implemented simply using the dot product operation of the the same input vectors,
+    or by using the sum squares operation,
+    both of which can be made reproducible using a corresponding reproducible
+    dot product and summation operations.
+    On one hand, if some input values are too big $\geq \sqrt{2^{e_{max}+1}}$,
+    the partial sum would overflow. It means that the computed result will
+    be $\texttt{Inf}$ whereas the real euclidean norm can be much smaller than the
+    overflow threshhold.
+    On the other hand, if  all input values are smaller than $\sqrt{2^{e_min}}$,
+    their squaring value will be smaller than the smallest representable value,
+    underflow would occur, causing the returned result to be 0.
+
+    Scaling technique can be used to handle the underflow/overflow issues.
+    For example, the functions \texttt{xnrm2} from the BLAS library \cite{BLAS}
+    scale input data by the intermediate maximum absolute value
+    to avoid both overflow and underflow.
+    However, using our indexed format scheme, such a scaling would alter
+    the indices of input data as well as of partial sum, and therefore
+    cannot guarantee reproducibility.
+    In order to maintain reproducibility, 
+    first, scaling factors must be power-of-two so that the scaling and rescaling
+    won't change any mantissa of input values as well as of partial sums.
+    Second, the scaling factors' exponents must be different by a multiple of $W$,
+    so that the slicing process using different scaling factors are identical.
+    %Therefore the reproducibility is maintained after rescaling.
+    Algorithm~\ref{alg:nrm2} summarizes the algorithm for sum of squares,
+    which will be used to compute the euclidean norm.
+    Note that, the handling of special input values $\texttt{NaN}$ $\pm \texttt{Inf}$
+    is similar to the sum operation, which is not included here for better readibility.
+
+    \begin{alg}
+        Given $x_k$ an element of a floating-point input vector,
+        and $Y$ the partial indexed sum of of $x^2_{j, 1 \leq j < k}$
+        with scaling factor $f$,
+        update the sum of squares with $x_k$.
+        \begin{algorithmic}[1]
+            \Require $f=0$ if $\max_{j=1}^{k-1}|x_j| = 0$.
+            Otherwise $2^{-p-W-1} f < \max_{j=1}^{k-1}|x_j| < 2^{W+2} f$
+            and $f = 2^{k*W}$ where $k \in \Z$,
+            where $p$ is the precision of input numbers and $W$ is the bin width.
+            $Y$ is the indexed sum of $(x_1/f)^2, \ldots, (x_{k-1}/f)^2$.
+            \State $e = W * \texttt{floor}(\max(\texttt{exp}(x_k) - 1,e_{min}+W) / W)$
+                \label{alg:nrm2.line.e}
+            \State $s = 2^e$
+            \If{$f < s$}
+                \For {$i=0$ \To $K-1$}
+                    \State ${Y_i}_P = (f/s)^2 * {Y_i}_P$
+                \EndFor
+                \State $f = s$
+          \EndIf
+          \State $xs = (x_k / f)^2$
+          \State \Call{Deposit}{K, $xs$, $Y$}
+          \Ensure
+            $Y$ is the intermediate indexed sum of $(x_1/f)^2, \ldots, (x_{k}/f)^2$.
+        \end{algorithmic}
+        \label{alg:nrm2}
+    \end{alg}
+
+    \begin{lem}
+    \label{lem:nrm2_scaling}
+    Let $f$ and $Y$ be the output of Algorithm~\ref{alg:nrm2}, then the updated sclaing factor is either $0$  or
+    or satisying
+    \begin{equation}
+    \begin{aligned}
+        2^{-p-W-1}f \leq \max_{j=1}^k |x_j| < 2^{W+2} f.
+    \end{aligned}
+    \end{equation}
+    \end{lem}
+
+    \begin{proof}
+         From line~\ref{alg:nrm2.line.e} of Algorithm~\ref{alg:nrm2}, it is to see that
+         $e$ is a multiple of $W$ and
+         \[
+            \begin{aligned}
+                e & \geq W * \texttt{floor}((e_{min} + W) / W) > e_{min} \\
+                e & \leq \max(\texttt{exp}(x_k) - 1, e_{min} + W) < e_{max}.
+            \end{aligned}
+         \]
+         Therefore both $s=2^e$ and $1/s$ is representable.
+         It also means that if there is no input exceptional values, the scaling factor $f$ is always representable.
+
+        The proof is trivial for the case $x_k = 0$. We suppose that $x_k \neq 0$.
+        Hence $x_k \geq 2^{e_{min} - p}$, or $e_{min} \leq \texttt{exp}(x_k) + p$,
+        where $p$ is the precision of input floating-point numbers.
+        Therefore $e \leq \max(\texttt{exp}(x_k), \texttt{exp}(x_k) + p + W)$,
+        which means
+        \begin{equation}
+            s = 2^e \leq 2^{\texttt{exp}(x_k)} 2^{p+W} < |x_k| 2^{p+W+1}.
+            \label{eq:nrm2_scaling.upper}
+        \end{equation}
+        Moreover, we have
+        \(
+            e \geq W * ((\texttt{exp}(x_k) -  1) / W - 1) = \texttt{exp}(x_k) - W -1.
+        \)
+        So 
+        \begin{equation}
+            s = 2^e \geq 2^{\texttt{exp}(x_k)} 2^{- W - 1} > |x_k| 2^{-W-2}.
+            \label{eq:nrm2_scaling.lower}
+        \end{equation}
+        The proof can be deduced by combining the Algorithm's requirement
+        with \eqref{eq:nrm2_scaling.upper} and \eqref{eq:nrm2_scaling.lower}.
+    \end{proof}
+
+    Lemma~\ref{lem:nrm2_scaling} means that 
+    for non-trival input values, the maximum absolute value of the scaled inputs
+    will always be kept in range $(2^{-p-W-1}, 2^{W+2})$, which guarantees that
+    there will be no overflow or underflow in computing the sum of squares.
+
+    Since the scaling factors in Algorithm~\ref{alg:nrm2} are always reprentable and $f \in 2^{W\Z}$,
+    the binning process is not affected by the scaling as well as the rescaling.
+    Therefore the reproducibility of Algorithm~\ref{alg:nrm2} is guaranteed
+    by the reproducibility of the indexed sum (see Section~\ref{sec:indexed_sum}).
+    Finally, the euclidean norm can be simply computed by: $f \sqrt{Y}$.
+
+    It is worth noting that the same scaling technique can be used to avoid
+    overflow and underflow for the summation, regardless of the index of the partial sum.
+    It is possible to scale input data by a factor of $2^{kW}$ so that the maximum
+    absolute value is always in range $[1,2^W)$.
+    This will help to avoid computing the index of partial sum
+    at the cost of having to store and communicate the scaling factor along computation.
+    It is therefore left as a tuning parameter for future work.
+
