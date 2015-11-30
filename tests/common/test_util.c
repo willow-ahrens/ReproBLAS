@@ -1355,12 +1355,12 @@ void util_dvec_fill(int N, double* V, int incV, util_vec_fill_t Fill, double Rea
       break;
     case util_Vec_Full_Range:
       for (i = 0; i < N; i++) {
-        V[i*incV] = (1 - (i % 2) * 2) * MIN(exp(log(DBL_MIN) + (log(DBL_MAX) - log(DBL_MIN)) * ((double)i / (double)N)), DBL_MAX);
+        V[i*incV] = (1 - (i % 2) * 2) * MAX(MIN(exp(log(DBL_MIN) + (log(DBL_MAX) - log(DBL_MIN)) * ((double)i / (double)N)), DBL_MAX), -1 * DBL_MAX);
       }
       break;
     case util_Vec_Half_Range:
       for (i = 0; i < N; i++) {
-        V[i*incV] = (1 - (i % 2) * 2) * MIN(exp(log(DBL_MAX) * ((double)i / (double)N)), DBL_MAX);
+        V[i*incV] = (1 - (i % 2) * 2) * MAX(MIN(exp(log(DBL_MAX) * ((double)i / (double)N)), DBL_MAX), -1 * DBL_MAX);
       }
       break;
     case util_Vec_Small_Plus_Increasing_Big:
@@ -1566,12 +1566,12 @@ void util_svec_fill(int N, float* V, int incV, util_vec_fill_t Fill, float RealS
       break;
     case util_Vec_Full_Range:
       for (i = 0; i < N; i++) {
-        V[i*incV] = (1 - (i % 2) * 2) * MIN(exp(log(FLT_MIN) + (log(FLT_MAX) - log(FLT_MIN)) * ((double)i / (double)N)), FLT_MAX);
+        V[i*incV] = (1 - (i % 2) * 2) * MAX(MIN(exp(log(FLT_MIN) + (log(FLT_MAX) - log(FLT_MIN)) * ((double)i / (double)N)), FLT_MAX), -1 * FLT_MAX);
       }
       break;
     case util_Vec_Half_Range:
       for (i = 0; i < N; i++) {
-        V[i*incV] = (1 - (i % 2) * 2) * MIN(exp(log(FLT_MAX) * ((double)i / (double)N)), FLT_MAX);
+        V[i*incV] = (1 - (i % 2) * 2) * MAX(MIN(exp(log(FLT_MAX) * ((double)i / (double)N)), FLT_MAX), -1 * FLT_MAX);
       }
       break;
     case util_Vec_Small_Plus_Increasing_Big:
