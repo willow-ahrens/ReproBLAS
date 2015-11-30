@@ -178,8 +178,14 @@ def get_siendurance(verbose="false"):
   return get_siendurance.siendurance
 get_siendurance.siendurance = None
 
+def my_get_cpu_info():
+  try:
+    return cpuinfo.get_cpu_info()
+  except Exception:
+    return None
+
 def get_cpu_freq(verbose="false"):
-  info = cpuinfo.get_cpu_info()
+  info = my_get_cpu_info()
   if info and "freq" not in config.cpu_info(verbose="false"):
     return info["hz_actual_raw"][0] * 10**(info["hz_actual_raw"][1])
   else:
@@ -187,7 +193,7 @@ def get_cpu_freq(verbose="false"):
     return config.cpu_info()["freq"]
 
 def get_fma(verbose="false"):
-  info = cpuinfo.get_cpu_info()
+  info = my_get_cpu_info()
   if info and "fma" not in config.cpu_info(verbose="false"):
     return "fma" in info["flags"]
   else:
@@ -195,7 +201,7 @@ def get_fma(verbose="false"):
     return config.cpu_info()["fma"]
 
 def get_cache(verbose="false"):
-  info = cpuinfo.get_cpu_info()
+  info = my_get_cpu_info()
   if info and "cache" not in config.cpu_info(verbose="false"):
     return int(info['l2_cache_size']) * 1024
   else:
