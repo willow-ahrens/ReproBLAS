@@ -1,6 +1,6 @@
 # select compiler (comment all for auto)
-#CC = cc
-CC = gcc
+CC = cc
+#CC = gcc
 #CC = icc
 #CC = pgcc
 #CC = craycc
