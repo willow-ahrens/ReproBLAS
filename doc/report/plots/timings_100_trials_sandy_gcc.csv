@@ -1,6 +1,10 @@
-  N   , fold ,   FillX    ,  a   ,   RDSUM   ,   RSSUM   
-16384 , 3    , rand       , 1000 , 1.358e-05 , 8.217e-06 
-16384 , 3    , full_range , 1000 , 1.382e-05 , 1.520e-05 
+ N   , fold ,   FillX    ,  a   ,   RDSUM   ,   RSSUM   
+8192 , 3    , rand       , 1000 , 5.514e-06 , 2.757e-06 
+8192 , 3    , half_range , 1000 , 5.514e-06 , 2.757e-06 
+
+ N   , fold ,   FillX    ,  a   ,   RDSUM   ,   RSSUM   
+8192 , 3    , rand       , 1000 , 6.575e-06 , 4.110e-06 
+8192 , 3    , half_range , 1000 , 6.823e-06 , 4.297e-06 
 
  N   , fold , FillX  ,   DSUM    ,   RDSUM   
 64   , 3    , normal , 4.706e-09 , 3.294e-08 
@@ -91,4 +95,3 @@
 (1024, 1024, 1024) , ('NoTrans', 'NoTrans') , 3    , normal , 100 , 8.806e-02 , 1.182e+00 
 (2048, 2048, 2048) , ('NoTrans', 'NoTrans') , 3    , normal , 100 , 6.890e-01 , 9.226e+00 
 (4096, 4096, 4096) , ('NoTrans', 'NoTrans') , 3    , normal , 100 , 5.967e+00 , 7.271e+01 
-
