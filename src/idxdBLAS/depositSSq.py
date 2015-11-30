@@ -15,12 +15,15 @@ class DepositSSq(deposit.Deposit):
     self.scale_name = scale_name
 
   def preprocess(self, code_block, n, incs, partial="", align=False):
-    code_block.include("{0} scale_mask = {1};".format(self.vec.type_name, self.vec.set(self.scale_name)[0]))
+#    code_block.include("{0} scale_mask = {1};".format(self.vec.type_name, self.vec.set(self.scale_name)[0]))
+    code_block.include("{0} scale_mask_inv = {1};".format(self.vec.type_name, self.vec.set("1.0 / " + self.scale_name)[0]))
     reg_width = self.compute_reg_width(n)
     if partial == "":
-      code_block.set_equal(self.load_vars[0], self.vec.div(self.vec.load(self.load_ptrs[0], 0, incs[0], n, align), ["scale_mask"] * reg_width))
+#      code_block.set_equal(self.load_vars[0], self.vec.div(self.vec.load(self.load_ptrs[0], 0, incs[0], n, align), ["scale_mask"] * reg_width))
+      code_block.set_equal(self.load_vars[0], self.vec.mul(self.vec.load(self.load_ptrs[0], 0, incs[0], n, align), ["scale_mask_inv"] * reg_width))
     else:
-      code_block.set_equal(self.load_vars[0], self.vec.div(self.vec.load_partial(self.load_ptrs[0], 0, incs[0], partial), ["scale_mask"] * reg_width))
+#      code_block.set_equal(self.load_vars[0], self.vec.div(self.vec.load_partial(self.load_ptrs[0], 0, incs[0], partial), ["scale_mask"] * reg_width))
+      code_block.set_equal(self.load_vars[0], self.vec.mul(self.vec.load_partial(self.load_ptrs[0], 0, incs[0], partial), ["scale_mask_inv"] * reg_width))
     code_block.set_equal(self.load_vars[0], self.vec.mul(self.load_vars[0], self.load_vars[0][:reg_width]))
 
   def set_daz_ftz(self, code_block):
