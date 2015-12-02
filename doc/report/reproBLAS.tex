@@ -2,7 +2,7 @@
   \label{sec:reproBLAS}
   ReproBLAS is the name given to our beloved library of implementations of algorithms described in this paper.
   The code is available online at \texttt{<http://bebop.cs.berkeley.edu/reproblas>}.
-  To be useful to the greatest number of performance-conscious scientific software developers, ReproBLAS is written in C (conforming to the C99 Standard \cite{c99}, with calling conventions that are compatibile with the datatypes of the C89 Standard \cite{c89}).
+  To be useful to the greatest number of performance-conscious scientific software developers, ReproBLAS is written in C (conforming to the C99 Standard \cite{c99}, with calling conventions that are compatible with the data types of the C89 Standard \cite{c89}).
 \begin{comment}
  complex types \cite{c89} as discussed in \cite{cblasinterface}
 Because the C89 standard did not standardize the complex floating point type, all interfaces refer to complex types using \texttt{void*} pointers. If a function would normally return a complex type, a \texttt{void*} pointer is added as the last argument and the function name is suffixed by \texttt{_sub}

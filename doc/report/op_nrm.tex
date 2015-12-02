@@ -1,14 +1,13 @@
 \subsection{Euclidean Norm}
   \label{sec:compositeops_nrm}
-    
-    The Euclidean norm operation computes
+    The Euclidean norm of a vector $\vec{x}$ (sometimes referred to as $\|\vec{x}\|$) is defined as
     \begin{equation}
-        \texttt{nrm2}(x) = \sqrt{\sum_{j=0}^{n-1} x_j^2}, \quad x_j \in \F.
+        \|\vec{x}\| = \sqrt{\sum_{j=0}^{n-1} x_j^2}, \quad x_j \in \F.
         \label{eq:nrm2}
     \end{equation}
 
     Since the summands in the summation of \eqref{eq:nrm2} are all non-negative,
-    there is no cancellation, the euclidean norm operation
+    there is no cancellation, the Euclidean norm operation
     is usually of high accuracy.
     It can be implemented simply using a dot product operation on two copies of the same input vector,
     or by using the sum operation on the squares of the input vector,
@@ -17,7 +16,7 @@
     On one hand, if some input values were too big ($\geq \sqrt{2^{e_{max}+1}}$),
     the partial sum would overflow. The computed result would
     be $\texttt{Inf}$ when the real Euclidean norm would be much smaller than the
-    overflow threshhold.
+    overflow threshold.
     On the other hand, if all input values were too small ($ < \sqrt{2^{e_{min}}}$),
     their squared value would be smaller than the smallest representable floating point number and 
     underflow would occur, causing the returned result to be 0.
@@ -36,9 +35,9 @@
     so that the slicing processes using different scaling factors are identical.
     %Therefore the reproducibility is maintained after rescaling.
     Algorithm~\ref{alg:nrm2} summarizes the algorithm for sum of squares,
-    which will be used to compute the euclidean norm.
+    which will be used to compute the Euclidean norm.
     Note that the handling of special input values \texttt{Inf}, \texttt{-Inf}, and \texttt{NaN}
-    is similar to the sum operation, which is not included here for better readibility.
+    is similar to the sum operation, which is not included here for better readability.
 
     \begin{samepage}
     \begin{alg}
@@ -117,15 +116,15 @@
     \end{proof}
 
     Lemma~\ref{lem:nrm2_scaling} means that 
-    for non-trival input values, the maximum absolute value of the scaled inputs
+    for non-trivial input values, the maximum absolute value of the scaled inputs
     will always be kept in range $(2^{-p-W-1}, 2^{W+2})$, which guarantees that
     there will be no overflow or underflow in computing the sum of squares.
 
-    Since the scaling factors in Algorithm~\ref{alg:nrm2} are always reprentable and $s \in 2^{W\Z}$,
+    Since the scaling factors in Algorithm~\ref{alg:nrm2} are always representable and $s \in 2^{W\Z}$,
     the binning process is not affected by the scaling as well as the rescaling.
     Therefore the reproducibility of Algorithm~\ref{alg:nrm2} is guaranteed
     by the reproducibility of the indexed sum (see Section~\ref{sec:indexed_sum}).
-    Finally, the euclidean norm can be simply computed as (using \eqref{eq:indexedvalue})
+    Finally, the Euclidean norm can be simply computed as (using \eqref{eq:indexedvalue})
     \begin{equation}
       s \sqrt{\mathcal{Y}}
     \end{equation}
