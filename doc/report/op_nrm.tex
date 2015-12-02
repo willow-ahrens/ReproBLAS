@@ -26,56 +26,56 @@
     For example, the function \texttt{xnrm2} from the BLAS library \cite{BLAS}
     scales input data by the intermediate maximum absolute value
     to avoid both overflow and underflow.
-    However, using our indexed format scheme, such a scaling would alter
-    the indices of input data as well as of partial sum, and therefore
+    However, in our indexed format scheme, such a scaling would alter
+    the mantissae of the input data and the splitting of the mantissae, and therefore
     cannot guarantee reproducibility.
     In order to maintain reproducibility, 
-    first, scaling factors must be power-of-two so that the scaling and rescaling
-    won't change any mantissa of input values as well as of partial sums.
-    Second, the scaling factors' exponents must be different by a multiple of $W$,
-    so that the slicing process using different scaling factors are identical.
+    first, scaling factors must be powers of two so that the scaling and rescaling
+    won't change any mantissae of input values.
+    Second, the scaling factors' exponents must differ only by multiples of $W$,
+    so that the slicing processes using different scaling factors are identical.
     %Therefore the reproducibility is maintained after rescaling.
     Algorithm~\ref{alg:nrm2} summarizes the algorithm for sum of squares,
     which will be used to compute the euclidean norm.
-    Note that, the handling of special input values $\texttt{NaN}$ $\pm \texttt{Inf}$
+    Note that the handling of special input values \texttt{Inf}, \texttt{-Inf}, and \texttt{NaN}
     is similar to the sum operation, which is not included here for better readibility.
 
+    \begin{samepage}
     \begin{alg}
-        Given $x_k$ an element of a floating-point input vector,
-        and $Y$ the partial indexed sum of of $x^2_{j, 1 \leq j < k}$
-        with scaling factor $f$,
-        update the sum of squares with $x_k$.
-        \begin{algorithmic}[1]
-            \Require $f=0$ if $\max_{j=1}^{k-1}|x_j| = 0$.
-            Otherwise $2^{-p-W-1} f < \max_{j=1}^{k-1}|x_j| < 2^{W+2} f$
-            and $f = 2^{k*W}$ where $k \in \Z$,
-            where $p$ is the precision of input numbers and $W$ is the bin width.
-            $Y$ is the indexed sum of $(x_1/f)^2, \ldots, (x_{k-1}/f)^2$.
-            \State $e = W * \texttt{floor}(\max(\texttt{exp}(x_k) - 1,e_{min}+W) / W)$
-                \label{alg:nrm2.line.e}
-            \State $s = 2^e$
-            \If{$f < s$}
-                \For {$i=0$ \To $K-1$}
-                    \State ${Y_i}_P = (f/s)^2 * {Y_i}_P$
-                \EndFor
-                \State $f = s$
+      If $Y$ is the $K$-fold indexed sum of some $(x_0/s)^2, ..., (x_{n - 1}/s)^2$ where $x_0, ..., x_{n} \in \F$, $s \in 2^{W\Z}$, produce the $K$-fold indexed sum of $(x_0/t)^2, ..., (x_{n}/t)^2$ where $t \in 2^{W\Z}$. 
+      \begin{algorithmic}[1]
+        \Require
+        \Statex $s=0$ if $\max_{j \in \{0, ..., n - 1\}}|x_j| = 0$.
+        Otherwise $2^{-p-W-1} s < \max_{j \in \{0, ..., n - 1\}}|x_j| < 2^{W+2} s$
+        and $s \in 2^{\Z*W}$.
+        \Statex $Y$ is the indexed sum of $(x_1/s)^2, ..., (x_{n-1}/s)^2$.
+        \Function{Add Float To Indexed Norm}{$K$, $x_n$, $Y$, $s$}
+          \State $e = W * \lfloor\max(\exp(x_n) - 1,e_{min}+W) / W\rfloor$
+              \label{alg:nrm2.line.e}
+          \State $t = 2^e$
+          \If{$s < t$}
+              \For {$k=0$ \To $K-1$}
+                  \State ${Y_k}_P = (s/t)^2 * {Y_k}_P$
+              \EndFor
+              \State $s = t$
           \EndIf
-          \State $xs = (x_k / f)^2$
-          \State \Call{Deposit}{K, $xs$, $Y$}
-          \Ensure
-            $Y$ is the intermediate indexed sum of $(x_1/f)^2, \ldots, (x_{k}/f)^2$.
-        \end{algorithmic}
-        \label{alg:nrm2}
+        \State \Call{Deposit}{$K$, $(x_n / s)^2$, $Y$}
+      \EndFunction
+      \Ensure
+      \Statex $s=0$ if $\max_{j \in \{0, ..., n\}}|x_j| = 0$.
+      Otherwise $2^{-p-W-1} s < \max_{j \in \{0, ..., n\}}|x_j| < 2^{W+2} s$
+      and $s \in 2^{\Z*W}$.
+      \Statex $Y$ is the indexed sum of $(x_0/s)^2, ..., (x_{n}/s)^2$.
+      \end{algorithmic}
+      \label{alg:nrm2}
     \end{alg}
+    \end{samepage}
 
     \begin{lem}
     \label{lem:nrm2_scaling}
-    Let $f$ and $Y$ be the output of Algorithm~\ref{alg:nrm2}, then the updated sclaing factor is either $0$  or
-    or satisying
+    Let $s$ and $Y$ be the output of Algorithm~\ref{alg:nrm2}, then the updated scaling factor $s$ is either $0$ or it satisfies
     \begin{equation}
-    \begin{aligned}
-        2^{-p-W-1}f \leq \max_{j=1}^k |x_j| < 2^{W+2} f.
-    \end{aligned}
+        2^{-p-W-1}s \leq \max_{j \in \{0, ..., n\}}|x_j| < 2^{W+2} s
     \end{equation}
     \end{lem}
 
@@ -84,29 +84,29 @@
          $e$ is a multiple of $W$ and
          \[
             \begin{aligned}
-                e & \geq W * \texttt{floor}((e_{min} + W) / W) > e_{min} \\
-                e & \leq \max(\texttt{exp}(x_k) - 1, e_{min} + W) < e_{max}.
+                e & \geq W * \lfloor(e_{\min} + W) / W\rfloor > e_{\min} \\
+                e & \leq \max(\exp(x_n) - 1, e_{\min} + W) < e_{\max}.
             \end{aligned}
          \]
-         Therefore both $s=2^e$ and $1/s$ is representable.
-         It also means that if there is no input exceptional values, the scaling factor $f$ is always representable.
+         Therefore both $t=2^e$ and $1/t$ is representable.
+         It also means that if there is no input exceptional values, the scaling factor $s$ is always representable.
 
-        The proof is trivial for the case $x_k = 0$. We suppose that $x_k \neq 0$.
-        Hence $x_k \geq 2^{e_{min} - p}$, or $e_{min} \leq \texttt{exp}(x_k) + p$,
+        The proof is trivial for the case $x_n = 0$. We suppose that $x_n \neq 0$.
+        Hence $x_n \geq 2^{e_{\min} - p}$, or $e_{\min} \leq \exp(x_n) + p$,
         where $p$ is the precision of input floating-point numbers.
-        Therefore $e \leq \max(\texttt{exp}(x_k), \texttt{exp}(x_k) + p + W)$,
+        Therefore $e \leq \max(\exp(x_n), \exp(x_n) + p + W)$,
         which means
         \begin{equation}
-            s = 2^e \leq 2^{\texttt{exp}(x_k)} 2^{p+W} < |x_k| 2^{p+W+1}.
+            t = 2^e \leq 2^{\exp(x_n)} 2^{p+W} < |x_n| 2^{p+W+1}.
             \label{eq:nrm2_scaling.upper}
         \end{equation}
         Moreover, we have
         \(
-            e \geq W * ((\texttt{exp}(x_k) -  1) / W - 1) = \texttt{exp}(x_k) - W -1.
+            e \geq W * ((\exp(x_n) -  1) / W - 1) = \exp(x_n) - W -1
         \)
         So 
         \begin{equation}
-            s = 2^e \geq 2^{\texttt{exp}(x_k)} 2^{- W - 1} > |x_k| 2^{-W-2}.
+            s = 2^e \geq 2^{\exp(x_n)} 2^{- W - 1} > |x_n| 2^{-W-2}
             \label{eq:nrm2_scaling.lower}
         \end{equation}
         The proof can be deduced by combining the Algorithm's requirement
@@ -118,15 +118,18 @@
     will always be kept in range $(2^{-p-W-1}, 2^{W+2})$, which guarantees that
     there will be no overflow or underflow in computing the sum of squares.
 
-    Since the scaling factors in Algorithm~\ref{alg:nrm2} are always reprentable and $f \in 2^{W\Z}$,
+    Since the scaling factors in Algorithm~\ref{alg:nrm2} are always reprentable and $s \in 2^{W\Z}$,
     the binning process is not affected by the scaling as well as the rescaling.
     Therefore the reproducibility of Algorithm~\ref{alg:nrm2} is guaranteed
     by the reproducibility of the indexed sum (see Section~\ref{sec:indexed_sum}).
-    Finally, the euclidean norm can be simply computed by: $f \sqrt{Y}$.
+    Finally, the euclidean norm can be simply computed by
+    \begin{equation}
+      s \sqrt{\mathcal{Y}}
+    \end{equation}
 
     It is worth noting that the same scaling technique can be used to avoid
     overflow and underflow for the summation, regardless of the index of the partial sum.
-    It is possible to scale input data by a factor of $2^{kW}$ so that the maximum
+    It is possible to scale input data by a factor in $2^{W\Z}$ so that the maximum
     absolute value is always in range $[1,2^W)$.
     This will help to avoid computing the index of partial sum
     at the cost of having to store and communicate the scaling factor along computation.
