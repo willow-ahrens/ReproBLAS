@@ -7,7 +7,6 @@
  complex types \cite{c89} as discussed in \cite{cblasinterface}
 Because the C89 standard did not standardize the complex floating point type, all interfaces refer to complex types using \texttt{void*} pointers. If a function would normally return a complex type, a \texttt{void*} pointer is added as the last argument and the function name is suffixed by \texttt{_sub}
 \end{comment}
-  %TODO cite interoperability?
   The choice of C allows for intrepid Fortran and C++ users to take advantage of the library as well.
   Code generation and testing utilities are implemented in the more productive language Python \cite{Python}.
   A few distributed memory functions are supplied using MPI \cite{MPI}, the industry standard for distributed memory programming.
