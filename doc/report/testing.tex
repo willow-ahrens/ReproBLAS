@@ -3,16 +3,17 @@
 
   Testing in ReproBLAS starts with the BLAS1 methods (\texttt{xsum}, \texttt{xasum}, \texttt{xnrm2}, and \texttt{xdot}). These methods are first checked to see that their results are accurate, then checked to see if the results are reproducible.
 
-  The accuracy of the reproducible BLAS1 methods is validated by checking to see if the results of each method are within the error margin specified by \eqref{eq:error2} from the true results. Because the true summation result must be known, these tests are performed on distributions with known sums. The input vectors used are shown in Table \ref{tbl:validateblas1data}.
+  The accuracy of the reproducible BLAS1 methods is validated by checking to see if the results of each method are within the error margin specified by \eqref{eq:error2} from the true results. Because the true summation result must be known, these tests are performed on distributions with known sums. The input vectors used are shown in Table \ref{tbl:validateblas1data}. Note that $\text{random}()$ is a floating point number uniformly distributed between 0 and 1.
 
     \begin{table}[!htbp]
         \centering
         \begin{tabular}{ | l |  l |} \hline
             Name & Value\\ \hline
-            $sine$ & $X_j = \sin(2 \pi j/n)$ \\ \hline
-            $small + big$ & $X_j = \begin{cases} 2^{\lfloor p/2\rfloor + 1} \text{ if } j == 0 \\ 2^{-\lfloor p/2\rfloor - 1} \text{ otherwise} \end{cases}$ \\ \hline
-            $small + big + big$ & $X_j = \begin{cases} 2^{\lfloor p/2\rfloor + 1} \text{ if } j == 0 \text{ or } j == n - 1 \\ 2^{-\lfloor p/2\rfloor - 1} \text{ otherwise} \end{cases}$\\ \hline
-            $small + big - big$ & $X_j = \begin{cases} 2^{\lfloor p/2\rfloor + 1} \text{ if } j == 0\\-2^{\lfloor p/2\rfloor + 1} \text{ if } j == n - 1\\ 2^{-\lfloor p/2\rfloor - 1} \text{ otherwise} \end{cases}$\\ \hline
+            $sine$ & $X_j = \begin{cases}\sin(2 \pi j/n) \text{ if } j < \lfloor n/2 \rfloor\\ 0 \text{ if } j = (n - 1)/2 \\ -X_{n - j - 1} \text{ otherwise } \end{cases}$ \\ \hline
+            $mountain$ & $X_j = \begin{cases}\text{random}()\text{ if } n = 0 \\ X_{j - 1} * 2^{-\lfloor p/2\rfloor - 1} \text{ if } j < \lfloor n/2 \rfloor\\ 0 \text{ if } j = (n - 1)/2 \\ -X_{n - j - 1} \text{ otherwise } \end{cases}$ \\ \hline
+            $small + big$ & $X_j = \begin{cases} 2^{\lfloor p/2\rfloor + 1} \text{ if } j = 0 \\ 2^{-\lfloor p/2\rfloor - 1} \text{ otherwise} \end{cases}$ \\ \hline
+            $small + big + big$ & $X_j = \begin{cases} 2^{\lfloor p/2\rfloor + 1} \text{ if } j = 0 \text{ or } j = n - 1 \\ 2^{-\lfloor p/2\rfloor - 1} \text{ otherwise} \end{cases}$\\ \hline
+            $small + big - big$ & $X_j = \begin{cases} 2^{\lfloor p/2\rfloor + 1} \text{ if } j = 0\\-2^{\lfloor p/2\rfloor + 1} \text{ if } j = n - 1\\ 2^{-\lfloor p/2\rfloor - 1} \text{ otherwise} \end{cases}$\\ \hline
         \end{tabular}
         \caption{ReproBLAS Accuracy Validation Vectors $X \in \F^n$}
         \label{tbl:validateblas1data}
@@ -25,13 +26,13 @@
         \centering
         \begin{tabular}{ | l |  l |} \hline
             Name & Value\\ \hline
-            $\texttt{Inf}$ & $X_j = \begin{cases} \texttt{Inf} \text{ if } j == 0 \\ 0 \text{ otherwise} \end{cases}$ \\ \hline
-            $\texttt{Inf} + \texttt{Inf}$ & $X_j = \begin{cases} \texttt{Inf} \text{ if } j == 0 \text{ or } j == n - 1 \\ 0 \text{ otherwise} \end{cases}$\\ \hline
-            $\texttt{Inf} - \texttt{Inf}$ & $X_j = \begin{cases} \texttt{Inf} \text{ if } j == 0 \\ -\texttt{Inf} \text{ if } j == n - 1 \\ 0 \text{ otherwise} \end{cases}$\\ \hline
-            $\texttt{NaN}$ & $X_j = \begin{cases} \texttt{NaN} \text{ if } j == 0 \\ 0 \text{ otherwise} \end{cases}$\\ \hline
-            $\texttt{Inf} + \texttt{NaN}$ & $X_j = \begin{cases} \texttt{Inf} \text{ if } j == 0 \\ \texttt{NaN} \text{ if } j == n - 1 \\ 0 \text{ otherwise} \end{cases}$\\ \hline
-            $\texttt{Inf} + \texttt{NaN} + \texttt{Inf}$ & $X_j = \begin{cases} \texttt{Inf} \text{ if } j == 0 \\ \texttt{NaN} \text{ if } j == \lfloor n/2 \rfloor \\ \texttt{Inf} \text{ if } j == n - 1 \\ 0 \text{ otherwise} \end{cases}$\\ \hline
-            $\texttt{Inf} + \texttt{NaN} - \texttt{Inf}$ & $X_j = \begin{cases} \texttt{Inf} \text{ if } j == 0 \\ \texttt{NaN} \text{ if } j == \lfloor n/2 \rfloor \\ -\texttt{Inf} \text{ if } j == n - 1 \\ 0 \text{ otherwise} \end{cases}$\\ \hline
+            $\texttt{Inf}$ & $X_j = \begin{cases} \texttt{Inf} \text{ if } j = 0 \\ 0 \text{ otherwise} \end{cases}$ \\ \hline
+            $\texttt{Inf} + \texttt{Inf}$ & $X_j = \begin{cases} \texttt{Inf} \text{ if } j = 0 \text{ or } j = n - 1 \\ 0 \text{ otherwise} \end{cases}$\\ \hline
+            $\texttt{Inf} - \texttt{Inf}$ & $X_j = \begin{cases} \texttt{Inf} \text{ if } j = 0 \\ -\texttt{Inf} \text{ if } j = n - 1 \\ 0 \text{ otherwise} \end{cases}$\\ \hline
+            $\texttt{NaN}$ & $X_j = \begin{cases} \texttt{NaN} \text{ if } j = 0 \\ 0 \text{ otherwise} \end{cases}$\\ \hline
+            $\texttt{Inf} + \texttt{NaN}$ & $X_j = \begin{cases} \texttt{Inf} \text{ if } j = 0 \\ \texttt{NaN} \text{ if } j = n - 1 \\ 0 \text{ otherwise} \end{cases}$\\ \hline
+            $\texttt{Inf} + \texttt{NaN} + \texttt{Inf}$ & $X_j = \begin{cases} \texttt{Inf} \text{ if } j = 0 \\ \texttt{NaN} \text{ if } j = \lfloor n/2 \rfloor \\ \texttt{Inf} \text{ if } j = n - 1 \\ 0 \text{ otherwise} \end{cases}$\\ \hline
+            $\texttt{Inf} + \texttt{NaN} - \texttt{Inf}$ & $X_j = \begin{cases} \texttt{Inf} \text{ if } j = 0 \\ \texttt{NaN} \text{ if } j = \lfloor n/2 \rfloor \\ -\texttt{Inf} \text{ if } j = n - 1 \\ 0 \text{ otherwise} \end{cases}$\\ \hline
         \end{tabular}
         \caption{ReproBLAS Exception Validation Vectors $X \in \F^n$}
         \label{tbl:validateinfblas1data}

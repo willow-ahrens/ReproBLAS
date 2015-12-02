@@ -45,13 +45,13 @@ rects2 = plt.bar(index + bar_width, np.array(tables[1][2][-2:]) * 1000000.0, bar
                  alpha=opacity,
                  hatch='//',
                  color='blue',
-                 label='Full Exponent Range Distribution')
+                 label='Half Exponent Range Distribution')
 
 plt.xlabel('Reproducible Summation Function')
 plt.ylabel('Time (microseconds)')
 plt.title('Reproducible Summation Time Vs. Distribution ({} Values)'.format(int(tables[1][1][0])))
 plt.xticks(index + bar_width, ('rdsum (double)', 'rssum (float)'))
-plt.legend(loc="lower right")
+plt.legend(loc="upper right")
 
 plt.tight_layout()
 plt.savefig("easy_vs_hard.eps", format='eps', dpi=1200)

@@ -1,30 +1,30 @@
 \subsection{Euclidean Norm}
   \label{sec:compositeops_nrm}
     
-    The Euclidean Norm operation computes
+    The Euclidean norm operation computes
     \begin{equation}
         \texttt{nrm2}(x) = \sqrt{\sum_{j=0}^{n-1} x_j^2}, \quad x_j \in \F.
         \label{eq:nrm2}
     \end{equation}
 
-    Since the addends in the summation of \eqref{eq:nrm2} are all non-negative,
+    Since the summands in the summation of \eqref{eq:nrm2} are all non-negative,
     there is no cancellation, the euclidean norm operation
     is usually of high accuracy.
-    It can be implemented simply using the dot product operation of the the same input vectors,
-    or by using the sum squares operation,
+    It can be implemented simply using a dot product operation on two copies of the same input vector,
+    or by using the sum operation on the squares of the input vector,
     both of which can be made reproducible using a corresponding reproducible
-    dot product and summation operations.
-    On one hand, if some input values are too big $\geq \sqrt{2^{e_{max}+1}}$,
-    the partial sum would overflow. It means that the computed result will
-    be $\texttt{Inf}$ whereas the real euclidean norm can be much smaller than the
+    dot product and summation operations. However, both of these methods are prone to unnecessary overflow and underflow.
+    On one hand, if some input values were too big ($\geq \sqrt{2^{e_{max}+1}}$),
+    the partial sum would overflow. The computed result would
+    be $\texttt{Inf}$ when the real Euclidean norm would be much smaller than the
     overflow threshhold.
-    On the other hand, if  all input values are smaller than $\sqrt{2^{e_min}}$,
-    their squaring value will be smaller than the smallest representable value,
+    On the other hand, if all input values were too small ($ < \sqrt{2^{e_{min}}}$),
+    their squared value would be smaller than the smallest representable floating point number and 
     underflow would occur, causing the returned result to be 0.
 
-    Scaling technique can be used to handle the underflow/overflow issues.
-    For example, the functions \texttt{xnrm2} from the BLAS library \cite{BLAS}
-    scale input data by the intermediate maximum absolute value
+    Scaling techniques can be used to handle the underflow/overflow issues.
+    For example, the function \texttt{xnrm2} from the BLAS library \cite{BLAS}
+    scales input data by the intermediate maximum absolute value
     to avoid both overflow and underflow.
     However, using our indexed format scheme, such a scaling would alter
     the indices of input data as well as of partial sum, and therefore
