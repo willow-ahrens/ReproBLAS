@@ -45,6 +45,7 @@ libidxd.a_DEPS = cciconv_sub.o \
                  didconv.o \
                  diddeposit.o \
                  didiadd.o \
+                 didiaddsq.o \
                  didiaddv.o \
                  didiset.o \
                  didupdate.o \
@@ -84,6 +85,7 @@ libidxd.a_DEPS = cciconv_sub.o \
                  sisdeposit.o \
                  sisetzero.o \
                  sisiadd.o \
+                 sisiaddsq.o \
                  sisiaddv.o \
                  sisiset.o \
                  sisize.o \

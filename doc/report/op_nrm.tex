@@ -48,7 +48,7 @@
         \Statex $s=0$ if $\max_{j \in \{0, ..., n - 1\}}|x_j| = 0$.
         Otherwise $2^{-p-W-1} s < \max_{j \in \{0, ..., n - 1\}}|x_j| < 2^{W+2} s$
         and $s \in 2^{\Z*W}$.
-        \Statex $Y$ is the indexed sum of $(x_1/s)^2, ..., (x_{n-1}/s)^2$.
+        \Statex $Y$ is the indexed sum of $(x_0/s)^2, ..., (x_{n-1}/s)^2$.
         \Function{Add Float To Indexed Norm}{$K$, $x_n$, $Y$, $s$}
           \State $e = W * \lfloor\max(\exp(x_n) - 1,e_{min}+W) / W\rfloor$
               \label{alg:nrm2.line.e}
@@ -70,6 +70,9 @@
       \label{alg:nrm2}
     \end{alg}
     \end{samepage}
+
+    A method to add the scaled indexed sum of squares of a vector to a scaled indexed type (using an Algorithm similar to \ref{alg:nrm2}) is available in ReproBLAS as \texttt{idxdBLAS\_xixssq} in \texttt{idxdBLAS.h}. A method to return the reproducible Euclidean norm of a vector is available as \texttt{reproBLAS\_rxnrm2} in \texttt{reproBLAS.h}. The function \texttt{idxd\_xixiaddsq} in \texttt{idxd.h} can be used to add two scaled indexed sums of squares. An MPI data type that holds a scaled indexed type can be created (creation is only performed once, subsequent calls return the same copy) and returned using the \texttt{idxdMPI\_DOUBLE\_INDEXED\_SCALED}, etc. function of \texttt{idxdMPI.h}. \texttt{idxdMPI.h} also contains the \texttt{XIXIADDSQ} method, an MPI reduction operator that can reduce the scaled sums of squares in parallel. (see Section \ref{sec:reproBLAS} for details).
+
 
     \begin{lem}
     \label{lem:nrm2_scaling}
@@ -122,7 +125,7 @@
     the binning process is not affected by the scaling as well as the rescaling.
     Therefore the reproducibility of Algorithm~\ref{alg:nrm2} is guaranteed
     by the reproducibility of the indexed sum (see Section~\ref{sec:indexed_sum}).
-    Finally, the euclidean norm can be simply computed by
+    Finally, the euclidean norm can be simply computed as (using \eqref{eq:indexedvalue})
     \begin{equation}
       s \sqrt{\mathcal{Y}}
     \end{equation}
