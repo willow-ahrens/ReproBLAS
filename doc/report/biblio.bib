@@ -42,7 +42,7 @@
 } 
 
 @inproceedings{taufer,
-  title={Improving numerical reproducibility and stability in large-scale numerical simulations on GPUs},
+  title={{Improving numerical reproducibility and stability in large-scale numerical simulations on GPUs}},
   author={Taufer, Michela and Padron, Omar and Saponaro, Philip and Patel, Sandeep},
   booktitle={Parallel \& Distributed Processing (IPDPS), 2010 IEEE International Symposium on},
   pages={1--9},
@@ -73,24 +73,39 @@
   publisher={IEC}
 }
 
-@misc{BLAS,
-  title = {{BLAS - Basic Linear Algebra Subroutines}},
-  note = {\verb|http://www.netlib.org/blas/|},
+@article{BLAS,
+  title={{An updated set of basic linear algebra subprograms (BLAS)}},
+  author={Blackford, L Susan and Petitet, Antoine and Pozo, Roldan and Remington, Karin and Whaley, R Clint and Demmel, James and Dongarra, Jack and Duff, Iain and Hammarling, Sven and Henry, Greg and others},
+  journal={ACM Transactions on Mathematical Software},
+  volume={28},
+  number={2},
+  pages={135--151},
+  year={2002}
 }
 
-@misc{PBLAS,
-  title = {{PBLAS - Parallel Basic Linear Algebra Subroutines}},
-  note = {\verb|http://www.netlib.org/scalapack/pblas_qref.html|},
+@incollection{PBLAS,
+  title={A proposal for a set of parallel basic linear algebra subprograms},
+  author={Choi, Jaeyoung and Dongarra, Jack and Ostrouchov, Susan and Petitet, Antoine and Walker, David and Whaley, R Clinton},
+  booktitle={Applied Parallel Computing Computations in Physics, Chemistry and Engineering Science},
+  pages={107--114},
+  year={1996},
+  publisher={Springer}
 }
 
-@misc{LAPACK,
-  title = {{LAPACK - Linear Algebra PACKage}},
-  note = {\verb|http://www.netlib.org/lapack/|},
+@book{LAPACK,
+  title={LAPACK Users' guide},
+  author={Anderson, Edward and Bai, Zhaojun and Bischof, Christian and Blackford, Susan and Demmel, James and Dongarra, Jack and Du Croz, Jeremy and Greenbaum, Anne and Hammerling, S and McKenney, Alan and others},
+  volume={9},
+  year={1999},
+  publisher={SIAM}
 }
 
-@misc{SCALAPACK,
-  title = {{ScaLAPACK - Scalable Linear Algebra PACKage}},
-  note = {\verb|http://www.netlib.org/scalapack/|},
+@book{SCALAPACK,
+  title={ScaLAPACK Users' guide},
+  author={Blackford, L Susan and Choi, Jaeyoung and Cleary, Andy and D'Azevedo, Eduardo and Demmel, James and Dhillon, Inderjit and Dongarra, Jack and Hammarling, Sven and Henry, Greg and Petitet, Antoine and others},
+  volume={4},
+  year={1997},
+  publisher={SIAM}
 }
 
 @misc{Cog,
@@ -103,12 +118,66 @@
   note = {\verb|http://github.com/aostruszka/nonrec-make|},
 }
 
-@misc{OpenTuner,
-  title = {{OpenTuner - An extensible framework for program autotuning}},
-  note = {\verb|http://opentuner.org/|},
+@InProceedings{OpenTuner,
+  author    = "Jason Ansel and Shoaib Kamil and Kalyan Veeramachaneni and Jonathan Ragan-Kelley and Jeffrey Bosboom and Una-May O'Reilly and Saman Amarasinghe",
+  title     = {{{OpenTuner: An extensible framework for program autotuning}}},
+  url       = "http://groups.csail.mit.edu/commit/papers/2014/ansel-pact14-opentuner.pdf",
+  slides    = "http://groups.csail.mit.edu/commit/papers/2014/ansel-pact14-opentuner-slides.pdf",
+  keywords  = "OpenTuner",
+  month     = "August",
+  year      = "2014",
+  address   = "Edmonton, Canada",
+  booktitle = "International Conference on Parallel Architectures and Compilation Techniques",
 }
 
-@misc{MKL,
-  title = {{MKL - Intel\textregistered~Math Kernel Library}},
-  note = {\verb|http://www.intel.com/software/products/mkl/|},
+
+@techreport{MKL,
+  title={{Intel\textregistered~ Math Kernel Library reference manual}},
+  author={Intel\textregistered~},
+  year={2011},
+  institution={630813-051US},
+  note={\verb|http://software.intel.com/sites/products/documentation/hpc/mkl/mklman/mklman.pdf|}
 }
+
+@article{MPI,
+  title={{MPI: A Standard Message Passing Interface}},
+  author={Walker, David W and Dongarra, Jack J},
+  journal={Supercomputer},
+  volume={12},
+  pages={56--68},
+  year={1996},
+  publisher={ASFRA BV}
+}
+
+@article{SSEAVX,
+  title={Advanced vector extensions programming reference},
+  author={Intel, Intel},
+  journal={Intel Corporation},
+  year={2011}
+}
+
+@inproceedings{Python,
+  title={Python Programming Language.},
+  author={Van Rossum, Guido and others},
+  booktitle={USENIX Annual Technical Conference},
+  volume={41},
+  year={2007}
+}
+
+
+@article{SUMMA,
+  title={SUMMA: Scalable universal matrix multiplication algorithm},
+  author={Van De Geijn, Robert A and Watts, Jerrell},
+  journal={Concurrency-Practice and Experience},
+  volume={9},
+  number={4},
+  pages={255--274},
+  year={1997}
+}
+
+@misc{reproducibilityBOF,
+  title={{SC15 BoF on "Reproducibility of high performance codes and simulations - tools, techniques, debugging"}}, 
+  note={\verb|https://gcl.cis.udel.edu/sc15bof.php|}, 
+  publisher={Global Computing Laboratory}, 
+  author={Leeser, Miriam and Dong H., Ahn and Taufer, Michela and Demmel, James and Gopalakrishnan, Ganesh and Heroux, Michael and Keyrouz, Walid and Sato, Kento}, 
+  year={2015}} 

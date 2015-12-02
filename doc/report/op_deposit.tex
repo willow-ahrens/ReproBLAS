@@ -45,7 +45,7 @@
       The last bit of $r$ is set to break ties when rounding ``to nearest'' so
       that the amount added to ${Y_k}_P$ does not depend on the size of
       ${Y_k}_P$ so far.
-      Algorithm~\ref{alg:depositrestricted} costs $3(K-1)+1=3K-2$ FLOPS,
+      Algorithm~\ref{alg:depositrestricted} costs $3(K-1)+1=3K-2$ FLOPs,
       not counting the or-bit operation.
       The following theorem proves the ``Ensure'' claim at
       the end of Algorithm \ref{alg:depositrestricted}.
@@ -214,8 +214,8 @@
       without any overflow.
 
       In the rare case when the index of $Y$ is 0, Algorithm~\ref{alg:deposit}
-      costs $3 * (K-2) + 7 = 3K+1$ FLOPS. Otherwise it has the same cost
-      of $3K-2$ FLOPS as Algorithm~\ref{alg:depositrestricted}.
+      costs $3 * (K-2) + 7 = 3K+1$ FLOPs. Otherwise it has the same cost
+      of $3K-2$ FLOPs as Algorithm~\ref{alg:depositrestricted}.
       Theorem \ref{thm:ddeposit} shows that Algorithm \ref{alg:deposit}
       enjoys the necessary properties.
 
