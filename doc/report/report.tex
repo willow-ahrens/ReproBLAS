@@ -7,6 +7,7 @@
 \usepackage{algpseudocode}
 \usepackage{graphicx}
 \usepackage{svg}
+\usepackage{url}
 \usepackage{tikz}
 \usepackage{float}
 \pagestyle{myheadings}
@@ -67,7 +68,7 @@ We describe an algorithm that computes a reproducible sum of floating point numb
 independent of the order of summation. The algorithm depends only on a subset of
 the IEEE Floating Point Standard 754-2008. It is communication-optimal, in the sense that
 it does just one pass over the data in the sequential case, or one reduction operation in
-the parallel case, requiring an ``accumulator’’ represented by just 6 floating point words
+the parallel case, requiring an ``accumulator'' represented by just 6 floating point words
 (more can be used if higher precision is desired). The arithmetic cost with a 6-word
 accumulator is $7n$ floating point additions to sum $n$ words, and (in IEEE double precision) the
 final error bound can be up to $10^{-8}$ times smaller than the error bound for conventional

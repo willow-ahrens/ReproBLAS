@@ -7,11 +7,11 @@
     \end{equation}
 
     Since the summands in the summation of \eqref{eq:nrm2} are all non-negative,
-    there is no cancellation, the Euclidean norm operation
+    there is no cancellation, so the Euclidean norm operation
     is usually of high accuracy.
     It can be implemented simply using a dot product operation on two copies of the same input vector,
     or by using the sum operation on the squares of the input vector,
-    both of which can be made reproducible using a corresponding reproducible
+    both of which can be made reproducible using corresponding reproducible
     dot product and summation operations. However, both of these methods are prone to unnecessary overflow and underflow.
     On one hand, if some input values were too big ($\geq \sqrt{2^{e_{max}+1}}$),
     the partial sum would overflow. The computed result would
@@ -37,7 +37,7 @@
     Algorithm~\ref{alg:nrm2} summarizes the algorithm for sum of squares,
     which will be used to compute the Euclidean norm.
     Note that the handling of special input values \texttt{Inf}, \texttt{-Inf}, and \texttt{NaN}
-    is similar to the sum operation, which is not included here for better readability.
+    is similar to the sum operation, which is not included here for simplicity.
 
     \begin{samepage}
     \begin{alg}
@@ -46,15 +46,15 @@
         \Require
         \Statex $s=0$ if $\max_{j \in \{0, ..., n - 1\}}|x_j| = 0$.
         Otherwise $2^{-p-W-1} s < \max_{j \in \{0, ..., n - 1\}}|x_j| < 2^{W+2} s$
-        and $s \in 2^{\Z*W}$.
+        and $s \in 2^{W\Z}$.
         \Statex $Y$ is the indexed sum of $(x_0/s)^2, ..., (x_{n-1}/s)^2$.
         \Function{Add Float To Indexed Norm}{$K$, $x_n$, $Y$, $s$}
-          \State $e = W * \lfloor\max(\exp(x_n) - 1,e_{min}+W) / W\rfloor$
+          \State $e = W \lfloor\max(\exp(x_n) - 1,e_{min}+W) / W\rfloor$
               \label{alg:nrm2.line.e}
           \State $t = 2^e$
           \If{$s < t$}
               \For {$k=0$ \To $K-1$}
-                  \State ${Y_k}_P = (s/t)^2 * {Y_k}_P$
+                  \State ${Y_k}_P = (s/t)^2 {Y_k}_P$
               \EndFor
               \State $s = t$
           \EndIf
@@ -63,14 +63,14 @@
       \Ensure
       \Statex $s=0$ if $\max_{j \in \{0, ..., n\}}|x_j| = 0$.
       Otherwise $2^{-p-W-1} s < \max_{j \in \{0, ..., n\}}|x_j| < 2^{W+2} s$
-      and $s \in 2^{\Z*W}$.
+      and $s \in 2^{W\Z}$.
       \Statex $Y$ is the indexed sum of $(x_0/s)^2, ..., (x_{n}/s)^2$.
       \end{algorithmic}
       \label{alg:nrm2}
     \end{alg}
     \end{samepage}
 
-    A method to add the scaled indexed sum of squares of a vector to a scaled indexed type (using an Algorithm similar to \ref{alg:nrm2}) is available in ReproBLAS as \texttt{idxdBLAS\_xixssq} in \texttt{idxdBLAS.h}. A method to return the reproducible Euclidean norm of a vector is available as \texttt{reproBLAS\_rxnrm2} in \texttt{reproBLAS.h}. The function \texttt{idxd\_xixiaddsq} in \texttt{idxd.h} can be used to add two scaled indexed sums of squares. An MPI data type that holds a scaled indexed type can be created (creation is only performed once, subsequent calls return the same copy) and returned using the \texttt{idxdMPI\_DOUBLE\_INDEXED\_SCALED}, etc. function of \texttt{idxdMPI.h}. \texttt{idxdMPI.h} also contains the \texttt{XIXIADDSQ} method, an MPI reduction operator that can reduce the scaled sums of squares in parallel. (see Section \ref{sec:reproBLAS} for details).
+    A method to add the scaled indexed sum of squares of a vector to a scaled indexed type (using an Algorithm similar to \ref{alg:nrm2}) is available in ReproBLAS as \texttt{idxdBLAS\_xixssq} in \texttt{idxdBLAS.h}. A method to return the reproducible Euclidean norm of a vector is available as \texttt{reproBLAS\_rxnrm2} in \texttt{reproBLAS.h}. The function \texttt{idxd\_xixiaddsq} in \texttt{idxd.h} can be used to add two scaled indexed sums of squares. An MPI data type that holds a scaled indexed type can be created (creation is only performed once, subsequent calls return the same copy) and returned using the \texttt{idxdMPI\_DOUBLE\_INDEXED\_SCALED}, etc. function of \texttt{idxdMPI.h}. \texttt{idxdMPI.h} also contains the \texttt{XIXIADDSQ} method, an MPI reduction operator that can reduce the scaled sums of squares in parallel (see Section \ref{sec:reproBLAS} for details).
 
 
     \begin{lem}
@@ -86,12 +86,12 @@
          $e$ is a multiple of $W$ and
          \[
             \begin{aligned}
-                e & \geq W * \lfloor(e_{\min} + W) / W\rfloor > e_{\min} \\
+                e & \geq W \lfloor(e_{\min} + W) / W\rfloor > e_{\min} \\
                 e & \leq \max(\exp(x_n) - 1, e_{\min} + W) < e_{\max}.
             \end{aligned}
          \]
-         Therefore both $t=2^e$ and $1/t$ is representable.
-         It also means that if there is no input exceptional values, the scaling factor $s$ is always representable.
+         Therefore both $t=2^e$ and $1/t$ are representable.
+         It also means that if there are no input exceptional values, the scaling factor $s$ is always representable.
 
         The proof is trivial for the case $x_n = 0$. We suppose that $x_n \neq 0$.
         Hence $x_n \geq 2^{e_{\min} - p}$, or $e_{\min} \leq \exp(x_n) + p$,
@@ -104,8 +104,8 @@
         \end{equation}
         Moreover, we have
         \(
-            e \geq W * ((\exp(x_n) -  1) / W - 1) = \exp(x_n) - W -1
-        \)
+            e \geq W ((\exp(x_n) -  1) / W - 1) = \exp(x_n) - W -1
+        \).
         So 
         \begin{equation}
             s = 2^e \geq 2^{\exp(x_n)} 2^{- W - 1} > |x_n| 2^{-W-2}
@@ -133,7 +133,7 @@
     overflow and underflow for the summation, regardless of the index of the partial sum.
     It is possible to scale input data by a factor in $2^{W\Z}$ so that the maximum
     absolute value is always in range $[1,2^W)$.
-    This will help to avoid computing the index of partial sum
-    at the cost of having to store and communicate the scaling factor along computation.
+    This will help to avoid computing the index of the partial sum
+    at the cost of having to store and communicate the scaling factor along the computation.
     It is therefore left as a tuning parameter for future work.
 

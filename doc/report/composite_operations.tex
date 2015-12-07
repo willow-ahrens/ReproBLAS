@@ -18,7 +18,7 @@ that deals with arbitrary reduction trees shapes.
     \item The Level 1 BLAS (BLAS1) is a set of vector operations on
       strided arrays. Several of these operations are already
       reproducible, such as the \texttt{xscal} operation, which scales a vector by a scalar value or the \texttt{xsaxpy} operation, which adds a scaled copy of one vector to another. These operations are reproducible provided they are implemented in the same way. For example \texttt{xsaxpy} might not be reproducible if one implementation uses a fused multiply-add instruction and the other does not. Other operations, such as
-      the dot product or vector norm, are not already reproducible with
+      the dot product or vector norm, are not reproducible with
       respect to data permutation, and must be modified to have this quality. These operations
       are \texttt{xasum}, \texttt{xnrm2}, and 
       \texttt{xdot}.
@@ -31,9 +31,9 @@ that deals with arbitrary reduction trees shapes.
   The Linear Algebra PACKage (LAPACK) \cite{LAPACK}, is a set of higher-level
   routines for linear algebra, providing routines for operations like solving linear equations, linear least squares, eigenvalue problems, and singular value decomposition. LAPACK does most floating point computation using the BLAS.
 
-  The BLAS and LAPACK have been extended to distributed-memory systems in the PBLAS \cite{PBLAS} and SCALAPACK \cite{SCALAPACK} libraries. While most BLAS and PBLAS operations can clearly be made reproducible, it is an open question as to which LAPACK and SCALAPACK routines can be made reproducible and how this would be done. This is future work.
+  The BLAS and LAPACK have been extended to distributed-memory systems in the PBLAS \cite{PBLAS} and SCALAPACK \cite{SCALAPACK} libraries. While most BLAS and PBLAS operations can clearly be made reproducible, it is an open question as to which LAPACK and SCALAPACK routines can be made reproducible simply by using reproducible BLAS, or whether there are other sources of nonreproducibility to eliminate. This is future work.
 
-  Out of the large design space outlined above, we describe in this paper and implement in ReproBLAS sequential versions of key operations from the BLAS, and a distributed-memory reduction operation which can be used to parallelize these sequential operations in a reproducible way. We described the BLAS1 operations \texttt{xasum} and \texttt{xdot} at the end of Section \ref{sec:primitiveops_sum} previously. The BLAS1 operation \texttt{xnrm2} is discussed in Section \ref{sec:compositeops_nrm}. The BLAS2 and BLAS3 operations \texttt{xgemv} and \texttt{xgemm} are discussed in Sections \ref{sec:compositeops_gemv} and \ref{sec:compositeops_gemm} respectively. Eventually, we hope to extend ReproBLAS to contain reproducible versions of all BLAS and PBLAS routines.
+  Out of the large design space outlined above, we describe in this paper and implement in ReproBLAS sequential versions of key operations from the BLAS, and a distributed-memory reduction operation which can be used to parallelize these sequential operations in a reproducible way. We described the BLAS1 operations \texttt{xasum} and \texttt{xdot} at the end of Section \ref{sec:primitiveops_sum} previously. The BLAS1 operation \texttt{xnrm2} is discussed in Section \ref{sec:compositeops_nrm}. The BLAS2 and BLAS3 operations \texttt{xgemv} and \texttt{xgemm} are discussed in Sections \ref{sec:compositeops_gemv} and \ref{sec:compositeops_gemm} respectively. Eventually, we intend to extend ReproBLAS to contain reproducible versions of all BLAS and PBLAS routines.
 
     \input{op_reduce}
     \input{op_nrm}
