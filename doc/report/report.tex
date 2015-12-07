@@ -12,6 +12,7 @@
 \usepackage{float}
 \pagestyle{myheadings}
 \usepackage{verbatim}
+\usepackage{xparse,etoolbox}
 
 \widowpenalties 1 1000
 
@@ -44,6 +45,7 @@
   {}% header specification (empty for default)
 \makeatother
 \end{comment}
+
 \theoremstyle{definition}
 \newtheorem{thm}{Theorem}[section]
 \newtheorem{lem}[thm]{Lemma}
@@ -51,6 +53,27 @@
 \newtheorem{definition}{Definition}[section]
 \numberwithin{equation}{section}
 \numberwithin{figure}{section}
+
+\newcommand{\blocktheorem}[1]{%
+  \csletcs{old#1}{#1}% Store \begin
+  \csletcs{endold#1}{end#1}% Store \end
+  \RenewDocumentEnvironment{#1}{o}
+    {\par\addvspace{1.5ex}
+     \noindent\begin{minipage}{\textwidth}
+     \IfNoValueTF{##1}
+       {\csuse{old#1}}
+       {\csuse{old#1}[##1]}}
+    {\csuse{endold#1}
+     \end{minipage}
+     \par\addvspace{1.5ex}}
+}
+
+\raggedbottom
+
+\blocktheorem{thm}% Make thm into a block
+\blocktheorem{definition}% Make definition into a block
+\blocktheorem{lem}% Make lem into a block
+\blocktheorem{alg}% Make alg into a block
 
 \graphicspath{{plots}}
 \begin{document}
