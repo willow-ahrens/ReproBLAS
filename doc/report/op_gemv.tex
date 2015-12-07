@@ -12,15 +12,17 @@
 
   A consequence of calculating the indexed matrix-vector product using indexed sums is that it will be reproducible with respect to permutation of the columns of $A$ together with entries of $x$.
   Let $\sigma_0, ..., \sigma_{n - 1}$ be some permutation of the first $n$ nonnegative integers such that $\{\sigma_0, ..., \sigma_{n - 1}\} = \{0, ..., n - 1\}$ as sets. Then we have
-  \[
+  \begin{equation}
     y_i = \sum\limits_{j = 0}^{n - 1} A_{i, j}x_j = \sum\limits_{j = 0}^{n - 1} A_{i, \sigma_j}x_{\sigma_j}
-  \]
+    \label{eq:gemvpermute}
+  \end{equation}
 
   More importantly, the matrix-vector product should remain reproducible under any reduction tree shape.
   If $A = [A_{(0)}, A_{(1)}]$ where $A_{(0)}$ and $A_{(1)}$ are submatrices of size $m \times n_{(0)}$ and $m \times n_{(1)}$ and if $x = [x_{(0)}, x_{(1)}]$ where $x_{(0)}$ and $x_{(1)}$ are subvectors of size $n_{(0)}$ and $n_{(1)}$ then we have 
-  \[
+  \begin{equation}
     Ax = A_{(0)}x_{(0)} + A_{(1)}x_{(1)}
-  \]
+    \label{eq:gemvblock}
+  \end{equation}
 
   It is clear from Theorems \ref{thm:indexed_sum_unique} and the ``Ensure'' claim of Algorithm \ref{alg:addindexedtoindexed} that if the matrix-vector product is computed using indexed summation, the result is reproducible.
 

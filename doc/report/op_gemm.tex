@@ -12,15 +12,17 @@
 
   A consequence of calculating the indexed matrix-matrix product using indexed sums is that it will be reproducible with respect to permutation of the columns of $A$ together with rows of $B$.
   Let $\sigma_0, ..., \sigma_{k - 1}$ be some permutation of the first $k$ nonnegative integers such that $\{\sigma_0, ..., \sigma_{k - 1}\} = \{0, ..., n - 1\}$ as sets. Then we have
-  \[
+  \begin{equation}
     C_{i, j} = \sum\limits_{l = 0}^{k - 1} A_{i, l}B_{l, j} = \sum\limits_{l = 0}^{k - 1} A_{i, \sigma_l}B_{\sigma_l, j}
-  \]
+    \label{eq:gemmpermute}
+  \end{equation}
 
   More importantly, the matrix-vector product should remain reproducible under any reduction tree shape.
   If $A = [A_{(0)}, A_{(1)}]$ where $A_{(0)}$ and $A_{(1)}$ are submatrices of size $m \times k_{(0)}$ and $m \times k_{(1)}$ and if $B = \left[\begin{array}{c}B_{(0)}\\ B_{(1)}\end{array}\right]$ where $B_{(0)}$ and $B_{(1)}$ are submatrices of size $k_{(0)} \times n$ and $k_{(1)} \times n$ then we have 
-  \[
+  \begin{equation}
     AB = A_{(0)}B_{(0)} + A_{(1)}B_{(1)}
-  \]
+    \label{eq:gemmblock}
+  \end{equation}
 
   It is clear from Theorems \ref{thm:indexed_sum_unique} and the ``Ensure'' claim of Algorithm \ref{alg:addindexedtoindexed} that if the matrix-matrix product is computed using indexed summation, the result is reproducible.
 
