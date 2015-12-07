@@ -60,7 +60,7 @@
     using only the core operations in the \textproc{DepositRestricted} operation
     (Algorithm \ref{alg:depositrestricted}). \texttt{rdsum} achieved performance of
     $1.20\cdot 10^{10}$ FLOPS ($61.9\%$ of peak) on the difficult dataset.
-    \texttt{rssum} achieved performance of $1.88\cdot 10^{10}$ FLOPS ($48.6\%$ of
+    \texttt{rssum} achieved performance of $1.91\cdot 10^{10}$ FLOPS ($49.3\%$ of
     peak) on the difficult dataset. It is clear from the figure that the additional
     cost of the \textproc{Update} operation is modest, and the performance of the
     summation algorithm has only a weak dependence on the data.
@@ -82,7 +82,21 @@
     }
     \end{lstlisting}
 
-  Time (measured relative to the peak theoretical time for recursive summation) is shown for each method. The double-precision floating point numbers to be summed are normally distributed with mean $0$ and variance $1$. The values of $N$ shown are powers of two from $2^6$ to $2^{12}$. All of the problems shown on this plot were resident in L1 cache. The peak performance of \texttt{rdsum} is $1.94\cdot 10^{10}$ FLOPS. The peak performance of the \texttt{for}-loop is $1.36\cdot 10^{10}$ FLOPS. The peak performance of the \texttt{for}-loop is $0.7$ times that of \texttt{rdsum}, as the \texttt{for}-loop requires 1 addition per element, but \texttt{rdsum} requires $3K - 2 = 7$ additions and $K = 3$ or-bit operations per element which can be done in parallel. This also explains why the theoretical peak time required for \texttt{rdsum} is 7 times larger than the \texttt{for}-loop. Compiling with the \texttt{gcc} flag \texttt{-fopt-info-vec-optimized} tells us that the \texttt{for}-loop is not vectorized by the compiler, and therefore not running at peak. With this in mind, reproducible summation is competitive with a simple \texttt{for}-loop.
+  Time (measured relative to the peak theoretical time for recursive summation)
+  is shown for each method. The double-precision floating point numbers to be
+  summed are normally distributed with mean $0$ and variance $1$. The values of
+  $N$ shown are powers of two from $2^6$ to $2^{12}$. All of the problems shown
+  on this plot were resident in L1 cache. The peak performance of \texttt{rdsum}
+  is $1.94\cdot 10^{10}$ FLOPS. The peak performance of the \texttt{for}-loop is
+  $1.36\cdot 10^{10}$ FLOPS. The peak performance of the \texttt{for}-loop is
+  $0.7$ times that of \texttt{rdsum}, as the \texttt{for}-loop requires 1
+  addition per element, but \texttt{rdsum} requires $3K - 2 = 7$ additions and $K
+  = 3$ or-bit operations per element which can be done in parallel. This also
+  explains why the theoretical peak time required for \texttt{rdsum} is 7 times
+  larger than the \texttt{for}-loop. Compiling with the \texttt{gcc} flag
+  \texttt{-fopt-info-vec-optimized} tells us that the \texttt{for}-loop is not
+  vectorized by the compiler, and therefore not running at peak. With this in
+  mind, reproducible summation is competitive with a simple \texttt{for}-loop.
   \begin{figure}[H]
   \begin{center}
   \includegraphics[width=\textwidth]{plots/sum_comparison}
@@ -109,7 +123,7 @@
   \end{figure}
   The non-transposed matrix-vector product is the only case where composition of BLAS2 and BLAS3 functions did not achieve results within a factor of 2 of theoretical peak. Because the reproducible dot product operates most efficiently on contiguous sections of memory, the matrix must be transposed so that memory can be read contiguously. This causes the reproducible matrix-vector product to perform poorly due to the extra cost of matrix transposition in an already memory-bound routine. In future versions of the library, this method could be improved by writing a custom inner-loop kernel that does not make calls to \texttt{xixdot}. The kernel would operate on the primary fields of several indexed types at the same time using vectorized operations.
 
-  The transposed matrix-vector product performs better than the non-transposed case. Timings are shown in Figure \ref{fig:gemv_trans_timings}. The reader should notice that in this case, the reproducible routine is only a factor of $2.41$ times slower than the optimized BLAS routine.
+  The transposed matrix-vector product performs better than the non-transposed case. Timings are shown in Figure \ref{fig:gemv_trans_timings}. The reader should notice that in this case, the reproducible routine is only a factor of $2.43$ times slower than the optimized BLAS routine.
   \begin{figure}[H]
   \begin{center}
   \includegraphics[width=\textwidth]{plots/gemv_trans_comparison}
@@ -119,7 +133,7 @@
   \end{figure}
 
   \subsubsection{BLAS3}
-    We show in Figure \ref{fig:gemm_timings} timings of the reproducible matrix-matrix product versus the MKL BLAS matrix-matrix product. Because the timings for each transposition case (transposing or not transposing $A$ or $B$) are similar, we show only the standard case for brevity. Each double-precision floating point input matrix element is normally distributed with mean $0$ and variance $1$. The values of $N$ shown are powers of two from $2^6$ to $2^{12}$. Problem size $2^6$ was resident in L2 cache, problem sizes $2^7$ to $2^9$ were resident in L3 cache and problem sizes $2^{10}$ to $2^{12}$ exceeded the L3 cache size. The peak performances of \texttt{rdgemm} and \texttt{dgemm} are the same as that of \texttt{rddot} and \texttt{ddot}. In this case, since \texttt{dgemm} is running close to peak and \texttt{rdgemm} is running at about half of peak, the reproducible routine is a factor of $12.8$ times slower than the optimized BLAS routine.
+    We show in Figure \ref{fig:gemm_timings} timings of the reproducible matrix-matrix product versus the MKL BLAS matrix-matrix product. Because the timings for each transposition case (transposing or not transposing $A$ or $B$) are similar, we show only the standard case for brevity. Each double-precision floating point input matrix element is normally distributed with mean $0$ and variance $1$. The values of $N$ shown are powers of two from $2^6$ to $2^{12}$. Problem size $2^6$ was resident in L2 cache, problem sizes $2^7$ to $2^9$ were resident in L3 cache and problem sizes $2^{10}$ to $2^{12}$ exceeded the L3 cache size. The peak performances of \texttt{rdgemm} and \texttt{dgemm} are the same as that of \texttt{rddot} and \texttt{ddot}. In this case, since \texttt{dgemm} is running close to peak and \texttt{rdgemm} is running at $47.1\%$ of peak, the reproducible routine is a factor of $12.6$ times slower than the optimized BLAS routine.
   \begin{figure}[H]
   \begin{center}
   \includegraphics[width=\textwidth]{plots/gemm_comparison}
