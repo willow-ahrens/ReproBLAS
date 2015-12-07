@@ -37,14 +37,25 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   //fill X
   util_cvec_fill(N, X, incX, FillX, RealScaleX, ImagScaleX);
 
-  time_tic();
-  for(i = 0; i < trials; i++){
-    res = 0;
-    for(j = 0; j < N; j++){
-      res += X[j * incX];
+  if(incX == 1){
+    time_tic();
+    for(i = 0; i < trials; i++){
+      res = 0;
+      for(j = 0; j < N; j++){
+        res += X[j];
+      }
     }
+    time_toc();
+  }else{
+    time_tic();
+    for(i = 0; i < trials; i++){
+      res = 0;
+      for(j = 0; j < N; j++){
+        res += X[j * incX];
+      }
+    }
+    time_toc();
   }
-  time_toc();
 
   double dN = (double)N;
   metric_load_double("time", time_read());

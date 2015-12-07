@@ -1,7 +1,7 @@
 # select compiler (comment all for auto)
 #CC = cc
-CC = gcc
-#CC = icc
+#CC = gcc
+CC = icc
 #CC = pgcc
 #CC = craycc
 #CC = clang
@@ -58,7 +58,7 @@ OPTFLAGS := -O3
 ENDIAN := $(shell perl -le 'print unpack(N,pack(L,0x01020304)) == 0x01020304 ? big : little')
 
 # select whether or not to use of BLAS library (if BUILD_BLAS is not defined or set to value other that "true" an external BLAS library will not be used and corresponding parts of ReproBLAS won't build)
-#BUILD_BLAS := true
+BUILD_BLAS := true
 
 # select BLAS library from preconfigured or custom options (if BLAS=true)
 
@@ -71,9 +71,9 @@ ENDIAN := $(shell perl -le 'print unpack(N,pack(L,0x01020304)) == 0x01020304 ? b
 #CPPFLAGS += -DCBLAS=1
 
 # Intel MKL Sequential BLAS
-#LDFLAGS += -mkl=sequential
+LDFLAGS += -mkl=sequential
 #LDFLAGS += ${MKLROOT}/lib/libmkl_intel_lp64.a ${MKLROOT}/lib/libmkl_core.a ${MKLROOT}/lib/libmkl_sequential.a -lpthread -lm
-#CPPFLAGS += -DCBLAS=1
+CPPFLAGS += -DCBLAS=1
 
 # Atlas BLAS
 #LDFLAGS += -latlas
