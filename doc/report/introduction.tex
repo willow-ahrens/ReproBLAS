@@ -15,7 +15,7 @@
   \begin{enumerate}
     \item They compute a reproducible sum independent of the order of the summands, how they are assigned to processors, or how they are aligned in memory.
     \item They make only basic assumptions about the underlying arithmetic (a subset of IEEE Standard 754-2008 \cite{ieee754}).
-    \item They scale well as a performance-optimized, non-reproducible implementation, as $n$ (number of summands) and $p$ (number of processors) grow, performing one pass over the data, and requiring just one reduction operation in the parallel case.
+    \item They scale as well as a performance-optimized, non-reproducible implementation, as $n$ (number of summands) and $p$ (number of processors) grow, performing one pass over the data, and requiring just one reduction operation in the parallel case.
     \item The user can choose the desired accuracy of the result. In particular, getting a reproducible result with about the same accuracy as the performance optimized algorithm is only a small constant times slower, but higher accuracy is possible too.
   \end{enumerate}
   The algorithms of \cite{repsum} did not, however, work for all ranges of floating-point input (because of over/underflow) nor did they contain all of the functional components necessary to be deployed in an existing application (they lacked an algorithm to convert from a reproducible type back to floating point format while maintaining accuracy).
