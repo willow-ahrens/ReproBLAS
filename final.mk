@@ -7,9 +7,9 @@
 # INSTALL_LIB_$(dir) - same for libraries
 # INSTALL_DOC_$(dir) - and for documentation
 
-BIN_DIR := /tmp/test-ex1/bin
-LIB_DIR := /tmp/test-ex1/lib
-DOC_DIR := /tmp/test-ex1/share/doc/ex1
+BIN_DIR := /tmp/reproBLAS2/bin
+LIB_DIR := /tmp/reproBLAS2/lib
+DOC_DIR := /tmp/reproBLAS2/share/doc/reproBLAS2
 
 INSTALL := install
 INSTALL_DATA := install -m 644
@@ -29,7 +29,7 @@ install-doc: $(call get_subtree,INSTALL_DOC,$(TOP))
 	$(INSTALL) -d $(DOC_DIR)
 	$(INSTALL_DATA) -t $(DOC_DIR) $^
 
-.PHONY: check bench acc reference tune doc excise update
+.PHONY: check bench acc reference tune doc excise update install install-bin install-lib install-doc
 
 # tunes
 tune:# update
