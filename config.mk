@@ -1,3 +1,15 @@
+# select binary installation directory
+BIN_DIR := /tmp/reproBLAS2/bin
+
+# select library installation directory
+LIB_DIR := /usr/local/lib
+
+# select header installation directory
+INC_DIR := /usr/local/include
+
+# select documentation installation directory
+DOC_DIR := /tmp/reproBLAS2/share/doc/reproBLAS2
+
 # select compiler (comment all for auto)
 CC = cc
 #CC = gcc

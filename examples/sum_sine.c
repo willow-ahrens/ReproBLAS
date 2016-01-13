@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <math.h>
 #include <sys/time.h>
+#include <idxd.h>
+#include <idxdBLAS.h>
+#include <reproBLAS.h>
 
 static struct timeval start;
 static struct timeval end;
@@ -49,7 +52,7 @@ int main (int argc, char** args) {
   double sum_shuffled;
   double elapsed_time;
 
-  printf("Sum of sin(2* M_PI * (i / (double)n - 0.5)).  n = %d.\n", n);
+  printf("Sum of sin(2* M_PI * (i / (double)n - 0.5)).  n = %d.\n\n", n);
 
   // Set x to be a sine wave
   for(int i = 0; i < n; i++){
