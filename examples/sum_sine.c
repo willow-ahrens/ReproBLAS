@@ -45,7 +45,7 @@ void doubledouble_plus_double(double* a, double b) {
 }
 
 int main (int argc, char** args) {
-  int n = 100000;
+  int n = 1000000;
   double *x = malloc(n * sizeof(double));
   double *x_shuffled = malloc(n * sizeof(double));
   double sum;
@@ -73,7 +73,7 @@ int main (int argc, char** args) {
   }
 
   // Make a header
-  printf("%10s : Time (s)\t: |Sum - Sum of Shuffled| = ?\n", "Sum Method");
+  printf("%15s : Time (s) : |Sum - Sum of Shuffled| = ?\n", "Sum Method");
 
   // First, we sum x using double precision
   tic();
@@ -89,7 +89,106 @@ int main (int argc, char** args) {
     sum_shuffled += x_shuffled[i];
   }
 
-  printf("%10s : %.3g\t: |%.17e - %.17e| = %g\n", "double", elapsed_time, sum, sum_shuffled, fabs(sum - sum_shuffled));
+  printf("%15s : %-8g : |%.17e - %.17e| = %g\n", "double", elapsed_time, sum, sum_shuffled, fabs(sum - sum_shuffled));
+
+  // What if we sum x using double double precision?
+  tic();
+  double ddsum[2] = {0.0, 0.0};
+  for(int i = 0; i < n; i++){
+    doubledouble_plus_double(ddsum, x[i]);
+  }
+  sum = ddsum[0] + ddsum[1];
+  elapsed_time = toc();
+
+  // Next, we sum the shuffled x
+  ddsum[0] = 0.0;
+  ddsum[1] = 0.0;
+  for(int i = 0; i < n; i++){
+    doubledouble_plus_double(ddsum, x_shuffled[i]);
+  }
+  sum_shuffled = ddsum[0] + ddsum[1];
+
+  printf("%15s : %-8g : |%.17e - %.17e| = %g\n", "doubledouble", elapsed_time, sum, sum_shuffled, fabs(sum - sum_shuffled));
+
+  // Pretty soon we're gonna need some indexed types.
+  double_indexed *isum = idxd_dialloc(3);
+  double_indexed *itmp = idxd_dialloc(3);
+
+  // Here, we sum x by converting it to an array of indexed types,
+  // then we sum the indexed types. This is the most inefficient way to
+  // apply the indexed summation algorithm, but it demonstrates the method
+  // of adding indexed types.
+  tic();
+  idxd_disetzero(3, isum);
+  for(int i = 0; i < n; i++){
+    idxd_didconv(3, x[i], itmp);
+    idxd_didiadd(3, itmp, isum);
+  }
+  sum = idxd_ddiconv(3, isum);
+  elapsed_time = toc();
+
+  // Next, we sum the shuffled x
+  tic();
+  idxd_disetzero(3, isum);
+  for(int i = 0; i < n; i++){
+    idxd_didconv(3, x_shuffled[i], itmp);
+    idxd_didiadd(3, itmp, isum);
+  }
+  sum_shuffled = idxd_ddiconv(3, isum);
+  elapsed_time = toc();
+
+  printf("%15s : %-8g : |%.17e - %.17e| = %g\n", "idxd_didiadd", elapsed_time, sum, sum_shuffled, fabs(sum - sum_shuffled));
+
+  // Here, we sum x using idxd primitives. This is less efficient than the
+  // optimized reproBLAS_sum method, but might be useful if the data isn't
+  // arranged in a vector.
+  tic();
+  idxd_disetzero(3, isum);
+  for(int i = 0; i < n; i++){
+    idxd_didadd(3, x[i], isum);
+  }
+  sum = idxd_ddiconv(3, isum);
+  elapsed_time = toc();
+
+  // Next, we sum the shuffled x
+  tic();
+  idxd_disetzero(3, isum);
+  for(int i = 0; i < n; i++){
+    idxd_didadd(3, x_shuffled[i], isum);
+  }
+  sum_shuffled = idxd_ddiconv(3, isum);
+  elapsed_time = toc();
+
+  printf("%15s : %-8g : |%.17e - %.17e| = %g\n", "idxd_didadd", elapsed_time, sum, sum_shuffled, fabs(sum - sum_shuffled));
+
+  // Here, we sum x using idxdBLAS. This shows off the internal methods of
+  // reproBLAS.
+  tic();
+  idxd_disetzero(3, isum);
+  idxdBLAS_didsum(3, n, x, 1, isum);
+  sum = idxd_ddiconv(3, isum);
+  elapsed_time = toc();
+
+  // Next, we sum the shuffled x
+  tic();
+  idxd_disetzero(3, isum);
+  idxdBLAS_didsum(3, n, x_shuffled, 1, isum);
+  sum_shuffled = idxd_ddiconv(3, isum);
+  elapsed_time = toc();
+
+  printf("%15s : %-8g : |%.17e - %.17e| = %g\n", "idxdBLAS_didsum", elapsed_time, sum, sum_shuffled, fabs(sum - sum_shuffled));
+
+  // Here, we sum x using reproBLAS. This is the fastest and easiest method
+  tic();
+  sum = reproBLAS_dsum(n, x, 1);
+  elapsed_time = toc();
+
+  // Next, we sum the shuffled x
+  tic();
+  sum_shuffled = reproBLAS_dsum(n, x_shuffled, 1);
+  elapsed_time = toc();
+
+  printf("%15s : %-8g : |%.17e - %.17e| = %g\n", "reproBLAS_dsum", elapsed_time, sum, sum_shuffled, fabs(sum - sum_shuffled));
 
   free(x);
   free(x_shuffled);
