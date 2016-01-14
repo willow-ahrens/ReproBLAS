@@ -44,7 +44,7 @@ void doubledouble_plus_double(double* a, double b) {
   a[1] = t2 - (a[0] - t1);
 }
 
-int main (int argc, char** args) {
+int main (int argc, char** argv) {
   int n = 1000000;
   double *x = malloc(n * sizeof(double));
   double *x_shuffled = malloc(n * sizeof(double));

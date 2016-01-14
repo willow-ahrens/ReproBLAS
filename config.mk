@@ -28,15 +28,15 @@ CPPFLAGS +=
 LDFLAGS +=
 
 # select whether or not to build mpi (if BUILD_MPI is not defined or set to value other that "true" MPI will not be used and corresponding parts of ReproBLAS won't build)
-#BUILD_MPI = true
+BUILD_MPI = true
 
 # select MPI compiler flags (comment all for auto)
-#MPICFLAGS = $(shell mpicc --showme compile)
+MPICFLAGS = $(shell mpicc --showme:compile)
 #MPICFLAGS = $(shell mpicc -compile_info)
 #MPICFLAGS =
 
 # select MPI linker flags (comment all for auto)
-#MPILDFLAGS = $(shell mpicc --showme link)
+MPILDFLAGS = $(shell mpicc --showme:link)
 #MPICFLAGS = $(shell mpicc -link_info)
 #MPICFLAGS =
 
