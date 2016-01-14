@@ -9,17 +9,17 @@
 static struct timeval start;
 static struct timeval end;
 
-void tic(void) {
+void tic(void){
   gettimeofday( &start, NULL );
 }
 
-double toc(void) {
+double toc(void){
   gettimeofday( &end, NULL );
 
   return (end.tv_sec - start.tv_sec) + 1.0e-6 * (end.tv_usec - start.tv_usec);
 }
 
-void doubledouble_plus_double(double* a, double b) {
+void doubledouble_plus_double(double* a, double b){
   double bv;
   double s1, s2, t1, t2;
 
@@ -43,7 +43,7 @@ void doubledouble_plus_double(double* a, double b) {
   a[1] = t2 - (a[0] - t1);
 }
 
-int main (int argc, char** argv) {
+int main(int argc, char** argv){
   int n = 1000000;
   double *x = malloc(n * sizeof(double));
   double *x_shuffled = malloc(n * sizeof(double));

@@ -11,17 +11,17 @@
 static struct timeval start;
 static struct timeval end;
 
-void tic(void) {
+void tic(void){
   gettimeofday( &start, NULL );
 }
 
-double toc(void) {
+double toc(void){
   gettimeofday( &end, NULL );
 
   return (end.tv_sec - start.tv_sec) + 1.0e-6 * (end.tv_usec - start.tv_usec);
 }
 
-int main (int argc, char** argv) {
+int main(int argc, char** argv){
   int rank;
   int size;
   MPI_Init(&argc, &argv);
