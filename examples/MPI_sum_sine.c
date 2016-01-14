@@ -11,39 +11,14 @@
 static struct timeval start;
 static struct timeval end;
 
-void tic() {
+void tic(void) {
   gettimeofday( &start, NULL );
 }
 
-double toc( )
-{
+double toc(void) {
   gettimeofday( &end, NULL );
 
   return (end.tv_sec - start.tv_sec) + 1.0e-6 * (end.tv_usec - start.tv_usec);
-}
-
-void doubledouble_plus_double(double* a, double b) {
-  double bv;
-  double s1, s2, t1, t2;
-
-  // Add two hi words
-  s1 = a[0] + b;
-  bv = s1 - a[0];
-  s2 = ((b - bv) + (a[0] - (s1 - bv)));
-
-  t1 = a[1] + s2;
-  bv = t1 - a[1];
-  t2 = ((s2 - bv) + (a[1] - (t1 - bv)));
-
-  s2 = t1;
-
-  // Renormalize (s1, s2)  to  (t1, s2)
-  t1 = s1 + s2;
-  t2 += s2 - (t1 - s1);
-
-  // Renormalize (t1, t2)
-  a[0] = t1 + t2;
-  a[1] = t2 - (a[0] - t1);
 }
 
 int main (int argc, char** argv) {
@@ -96,6 +71,7 @@ int main (int argc, char** argv) {
 
   if(rank == 0){
     printf("Sum of sin(2* M_PI * (i / (double)n - 0.5)).  n = %d.\n\n", n);
+
     // Make a header
     printf("%15s : Time (s) : |Sum - Sum of Shuffled| = ?\n", "Sum Method");
   }
