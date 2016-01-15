@@ -6,8 +6,8 @@
 
 #include "../../config.h"
 
-static MPI_Datatype types[DIMAXFOLD + 1];
-static int types_initialized[DIMAXFOLD + 1]; //initializes to 0
+static MPI_Datatype types[idxd_DIMAXFOLD + 1];
+static int types_initialized[idxd_DIMAXFOLD + 1]; //initializes to 0
 
 MPI_Datatype idxdMPI_DOUBLE_COMPLEX_INDEXED(const int fold){
   int rc;

@@ -38,7 +38,7 @@ static void verify_didssq_options_initialize(void){
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
   fold._int.min               = 2;
-  fold._int.max               = DIMAXFOLD;
+  fold._int.max               = idxd_DIMAXFOLD;
   fold._int.value             = DIDEFAULTFOLD;
 }
 

@@ -40,9 +40,9 @@ int main(int argc, char** argv){
 
   printf("  \"simaxindex\": %d,\n", idxd_SIMAXINDEX);
 
-  printf("  \"dimaxfold\": %d,\n", DIMAXFOLD);
+  printf("  \"dimaxfold\": %d,\n", idxd_DIMAXFOLD);
 
-  printf("  \"simaxfold\": %d,\n", SIMAXFOLD);
+  printf("  \"simaxfold\": %d,\n", idxd_SIMAXFOLD);
 
   printf("  \"didefaultfold\": %d,\n", DIDEFAULTFOLD);
 

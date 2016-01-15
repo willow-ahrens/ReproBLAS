@@ -29,7 +29,7 @@ static void validate_internal_saugsum_options_initialize(void){
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
   fold._int.min               = 2;
-  fold._int.max               = SIMAXFOLD;
+  fold._int.max               = idxd_SIMAXFOLD;
   fold._int.value             = SIDEFAULTFOLD;
 }
 

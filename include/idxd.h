@@ -116,6 +116,22 @@ typedef float float_complex_indexed;
 #define idxd_SIMAXINDEX (((FLT_MAX_EXP - FLT_MIN_EXP + FLT_MANT_DIG - 1)/SIWIDTH) - 1)
 
 /**
+ * @brief The maximum double precision fold supported by the library.
+ *
+ * @author Peter Ahrens
+ * @date   14 Jan 2016
+ */
+#define idxd_DIMAXFOLD (idxd_DIMAXINDEX + 1)
+
+/**
+ * @brief The maximum single precision fold supported by the library.
+ *
+ * @author Peter Ahrens
+ * @date   14 Jan 2016
+ */
+#define idxd_SIMAXFOLD (idxd_SIMAXINDEX + 1)
+
+/**
  * @brief Indexed double precision deposit endurance
  *
  * The number of deposits that can be performed before a renorm is necessary. Applies also to indexed complex double precision.

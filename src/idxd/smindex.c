@@ -25,7 +25,7 @@ int idxd_smindex(const float *priX){
   int exp;
 
   if(priX[0] == 0.0){
-    return (FLT_MAX_EXP - FLT_MIN_EXP)/SIWIDTH + SIMAXFOLD;
+    return (FLT_MAX_EXP - FLT_MIN_EXP)/SIWIDTH + idxd_SIMAXFOLD;
   }else{
     frexpf(priX[0], &exp);
     if(exp == FLT_MAX_EXP){

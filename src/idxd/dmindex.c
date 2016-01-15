@@ -25,7 +25,7 @@ int idxd_dmindex(const double *priX){
   int exp;
 
   if(priX[0] == 0.0){
-    return (DBL_MAX_EXP - DBL_MIN_EXP)/DIWIDTH + DIMAXFOLD;
+    return (DBL_MAX_EXP - DBL_MIN_EXP)/DIWIDTH + idxd_DIMAXFOLD;
   }else{
     frexp(priX[0], &exp);
     if(exp == DBL_MAX_EXP){

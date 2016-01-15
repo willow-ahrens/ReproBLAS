@@ -200,3 +200,13 @@ def cpu_info(verbose="false"):
 #  @date   28 May 2015
 #
 version = "2.0.0"
+
+##
+#  @brief maximum fold to autotune
+#
+#  Increases to this number will vastly increase the time necessary to autotune the library
+#
+#  @author Peter Ahrens
+#  @date   28 May 2015
+#
+max_expand_fold = 4

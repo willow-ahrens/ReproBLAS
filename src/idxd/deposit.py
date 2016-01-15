@@ -5,6 +5,7 @@ from dataTypes import *
 from vectorizations import *
 from generate import *
 from scripts import terminal
+import config
 import itertools
 
   #SUM_WIDTH = number of indexed sums used at once
@@ -16,11 +17,9 @@ class Deposit(Target):
     super(Deposit, self).__init__()
     if data_type_class.base_type.name == "double":
       self.default_fold = terminal.get_didefaultfold()
-      self.max_fold = terminal.get_dimaxfold()
     else:
       self.default_fold = terminal.get_sidefaultfold()
-      self.max_fold = terminal.get_simaxfold()
-    self.max_expand_fold = min(self.max_fold, 6)
+    self.max_expand_fold = config.max_expand_fold;
     self.data_type_class = data_type_class
     self.fold_name = fold_name
     self.N_name = N_name
@@ -140,7 +139,7 @@ class Deposit(Target):
         code_block.define_vars(self.vec.type_name, self.s_vars[j])
 
     if fold == 0:
-      code_block.write("{0} s_buffer[{1}];".format(self.vec.type_name, mix("*", max_reg_width, "{}IMAXFOLD".format(self.data_type.base_type.name_char.upper()))))
+      code_block.write("{0} s_buffer[{1}];".format(self.vec.type_name, mix("*", max_reg_width, "idxd_{}IMAXFOLD".format(self.data_type.base_type.name_char.upper()))))
       self.buffer_vars = ["s_buffer[{0}]".format(mix("+", mix("*", "j", max_reg_width), i)) for i in range(max_reg_width)]
       self.buffer0_vars = ["s_buffer[{0}]".format(mix("+", mix("*", "0", max_reg_width), i)) for i in range(max_reg_width)]
 

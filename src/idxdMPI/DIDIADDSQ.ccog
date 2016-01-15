@@ -224,8 +224,8 @@ static void idxdMPI_didiaddsq_51(void *invec, void *inoutvec, int *len, MPI_Data
 
 //[[[end]]]
 
-static MPI_Op ops[DIMAXFOLD + 1];
-static int ops_initialized[DIMAXFOLD + 1]; //initializes to 0
+static MPI_Op ops[idxd_DIMAXFOLD + 1];
+static int ops_initialized[idxd_DIMAXFOLD + 1]; //initializes to 0
 
 MPI_Op idxdMPI_DIDIADDSQ(const int fold){
   int rc;

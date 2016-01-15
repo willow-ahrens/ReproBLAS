@@ -92,8 +92,8 @@ static void idxdMPI_sisiadd_20(void *invec, void *inoutvec, int *len, MPI_Dataty
 
 //[[[end]]]
 
-static MPI_Op ops[SIMAXFOLD + 1];
-static int ops_initialized[SIMAXFOLD + 1]; //initializes to 0
+static MPI_Op ops[idxd_SIMAXFOLD + 1];
+static int ops_initialized[idxd_SIMAXFOLD + 1]; //initializes to 0
 
 MPI_Op idxdMPI_SISIADD(const int fold){
   int rc;
