@@ -51,11 +51,26 @@ Usage:
       -lm
 
 Advanced Usage:
-  ReproBLAS uses a custom build system. It uses gnu make
+    ReproBLAS uses a custom build system. It is based off of the nonrec-make
+  project. The build system encodes information not in the Makefile, but in a
+  separate file in each directory called Rules.mk. The default make target
+  builds all files in the subtree rooted at the current directory. If you want
+  to build all files, type 'make all'. If you want to make just the files in
+  the current directory, type 'make dir'. There are corresponding targets
+  'clean_tree', 'clean_all', 'clean_dir'. Check {ReproBLAS_ROOT}/config.mk for
+  many more options. The make system lives in {ReproBLAS_ROOT}/mk. The built
+  files go in {ReproBLAS_ROOT}/build.
 
+    If you have python, you can run the tests. To run the benchmarks, type
+  'make bench'. To run the checks, type 'make check'. To run the accuracy test,
+  type 'make acc'. By following the example of
+  {ReproBLAS_ROOT}/tests/checks/check.py,
+  {ReproBLAS_ROOT}/tests/benchs/bench.py,
+  and {ReproBLAS_ROOT}/tests/accs/acc.py, the user can build their own tests
+  composed of subsets of the available tests in
+  {ReproBLAS_ROOT}/tests/checks/checks.py,
+  {ReproBLAS_ROOT}/tests/benchs/benchs.py,
+  and {ReproBLAS_ROOT}/tests/accs/accs.py.
 
-- make check
-  check the reproducibility of the compiled library
-- make accuracy
-  check the accuracy of the provided reproducible BLAS level 1 routines
-
+  Several configuration options are available in {ReproBLAS_ROOT}/config.py,
+  {ReproBLAS_ROOT}/config.mk, and {ReproBLAS_ROOT}/config.h.
