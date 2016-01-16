@@ -29,6 +29,18 @@ cog.out(str(code_block))
 #endif
 //[[[end]]]
 
+/**
+ * @brief  Find maximum absolute value in vector of double precision
+ *
+ * Returns the absolute value of the element of maximum absolute value in an array.
+ *
+ * @param N vector length
+ * @param X double precision vector
+ * @param incX X vector stride (use every incX'th element)
+ *
+ * @author Peter Ahrens
+ * @date   15 Jan 2016
+ */
 double idxdBLAS_damax(const int N, const double *X, const int incX){
   double amax;
   /*[[[cog

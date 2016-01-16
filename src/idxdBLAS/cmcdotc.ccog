@@ -42,6 +42,24 @@ cog.out(generate.generate(blockSize.BlockSize("cmcdotc", "N_block_MAX", 32, term
 #define N_block_MAX 512
 //[[[end]]]
 
+/**
+ * @brief Compute manually specified indexed complex single precision conjugated dot product Z of complex single precision vectors X and Y
+ *
+ * Set Z to the indexed sum of the pairwise products of X and conjugated Y.
+ *
+ * @param N vector length
+ * @param X complex single precision vector
+ * @param incX X vector stride (use every incX'th element)
+ * @param Y complex single precision vector
+ * @param incY Y vector stride (use every incX'th element)
+ * @param priZ Z's primary vector
+ * @param incpriZ stride within Z's primary vector (use every incpriZ'th element)
+ * @param carZ Z's carry vector
+ * @param inccarZ stride within Z's carry vector (use every inccarZ'th element)
+ *
+ * @author Peter Ahrens
+ * @date   15 Jan 2016
+ */
 void idxdBLAS_cmcdotc(const int fold, const int N, const void *X, const int incX, const void *Y, const int incY, float *manZ, const int incmanZ, float *carZ, const int inccarZ){
   float amaxm[2];
   int i, j;

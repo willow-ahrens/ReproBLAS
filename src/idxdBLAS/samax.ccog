@@ -29,6 +29,18 @@ cog.out(str(code_block))
 #endif
 //[[[end]]]
 
+/**
+ * @brief  Find maximum absolute value in vector of single precision
+ *
+ * Returns the absolute value of the element of maximum absolute value in an array.
+ *
+ * @param N vector length
+ * @param X single precision vector
+ * @param incX X vector stride (use every incX'th element)
+ *
+ * @author Peter Ahrens
+ * @date   15 Jan 2016
+ */
 float idxdBLAS_samax(const int N, const float *X, const int incX){
   float amax;
   /*[[[cog

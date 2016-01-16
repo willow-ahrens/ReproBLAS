@@ -29,6 +29,20 @@ cog.out(str(code_block))
 #endif
 //[[[end]]]
 
+/*sing*
+ * @brief  Find maximum absolute value pairwise product between vectors of single precision
+ *
+ * Returns the absolute value of the pairwise product of maximum absolute value between X and Y.
+ *
+ * @param N vector length
+ * @param X single precision vector
+ * @param incX X vector stride (use every incX'th element)
+ * @param Y single precision vector
+ * @param incY Y vector stride (use every incY'th element)
+ *
+ * @author Peter Ahrens
+ * @date   15 Jan 2016
+ */
 float idxdBLAS_samaxm(const int N, const float *X, const int incX, const float *Y, const int incY){
   float amaxm;
   /*[[[cog

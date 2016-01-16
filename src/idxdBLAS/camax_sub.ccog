@@ -30,6 +30,20 @@ cog.out(str(code_block))
 #endif
 //[[[end]]]
 
+
+/**
+ * @brief  Find maximum magnitude in vector of complex single precision
+ *
+ * Returns the magnitude of the element of maximum magnitude in an array.
+ *
+ * @param N vector length
+ * @param X complex single precision vector
+ * @param incX X vector stride (use every incX'th element)
+ * @param amax scalar return
+ *
+ * @author Peter Ahrens
+ * @date   15 Jan 2016
+ */
 void idxdBLAS_camax_sub(const int N, const void *X, const int incX, void *amax) {
   const float *x = (const float*)X;
   /*[[[cog

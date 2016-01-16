@@ -1,7 +1,3 @@
-/*
- *  Created   13/10/25   H.D. Nguyen
- */
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -42,6 +38,24 @@ cog.out(generate.generate(blockSize.BlockSize("dmddot", "N_block_MAX", 32, termi
 #define N_block_MAX 1024
 //[[[end]]]
 
+/**
+ * @brief Compute manually specified indexed double precision dot product Z of double precision vectors X and Y
+ *
+ * Set Z to the indexed sum of the pairwise products of X and Y.
+ *
+ * @param N vector length
+ * @param X double precision vector
+ * @param incX X vector stride (use every incX'th element)
+ * @param Y double precision vector
+ * @param incY Y vector stride (use every incX'th element)
+ * @param priZ Z's primary vector
+ * @param incpriZ stride within Z's primary vector (use every incpriZ'th element)
+ * @param carZ Z's carry vector
+ * @param inccarZ stride within Z's carry vector (use every inccarZ'th element)
+ *
+ * @author Peter Ahrens
+ * @date   15 Jan 2016
+ */
 void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int incX, const double *Y, const int incY, double *manZ, const int incmanZ, double *carZ, const int inccarZ){
   double amaxm;
   int i, j;
