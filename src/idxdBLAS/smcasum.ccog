@@ -42,6 +42,22 @@ cog.out(generate.generate(blockSize.BlockSize("smcasum", "N_block_MAX", 32, term
 #define N_block_MAX 256
 //[[[end]]]
 
+/**
+ * @brief Compute manually specified indexed single precision absolute sum Z of complex single precision vector X
+ *
+ * Set Z to the indexed sum of magnitudes of elements of X.
+ *
+ * @param N vector length
+ * @param X complex single precision vector
+ * @param incX X vector stride (use every incX'th element)
+ * @param priZ Z's primary vector
+ * @param incpriZ stride within Z's primary vector (use every incpriZ'th element)
+ * @param carZ Z's carry vector
+ * @param inccarZ stride within Z's carry vector (use every inccarZ'th element)
+ *
+ * @author Peter Ahrens
+ * @date   15 Jan 2016
+ */
 void idxdBLAS_smcasum(const int fold, const int N, const void *X, const int incX, float *manY, const int incmanY, float *carY, const int inccarY){
   float amax_tmp[2];
   float amax;

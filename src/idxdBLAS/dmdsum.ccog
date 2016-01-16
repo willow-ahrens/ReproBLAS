@@ -42,6 +42,22 @@ cog.out(generate.generate(blockSize.BlockSize("dmdsum", "N_block_MAX", 32, termi
 #define N_block_MAX 2048
 //[[[end]]]
 
+/**
+ * @brief Compute manually specified indexed double precision sum Z of double precision vector X
+ *
+ * Set Z to the indexed sum of X.
+ *
+ * @param N vector length
+ * @param X double precision vector
+ * @param incX X vector stride (use every incX'th element)
+ * @param priZ Z's primary vector
+ * @param incpriZ stride within Z's primary vector (use every incpriZ'th element)
+ * @param carZ Z's carry vector
+ * @param inccarZ stride within Z's carry vector (use every inccarZ'th element)
+ *
+ * @author Peter Ahrens
+ * @date   15 Jan 2016
+ */
 void idxdBLAS_dmdsum(const int fold, const int N, const double *X, const int incX, double *manY, const int incmanY, double *carY, const int inccarY){
   double amax;
   int i, j;

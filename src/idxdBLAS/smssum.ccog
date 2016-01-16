@@ -43,6 +43,22 @@ cog.out(generate.generate(blockSize.BlockSize("smssum", "N_block_MAX", 32, termi
 #define N_block_MAX 512
 //[[[end]]]
 
+/**
+ * @brief Compute manually specified indexed single precision sum Z of single precision vector X
+ *
+ * Set Z to the indexed sum of X.
+ *
+ * @param N vector length
+ * @param X single precision vector
+ * @param incX X vector stride (use every incX'th element)
+ * @param priZ Z's primary vector
+ * @param incpriZ stride within Z's primary vector (use every incpriZ'th element)
+ * @param carZ Z's carry vector
+ * @param inccarZ stride within Z's carry vector (use every inccarZ'th element)
+ *
+ * @author Peter Ahrens
+ * @date   15 Jan 2016
+ */
 void idxdBLAS_smssum(const int fold, const int N, const float *X, const int incX, float *manY, const int incmanY, float *carY, const int inccarY){
   float amax;
   int i, j;
