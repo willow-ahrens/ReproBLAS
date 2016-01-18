@@ -1,8 +1,6 @@
-#include <complex.h>
-#include <stdio.h>
 #include <stdlib.h>
-#include <float.h>
 #include <math.h>
+
 #include "../config.h"
 #include "../common/common.h"
 #include "idxdBLAS.h"
@@ -31,6 +29,7 @@ cog.out(str(code_block))
 //[[[end]]]
 
 /**
+ * @internal
  * @brief  Find maximum magnitude in vector of complex double precision
  *
  * Returns the magnitude of the element of maximum magnitude in an array.

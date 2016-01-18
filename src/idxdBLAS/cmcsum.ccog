@@ -1,11 +1,5 @@
-/*
- *  Created   13/10/25   H.D. Nguyen
- */
-
 #include <stdlib.h>
-#include <stdio.h>
 #include <math.h>
-#include <float.h>
 
 #include "../config.h"
 #include "../common/common.h"
@@ -43,6 +37,7 @@ cog.out(generate.generate(blockSize.BlockSize("cmcsum", "N_block_MAX", 32, termi
 //[[[end]]]
 
 /**
+ * @internal
  * @brief Add to manually specified indexed complex single precision Y the sum of complex single precision vector X
  *
  * Add to Y the indexed sum of X.

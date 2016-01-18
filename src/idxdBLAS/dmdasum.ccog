@@ -1,11 +1,5 @@
-/*
- *  Created   13/10/25   H.D. Nguyen
- */
-
 #include <stdlib.h>
-#include <stdio.h>
 #include <math.h>
-#include <float.h>
 
 #include "../config.h"
 #include "../common/common.h"
@@ -43,6 +37,7 @@ cog.out(generate.generate(blockSize.BlockSize("dmdasum", "N_block_MAX", 32, term
 //[[[end]]]
 
 /**
+ * @internal
  * @brief Add to manually specified indexed double precision Y the absolute sum of double precision vector X
  *
  * Add to Y the indexed sum of absolute values of elements in X.

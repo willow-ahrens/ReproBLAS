@@ -1,11 +1,5 @@
-/*
- *  Created   13/10/25   H.D. Nguyen
- */
-
 #include <stdlib.h>
-#include <stdio.h>
 #include <math.h>
-#include <float.h>
 
 #include "../config.h"
 #include "../common/common.h"
@@ -43,6 +37,7 @@ cog.out(generate.generate(blockSize.BlockSize("zmzdotu", "N_block_MAX", 32, term
 //[[[end]]]
 
 /**
+ * @internal
  * @brief Add to manually specified indexed complex double precision Z the unconjugated dot product of complex double precision vectors X and Y
  *
  * Add to Z to the indexed sum of the pairwise products of X and Y.

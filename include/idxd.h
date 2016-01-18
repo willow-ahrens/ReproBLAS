@@ -217,55 +217,6 @@ typedef float float_complex_indexed;
  */
 #define idxd_SMEXPANSION (1.0*(1 << (FLT_MANT_DIG - SIWIDTH + 1)))
 
-/**
- * @internal
- */
-typedef struct Idouble_ {
-	double m[3];
-	double c[3];
-} I_double;
-
-/**
- * @internal
- */
-#define Idouble I_double
-/**
- * @internal
- */
-#define Ifloat  I_float
-/**
- * @internal
- */
-#define dIcomplex I_double_Complex
-/**
- * @internal
- */
-#define sIcomplex I_float_Complex
-
-/**
- * @internal
- */
-typedef struct dIComplex_ {
-	double m[2*3];
-	double c[2*3];
-} I_double_Complex;
-
-/**
- * @internal
- */
-typedef struct Ifloat_ {
-	float  m[3];
-	float c[3];
-} I_float;
-
-/**
- * @internal
- */
-typedef struct sIComplex_{
-	float m[2*3];
-	float c[2*3];
-} I_float_Complex;
-
 size_t idxd_disize(const int fold);
 size_t idxd_zisize(const int fold);
 size_t idxd_sisize(const int fold);

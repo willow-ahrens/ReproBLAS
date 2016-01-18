@@ -1,7 +1,6 @@
-#include <float.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+
 #include "../config.h"
 #include "../common/common.h"
 #include "idxdBLAS.h"
@@ -30,6 +29,7 @@ cog.out(str(code_block))
 //[[[end]]]
 
 /**
+ * @internal
  * @brief  Find maximum absolute value in vector of double precision
  *
  * Returns the absolute value of the element of maximum absolute value in an array.

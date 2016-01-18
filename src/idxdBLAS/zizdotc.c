@@ -1,7 +1,3 @@
-/*
- *  Created   13/10/25   H.D. Nguyen
- */
-
 #include "idxdBLAS.h"
 
 /**

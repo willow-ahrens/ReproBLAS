@@ -1,9 +1,7 @@
 #include <stdlib.h>
 
-#include <idxdBLAS.h>
-#include <idxd.h>
-
 #include "../common/common.h"
+#include "idxdBLAS.h"
 
 /*[[[cog
 import cog
