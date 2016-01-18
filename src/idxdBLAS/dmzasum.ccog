@@ -43,17 +43,17 @@ cog.out(generate.generate(blockSize.BlockSize("dmzasum", "N_block_MAX", 32, term
 //[[[end]]]
 
 /**
- * @brief Compute manually specified indexed double precision absolute sum Z of complex double precision vector X
+ * @brief Add to manually specified indexed double precision Y the absolute sum of complex double precision vector X
  *
- * Set Z to the indexed sum of magnitudes of elements of X.
+ * Add to Y the indexed sum of magnitudes of elements of X.
  *
  * @param N vector length
  * @param X complex double precision vector
  * @param incX X vector stride (use every incX'th element)
- * @param priZ Z's primary vector
- * @param incpriZ stride within Z's primary vector (use every incpriZ'th element)
- * @param carZ Z's carry vector
- * @param inccarZ stride within Z's carry vector (use every inccarZ'th element)
+ * @param priY Y's primary vector
+ * @param incpriY stride within Y's primary vector (use every incpriY'th element)
+ * @param carY Y's carry vector
+ * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
  * @author Peter Ahrens
  * @date   15 Jan 2016

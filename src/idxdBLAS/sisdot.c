@@ -5,9 +5,9 @@
 #include "idxdBLAS.h"
 
 /**
- * @brief Compute indexed single precision dot product Z of single precision vectors X and Y
+ * @brief Add to indexed single precision Z the dot product of single precision vectors X and Y
  *
- * Set Z to the indexed sum of the pairwise products of X and Y.
+ * Add to Z the indexed sum of the pairwise products of X and Y.
  *
  * @param N vector length
  * @param X single precision vector

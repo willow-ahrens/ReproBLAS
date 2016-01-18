@@ -5,9 +5,9 @@
 #include "idxdBLAS.h"
 
 /**
- * @brief Compute manually specified indexed complex double precision unconjugated dot product Z of complex double precision vectors X and Y
+ * @brief Add to indexed complex double precision Z the unconjugated dot product of complex double precision vectors X and Y
  *
- * Set Z to the indexed sum of the pairwise products of X and Y.
+ * Add to Z the indexed sum of the pairwise products of X and Y.
  *
  * @param N vector length
  * @param X complex double precision vector

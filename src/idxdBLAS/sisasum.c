@@ -5,14 +5,14 @@
 #include "idxdBLAS.h"
 
 /**
- * @brief Compute indexed single precision absolute sum Z of single precision vector X
+ * @brief Add to indexed single precision Y the absolute sum of single precision vector X
  *
- * Set Z to the indexed sum of absolute values of elements in X.
+ * Add to Y the indexed sum of absolute values of elements in X.
  *
  * @param N vector length
  * @param X single precision vector
  * @param incX X vector stride (use every incX'th element)
- * @param Z indexed scalar Z
+ * @param Y indexed scalar Y
  * @author Peter Ahrens
  * @date   15 Jan 2016
  */

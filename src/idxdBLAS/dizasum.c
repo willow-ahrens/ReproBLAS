@@ -5,14 +5,14 @@
 #include "idxdBLAS.h"
 
 /**
- * @brief Compute indexed double precision absolute sum Z of complex double precision vector X
+ * @brief Add to indexed double precision Y the absolute sum of complex double precision vector X
  *
- * Set Z to the indexed sum of magnitudes of elements of X.
+ * Add to Y the indexed sum of magnitudes of elements of X.
  *
  * @param N vector length
  * @param X complex double precision vector
  * @param incX X vector stride (use every incX'th element)
- * @param Z indexed scalar Z
+ * @param Y indexed scalar Y
  *
  * @author Peter Ahrens
  * @date   15 Jan 2016

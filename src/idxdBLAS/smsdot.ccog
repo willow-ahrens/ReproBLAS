@@ -39,9 +39,9 @@ cog.out(generate.generate(blockSize.BlockSize("smsdot", "N_block_MAX", 32, termi
 //[[[end]]]
 
 /**
- * @brief Compute manually specified indexed single precision dot product Z of single precision vectors X and Y
+ * @brief Add to manually specified indexed single precision Z the dot product of single precision vectors X and Y
  *
- * Set Z to the indexed sum of the pairwise products of X and Y.
+ * Add to Z the indexed sum of the pairwise products of X and Y.
  *
  * @param N vector length
  * @param X single precision vector

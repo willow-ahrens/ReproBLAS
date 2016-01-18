@@ -37,6 +37,7 @@ cog.out(str(code_block))
  * @param N vector length
  * @param X single precision vector
  * @param incX X vector stride (use every incX'th element)
+ * @return absolute maximum value of X
  *
  * @author Peter Ahrens
  * @date   15 Jan 2016

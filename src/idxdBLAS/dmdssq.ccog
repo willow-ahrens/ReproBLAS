@@ -42,6 +42,25 @@ cog.out(generate.generate(blockSize.BlockSize("dmdssq", "N_block_MAX", 32, termi
 #define N_block_MAX 2048
 //[[[end]]]
 
+
+/**
+ * @brief Add to scaled manually specified indexed double precision Y the scaled sum of squares of elements of double precision vector X
+ *
+ * Add to Y the scaled indexed sum of the squares of each element of X. The scaling of each square is performed using #idxd_dscale
+ *
+ * @param N vector length
+ * @param X double precision vector
+ * @param incX X vector stride (use every incX'th element)
+ * @param scaleY the scaling factor of Y
+ * @param priY Y's primary vector
+ * @param incpriY stride within Y's primary vector (use every incpriY'th element)
+ * @param carY Y's carry vector
+ * @param inccarY stride within Y's carry vector (use every inccarY'th element)
+ * @return the new scaling factor of Y
+ *
+ * @author Peter Ahrens
+ * @date   18 Jan 2016
+ */
 double idxdBLAS_dmdssq(const int fold, const int N, const double *X, const int incX, const double scaleY, double *manY, const int incmanY, double *carY, const int inccarY){
   double amax;
   double scl = scaleY;

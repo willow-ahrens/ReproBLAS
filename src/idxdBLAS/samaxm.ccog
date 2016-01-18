@@ -39,6 +39,7 @@ cog.out(str(code_block))
  * @param incX X vector stride (use every incX'th element)
  * @param Y single precision vector
  * @param incY Y vector stride (use every incY'th element)
+ * @return absolute maximum value multiple of X and Y
  *
  * @author Peter Ahrens
  * @date   15 Jan 2016
