@@ -3,7 +3,7 @@
 /**
  * @brief Add to scaled indexed double precision Y the scaled sum of squares of elements of double precision vector X
  *
- * Add to Y the scaled indexed sum of the squares of each element of X. The scaling of each square is performed using #idxd_dscale
+ * Add to Y the scaled indexed sum of the squares of each element of X. The scaling of each square is performed using #idxd_dscale()
  *
  * @param N vector length
  * @param X double precision vector

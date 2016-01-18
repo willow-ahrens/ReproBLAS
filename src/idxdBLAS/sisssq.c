@@ -3,7 +3,7 @@
 /**
  * @brief Add to scaled indexed single precision Y the scaled sum of squares of elements of single precision vector X
  *
- * Add to Y the scaled indexed sum of the squares of each element of X. The scaling of each square is performed using #idxd_sscale
+ * Add to Y the scaled indexed sum of the squares of each element of X. The scaling of each square is performed using #idxd_sscale()
  *
  * @param N vector length
  * @param X single precision vector
