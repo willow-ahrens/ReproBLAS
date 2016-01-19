@@ -1,5 +1,5 @@
 TARGETS :=
-SUBDIRS := src tests scripts include
+SUBDIRS := src tests scripts include doc
 
 COGFLAGS += -D args=$(ARGS) -D params=$(TOP)/src/params.json -D mode=generate
 

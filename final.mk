@@ -45,7 +45,6 @@ endif
 # tunes
 tune:# update
 	$(CALL_PYTHON) $(TOP)/tune/ReproBLASOpenTuner.py --params $(TOP)/src/params.json --args $(TOP)/src/tuned_args.json --database $(TOP)/tune/ReproBLASOpenTuner.db --trials 100 --no-dups --verbose $(VERBOSE) --bail-threshold 7
-
 # Removes generated code from code generators
 excise:
 	$(foreach SOURCE, $(call get_subtree,COGGED,$(TOP)), $(COG) -r -x $(SOURCE) &&) echo
@@ -64,9 +63,10 @@ acc:
 	$(CALL_PYTHON) $(TOP)/tests/accs/acc.py --runmode parallel --verbose $(VERBOSE)
 
 dox:
-	cd $(TOP); rm -rf dox/*; doxygen config.dox; cd dox/latex;make
+	cd $(TOP); rm -rf dox; doxygen config.dox; cd dox/latex; make
 	cd $(TOP); rm -rf doc/reference_manual_html/*; rm -rf doc/reference_manual.pdf
 	cd $(TOP); cp -r dox/html/* doc/reference_manual_html; cp dox/latex/refman.pdf doc/reference_manual.pdf
+	cd $(TOP); rm -rf dox;
 
 update: $(GETTER)
 	$(GETTER) > $(TOP)/scripts/getter.json

@@ -20,6 +20,8 @@
  * @date   15 Jan 2016
  */
 double reproBLAS_rdnrm2(const int fold, const int N, const double* X, const int incX) {
+  double_indexed *ssq = idxd_dialloc(fold);
+  double scl;
   double nrm2;
 
   idxd_disetzero(fold, ssq);
