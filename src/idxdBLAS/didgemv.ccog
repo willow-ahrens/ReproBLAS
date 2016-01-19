@@ -34,7 +34,7 @@ cog.out(generate.generate(blockSize.BlockSize("didgemv", "T_BLOCK", 1, 32, 32, [
  *
  * Performs one of the matrix-vector operations
  *
- *   y := alpha*A*x + y,   or   y := alpha*A**T*x + y,
+ *   y := alpha*A*x + y   or   y := alpha*A**T*x + y,
  *
  * where alpha is a scalar, x is a vector, y is an indexed vector, and A is an M by N matrix.
  *

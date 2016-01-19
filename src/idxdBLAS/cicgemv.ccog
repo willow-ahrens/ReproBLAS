@@ -34,7 +34,7 @@ cog.out(generate.generate(blockSize.BlockSize("cicgemv", "T_BLOCK", 1, 32, 32, [
  *
  * Performs one of the matrix-vector operations
  *
- *   y := alpha*A*x + beta*y,   or   y := alpha*A**T*x + beta*y, or y := alpha*A**H*x + beta*y,
+ *   y := alpha*A*x + beta*y   or   y := alpha*A**T*x + beta*y   or   y := alpha*A**H*x + beta*y,
  *
  * where alpha and beta are scalars, x is a vector, y is an indexed vector, and A is an M by N matrix.
  *

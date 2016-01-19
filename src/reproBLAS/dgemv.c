@@ -3,15 +3,16 @@
 #include "../../config.h"
 
 /**
- * @brief Add to indexed double precision vector Y the matrix-vector product of double precision matrix A and double precision vector X
+ * @brief Add to double precision vector Y the reproducible matrix-vector product of double precision matrix A and double precision vector X
  *
  * Performs one of the matrix-vector operations
  *
- *   y := alpha*A*x + beta*y,   or   y := alpha*A**T*x + beta*y,
+ *   y := alpha*A*x + beta*y   or   y := alpha*A**T*x + beta*y,
  *
- * where alpha and beta are scalars, x is a vector, y is an indexed vector, and A is an M by N matrix.
+ * where alpha and beta are scalars, x and y are vectors, and A is an M by N matrix.
  *
- * @param fold the fold of the indexed types
+ * The matrix-vector product is computed using indexed types of default fold with #idxdBLAS_didgemv()
+ *
  * @param Order a character specifying the matrix ordering ('r' or 'R' for row-major, 'c' or 'C' for column major)
  * @param TransA a character specifying whether or not to transpose A before taking the matrix-vector product ('n' or 'N' not to transpose, 't' or 'T' or 'c' or 'C' to transpose)
  * @param M number of rows of matrix A
@@ -22,7 +23,7 @@
  * @param X double precision vector of at least size N if not transposed or size M otherwise
  * @param incX X vector stride (use every incX'th element)
  * @param beta scalar beta
- * @param Y indexed double precision vector Y of at least size M if not transposed or size N otherwise
+ * @param Y double precision vector Y of at least size M if not transposed or size N otherwise
  * @param incY Y vector stride (use every incY'th element)
  *
  * @author Peter Ahrens

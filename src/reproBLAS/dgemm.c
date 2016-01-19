@@ -3,19 +3,20 @@
 #include "../../config.h"
 
 /**
- * @brief Add to indexed double precision matrix C the matrix-matrix product of double precision matrices A and B
+ * @brief Add to double precision matrix C the reproducible matrix-matrix product of double precision matrices A and B
  *
  * Performs one of the matrix-matrix operations
  *
- *   C := alpha*op(A)*op(B) + C,
+ *   C := alpha*op(A)*op(B) + beta*C,
  *
  * where  op(X) is one of
  *
  *   op(X) = X   or   op(X) = X**T,
  *
- * alpha is a scalar, A and B are matrices with op(A) an m by k matrix and op(B) a k by n matrix, and C is an indexed m by n matrix.
+ * alpha and beta are scalars, A and B and C are matrices with op(A) an M by K matrix, op(B) a K by N matrix, and C is an M by N matrix.
  *
- * @param fold the fold of the indexed types
+ * The matrix-matrix product is computed using indexed types of default fold with #idxdBLAS_didgemm()
+ *
  * @param Order a character specifying the matrix ordering ('r' or 'R' for row-major, 'c' or 'C' for column major)
  * @param TransA a character specifying whether or not to transpose A before taking the matrix-matrix product ('n' or 'N' not to transpose, 't' or 'T' or 'c' or 'C' to transpose)
  * @param TransB a character specifying whether or not to transpose B before taking the matrix-matrix product ('n' or 'N' not to transpose, 't' or 'T' or 'c' or 'C' to transpose)
@@ -27,7 +28,7 @@
  * @param lda the first dimension of A as declared in the calling program. lda must be at least na in row major or ma in column major.
  * @param B double precision matrix of dimension (mb, ldb) in row-major or (ldb, nb) in column-major. (mb, nb) is (K, N) if B is not transposed and (N, K) otherwise.
  * @param ldb the first dimension of B as declared in the calling program. ldb must be at least nb in row major or mb in column major.
- * @param C indexed double precision matrix of dimension (M, ldc) in row-major or (ldc, N) in column-major.
+ * @param C double precision matrix of dimension (M, ldc) in row-major or (ldc, N) in column-major.
  * @param ldc the first dimension of C as declared in the calling program. ldc must be at least N in row major or M in column major.
  *
  * @author Peter Ahrens

@@ -38,7 +38,7 @@ cog.out(generate.generate(blockSize.BlockSize("didgemm", "XYT_BLOCK", y_block, x
  *
  *   op(X) = X   or   op(X) = X**T,
  *
- * alpha is a scalar, A and B are matrices with op(A) an m by k matrix and op(B) a k by n matrix, and C is an indexed m by n matrix.
+ * alpha is a scalar, A and B are matrices with op(A) an M by K matrix and op(B) a K by N matrix, and C is an indexed M by N matrix.
  *
  * @param fold the fold of the indexed types
  * @param Order a character specifying the matrix ordering ('r' or 'R' for row-major, 'c' or 'C' for column major)
