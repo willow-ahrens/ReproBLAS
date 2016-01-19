@@ -5,6 +5,7 @@
  *
  * Add to Y the indexed sum of magnitudes of elements of X.
  *
+ * @param fold the fold of the indexed types
  * @param N vector length
  * @param X complex double precision vector
  * @param incX X vector stride (use every incX'th element)

@@ -5,6 +5,7 @@
  *
  * Add to Y the scaled indexed sum of the squares of each element of X. The scaling of each square is performed using #idxd_dscale()
  *
+ * @param fold the fold of the indexed types
  * @param N vector length
  * @param X complex double precision vector
  * @param incX X vector stride (use every incX'th element)

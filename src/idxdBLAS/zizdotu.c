@@ -5,11 +5,12 @@
  *
  * Add to Z the indexed sum of the pairwise products of X and Y.
  *
+ * @param fold the fold of the indexed types
  * @param N vector length
  * @param X complex double precision vector
  * @param incX X vector stride (use every incX'th element)
  * @param Y complex double precision vector
- * @param incY Y vector stride (use every incX'th element)
+ * @param incY Y vector stride (use every incY'th element)
  * @param indexed scalar Z
  *
  * @author Peter Ahrens

@@ -42,11 +42,12 @@ cog.out(generate.generate(blockSize.BlockSize("cmcdotu", "N_block_MAX", 32, term
  *
  * Add to Z the indexed sum of the pairwise products of X and Y.
  *
+ * @param fold the fold of the indexed types
  * @param N vector length
  * @param X complex single precision vector
  * @param incX X vector stride (use every incX'th element)
  * @param Y complex single precision vector
- * @param incY Y vector stride (use every incX'th element)
+ * @param incY Y vector stride (use every incY'th element)
  * @param priZ Z's primary vector
  * @param incpriZ stride within Z's primary vector (use every incpriZ'th element)
  * @param carZ Z's carry vector
