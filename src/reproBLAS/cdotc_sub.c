@@ -3,17 +3,18 @@
 #include "../../config.h"
 
 /**
- * @brief Compute reproducible conjugated dot product of complex single precision vectors X and Y
+ * @brief Compute the reproducible conjugated dot product of complex single precision vectors X and Y
  *
- * Returns the reproducible sum of the pairwise products of X and conjugated Y.
+ * Return the sum of the pairwise products of X and conjugated Y.
  *
- * The dot product is computed using indexed types of default fold with #idxdBLAS_cicdotu().
+ * The reproducible dot product is computed with indexed types of default fold using #idxdBLAS_cicdotc()
  *
  * @param N vector length
  * @param X complex single precision vector
  * @param incX X vector stride (use every incX'th element)
  * @param Y complex single precision vector
  * @param incY Y vector stride (use every incY'th element)
+ * @param dotc scalar return
  *
  * @author Peter Ahrens
  * @date   15 Jan 2016
