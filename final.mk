@@ -11,7 +11,7 @@
 INSTALL := install
 INSTALL_DATA := install -m 644
 
-.PHONY: check bench acc reference tune doc excise update install install-bin install-lib install-inc install-doc
+.PHONY: check bench acc reference tune dox excise update install install-bin install-lib install-inc install-doc
 
 install: install-bin install-lib install-inc install-doc
 
@@ -63,8 +63,10 @@ bench:
 acc:
 	$(CALL_PYTHON) $(TOP)/tests/accs/acc.py --runmode parallel --verbose $(VERBOSE)
 
-doc:
-	cd $(TOP); rm -rf doc/*; doxygen config.dox; cd doc/latex;make
+dox:
+	cd $(TOP); rm -rf dox/*; doxygen config.dox; cd dox/latex;make
+	cd $(TOP); rm -rf doc/reference_manual_html/*; rm -rf doc/reference_manual.pdf
+	cd $(TOP); cp -r dox/html/* doc/reference_manual_html; cp dox/latex/refman.pdf doc/reference_manual.pdf
 
 update: $(GETTER)
 	$(GETTER) > $(TOP)/scripts/getter.json

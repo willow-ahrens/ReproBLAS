@@ -1,0 +1,117 @@
+\documentclass[12pt]{article}
+\usepackage{amsfonts}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{graphicx}
+\usepackage{svg}
+\usepackage{url}
+\usepackage{tikz}
+\usepackage{float}
+\pagestyle{myheadings}
+\usepackage{verbatim}
+\usepackage{xparse,etoolbox}
+
+\widowpenalties 1 1000
+
+\author{Peter Ahrens, Hong Diep Nguyen, James Demmel}
+\title{Efficient Reproducible Floating Point Summation and BLAS}
+\providecommand{\R}{\ensuremath{\mathbb{R}}}
+\providecommand{\F}{\ensuremath{\mathbb{F}}}
+\providecommand{\Z}{\ensuremath{\mathbb{Z}}}
+\providecommand{\exp}{\ensuremath{\text{exp}}}
+%\providecommand{\min}{\ensuremath{\text{min}}}
+%\providecommand{\max}{\ensuremath{\text{max}}}
+\providecommand{\ulp}{\ensuremath{\text{ulp}}}
+\providecommand{\ufp}{\ensuremath{\text{ufp}}}
+\providecommand{\fl}{\ensuremath{\text{fl}}}
+\providecommand{\To}{\ensuremath{\text{ to }}}
+\newcommand{\fct}[1]{\ensuremath{\mathtt{#1}}}
+\providecommand{\roundtonearestinfty}{\ensuremath{\mathcal{R}_\text{$\infty$}}}
+\begin{comment}
+\makeatletter
+\newtheoremstyle{indented}
+  {3pt}% space before
+  {3pt}% space after
+  {\addtolength{\@totalleftmargin}{3.5em}
+   \addtolength{\linewidth}{-3.5em}
+   \parshape 1 3.5em \linewidth}% body font
+  {}% indent
+  {\bfseries}% header font
+  {.}% punctuation
+  {.5em}% after theorem header
+  {}% header specification (empty for default)
+\makeatother
+\end{comment}
+
+\theoremstyle{definition}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{alg}{Algorithm}[section]
+\newtheorem{definition}{Definition}[section]
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+
+\newcommand{\blocktheorem}[1]{%
+  \csletcs{old#1}{#1}% Store \begin
+  \csletcs{endold#1}{end#1}% Store \end
+  \RenewDocumentEnvironment{#1}{o}
+    {\par\addvspace{1.5ex}
+     \noindent\begin{minipage}{\textwidth}
+     \IfNoValueTF{##1}
+       {\csuse{old#1}}
+       {\csuse{old#1}[##1]}}
+    {\csuse{endold#1}
+     \end{minipage}
+     \par\addvspace{1.5ex}}
+}
+
+\raggedbottom
+
+\blocktheorem{thm}% Make thm into a block
+\blocktheorem{definition}% Make definition into a block
+\blocktheorem{lem}% Make lem into a block
+\blocktheorem{alg}% Make alg into a block
+
+\graphicspath{{plots}}
+\begin{document}
+\noindent
+\maketitle
+\begin{abstract}
+We define reproducibility to mean getting bitwise identical results from
+multiple runs of the same program, perhaps with different hardware resources or other
+changes that should ideally not change the answer. Many users depend on reproducibility
+for debugging or correctness \cite{reproducibilityBOF}. However, dynamic scheduling of parallel computing
+resources, combined with nonassociativity of floating point addition, makes attaining
+reproducibility a challenge even for simple operations like summing a vector of numbers,
+or more complicated operations like the Basic Linear Algebra Subprograms (BLAS).
+We describe an algorithm that computes a reproducible sum of floating point numbers,
+independent of the order of summation. The algorithm depends only on a subset of
+the IEEE Floating Point Standard 754-2008. It is communication-optimal, in the sense that
+it does just one pass over the data in the sequential case, or one reduction operation in
+the parallel case, requiring an ``accumulator'' represented by just 6 floating point words
+(more can be used if higher precision is desired). The arithmetic cost with a 6-word
+accumulator is $7n$ floating point additions to sum $n$ words, and (in IEEE double precision) the
+final error bound can be up to $10^{-8}$ times smaller than the error bound for conventional
+summation. We describe the basic summation algorithm, the software infrastructure used to
+build reproducible BLAS (ReproBLAS), and performance results. For example, when computing the dot product of 4096 double precision floating point numbers, we get an
+4x slowdown compared to Intel\textregistered Math Kernel Library (MKL) running on an Intel\textregistered Core i7-2600 CPU operating at 3.4 GHz and 256 KB L2 Cache.
+\end{abstract}
+\newpage
+\tableofcontents
+\newpage
+
+\input{introduction}
+\input{notations}
+\input{binning}
+\input{indexed_type}
+\input{primitive_operations}
+\input{composite_operations}
+\input{reproBLAS}
+\input{conclusions}
+
+\bibliographystyle{unsrt}
+\bibliography{biblio}
+\end{document}
