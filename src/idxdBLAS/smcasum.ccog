@@ -2270,7 +2270,7 @@ void idxdBLAS_smcasum(const int fold, const int N, const void *X, const int incX
               __m256 expansion_mask_0;
               __m256 q_0;
               __m256 s_0;
-              __m256 s_buffer[SIMAXFOLD];
+              __m256 s_buffer[idxd_SIMAXFOLD];
 
               for(j = 0; j < fold; j += 1){
                 s_buffer[j] = (__m256)_mm256_broadcast_sd((double *)(((float*)asum) + (j * 2)));
@@ -5459,7 +5459,7 @@ void idxdBLAS_smcasum(const int fold, const int N, const void *X, const int incX
               __m128 expansion_mask_0;
               __m128 q_0, q_1;
               __m128 s_0, s_1;
-              __m128 s_buffer[(SIMAXFOLD * 2)];
+              __m128 s_buffer[(idxd_SIMAXFOLD * 2)];
 
               for(j = 0; j < fold; j += 1){
                 s_buffer[(j * 2)] = s_buffer[((j * 2) + 1)] = (__m128)_mm_load1_pd((double *)(((float*)asum) + (j * 2)));
@@ -5980,7 +5980,7 @@ void idxdBLAS_smcasum(const int fold, const int N, const void *X, const int incX
               float expansion_mask_0, expansion_mask_1;
               float q_0, q_1;
               float s_0, s_1;
-              float s_buffer[(SIMAXFOLD * 2)];
+              float s_buffer[(idxd_SIMAXFOLD * 2)];
 
               for(j = 0; j < fold; j += 1){
                 s_buffer[(j * 2)] = ((float*)asum)[(j * 2)];

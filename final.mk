@@ -64,7 +64,7 @@ acc:
 
 dox:
 	cd $(TOP); rm -rf dox; doxygen config.dox; cd dox/latex; make
-	cd $(TOP); cd dox; zip -r reference_website.zip html
+	cd $(TOP)/dox; mv html reference_website; zip -r reference_website.zip reference_website
 	cd $(TOP); rm -f doc/reference_website.zip; rm -f doc/reference_manual.pdf
 	cd $(TOP); cp dox/reference_website.zip doc; cp dox/latex/refman.pdf doc/reference_manual.pdf
 	cd $(TOP); rm -rf dox;

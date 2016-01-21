@@ -2274,7 +2274,7 @@ void idxdBLAS_smsasum(const int fold, const int N, const float *X, const int inc
               __m256 expansion_0;
               __m256 q_0, q_1;
               __m256 s_0, s_1;
-              __m256 s_buffer[(SIMAXFOLD * 2)];
+              __m256 s_buffer[(idxd_SIMAXFOLD * 2)];
 
               for(j = 0; j < fold; j += 1){
                 s_buffer[(j * 2)] = s_buffer[((j * 2) + 1)] = _mm256_broadcast_ss(manY + (incmanY * j));
@@ -5539,7 +5539,7 @@ void idxdBLAS_smsasum(const int fold, const int N, const float *X, const int inc
               __m128 expansion_0;
               __m128 q_0, q_1;
               __m128 s_0, s_1;
-              __m128 s_buffer[(SIMAXFOLD * 2)];
+              __m128 s_buffer[(idxd_SIMAXFOLD * 2)];
 
               for(j = 0; j < fold; j += 1){
                 s_buffer[(j * 2)] = s_buffer[((j * 2) + 1)] = _mm_load1_ps(manY + (incmanY * j));
@@ -5919,7 +5919,7 @@ void idxdBLAS_smsasum(const int fold, const int N, const float *X, const int inc
               float expansion_0;
               float q_0;
               float s_0;
-              float s_buffer[SIMAXFOLD];
+              float s_buffer[idxd_SIMAXFOLD];
 
               for(j = 0; j < fold; j += 1){
                 s_buffer[j] = manY[(incmanY * j)];

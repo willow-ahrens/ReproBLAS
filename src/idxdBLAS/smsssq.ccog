@@ -104,7 +104,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
       ]]]*/
     {
       #ifdef __AVX__
-        __m256 scale_mask = _mm256_set1_ps(scl);
+        __m256 scale_mask_inv = _mm256_set1_ps(1.0 / scl);
         __m256 blp_mask_tmp;
         {
           __m256 tmp;
@@ -139,14 +139,14 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                   expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 64 <= N_block; i += 64, X += 64){
-                    X_0 = _mm256_div_ps(_mm256_loadu_ps(X), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_loadu_ps(X + 8), scale_mask);
-                    X_2 = _mm256_div_ps(_mm256_loadu_ps(X + 16), scale_mask);
-                    X_3 = _mm256_div_ps(_mm256_loadu_ps(X + 24), scale_mask);
-                    X_4 = _mm256_div_ps(_mm256_loadu_ps(X + 32), scale_mask);
-                    X_5 = _mm256_div_ps(_mm256_loadu_ps(X + 40), scale_mask);
-                    X_6 = _mm256_div_ps(_mm256_loadu_ps(X + 48), scale_mask);
-                    X_7 = _mm256_div_ps(_mm256_loadu_ps(X + 56), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_loadu_ps(X + 8), scale_mask_inv);
+                    X_2 = _mm256_mul_ps(_mm256_loadu_ps(X + 16), scale_mask_inv);
+                    X_3 = _mm256_mul_ps(_mm256_loadu_ps(X + 24), scale_mask_inv);
+                    X_4 = _mm256_mul_ps(_mm256_loadu_ps(X + 32), scale_mask_inv);
+                    X_5 = _mm256_mul_ps(_mm256_loadu_ps(X + 40), scale_mask_inv);
+                    X_6 = _mm256_mul_ps(_mm256_loadu_ps(X + 48), scale_mask_inv);
+                    X_7 = _mm256_mul_ps(_mm256_loadu_ps(X + 56), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
                     X_2 = _mm256_mul_ps(X_2, X_2);
@@ -230,10 +230,10 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     s_2_0 = _mm256_add_ps(s_2_0, _mm256_or_ps(X_7, blp_mask_tmp));
                   }
                   if(i + 32 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_loadu_ps(X), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_loadu_ps(X + 8), scale_mask);
-                    X_2 = _mm256_div_ps(_mm256_loadu_ps(X + 16), scale_mask);
-                    X_3 = _mm256_div_ps(_mm256_loadu_ps(X + 24), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_loadu_ps(X + 8), scale_mask_inv);
+                    X_2 = _mm256_mul_ps(_mm256_loadu_ps(X + 16), scale_mask_inv);
+                    X_3 = _mm256_mul_ps(_mm256_loadu_ps(X + 24), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
                     X_2 = _mm256_mul_ps(X_2, X_2);
@@ -278,8 +278,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 32, X += 32;
                   }
                   if(i + 16 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_loadu_ps(X), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_loadu_ps(X + 8), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_loadu_ps(X + 8), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
 
@@ -304,7 +304,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 16, X += 16;
                   }
                   if(i + 8 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_loadu_ps(X), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_loadu_ps(X), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -319,7 +319,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 8, X += 8;
                   }
                   if(i < N_block){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(0, (N_block - i)>6?X[6]:0, (N_block - i)>5?X[5]:0, (N_block - i)>4?X[4]:0, (N_block - i)>3?X[3]:0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(0, (N_block - i)>6?X[6]:0, (N_block - i)>5?X[5]:0, (N_block - i)>4?X[4]:0, (N_block - i)>3?X[3]:0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -335,14 +335,14 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   }
                 }else{
                   for(i = 0; i + 64 <= N_block; i += 64, X += 64){
-                    X_0 = _mm256_div_ps(_mm256_loadu_ps(X), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_loadu_ps(X + 8), scale_mask);
-                    X_2 = _mm256_div_ps(_mm256_loadu_ps(X + 16), scale_mask);
-                    X_3 = _mm256_div_ps(_mm256_loadu_ps(X + 24), scale_mask);
-                    X_4 = _mm256_div_ps(_mm256_loadu_ps(X + 32), scale_mask);
-                    X_5 = _mm256_div_ps(_mm256_loadu_ps(X + 40), scale_mask);
-                    X_6 = _mm256_div_ps(_mm256_loadu_ps(X + 48), scale_mask);
-                    X_7 = _mm256_div_ps(_mm256_loadu_ps(X + 56), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_loadu_ps(X + 8), scale_mask_inv);
+                    X_2 = _mm256_mul_ps(_mm256_loadu_ps(X + 16), scale_mask_inv);
+                    X_3 = _mm256_mul_ps(_mm256_loadu_ps(X + 24), scale_mask_inv);
+                    X_4 = _mm256_mul_ps(_mm256_loadu_ps(X + 32), scale_mask_inv);
+                    X_5 = _mm256_mul_ps(_mm256_loadu_ps(X + 40), scale_mask_inv);
+                    X_6 = _mm256_mul_ps(_mm256_loadu_ps(X + 48), scale_mask_inv);
+                    X_7 = _mm256_mul_ps(_mm256_loadu_ps(X + 56), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
                     X_2 = _mm256_mul_ps(X_2, X_2);
@@ -426,10 +426,10 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     s_2_0 = _mm256_add_ps(s_2_0, _mm256_or_ps(X_7, blp_mask_tmp));
                   }
                   if(i + 32 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_loadu_ps(X), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_loadu_ps(X + 8), scale_mask);
-                    X_2 = _mm256_div_ps(_mm256_loadu_ps(X + 16), scale_mask);
-                    X_3 = _mm256_div_ps(_mm256_loadu_ps(X + 24), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_loadu_ps(X + 8), scale_mask_inv);
+                    X_2 = _mm256_mul_ps(_mm256_loadu_ps(X + 16), scale_mask_inv);
+                    X_3 = _mm256_mul_ps(_mm256_loadu_ps(X + 24), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
                     X_2 = _mm256_mul_ps(X_2, X_2);
@@ -474,8 +474,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 32, X += 32;
                   }
                   if(i + 16 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_loadu_ps(X), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_loadu_ps(X + 8), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_loadu_ps(X + 8), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
 
@@ -500,7 +500,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 16, X += 16;
                   }
                   if(i + 8 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_loadu_ps(X), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_loadu_ps(X), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -515,7 +515,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 8, X += 8;
                   }
                   if(i < N_block){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(0, (N_block - i)>6?X[6]:0, (N_block - i)>5?X[5]:0, (N_block - i)>4?X[4]:0, (N_block - i)>3?X[3]:0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(0, (N_block - i)>6?X[6]:0, (N_block - i)>5?X[5]:0, (N_block - i)>4?X[4]:0, (N_block - i)>3?X[3]:0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -535,14 +535,14 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                   expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 64 <= N_block; i += 64, X += (incX * 64)){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
-                    X_2 = _mm256_div_ps(_mm256_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)], X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask);
-                    X_3 = _mm256_div_ps(_mm256_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)], X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask);
-                    X_4 = _mm256_div_ps(_mm256_set_ps(X[(incX * 39)], X[(incX * 38)], X[(incX * 37)], X[(incX * 36)], X[(incX * 35)], X[(incX * 34)], X[(incX * 33)], X[(incX * 32)]), scale_mask);
-                    X_5 = _mm256_div_ps(_mm256_set_ps(X[(incX * 47)], X[(incX * 46)], X[(incX * 45)], X[(incX * 44)], X[(incX * 43)], X[(incX * 42)], X[(incX * 41)], X[(incX * 40)]), scale_mask);
-                    X_6 = _mm256_div_ps(_mm256_set_ps(X[(incX * 55)], X[(incX * 54)], X[(incX * 53)], X[(incX * 52)], X[(incX * 51)], X[(incX * 50)], X[(incX * 49)], X[(incX * 48)]), scale_mask);
-                    X_7 = _mm256_div_ps(_mm256_set_ps(X[(incX * 63)], X[(incX * 62)], X[(incX * 61)], X[(incX * 60)], X[(incX * 59)], X[(incX * 58)], X[(incX * 57)], X[(incX * 56)]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
+                    X_2 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)], X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask_inv);
+                    X_3 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)], X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask_inv);
+                    X_4 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 39)], X[(incX * 38)], X[(incX * 37)], X[(incX * 36)], X[(incX * 35)], X[(incX * 34)], X[(incX * 33)], X[(incX * 32)]), scale_mask_inv);
+                    X_5 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 47)], X[(incX * 46)], X[(incX * 45)], X[(incX * 44)], X[(incX * 43)], X[(incX * 42)], X[(incX * 41)], X[(incX * 40)]), scale_mask_inv);
+                    X_6 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 55)], X[(incX * 54)], X[(incX * 53)], X[(incX * 52)], X[(incX * 51)], X[(incX * 50)], X[(incX * 49)], X[(incX * 48)]), scale_mask_inv);
+                    X_7 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 63)], X[(incX * 62)], X[(incX * 61)], X[(incX * 60)], X[(incX * 59)], X[(incX * 58)], X[(incX * 57)], X[(incX * 56)]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
                     X_2 = _mm256_mul_ps(X_2, X_2);
@@ -626,10 +626,10 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     s_2_0 = _mm256_add_ps(s_2_0, _mm256_or_ps(X_7, blp_mask_tmp));
                   }
                   if(i + 32 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
-                    X_2 = _mm256_div_ps(_mm256_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)], X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask);
-                    X_3 = _mm256_div_ps(_mm256_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)], X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
+                    X_2 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)], X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask_inv);
+                    X_3 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)], X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
                     X_2 = _mm256_mul_ps(X_2, X_2);
@@ -674,8 +674,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 32, X += (incX * 32);
                   }
                   if(i + 16 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
 
@@ -700,7 +700,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 16, X += (incX * 16);
                   }
                   if(i + 8 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -715,7 +715,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 8, X += (incX * 8);
                   }
                   if(i < N_block){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(0, (N_block - i)>6?X[(incX * 6)]:0, (N_block - i)>5?X[(incX * 5)]:0, (N_block - i)>4?X[(incX * 4)]:0, (N_block - i)>3?X[(incX * 3)]:0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(0, (N_block - i)>6?X[(incX * 6)]:0, (N_block - i)>5?X[(incX * 5)]:0, (N_block - i)>4?X[(incX * 4)]:0, (N_block - i)>3?X[(incX * 3)]:0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -731,14 +731,14 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   }
                 }else{
                   for(i = 0; i + 64 <= N_block; i += 64, X += (incX * 64)){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
-                    X_2 = _mm256_div_ps(_mm256_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)], X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask);
-                    X_3 = _mm256_div_ps(_mm256_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)], X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask);
-                    X_4 = _mm256_div_ps(_mm256_set_ps(X[(incX * 39)], X[(incX * 38)], X[(incX * 37)], X[(incX * 36)], X[(incX * 35)], X[(incX * 34)], X[(incX * 33)], X[(incX * 32)]), scale_mask);
-                    X_5 = _mm256_div_ps(_mm256_set_ps(X[(incX * 47)], X[(incX * 46)], X[(incX * 45)], X[(incX * 44)], X[(incX * 43)], X[(incX * 42)], X[(incX * 41)], X[(incX * 40)]), scale_mask);
-                    X_6 = _mm256_div_ps(_mm256_set_ps(X[(incX * 55)], X[(incX * 54)], X[(incX * 53)], X[(incX * 52)], X[(incX * 51)], X[(incX * 50)], X[(incX * 49)], X[(incX * 48)]), scale_mask);
-                    X_7 = _mm256_div_ps(_mm256_set_ps(X[(incX * 63)], X[(incX * 62)], X[(incX * 61)], X[(incX * 60)], X[(incX * 59)], X[(incX * 58)], X[(incX * 57)], X[(incX * 56)]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
+                    X_2 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)], X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask_inv);
+                    X_3 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)], X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask_inv);
+                    X_4 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 39)], X[(incX * 38)], X[(incX * 37)], X[(incX * 36)], X[(incX * 35)], X[(incX * 34)], X[(incX * 33)], X[(incX * 32)]), scale_mask_inv);
+                    X_5 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 47)], X[(incX * 46)], X[(incX * 45)], X[(incX * 44)], X[(incX * 43)], X[(incX * 42)], X[(incX * 41)], X[(incX * 40)]), scale_mask_inv);
+                    X_6 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 55)], X[(incX * 54)], X[(incX * 53)], X[(incX * 52)], X[(incX * 51)], X[(incX * 50)], X[(incX * 49)], X[(incX * 48)]), scale_mask_inv);
+                    X_7 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 63)], X[(incX * 62)], X[(incX * 61)], X[(incX * 60)], X[(incX * 59)], X[(incX * 58)], X[(incX * 57)], X[(incX * 56)]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
                     X_2 = _mm256_mul_ps(X_2, X_2);
@@ -822,10 +822,10 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     s_2_0 = _mm256_add_ps(s_2_0, _mm256_or_ps(X_7, blp_mask_tmp));
                   }
                   if(i + 32 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
-                    X_2 = _mm256_div_ps(_mm256_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)], X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask);
-                    X_3 = _mm256_div_ps(_mm256_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)], X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
+                    X_2 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)], X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask_inv);
+                    X_3 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)], X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
                     X_2 = _mm256_mul_ps(X_2, X_2);
@@ -870,8 +870,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 32, X += (incX * 32);
                   }
                   if(i + 16 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
 
@@ -896,7 +896,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 16, X += (incX * 16);
                   }
                   if(i + 8 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -911,7 +911,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 8, X += (incX * 8);
                   }
                   if(i < N_block){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(0, (N_block - i)>6?X[(incX * 6)]:0, (N_block - i)>5?X[(incX * 5)]:0, (N_block - i)>4?X[(incX * 4)]:0, (N_block - i)>3?X[(incX * 3)]:0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(0, (N_block - i)>6?X[(incX * 6)]:0, (N_block - i)>5?X[(incX * 5)]:0, (N_block - i)>4?X[(incX * 4)]:0, (N_block - i)>3?X[(incX * 3)]:0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -965,11 +965,11 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                   expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 40 <= N_block; i += 40, X += 40){
-                    X_0 = _mm256_div_ps(_mm256_loadu_ps(X), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_loadu_ps(X + 8), scale_mask);
-                    X_2 = _mm256_div_ps(_mm256_loadu_ps(X + 16), scale_mask);
-                    X_3 = _mm256_div_ps(_mm256_loadu_ps(X + 24), scale_mask);
-                    X_4 = _mm256_div_ps(_mm256_loadu_ps(X + 32), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_loadu_ps(X + 8), scale_mask_inv);
+                    X_2 = _mm256_mul_ps(_mm256_loadu_ps(X + 16), scale_mask_inv);
+                    X_3 = _mm256_mul_ps(_mm256_loadu_ps(X + 24), scale_mask_inv);
+                    X_4 = _mm256_mul_ps(_mm256_loadu_ps(X + 32), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
                     X_2 = _mm256_mul_ps(X_2, X_2);
@@ -1043,10 +1043,10 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     s_3_0 = _mm256_add_ps(s_3_0, _mm256_or_ps(X_4, blp_mask_tmp));
                   }
                   if(i + 32 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_loadu_ps(X), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_loadu_ps(X + 8), scale_mask);
-                    X_2 = _mm256_div_ps(_mm256_loadu_ps(X + 16), scale_mask);
-                    X_3 = _mm256_div_ps(_mm256_loadu_ps(X + 24), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_loadu_ps(X + 8), scale_mask_inv);
+                    X_2 = _mm256_mul_ps(_mm256_loadu_ps(X + 16), scale_mask_inv);
+                    X_3 = _mm256_mul_ps(_mm256_loadu_ps(X + 24), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
                     X_2 = _mm256_mul_ps(X_2, X_2);
@@ -1107,8 +1107,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 32, X += 32;
                   }
                   if(i + 16 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_loadu_ps(X), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_loadu_ps(X + 8), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_loadu_ps(X + 8), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
 
@@ -1141,7 +1141,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 16, X += 16;
                   }
                   if(i + 8 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_loadu_ps(X), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_loadu_ps(X), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -1160,7 +1160,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 8, X += 8;
                   }
                   if(i < N_block){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(0, (N_block - i)>6?X[6]:0, (N_block - i)>5?X[5]:0, (N_block - i)>4?X[4]:0, (N_block - i)>3?X[3]:0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(0, (N_block - i)>6?X[6]:0, (N_block - i)>5?X[5]:0, (N_block - i)>4?X[4]:0, (N_block - i)>3?X[3]:0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -1180,11 +1180,11 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   }
                 }else{
                   for(i = 0; i + 40 <= N_block; i += 40, X += 40){
-                    X_0 = _mm256_div_ps(_mm256_loadu_ps(X), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_loadu_ps(X + 8), scale_mask);
-                    X_2 = _mm256_div_ps(_mm256_loadu_ps(X + 16), scale_mask);
-                    X_3 = _mm256_div_ps(_mm256_loadu_ps(X + 24), scale_mask);
-                    X_4 = _mm256_div_ps(_mm256_loadu_ps(X + 32), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_loadu_ps(X + 8), scale_mask_inv);
+                    X_2 = _mm256_mul_ps(_mm256_loadu_ps(X + 16), scale_mask_inv);
+                    X_3 = _mm256_mul_ps(_mm256_loadu_ps(X + 24), scale_mask_inv);
+                    X_4 = _mm256_mul_ps(_mm256_loadu_ps(X + 32), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
                     X_2 = _mm256_mul_ps(X_2, X_2);
@@ -1258,10 +1258,10 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     s_3_0 = _mm256_add_ps(s_3_0, _mm256_or_ps(X_4, blp_mask_tmp));
                   }
                   if(i + 32 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_loadu_ps(X), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_loadu_ps(X + 8), scale_mask);
-                    X_2 = _mm256_div_ps(_mm256_loadu_ps(X + 16), scale_mask);
-                    X_3 = _mm256_div_ps(_mm256_loadu_ps(X + 24), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_loadu_ps(X + 8), scale_mask_inv);
+                    X_2 = _mm256_mul_ps(_mm256_loadu_ps(X + 16), scale_mask_inv);
+                    X_3 = _mm256_mul_ps(_mm256_loadu_ps(X + 24), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
                     X_2 = _mm256_mul_ps(X_2, X_2);
@@ -1322,8 +1322,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 32, X += 32;
                   }
                   if(i + 16 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_loadu_ps(X), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_loadu_ps(X + 8), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_loadu_ps(X + 8), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
 
@@ -1356,7 +1356,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 16, X += 16;
                   }
                   if(i + 8 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_loadu_ps(X), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_loadu_ps(X), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -1375,7 +1375,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 8, X += 8;
                   }
                   if(i < N_block){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(0, (N_block - i)>6?X[6]:0, (N_block - i)>5?X[5]:0, (N_block - i)>4?X[4]:0, (N_block - i)>3?X[3]:0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(0, (N_block - i)>6?X[6]:0, (N_block - i)>5?X[5]:0, (N_block - i)>4?X[4]:0, (N_block - i)>3?X[3]:0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -1399,11 +1399,11 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                   expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 40 <= N_block; i += 40, X += (incX * 40)){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
-                    X_2 = _mm256_div_ps(_mm256_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)], X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask);
-                    X_3 = _mm256_div_ps(_mm256_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)], X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask);
-                    X_4 = _mm256_div_ps(_mm256_set_ps(X[(incX * 39)], X[(incX * 38)], X[(incX * 37)], X[(incX * 36)], X[(incX * 35)], X[(incX * 34)], X[(incX * 33)], X[(incX * 32)]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
+                    X_2 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)], X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask_inv);
+                    X_3 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)], X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask_inv);
+                    X_4 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 39)], X[(incX * 38)], X[(incX * 37)], X[(incX * 36)], X[(incX * 35)], X[(incX * 34)], X[(incX * 33)], X[(incX * 32)]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
                     X_2 = _mm256_mul_ps(X_2, X_2);
@@ -1477,10 +1477,10 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     s_3_0 = _mm256_add_ps(s_3_0, _mm256_or_ps(X_4, blp_mask_tmp));
                   }
                   if(i + 32 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
-                    X_2 = _mm256_div_ps(_mm256_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)], X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask);
-                    X_3 = _mm256_div_ps(_mm256_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)], X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
+                    X_2 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)], X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask_inv);
+                    X_3 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)], X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
                     X_2 = _mm256_mul_ps(X_2, X_2);
@@ -1541,8 +1541,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 32, X += (incX * 32);
                   }
                   if(i + 16 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
 
@@ -1575,7 +1575,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 16, X += (incX * 16);
                   }
                   if(i + 8 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -1594,7 +1594,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 8, X += (incX * 8);
                   }
                   if(i < N_block){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(0, (N_block - i)>6?X[(incX * 6)]:0, (N_block - i)>5?X[(incX * 5)]:0, (N_block - i)>4?X[(incX * 4)]:0, (N_block - i)>3?X[(incX * 3)]:0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(0, (N_block - i)>6?X[(incX * 6)]:0, (N_block - i)>5?X[(incX * 5)]:0, (N_block - i)>4?X[(incX * 4)]:0, (N_block - i)>3?X[(incX * 3)]:0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -1614,11 +1614,11 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   }
                 }else{
                   for(i = 0; i + 40 <= N_block; i += 40, X += (incX * 40)){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
-                    X_2 = _mm256_div_ps(_mm256_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)], X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask);
-                    X_3 = _mm256_div_ps(_mm256_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)], X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask);
-                    X_4 = _mm256_div_ps(_mm256_set_ps(X[(incX * 39)], X[(incX * 38)], X[(incX * 37)], X[(incX * 36)], X[(incX * 35)], X[(incX * 34)], X[(incX * 33)], X[(incX * 32)]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
+                    X_2 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)], X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask_inv);
+                    X_3 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)], X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask_inv);
+                    X_4 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 39)], X[(incX * 38)], X[(incX * 37)], X[(incX * 36)], X[(incX * 35)], X[(incX * 34)], X[(incX * 33)], X[(incX * 32)]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
                     X_2 = _mm256_mul_ps(X_2, X_2);
@@ -1692,10 +1692,10 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     s_3_0 = _mm256_add_ps(s_3_0, _mm256_or_ps(X_4, blp_mask_tmp));
                   }
                   if(i + 32 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
-                    X_2 = _mm256_div_ps(_mm256_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)], X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask);
-                    X_3 = _mm256_div_ps(_mm256_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)], X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
+                    X_2 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)], X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask_inv);
+                    X_3 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)], X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
                     X_2 = _mm256_mul_ps(X_2, X_2);
@@ -1756,8 +1756,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 32, X += (incX * 32);
                   }
                   if(i + 16 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
 
@@ -1790,7 +1790,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 16, X += (incX * 16);
                   }
                   if(i + 8 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -1809,7 +1809,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 8, X += (incX * 8);
                   }
                   if(i < N_block){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(0, (N_block - i)>6?X[(incX * 6)]:0, (N_block - i)>5?X[(incX * 5)]:0, (N_block - i)>4?X[(incX * 4)]:0, (N_block - i)>3?X[(incX * 3)]:0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(0, (N_block - i)>6?X[(incX * 6)]:0, (N_block - i)>5?X[(incX * 5)]:0, (N_block - i)>4?X[(incX * 4)]:0, (N_block - i)>3?X[(incX * 3)]:0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -1856,7 +1856,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
               __m256 expansion_0;
               __m256 q_0;
               __m256 s_0;
-              __m256 s_buffer[SIMAXFOLD];
+              __m256 s_buffer[idxd_SIMAXFOLD];
 
               for(j = 0; j < fold; j += 1){
                 s_buffer[j] = _mm256_broadcast_ss(manY + (incmanY * j));
@@ -1867,14 +1867,14 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                   expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 64 <= N_block; i += 64, X += 64){
-                    X_0 = _mm256_div_ps(_mm256_loadu_ps(X), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_loadu_ps(X + 8), scale_mask);
-                    X_2 = _mm256_div_ps(_mm256_loadu_ps(X + 16), scale_mask);
-                    X_3 = _mm256_div_ps(_mm256_loadu_ps(X + 24), scale_mask);
-                    X_4 = _mm256_div_ps(_mm256_loadu_ps(X + 32), scale_mask);
-                    X_5 = _mm256_div_ps(_mm256_loadu_ps(X + 40), scale_mask);
-                    X_6 = _mm256_div_ps(_mm256_loadu_ps(X + 48), scale_mask);
-                    X_7 = _mm256_div_ps(_mm256_loadu_ps(X + 56), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_loadu_ps(X + 8), scale_mask_inv);
+                    X_2 = _mm256_mul_ps(_mm256_loadu_ps(X + 16), scale_mask_inv);
+                    X_3 = _mm256_mul_ps(_mm256_loadu_ps(X + 24), scale_mask_inv);
+                    X_4 = _mm256_mul_ps(_mm256_loadu_ps(X + 32), scale_mask_inv);
+                    X_5 = _mm256_mul_ps(_mm256_loadu_ps(X + 40), scale_mask_inv);
+                    X_6 = _mm256_mul_ps(_mm256_loadu_ps(X + 48), scale_mask_inv);
+                    X_7 = _mm256_mul_ps(_mm256_loadu_ps(X + 56), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
                     X_2 = _mm256_mul_ps(X_2, X_2);
@@ -1990,10 +1990,10 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     s_buffer[j] = _mm256_add_ps(s_buffer[j], _mm256_or_ps(X_7, blp_mask_tmp));
                   }
                   if(i + 32 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_loadu_ps(X), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_loadu_ps(X + 8), scale_mask);
-                    X_2 = _mm256_div_ps(_mm256_loadu_ps(X + 16), scale_mask);
-                    X_3 = _mm256_div_ps(_mm256_loadu_ps(X + 24), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_loadu_ps(X + 8), scale_mask_inv);
+                    X_2 = _mm256_mul_ps(_mm256_loadu_ps(X + 16), scale_mask_inv);
+                    X_3 = _mm256_mul_ps(_mm256_loadu_ps(X + 24), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
                     X_2 = _mm256_mul_ps(X_2, X_2);
@@ -2054,8 +2054,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 32, X += 32;
                   }
                   if(i + 16 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_loadu_ps(X), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_loadu_ps(X + 8), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_loadu_ps(X + 8), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
 
@@ -2088,7 +2088,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 16, X += 16;
                   }
                   if(i + 8 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_loadu_ps(X), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_loadu_ps(X), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     s_0 = s_buffer[0];
@@ -2107,7 +2107,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 8, X += 8;
                   }
                   if(i < N_block){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(0, (N_block - i)>6?X[6]:0, (N_block - i)>5?X[5]:0, (N_block - i)>4?X[4]:0, (N_block - i)>3?X[3]:0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(0, (N_block - i)>6?X[6]:0, (N_block - i)>5?X[5]:0, (N_block - i)>4?X[4]:0, (N_block - i)>3?X[3]:0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     s_0 = s_buffer[0];
@@ -2127,14 +2127,14 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   }
                 }else{
                   for(i = 0; i + 64 <= N_block; i += 64, X += 64){
-                    X_0 = _mm256_div_ps(_mm256_loadu_ps(X), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_loadu_ps(X + 8), scale_mask);
-                    X_2 = _mm256_div_ps(_mm256_loadu_ps(X + 16), scale_mask);
-                    X_3 = _mm256_div_ps(_mm256_loadu_ps(X + 24), scale_mask);
-                    X_4 = _mm256_div_ps(_mm256_loadu_ps(X + 32), scale_mask);
-                    X_5 = _mm256_div_ps(_mm256_loadu_ps(X + 40), scale_mask);
-                    X_6 = _mm256_div_ps(_mm256_loadu_ps(X + 48), scale_mask);
-                    X_7 = _mm256_div_ps(_mm256_loadu_ps(X + 56), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_loadu_ps(X + 8), scale_mask_inv);
+                    X_2 = _mm256_mul_ps(_mm256_loadu_ps(X + 16), scale_mask_inv);
+                    X_3 = _mm256_mul_ps(_mm256_loadu_ps(X + 24), scale_mask_inv);
+                    X_4 = _mm256_mul_ps(_mm256_loadu_ps(X + 32), scale_mask_inv);
+                    X_5 = _mm256_mul_ps(_mm256_loadu_ps(X + 40), scale_mask_inv);
+                    X_6 = _mm256_mul_ps(_mm256_loadu_ps(X + 48), scale_mask_inv);
+                    X_7 = _mm256_mul_ps(_mm256_loadu_ps(X + 56), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
                     X_2 = _mm256_mul_ps(X_2, X_2);
@@ -2210,10 +2210,10 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     s_buffer[j] = _mm256_add_ps(s_buffer[j], _mm256_or_ps(X_7, blp_mask_tmp));
                   }
                   if(i + 32 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_loadu_ps(X), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_loadu_ps(X + 8), scale_mask);
-                    X_2 = _mm256_div_ps(_mm256_loadu_ps(X + 16), scale_mask);
-                    X_3 = _mm256_div_ps(_mm256_loadu_ps(X + 24), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_loadu_ps(X + 8), scale_mask_inv);
+                    X_2 = _mm256_mul_ps(_mm256_loadu_ps(X + 16), scale_mask_inv);
+                    X_3 = _mm256_mul_ps(_mm256_loadu_ps(X + 24), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
                     X_2 = _mm256_mul_ps(X_2, X_2);
@@ -2254,8 +2254,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 32, X += 32;
                   }
                   if(i + 16 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_loadu_ps(X), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_loadu_ps(X + 8), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_loadu_ps(X + 8), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
 
@@ -2278,7 +2278,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 16, X += 16;
                   }
                   if(i + 8 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_loadu_ps(X), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_loadu_ps(X), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     for(j = 0; j < fold - 1; j++){
@@ -2292,7 +2292,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 8, X += 8;
                   }
                   if(i < N_block){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(0, (N_block - i)>6?X[6]:0, (N_block - i)>5?X[5]:0, (N_block - i)>4?X[4]:0, (N_block - i)>3?X[3]:0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(0, (N_block - i)>6?X[6]:0, (N_block - i)>5?X[5]:0, (N_block - i)>4?X[4]:0, (N_block - i)>3?X[3]:0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     for(j = 0; j < fold - 1; j++){
@@ -2311,14 +2311,14 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                   expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 64 <= N_block; i += 64, X += (incX * 64)){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
-                    X_2 = _mm256_div_ps(_mm256_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)], X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask);
-                    X_3 = _mm256_div_ps(_mm256_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)], X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask);
-                    X_4 = _mm256_div_ps(_mm256_set_ps(X[(incX * 39)], X[(incX * 38)], X[(incX * 37)], X[(incX * 36)], X[(incX * 35)], X[(incX * 34)], X[(incX * 33)], X[(incX * 32)]), scale_mask);
-                    X_5 = _mm256_div_ps(_mm256_set_ps(X[(incX * 47)], X[(incX * 46)], X[(incX * 45)], X[(incX * 44)], X[(incX * 43)], X[(incX * 42)], X[(incX * 41)], X[(incX * 40)]), scale_mask);
-                    X_6 = _mm256_div_ps(_mm256_set_ps(X[(incX * 55)], X[(incX * 54)], X[(incX * 53)], X[(incX * 52)], X[(incX * 51)], X[(incX * 50)], X[(incX * 49)], X[(incX * 48)]), scale_mask);
-                    X_7 = _mm256_div_ps(_mm256_set_ps(X[(incX * 63)], X[(incX * 62)], X[(incX * 61)], X[(incX * 60)], X[(incX * 59)], X[(incX * 58)], X[(incX * 57)], X[(incX * 56)]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
+                    X_2 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)], X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask_inv);
+                    X_3 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)], X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask_inv);
+                    X_4 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 39)], X[(incX * 38)], X[(incX * 37)], X[(incX * 36)], X[(incX * 35)], X[(incX * 34)], X[(incX * 33)], X[(incX * 32)]), scale_mask_inv);
+                    X_5 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 47)], X[(incX * 46)], X[(incX * 45)], X[(incX * 44)], X[(incX * 43)], X[(incX * 42)], X[(incX * 41)], X[(incX * 40)]), scale_mask_inv);
+                    X_6 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 55)], X[(incX * 54)], X[(incX * 53)], X[(incX * 52)], X[(incX * 51)], X[(incX * 50)], X[(incX * 49)], X[(incX * 48)]), scale_mask_inv);
+                    X_7 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 63)], X[(incX * 62)], X[(incX * 61)], X[(incX * 60)], X[(incX * 59)], X[(incX * 58)], X[(incX * 57)], X[(incX * 56)]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
                     X_2 = _mm256_mul_ps(X_2, X_2);
@@ -2434,10 +2434,10 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     s_buffer[j] = _mm256_add_ps(s_buffer[j], _mm256_or_ps(X_7, blp_mask_tmp));
                   }
                   if(i + 32 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
-                    X_2 = _mm256_div_ps(_mm256_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)], X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask);
-                    X_3 = _mm256_div_ps(_mm256_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)], X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
+                    X_2 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)], X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask_inv);
+                    X_3 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)], X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
                     X_2 = _mm256_mul_ps(X_2, X_2);
@@ -2498,8 +2498,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 32, X += (incX * 32);
                   }
                   if(i + 16 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
 
@@ -2532,7 +2532,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 16, X += (incX * 16);
                   }
                   if(i + 8 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     s_0 = s_buffer[0];
@@ -2551,7 +2551,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 8, X += (incX * 8);
                   }
                   if(i < N_block){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(0, (N_block - i)>6?X[(incX * 6)]:0, (N_block - i)>5?X[(incX * 5)]:0, (N_block - i)>4?X[(incX * 4)]:0, (N_block - i)>3?X[(incX * 3)]:0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(0, (N_block - i)>6?X[(incX * 6)]:0, (N_block - i)>5?X[(incX * 5)]:0, (N_block - i)>4?X[(incX * 4)]:0, (N_block - i)>3?X[(incX * 3)]:0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     s_0 = s_buffer[0];
@@ -2571,14 +2571,14 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   }
                 }else{
                   for(i = 0; i + 64 <= N_block; i += 64, X += (incX * 64)){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
-                    X_2 = _mm256_div_ps(_mm256_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)], X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask);
-                    X_3 = _mm256_div_ps(_mm256_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)], X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask);
-                    X_4 = _mm256_div_ps(_mm256_set_ps(X[(incX * 39)], X[(incX * 38)], X[(incX * 37)], X[(incX * 36)], X[(incX * 35)], X[(incX * 34)], X[(incX * 33)], X[(incX * 32)]), scale_mask);
-                    X_5 = _mm256_div_ps(_mm256_set_ps(X[(incX * 47)], X[(incX * 46)], X[(incX * 45)], X[(incX * 44)], X[(incX * 43)], X[(incX * 42)], X[(incX * 41)], X[(incX * 40)]), scale_mask);
-                    X_6 = _mm256_div_ps(_mm256_set_ps(X[(incX * 55)], X[(incX * 54)], X[(incX * 53)], X[(incX * 52)], X[(incX * 51)], X[(incX * 50)], X[(incX * 49)], X[(incX * 48)]), scale_mask);
-                    X_7 = _mm256_div_ps(_mm256_set_ps(X[(incX * 63)], X[(incX * 62)], X[(incX * 61)], X[(incX * 60)], X[(incX * 59)], X[(incX * 58)], X[(incX * 57)], X[(incX * 56)]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
+                    X_2 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)], X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask_inv);
+                    X_3 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)], X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask_inv);
+                    X_4 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 39)], X[(incX * 38)], X[(incX * 37)], X[(incX * 36)], X[(incX * 35)], X[(incX * 34)], X[(incX * 33)], X[(incX * 32)]), scale_mask_inv);
+                    X_5 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 47)], X[(incX * 46)], X[(incX * 45)], X[(incX * 44)], X[(incX * 43)], X[(incX * 42)], X[(incX * 41)], X[(incX * 40)]), scale_mask_inv);
+                    X_6 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 55)], X[(incX * 54)], X[(incX * 53)], X[(incX * 52)], X[(incX * 51)], X[(incX * 50)], X[(incX * 49)], X[(incX * 48)]), scale_mask_inv);
+                    X_7 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 63)], X[(incX * 62)], X[(incX * 61)], X[(incX * 60)], X[(incX * 59)], X[(incX * 58)], X[(incX * 57)], X[(incX * 56)]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
                     X_2 = _mm256_mul_ps(X_2, X_2);
@@ -2654,10 +2654,10 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     s_buffer[j] = _mm256_add_ps(s_buffer[j], _mm256_or_ps(X_7, blp_mask_tmp));
                   }
                   if(i + 32 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
-                    X_2 = _mm256_div_ps(_mm256_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)], X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask);
-                    X_3 = _mm256_div_ps(_mm256_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)], X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
+                    X_2 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)], X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask_inv);
+                    X_3 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)], X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
                     X_2 = _mm256_mul_ps(X_2, X_2);
@@ -2698,8 +2698,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 32, X += (incX * 32);
                   }
                   if(i + 16 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm256_div_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)], X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
                     X_1 = _mm256_mul_ps(X_1, X_1);
 
@@ -2722,7 +2722,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 16, X += (incX * 16);
                   }
                   if(i + 8 <= N_block){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)], X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     for(j = 0; j < fold - 1; j++){
@@ -2736,7 +2736,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 8, X += (incX * 8);
                   }
                   if(i < N_block){
-                    X_0 = _mm256_div_ps(_mm256_set_ps(0, (N_block - i)>6?X[(incX * 6)]:0, (N_block - i)>5?X[(incX * 5)]:0, (N_block - i)>4?X[(incX * 4)]:0, (N_block - i)>3?X[(incX * 3)]:0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask);
+                    X_0 = _mm256_mul_ps(_mm256_set_ps(0, (N_block - i)>6?X[(incX * 6)]:0, (N_block - i)>5?X[(incX * 5)]:0, (N_block - i)>4?X[(incX * 4)]:0, (N_block - i)>3?X[(incX * 3)]:0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask_inv);
                     X_0 = _mm256_mul_ps(X_0, X_0);
 
                     for(j = 0; j < fold - 1; j++){
@@ -2766,7 +2766,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
         }
 
       #elif defined(__SSE2__)
-        __m128 scale_mask = _mm_set1_ps(scl);
+        __m128 scale_mask_inv = _mm_set1_ps(1.0 / scl);
         __m128 blp_mask_tmp;
         {
           __m128 tmp;
@@ -2799,13 +2799,13 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                   expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 28 <= N_block; i += 28, X += 28){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
-                    X_1 = _mm_div_ps(_mm_loadu_ps(X + 4), scale_mask);
-                    X_2 = _mm_div_ps(_mm_loadu_ps(X + 8), scale_mask);
-                    X_3 = _mm_div_ps(_mm_loadu_ps(X + 12), scale_mask);
-                    X_4 = _mm_div_ps(_mm_loadu_ps(X + 16), scale_mask);
-                    X_5 = _mm_div_ps(_mm_loadu_ps(X + 20), scale_mask);
-                    X_6 = _mm_div_ps(_mm_loadu_ps(X + 24), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_loadu_ps(X + 4), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_loadu_ps(X + 8), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_loadu_ps(X + 12), scale_mask_inv);
+                    X_4 = _mm_mul_ps(_mm_loadu_ps(X + 16), scale_mask_inv);
+                    X_5 = _mm_mul_ps(_mm_loadu_ps(X + 20), scale_mask_inv);
+                    X_6 = _mm_mul_ps(_mm_loadu_ps(X + 24), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -2851,10 +2851,10 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     s_1_0 = _mm_add_ps(s_1_0, _mm_or_ps(X_6, blp_mask_tmp));
                   }
                   if(i + 16 <= N_block){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
-                    X_1 = _mm_div_ps(_mm_loadu_ps(X + 4), scale_mask);
-                    X_2 = _mm_div_ps(_mm_loadu_ps(X + 8), scale_mask);
-                    X_3 = _mm_div_ps(_mm_loadu_ps(X + 12), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_loadu_ps(X + 4), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_loadu_ps(X + 8), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_loadu_ps(X + 12), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -2883,8 +2883,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 16, X += 16;
                   }
                   if(i + 8 <= N_block){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
-                    X_1 = _mm_div_ps(_mm_loadu_ps(X + 4), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_loadu_ps(X + 4), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
 
@@ -2901,7 +2901,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 8, X += 8;
                   }
                   if(i + 4 <= N_block){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -2912,7 +2912,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 4, X += 4;
                   }
                   if(i < N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -2924,13 +2924,13 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   }
                 }else{
                   for(i = 0; i + 28 <= N_block; i += 28, X += 28){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
-                    X_1 = _mm_div_ps(_mm_loadu_ps(X + 4), scale_mask);
-                    X_2 = _mm_div_ps(_mm_loadu_ps(X + 8), scale_mask);
-                    X_3 = _mm_div_ps(_mm_loadu_ps(X + 12), scale_mask);
-                    X_4 = _mm_div_ps(_mm_loadu_ps(X + 16), scale_mask);
-                    X_5 = _mm_div_ps(_mm_loadu_ps(X + 20), scale_mask);
-                    X_6 = _mm_div_ps(_mm_loadu_ps(X + 24), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_loadu_ps(X + 4), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_loadu_ps(X + 8), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_loadu_ps(X + 12), scale_mask_inv);
+                    X_4 = _mm_mul_ps(_mm_loadu_ps(X + 16), scale_mask_inv);
+                    X_5 = _mm_mul_ps(_mm_loadu_ps(X + 20), scale_mask_inv);
+                    X_6 = _mm_mul_ps(_mm_loadu_ps(X + 24), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -2976,10 +2976,10 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     s_1_0 = _mm_add_ps(s_1_0, _mm_or_ps(X_6, blp_mask_tmp));
                   }
                   if(i + 16 <= N_block){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
-                    X_1 = _mm_div_ps(_mm_loadu_ps(X + 4), scale_mask);
-                    X_2 = _mm_div_ps(_mm_loadu_ps(X + 8), scale_mask);
-                    X_3 = _mm_div_ps(_mm_loadu_ps(X + 12), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_loadu_ps(X + 4), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_loadu_ps(X + 8), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_loadu_ps(X + 12), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -3008,8 +3008,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 16, X += 16;
                   }
                   if(i + 8 <= N_block){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
-                    X_1 = _mm_div_ps(_mm_loadu_ps(X + 4), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_loadu_ps(X + 4), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
 
@@ -3026,7 +3026,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 8, X += 8;
                   }
                   if(i + 4 <= N_block){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -3037,7 +3037,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 4, X += 4;
                   }
                   if(i < N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -3053,13 +3053,13 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                   expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 28 <= N_block; i += 28, X += (incX * 28)){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm_div_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask);
-                    X_2 = _mm_div_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
-                    X_3 = _mm_div_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask);
-                    X_4 = _mm_div_ps(_mm_set_ps(X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask);
-                    X_5 = _mm_div_ps(_mm_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)]), scale_mask);
-                    X_6 = _mm_div_ps(_mm_set_ps(X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask_inv);
+                    X_4 = _mm_mul_ps(_mm_set_ps(X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask_inv);
+                    X_5 = _mm_mul_ps(_mm_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)]), scale_mask_inv);
+                    X_6 = _mm_mul_ps(_mm_set_ps(X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -3105,10 +3105,10 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     s_1_0 = _mm_add_ps(s_1_0, _mm_or_ps(X_6, blp_mask_tmp));
                   }
                   if(i + 16 <= N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm_div_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask);
-                    X_2 = _mm_div_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
-                    X_3 = _mm_div_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -3137,8 +3137,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 16, X += (incX * 16);
                   }
                   if(i + 8 <= N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm_div_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
 
@@ -3155,7 +3155,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 8, X += (incX * 8);
                   }
                   if(i + 4 <= N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -3166,7 +3166,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 4, X += (incX * 4);
                   }
                   if(i < N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -3178,13 +3178,13 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   }
                 }else{
                   for(i = 0; i + 28 <= N_block; i += 28, X += (incX * 28)){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm_div_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask);
-                    X_2 = _mm_div_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
-                    X_3 = _mm_div_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask);
-                    X_4 = _mm_div_ps(_mm_set_ps(X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask);
-                    X_5 = _mm_div_ps(_mm_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)]), scale_mask);
-                    X_6 = _mm_div_ps(_mm_set_ps(X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask_inv);
+                    X_4 = _mm_mul_ps(_mm_set_ps(X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask_inv);
+                    X_5 = _mm_mul_ps(_mm_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)]), scale_mask_inv);
+                    X_6 = _mm_mul_ps(_mm_set_ps(X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -3230,10 +3230,10 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     s_1_0 = _mm_add_ps(s_1_0, _mm_or_ps(X_6, blp_mask_tmp));
                   }
                   if(i + 16 <= N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm_div_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask);
-                    X_2 = _mm_div_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
-                    X_3 = _mm_div_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -3262,8 +3262,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 16, X += (incX * 16);
                   }
                   if(i + 8 <= N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm_div_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
 
@@ -3280,7 +3280,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 8, X += (incX * 8);
                   }
                   if(i + 4 <= N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -3291,7 +3291,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 4, X += (incX * 4);
                   }
                   if(i < N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -3336,20 +3336,20 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                   expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 56 <= N_block; i += 56, X += 56){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
-                    X_1 = _mm_div_ps(_mm_loadu_ps(X + 4), scale_mask);
-                    X_2 = _mm_div_ps(_mm_loadu_ps(X + 8), scale_mask);
-                    X_3 = _mm_div_ps(_mm_loadu_ps(X + 12), scale_mask);
-                    X_4 = _mm_div_ps(_mm_loadu_ps(X + 16), scale_mask);
-                    X_5 = _mm_div_ps(_mm_loadu_ps(X + 20), scale_mask);
-                    X_6 = _mm_div_ps(_mm_loadu_ps(X + 24), scale_mask);
-                    X_7 = _mm_div_ps(_mm_loadu_ps(X + 28), scale_mask);
-                    X_8 = _mm_div_ps(_mm_loadu_ps(X + 32), scale_mask);
-                    X_9 = _mm_div_ps(_mm_loadu_ps(X + 36), scale_mask);
-                    X_10 = _mm_div_ps(_mm_loadu_ps(X + 40), scale_mask);
-                    X_11 = _mm_div_ps(_mm_loadu_ps(X + 44), scale_mask);
-                    X_12 = _mm_div_ps(_mm_loadu_ps(X + 48), scale_mask);
-                    X_13 = _mm_div_ps(_mm_loadu_ps(X + 52), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_loadu_ps(X + 4), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_loadu_ps(X + 8), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_loadu_ps(X + 12), scale_mask_inv);
+                    X_4 = _mm_mul_ps(_mm_loadu_ps(X + 16), scale_mask_inv);
+                    X_5 = _mm_mul_ps(_mm_loadu_ps(X + 20), scale_mask_inv);
+                    X_6 = _mm_mul_ps(_mm_loadu_ps(X + 24), scale_mask_inv);
+                    X_7 = _mm_mul_ps(_mm_loadu_ps(X + 28), scale_mask_inv);
+                    X_8 = _mm_mul_ps(_mm_loadu_ps(X + 32), scale_mask_inv);
+                    X_9 = _mm_mul_ps(_mm_loadu_ps(X + 36), scale_mask_inv);
+                    X_10 = _mm_mul_ps(_mm_loadu_ps(X + 40), scale_mask_inv);
+                    X_11 = _mm_mul_ps(_mm_loadu_ps(X + 44), scale_mask_inv);
+                    X_12 = _mm_mul_ps(_mm_loadu_ps(X + 48), scale_mask_inv);
+                    X_13 = _mm_mul_ps(_mm_loadu_ps(X + 52), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -3493,14 +3493,14 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     s_2_1 = _mm_add_ps(s_2_1, _mm_or_ps(X_13, blp_mask_tmp));
                   }
                   if(i + 32 <= N_block){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
-                    X_1 = _mm_div_ps(_mm_loadu_ps(X + 4), scale_mask);
-                    X_2 = _mm_div_ps(_mm_loadu_ps(X + 8), scale_mask);
-                    X_3 = _mm_div_ps(_mm_loadu_ps(X + 12), scale_mask);
-                    X_4 = _mm_div_ps(_mm_loadu_ps(X + 16), scale_mask);
-                    X_5 = _mm_div_ps(_mm_loadu_ps(X + 20), scale_mask);
-                    X_6 = _mm_div_ps(_mm_loadu_ps(X + 24), scale_mask);
-                    X_7 = _mm_div_ps(_mm_loadu_ps(X + 28), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_loadu_ps(X + 4), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_loadu_ps(X + 8), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_loadu_ps(X + 12), scale_mask_inv);
+                    X_4 = _mm_mul_ps(_mm_loadu_ps(X + 16), scale_mask_inv);
+                    X_5 = _mm_mul_ps(_mm_loadu_ps(X + 20), scale_mask_inv);
+                    X_6 = _mm_mul_ps(_mm_loadu_ps(X + 24), scale_mask_inv);
+                    X_7 = _mm_mul_ps(_mm_loadu_ps(X + 28), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -3585,10 +3585,10 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 32, X += 32;
                   }
                   if(i + 16 <= N_block){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
-                    X_1 = _mm_div_ps(_mm_loadu_ps(X + 4), scale_mask);
-                    X_2 = _mm_div_ps(_mm_loadu_ps(X + 8), scale_mask);
-                    X_3 = _mm_div_ps(_mm_loadu_ps(X + 12), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_loadu_ps(X + 4), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_loadu_ps(X + 8), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_loadu_ps(X + 12), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -3633,8 +3633,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 16, X += 16;
                   }
                   if(i + 8 <= N_block){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
-                    X_1 = _mm_div_ps(_mm_loadu_ps(X + 4), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_loadu_ps(X + 4), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
 
@@ -3659,7 +3659,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 8, X += 8;
                   }
                   if(i + 4 <= N_block){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -3674,7 +3674,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 4, X += 4;
                   }
                   if(i < N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -3690,20 +3690,20 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   }
                 }else{
                   for(i = 0; i + 56 <= N_block; i += 56, X += 56){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
-                    X_1 = _mm_div_ps(_mm_loadu_ps(X + 4), scale_mask);
-                    X_2 = _mm_div_ps(_mm_loadu_ps(X + 8), scale_mask);
-                    X_3 = _mm_div_ps(_mm_loadu_ps(X + 12), scale_mask);
-                    X_4 = _mm_div_ps(_mm_loadu_ps(X + 16), scale_mask);
-                    X_5 = _mm_div_ps(_mm_loadu_ps(X + 20), scale_mask);
-                    X_6 = _mm_div_ps(_mm_loadu_ps(X + 24), scale_mask);
-                    X_7 = _mm_div_ps(_mm_loadu_ps(X + 28), scale_mask);
-                    X_8 = _mm_div_ps(_mm_loadu_ps(X + 32), scale_mask);
-                    X_9 = _mm_div_ps(_mm_loadu_ps(X + 36), scale_mask);
-                    X_10 = _mm_div_ps(_mm_loadu_ps(X + 40), scale_mask);
-                    X_11 = _mm_div_ps(_mm_loadu_ps(X + 44), scale_mask);
-                    X_12 = _mm_div_ps(_mm_loadu_ps(X + 48), scale_mask);
-                    X_13 = _mm_div_ps(_mm_loadu_ps(X + 52), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_loadu_ps(X + 4), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_loadu_ps(X + 8), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_loadu_ps(X + 12), scale_mask_inv);
+                    X_4 = _mm_mul_ps(_mm_loadu_ps(X + 16), scale_mask_inv);
+                    X_5 = _mm_mul_ps(_mm_loadu_ps(X + 20), scale_mask_inv);
+                    X_6 = _mm_mul_ps(_mm_loadu_ps(X + 24), scale_mask_inv);
+                    X_7 = _mm_mul_ps(_mm_loadu_ps(X + 28), scale_mask_inv);
+                    X_8 = _mm_mul_ps(_mm_loadu_ps(X + 32), scale_mask_inv);
+                    X_9 = _mm_mul_ps(_mm_loadu_ps(X + 36), scale_mask_inv);
+                    X_10 = _mm_mul_ps(_mm_loadu_ps(X + 40), scale_mask_inv);
+                    X_11 = _mm_mul_ps(_mm_loadu_ps(X + 44), scale_mask_inv);
+                    X_12 = _mm_mul_ps(_mm_loadu_ps(X + 48), scale_mask_inv);
+                    X_13 = _mm_mul_ps(_mm_loadu_ps(X + 52), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -3847,14 +3847,14 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     s_2_1 = _mm_add_ps(s_2_1, _mm_or_ps(X_13, blp_mask_tmp));
                   }
                   if(i + 32 <= N_block){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
-                    X_1 = _mm_div_ps(_mm_loadu_ps(X + 4), scale_mask);
-                    X_2 = _mm_div_ps(_mm_loadu_ps(X + 8), scale_mask);
-                    X_3 = _mm_div_ps(_mm_loadu_ps(X + 12), scale_mask);
-                    X_4 = _mm_div_ps(_mm_loadu_ps(X + 16), scale_mask);
-                    X_5 = _mm_div_ps(_mm_loadu_ps(X + 20), scale_mask);
-                    X_6 = _mm_div_ps(_mm_loadu_ps(X + 24), scale_mask);
-                    X_7 = _mm_div_ps(_mm_loadu_ps(X + 28), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_loadu_ps(X + 4), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_loadu_ps(X + 8), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_loadu_ps(X + 12), scale_mask_inv);
+                    X_4 = _mm_mul_ps(_mm_loadu_ps(X + 16), scale_mask_inv);
+                    X_5 = _mm_mul_ps(_mm_loadu_ps(X + 20), scale_mask_inv);
+                    X_6 = _mm_mul_ps(_mm_loadu_ps(X + 24), scale_mask_inv);
+                    X_7 = _mm_mul_ps(_mm_loadu_ps(X + 28), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -3939,10 +3939,10 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 32, X += 32;
                   }
                   if(i + 16 <= N_block){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
-                    X_1 = _mm_div_ps(_mm_loadu_ps(X + 4), scale_mask);
-                    X_2 = _mm_div_ps(_mm_loadu_ps(X + 8), scale_mask);
-                    X_3 = _mm_div_ps(_mm_loadu_ps(X + 12), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_loadu_ps(X + 4), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_loadu_ps(X + 8), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_loadu_ps(X + 12), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -3987,8 +3987,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 16, X += 16;
                   }
                   if(i + 8 <= N_block){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
-                    X_1 = _mm_div_ps(_mm_loadu_ps(X + 4), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_loadu_ps(X + 4), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
 
@@ -4013,7 +4013,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 8, X += 8;
                   }
                   if(i + 4 <= N_block){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -4028,7 +4028,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 4, X += 4;
                   }
                   if(i < N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -4048,20 +4048,20 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                   expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 56 <= N_block; i += 56, X += (incX * 56)){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm_div_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask);
-                    X_2 = _mm_div_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
-                    X_3 = _mm_div_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask);
-                    X_4 = _mm_div_ps(_mm_set_ps(X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask);
-                    X_5 = _mm_div_ps(_mm_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)]), scale_mask);
-                    X_6 = _mm_div_ps(_mm_set_ps(X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask);
-                    X_7 = _mm_div_ps(_mm_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)]), scale_mask);
-                    X_8 = _mm_div_ps(_mm_set_ps(X[(incX * 35)], X[(incX * 34)], X[(incX * 33)], X[(incX * 32)]), scale_mask);
-                    X_9 = _mm_div_ps(_mm_set_ps(X[(incX * 39)], X[(incX * 38)], X[(incX * 37)], X[(incX * 36)]), scale_mask);
-                    X_10 = _mm_div_ps(_mm_set_ps(X[(incX * 43)], X[(incX * 42)], X[(incX * 41)], X[(incX * 40)]), scale_mask);
-                    X_11 = _mm_div_ps(_mm_set_ps(X[(incX * 47)], X[(incX * 46)], X[(incX * 45)], X[(incX * 44)]), scale_mask);
-                    X_12 = _mm_div_ps(_mm_set_ps(X[(incX * 51)], X[(incX * 50)], X[(incX * 49)], X[(incX * 48)]), scale_mask);
-                    X_13 = _mm_div_ps(_mm_set_ps(X[(incX * 55)], X[(incX * 54)], X[(incX * 53)], X[(incX * 52)]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask_inv);
+                    X_4 = _mm_mul_ps(_mm_set_ps(X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask_inv);
+                    X_5 = _mm_mul_ps(_mm_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)]), scale_mask_inv);
+                    X_6 = _mm_mul_ps(_mm_set_ps(X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask_inv);
+                    X_7 = _mm_mul_ps(_mm_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)]), scale_mask_inv);
+                    X_8 = _mm_mul_ps(_mm_set_ps(X[(incX * 35)], X[(incX * 34)], X[(incX * 33)], X[(incX * 32)]), scale_mask_inv);
+                    X_9 = _mm_mul_ps(_mm_set_ps(X[(incX * 39)], X[(incX * 38)], X[(incX * 37)], X[(incX * 36)]), scale_mask_inv);
+                    X_10 = _mm_mul_ps(_mm_set_ps(X[(incX * 43)], X[(incX * 42)], X[(incX * 41)], X[(incX * 40)]), scale_mask_inv);
+                    X_11 = _mm_mul_ps(_mm_set_ps(X[(incX * 47)], X[(incX * 46)], X[(incX * 45)], X[(incX * 44)]), scale_mask_inv);
+                    X_12 = _mm_mul_ps(_mm_set_ps(X[(incX * 51)], X[(incX * 50)], X[(incX * 49)], X[(incX * 48)]), scale_mask_inv);
+                    X_13 = _mm_mul_ps(_mm_set_ps(X[(incX * 55)], X[(incX * 54)], X[(incX * 53)], X[(incX * 52)]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -4205,14 +4205,14 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     s_2_1 = _mm_add_ps(s_2_1, _mm_or_ps(X_13, blp_mask_tmp));
                   }
                   if(i + 32 <= N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm_div_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask);
-                    X_2 = _mm_div_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
-                    X_3 = _mm_div_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask);
-                    X_4 = _mm_div_ps(_mm_set_ps(X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask);
-                    X_5 = _mm_div_ps(_mm_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)]), scale_mask);
-                    X_6 = _mm_div_ps(_mm_set_ps(X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask);
-                    X_7 = _mm_div_ps(_mm_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask_inv);
+                    X_4 = _mm_mul_ps(_mm_set_ps(X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask_inv);
+                    X_5 = _mm_mul_ps(_mm_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)]), scale_mask_inv);
+                    X_6 = _mm_mul_ps(_mm_set_ps(X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask_inv);
+                    X_7 = _mm_mul_ps(_mm_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -4297,10 +4297,10 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 32, X += (incX * 32);
                   }
                   if(i + 16 <= N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm_div_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask);
-                    X_2 = _mm_div_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
-                    X_3 = _mm_div_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -4345,8 +4345,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 16, X += (incX * 16);
                   }
                   if(i + 8 <= N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm_div_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
 
@@ -4371,7 +4371,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 8, X += (incX * 8);
                   }
                   if(i + 4 <= N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -4386,7 +4386,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 4, X += (incX * 4);
                   }
                   if(i < N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -4402,20 +4402,20 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   }
                 }else{
                   for(i = 0; i + 56 <= N_block; i += 56, X += (incX * 56)){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm_div_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask);
-                    X_2 = _mm_div_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
-                    X_3 = _mm_div_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask);
-                    X_4 = _mm_div_ps(_mm_set_ps(X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask);
-                    X_5 = _mm_div_ps(_mm_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)]), scale_mask);
-                    X_6 = _mm_div_ps(_mm_set_ps(X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask);
-                    X_7 = _mm_div_ps(_mm_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)]), scale_mask);
-                    X_8 = _mm_div_ps(_mm_set_ps(X[(incX * 35)], X[(incX * 34)], X[(incX * 33)], X[(incX * 32)]), scale_mask);
-                    X_9 = _mm_div_ps(_mm_set_ps(X[(incX * 39)], X[(incX * 38)], X[(incX * 37)], X[(incX * 36)]), scale_mask);
-                    X_10 = _mm_div_ps(_mm_set_ps(X[(incX * 43)], X[(incX * 42)], X[(incX * 41)], X[(incX * 40)]), scale_mask);
-                    X_11 = _mm_div_ps(_mm_set_ps(X[(incX * 47)], X[(incX * 46)], X[(incX * 45)], X[(incX * 44)]), scale_mask);
-                    X_12 = _mm_div_ps(_mm_set_ps(X[(incX * 51)], X[(incX * 50)], X[(incX * 49)], X[(incX * 48)]), scale_mask);
-                    X_13 = _mm_div_ps(_mm_set_ps(X[(incX * 55)], X[(incX * 54)], X[(incX * 53)], X[(incX * 52)]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask_inv);
+                    X_4 = _mm_mul_ps(_mm_set_ps(X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask_inv);
+                    X_5 = _mm_mul_ps(_mm_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)]), scale_mask_inv);
+                    X_6 = _mm_mul_ps(_mm_set_ps(X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask_inv);
+                    X_7 = _mm_mul_ps(_mm_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)]), scale_mask_inv);
+                    X_8 = _mm_mul_ps(_mm_set_ps(X[(incX * 35)], X[(incX * 34)], X[(incX * 33)], X[(incX * 32)]), scale_mask_inv);
+                    X_9 = _mm_mul_ps(_mm_set_ps(X[(incX * 39)], X[(incX * 38)], X[(incX * 37)], X[(incX * 36)]), scale_mask_inv);
+                    X_10 = _mm_mul_ps(_mm_set_ps(X[(incX * 43)], X[(incX * 42)], X[(incX * 41)], X[(incX * 40)]), scale_mask_inv);
+                    X_11 = _mm_mul_ps(_mm_set_ps(X[(incX * 47)], X[(incX * 46)], X[(incX * 45)], X[(incX * 44)]), scale_mask_inv);
+                    X_12 = _mm_mul_ps(_mm_set_ps(X[(incX * 51)], X[(incX * 50)], X[(incX * 49)], X[(incX * 48)]), scale_mask_inv);
+                    X_13 = _mm_mul_ps(_mm_set_ps(X[(incX * 55)], X[(incX * 54)], X[(incX * 53)], X[(incX * 52)]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -4559,14 +4559,14 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     s_2_1 = _mm_add_ps(s_2_1, _mm_or_ps(X_13, blp_mask_tmp));
                   }
                   if(i + 32 <= N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm_div_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask);
-                    X_2 = _mm_div_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
-                    X_3 = _mm_div_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask);
-                    X_4 = _mm_div_ps(_mm_set_ps(X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask);
-                    X_5 = _mm_div_ps(_mm_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)]), scale_mask);
-                    X_6 = _mm_div_ps(_mm_set_ps(X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask);
-                    X_7 = _mm_div_ps(_mm_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask_inv);
+                    X_4 = _mm_mul_ps(_mm_set_ps(X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask_inv);
+                    X_5 = _mm_mul_ps(_mm_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)]), scale_mask_inv);
+                    X_6 = _mm_mul_ps(_mm_set_ps(X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask_inv);
+                    X_7 = _mm_mul_ps(_mm_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -4651,10 +4651,10 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 32, X += (incX * 32);
                   }
                   if(i + 16 <= N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm_div_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask);
-                    X_2 = _mm_div_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
-                    X_3 = _mm_div_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -4699,8 +4699,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 16, X += (incX * 16);
                   }
                   if(i + 8 <= N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm_div_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
 
@@ -4725,7 +4725,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 8, X += (incX * 8);
                   }
                   if(i + 4 <= N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -4740,7 +4740,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 4, X += (incX * 4);
                   }
                   if(i < N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -4800,9 +4800,9 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                   expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 12 <= N_block; i += 12, X += 12){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
-                    X_1 = _mm_div_ps(_mm_loadu_ps(X + 4), scale_mask);
-                    X_2 = _mm_div_ps(_mm_loadu_ps(X + 8), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_loadu_ps(X + 4), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_loadu_ps(X + 8), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -4848,8 +4848,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     s_3_0 = _mm_add_ps(s_3_0, _mm_or_ps(X_2, blp_mask_tmp));
                   }
                   if(i + 8 <= N_block){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
-                    X_1 = _mm_div_ps(_mm_loadu_ps(X + 4), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_loadu_ps(X + 4), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
 
@@ -4882,7 +4882,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 8, X += 8;
                   }
                   if(i + 4 <= N_block){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -4901,7 +4901,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 4, X += 4;
                   }
                   if(i < N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -4921,9 +4921,9 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   }
                 }else{
                   for(i = 0; i + 12 <= N_block; i += 12, X += 12){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
-                    X_1 = _mm_div_ps(_mm_loadu_ps(X + 4), scale_mask);
-                    X_2 = _mm_div_ps(_mm_loadu_ps(X + 8), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_loadu_ps(X + 4), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_loadu_ps(X + 8), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -4969,8 +4969,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     s_3_0 = _mm_add_ps(s_3_0, _mm_or_ps(X_2, blp_mask_tmp));
                   }
                   if(i + 8 <= N_block){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
-                    X_1 = _mm_div_ps(_mm_loadu_ps(X + 4), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_loadu_ps(X + 4), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
 
@@ -5003,7 +5003,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 8, X += 8;
                   }
                   if(i + 4 <= N_block){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -5022,7 +5022,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 4, X += 4;
                   }
                   if(i < N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -5046,9 +5046,9 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                   expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 12 <= N_block; i += 12, X += (incX * 12)){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm_div_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask);
-                    X_2 = _mm_div_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -5094,8 +5094,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     s_3_0 = _mm_add_ps(s_3_0, _mm_or_ps(X_2, blp_mask_tmp));
                   }
                   if(i + 8 <= N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm_div_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
 
@@ -5128,7 +5128,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 8, X += (incX * 8);
                   }
                   if(i + 4 <= N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -5147,7 +5147,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 4, X += (incX * 4);
                   }
                   if(i < N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -5167,9 +5167,9 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   }
                 }else{
                   for(i = 0; i + 12 <= N_block; i += 12, X += (incX * 12)){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm_div_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask);
-                    X_2 = _mm_div_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -5215,8 +5215,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     s_3_0 = _mm_add_ps(s_3_0, _mm_or_ps(X_2, blp_mask_tmp));
                   }
                   if(i + 8 <= N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm_div_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
 
@@ -5249,7 +5249,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 8, X += (incX * 8);
                   }
                   if(i + 4 <= N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -5268,7 +5268,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 4, X += (incX * 4);
                   }
                   if(i < N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     q_0 = s_0_0;
@@ -5315,7 +5315,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
               __m128 expansion_0;
               __m128 q_0, q_1;
               __m128 s_0, s_1;
-              __m128 s_buffer[(SIMAXFOLD * 2)];
+              __m128 s_buffer[(idxd_SIMAXFOLD * 2)];
 
               for(j = 0; j < fold; j += 1){
                 s_buffer[(j * 2)] = s_buffer[((j * 2) + 1)] = _mm_load1_ps(manY + (incmanY * j));
@@ -5326,16 +5326,16 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                   expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 40 <= N_block; i += 40, X += 40){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
-                    X_1 = _mm_div_ps(_mm_loadu_ps(X + 4), scale_mask);
-                    X_2 = _mm_div_ps(_mm_loadu_ps(X + 8), scale_mask);
-                    X_3 = _mm_div_ps(_mm_loadu_ps(X + 12), scale_mask);
-                    X_4 = _mm_div_ps(_mm_loadu_ps(X + 16), scale_mask);
-                    X_5 = _mm_div_ps(_mm_loadu_ps(X + 20), scale_mask);
-                    X_6 = _mm_div_ps(_mm_loadu_ps(X + 24), scale_mask);
-                    X_7 = _mm_div_ps(_mm_loadu_ps(X + 28), scale_mask);
-                    X_8 = _mm_div_ps(_mm_loadu_ps(X + 32), scale_mask);
-                    X_9 = _mm_div_ps(_mm_loadu_ps(X + 36), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_loadu_ps(X + 4), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_loadu_ps(X + 8), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_loadu_ps(X + 12), scale_mask_inv);
+                    X_4 = _mm_mul_ps(_mm_loadu_ps(X + 16), scale_mask_inv);
+                    X_5 = _mm_mul_ps(_mm_loadu_ps(X + 20), scale_mask_inv);
+                    X_6 = _mm_mul_ps(_mm_loadu_ps(X + 24), scale_mask_inv);
+                    X_7 = _mm_mul_ps(_mm_loadu_ps(X + 28), scale_mask_inv);
+                    X_8 = _mm_mul_ps(_mm_loadu_ps(X + 32), scale_mask_inv);
+                    X_9 = _mm_mul_ps(_mm_loadu_ps(X + 36), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -5469,14 +5469,14 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     s_buffer[((j * 2) + 1)] = _mm_add_ps(s_buffer[((j * 2) + 1)], _mm_or_ps(X_9, blp_mask_tmp));
                   }
                   if(i + 32 <= N_block){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
-                    X_1 = _mm_div_ps(_mm_loadu_ps(X + 4), scale_mask);
-                    X_2 = _mm_div_ps(_mm_loadu_ps(X + 8), scale_mask);
-                    X_3 = _mm_div_ps(_mm_loadu_ps(X + 12), scale_mask);
-                    X_4 = _mm_div_ps(_mm_loadu_ps(X + 16), scale_mask);
-                    X_5 = _mm_div_ps(_mm_loadu_ps(X + 20), scale_mask);
-                    X_6 = _mm_div_ps(_mm_loadu_ps(X + 24), scale_mask);
-                    X_7 = _mm_div_ps(_mm_loadu_ps(X + 28), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_loadu_ps(X + 4), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_loadu_ps(X + 8), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_loadu_ps(X + 12), scale_mask_inv);
+                    X_4 = _mm_mul_ps(_mm_loadu_ps(X + 16), scale_mask_inv);
+                    X_5 = _mm_mul_ps(_mm_loadu_ps(X + 20), scale_mask_inv);
+                    X_6 = _mm_mul_ps(_mm_loadu_ps(X + 24), scale_mask_inv);
+                    X_7 = _mm_mul_ps(_mm_loadu_ps(X + 28), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -5585,10 +5585,10 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 32, X += 32;
                   }
                   if(i + 16 <= N_block){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
-                    X_1 = _mm_div_ps(_mm_loadu_ps(X + 4), scale_mask);
-                    X_2 = _mm_div_ps(_mm_loadu_ps(X + 8), scale_mask);
-                    X_3 = _mm_div_ps(_mm_loadu_ps(X + 12), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_loadu_ps(X + 4), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_loadu_ps(X + 8), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_loadu_ps(X + 12), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -5645,8 +5645,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 16, X += 16;
                   }
                   if(i + 8 <= N_block){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
-                    X_1 = _mm_div_ps(_mm_loadu_ps(X + 4), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_loadu_ps(X + 4), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
 
@@ -5677,7 +5677,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 8, X += 8;
                   }
                   if(i + 4 <= N_block){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     s_0 = s_buffer[0];
@@ -5696,7 +5696,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 4, X += 4;
                   }
                   if(i < N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     s_0 = s_buffer[0];
@@ -5716,16 +5716,16 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   }
                 }else{
                   for(i = 0; i + 40 <= N_block; i += 40, X += 40){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
-                    X_1 = _mm_div_ps(_mm_loadu_ps(X + 4), scale_mask);
-                    X_2 = _mm_div_ps(_mm_loadu_ps(X + 8), scale_mask);
-                    X_3 = _mm_div_ps(_mm_loadu_ps(X + 12), scale_mask);
-                    X_4 = _mm_div_ps(_mm_loadu_ps(X + 16), scale_mask);
-                    X_5 = _mm_div_ps(_mm_loadu_ps(X + 20), scale_mask);
-                    X_6 = _mm_div_ps(_mm_loadu_ps(X + 24), scale_mask);
-                    X_7 = _mm_div_ps(_mm_loadu_ps(X + 28), scale_mask);
-                    X_8 = _mm_div_ps(_mm_loadu_ps(X + 32), scale_mask);
-                    X_9 = _mm_div_ps(_mm_loadu_ps(X + 36), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_loadu_ps(X + 4), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_loadu_ps(X + 8), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_loadu_ps(X + 12), scale_mask_inv);
+                    X_4 = _mm_mul_ps(_mm_loadu_ps(X + 16), scale_mask_inv);
+                    X_5 = _mm_mul_ps(_mm_loadu_ps(X + 20), scale_mask_inv);
+                    X_6 = _mm_mul_ps(_mm_loadu_ps(X + 24), scale_mask_inv);
+                    X_7 = _mm_mul_ps(_mm_loadu_ps(X + 28), scale_mask_inv);
+                    X_8 = _mm_mul_ps(_mm_loadu_ps(X + 32), scale_mask_inv);
+                    X_9 = _mm_mul_ps(_mm_loadu_ps(X + 36), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -5809,14 +5809,14 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     s_buffer[((j * 2) + 1)] = _mm_add_ps(s_buffer[((j * 2) + 1)], _mm_or_ps(X_9, blp_mask_tmp));
                   }
                   if(i + 32 <= N_block){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
-                    X_1 = _mm_div_ps(_mm_loadu_ps(X + 4), scale_mask);
-                    X_2 = _mm_div_ps(_mm_loadu_ps(X + 8), scale_mask);
-                    X_3 = _mm_div_ps(_mm_loadu_ps(X + 12), scale_mask);
-                    X_4 = _mm_div_ps(_mm_loadu_ps(X + 16), scale_mask);
-                    X_5 = _mm_div_ps(_mm_loadu_ps(X + 20), scale_mask);
-                    X_6 = _mm_div_ps(_mm_loadu_ps(X + 24), scale_mask);
-                    X_7 = _mm_div_ps(_mm_loadu_ps(X + 28), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_loadu_ps(X + 4), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_loadu_ps(X + 8), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_loadu_ps(X + 12), scale_mask_inv);
+                    X_4 = _mm_mul_ps(_mm_loadu_ps(X + 16), scale_mask_inv);
+                    X_5 = _mm_mul_ps(_mm_loadu_ps(X + 20), scale_mask_inv);
+                    X_6 = _mm_mul_ps(_mm_loadu_ps(X + 24), scale_mask_inv);
+                    X_7 = _mm_mul_ps(_mm_loadu_ps(X + 28), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -5885,10 +5885,10 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 32, X += 32;
                   }
                   if(i + 16 <= N_block){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
-                    X_1 = _mm_div_ps(_mm_loadu_ps(X + 4), scale_mask);
-                    X_2 = _mm_div_ps(_mm_loadu_ps(X + 8), scale_mask);
-                    X_3 = _mm_div_ps(_mm_loadu_ps(X + 12), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_loadu_ps(X + 4), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_loadu_ps(X + 8), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_loadu_ps(X + 12), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -5925,8 +5925,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 16, X += 16;
                   }
                   if(i + 8 <= N_block){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
-                    X_1 = _mm_div_ps(_mm_loadu_ps(X + 4), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_loadu_ps(X + 4), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
 
@@ -5947,7 +5947,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 8, X += 8;
                   }
                   if(i + 4 <= N_block){
-                    X_0 = _mm_div_ps(_mm_loadu_ps(X), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_loadu_ps(X), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     for(j = 0; j < fold - 1; j++){
@@ -5961,7 +5961,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 4, X += 4;
                   }
                   if(i < N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(0, (N_block - i)>2?X[2]:0, (N_block - i)>1?X[1]:0, X[0]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     for(j = 0; j < fold - 1; j++){
@@ -5980,16 +5980,16 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                   expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                   for(i = 0; i + 40 <= N_block; i += 40, X += (incX * 40)){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm_div_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask);
-                    X_2 = _mm_div_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
-                    X_3 = _mm_div_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask);
-                    X_4 = _mm_div_ps(_mm_set_ps(X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask);
-                    X_5 = _mm_div_ps(_mm_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)]), scale_mask);
-                    X_6 = _mm_div_ps(_mm_set_ps(X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask);
-                    X_7 = _mm_div_ps(_mm_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)]), scale_mask);
-                    X_8 = _mm_div_ps(_mm_set_ps(X[(incX * 35)], X[(incX * 34)], X[(incX * 33)], X[(incX * 32)]), scale_mask);
-                    X_9 = _mm_div_ps(_mm_set_ps(X[(incX * 39)], X[(incX * 38)], X[(incX * 37)], X[(incX * 36)]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask_inv);
+                    X_4 = _mm_mul_ps(_mm_set_ps(X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask_inv);
+                    X_5 = _mm_mul_ps(_mm_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)]), scale_mask_inv);
+                    X_6 = _mm_mul_ps(_mm_set_ps(X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask_inv);
+                    X_7 = _mm_mul_ps(_mm_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)]), scale_mask_inv);
+                    X_8 = _mm_mul_ps(_mm_set_ps(X[(incX * 35)], X[(incX * 34)], X[(incX * 33)], X[(incX * 32)]), scale_mask_inv);
+                    X_9 = _mm_mul_ps(_mm_set_ps(X[(incX * 39)], X[(incX * 38)], X[(incX * 37)], X[(incX * 36)]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -6123,14 +6123,14 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     s_buffer[((j * 2) + 1)] = _mm_add_ps(s_buffer[((j * 2) + 1)], _mm_or_ps(X_9, blp_mask_tmp));
                   }
                   if(i + 32 <= N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm_div_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask);
-                    X_2 = _mm_div_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
-                    X_3 = _mm_div_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask);
-                    X_4 = _mm_div_ps(_mm_set_ps(X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask);
-                    X_5 = _mm_div_ps(_mm_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)]), scale_mask);
-                    X_6 = _mm_div_ps(_mm_set_ps(X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask);
-                    X_7 = _mm_div_ps(_mm_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask_inv);
+                    X_4 = _mm_mul_ps(_mm_set_ps(X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask_inv);
+                    X_5 = _mm_mul_ps(_mm_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)]), scale_mask_inv);
+                    X_6 = _mm_mul_ps(_mm_set_ps(X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask_inv);
+                    X_7 = _mm_mul_ps(_mm_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -6239,10 +6239,10 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 32, X += (incX * 32);
                   }
                   if(i + 16 <= N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm_div_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask);
-                    X_2 = _mm_div_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
-                    X_3 = _mm_div_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -6299,8 +6299,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 16, X += (incX * 16);
                   }
                   if(i + 8 <= N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm_div_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
 
@@ -6331,7 +6331,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 8, X += (incX * 8);
                   }
                   if(i + 4 <= N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     s_0 = s_buffer[0];
@@ -6350,7 +6350,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 4, X += (incX * 4);
                   }
                   if(i < N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     s_0 = s_buffer[0];
@@ -6370,16 +6370,16 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   }
                 }else{
                   for(i = 0; i + 40 <= N_block; i += 40, X += (incX * 40)){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm_div_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask);
-                    X_2 = _mm_div_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
-                    X_3 = _mm_div_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask);
-                    X_4 = _mm_div_ps(_mm_set_ps(X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask);
-                    X_5 = _mm_div_ps(_mm_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)]), scale_mask);
-                    X_6 = _mm_div_ps(_mm_set_ps(X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask);
-                    X_7 = _mm_div_ps(_mm_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)]), scale_mask);
-                    X_8 = _mm_div_ps(_mm_set_ps(X[(incX * 35)], X[(incX * 34)], X[(incX * 33)], X[(incX * 32)]), scale_mask);
-                    X_9 = _mm_div_ps(_mm_set_ps(X[(incX * 39)], X[(incX * 38)], X[(incX * 37)], X[(incX * 36)]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask_inv);
+                    X_4 = _mm_mul_ps(_mm_set_ps(X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask_inv);
+                    X_5 = _mm_mul_ps(_mm_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)]), scale_mask_inv);
+                    X_6 = _mm_mul_ps(_mm_set_ps(X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask_inv);
+                    X_7 = _mm_mul_ps(_mm_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)]), scale_mask_inv);
+                    X_8 = _mm_mul_ps(_mm_set_ps(X[(incX * 35)], X[(incX * 34)], X[(incX * 33)], X[(incX * 32)]), scale_mask_inv);
+                    X_9 = _mm_mul_ps(_mm_set_ps(X[(incX * 39)], X[(incX * 38)], X[(incX * 37)], X[(incX * 36)]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -6463,14 +6463,14 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     s_buffer[((j * 2) + 1)] = _mm_add_ps(s_buffer[((j * 2) + 1)], _mm_or_ps(X_9, blp_mask_tmp));
                   }
                   if(i + 32 <= N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm_div_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask);
-                    X_2 = _mm_div_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
-                    X_3 = _mm_div_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask);
-                    X_4 = _mm_div_ps(_mm_set_ps(X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask);
-                    X_5 = _mm_div_ps(_mm_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)]), scale_mask);
-                    X_6 = _mm_div_ps(_mm_set_ps(X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask);
-                    X_7 = _mm_div_ps(_mm_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask_inv);
+                    X_4 = _mm_mul_ps(_mm_set_ps(X[(incX * 19)], X[(incX * 18)], X[(incX * 17)], X[(incX * 16)]), scale_mask_inv);
+                    X_5 = _mm_mul_ps(_mm_set_ps(X[(incX * 23)], X[(incX * 22)], X[(incX * 21)], X[(incX * 20)]), scale_mask_inv);
+                    X_6 = _mm_mul_ps(_mm_set_ps(X[(incX * 27)], X[(incX * 26)], X[(incX * 25)], X[(incX * 24)]), scale_mask_inv);
+                    X_7 = _mm_mul_ps(_mm_set_ps(X[(incX * 31)], X[(incX * 30)], X[(incX * 29)], X[(incX * 28)]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -6539,10 +6539,10 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 32, X += (incX * 32);
                   }
                   if(i + 16 <= N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm_div_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask);
-                    X_2 = _mm_div_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask);
-                    X_3 = _mm_div_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask_inv);
+                    X_2 = _mm_mul_ps(_mm_set_ps(X[(incX * 11)], X[(incX * 10)], X[(incX * 9)], X[(incX * 8)]), scale_mask_inv);
+                    X_3 = _mm_mul_ps(_mm_set_ps(X[(incX * 15)], X[(incX * 14)], X[(incX * 13)], X[(incX * 12)]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
                     X_2 = _mm_mul_ps(X_2, X_2);
@@ -6579,8 +6579,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 16, X += (incX * 16);
                   }
                   if(i + 8 <= N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
-                    X_1 = _mm_div_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
+                    X_1 = _mm_mul_ps(_mm_set_ps(X[(incX * 7)], X[(incX * 6)], X[(incX * 5)], X[(incX * 4)]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
                     X_1 = _mm_mul_ps(X_1, X_1);
 
@@ -6601,7 +6601,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 8, X += (incX * 8);
                   }
                   if(i + 4 <= N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(X[(incX * 3)], X[(incX * 2)], X[incX], X[0]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     for(j = 0; j < fold - 1; j++){
@@ -6615,7 +6615,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                     i += 4, X += (incX * 4);
                   }
                   if(i < N_block){
-                    X_0 = _mm_div_ps(_mm_set_ps(0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask);
+                    X_0 = _mm_mul_ps(_mm_set_ps(0, (N_block - i)>2?X[(incX * 2)]:0, (N_block - i)>1?X[incX]:0, X[0]), scale_mask_inv);
                     X_0 = _mm_mul_ps(X_0, X_0);
 
                     for(j = 0; j < fold - 1; j++){
@@ -6647,7 +6647,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
         }
 
       #else
-        float scale_mask = scl;
+        float scale_mask_inv = 1.0 / scl;
         int_float blp_tmp; (void)blp_tmp;
         float cons_tmp; (void)cons_tmp;
 
@@ -6673,7 +6673,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   compression_0 = idxd_SMCOMPRESSION;
                   expansion_0 = idxd_SMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += 1){
-                    X_0 = X[0] / scale_mask;
+                    X_0 = X[0] * scale_mask_inv;
                     X_0 = X_0 * X_0;
 
                     q_0 = s_0_0;
@@ -6694,7 +6694,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   }
                 }else{
                   for(i = 0; i + 1 <= N_block; i += 1, X += 1){
-                    X_0 = X[0] / scale_mask;
+                    X_0 = X[0] * scale_mask_inv;
                     X_0 = X_0 * X_0;
 
                     q_0 = s_0_0;
@@ -6719,7 +6719,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   compression_0 = idxd_SMCOMPRESSION;
                   expansion_0 = idxd_SMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += incX){
-                    X_0 = X[0] / scale_mask;
+                    X_0 = X[0] * scale_mask_inv;
                     X_0 = X_0 * X_0;
 
                     q_0 = s_0_0;
@@ -6740,7 +6740,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   }
                 }else{
                   for(i = 0; i + 1 <= N_block; i += 1, X += incX){
-                    X_0 = X[0] / scale_mask;
+                    X_0 = X[0] * scale_mask_inv;
                     X_0 = X_0 * X_0;
 
                     q_0 = s_0_0;
@@ -6776,7 +6776,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
               float expansion_0;
               float q_0;
               float s_0;
-              float s_buffer[SIMAXFOLD];
+              float s_buffer[idxd_SIMAXFOLD];
 
               for(j = 0; j < fold; j += 1){
                 s_buffer[j] = manY[(incmanY * j)];
@@ -6787,7 +6787,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   compression_0 = idxd_SMCOMPRESSION;
                   expansion_0 = idxd_SMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += 1){
-                    X_0 = X[0] / scale_mask;
+                    X_0 = X[0] * scale_mask_inv;
                     X_0 = X_0 * X_0;
 
                     s_0 = s_buffer[0];
@@ -6812,7 +6812,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   }
                 }else{
                   for(i = 0; i + 1 <= N_block; i += 1, X += 1){
-                    X_0 = X[0] / scale_mask;
+                    X_0 = X[0] * scale_mask_inv;
                     X_0 = X_0 * X_0;
 
                     for(j = 0; j < fold - 1; j++){
@@ -6834,7 +6834,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   compression_0 = idxd_SMCOMPRESSION;
                   expansion_0 = idxd_SMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += incX){
-                    X_0 = X[0] / scale_mask;
+                    X_0 = X[0] * scale_mask_inv;
                     X_0 = X_0 * X_0;
 
                     s_0 = s_buffer[0];
@@ -6859,7 +6859,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   }
                 }else{
                   for(i = 0; i + 1 <= N_block; i += 1, X += incX){
-                    X_0 = X[0] / scale_mask;
+                    X_0 = X[0] * scale_mask_inv;
                     X_0 = X_0 * X_0;
 
                     for(j = 0; j < fold - 1; j++){

@@ -1,5 +1,5 @@
 # select binary installation directory
-BIN_DIR := /tmp/reproBLAS2/bin
+BIN_DIR := /usr/local/bin
 
 # select library installation directory
 LIB_DIR := /usr/local/lib
@@ -8,7 +8,7 @@ LIB_DIR := /usr/local/lib
 INC_DIR := /usr/local/include
 
 # select documentation installation directory
-DOC_DIR := /tmp/reproBLAS2/share/doc/reproBLAS2
+DOC_DIR := /usr/local/share/doc/reproBLAS2
 
 # select compiler (comment all for auto)
 CC = cc
@@ -28,16 +28,16 @@ CPPFLAGS +=
 LDFLAGS +=
 
 # select whether or not to build mpi (if BUILD_MPI is not defined or set to value other that "true" MPI will not be used and corresponding parts of ReproBLAS won't build)
-BUILD_MPI = true
+BUILD_MPI = false
 
 # select MPI compiler flags (comment all for auto)
-MPICFLAGS = $(shell mpicc --showme:compile)
+#MPICFLAGS = $(shell mpicc --showme:compile)
 #MPICFLAGS = $(shell mpicc --showme compile)
 #MPICFLAGS = $(shell mpicc -compile_info)
 #MPICFLAGS =
 
 # select MPI linker flags (comment all for auto)
-MPILDFLAGS = $(shell mpicc --showme:link)
+#MPILDFLAGS = $(shell mpicc --showme:link)
 #MPILDFLAGS = $(shell mpicc --showme link)
 #MPICFLAGS = $(shell mpicc -link_info)
 #MPICFLAGS =

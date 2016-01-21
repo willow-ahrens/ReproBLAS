@@ -4610,7 +4610,7 @@ void idxdBLAS_cmcdotc(const int fold, const int N, const void *X, const int incX
               __m256 expansion_mask_0;
               __m256 q_0, q_1;
               __m256 s_0, s_1;
-              __m256 s_buffer[(SIMAXFOLD * 2)];
+              __m256 s_buffer[(idxd_SIMAXFOLD * 2)];
 
               for(j = 0; j < fold; j += 1){
                 s_buffer[(j * 2)] = s_buffer[((j * 2) + 1)] = (__m256)_mm256_broadcast_sd((double *)(((float*)manZ) + (incmanZ * j * 2)));
@@ -9419,7 +9419,7 @@ void idxdBLAS_cmcdotc(const int fold, const int N, const void *X, const int incX
               __m128 expansion_mask_0;
               __m128 q_0, q_1, q_2, q_3;
               __m128 s_0, s_1, s_2, s_3;
-              __m128 s_buffer[(SIMAXFOLD * 4)];
+              __m128 s_buffer[(idxd_SIMAXFOLD * 4)];
 
               for(j = 0; j < fold; j += 1){
                 s_buffer[(j * 4)] = s_buffer[((j * 4) + 1)] = s_buffer[((j * 4) + 2)] = s_buffer[((j * 4) + 3)] = (__m128)_mm_load1_pd((double *)(((float*)manZ) + (incmanZ * j * 2)));
@@ -11080,7 +11080,7 @@ void idxdBLAS_cmcdotc(const int fold, const int N, const void *X, const int incX
               float expansion_mask_0, expansion_mask_1;
               float q_0, q_1, q_2, q_3;
               float s_0, s_1, s_2, s_3;
-              float s_buffer[(SIMAXFOLD * 4)];
+              float s_buffer[(idxd_SIMAXFOLD * 4)];
 
               for(j = 0; j < fold; j += 1){
                 s_buffer[(j * 4)] = s_buffer[((j * 4) + 2)] = ((float*)manZ)[(incmanZ * j * 2)];

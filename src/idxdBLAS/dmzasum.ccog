@@ -2822,7 +2822,7 @@ void idxdBLAS_dmzasum(const int fold, const int N, const void *X, const int incX
               __m256d expansion_mask_0;
               __m256d q_0, q_1;
               __m256d s_0, s_1;
-              __m256d s_buffer[(DIMAXFOLD * 2)];
+              __m256d s_buffer[(idxd_DIMAXFOLD * 2)];
 
               for(j = 0; j < fold; j += 1){
                 s_buffer[(j * 2)] = s_buffer[((j * 2) + 1)] = _mm256_broadcast_pd((__m128d *)(((double*)asum) + (j * 2)));
@@ -8992,7 +8992,7 @@ void idxdBLAS_dmzasum(const int fold, const int N, const void *X, const int incX
               __m128d expansion_mask_0;
               __m128d q_0, q_1, q_2, q_3;
               __m128d s_0, s_1, s_2, s_3;
-              __m128d s_buffer[(DIMAXFOLD * 4)];
+              __m128d s_buffer[(idxd_DIMAXFOLD * 4)];
 
               for(j = 0; j < fold; j += 1){
                 s_buffer[(j * 4)] = s_buffer[((j * 4) + 1)] = s_buffer[((j * 4) + 2)] = s_buffer[((j * 4) + 3)] = _mm_loadu_pd(((double*)asum) + (j * 2));
@@ -9634,7 +9634,7 @@ void idxdBLAS_dmzasum(const int fold, const int N, const void *X, const int incX
               double expansion_mask_0, expansion_mask_1;
               double q_0, q_1;
               double s_0, s_1;
-              double s_buffer[(DIMAXFOLD * 2)];
+              double s_buffer[(idxd_DIMAXFOLD * 2)];
 
               for(j = 0; j < fold; j += 1){
                 s_buffer[(j * 2)] = ((double*)asum)[(j * 2)];
