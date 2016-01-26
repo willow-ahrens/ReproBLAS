@@ -1,7 +1,3 @@
-/*
- *  Created   13/10/25   H.D. Nguyen
- */
-
 #ifndef IDXDMPI_H_
 #define IDXDMPI_H_
 

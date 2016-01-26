@@ -25,8 +25,8 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   (void)incY;
   int i;
   float scale;
-  float ratio;
-  float bound;
+  float scale_mantissa;
+  int scale_exponent;
 
   util_random_seed();
 
@@ -39,24 +39,22 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   }
   for (i = 0; i < N * (FLT_MAX_EXP - FLT_MIN_EXP); i++) {
     scale = idxd_sscale(X[i * incX]);
-    bound = ldexpf(0.5, SIWIDTH + 1);
-    ratio = X[i * incX] / scale;
-    if(ratio < 1.0){
-      printf("%g / idxd_sscale(%g) !>= 1.0\n", X[i * incX], X[i * incX]);
-      printf("%g / %g !>= 1.0\n", X[i * incX], scale);
-      printf("%g !>= 1.0\n", ratio);
+    scale_mantissa = frexpf(scale, &scale_exponent) * 2.0;
+    scale_exponent -= 1;
+    if(scale_mantissa != 1.0 || scale_exponent % SIWIDTH != 0){
+      printf("idxd_sscale(%g) = %g = %g * 2^%d is not of form 2^(SIWIDTH * integer)\n", X[i * incX], scale, scale_mantissa, scale_exponent);
       return 1;
     }
-    if(ratio >= bound){
-      printf("%g / idxd_sscale(%g) !< 2^SIWIDTH\n", X[i * incX], X[i * incX]);
-      printf("%g / %g !< %g\n", X[i * incX], scale, bound);
-      printf("%g !< %g\n", ratio, bound);
+    if(ldexpf(0.5, -FLT_MANT_DIG - SIWIDTH) * scale >= X[i * incX]){
+      printf("idxd_sscale(%g) * 2^(−FLT_MANT_DIG − SIWIDTH − 1) >= %g\n", X[i * incX], X[i * incX]);
+      printf("%g * 2^(−FLT_MANT_DIG − SIWIDTH − 1) >= %g\n", scale, X[i * incX]);
       return 1;
     }
-  }
-  if(idxd_sindex(idxd_sscale(0.0)) != idxd_sindex(0.0)){
-    printf("idxd_sindex(idxd_sscale(0.0)) != idxd_sindex(0.0)\n");
-    return 1;
+    if(X[i * incX] >= ldexpf(0.5, SIWIDTH + 3) * scale){
+      printf("%g >= idxd_sscale(%g) * 2^(SIWIDTH + 2)\n", X[i * incX], X[i * incX]);
+      printf("%g >= %g * 2^(SIWIDTH + 2)\n", X[i * incX], scale);
+      return 1;
+    }
   }
   return 0;
 }

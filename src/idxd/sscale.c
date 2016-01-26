@@ -8,9 +8,13 @@
  * @internal
  * @brief Get a reproducible single precision scale
  *
- * For a given X, the smallest Y such that #idxd_sindex(X) == #idxd_sindex(Y)
+ * For any given X, return a reproducible scaling factor Y of the form
  *
- * Perhaps the most useful property of this number is that if the bin epsilon of X's bin is normalized, 1.0 <= X * (1.0/Y) < 2^#SIWIDTH
+ * 2^(#SIWIDTH * z) where z is an integer
+ *
+ * such that
+ *
+ * Y * 2^(-FLT_MANT_DIG - #SIWIDTH - 1) < X < Y * 2\^(#SIWIDTH + 2)
  *
  * @param X single precision number to be scaled
  * @return reproducible scaling factor
@@ -19,5 +23,9 @@
  * @date   19 Jun 2015
  */
 float idxd_sscale(const float X){
-  return ldexpf(0.5, (FLT_MAX_EXP - SIWIDTH + 1) - idxd_sindex(X) * SIWIDTH);
+    int e = EXPF(X);
+    e = e < SIWIDTH ? SIWIDTH : e;
+    e -= (e - EXPF_BIAS - 1) % SIWIDTH;
+    e -= EXPF_BIAS;
+    return ldexpf(0.5, e);
 }
