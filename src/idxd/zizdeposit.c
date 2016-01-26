@@ -1,7 +1,7 @@
 #include <idxd.h>
 
 /**
- * @brief  Add complex double precision to suitably indexed manually specified indexed complex double precision (Y += X)
+ * @brief  Add complex double precision to suitably indexed indexed complex double precision (Y += X)
  *
  * Performs the operation Y += X on an indexed type Y where the index of Y is larger than the index of X
  *
@@ -9,8 +9,7 @@
  *
  * @param fold the fold of the indexed types
  * @param X scalar X
- * @param priY Y's primary vector
- * @param incpriY stride within Y's primary vector (use every incpriY'th element)
+ * @param Y indexed scalar Y
  *
  * @author Hong Diep Nguyen
  * @author Peter Ahrens
