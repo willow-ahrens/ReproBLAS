@@ -11,7 +11,7 @@
  * @param incX X vector stride (use every incX'th element)
  * @param Y complex double precision vector
  * @param incY Y vector stride (use every incY'th element)
- * @param scalar return Z
+ * @param Z scalar return Z
  *
  * @author Peter Ahrens
  * @date   15 Jan 2016

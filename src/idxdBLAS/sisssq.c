@@ -10,6 +10,7 @@
  * @param X single precision vector
  * @param incX X vector stride (use every incX'th element)
  * @param scaleY the scaling factor of Y
+ * @param Y indexed scalar Y
  * @return the new scaling factor of Y
  *
  * @author Peter Ahrens

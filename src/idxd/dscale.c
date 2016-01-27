@@ -14,7 +14,7 @@
  *
  * such that
  *
- * Y * 2^(-DBL_MANT_DIG - #DIWIDTH - 1) < X < Y * 2\^(#DIWIDTH + 2)
+ * Y * 2^(-@c DBL_MANT_DIG - #DIWIDTH - 1) < X < Y * 2\^(#DIWIDTH + 2)
  *
  * @param X double precision number to be scaled
  * @return reproducible scaling factor

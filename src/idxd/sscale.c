@@ -14,7 +14,7 @@
  *
  * such that
  *
- * Y * 2^(-FLT_MANT_DIG - #SIWIDTH - 1) < X < Y * 2\^(#SIWIDTH + 2)
+ * Y * 2^(-@c FLT_MANT_DIG - #SIWIDTH - 1) < X < Y * 2\^(#SIWIDTH + 2)
  *
  * @param X single precision number to be scaled
  * @return reproducible scaling factor
