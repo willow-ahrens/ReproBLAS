@@ -55,7 +55,7 @@ cog.out(generate.generate(blockSize.BlockSize("cmcsum", "N_block_MAX", 32, termi
  * @author Peter Ahrens
  * @date   15 Jan 2016
  */
-void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX, float *manY, const int incmanY, float *carY, const int inccarY){
+void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX, float *priY, const int incpriY, float *carY, const int inccarY){
   float amax[2];
   int i, j;
   int N_block = N_block_MAX;
@@ -68,38 +68,38 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
 
     idxdBLAS_camax_sub(N_block, x, incX, amax);
 
-    if (isinf(amax[0]) || isinf(manY[0])){
+    if (isinf(amax[0]) || isinf(priY[0])){
       for (j = 0; j < N_block; j++){
-        manY[0] += x[j * 2 * incX];
+        priY[0] += x[j * 2 * incX];
       }
     }
-    if (isinf(amax[1]) || isinf(manY[1])){
+    if (isinf(amax[1]) || isinf(priY[1])){
       for (j = 0; j < N_block; j++){
-        manY[1] += x[j * 2 * incX + 1];
+        priY[1] += x[j * 2 * incX + 1];
       }
     }
-    if (isnan(manY[0]) && isnan(manY[1])){
+    if (isnan(priY[0]) && isnan(priY[1])){
       return;
-    } else if (isinf(manY[0]) && isinf(manY[1])){
+    } else if (isinf(priY[0]) && isinf(priY[1])){
       x += N_block * 2 * incX;
       continue;
     }
-    if (ISNANINFF(manY[0])){
-      amax[0] = manY[0];
+    if (ISNANINFF(priY[0])){
+      amax[0] = priY[0];
     }
-    if (ISNANINFF(manY[1])){
-      amax[1] = manY[1];
+    if (ISNANINFF(priY[1])){
+      amax[1] = priY[1];
     }
 
     if (deposits + N_block > idxd_SIENDURANCE) {
-      idxd_cmrenorm(fold, manY, incmanY, carY, inccarY);
+      idxd_cmrenorm(fold, priY, incpriY, carY, inccarY);
       deposits = 0;
     }
 
-    idxd_cmcupdate(fold, amax, manY, incmanY, carY, inccarY);
+    idxd_cmcupdate(fold, amax, priY, incpriY, carY, inccarY);
 
     /*[[[cog
-    cog.out(generate.generate(depositSum.DepositSum(dataTypes.FloatComplex, "fold", "N_block", "x", "incX", "manY", "incmanY"), cog.inFile, args, params, mode))
+    cog.out(generate.generate(depositSum.DepositSum(dataTypes.FloatComplex, "fold", "N_block", "x", "incX", "priY", "incpriY"), cog.inFile, args, params, mode))
     ]]]*/
     {
       #ifdef __AVX__
@@ -128,13 +128,13 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
               __m256 s_0_0, s_0_1;
               __m256 s_1_0, s_1_1;
 
-              s_0_0 = s_0_1 = (__m256)_mm256_broadcast_sd((double *)(((float*)manY)));
-              s_1_0 = s_1_1 = (__m256)_mm256_broadcast_sd((double *)(((float*)manY) + (incmanY * 2)));
+              s_0_0 = s_0_1 = (__m256)_mm256_broadcast_sd((double *)(((float*)priY)));
+              s_1_0 = s_1_1 = (__m256)_mm256_broadcast_sd((double *)(((float*)priY) + (incpriY * 2)));
 
               if(incX == 1){
-                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
-                  if(idxd_smindex0(manY)){
-                    if(idxd_smindex0(manY + 1)){
+                if(idxd_smindex0(priY) || idxd_smindex0(priY + 1)){
+                  if(idxd_smindex0(priY)){
+                    if(idxd_smindex0(priY + 1)){
                       compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -381,9 +381,9 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
                   }
                 }
               }else{
-                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
-                  if(idxd_smindex0(manY)){
-                    if(idxd_smindex0(manY + 1)){
+                if(idxd_smindex0(priY) || idxd_smindex0(priY + 1)){
+                  if(idxd_smindex0(priY)){
+                    if(idxd_smindex0(priY + 1)){
                       compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -631,18 +631,18 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
                 }
               }
 
-              s_0_0 = _mm256_sub_ps(s_0_0, _mm256_set_ps(((float*)manY)[1], ((float*)manY)[0], ((float*)manY)[1], ((float*)manY)[0], ((float*)manY)[1], ((float*)manY)[0], 0, 0));
-              cons_tmp = (__m256)_mm256_broadcast_sd((double *)(((float*)((float*)manY))));
+              s_0_0 = _mm256_sub_ps(s_0_0, _mm256_set_ps(((float*)priY)[1], ((float*)priY)[0], ((float*)priY)[1], ((float*)priY)[0], ((float*)priY)[1], ((float*)priY)[0], 0, 0));
+              cons_tmp = (__m256)_mm256_broadcast_sd((double *)(((float*)((float*)priY))));
               s_0_0 = _mm256_add_ps(s_0_0, _mm256_sub_ps(s_0_1, cons_tmp));
               _mm256_store_ps(cons_buffer_tmp, s_0_0);
-              ((float*)manY)[0] = cons_buffer_tmp[0] + cons_buffer_tmp[2] + cons_buffer_tmp[4] + cons_buffer_tmp[6];
-              ((float*)manY)[1] = cons_buffer_tmp[1] + cons_buffer_tmp[3] + cons_buffer_tmp[5] + cons_buffer_tmp[7];
-              s_1_0 = _mm256_sub_ps(s_1_0, _mm256_set_ps(((float*)manY)[((incmanY * 2) + 1)], ((float*)manY)[(incmanY * 2)], ((float*)manY)[((incmanY * 2) + 1)], ((float*)manY)[(incmanY * 2)], ((float*)manY)[((incmanY * 2) + 1)], ((float*)manY)[(incmanY * 2)], 0, 0));
-              cons_tmp = (__m256)_mm256_broadcast_sd((double *)(((float*)((float*)manY)) + (incmanY * 2)));
+              ((float*)priY)[0] = cons_buffer_tmp[0] + cons_buffer_tmp[2] + cons_buffer_tmp[4] + cons_buffer_tmp[6];
+              ((float*)priY)[1] = cons_buffer_tmp[1] + cons_buffer_tmp[3] + cons_buffer_tmp[5] + cons_buffer_tmp[7];
+              s_1_0 = _mm256_sub_ps(s_1_0, _mm256_set_ps(((float*)priY)[((incpriY * 2) + 1)], ((float*)priY)[(incpriY * 2)], ((float*)priY)[((incpriY * 2) + 1)], ((float*)priY)[(incpriY * 2)], ((float*)priY)[((incpriY * 2) + 1)], ((float*)priY)[(incpriY * 2)], 0, 0));
+              cons_tmp = (__m256)_mm256_broadcast_sd((double *)(((float*)((float*)priY)) + (incpriY * 2)));
               s_1_0 = _mm256_add_ps(s_1_0, _mm256_sub_ps(s_1_1, cons_tmp));
               _mm256_store_ps(cons_buffer_tmp, s_1_0);
-              ((float*)manY)[(incmanY * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[2] + cons_buffer_tmp[4] + cons_buffer_tmp[6];
-              ((float*)manY)[((incmanY * 2) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3] + cons_buffer_tmp[5] + cons_buffer_tmp[7];
+              ((float*)priY)[(incpriY * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[2] + cons_buffer_tmp[4] + cons_buffer_tmp[6];
+              ((float*)priY)[((incpriY * 2) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3] + cons_buffer_tmp[5] + cons_buffer_tmp[7];
 
               if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
                 _mm_setcsr(SIMD_daz_ftz_old_tmp);
@@ -661,14 +661,14 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
               __m256 s_1_0;
               __m256 s_2_0;
 
-              s_0_0 = (__m256)_mm256_broadcast_sd((double *)(((float*)manY)));
-              s_1_0 = (__m256)_mm256_broadcast_sd((double *)(((float*)manY) + (incmanY * 2)));
-              s_2_0 = (__m256)_mm256_broadcast_sd((double *)(((float*)manY) + (incmanY * 4)));
+              s_0_0 = (__m256)_mm256_broadcast_sd((double *)(((float*)priY)));
+              s_1_0 = (__m256)_mm256_broadcast_sd((double *)(((float*)priY) + (incpriY * 2)));
+              s_2_0 = (__m256)_mm256_broadcast_sd((double *)(((float*)priY) + (incpriY * 4)));
 
               if(incX == 1){
-                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
-                  if(idxd_smindex0(manY)){
-                    if(idxd_smindex0(manY + 1)){
+                if(idxd_smindex0(priY) || idxd_smindex0(priY + 1)){
+                  if(idxd_smindex0(priY)){
+                    if(idxd_smindex0(priY + 1)){
                       compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -1023,9 +1023,9 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
                   }
                 }
               }else{
-                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
-                  if(idxd_smindex0(manY)){
-                    if(idxd_smindex0(manY + 1)){
+                if(idxd_smindex0(priY) || idxd_smindex0(priY + 1)){
+                  if(idxd_smindex0(priY)){
+                    if(idxd_smindex0(priY + 1)){
                       compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -1381,18 +1381,18 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
                 }
               }
 
-              s_0_0 = _mm256_sub_ps(s_0_0, _mm256_set_ps(((float*)manY)[1], ((float*)manY)[0], ((float*)manY)[1], ((float*)manY)[0], ((float*)manY)[1], ((float*)manY)[0], 0, 0));
+              s_0_0 = _mm256_sub_ps(s_0_0, _mm256_set_ps(((float*)priY)[1], ((float*)priY)[0], ((float*)priY)[1], ((float*)priY)[0], ((float*)priY)[1], ((float*)priY)[0], 0, 0));
               _mm256_store_ps(cons_buffer_tmp, s_0_0);
-              ((float*)manY)[0] = cons_buffer_tmp[0] + cons_buffer_tmp[2] + cons_buffer_tmp[4] + cons_buffer_tmp[6];
-              ((float*)manY)[1] = cons_buffer_tmp[1] + cons_buffer_tmp[3] + cons_buffer_tmp[5] + cons_buffer_tmp[7];
-              s_1_0 = _mm256_sub_ps(s_1_0, _mm256_set_ps(((float*)manY)[((incmanY * 2) + 1)], ((float*)manY)[(incmanY * 2)], ((float*)manY)[((incmanY * 2) + 1)], ((float*)manY)[(incmanY * 2)], ((float*)manY)[((incmanY * 2) + 1)], ((float*)manY)[(incmanY * 2)], 0, 0));
+              ((float*)priY)[0] = cons_buffer_tmp[0] + cons_buffer_tmp[2] + cons_buffer_tmp[4] + cons_buffer_tmp[6];
+              ((float*)priY)[1] = cons_buffer_tmp[1] + cons_buffer_tmp[3] + cons_buffer_tmp[5] + cons_buffer_tmp[7];
+              s_1_0 = _mm256_sub_ps(s_1_0, _mm256_set_ps(((float*)priY)[((incpriY * 2) + 1)], ((float*)priY)[(incpriY * 2)], ((float*)priY)[((incpriY * 2) + 1)], ((float*)priY)[(incpriY * 2)], ((float*)priY)[((incpriY * 2) + 1)], ((float*)priY)[(incpriY * 2)], 0, 0));
               _mm256_store_ps(cons_buffer_tmp, s_1_0);
-              ((float*)manY)[(incmanY * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[2] + cons_buffer_tmp[4] + cons_buffer_tmp[6];
-              ((float*)manY)[((incmanY * 2) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3] + cons_buffer_tmp[5] + cons_buffer_tmp[7];
-              s_2_0 = _mm256_sub_ps(s_2_0, _mm256_set_ps(((float*)manY)[((incmanY * 4) + 1)], ((float*)manY)[(incmanY * 4)], ((float*)manY)[((incmanY * 4) + 1)], ((float*)manY)[(incmanY * 4)], ((float*)manY)[((incmanY * 4) + 1)], ((float*)manY)[(incmanY * 4)], 0, 0));
+              ((float*)priY)[(incpriY * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[2] + cons_buffer_tmp[4] + cons_buffer_tmp[6];
+              ((float*)priY)[((incpriY * 2) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3] + cons_buffer_tmp[5] + cons_buffer_tmp[7];
+              s_2_0 = _mm256_sub_ps(s_2_0, _mm256_set_ps(((float*)priY)[((incpriY * 4) + 1)], ((float*)priY)[(incpriY * 4)], ((float*)priY)[((incpriY * 4) + 1)], ((float*)priY)[(incpriY * 4)], ((float*)priY)[((incpriY * 4) + 1)], ((float*)priY)[(incpriY * 4)], 0, 0));
               _mm256_store_ps(cons_buffer_tmp, s_2_0);
-              ((float*)manY)[(incmanY * 4)] = cons_buffer_tmp[0] + cons_buffer_tmp[2] + cons_buffer_tmp[4] + cons_buffer_tmp[6];
-              ((float*)manY)[((incmanY * 4) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3] + cons_buffer_tmp[5] + cons_buffer_tmp[7];
+              ((float*)priY)[(incpriY * 4)] = cons_buffer_tmp[0] + cons_buffer_tmp[2] + cons_buffer_tmp[4] + cons_buffer_tmp[6];
+              ((float*)priY)[((incpriY * 4) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3] + cons_buffer_tmp[5] + cons_buffer_tmp[7];
 
               if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
                 _mm_setcsr(SIMD_daz_ftz_old_tmp);
@@ -1412,15 +1412,15 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
               __m256 s_2_0;
               __m256 s_3_0;
 
-              s_0_0 = (__m256)_mm256_broadcast_sd((double *)(((float*)manY)));
-              s_1_0 = (__m256)_mm256_broadcast_sd((double *)(((float*)manY) + (incmanY * 2)));
-              s_2_0 = (__m256)_mm256_broadcast_sd((double *)(((float*)manY) + (incmanY * 4)));
-              s_3_0 = (__m256)_mm256_broadcast_sd((double *)(((float*)manY) + (incmanY * 6)));
+              s_0_0 = (__m256)_mm256_broadcast_sd((double *)(((float*)priY)));
+              s_1_0 = (__m256)_mm256_broadcast_sd((double *)(((float*)priY) + (incpriY * 2)));
+              s_2_0 = (__m256)_mm256_broadcast_sd((double *)(((float*)priY) + (incpriY * 4)));
+              s_3_0 = (__m256)_mm256_broadcast_sd((double *)(((float*)priY) + (incpriY * 6)));
 
               if(incX == 1){
-                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
-                  if(idxd_smindex0(manY)){
-                    if(idxd_smindex0(manY + 1)){
+                if(idxd_smindex0(priY) || idxd_smindex0(priY + 1)){
+                  if(idxd_smindex0(priY)){
+                    if(idxd_smindex0(priY + 1)){
                       compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -1923,9 +1923,9 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
                   }
                 }
               }else{
-                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
-                  if(idxd_smindex0(manY)){
-                    if(idxd_smindex0(manY + 1)){
+                if(idxd_smindex0(priY) || idxd_smindex0(priY + 1)){
+                  if(idxd_smindex0(priY)){
+                    if(idxd_smindex0(priY + 1)){
                       compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -2429,22 +2429,22 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
                 }
               }
 
-              s_0_0 = _mm256_sub_ps(s_0_0, _mm256_set_ps(((float*)manY)[1], ((float*)manY)[0], ((float*)manY)[1], ((float*)manY)[0], ((float*)manY)[1], ((float*)manY)[0], 0, 0));
+              s_0_0 = _mm256_sub_ps(s_0_0, _mm256_set_ps(((float*)priY)[1], ((float*)priY)[0], ((float*)priY)[1], ((float*)priY)[0], ((float*)priY)[1], ((float*)priY)[0], 0, 0));
               _mm256_store_ps(cons_buffer_tmp, s_0_0);
-              ((float*)manY)[0] = cons_buffer_tmp[0] + cons_buffer_tmp[2] + cons_buffer_tmp[4] + cons_buffer_tmp[6];
-              ((float*)manY)[1] = cons_buffer_tmp[1] + cons_buffer_tmp[3] + cons_buffer_tmp[5] + cons_buffer_tmp[7];
-              s_1_0 = _mm256_sub_ps(s_1_0, _mm256_set_ps(((float*)manY)[((incmanY * 2) + 1)], ((float*)manY)[(incmanY * 2)], ((float*)manY)[((incmanY * 2) + 1)], ((float*)manY)[(incmanY * 2)], ((float*)manY)[((incmanY * 2) + 1)], ((float*)manY)[(incmanY * 2)], 0, 0));
+              ((float*)priY)[0] = cons_buffer_tmp[0] + cons_buffer_tmp[2] + cons_buffer_tmp[4] + cons_buffer_tmp[6];
+              ((float*)priY)[1] = cons_buffer_tmp[1] + cons_buffer_tmp[3] + cons_buffer_tmp[5] + cons_buffer_tmp[7];
+              s_1_0 = _mm256_sub_ps(s_1_0, _mm256_set_ps(((float*)priY)[((incpriY * 2) + 1)], ((float*)priY)[(incpriY * 2)], ((float*)priY)[((incpriY * 2) + 1)], ((float*)priY)[(incpriY * 2)], ((float*)priY)[((incpriY * 2) + 1)], ((float*)priY)[(incpriY * 2)], 0, 0));
               _mm256_store_ps(cons_buffer_tmp, s_1_0);
-              ((float*)manY)[(incmanY * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[2] + cons_buffer_tmp[4] + cons_buffer_tmp[6];
-              ((float*)manY)[((incmanY * 2) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3] + cons_buffer_tmp[5] + cons_buffer_tmp[7];
-              s_2_0 = _mm256_sub_ps(s_2_0, _mm256_set_ps(((float*)manY)[((incmanY * 4) + 1)], ((float*)manY)[(incmanY * 4)], ((float*)manY)[((incmanY * 4) + 1)], ((float*)manY)[(incmanY * 4)], ((float*)manY)[((incmanY * 4) + 1)], ((float*)manY)[(incmanY * 4)], 0, 0));
+              ((float*)priY)[(incpriY * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[2] + cons_buffer_tmp[4] + cons_buffer_tmp[6];
+              ((float*)priY)[((incpriY * 2) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3] + cons_buffer_tmp[5] + cons_buffer_tmp[7];
+              s_2_0 = _mm256_sub_ps(s_2_0, _mm256_set_ps(((float*)priY)[((incpriY * 4) + 1)], ((float*)priY)[(incpriY * 4)], ((float*)priY)[((incpriY * 4) + 1)], ((float*)priY)[(incpriY * 4)], ((float*)priY)[((incpriY * 4) + 1)], ((float*)priY)[(incpriY * 4)], 0, 0));
               _mm256_store_ps(cons_buffer_tmp, s_2_0);
-              ((float*)manY)[(incmanY * 4)] = cons_buffer_tmp[0] + cons_buffer_tmp[2] + cons_buffer_tmp[4] + cons_buffer_tmp[6];
-              ((float*)manY)[((incmanY * 4) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3] + cons_buffer_tmp[5] + cons_buffer_tmp[7];
-              s_3_0 = _mm256_sub_ps(s_3_0, _mm256_set_ps(((float*)manY)[((incmanY * 6) + 1)], ((float*)manY)[(incmanY * 6)], ((float*)manY)[((incmanY * 6) + 1)], ((float*)manY)[(incmanY * 6)], ((float*)manY)[((incmanY * 6) + 1)], ((float*)manY)[(incmanY * 6)], 0, 0));
+              ((float*)priY)[(incpriY * 4)] = cons_buffer_tmp[0] + cons_buffer_tmp[2] + cons_buffer_tmp[4] + cons_buffer_tmp[6];
+              ((float*)priY)[((incpriY * 4) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3] + cons_buffer_tmp[5] + cons_buffer_tmp[7];
+              s_3_0 = _mm256_sub_ps(s_3_0, _mm256_set_ps(((float*)priY)[((incpriY * 6) + 1)], ((float*)priY)[(incpriY * 6)], ((float*)priY)[((incpriY * 6) + 1)], ((float*)priY)[(incpriY * 6)], ((float*)priY)[((incpriY * 6) + 1)], ((float*)priY)[(incpriY * 6)], 0, 0));
               _mm256_store_ps(cons_buffer_tmp, s_3_0);
-              ((float*)manY)[(incmanY * 6)] = cons_buffer_tmp[0] + cons_buffer_tmp[2] + cons_buffer_tmp[4] + cons_buffer_tmp[6];
-              ((float*)manY)[((incmanY * 6) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3] + cons_buffer_tmp[5] + cons_buffer_tmp[7];
+              ((float*)priY)[(incpriY * 6)] = cons_buffer_tmp[0] + cons_buffer_tmp[2] + cons_buffer_tmp[4] + cons_buffer_tmp[6];
+              ((float*)priY)[((incpriY * 6) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3] + cons_buffer_tmp[5] + cons_buffer_tmp[7];
 
               if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
                 _mm_setcsr(SIMD_daz_ftz_old_tmp);
@@ -2463,13 +2463,13 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
               __m256 s_buffer[idxd_SIMAXFOLD];
 
               for(j = 0; j < fold; j += 1){
-                s_buffer[j] = (__m256)_mm256_broadcast_sd((double *)(((float*)manY) + (incmanY * j * 2)));
+                s_buffer[j] = (__m256)_mm256_broadcast_sd((double *)(((float*)priY) + (incpriY * j * 2)));
               }
 
               if(incX == 1){
-                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
-                  if(idxd_smindex0(manY)){
-                    if(idxd_smindex0(manY + 1)){
+                if(idxd_smindex0(priY) || idxd_smindex0(priY + 1)){
+                  if(idxd_smindex0(priY)){
+                    if(idxd_smindex0(priY + 1)){
                       compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -2846,9 +2846,9 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
                   }
                 }
               }else{
-                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
-                  if(idxd_smindex0(manY)){
-                    if(idxd_smindex0(manY + 1)){
+                if(idxd_smindex0(priY) || idxd_smindex0(priY + 1)){
+                  if(idxd_smindex0(priY)){
+                    if(idxd_smindex0(priY + 1)){
                       compression_0 = _mm256_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm256_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -3227,10 +3227,10 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
               }
 
               for(j = 0; j < fold; j += 1){
-                s_buffer[j] = _mm256_sub_ps(s_buffer[j], _mm256_set_ps(((float*)manY)[((incmanY * j * 2) + 1)], ((float*)manY)[(incmanY * j * 2)], ((float*)manY)[((incmanY * j * 2) + 1)], ((float*)manY)[(incmanY * j * 2)], ((float*)manY)[((incmanY * j * 2) + 1)], ((float*)manY)[(incmanY * j * 2)], 0, 0));
+                s_buffer[j] = _mm256_sub_ps(s_buffer[j], _mm256_set_ps(((float*)priY)[((incpriY * j * 2) + 1)], ((float*)priY)[(incpriY * j * 2)], ((float*)priY)[((incpriY * j * 2) + 1)], ((float*)priY)[(incpriY * j * 2)], ((float*)priY)[((incpriY * j * 2) + 1)], ((float*)priY)[(incpriY * j * 2)], 0, 0));
                 _mm256_store_ps(cons_buffer_tmp, s_buffer[j]);
-                ((float*)manY)[(incmanY * j * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[2] + cons_buffer_tmp[4] + cons_buffer_tmp[6];
-                ((float*)manY)[((incmanY * j * 2) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3] + cons_buffer_tmp[5] + cons_buffer_tmp[7];
+                ((float*)priY)[(incpriY * j * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[2] + cons_buffer_tmp[4] + cons_buffer_tmp[6];
+                ((float*)priY)[((incpriY * j * 2) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3] + cons_buffer_tmp[5] + cons_buffer_tmp[7];
               }
 
               if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
@@ -3266,13 +3266,13 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
               __m128 s_0_0, s_0_1;
               __m128 s_1_0, s_1_1;
 
-              s_0_0 = s_0_1 = (__m128)_mm_load1_pd((double *)(((float*)manY)));
-              s_1_0 = s_1_1 = (__m128)_mm_load1_pd((double *)(((float*)manY) + (incmanY * 2)));
+              s_0_0 = s_0_1 = (__m128)_mm_load1_pd((double *)(((float*)priY)));
+              s_1_0 = s_1_1 = (__m128)_mm_load1_pd((double *)(((float*)priY) + (incpriY * 2)));
 
               if(incX == 1){
-                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
-                  if(idxd_smindex0(manY)){
-                    if(idxd_smindex0(manY + 1)){
+                if(idxd_smindex0(priY) || idxd_smindex0(priY + 1)){
+                  if(idxd_smindex0(priY)){
+                    if(idxd_smindex0(priY + 1)){
                       compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -3519,9 +3519,9 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
                   }
                 }
               }else{
-                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
-                  if(idxd_smindex0(manY)){
-                    if(idxd_smindex0(manY + 1)){
+                if(idxd_smindex0(priY) || idxd_smindex0(priY + 1)){
+                  if(idxd_smindex0(priY)){
+                    if(idxd_smindex0(priY + 1)){
                       compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -3769,18 +3769,18 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
                 }
               }
 
-              s_0_0 = _mm_sub_ps(s_0_0, _mm_set_ps(((float*)manY)[1], ((float*)manY)[0], 0, 0));
-              cons_tmp = (__m128)_mm_load1_pd((double *)(((float*)((float*)manY))));
+              s_0_0 = _mm_sub_ps(s_0_0, _mm_set_ps(((float*)priY)[1], ((float*)priY)[0], 0, 0));
+              cons_tmp = (__m128)_mm_load1_pd((double *)(((float*)((float*)priY))));
               s_0_0 = _mm_add_ps(s_0_0, _mm_sub_ps(s_0_1, cons_tmp));
               _mm_store_ps(cons_buffer_tmp, s_0_0);
-              ((float*)manY)[0] = cons_buffer_tmp[0] + cons_buffer_tmp[2];
-              ((float*)manY)[1] = cons_buffer_tmp[1] + cons_buffer_tmp[3];
-              s_1_0 = _mm_sub_ps(s_1_0, _mm_set_ps(((float*)manY)[((incmanY * 2) + 1)], ((float*)manY)[(incmanY * 2)], 0, 0));
-              cons_tmp = (__m128)_mm_load1_pd((double *)(((float*)((float*)manY)) + (incmanY * 2)));
+              ((float*)priY)[0] = cons_buffer_tmp[0] + cons_buffer_tmp[2];
+              ((float*)priY)[1] = cons_buffer_tmp[1] + cons_buffer_tmp[3];
+              s_1_0 = _mm_sub_ps(s_1_0, _mm_set_ps(((float*)priY)[((incpriY * 2) + 1)], ((float*)priY)[(incpriY * 2)], 0, 0));
+              cons_tmp = (__m128)_mm_load1_pd((double *)(((float*)((float*)priY)) + (incpriY * 2)));
               s_1_0 = _mm_add_ps(s_1_0, _mm_sub_ps(s_1_1, cons_tmp));
               _mm_store_ps(cons_buffer_tmp, s_1_0);
-              ((float*)manY)[(incmanY * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[2];
-              ((float*)manY)[((incmanY * 2) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3];
+              ((float*)priY)[(incpriY * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[2];
+              ((float*)priY)[((incpriY * 2) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3];
 
               if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
                 _mm_setcsr(SIMD_daz_ftz_old_tmp);
@@ -3799,14 +3799,14 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
               __m128 s_1_0, s_1_1;
               __m128 s_2_0, s_2_1;
 
-              s_0_0 = s_0_1 = (__m128)_mm_load1_pd((double *)(((float*)manY)));
-              s_1_0 = s_1_1 = (__m128)_mm_load1_pd((double *)(((float*)manY) + (incmanY * 2)));
-              s_2_0 = s_2_1 = (__m128)_mm_load1_pd((double *)(((float*)manY) + (incmanY * 4)));
+              s_0_0 = s_0_1 = (__m128)_mm_load1_pd((double *)(((float*)priY)));
+              s_1_0 = s_1_1 = (__m128)_mm_load1_pd((double *)(((float*)priY) + (incpriY * 2)));
+              s_2_0 = s_2_1 = (__m128)_mm_load1_pd((double *)(((float*)priY) + (incpriY * 4)));
 
               if(incX == 1){
-                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
-                  if(idxd_smindex0(manY)){
-                    if(idxd_smindex0(manY + 1)){
+                if(idxd_smindex0(priY) || idxd_smindex0(priY + 1)){
+                  if(idxd_smindex0(priY)){
+                    if(idxd_smindex0(priY + 1)){
                       compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -4181,9 +4181,9 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
                   }
                 }
               }else{
-                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
-                  if(idxd_smindex0(manY)){
-                    if(idxd_smindex0(manY + 1)){
+                if(idxd_smindex0(priY) || idxd_smindex0(priY + 1)){
+                  if(idxd_smindex0(priY)){
+                    if(idxd_smindex0(priY + 1)){
                       compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -4559,24 +4559,24 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
                 }
               }
 
-              s_0_0 = _mm_sub_ps(s_0_0, _mm_set_ps(((float*)manY)[1], ((float*)manY)[0], 0, 0));
-              cons_tmp = (__m128)_mm_load1_pd((double *)(((float*)((float*)manY))));
+              s_0_0 = _mm_sub_ps(s_0_0, _mm_set_ps(((float*)priY)[1], ((float*)priY)[0], 0, 0));
+              cons_tmp = (__m128)_mm_load1_pd((double *)(((float*)((float*)priY))));
               s_0_0 = _mm_add_ps(s_0_0, _mm_sub_ps(s_0_1, cons_tmp));
               _mm_store_ps(cons_buffer_tmp, s_0_0);
-              ((float*)manY)[0] = cons_buffer_tmp[0] + cons_buffer_tmp[2];
-              ((float*)manY)[1] = cons_buffer_tmp[1] + cons_buffer_tmp[3];
-              s_1_0 = _mm_sub_ps(s_1_0, _mm_set_ps(((float*)manY)[((incmanY * 2) + 1)], ((float*)manY)[(incmanY * 2)], 0, 0));
-              cons_tmp = (__m128)_mm_load1_pd((double *)(((float*)((float*)manY)) + (incmanY * 2)));
+              ((float*)priY)[0] = cons_buffer_tmp[0] + cons_buffer_tmp[2];
+              ((float*)priY)[1] = cons_buffer_tmp[1] + cons_buffer_tmp[3];
+              s_1_0 = _mm_sub_ps(s_1_0, _mm_set_ps(((float*)priY)[((incpriY * 2) + 1)], ((float*)priY)[(incpriY * 2)], 0, 0));
+              cons_tmp = (__m128)_mm_load1_pd((double *)(((float*)((float*)priY)) + (incpriY * 2)));
               s_1_0 = _mm_add_ps(s_1_0, _mm_sub_ps(s_1_1, cons_tmp));
               _mm_store_ps(cons_buffer_tmp, s_1_0);
-              ((float*)manY)[(incmanY * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[2];
-              ((float*)manY)[((incmanY * 2) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3];
-              s_2_0 = _mm_sub_ps(s_2_0, _mm_set_ps(((float*)manY)[((incmanY * 4) + 1)], ((float*)manY)[(incmanY * 4)], 0, 0));
-              cons_tmp = (__m128)_mm_load1_pd((double *)(((float*)((float*)manY)) + (incmanY * 4)));
+              ((float*)priY)[(incpriY * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[2];
+              ((float*)priY)[((incpriY * 2) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3];
+              s_2_0 = _mm_sub_ps(s_2_0, _mm_set_ps(((float*)priY)[((incpriY * 4) + 1)], ((float*)priY)[(incpriY * 4)], 0, 0));
+              cons_tmp = (__m128)_mm_load1_pd((double *)(((float*)((float*)priY)) + (incpriY * 4)));
               s_2_0 = _mm_add_ps(s_2_0, _mm_sub_ps(s_2_1, cons_tmp));
               _mm_store_ps(cons_buffer_tmp, s_2_0);
-              ((float*)manY)[(incmanY * 4)] = cons_buffer_tmp[0] + cons_buffer_tmp[2];
-              ((float*)manY)[((incmanY * 4) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3];
+              ((float*)priY)[(incpriY * 4)] = cons_buffer_tmp[0] + cons_buffer_tmp[2];
+              ((float*)priY)[((incpriY * 4) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3];
 
               if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
                 _mm_setcsr(SIMD_daz_ftz_old_tmp);
@@ -4596,15 +4596,15 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
               __m128 s_2_0, s_2_1;
               __m128 s_3_0, s_3_1;
 
-              s_0_0 = s_0_1 = (__m128)_mm_load1_pd((double *)(((float*)manY)));
-              s_1_0 = s_1_1 = (__m128)_mm_load1_pd((double *)(((float*)manY) + (incmanY * 2)));
-              s_2_0 = s_2_1 = (__m128)_mm_load1_pd((double *)(((float*)manY) + (incmanY * 4)));
-              s_3_0 = s_3_1 = (__m128)_mm_load1_pd((double *)(((float*)manY) + (incmanY * 6)));
+              s_0_0 = s_0_1 = (__m128)_mm_load1_pd((double *)(((float*)priY)));
+              s_1_0 = s_1_1 = (__m128)_mm_load1_pd((double *)(((float*)priY) + (incpriY * 2)));
+              s_2_0 = s_2_1 = (__m128)_mm_load1_pd((double *)(((float*)priY) + (incpriY * 4)));
+              s_3_0 = s_3_1 = (__m128)_mm_load1_pd((double *)(((float*)priY) + (incpriY * 6)));
 
               if(incX == 1){
-                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
-                  if(idxd_smindex0(manY)){
-                    if(idxd_smindex0(manY + 1)){
+                if(idxd_smindex0(priY) || idxd_smindex0(priY + 1)){
+                  if(idxd_smindex0(priY)){
+                    if(idxd_smindex0(priY + 1)){
                       compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -5107,9 +5107,9 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
                   }
                 }
               }else{
-                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
-                  if(idxd_smindex0(manY)){
-                    if(idxd_smindex0(manY + 1)){
+                if(idxd_smindex0(priY) || idxd_smindex0(priY + 1)){
+                  if(idxd_smindex0(priY)){
+                    if(idxd_smindex0(priY + 1)){
                       compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -5613,30 +5613,30 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
                 }
               }
 
-              s_0_0 = _mm_sub_ps(s_0_0, _mm_set_ps(((float*)manY)[1], ((float*)manY)[0], 0, 0));
-              cons_tmp = (__m128)_mm_load1_pd((double *)(((float*)((float*)manY))));
+              s_0_0 = _mm_sub_ps(s_0_0, _mm_set_ps(((float*)priY)[1], ((float*)priY)[0], 0, 0));
+              cons_tmp = (__m128)_mm_load1_pd((double *)(((float*)((float*)priY))));
               s_0_0 = _mm_add_ps(s_0_0, _mm_sub_ps(s_0_1, cons_tmp));
               _mm_store_ps(cons_buffer_tmp, s_0_0);
-              ((float*)manY)[0] = cons_buffer_tmp[0] + cons_buffer_tmp[2];
-              ((float*)manY)[1] = cons_buffer_tmp[1] + cons_buffer_tmp[3];
-              s_1_0 = _mm_sub_ps(s_1_0, _mm_set_ps(((float*)manY)[((incmanY * 2) + 1)], ((float*)manY)[(incmanY * 2)], 0, 0));
-              cons_tmp = (__m128)_mm_load1_pd((double *)(((float*)((float*)manY)) + (incmanY * 2)));
+              ((float*)priY)[0] = cons_buffer_tmp[0] + cons_buffer_tmp[2];
+              ((float*)priY)[1] = cons_buffer_tmp[1] + cons_buffer_tmp[3];
+              s_1_0 = _mm_sub_ps(s_1_0, _mm_set_ps(((float*)priY)[((incpriY * 2) + 1)], ((float*)priY)[(incpriY * 2)], 0, 0));
+              cons_tmp = (__m128)_mm_load1_pd((double *)(((float*)((float*)priY)) + (incpriY * 2)));
               s_1_0 = _mm_add_ps(s_1_0, _mm_sub_ps(s_1_1, cons_tmp));
               _mm_store_ps(cons_buffer_tmp, s_1_0);
-              ((float*)manY)[(incmanY * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[2];
-              ((float*)manY)[((incmanY * 2) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3];
-              s_2_0 = _mm_sub_ps(s_2_0, _mm_set_ps(((float*)manY)[((incmanY * 4) + 1)], ((float*)manY)[(incmanY * 4)], 0, 0));
-              cons_tmp = (__m128)_mm_load1_pd((double *)(((float*)((float*)manY)) + (incmanY * 4)));
+              ((float*)priY)[(incpriY * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[2];
+              ((float*)priY)[((incpriY * 2) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3];
+              s_2_0 = _mm_sub_ps(s_2_0, _mm_set_ps(((float*)priY)[((incpriY * 4) + 1)], ((float*)priY)[(incpriY * 4)], 0, 0));
+              cons_tmp = (__m128)_mm_load1_pd((double *)(((float*)((float*)priY)) + (incpriY * 4)));
               s_2_0 = _mm_add_ps(s_2_0, _mm_sub_ps(s_2_1, cons_tmp));
               _mm_store_ps(cons_buffer_tmp, s_2_0);
-              ((float*)manY)[(incmanY * 4)] = cons_buffer_tmp[0] + cons_buffer_tmp[2];
-              ((float*)manY)[((incmanY * 4) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3];
-              s_3_0 = _mm_sub_ps(s_3_0, _mm_set_ps(((float*)manY)[((incmanY * 6) + 1)], ((float*)manY)[(incmanY * 6)], 0, 0));
-              cons_tmp = (__m128)_mm_load1_pd((double *)(((float*)((float*)manY)) + (incmanY * 6)));
+              ((float*)priY)[(incpriY * 4)] = cons_buffer_tmp[0] + cons_buffer_tmp[2];
+              ((float*)priY)[((incpriY * 4) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3];
+              s_3_0 = _mm_sub_ps(s_3_0, _mm_set_ps(((float*)priY)[((incpriY * 6) + 1)], ((float*)priY)[(incpriY * 6)], 0, 0));
+              cons_tmp = (__m128)_mm_load1_pd((double *)(((float*)((float*)priY)) + (incpriY * 6)));
               s_3_0 = _mm_add_ps(s_3_0, _mm_sub_ps(s_3_1, cons_tmp));
               _mm_store_ps(cons_buffer_tmp, s_3_0);
-              ((float*)manY)[(incmanY * 6)] = cons_buffer_tmp[0] + cons_buffer_tmp[2];
-              ((float*)manY)[((incmanY * 6) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3];
+              ((float*)priY)[(incpriY * 6)] = cons_buffer_tmp[0] + cons_buffer_tmp[2];
+              ((float*)priY)[((incpriY * 6) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3];
 
               if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
                 _mm_setcsr(SIMD_daz_ftz_old_tmp);
@@ -5655,13 +5655,13 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
               __m128 s_buffer[(idxd_SIMAXFOLD * 2)];
 
               for(j = 0; j < fold; j += 1){
-                s_buffer[(j * 2)] = s_buffer[((j * 2) + 1)] = (__m128)_mm_load1_pd((double *)(((float*)manY) + (incmanY * j * 2)));
+                s_buffer[(j * 2)] = s_buffer[((j * 2) + 1)] = (__m128)_mm_load1_pd((double *)(((float*)priY) + (incpriY * j * 2)));
               }
 
               if(incX == 1){
-                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
-                  if(idxd_smindex0(manY)){
-                    if(idxd_smindex0(manY + 1)){
+                if(idxd_smindex0(priY) || idxd_smindex0(priY + 1)){
+                  if(idxd_smindex0(priY)){
+                    if(idxd_smindex0(priY + 1)){
                       compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -5790,9 +5790,9 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
                   }
                 }
               }else{
-                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
-                  if(idxd_smindex0(manY)){
-                    if(idxd_smindex0(manY + 1)){
+                if(idxd_smindex0(priY) || idxd_smindex0(priY + 1)){
+                  if(idxd_smindex0(priY)){
+                    if(idxd_smindex0(priY + 1)){
                       compression_0 = _mm_set1_ps(idxd_SMCOMPRESSION);
                       expansion_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
                       expansion_mask_0 = _mm_set1_ps(idxd_SMEXPANSION * 0.5);
@@ -5923,12 +5923,12 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
               }
 
               for(j = 0; j < fold; j += 1){
-                s_buffer[(j * 2)] = _mm_sub_ps(s_buffer[(j * 2)], _mm_set_ps(((float*)manY)[((incmanY * j * 2) + 1)], ((float*)manY)[(incmanY * j * 2)], 0, 0));
-                cons_tmp = (__m128)_mm_load1_pd((double *)(((float*)((float*)manY)) + (incmanY * j * 2)));
+                s_buffer[(j * 2)] = _mm_sub_ps(s_buffer[(j * 2)], _mm_set_ps(((float*)priY)[((incpriY * j * 2) + 1)], ((float*)priY)[(incpriY * j * 2)], 0, 0));
+                cons_tmp = (__m128)_mm_load1_pd((double *)(((float*)((float*)priY)) + (incpriY * j * 2)));
                 s_buffer[(j * 2)] = _mm_add_ps(s_buffer[(j * 2)], _mm_sub_ps(s_buffer[((j * 2) + 1)], cons_tmp));
                 _mm_store_ps(cons_buffer_tmp, s_buffer[(j * 2)]);
-                ((float*)manY)[(incmanY * j * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[2];
-                ((float*)manY)[((incmanY * j * 2) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3];
+                ((float*)priY)[(incpriY * j * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[2];
+                ((float*)priY)[((incpriY * j * 2) + 1)] = cons_buffer_tmp[1] + cons_buffer_tmp[3];
               }
 
               if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
@@ -5956,17 +5956,17 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
               float s_1_0, s_1_1;
               float s_2_0, s_2_1;
 
-              s_0_0 = ((float*)manY)[0];
-              s_0_1 = ((float*)manY)[1];
-              s_1_0 = ((float*)manY)[(incmanY * 2)];
-              s_1_1 = ((float*)manY)[((incmanY * 2) + 1)];
-              s_2_0 = ((float*)manY)[(incmanY * 4)];
-              s_2_1 = ((float*)manY)[((incmanY * 4) + 1)];
+              s_0_0 = ((float*)priY)[0];
+              s_0_1 = ((float*)priY)[1];
+              s_1_0 = ((float*)priY)[(incpriY * 2)];
+              s_1_1 = ((float*)priY)[((incpriY * 2) + 1)];
+              s_2_0 = ((float*)priY)[(incpriY * 4)];
+              s_2_1 = ((float*)priY)[((incpriY * 4) + 1)];
 
               if(incX == 1){
-                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
-                  if(idxd_smindex0(manY)){
-                    if(idxd_smindex0(manY + 1)){
+                if(idxd_smindex0(priY) || idxd_smindex0(priY + 1)){
+                  if(idxd_smindex0(priY)){
+                    if(idxd_smindex0(priY + 1)){
                       compression_0 = idxd_SMCOMPRESSION;
                       expansion_0 = idxd_SMEXPANSION * 0.5;
                       expansion_mask_0 = idxd_SMEXPANSION * 0.5;
@@ -6059,9 +6059,9 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
                   }
                 }
               }else{
-                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
-                  if(idxd_smindex0(manY)){
-                    if(idxd_smindex0(manY + 1)){
+                if(idxd_smindex0(priY) || idxd_smindex0(priY + 1)){
+                  if(idxd_smindex0(priY)){
+                    if(idxd_smindex0(priY + 1)){
                       compression_0 = idxd_SMCOMPRESSION;
                       expansion_0 = idxd_SMEXPANSION * 0.5;
                       expansion_mask_0 = idxd_SMEXPANSION * 0.5;
@@ -6155,12 +6155,12 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
                 }
               }
 
-              ((float*)manY)[0] = s_0_0;
-              ((float*)manY)[1] = s_0_1;
-              ((float*)manY)[(incmanY * 2)] = s_1_0;
-              ((float*)manY)[((incmanY * 2) + 1)] = s_1_1;
-              ((float*)manY)[(incmanY * 4)] = s_2_0;
-              ((float*)manY)[((incmanY * 4) + 1)] = s_2_1;
+              ((float*)priY)[0] = s_0_0;
+              ((float*)priY)[1] = s_0_1;
+              ((float*)priY)[(incpriY * 2)] = s_1_0;
+              ((float*)priY)[((incpriY * 2) + 1)] = s_1_1;
+              ((float*)priY)[(incpriY * 4)] = s_2_0;
+              ((float*)priY)[((incpriY * 4) + 1)] = s_2_1;
 
             }
             break;
@@ -6176,14 +6176,14 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
               float s_buffer[(idxd_SIMAXFOLD * 2)];
 
               for(j = 0; j < fold; j += 1){
-                s_buffer[(j * 2)] = ((float*)manY)[(incmanY * j * 2)];
-                s_buffer[((j * 2) + 1)] = ((float*)manY)[((incmanY * j * 2) + 1)];
+                s_buffer[(j * 2)] = ((float*)priY)[(incpriY * j * 2)];
+                s_buffer[((j * 2) + 1)] = ((float*)priY)[((incpriY * j * 2) + 1)];
               }
 
               if(incX == 1){
-                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
-                  if(idxd_smindex0(manY)){
-                    if(idxd_smindex0(manY + 1)){
+                if(idxd_smindex0(priY) || idxd_smindex0(priY + 1)){
+                  if(idxd_smindex0(priY)){
+                    if(idxd_smindex0(priY + 1)){
                       compression_0 = idxd_SMCOMPRESSION;
                       expansion_0 = idxd_SMEXPANSION * 0.5;
                       expansion_mask_0 = idxd_SMEXPANSION * 0.5;
@@ -6274,9 +6274,9 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
                   }
                 }
               }else{
-                if(idxd_smindex0(manY) || idxd_smindex0(manY + 1)){
-                  if(idxd_smindex0(manY)){
-                    if(idxd_smindex0(manY + 1)){
+                if(idxd_smindex0(priY) || idxd_smindex0(priY + 1)){
+                  if(idxd_smindex0(priY)){
+                    if(idxd_smindex0(priY + 1)){
                       compression_0 = idxd_SMCOMPRESSION;
                       expansion_0 = idxd_SMEXPANSION * 0.5;
                       expansion_mask_0 = idxd_SMEXPANSION * 0.5;
@@ -6369,8 +6369,8 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
               }
 
               for(j = 0; j < fold; j += 1){
-                ((float*)manY)[(incmanY * j * 2)] = s_buffer[(j * 2)];
-                ((float*)manY)[((incmanY * j * 2) + 1)] = s_buffer[((j * 2) + 1)];
+                ((float*)priY)[(incpriY * j * 2)] = s_buffer[(j * 2)];
+                ((float*)priY)[((incpriY * j * 2) + 1)] = s_buffer[((j * 2) + 1)];
               }
 
             }
@@ -6383,14 +6383,14 @@ void idxdBLAS_cmcsum(const int fold, const int N, const void *X, const int incX,
     //[[[end]]]
 
     if (isinf(amax[0])){
-      manY[0] = amax[0];
+      priY[0] = amax[0];
     }
     if (isinf(amax[1])){
-      manY[1] = amax[1];
+      priY[1] = amax[1];
     }
 
     deposits += N_block;
   }
 
-  idxd_cmrenorm(fold, manY, incmanY, carY, inccarY);
+  idxd_cmrenorm(fold, priY, incpriY, carY, inccarY);
 }

@@ -56,7 +56,7 @@ cog.out(generate.generate(blockSize.BlockSize("dmzssq", "N_block_MAX", 32, termi
  * @author Peter Ahrens
  * @date   18 Jan 2016
  */
-double idxdBLAS_dmzssq(const int fold, const int N, const void *X, const int incX, const double scaleY, double *manY, const int incmanY, double *carY, const int inccarY){
+double idxdBLAS_dmzssq(const int fold, const int N, const void *X, const int incX, const double scaleY, double *priY, const int incpriY, double *carY, const int inccarY){
   double amax_tmp[2];
   double amax;
   double scl = 0.0;
@@ -75,17 +75,17 @@ double idxdBLAS_dmzssq(const int fold, const int N, const void *X, const int inc
     idxdBLAS_zamax_sub(N_block, x, incX, amax_tmp);
     amax = MAX(amax_tmp[0], amax_tmp[1]);
 
-    if (isinf(amax) || isinf(manY[0])){
+    if (isinf(amax) || isinf(priY[0])){
       for (j = 0; j < N_block; j++){
-        manY[0] += fabs(x[j * 2 * incX]);
-        manY[0] += fabs(x[j * 2 * incX + 1]);
+        priY[0] += fabs(x[j * 2 * incX]);
+        priY[0] += fabs(x[j * 2 * incX + 1]);
       }
     }
-    if (isnan(manY[0]) || isnan(ssq[0]) || isnan(ssq[1])){
-      manY[0] += ssq[0] + ssq[1];
+    if (isnan(priY[0]) || isnan(ssq[0]) || isnan(ssq[1])){
+      priY[0] += ssq[0] + ssq[1];
       free(ssq);
       return idxd_dscale(1.0);
-    } else if (isinf(manY[0])){
+    } else if (isinf(priY[0])){
       x += N_block * 2 * incX;
       continue;
     }
@@ -6293,12 +6293,12 @@ double idxdBLAS_dmzssq(const int fold, const int N, const void *X, const int inc
   }
 
   idxd_zirenorm(fold, ssq);
-  new_scl = idxd_dmdmaddsq(fold, scl, ssq, 2, ssq + 2 * fold, 2, scaleY, manY, incmanY, carY, inccarY);
-  scl = idxd_dmdmaddsq(fold, scl, ssq + 1, 2, ssq + 2 * fold + 1, 2, new_scl, manY, incmanY, carY, inccarY);
+  new_scl = idxd_dmdmaddsq(fold, scl, ssq, 2, ssq + 2 * fold, 2, scaleY, priY, incpriY, carY, inccarY);
+  scl = idxd_dmdmaddsq(fold, scl, ssq + 1, 2, ssq + 2 * fold + 1, 2, new_scl, priY, incpriY, carY, inccarY);
 
   free(ssq);
 
-  if (ISNANINF(manY[0])){
+  if (ISNANINF(priY[0])){
     return idxd_dscale(1.0);
   } else {
     return scl;

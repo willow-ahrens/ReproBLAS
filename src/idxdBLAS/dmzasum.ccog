@@ -54,7 +54,7 @@ cog.out(generate.generate(blockSize.BlockSize("dmzasum", "N_block_MAX", 32, term
  * @author Peter Ahrens
  * @date   15 Jan 2016
  */
-void idxdBLAS_dmzasum(const int fold, const int N, const void *X, const int incX, double *manY, const int incmanY, double *carY, const int inccarY){
+void idxdBLAS_dmzasum(const int fold, const int N, const void *X, const int incX, double *priY, const int incpriY, double *carY, const int inccarY){
   double amax_tmp[2];
   double amax;
   int i, j;
@@ -71,17 +71,17 @@ void idxdBLAS_dmzasum(const int fold, const int N, const void *X, const int incX
     idxdBLAS_zamax_sub(N_block, x, incX, amax_tmp);
     amax = MAX(amax_tmp[0], amax_tmp[1]);
 
-    if (isinf(amax) || isinf(manY[0])){
+    if (isinf(amax) || isinf(priY[0])){
       for (j = 0; j < N_block; j++){
-        manY[0] += fabs(x[j * 2 * incX]);
-        manY[0] += fabs(x[j * 2 * incX + 1]);
+        priY[0] += fabs(x[j * 2 * incX]);
+        priY[0] += fabs(x[j * 2 * incX + 1]);
       }
     }
-    if (isnan(manY[0]) || isnan(asum[0]) || isnan(asum[1])){
-      manY[0] += asum[0] + asum[1];
+    if (isnan(priY[0]) || isnan(asum[0]) || isnan(asum[1])){
+      priY[0] += asum[0] + asum[1];
       free(asum);
       return;
-    } else if (isinf(manY[0])){
+    } else if (isinf(priY[0])){
       x += N_block * 2 * incX;
       continue;
     }
@@ -9847,8 +9847,8 @@ void idxdBLAS_dmzasum(const int fold, const int N, const void *X, const int incX
   }
 
   idxd_zirenorm(fold, asum);
-  idxd_dmdmadd(fold, asum, 2, asum + 2 * fold, 2, manY, incmanY, carY, inccarY);
-  idxd_dmdmadd(fold, asum + 1, 2, asum + 2 * fold + 1, 2, manY, incmanY, carY, inccarY);
+  idxd_dmdmadd(fold, asum, 2, asum + 2 * fold, 2, priY, incpriY, carY, inccarY);
+  idxd_dmdmadd(fold, asum + 1, 2, asum + 2 * fold + 1, 2, priY, incpriY, carY, inccarY);
 
   free(asum);
 

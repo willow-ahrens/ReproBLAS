@@ -56,7 +56,7 @@ cog.out(generate.generate(blockSize.BlockSize("dmddot", "N_block_MAX", 32, termi
  * @author Peter Ahrens
  * @date   15 Jan 2016
  */
-void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int incX, const double *Y, const int incY, double *manZ, const int incmanZ, double *carZ, const int inccarZ){
+void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int incX, const double *Y, const int incY, double *priZ, const int incpriZ, double *carZ, const int inccarZ){
   double amaxm;
   int i, j;
   int N_block = N_block_MAX;
@@ -67,28 +67,28 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
 
     amaxm = idxdBLAS_damaxm(N_block, X, incX, Y, incY);
 
-    if (isinf(amaxm) || isinf(manZ[0])){
+    if (isinf(amaxm) || isinf(priZ[0])){
       for (j = 0; j < N_block; j++){
-        manZ[0] += X[j * incX] * Y[j * incY];
+        priZ[0] += X[j * incX] * Y[j * incY];
       }
     }
-    if (isnan(manZ[0])){
+    if (isnan(priZ[0])){
       return;
-    } else if (isinf(manZ[0])){
+    } else if (isinf(priZ[0])){
       X += N_block * incX;
       Y += N_block * incY;
       continue;
     }
 
     if (deposits + N_block > idxd_DIENDURANCE) {
-      idxd_dmrenorm(fold, manZ, incmanZ, carZ, inccarZ);
+      idxd_dmrenorm(fold, priZ, incpriZ, carZ, inccarZ);
       deposits = 0;
     }
 
-    idxd_dmdupdate(fold, amaxm, manZ, incmanZ, carZ, inccarZ);
+    idxd_dmdupdate(fold, amaxm, priZ, incpriZ, carZ, inccarZ);
 
     /*[[[cog
-    cog.out(generate.generate(depositDot.DepositDot(dataTypes.Double, "fold", "N_block", "X", "incX", "manZ", "incmanZ", "Y", "incY"), cog.inFile, args, params, mode))
+    cog.out(generate.generate(depositDot.DepositDot(dataTypes.Double, "fold", "N_block", "X", "incX", "priZ", "incpriZ", "Y", "incY"), cog.inFile, args, params, mode))
     ]]]*/
     {
       #ifdef __AVX__
@@ -117,12 +117,12 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
               __m256d s_0_0, s_0_1;
               __m256d s_1_0, s_1_1;
 
-              s_0_0 = s_0_1 = _mm256_broadcast_sd(manZ);
-              s_1_0 = s_1_1 = _mm256_broadcast_sd(manZ + incmanZ);
+              s_0_0 = s_0_1 = _mm256_broadcast_sd(priZ);
+              s_1_0 = s_1_1 = _mm256_broadcast_sd(priZ + incpriZ);
 
               if(incX == 1){
                 if(incY == 1){
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 16 <= N_block; i += 16, X += 16, Y += 16){
@@ -286,7 +286,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     }
                   }
                 }else{
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 16 <= N_block; i += 16, X += 16, Y += (incY * 16)){
@@ -452,7 +452,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                 }
               }else{
                 if(incY == 1){
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 16 <= N_block; i += 16, X += (incX * 16), Y += 16){
@@ -616,7 +616,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     }
                   }
                 }else{
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 16 <= N_block; i += 16, X += (incX * 16), Y += (incY * 16)){
@@ -782,16 +782,16 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                 }
               }
 
-              s_0_0 = _mm256_sub_pd(s_0_0, _mm256_set_pd(manZ[0], manZ[0], manZ[0], 0));
-              cons_tmp = _mm256_broadcast_sd(manZ);
+              s_0_0 = _mm256_sub_pd(s_0_0, _mm256_set_pd(priZ[0], priZ[0], priZ[0], 0));
+              cons_tmp = _mm256_broadcast_sd(priZ);
               s_0_0 = _mm256_add_pd(s_0_0, _mm256_sub_pd(s_0_1, cons_tmp));
               _mm256_store_pd(cons_buffer_tmp, s_0_0);
-              manZ[0] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3];
-              s_1_0 = _mm256_sub_pd(s_1_0, _mm256_set_pd(manZ[incmanZ], manZ[incmanZ], manZ[incmanZ], 0));
-              cons_tmp = _mm256_broadcast_sd(manZ + incmanZ);
+              priZ[0] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3];
+              s_1_0 = _mm256_sub_pd(s_1_0, _mm256_set_pd(priZ[incpriZ], priZ[incpriZ], priZ[incpriZ], 0));
+              cons_tmp = _mm256_broadcast_sd(priZ + incpriZ);
               s_1_0 = _mm256_add_pd(s_1_0, _mm256_sub_pd(s_1_1, cons_tmp));
               _mm256_store_pd(cons_buffer_tmp, s_1_0);
-              manZ[incmanZ] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3];
+              priZ[incpriZ] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3];
 
               if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
                 _mm_setcsr(SIMD_daz_ftz_old_tmp);
@@ -810,13 +810,13 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
               __m256d s_1_0, s_1_1;
               __m256d s_2_0, s_2_1;
 
-              s_0_0 = s_0_1 = _mm256_broadcast_sd(manZ);
-              s_1_0 = s_1_1 = _mm256_broadcast_sd(manZ + incmanZ);
-              s_2_0 = s_2_1 = _mm256_broadcast_sd(manZ + (incmanZ * 2));
+              s_0_0 = s_0_1 = _mm256_broadcast_sd(priZ);
+              s_1_0 = s_1_1 = _mm256_broadcast_sd(priZ + incpriZ);
+              s_2_0 = s_2_1 = _mm256_broadcast_sd(priZ + (incpriZ * 2));
 
               if(incX == 1){
                 if(incY == 1){
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 16 <= N_block; i += 16, X += 16, Y += 16){
@@ -1044,7 +1044,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     }
                   }
                 }else{
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 16 <= N_block; i += 16, X += 16, Y += (incY * 16)){
@@ -1274,7 +1274,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                 }
               }else{
                 if(incY == 1){
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 16 <= N_block; i += 16, X += (incX * 16), Y += 16){
@@ -1502,7 +1502,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     }
                   }
                 }else{
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 16 <= N_block; i += 16, X += (incX * 16), Y += (incY * 16)){
@@ -1732,21 +1732,21 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                 }
               }
 
-              s_0_0 = _mm256_sub_pd(s_0_0, _mm256_set_pd(manZ[0], manZ[0], manZ[0], 0));
-              cons_tmp = _mm256_broadcast_sd(manZ);
+              s_0_0 = _mm256_sub_pd(s_0_0, _mm256_set_pd(priZ[0], priZ[0], priZ[0], 0));
+              cons_tmp = _mm256_broadcast_sd(priZ);
               s_0_0 = _mm256_add_pd(s_0_0, _mm256_sub_pd(s_0_1, cons_tmp));
               _mm256_store_pd(cons_buffer_tmp, s_0_0);
-              manZ[0] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3];
-              s_1_0 = _mm256_sub_pd(s_1_0, _mm256_set_pd(manZ[incmanZ], manZ[incmanZ], manZ[incmanZ], 0));
-              cons_tmp = _mm256_broadcast_sd(manZ + incmanZ);
+              priZ[0] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3];
+              s_1_0 = _mm256_sub_pd(s_1_0, _mm256_set_pd(priZ[incpriZ], priZ[incpriZ], priZ[incpriZ], 0));
+              cons_tmp = _mm256_broadcast_sd(priZ + incpriZ);
               s_1_0 = _mm256_add_pd(s_1_0, _mm256_sub_pd(s_1_1, cons_tmp));
               _mm256_store_pd(cons_buffer_tmp, s_1_0);
-              manZ[incmanZ] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3];
-              s_2_0 = _mm256_sub_pd(s_2_0, _mm256_set_pd(manZ[(incmanZ * 2)], manZ[(incmanZ * 2)], manZ[(incmanZ * 2)], 0));
-              cons_tmp = _mm256_broadcast_sd(manZ + (incmanZ * 2));
+              priZ[incpriZ] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3];
+              s_2_0 = _mm256_sub_pd(s_2_0, _mm256_set_pd(priZ[(incpriZ * 2)], priZ[(incpriZ * 2)], priZ[(incpriZ * 2)], 0));
+              cons_tmp = _mm256_broadcast_sd(priZ + (incpriZ * 2));
               s_2_0 = _mm256_add_pd(s_2_0, _mm256_sub_pd(s_2_1, cons_tmp));
               _mm256_store_pd(cons_buffer_tmp, s_2_0);
-              manZ[(incmanZ * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3];
+              priZ[(incpriZ * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3];
 
               if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
                 _mm_setcsr(SIMD_daz_ftz_old_tmp);
@@ -1766,14 +1766,14 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
               __m256d s_2_0, s_2_1;
               __m256d s_3_0, s_3_1;
 
-              s_0_0 = s_0_1 = _mm256_broadcast_sd(manZ);
-              s_1_0 = s_1_1 = _mm256_broadcast_sd(manZ + incmanZ);
-              s_2_0 = s_2_1 = _mm256_broadcast_sd(manZ + (incmanZ * 2));
-              s_3_0 = s_3_1 = _mm256_broadcast_sd(manZ + (incmanZ * 3));
+              s_0_0 = s_0_1 = _mm256_broadcast_sd(priZ);
+              s_1_0 = s_1_1 = _mm256_broadcast_sd(priZ + incpriZ);
+              s_2_0 = s_2_1 = _mm256_broadcast_sd(priZ + (incpriZ * 2));
+              s_3_0 = s_3_1 = _mm256_broadcast_sd(priZ + (incpriZ * 3));
 
               if(incX == 1){
                 if(incY == 1){
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 16 <= N_block; i += 16, X += 16, Y += 16){
@@ -2065,7 +2065,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     }
                   }
                 }else{
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 16 <= N_block; i += 16, X += 16, Y += (incY * 16)){
@@ -2359,7 +2359,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                 }
               }else{
                 if(incY == 1){
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 16 <= N_block; i += 16, X += (incX * 16), Y += 16){
@@ -2651,7 +2651,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     }
                   }
                 }else{
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 16 <= N_block; i += 16, X += (incX * 16), Y += (incY * 16)){
@@ -2945,26 +2945,26 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                 }
               }
 
-              s_0_0 = _mm256_sub_pd(s_0_0, _mm256_set_pd(manZ[0], manZ[0], manZ[0], 0));
-              cons_tmp = _mm256_broadcast_sd(manZ);
+              s_0_0 = _mm256_sub_pd(s_0_0, _mm256_set_pd(priZ[0], priZ[0], priZ[0], 0));
+              cons_tmp = _mm256_broadcast_sd(priZ);
               s_0_0 = _mm256_add_pd(s_0_0, _mm256_sub_pd(s_0_1, cons_tmp));
               _mm256_store_pd(cons_buffer_tmp, s_0_0);
-              manZ[0] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3];
-              s_1_0 = _mm256_sub_pd(s_1_0, _mm256_set_pd(manZ[incmanZ], manZ[incmanZ], manZ[incmanZ], 0));
-              cons_tmp = _mm256_broadcast_sd(manZ + incmanZ);
+              priZ[0] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3];
+              s_1_0 = _mm256_sub_pd(s_1_0, _mm256_set_pd(priZ[incpriZ], priZ[incpriZ], priZ[incpriZ], 0));
+              cons_tmp = _mm256_broadcast_sd(priZ + incpriZ);
               s_1_0 = _mm256_add_pd(s_1_0, _mm256_sub_pd(s_1_1, cons_tmp));
               _mm256_store_pd(cons_buffer_tmp, s_1_0);
-              manZ[incmanZ] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3];
-              s_2_0 = _mm256_sub_pd(s_2_0, _mm256_set_pd(manZ[(incmanZ * 2)], manZ[(incmanZ * 2)], manZ[(incmanZ * 2)], 0));
-              cons_tmp = _mm256_broadcast_sd(manZ + (incmanZ * 2));
+              priZ[incpriZ] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3];
+              s_2_0 = _mm256_sub_pd(s_2_0, _mm256_set_pd(priZ[(incpriZ * 2)], priZ[(incpriZ * 2)], priZ[(incpriZ * 2)], 0));
+              cons_tmp = _mm256_broadcast_sd(priZ + (incpriZ * 2));
               s_2_0 = _mm256_add_pd(s_2_0, _mm256_sub_pd(s_2_1, cons_tmp));
               _mm256_store_pd(cons_buffer_tmp, s_2_0);
-              manZ[(incmanZ * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3];
-              s_3_0 = _mm256_sub_pd(s_3_0, _mm256_set_pd(manZ[(incmanZ * 3)], manZ[(incmanZ * 3)], manZ[(incmanZ * 3)], 0));
-              cons_tmp = _mm256_broadcast_sd(manZ + (incmanZ * 3));
+              priZ[(incpriZ * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3];
+              s_3_0 = _mm256_sub_pd(s_3_0, _mm256_set_pd(priZ[(incpriZ * 3)], priZ[(incpriZ * 3)], priZ[(incpriZ * 3)], 0));
+              cons_tmp = _mm256_broadcast_sd(priZ + (incpriZ * 3));
               s_3_0 = _mm256_add_pd(s_3_0, _mm256_sub_pd(s_3_1, cons_tmp));
               _mm256_store_pd(cons_buffer_tmp, s_3_0);
-              manZ[(incmanZ * 3)] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3];
+              priZ[(incpriZ * 3)] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3];
 
               if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
                 _mm_setcsr(SIMD_daz_ftz_old_tmp);
@@ -2983,12 +2983,12 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
               __m256d s_buffer[(idxd_DIMAXFOLD * 2)];
 
               for(j = 0; j < fold; j += 1){
-                s_buffer[(j * 2)] = s_buffer[((j * 2) + 1)] = _mm256_broadcast_sd(manZ + (incmanZ * j));
+                s_buffer[(j * 2)] = s_buffer[((j * 2) + 1)] = _mm256_broadcast_sd(priZ + (incpriZ * j));
               }
 
               if(incX == 1){
                 if(incY == 1){
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 32 <= N_block; i += 32, X += 32, Y += 32){
@@ -3436,7 +3436,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     }
                   }
                 }else{
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 32 <= N_block; i += 32, X += 32, Y += (incY * 32)){
@@ -3886,7 +3886,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                 }
               }else{
                 if(incY == 1){
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 32 <= N_block; i += 32, X += (incX * 32), Y += 32){
@@ -4334,7 +4334,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     }
                   }
                 }else{
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm256_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm256_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 32 <= N_block; i += 32, X += (incX * 32), Y += (incY * 32)){
@@ -4785,11 +4785,11 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
               }
 
               for(j = 0; j < fold; j += 1){
-                s_buffer[(j * 2)] = _mm256_sub_pd(s_buffer[(j * 2)], _mm256_set_pd(manZ[(incmanZ * j)], manZ[(incmanZ * j)], manZ[(incmanZ * j)], 0));
-                cons_tmp = _mm256_broadcast_sd(manZ + (incmanZ * j));
+                s_buffer[(j * 2)] = _mm256_sub_pd(s_buffer[(j * 2)], _mm256_set_pd(priZ[(incpriZ * j)], priZ[(incpriZ * j)], priZ[(incpriZ * j)], 0));
+                cons_tmp = _mm256_broadcast_sd(priZ + (incpriZ * j));
                 s_buffer[(j * 2)] = _mm256_add_pd(s_buffer[(j * 2)], _mm256_sub_pd(s_buffer[((j * 2) + 1)], cons_tmp));
                 _mm256_store_pd(cons_buffer_tmp, s_buffer[(j * 2)]);
-                manZ[(incmanZ * j)] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3];
+                priZ[(incpriZ * j)] = cons_buffer_tmp[0] + cons_buffer_tmp[1] + cons_buffer_tmp[2] + cons_buffer_tmp[3];
               }
 
               if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
@@ -4825,12 +4825,12 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
               __m128d s_0_0, s_0_1, s_0_2, s_0_3;
               __m128d s_1_0, s_1_1, s_1_2, s_1_3;
 
-              s_0_0 = s_0_1 = s_0_2 = s_0_3 = _mm_load1_pd(manZ);
-              s_1_0 = s_1_1 = s_1_2 = s_1_3 = _mm_load1_pd(manZ + incmanZ);
+              s_0_0 = s_0_1 = s_0_2 = s_0_3 = _mm_load1_pd(priZ);
+              s_1_0 = s_1_1 = s_1_2 = s_1_3 = _mm_load1_pd(priZ + incpriZ);
 
               if(incX == 1){
                 if(incY == 1){
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 24 <= N_block; i += 24, X += 24, Y += 24){
@@ -5330,7 +5330,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     }
                   }
                 }else{
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 24 <= N_block; i += 24, X += 24, Y += (incY * 24)){
@@ -5832,7 +5832,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                 }
               }else{
                 if(incY == 1){
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 24 <= N_block; i += 24, X += (incX * 24), Y += 24){
@@ -6332,7 +6332,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     }
                   }
                 }else{
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 24 <= N_block; i += 24, X += (incX * 24), Y += (incY * 24)){
@@ -6834,20 +6834,20 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                 }
               }
 
-              s_0_0 = _mm_sub_pd(s_0_0, _mm_set_pd(manZ[0], 0));
-              cons_tmp = _mm_load1_pd(manZ);
+              s_0_0 = _mm_sub_pd(s_0_0, _mm_set_pd(priZ[0], 0));
+              cons_tmp = _mm_load1_pd(priZ);
               s_0_0 = _mm_add_pd(s_0_0, _mm_sub_pd(s_0_1, cons_tmp));
               s_0_0 = _mm_add_pd(s_0_0, _mm_sub_pd(s_0_2, cons_tmp));
               s_0_0 = _mm_add_pd(s_0_0, _mm_sub_pd(s_0_3, cons_tmp));
               _mm_store_pd(cons_buffer_tmp, s_0_0);
-              manZ[0] = cons_buffer_tmp[0] + cons_buffer_tmp[1];
-              s_1_0 = _mm_sub_pd(s_1_0, _mm_set_pd(manZ[incmanZ], 0));
-              cons_tmp = _mm_load1_pd(manZ + incmanZ);
+              priZ[0] = cons_buffer_tmp[0] + cons_buffer_tmp[1];
+              s_1_0 = _mm_sub_pd(s_1_0, _mm_set_pd(priZ[incpriZ], 0));
+              cons_tmp = _mm_load1_pd(priZ + incpriZ);
               s_1_0 = _mm_add_pd(s_1_0, _mm_sub_pd(s_1_1, cons_tmp));
               s_1_0 = _mm_add_pd(s_1_0, _mm_sub_pd(s_1_2, cons_tmp));
               s_1_0 = _mm_add_pd(s_1_0, _mm_sub_pd(s_1_3, cons_tmp));
               _mm_store_pd(cons_buffer_tmp, s_1_0);
-              manZ[incmanZ] = cons_buffer_tmp[0] + cons_buffer_tmp[1];
+              priZ[incpriZ] = cons_buffer_tmp[0] + cons_buffer_tmp[1];
 
               if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
                 _mm_setcsr(SIMD_daz_ftz_old_tmp);
@@ -6866,13 +6866,13 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
               __m128d s_1_0, s_1_1;
               __m128d s_2_0, s_2_1;
 
-              s_0_0 = s_0_1 = _mm_load1_pd(manZ);
-              s_1_0 = s_1_1 = _mm_load1_pd(manZ + incmanZ);
-              s_2_0 = s_2_1 = _mm_load1_pd(manZ + (incmanZ * 2));
+              s_0_0 = s_0_1 = _mm_load1_pd(priZ);
+              s_1_0 = s_1_1 = _mm_load1_pd(priZ + incpriZ);
+              s_2_0 = s_2_1 = _mm_load1_pd(priZ + (incpriZ * 2));
 
               if(incX == 1){
                 if(incY == 1){
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 16 <= N_block; i += 16, X += 16, Y += 16){
@@ -7300,7 +7300,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     }
                   }
                 }else{
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 16 <= N_block; i += 16, X += 16, Y += (incY * 16)){
@@ -7730,7 +7730,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                 }
               }else{
                 if(incY == 1){
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 16 <= N_block; i += 16, X += (incX * 16), Y += 16){
@@ -8158,7 +8158,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     }
                   }
                 }else{
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 16 <= N_block; i += 16, X += (incX * 16), Y += (incY * 16)){
@@ -8588,21 +8588,21 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                 }
               }
 
-              s_0_0 = _mm_sub_pd(s_0_0, _mm_set_pd(manZ[0], 0));
-              cons_tmp = _mm_load1_pd(manZ);
+              s_0_0 = _mm_sub_pd(s_0_0, _mm_set_pd(priZ[0], 0));
+              cons_tmp = _mm_load1_pd(priZ);
               s_0_0 = _mm_add_pd(s_0_0, _mm_sub_pd(s_0_1, cons_tmp));
               _mm_store_pd(cons_buffer_tmp, s_0_0);
-              manZ[0] = cons_buffer_tmp[0] + cons_buffer_tmp[1];
-              s_1_0 = _mm_sub_pd(s_1_0, _mm_set_pd(manZ[incmanZ], 0));
-              cons_tmp = _mm_load1_pd(manZ + incmanZ);
+              priZ[0] = cons_buffer_tmp[0] + cons_buffer_tmp[1];
+              s_1_0 = _mm_sub_pd(s_1_0, _mm_set_pd(priZ[incpriZ], 0));
+              cons_tmp = _mm_load1_pd(priZ + incpriZ);
               s_1_0 = _mm_add_pd(s_1_0, _mm_sub_pd(s_1_1, cons_tmp));
               _mm_store_pd(cons_buffer_tmp, s_1_0);
-              manZ[incmanZ] = cons_buffer_tmp[0] + cons_buffer_tmp[1];
-              s_2_0 = _mm_sub_pd(s_2_0, _mm_set_pd(manZ[(incmanZ * 2)], 0));
-              cons_tmp = _mm_load1_pd(manZ + (incmanZ * 2));
+              priZ[incpriZ] = cons_buffer_tmp[0] + cons_buffer_tmp[1];
+              s_2_0 = _mm_sub_pd(s_2_0, _mm_set_pd(priZ[(incpriZ * 2)], 0));
+              cons_tmp = _mm_load1_pd(priZ + (incpriZ * 2));
               s_2_0 = _mm_add_pd(s_2_0, _mm_sub_pd(s_2_1, cons_tmp));
               _mm_store_pd(cons_buffer_tmp, s_2_0);
-              manZ[(incmanZ * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[1];
+              priZ[(incpriZ * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[1];
 
               if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
                 _mm_setcsr(SIMD_daz_ftz_old_tmp);
@@ -8622,14 +8622,14 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
               __m128d s_2_0, s_2_1;
               __m128d s_3_0, s_3_1;
 
-              s_0_0 = s_0_1 = _mm_load1_pd(manZ);
-              s_1_0 = s_1_1 = _mm_load1_pd(manZ + incmanZ);
-              s_2_0 = s_2_1 = _mm_load1_pd(manZ + (incmanZ * 2));
-              s_3_0 = s_3_1 = _mm_load1_pd(manZ + (incmanZ * 3));
+              s_0_0 = s_0_1 = _mm_load1_pd(priZ);
+              s_1_0 = s_1_1 = _mm_load1_pd(priZ + incpriZ);
+              s_2_0 = s_2_1 = _mm_load1_pd(priZ + (incpriZ * 2));
+              s_3_0 = s_3_1 = _mm_load1_pd(priZ + (incpriZ * 3));
 
               if(incX == 1){
                 if(incY == 1){
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 12 <= N_block; i += 12, X += 12, Y += 12){
@@ -9121,7 +9121,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     }
                   }
                 }else{
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 12 <= N_block; i += 12, X += 12, Y += (incY * 12)){
@@ -9615,7 +9615,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                 }
               }else{
                 if(incY == 1){
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 12 <= N_block; i += 12, X += (incX * 12), Y += 12){
@@ -10107,7 +10107,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     }
                   }
                 }else{
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 12 <= N_block; i += 12, X += (incX * 12), Y += (incY * 12)){
@@ -10601,26 +10601,26 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                 }
               }
 
-              s_0_0 = _mm_sub_pd(s_0_0, _mm_set_pd(manZ[0], 0));
-              cons_tmp = _mm_load1_pd(manZ);
+              s_0_0 = _mm_sub_pd(s_0_0, _mm_set_pd(priZ[0], 0));
+              cons_tmp = _mm_load1_pd(priZ);
               s_0_0 = _mm_add_pd(s_0_0, _mm_sub_pd(s_0_1, cons_tmp));
               _mm_store_pd(cons_buffer_tmp, s_0_0);
-              manZ[0] = cons_buffer_tmp[0] + cons_buffer_tmp[1];
-              s_1_0 = _mm_sub_pd(s_1_0, _mm_set_pd(manZ[incmanZ], 0));
-              cons_tmp = _mm_load1_pd(manZ + incmanZ);
+              priZ[0] = cons_buffer_tmp[0] + cons_buffer_tmp[1];
+              s_1_0 = _mm_sub_pd(s_1_0, _mm_set_pd(priZ[incpriZ], 0));
+              cons_tmp = _mm_load1_pd(priZ + incpriZ);
               s_1_0 = _mm_add_pd(s_1_0, _mm_sub_pd(s_1_1, cons_tmp));
               _mm_store_pd(cons_buffer_tmp, s_1_0);
-              manZ[incmanZ] = cons_buffer_tmp[0] + cons_buffer_tmp[1];
-              s_2_0 = _mm_sub_pd(s_2_0, _mm_set_pd(manZ[(incmanZ * 2)], 0));
-              cons_tmp = _mm_load1_pd(manZ + (incmanZ * 2));
+              priZ[incpriZ] = cons_buffer_tmp[0] + cons_buffer_tmp[1];
+              s_2_0 = _mm_sub_pd(s_2_0, _mm_set_pd(priZ[(incpriZ * 2)], 0));
+              cons_tmp = _mm_load1_pd(priZ + (incpriZ * 2));
               s_2_0 = _mm_add_pd(s_2_0, _mm_sub_pd(s_2_1, cons_tmp));
               _mm_store_pd(cons_buffer_tmp, s_2_0);
-              manZ[(incmanZ * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[1];
-              s_3_0 = _mm_sub_pd(s_3_0, _mm_set_pd(manZ[(incmanZ * 3)], 0));
-              cons_tmp = _mm_load1_pd(manZ + (incmanZ * 3));
+              priZ[(incpriZ * 2)] = cons_buffer_tmp[0] + cons_buffer_tmp[1];
+              s_3_0 = _mm_sub_pd(s_3_0, _mm_set_pd(priZ[(incpriZ * 3)], 0));
+              cons_tmp = _mm_load1_pd(priZ + (incpriZ * 3));
               s_3_0 = _mm_add_pd(s_3_0, _mm_sub_pd(s_3_1, cons_tmp));
               _mm_store_pd(cons_buffer_tmp, s_3_0);
-              manZ[(incmanZ * 3)] = cons_buffer_tmp[0] + cons_buffer_tmp[1];
+              priZ[(incpriZ * 3)] = cons_buffer_tmp[0] + cons_buffer_tmp[1];
 
               if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
                 _mm_setcsr(SIMD_daz_ftz_old_tmp);
@@ -10639,12 +10639,12 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
               __m128d s_buffer[(idxd_DIMAXFOLD * 4)];
 
               for(j = 0; j < fold; j += 1){
-                s_buffer[(j * 4)] = s_buffer[((j * 4) + 1)] = s_buffer[((j * 4) + 2)] = s_buffer[((j * 4) + 3)] = _mm_load1_pd(manZ + (incmanZ * j));
+                s_buffer[(j * 4)] = s_buffer[((j * 4) + 1)] = s_buffer[((j * 4) + 2)] = s_buffer[((j * 4) + 3)] = _mm_load1_pd(priZ + (incpriZ * j));
               }
 
               if(incX == 1){
                 if(incY == 1){
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 8 <= N_block; i += 8, X += 8, Y += 8){
@@ -10880,7 +10880,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     }
                   }
                 }else{
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 8 <= N_block; i += 8, X += 8, Y += (incY * 8)){
@@ -11118,7 +11118,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                 }
               }else{
                 if(incY == 1){
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 8 <= N_block; i += 8, X += (incX * 8), Y += 8){
@@ -11354,7 +11354,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     }
                   }
                 }else{
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = _mm_set1_pd(idxd_DMCOMPRESSION);
                     expansion_0 = _mm_set1_pd(idxd_DMEXPANSION * 0.5);
                     for(i = 0; i + 8 <= N_block; i += 8, X += (incX * 8), Y += (incY * 8)){
@@ -11593,13 +11593,13 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
               }
 
               for(j = 0; j < fold; j += 1){
-                s_buffer[(j * 4)] = _mm_sub_pd(s_buffer[(j * 4)], _mm_set_pd(manZ[(incmanZ * j)], 0));
-                cons_tmp = _mm_load1_pd(manZ + (incmanZ * j));
+                s_buffer[(j * 4)] = _mm_sub_pd(s_buffer[(j * 4)], _mm_set_pd(priZ[(incpriZ * j)], 0));
+                cons_tmp = _mm_load1_pd(priZ + (incpriZ * j));
                 s_buffer[(j * 4)] = _mm_add_pd(s_buffer[(j * 4)], _mm_sub_pd(s_buffer[((j * 4) + 1)], cons_tmp));
                 s_buffer[(j * 4)] = _mm_add_pd(s_buffer[(j * 4)], _mm_sub_pd(s_buffer[((j * 4) + 2)], cons_tmp));
                 s_buffer[(j * 4)] = _mm_add_pd(s_buffer[(j * 4)], _mm_sub_pd(s_buffer[((j * 4) + 3)], cons_tmp));
                 _mm_store_pd(cons_buffer_tmp, s_buffer[(j * 4)]);
-                manZ[(incmanZ * j)] = cons_buffer_tmp[0] + cons_buffer_tmp[1];
+                priZ[(incpriZ * j)] = cons_buffer_tmp[0] + cons_buffer_tmp[1];
               }
 
               if(SIMD_daz_ftz_new_tmp != SIMD_daz_ftz_old_tmp){
@@ -11627,13 +11627,13 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
               double s_1_0;
               double s_2_0;
 
-              s_0_0 = manZ[0];
-              s_1_0 = manZ[incmanZ];
-              s_2_0 = manZ[(incmanZ * 2)];
+              s_0_0 = priZ[0];
+              s_1_0 = priZ[incpriZ];
+              s_2_0 = priZ[(incpriZ * 2)];
 
               if(incX == 1){
                 if(incY == 1){
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = idxd_DMCOMPRESSION;
                     expansion_0 = idxd_DMEXPANSION * 0.5;
                     for(i = 0; i + 1 <= N_block; i += 1, X += 1, Y += 1){
@@ -11681,7 +11681,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     }
                   }
                 }else{
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = idxd_DMCOMPRESSION;
                     expansion_0 = idxd_DMEXPANSION * 0.5;
                     for(i = 0; i + 1 <= N_block; i += 1, X += 1, Y += incY){
@@ -11731,7 +11731,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                 }
               }else{
                 if(incY == 1){
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = idxd_DMCOMPRESSION;
                     expansion_0 = idxd_DMEXPANSION * 0.5;
                     for(i = 0; i + 1 <= N_block; i += 1, X += incX, Y += 1){
@@ -11779,7 +11779,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     }
                   }
                 }else{
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = idxd_DMCOMPRESSION;
                     expansion_0 = idxd_DMEXPANSION * 0.5;
                     for(i = 0; i + 1 <= N_block; i += 1, X += incX, Y += incY){
@@ -11829,9 +11829,9 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                 }
               }
 
-              manZ[0] = s_0_0;
-              manZ[incmanZ] = s_1_0;
-              manZ[(incmanZ * 2)] = s_2_0;
+              priZ[0] = s_0_0;
+              priZ[incpriZ] = s_1_0;
+              priZ[(incpriZ * 2)] = s_2_0;
 
             }
             break;
@@ -11847,12 +11847,12 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
               double s_buffer[idxd_DIMAXFOLD];
 
               for(j = 0; j < fold; j += 1){
-                s_buffer[j] = manZ[(incmanZ * j)];
+                s_buffer[j] = priZ[(incpriZ * j)];
               }
 
               if(incX == 1){
                 if(incY == 1){
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = idxd_DMCOMPRESSION;
                     expansion_0 = idxd_DMEXPANSION * 0.5;
                     for(i = 0; i + 1 <= N_block; i += 1, X += 1, Y += 1){
@@ -11901,7 +11901,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     }
                   }
                 }else{
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = idxd_DMCOMPRESSION;
                     expansion_0 = idxd_DMEXPANSION * 0.5;
                     for(i = 0; i + 1 <= N_block; i += 1, X += 1, Y += incY){
@@ -11952,7 +11952,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                 }
               }else{
                 if(incY == 1){
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = idxd_DMCOMPRESSION;
                     expansion_0 = idxd_DMEXPANSION * 0.5;
                     for(i = 0; i + 1 <= N_block; i += 1, X += incX, Y += 1){
@@ -12001,7 +12001,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     }
                   }
                 }else{
-                  if(idxd_dmindex0(manZ)){
+                  if(idxd_dmindex0(priZ)){
                     compression_0 = idxd_DMCOMPRESSION;
                     expansion_0 = idxd_DMEXPANSION * 0.5;
                     for(i = 0; i + 1 <= N_block; i += 1, X += incX, Y += incY){
@@ -12053,7 +12053,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
               }
 
               for(j = 0; j < fold; j += 1){
-                manZ[(incmanZ * j)] = s_buffer[j];
+                priZ[(incpriZ * j)] = s_buffer[j];
               }
 
             }
@@ -12068,5 +12068,5 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
     deposits += N_block;
   }
 
-  idxd_dmrenorm(fold, manZ, incmanZ, carZ, inccarZ);
+  idxd_dmrenorm(fold, priZ, incpriZ, carZ, inccarZ);
 }
