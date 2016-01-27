@@ -9,7 +9,7 @@
  * @param N vector length
  * @param X complex double precision vector
  * @param incX X vector stride (use every incX'th element)
- * @param indexed scalar Y
+ * @param Y indexed scalar Y
  *
  * @author Peter Ahrens
  * @date   15 Jan 2016

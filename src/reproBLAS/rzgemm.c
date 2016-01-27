@@ -31,6 +31,7 @@
  * @param lda the first dimension of A as declared in the calling program. lda must be at least na in row major or ma in column major.
  * @param B complex double precision matrix of dimension (mb, ldb) in row-major or (ldb, nb) in column-major. (mb, nb) is (K, N) if B is not transposed and (N, K) otherwise.
  * @param ldb the first dimension of B as declared in the calling program. ldb must be at least nb in row major or mb in column major.
+ * @param beta scalar beta
  * @param C complex double precision matrix of dimension (M, ldc) in row-major or (ldc, N) in column-major.
  * @param ldc the first dimension of C as declared in the calling program. ldc must be at least N in row major or M in column major.
  *

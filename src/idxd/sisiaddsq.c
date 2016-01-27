@@ -6,9 +6,9 @@
  * Performs the operation Y += X, where X and Y represent scaled sums of squares.
  *
  * @param fold the fold of the indexed types
- * @param scaleX scale of X (scaleX == #idxd_sscale(Z) for some @c float Z)
+ * @param scaleX scale of X (scaleX == #idxd_sscale (Z) for some @c float Z)
  * @param X indexed scalar X
- * @param scaleY scale of Y (scaleY == #idxd_sscale(Z) for some @c float Z)
+ * @param scaleY scale of Y (scaleY == #idxd_sscale (Z) for some @c float Z)
  * @param Y indexed scalar Y
  *
  * @return updated scale of Y

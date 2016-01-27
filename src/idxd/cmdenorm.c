@@ -10,6 +10,7 @@
  *
  * A quick check to determine if calculations involving X cannot be performed with "denormals are zero"
  *
+ * @param fold the fold of the indexed type
  * @param priX X's primary vector
  * @return >0 if x has denormal bits, 0 otherwise.
  *

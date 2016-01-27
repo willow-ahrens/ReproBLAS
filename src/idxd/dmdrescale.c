@@ -4,15 +4,13 @@
  * @internal
  * @brief rescale manually specified indexed double precision sum of squares
  *
- * Rescale an indexed double precision sum of squares Y to Y' such that Y / (scaleY * scaleY) == Y' / (X * X)
- *
- * Note that Y is assumed to have an index at least the index of 1.0, and that X >= scaleY
+ * Rescale an indexed double precision sum of squares Y
  *
  * @param fold the fold of the indexed types
- * @param X Y's new scaleY (X == #idxd_dscale(Y) for some @c double Y) (X >= scaleY)
- * @param scaleY Y's current scaleY (scaleY == #idxd_dscale(Y) for some @c double Y) (X >= scaleY)
- * @param priY Y's primary vector (#idxd_dmindex(Y) >= #idxd_dindex(1.0))
- * @param incpriY stride within Y's primary vector (use every incpriY'th element)
+ * @param X Y's new scaleY (X == #idxd_dscale (f) for some @c double f) (X >= scaleY)
+ * @param scaleY Y's current scaleY (scaleY == #idxd_dscale (f) for some @c double f) (X >= scaleY)
+ * @param priY Y's primary vector
+ * @param incpriY stride within Y's primary vector
  * @param carY Y's carry vector
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
