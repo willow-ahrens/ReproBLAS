@@ -1,0 +1,174 @@
+\section{Notation and Background}
+  \label{sec:notation}
+  Let $\R$ and $\Z$ denote the sets of real numbers and integers respectively.
+
+  For all $r \in \R$, let $r\Z$ denote the set of all multiples of $r$,
+  $\{rz | z \in \Z\}$.
+
+  For all $r \in \R$, let $\lceil r \rceil$ be the minimum element $z \in \Z$
+  such that $z \geq r$.
+
+  For all $r \in \R$, let $\lfloor r \rfloor$ be the maximum element $z \in \Z$
+  such that $z \leq r$.
+
+  We define the function $\roundtonearestinfty(r, e), r \in R, e \in \Z$ as
+
+  \begin{equation}
+    \roundtonearestinfty(r, e) = \begin{cases}
+        \lfloor r/2^e + 1/2 \rfloor 2^e \text{ if } r \geq 0\\
+        \lceil r/2^e - 1/2 \rceil 2^e \text{ otherwise}
+    \end{cases}
+  \end{equation}
+
+  $\roundtonearestinfty(r, e)$ rounds $r$ to the nearest multiple of $2^e$,
+  breaking ties away from 0. Properties of such rounding are shown in
+  \eqref{eq:round}
+  \begin{equation}
+    \begin{aligned}
+    \bigl|r - \roundtonearestinfty(r, e)\bigr| & \leq 2^{e - 1} \\
+    \roundtonearestinfty(r,e) & = 0 \text{ if } |r| < 2^{e-1}.
+    \end{aligned}
+    \label{eq:round}
+  \end{equation}
+
+  Let $\F_{b,p,e_{min},e_{max}}$ denote the set of floating-point numbers
+  of \textbf{base} $b \in \Z$ ($b \geq 2$),
+  \textbf{precision} $p \in Z$ ($p \geq 1$) and \textbf{exponent range} $[e_{min}, e_{max}]$
+  where $e_{min}, e_{max} \in \Z$ and $e_{min} \geq e_{max}$.
+  Each value $f \in \F_{b,p,e_{min},e_{max}}$ is represented by:
+  \[
+    f = s \cdot m_0.m_1 \ldots m_{p-1} \cdot b^e,
+  \]
+  where $s \in \{-1,1 \}$ is the \textbf{sign},
+  $e \in \Z, e_{\min} \leq e \leq e_{\max}$ is the \textbf{exponent}
+  (also defined as $\exp(f)$),
+  and $m = m_0.m_1 \ldots m_{p-1}, m_i \in \{ 0, 1, \ldots, b-1 \}$
+  is the \textbf{significand} (also called the \textbf{mantissa}) of $f$. Assume that $f$ is represented using the smallest exponent possible.
+
+  Although much of the analysis below can be applied to a general floating-point
+  format, in the context of this paper we assume binary floating-point formats complying with the IEEE 754-2008 standard \cite{ieee754}.
+  For simplicity as well as for readability, throughout this paper
+  $\F_{b,p,e_{min},e_{max}}$ will be written simply as $\F$, referring to
+  some IEEE 754-2008 binary floating-point format,
+  i.e. $b=2$ and $m_i \in \{0, 1\}$.
+  All the analysis will be based on the corresponding parameters $p$, $e_{min}$
+  and $e_{max}$.
+
+  \begin{comment}
+    While the analysis below applies for any chosen values of $p$, $e_{\min}$, and $e_{\max}$ 
+    (provided that $p << e_{\max} - e_{\min}$), our software is implemented in IEEE 754-2008
+     single and double precision.
+  \end{comment}
+
+  \begin{comment}
+  Specific parameters for those two formats are given in Table \ref{tbl:IEEE-754}.
+  \begin{table}[!htbp]
+    \caption{IEEE 754-2008 binary floating-point formats}
+    \label{tbl:IEEE-754}
+        \centering
+        \begin{tabular}{ | l | l | l | } \hline
+            Floating-Point Type & single precision & double precision \\ \hline
+            C data type & \texttt{float} & \texttt{double} \\ \hline
+            $p$ & 24 & 53 \\ \hline
+            Exponent field width & 8 & 11 \\ \hline
+            Exponent bias & 127 & 1023 \\ \hline
+            $e_{min}$ & -126 & -1022 \\ \hline
+            $e_{max}$ & 127 & 1023 \\ \hline
+        \end{tabular}
+  \end{table}
+
+  The exponent is stored in internal representation in biased form
+  using 8 bits for single precision, and 11 bits for double precision.
+  The exponent of a represented floating-point number is equal to
+  the biased exponent (the unsigned integer value stored in the exponent field)
+  minus the bias value (see table~\ref{tbl:IEEE-754}).
+  An exponent field with all bits set to 0 is reserved for zeros and denormalized values.
+  An exponent field with all bits set to 1 is reserved for infinities and NaN.
+  \end{comment}
+
+  Since a floating point number is always represented using the smallest possible
+  exponent, the first bit $m_0$ is not explicitly stored in internal representation
+  and is referred to as the "hidden" or "implicit" bit.
+  Therefore only $p-1$ bits are used to represent the mantissa of $f$.
+
+  $f = 0$ if and only if all $m_j = 0$ and $e = e_{\min} - 1$.
+  $f$ is said to be \textbf{normalized} if $m_0 =1$
+  and $e_{max} \geq e \geq e_{\min}$.
+  $f$ is said to be \textbf{unnormalized} if $m_0 = 0$ (unnormalized numbers can 
+  exist if the hidden bit convention is not followed), and
+  \textbf{denormalized} if $m_0 = 0$ and $e = e_{\min} - 1$.
+
+  \begin{comment}
+  In binary internal representation, $f=0$ is represented by a biased exponent of $0$
+  as well as a mantissa field of all 0-bits.
+  Denormalized numbers have biased exponent of $0$ and non-zero mantissa field.
+  An exponent field of all 1-bits and a mantissa field of all 0-bits
+  represent infinities, positive or negative depending on the sign bit.
+  An exponent field of all 1-bits and a non-zero mantissa field
+  represent a NaN value.
+  \end{comment}
+
+  We assume rounding mode ``to nearest'' (no specific tie
+  breaking behavior is required) and gradual underflow, although
+  methods to handle abrupt underflow will be considered in Section
+  \ref{sec:indexed_underflow_abrupt}.
+
+  $r \in \R$ is \textbf{representable} as a floating point number if there
+  exists $f \in \F$ such that $r = f$ as real numbers.
+
+  For all $r \in \R$, $e \in \Z$ such that $e_{\min} - p < e$ and $|r| < 2
+  \cdot 2^{e_{\max}}$, if $r \in 2^e\Z$ and $|r| \leq 2^{e + p}$ then $r$ is
+  representable.
+
+  Machine epsilon, $\epsilon$, the difference between 1 and the greatest
+  floating point number smaller than 1, is defined as $\epsilon = 2^{-p}$.
+
+  The unit in the last place of $f \in \F$, $\ulp(f)$, is the spacing between
+  two consecutive floating point numbers of the same exponent as $f$. If $f$ is
+  normalized, $\ulp(f) = 2^{\exp(f) - p + 1} = 2  \epsilon  2^{\exp(f)}$ and
+  $\ulp(f) \leq 2^{1 - p}|f|$.
+
+  The unit in the first place of $f \in F$, $\ufp(f)$, is the value of the
+  first significant bit of $f$. If $f$ is normalized, $\ufp(f) = 2^{\exp(f)}$.
+
+  For all $f_0, f_1 \in \F$, $\fl(f_0 \text{ op } f_1)$ denotes the evaluated
+  result of the expression $(f_0 \text{ op } f_1)$ in floating point
+  arithmetic. If $(f_0 \text{ op } f_1)$ is representable, then
+  \(
+    \fl(f_0 \text{ op } f_1) = (f_0 \text{ op } f_1).
+  \)
+  If rounding is ``to nearest,'' and there is no overflow, then we have that
+  \(
+    |\fl(f_0 \text{ op } f_1) - (f_0 \text{ op } f_1)| \leq 0.5\ulp(\fl(f_0 \text{ op } f_1)).
+  \)
+  This bound accounts for underflow as the magnitude of $\ulp(f)$ reflects the appropriate loss of accuracy when $f$ is in the denormal range.
+
+  ReproBLAS is the library implementation of the algorithms defined later in this work.
+
+  As ReproBLAS is written in C, \texttt{float} and \texttt{double} refer to the
+  floating point types specified in the 1989 C standard \cite{c89} and we
+  assume that they correspond to the \texttt{binary-32} and \texttt{binary-64}
+  types in the IEEE 754-2008 floating point standard \cite{ieee754}.
+
+  The functions in ReproBLAS are named after their BLAS counterparts.
+  As such, function names are prefixed by a one or two character code indicating the data type of their inputs and outputs. If a function's input and output data types differ, the function name is prefixed by the output data type code followed by the input data type code.
+  The codes used are enumerated in Table \ref{tbl:blas_naming_codes}. The indexed type is a reproducible floating point data type that will be described later in Section \ref{sec:indexed}.
+  \begin{table}[!htbp]
+    \caption{ReproBLAS naming convention character codes}
+    \label{tbl:blas_naming_codes}
+        \centering
+        \begin{tabular}{ | l | l | } \hline
+            Data Type & Code \\ \hline
+            \texttt{double} & d \\ \hline
+            \texttt{double complex} & z \\ \hline
+            \texttt{float} & s \\ \hline
+            \texttt{float complex} & c \\ \hline
+            \texttt{double\_indexed} & di \\ \hline
+            \texttt{double\_complex\_indexed} & zi \\ \hline
+            \texttt{float\_indexed} & si \\ \hline
+            \texttt{float\_complex\_indexed} & ci \\ \hline
+        \end{tabular}
+  \end{table}
+  As an example, an absolute sum routine \texttt{asum} that returns a \texttt{double\_indexed} and takes as input an array of \texttt{complex double} would be named \texttt{dizasum}. To be generic when referring to a routine, we will use the special character \texttt{x}, so that all \texttt{asum} routines that take floating point inputs and return indexed types can be referred to as \texttt{xixasum}.
+
+  All indices start at $0$ in correspondence with the actual ReproBLAS implementation.

@@ -1,0 +1,58 @@
+#include <stdio.h>
+
+#include <idxd.h>
+
+#include "../config.h"
+
+/*[[[cog
+import cog
+from src.gen import vectorizations
+from src.gen import utils
+]]]*/
+//[[[end]]]
+
+int main(int argc, char** argv){
+  (void)argc;
+  (void)argv;
+
+  printf("{\n");
+
+  /*[[[cog
+  def print_vectorization(vectorization, code_block):
+    code_block.write('printf("  \\\"vectorization\\\": \\\"{}\\\",\\n");'.format(vectorization.name))
+  code_block = utils.CodeBlock()
+  vectorizations.iterate_all_vectorizations(print_vectorization, code_block)
+  cog.out(str(code_block))
+  ]]]*/
+  #ifdef __AVX__
+    printf("  \"vectorization\": \"AVX\",\n");
+
+  #elif defined(__SSE2__)
+    printf("  \"vectorization\": \"SSE\",\n");
+
+  #else
+    printf("  \"vectorization\": \"SISD\",\n");
+
+  #endif
+  //[[[end]]]
+
+  printf("  \"dimaxindex\": %d,\n", idxd_DIMAXINDEX);
+
+  printf("  \"simaxindex\": %d,\n", idxd_SIMAXINDEX);
+
+  printf("  \"dimaxfold\": %d,\n", idxd_DIMAXFOLD);
+
+  printf("  \"simaxfold\": %d,\n", idxd_SIMAXFOLD);
+
+  printf("  \"didefaultfold\": %d,\n", DIDEFAULTFOLD);
+
+  printf("  \"sidefaultfold\": %d,\n", SIDEFAULTFOLD);
+
+  printf("  \"diendurance\": %d,\n", idxd_DIENDURANCE);
+
+  printf("  \"siendurance\": %d\n", idxd_SIENDURANCE);
+
+  printf("}\n");
+
+  return 0;
+}

@@ -1,0 +1,31 @@
+\section{ReproBLAS}
+  \label{sec:reproBLAS}
+  ReproBLAS is the name given to our library of implementations of algorithms described in this paper.
+  The code is available online at \path{http://bebop.cs.berkeley.edu/reproblas}.
+  To be useful to the greatest number of performance-conscious scientific software developers, ReproBLAS is written in C (conforming to the C99 Standard \cite{c99}, with calling conventions that are compatible with the data types of the C89 Standard \cite{c89}).
+\begin{comment}
+ complex types \cite{c89} as discussed in \cite{cblasinterface}
+Because the C89 standard did not standardize the complex floating point type, all interfaces refer to complex types using \texttt{void*} pointers. If a function would normally return a complex type, a \texttt{void*} pointer is added as the last argument and the function name is suffixed by \texttt{_sub}
+\end{comment}
+  The choice of C allows for intrepid Fortran and C++ users to take advantage of the library as well.
+  Code generation and testing utilities are implemented in the more productive language Python \cite{Python}.
+  A few distributed memory functions are supplied using MPI \cite{MPI}, the industry standard for distributed memory programming.
+
+  We leave the specifics of the library to the documentation included with the library itself, and here offer only a summary of some of the design decisions made in ReproBLAS.
+
+  Several of the functions in ReproBLAS are optionally vectorized using Intel AVX or SSE intrinsics \cite{SSEAVX}, depending on what is available on the system. With AVX, vectorization allows for 256-bit registers (4 \texttt{double} or 8 \texttt{float}) to be operated on in one instruction. Because so many routines were vectorized and due to the complicated nature of the operations, a Python suite was implemented to generate code that is generic to the particular vectorization in question. By simply augmenting this suite of code generation functions, this allows for future modifications of ReproBLAS to use newer intrinsics (such as AVX-512) when they become widely available. Another benefit of code generation is that it allows us to programatically restructure code to take advantage of loop unrolling and instruction-level parallelism.
+
+  To handle the complex build processes involved in code generation without increasing the software requirements of the library, we created a custom build system written entirely in GNU Make. We adopted the build system from a non-recursive makefile template called nonrec-make \cite{nonrec-make}. The build system handles some of the complexity of code generation with the help of the Python package Cog \cite{Cog}, which allows the programmer to write Python code inline with C code.
+
+  Code generation and cache blocking add several parameters to ReproBLAS that must be tuned. OpenTuner \cite{OpenTuner}, an extensible Python autotuner, was used to search the parameter space to find optimal values for ReproBLAS parameters.
+
+  ReproBLAS is divided into several modules, each one with a separate header file and static library. \texttt{idxd.h} contains the primitive operations discussed in Section \ref{sec:primitiveops} and the utility functions regarding the indexed type discussed in Section \ref{sec:indexed}. 
+\texttt{idxd.h} also contains several basic functions not mentioned that relate to the core reproducible summation algorithm.
+ \texttt{idxdBLAS.h} contains the indexed versions of the BLAS functions discussed in Section \ref{sec:compositeops}.
+ These functions are optimized composite operations built from functions in \texttt{idxd.h}.
+ \texttt{reproBLAS.h} contains versions of functions in \texttt{idxdBLAS.h} that do not require the user to use indexed types.
+ Each function has the same name and signature as its BLAS counterpart, and behaves similarly (except with added guarantees of reproducibility).
+ Functions in \texttt{reproBLAS.h} with an ``r'' prepended to their name allow the user to specify the number of accumulators ($K$, where the internal indexed type used is $K$-fold) used to compute the result, allowing for a user-specified level of accuracy. 
+\texttt{idxdMPI.h} contains MPI data types used to communicate indexed types, and also contains an MPI reduction operator allowing the user to reproducibly reduce the MPI indexed types.
+  \input{timing}
+  \input{testing}

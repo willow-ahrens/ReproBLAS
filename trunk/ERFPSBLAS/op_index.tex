@@ -1,0 +1,55 @@
+  \subsection{Index}
+    \label{sec:primitiveops_index}
+    When operating on indexed types it is sometimes necessary to compute their
+    index. Algorithm \ref{alg:iindex} yields the index of an indexed type in
+    constant time. Algorithm \ref{alg:iindex} is available in ReproBLAS as \texttt{idxd\_xmindex} in \texttt{idxd.h} (see Section \ref{sec:reproBLAS} for details).
+
+    \begin{samepage}
+    \begin{alg}
+      Given an indexed type $Y$, calculate its index $I$
+      \begin{algorithmic}[1]
+        \Require
+          \Statex ${Y_0}_P \in (\epsilon^{-1}  2^{a_{I}}, 2  \epsilon^{-1}  2^{a_I})$
+          where $a_I$ is defined in \eqref{eq:a}
+        \Function{IIndex}{Y}
+          \State \Return $\lfloor(e_{\max} + p - \exp({Y_0}_P) - W + 1)/W\rfloor$
+          \Comment{Index $I$ of $Y$}
+        \EndFunction
+        \Ensure
+          \Statex Returned result $I$ is the index of $Y$.
+      \end{algorithmic}
+      \label{alg:iindex}
+    \end{alg}
+    \end{samepage}
+
+    Note that the floor function is necessary in Algorithm \ref{alg:iindex} to
+    account for the case where $Y$ has index $0$, which has $\exp({Y_0}_P) =
+    2^{e_{\max}}$ as discussed in Section \ref{sec:indexed_overflow}.  This
+    uses the assumption that $\frac{p+1}{2} < W < p-2$, so $3 < p - W + 1 < W.$ 
+    Note also that the function $\exp()$ used above is assumed to return the biased exponent of ${Y_0}_P$, so that \textproc{IIndex} returns 0 when ${Y_0}_P$ is \texttt{Inf}, \texttt{-Inf}, or \texttt{NaN} and $i_{\max}$ when ${Y_0}_P$ is 0 or denormalized.
+
+    Another useful operation is, given some $x \in \F$, to find the unique bin
+    $(a_J, b_J]$ where $J$ is the greatest integer such that $|x| < 2^{b_J}$ and $J \leq i_{\max}$.
+    Algorithm \ref{alg:index} yields such a $J$ in constant time. Algorithm \ref{alg:index} is available in ReproBLAS as \texttt{idxd\_xindex} in \texttt{idxd.h} (see Section \ref{sec:reproBLAS} for details).
+
+
+    \begin{samepage}
+    \begin{alg}
+      Given $x \in \F$, calculate the largest integer $J$ such that $2^{b_J} > |x|$ and $J \leq i_{\max}$
+      \begin{algorithmic}[1]
+        \Require $i_{\max}$ is defined in \eqref{eq:imax},
+          $a_J$ is defined in \eqref{eq:a}.
+        \Function{Index}{x}
+          \If {$x = 0$} \State \Return $i_{\max}$ \EndIf
+          \State \Return $\min(i_{\max}, \lfloor(e_{\max} - \exp(x))/W\rfloor)$
+          \Comment{Index $J$ of $x$}
+        \EndFunction
+        \Ensure
+          \Statex $J$ is the greatest integer such that $|x| < 2^{b_J}$ and $J \leq i_{\max}$.
+      \end{algorithmic}
+      \label{alg:index}
+    \end{alg}
+     \end{samepage}
+
+    Note again that the function $\exp()$ used above is assumed to return the biased exponent of $x$, so that \textproc{Index} returns 0 when $x$ is \texttt{Inf}, \texttt{-Inf}, or \texttt{NaN} and $i_{\max}$ when $x < 2^{a_{i_{\max}}}$.
+    This behavior is consistent with the following algorithms since values smaller than the least bin will not be accumulated. Algorithms \ref{alg:iindex} and \ref{alg:index} are used infrequently, usually being called once at the beginning of a routine.

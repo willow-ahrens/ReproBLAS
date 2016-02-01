@@ -1,0 +1,229 @@
+#include <stdlib.h>
+
+#include "../common/common.h"
+#include "idxdBLAS.h"
+
+/*[[[cog
+import cog
+import generate
+import dataTypes
+from src.common import blockSize
+from scripts import terminal
+
+rounded_cache = 2**(int(terminal.get_cache()).bit_length() - 1)
+xy_block = rounded_cache//dataTypes.DoubleComplex.byte_size
+y_block = max(xy_block//256, 1)
+
+cog.out(generate.generate(blockSize.BlockSize("zizgemv", "Y_BLOCK", 1, y_block, y_block, ["bench_rzgemv_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("zizgemv", "XY_BLOCK", y_block, xy_block, xy_block, ["bench_rzgemv_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("zizgemv", "YT_BLOCK", 1, y_block, y_block, ["bench_rzgemv_TransA_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("zizgemv", "XYT_BLOCK", y_block, xy_block, xy_block, ["bench_rzgemv_TransA_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("zizgemv", "T_BLOCK", 1, 32, 32, ["bench_rzgemv_TransA_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+]]]*/
+#define Y_BLOCK 4
+#define XY_BLOCK 16384
+#define YT_BLOCK 64
+#define XYT_BLOCK 8192
+#define T_BLOCK 4
+//[[[end]]]
+#define X_BLOCK (XY_BLOCK/Y_BLOCK)
+#define XT_BLOCK (XYT_BLOCK/YT_BLOCK)
+
+/**
+ * @brief Add to indexed complex double precision vector Y the matrix-vector product of complex double precision matrix A and complex double precision vector X
+ *
+ * Performs one of the matrix-vector operations
+ *
+ *   y := alpha*A*x + y   or   y := alpha*A**T*x + y   or   y := alpha*A**H*x + y,
+ *
+ * where alpha is a scalar, x is a vector, y is an indexed vector, and A is an M by N matrix.
+ *
+ * @param fold the fold of the indexed types
+ * @param Order a character specifying the matrix ordering ('r' or 'R' for row-major, 'c' or 'C' for column major)
+ * @param TransA a character specifying whether or not to transpose A before taking the matrix-vector product ('n' or 'N' not to transpose, 't' or 'T' to transpose, 'c' or 'C' to conjugate transpose)
+ * @param M number of rows of matrix A
+ * @param N number of columns of matrix A
+ * @param alpha scalar alpha
+ * @param A complex double precision matrix of dimension (M, lda) in row-major or (lda, N) in column-major
+ * @param lda the first dimension of A as declared in the calling program
+ * @param X complex double precision vector of at least size N if not transposed or size M otherwise
+ * @param incX X vector stride (use every incX'th element)
+ * @param Y indexed complex double precision vector Y of at least size M if not transposed or size N otherwise
+ * @param incY Y vector stride (use every incY'th element)
+ *
+ * @author Peter Ahrens
+ * @date   18 Jan 2016
+ */
+void idxdBLAS_zizgemv(const int fold, const char Order,
+                      const char TransA, const int M, const int N,
+                      const void *alpha, const void *A, const int lda,
+                      const void *X, const int incX,
+                      double_complex_indexed *Y, const int incY){
+  int i;
+  int ii;
+  int iii;
+  int j;
+  int jj;
+  int jjj;
+  double *bufX;
+  int incbufX;
+  double *bufA;
+
+  if(M == 0 || N == 0 || (((double*)alpha)[0] == 0.0 && ((double*)alpha)[1] == 0.0)){
+    return;
+  }
+
+  switch(Order){
+
+    //row major
+    case 'r':
+    case 'R':
+      switch(TransA){
+
+        //row major A not transposed
+        case 'n':
+        case 'N':
+          if(((double*)alpha)[0] == 1.0 && ((double*)alpha)[1] == 0.0){
+            bufX = (double*)X;
+            incbufX = incX;
+          }else{
+            bufX = (double*)malloc(N * 2 * sizeof(double));
+            for(j = 0; j < N; j++){
+              bufX[2 * j] = ((double*)X)[2 * j * incX] * ((double*)alpha)[0] - ((double*)X)[2 * j * incX + 1] * ((double*)alpha)[1];
+              bufX[2 * j + 1] = ((double*)X)[2 * j * incX] * ((double*)alpha)[1] + ((double*)X)[2 * j * incX + 1] * ((double*)alpha)[0];
+            }
+            incbufX = 1;
+          }
+          for(i = 0; i < M; i += Y_BLOCK){
+            for(j = 0; j < N; j += X_BLOCK){
+              for(ii = i; ii < M && ii < i + Y_BLOCK; ii++){
+                idxdBLAS_zizdotu(fold, MIN(X_BLOCK, N - j), ((double*)A) + 2 * (ii * lda + j), 1, bufX + 2 * j * incbufX, incbufX, Y + ii * incY * idxd_zinum(fold));
+              }
+            }
+          }
+          if(((double*)alpha)[0] != 1.0 || ((double*)alpha)[1] != 0.0){
+            free(bufX);
+          }
+          break;
+
+        //row major A transposed
+        case 't':
+        case 'T':
+          if(((double*)alpha)[0] == 1.0 && ((double*)alpha)[1] == 0.0){
+            bufX = (double*)X;
+            incbufX = incX;
+          }else{
+            bufX = (double*)malloc(M * 2 * sizeof(double));
+            for(j = 0; j < M; j++){
+              bufX[2 * j] = ((double*)X)[2 * j * incX] * ((double*)alpha)[0] - ((double*)X)[2 * j * incX + 1] * ((double*)alpha)[1];
+              bufX[2 * j + 1] = ((double*)X)[2 * j * incX] * ((double*)alpha)[1] + ((double*)X)[2 * j * incX + 1] * ((double*)alpha)[0];
+            }
+            incbufX = 1;
+          }
+          bufA = (double*)malloc(XT_BLOCK * YT_BLOCK * 2 * sizeof(double));
+          for(i = 0; i < N; i += YT_BLOCK){
+            for(j = 0; j < M; j += XT_BLOCK){
+              for(jj = j; jj < M && jj < j + XT_BLOCK; jj += T_BLOCK){
+                for(ii = i; ii < N && ii < i + YT_BLOCK; ii+= T_BLOCK){
+                  for(jjj = jj; jjj < M && jjj < jj + MIN(T_BLOCK, XT_BLOCK); jjj++){
+                    for(iii = ii; iii < N && iii < ii + MIN(T_BLOCK, YT_BLOCK); iii++){
+                      bufA[2 * ((iii - i) * XT_BLOCK + (jjj - j))] = ((double*)A)[2 * (jjj * lda + iii)];
+                      bufA[2 * ((iii - i) * XT_BLOCK + (jjj - j)) + 1] = ((double*)A)[2 * (jjj * lda + iii) + 1];
+                    }
+                  }
+                }
+              }
+              for(ii = i; ii < N && ii < i + YT_BLOCK; ii++){
+                idxdBLAS_zizdotu(fold, MIN(XT_BLOCK, M - j), bufA + 2 * (ii - i) * XT_BLOCK, 1, bufX + 2 * j * incbufX, incbufX, Y + ii * incY * idxd_zinum(fold));
+              }
+            }
+          }
+          free(bufA);
+          if(((double*)alpha)[0] != 1.0 || ((double*)alpha)[1] != 0.0){
+            free(bufX);
+          }
+          break;
+
+        //row major A conjugate transposed
+        default:
+          if(((double*)alpha)[0] == 1.0 && ((double*)alpha)[1] == 0.0){
+            bufX = (double*)X;
+            incbufX = incX;
+          }else{
+            bufX = (double*)malloc(M * 2 * sizeof(double));
+            for(j = 0; j < M; j++){
+              bufX[2 * j] = ((double*)X)[2 * j * incX] * ((double*)alpha)[0] - ((double*)X)[2 * j * incX + 1] * ((double*)alpha)[1];
+              bufX[2 * j + 1] = ((double*)X)[2 * j * incX] * ((double*)alpha)[1] + ((double*)X)[2 * j * incX + 1] * ((double*)alpha)[0];
+            }
+            incbufX = 1;
+          }
+          bufA = (double*)malloc(XT_BLOCK * YT_BLOCK * 2 * sizeof(double));
+          for(i = 0; i < N; i += YT_BLOCK){
+            for(j = 0; j < M; j += XT_BLOCK){
+              for(jj = j; jj < M && jj < j + XT_BLOCK; jj += T_BLOCK){
+                for(ii = i; ii < N && ii < i + YT_BLOCK; ii+= T_BLOCK){
+                  for(jjj = jj; jjj < M && jjj < jj + MIN(T_BLOCK, XT_BLOCK); jjj++){
+                    for(iii = ii; iii < N && iii < ii + MIN(T_BLOCK, YT_BLOCK); iii++){
+                      bufA[2 * ((iii - i) * XT_BLOCK + (jjj - j))] = ((double*)A)[2 * (jjj * lda + iii)];
+                      bufA[2 * ((iii - i) * XT_BLOCK + (jjj - j)) + 1] = ((double*)A)[2 * (jjj * lda + iii) + 1];
+                    }
+                  }
+                }
+              }
+              for(ii = i; ii < N && ii < i + YT_BLOCK; ii++){
+                idxdBLAS_zizdotc(fold, MIN(XT_BLOCK, M - j), bufA + 2 * (ii - i) * XT_BLOCK, 1, bufX + 2 * j * incbufX, incbufX, Y + ii * incY * idxd_zinum(fold));
+              }
+            }
+          }
+          free(bufA);
+          if(((double*)alpha)[0] != 1.0 || ((double*)alpha)[1] != 0.0){
+            free(bufX);
+          }
+          break;
+      }
+      break;
+
+    //column major
+    default:
+      switch(TransA){
+
+        //column major A not transposed
+        case 'n':
+        case 'N':
+          idxdBLAS_zizgemv(fold, 'r', 't', N, M, alpha, A, lda, X, incX, Y, incY);
+          break;
+
+        //column major A transposed
+        case 't':
+        case 'T':
+          idxdBLAS_zizgemv(fold, 'r', 'n', N, M, alpha, A, lda, X, incX, Y, incY);
+          break;
+
+        //column major A conjugate transposed
+        default:
+          if(((double*)alpha)[0] == 1.0 && ((double*)alpha)[1] == 0.0){
+            bufX = (double*)X;
+            incbufX = incX;
+          }else{
+            bufX = (double*)malloc(M * 2 * sizeof(double));
+            for(j = 0; j < M; j++){
+              bufX[2 * j] = ((double*)X)[2 * j * incX] * ((double*)alpha)[0] - ((double*)X)[2 * j * incX + 1] * ((double*)alpha)[1];
+              bufX[2 * j + 1] = ((double*)X)[2 * j * incX] * ((double*)alpha)[1] + ((double*)X)[2 * j * incX + 1] * ((double*)alpha)[0];
+            }
+            incbufX = 1;
+          }
+          for(i = 0; i < N; i += Y_BLOCK){
+            for(j = 0; j < M; j += X_BLOCK){
+              for(ii = i; ii < N && ii < i + Y_BLOCK; ii++){
+                idxdBLAS_zizdotc(fold, MIN(X_BLOCK, N - j), ((double*)A) + 2 * (ii * lda + j), 1, bufX + 2 * j * incbufX, incbufX, Y + ii * incY * idxd_zinum(fold));
+              }
+            }
+          }
+          if(((double*)alpha)[0] != 1.0 || ((double*)alpha)[1] != 0.0){
+            free(bufX);
+          }
+          break;
+      }
+      break;
+  }
+}

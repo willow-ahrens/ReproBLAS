@@ -1,0 +1,76 @@
+Reproducible BLAS v2.0
+
+Installation:
+
+0.    Download the latest version of source code from
+    bebop.cs.berkeley.edu/reproblas/download.html
+1.    Un-compress the downloaded zip or tar file to {ReproBLAS_ROOT} folder
+2.    Go to {ReproBLAS_ROOT}
+3.    Check that all of the settings in config.mk are correct. Most importantly,
+    check that the install locations are correct. If you want to use MPI, be
+    sure to set the BUILD_MPI flag and to supply the proper MPI compiling and
+    linking flags.
+4.    Python is recommended for installation. If python is installed, ReproBLAS
+    will use code generation during installation. If python is not installed,
+    ReproBLAS will use pre-generated files and you can skip to step 7.
+5.    If python is installed, first type 'make update'. This will make all of
+    the configuration settings available to the python generators.
+6.    From {ReproBLAS_ROOT}, type 'make'.
+7.    From {ReproBLAS_ROOT}, type 'make install'.
+8.    To verify installation, try compiling the examples. From
+    {ReproBLAS_ROOT}/examples, type 'make'. Then, run the example with
+    './sum_sine'
+
+Documentation:
+
+0.    Read the examples in {ReproBLAS_ROOT}/examples
+1.    Browse the installed documentation at the location specified by the
+    DOC_DIR variable in config.mk. Your can browse it in website form or as a
+    pdf.
+2.    Consult the header files in {ReproBLAS_ROOT}/include
+
+Usage:
+
+    ReproBLAS libraries are nested in functionality. What follows is a graph
+  where a forward edge represents inclusion:
+
+    libreproBLAS.a
+         |
+         v
+    libidxdBLAS.a  libidxdMPI.a
+         |              |
+         +-----+  +-----+
+               |  |
+               v  v
+             libidxd.a
+
+    All ReproBLAS libraries require you to link to libm.a. Therefore, your link
+  string should include some subset of:
+      -lidxd -lidxdBLAS -lreproBLAS -lidxdMPI
+    Followed by:
+      -lm
+
+Advanced Usage:
+    ReproBLAS uses a custom build system. It is based off of the nonrec-make
+  project. The build system encodes information not in the Makefile, but in a
+  separate file in each directory called Rules.mk. The default make target
+  builds all files in the subtree rooted at the current directory. If you want
+  to build all files, type 'make all'. If you want to make just the files in
+  the current directory, type 'make dir'. There are corresponding targets
+  'clean_tree', 'clean_all', 'clean_dir'. Check {ReproBLAS_ROOT}/config.mk for
+  many more options. The make system lives in {ReproBLAS_ROOT}/mk. The built
+  files go in {ReproBLAS_ROOT}/build.
+
+    If you have python, you can run the tests. To run the benchmarks, type
+  'make bench'. To run the checks, type 'make check'. To run the accuracy test,
+  type 'make acc'. By following the example of
+  {ReproBLAS_ROOT}/tests/checks/check.py,
+  {ReproBLAS_ROOT}/tests/benchs/bench.py,
+  and {ReproBLAS_ROOT}/tests/accs/acc.py, the user can build their own tests
+  composed of subsets of the available tests in
+  {ReproBLAS_ROOT}/tests/checks/checks.py,
+  {ReproBLAS_ROOT}/tests/benchs/benchs.py,
+  and {ReproBLAS_ROOT}/tests/accs/accs.py.
+
+  Several configuration options are available in {ReproBLAS_ROOT}/config.py,
+  {ReproBLAS_ROOT}/config.mk, and {ReproBLAS_ROOT}/config.h.

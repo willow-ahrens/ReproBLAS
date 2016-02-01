@@ -1,0 +1,453 @@
+#include <mpi.h>
+#include <stdio.h>
+
+#include <idxd.h>
+#include <idxdMPI.h>
+
+#include <../config.h>
+
+static inline void didiaddsqv(const int fold, const int N, const double *X, double *Y){
+  int i;
+  for(i = 0; i < N; i++, X += idxd_dinum(fold) + 1, Y += idxd_dinum(fold) + 1){
+    idxd_dmdmaddsq(fold, X[0], (double_indexed*)(X + 1), 1, (double_indexed*)(X + 1 + fold), 1, Y[0], (double_indexed*)(Y + 1), 1, (double_indexed*)(Y + 1 + fold), 1);
+  }
+}
+
+/*[[[cog
+import cog
+from scripts import terminal
+for fold in range(2, terminal.get_dimaxindex() + 1):
+  cog.outl("static void idxdMPI_didiaddsq_{}(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){{".format(fold))
+  cog.outl("  didiaddsqv({}, *len, (double*)invec, (double*)inoutvec);".format(fold))
+  cog.outl("}")
+  cog.outl("")
+]]]*/
+static void idxdMPI_didiaddsq_2(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(2, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_3(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(3, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_4(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(4, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_5(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(5, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_6(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(6, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_7(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(7, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_8(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(8, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_9(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(9, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_10(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(10, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_11(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(11, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_12(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(12, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_13(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(13, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_14(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(14, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_15(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(15, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_16(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(16, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_17(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(17, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_18(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(18, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_19(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(19, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_20(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(20, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_21(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(21, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_22(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(22, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_23(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(23, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_24(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(24, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_25(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(25, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_26(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(26, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_27(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(27, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_28(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(28, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_29(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(29, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_30(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(30, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_31(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(31, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_32(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(32, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_33(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(33, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_34(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(34, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_35(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(35, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_36(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(36, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_37(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(37, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_38(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(38, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_39(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(39, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_40(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(40, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_41(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(41, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_42(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(42, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_43(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(43, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_44(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(44, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_45(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(45, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_46(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(46, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_47(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(47, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_48(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(48, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_49(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(49, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_50(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(50, *len, (double*)invec, (double*)inoutvec);
+}
+
+static void idxdMPI_didiaddsq_51(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  didiaddsqv(51, *len, (double*)invec, (double*)inoutvec);
+}
+
+//[[[end]]]
+
+static MPI_Op ops[idxd_DIMAXFOLD + 1];
+static int ops_initialized[idxd_DIMAXFOLD + 1]; //initializes to 0
+
+MPI_Op idxdMPI_DIDIADDSQ(const int fold){
+  int rc;
+  if(!ops_initialized[fold]){
+    switch(fold){
+      /*[[[cog
+      import cog
+      from scripts import terminal
+      for fold in range(2, terminal.get_dimaxindex() + 1):
+        cog.outl("case {}:".format(fold))
+        cog.outl("  rc = MPI_Op_create(&idxdMPI_didiaddsq_{0}, 1, ops + {0});".format(fold))
+        cog.outl("  break;")
+        cog.outl("")
+      ]]]*/
+      case 2:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_2, 1, ops + 2);
+        break;
+
+      case 3:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_3, 1, ops + 3);
+        break;
+
+      case 4:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_4, 1, ops + 4);
+        break;
+
+      case 5:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_5, 1, ops + 5);
+        break;
+
+      case 6:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_6, 1, ops + 6);
+        break;
+
+      case 7:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_7, 1, ops + 7);
+        break;
+
+      case 8:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_8, 1, ops + 8);
+        break;
+
+      case 9:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_9, 1, ops + 9);
+        break;
+
+      case 10:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_10, 1, ops + 10);
+        break;
+
+      case 11:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_11, 1, ops + 11);
+        break;
+
+      case 12:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_12, 1, ops + 12);
+        break;
+
+      case 13:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_13, 1, ops + 13);
+        break;
+
+      case 14:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_14, 1, ops + 14);
+        break;
+
+      case 15:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_15, 1, ops + 15);
+        break;
+
+      case 16:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_16, 1, ops + 16);
+        break;
+
+      case 17:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_17, 1, ops + 17);
+        break;
+
+      case 18:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_18, 1, ops + 18);
+        break;
+
+      case 19:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_19, 1, ops + 19);
+        break;
+
+      case 20:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_20, 1, ops + 20);
+        break;
+
+      case 21:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_21, 1, ops + 21);
+        break;
+
+      case 22:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_22, 1, ops + 22);
+        break;
+
+      case 23:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_23, 1, ops + 23);
+        break;
+
+      case 24:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_24, 1, ops + 24);
+        break;
+
+      case 25:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_25, 1, ops + 25);
+        break;
+
+      case 26:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_26, 1, ops + 26);
+        break;
+
+      case 27:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_27, 1, ops + 27);
+        break;
+
+      case 28:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_28, 1, ops + 28);
+        break;
+
+      case 29:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_29, 1, ops + 29);
+        break;
+
+      case 30:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_30, 1, ops + 30);
+        break;
+
+      case 31:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_31, 1, ops + 31);
+        break;
+
+      case 32:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_32, 1, ops + 32);
+        break;
+
+      case 33:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_33, 1, ops + 33);
+        break;
+
+      case 34:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_34, 1, ops + 34);
+        break;
+
+      case 35:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_35, 1, ops + 35);
+        break;
+
+      case 36:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_36, 1, ops + 36);
+        break;
+
+      case 37:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_37, 1, ops + 37);
+        break;
+
+      case 38:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_38, 1, ops + 38);
+        break;
+
+      case 39:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_39, 1, ops + 39);
+        break;
+
+      case 40:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_40, 1, ops + 40);
+        break;
+
+      case 41:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_41, 1, ops + 41);
+        break;
+
+      case 42:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_42, 1, ops + 42);
+        break;
+
+      case 43:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_43, 1, ops + 43);
+        break;
+
+      case 44:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_44, 1, ops + 44);
+        break;
+
+      case 45:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_45, 1, ops + 45);
+        break;
+
+      case 46:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_46, 1, ops + 46);
+        break;
+
+      case 47:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_47, 1, ops + 47);
+        break;
+
+      case 48:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_48, 1, ops + 48);
+        break;
+
+      case 49:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_49, 1, ops + 49);
+        break;
+
+      case 50:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_50, 1, ops + 50);
+        break;
+
+      case 51:
+        rc = MPI_Op_create(&idxdMPI_didiaddsq_51, 1, ops + 51);
+        break;
+
+      //[[[end]]]
+    }
+    if(rc != MPI_SUCCESS){
+      fprintf(stderr, "[%s.%d] ReproBLAS error: MPI_Op_create error: %d\n", __FILE__, __LINE__, rc);
+      MPI_Abort(MPI_COMM_WORLD, rc);
+      return 0;
+    }
+    ops_initialized[fold] = 1;
+  }
+  return ops[fold];
+}
