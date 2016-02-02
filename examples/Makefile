@@ -21,6 +21,8 @@ ifneq ($(MPICC),)
 	mpi_examples += MPI_sum_sine
 endif
 
+.PHONY: all clean
+
 all: $(examples) $(omp_examples) $(mpi_examples)
 
 OBJS   = $(patsubst %,%.o,$(examples))
