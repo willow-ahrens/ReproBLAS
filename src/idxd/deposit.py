@@ -269,61 +269,17 @@ class Deposit(Target):
       for i in range(max(unroll_width, 1)):
         code_block.write("for(j = 0; j < {} - 1; j++){{".format(self.fold_name))
         code_block.indent()
-        code_block.set_equal(self.s_vars[0], self.buffer_vars[:reg_width])
-        self.vec.add_blp_into(self.q_vars, self.s_vars[0], self.load_vars[0][i * reg_width:], reg_width)
-        code_block.set_equal(self.buffer_vars, self.q_vars[:reg_width])
-        code_block.set_equal(self.q_vars, self.vec.sub(self.s_vars[0], self.q_vars[:reg_width]))
-        code_block.set_equal(self.load_vars[0][i * reg_width:], self.vec.add(self.load_vars[0][i * reg_width:], self.q_vars[:reg_width]))
-        code_block.dedent()
+        code_block.set_equal(self.buffer_vars[:reg_width], self.vec.add(self.buffer_vars[:reg_width], self.load_vars[0][i * reg_width:]))
         code_block.write("}")
-        self.vec.add_blp_into(self.buffer_vars, self.buffer_vars, self.load_vars[0][i * reg_width:], reg_width)
+        code_block.set_equal(self.buffer_vars[:reg_width], self.vec.add(self.buffer_vars[:reg_width], self.load_vars[0][i * reg_width:]))
     else:
       for i in range(max(unroll_width, 1)):
         for j in range(fold - 1):
-          code_block.set_equal(self.q_vars, self.s_vars[j][:reg_width])
-          self.vec.add_blp_into(self.s_vars[j], self.s_vars[j], self.load_vars[0][i * reg_width:], reg_width)
-          code_block.set_equal(self.q_vars, self.vec.sub(self.q_vars, self.s_vars[j][:reg_width]))
-          code_block.set_equal(self.load_vars[0][i * reg_width:], self.vec.add(self.load_vars[0][i * reg_width:], self.q_vars[:reg_width]))
-        self.vec.add_blp_into(self.s_vars[fold - 1], self.s_vars[fold - 1], self.load_vars[0][i * reg_width:], reg_width)
+          code_block.set_equal(self.s_vars[j][:reg_width], self.vec.add(self.s_vars[j][:reg_width], self.load_vars[0][i * reg_width:]))
+        code_block.set_equal(self.s_vars[j][:reg_width], self.vec.add(self.s_vars[j][:reg_width], self.load_vars[0][i * reg_width:]))
 
   def process0(self, code_block, fold, reg_width, unroll_width):
-    if(fold == 0):
-      for i in range(max(unroll_width, 1)):
-        code_block.set_equal(self.s_vars[0], self.buffer0_vars[:reg_width])
-        self.vec.add_blp_into(self.q_vars, self.s_vars[0], self.vec.mul(self.load_vars[0][i * reg_width:], itertools.cycle(self.compression_vars)), reg_width)
-        code_block.set_equal(self.buffer0_vars, self.q_vars[:reg_width])
-        if self.data_type.is_complex:
-          code_block.set_equal(self.q_vars, self.vec.sub(self.s_vars[0], self.q_vars[:reg_width]))
-          code_block.set_equal(self.load_vars[0][i * reg_width:], self.vec.add(self.vec.add(self.load_vars[0][i * reg_width:], self.vec.mul(self.q_vars, itertools.cycle(self.expansion_vars))), self.vec.mul(self.q_vars, itertools.cycle(self.expansion_mask_vars))))
-        else:
-          code_block.set_equal(self.q_vars, self.vec.mul(self.vec.sub(self.s_vars[0], self.q_vars[:reg_width]), itertools.cycle(self.expansion_vars)))
-          code_block.set_equal(self.load_vars[0][i * reg_width:], self.vec.add(self.vec.add(self.load_vars[0][i * reg_width:], self.q_vars[:reg_width]), self.q_vars[:reg_width]))
-        code_block.write("for(j = 1; j < {} - 1; j++){{".format(self.fold_name))
-        code_block.indent()
-        code_block.set_equal(self.s_vars[0], self.buffer_vars[:reg_width])
-        self.vec.add_blp_into(self.q_vars, self.s_vars[0], self.load_vars[0][i * reg_width:], reg_width)
-        code_block.set_equal(self.buffer_vars, self.q_vars[:reg_width])
-        code_block.set_equal(self.q_vars, self.vec.sub(self.s_vars[0], self.q_vars[:reg_width]))
-        code_block.set_equal(self.load_vars[0][i * reg_width:], self.vec.add(self.load_vars[0][i * reg_width:], self.q_vars[:reg_width]))
-        code_block.dedent()
-        code_block.write("}")
-        self.vec.add_blp_into(self.buffer_vars, self.buffer_vars, self.load_vars[0][i * reg_width:], reg_width)
-    else:
-      for i in range(max(unroll_width, 1)):
-          code_block.set_equal(self.q_vars, self.s_vars[0][:reg_width])
-          self.vec.add_blp_into(self.s_vars[0], self.s_vars[0], self.vec.mul(self.load_vars[0][i * reg_width:], itertools.cycle(self.compression_vars)), reg_width)
-          if self.data_type.is_complex:
-            code_block.set_equal(self.q_vars, self.vec.sub(self.q_vars, self.s_vars[0][:reg_width]))
-            code_block.set_equal(self.load_vars[0][i * reg_width:], self.vec.add(self.vec.add(self.load_vars[0][i * reg_width:], self.vec.mul(self.q_vars[:reg_width], itertools.cycle(self.expansion_vars))), self.vec.mul(self.q_vars[:reg_width], itertools.cycle(self.expansion_mask_vars))))
-          else:
-            code_block.set_equal(self.q_vars, self.vec.mul(self.vec.sub(self.q_vars, self.s_vars[0][:reg_width]), itertools.cycle(self.expansion_vars)))
-            code_block.set_equal(self.load_vars[0][i * reg_width:], self.vec.add(self.vec.add(self.load_vars[0][i * reg_width:], self.q_vars[:reg_width]), self.q_vars[:reg_width]))
-          for j in range(1, fold - 1):
-            code_block.set_equal(self.q_vars, self.s_vars[j][:reg_width])
-            self.vec.add_blp_into(self.s_vars[j], self.s_vars[j], self.load_vars[0][i * reg_width:], reg_width)
-            code_block.set_equal(self.q_vars, self.vec.sub(self.q_vars, self.s_vars[j][:reg_width]))
-            code_block.set_equal(self.load_vars[0][i * reg_width:], self.vec.add(self.load_vars[0][i * reg_width:], self.q_vars[:reg_width]))
-          self.vec.add_blp_into(self.s_vars[fold - 1], self.s_vars[fold - 1], self.load_vars[0][i * reg_width:], reg_width)
+    self.process(code_block, fold, reg_width, unroll_width)
 
   def set_daz_ftz(self, code_block):
     code_block.write("if(!idxd_{}mdenorm({}, {})){{".format(self.data_type.name_char, self.fold_name, self.priY_name))
