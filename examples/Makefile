@@ -1,5 +1,5 @@
-CC = gcc-5
-LDC = gcc-5
+CC = gcc
+LDC = gcc
 
 #MPICC = mpicc
 MPILDC = $(MPICC)
