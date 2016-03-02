@@ -84,6 +84,20 @@ double complex zmul(double complex a, double complex b);
 
 float complex cmul(float complex a, float complex b);
 
+void util_dsplit(double a, double *a_l, double *a_t);
+void util_zsplit(double complex a, double complex *a_l, double complex *a_t);
+void util_ssplit(float a, float *a_l, float *a_t);
+void util_csplit(float complex a, float complex *a_l, float complex *a_t);
+
+void util_dvec_dotsplit_twins(int N, double *V, int incV, double *U, int incU);
+void util_dvec_dotsplit_couples(int N, double *V, int incV, double *U, int incU);
+void util_zvec_dotsplit_twins(int N, double complex *V, int incV, double complex *U, int incU);
+void util_zvec_dotsplit_couples(int N, double complex *V, int incV, double complex *U, int incU);
+void util_svec_dotsplit_twins(int N, float *V, int incV, float *U, int incU);
+void util_svec_dotsplit_couples(int N, float *V, int incV, float *U, int incU);
+void util_cvec_dotsplit_twins(int N, float complex *V, int incV, float complex *U, int incU);
+void util_cvec_dotsplit_couples(int N, float complex *V, int incV, float complex *U, int incU);
+
 #ifndef MIN
   #define MIN(A, B) (((A) < (B))? (A): (B))
 #endif
@@ -179,5 +193,88 @@ double *util_dmat_op(char Order, char TransA, int opM, int opN, double *A, int l
 double complex *util_zmat_op(char Order, char TransA, int opM, int opN, double complex *A, int lda);
 float *util_smat_op(char Order, char TransA, int opM, int opN, float *A, int lda);
 float complex *util_cmat_op(char Order, char TransA, int opM, int opN, float complex *A, int lda);
+
+/*
+ * Purpose
+ * =======
+ *
+ * This routine generates the test vectors X and Y for C_ZDOT.
+ *
+ * Arguments
+ * =========
+ * 
+ * n       (input) int
+ *         The length of the vectors X and Y.
+ *
+ * n_fix2  (input) int
+ *         Number of pairs in the vectors X and Y that are fixed in value,
+ *
+ * n_mix   (input) int
+ *         Number of pairs in the vectors X and Y with X(i) fixed
+ *         and Y(i) free in value.
+ *
+ * norm    (input) int
+ *         = -1 : the vectors are scaled with norms near underflow.
+ *         = 0  : the vectors have norms of order 1.
+ *         = 1  : the vectors are scaled with norms near overflow.
+ *
+ * conj    (input) if 'c' or 'C', conjugate
+ *
+ * alpha   (input/output) void*
+ *         If alpha_flag = 1, alpha is input.
+ *         If alpha_flag = 0, alpha is output.
+ *
+ * alpha_flag (input) int
+ *         = 0 : alpha is free, and is output.
+ *         = 1 : alpha is fixed on input.
+ *
+ * beta    (input) void*
+ *         If beta_flag = 1, beta is input.
+ *         If beta_flag = 0, beta is output.
+ *
+ * beta_flag (input) int
+ *         = 0 : beta is free, and is output.
+ *         = 1 : beta is fixed on input.
+ *
+ * x       (input/output) void*
+ *
+ * y       (input/output) void*
+ *
+ * seed    (input/output) int* 
+ *         The seed for the random number generator.
+ * 
+ * r       (output) void*
+ *         The generated scalar r that will be used as an input to DOT.
+ *
+ * r_true_l (output) double[]
+ *         The leading (real,imaginary) parts of the truth in double-double.
+ *
+ * r_true_t (output) double[]
+ *         The trailing (real,imaginary) parts of the truth in double-double.
+ *
+ */
+void util_xblas_ddot_fill(int n, int n_fix2, int n_mix, int norm,
+                  char conj,
+                  double *alpha, int alpha_flag, double *beta, int beta_flag,
+                  double *x, double *y, int *seed,
+                  double *r, double *r_true_l, double *r_true_t);
+
+void util_xblas_zdot_fill(int n, int n_fix2, int n_mix, int norm,
+                  char conj,
+                  void *alpha, int alpha_flag, void *beta, int beta_flag,
+                  void *x, void *y, int *seed,
+                  void *r, double r_true_l[], double r_true_t[]);
+
+void util_xblas_sdot_fill(int n, int n_fix2, int n_mix, int norm,
+                  char conj,
+                  float *alpha, int alpha_flag, float *beta, int beta_flag,
+                  float *x, float *y, int *seed,
+                  float *r, double *r_true_l, double *r_true_t);
+
+void util_xblas_cdot_fill(int n, int n_fix2, int n_mix, int norm,
+                  char conj,
+                  void *alpha, int alpha_flag, void *beta, int beta_flag,
+                  void *x, void *y, int *seed,
+                  void *r, double r_true_l[], double r_true_t[]);
 
 #endif

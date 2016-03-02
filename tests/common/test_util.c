@@ -191,6 +191,104 @@ float complex cmul(float complex a, float complex b){
   return c;
 }
 
+void util_dsplit(double a, double *a_l, double *a_t){
+  if (fabs(a) >= DBL_MAX/(1ull << ((DBL_MANT_DIG + 3)/2))){
+    util_dsplit(a/(1ull << ((DBL_MANT_DIG + 3)/2)), a_l, a_t);
+    *a_l *= (1ull << ((DBL_MANT_DIG + 3)/2));
+    *a_t *= (1ull << ((DBL_MANT_DIG + 3)/2));
+    return;
+  }
+  double t = ((double)((1ull << ((DBL_MANT_DIG + 1)/2)) + 1)) * a;
+  *a_l = t - (t - a);
+  *a_t = a - *a_l;
+}
+
+void util_zsplit(double complex a, double complex *a_l, double complex *a_t){
+  util_dsplit(((double*)&a)[0], ((double*)a_l) + 0, ((double*)a_t) + 0);
+  util_dsplit(((double*)&a)[1], ((double*)a_l) + 1, ((double*)a_t) + 1);
+}
+
+void util_ssplit(float a, float *a_l, float *a_t){
+  if (fabsf(a) >= FLT_MAX/(1ull << ((FLT_MANT_DIG + 3)/2))){
+    util_ssplit(a/(1ull << ((FLT_MANT_DIG + 3)/2)), a_l, a_t);
+    *a_l *= (1ull << ((FLT_MANT_DIG + 3)/2));
+    *a_t *= (1ull << ((FLT_MANT_DIG + 3)/2));
+    return;
+  }
+  float t = ((float)((1ull << ((FLT_MANT_DIG + 1)/2)) + 1)) * a;
+  *a_l = t - (t - a);
+  *a_t = a - *a_l;
+}
+
+void util_csplit(float complex a, float complex *a_l, float complex *a_t){
+  util_ssplit(((float*)&a)[0], ((float*)a_l) + 0, ((float*)a_t) + 0);
+  util_ssplit(((float*)&a)[1], ((float*)a_l) + 1, ((float*)a_t) + 1);
+}
+
+void util_dvec_dotsplit_twins(int N, double *V, int incV, double *U, int incU){
+  for(int i = 0; i < N; i++){
+    util_dsplit(V[i], U + 0, U + 2 * incU);
+    util_dsplit(V[i], U + incU, U + 3 * incU);
+    U += 4 * incU;
+  }
+}
+
+void util_dvec_dotsplit_couples(int N, double *V, int incV, double *U, int incU){
+  for(int i = 0; i < N; i++){
+    util_dsplit(V[i], U + 0, U + incU);
+    util_dsplit(V[i], U + 2 * incU, U + 3 * incU);
+    U += 4 * incU;
+  }
+}
+
+void util_zvec_dotsplit_twins(int N, double complex *V, int incV, double complex *U, int incU){
+  for(int i = 0; i < N; i++){
+    util_zsplit(V[i], U + 0, U + 2 * incU);
+    util_zsplit(V[i], U + incU, U + 3 * incU);
+    U += 4 * incU;
+  }
+}
+
+void util_zvec_dotsplit_couples(int N, double complex *V, int incV, double complex *U, int incU){
+  for(int i = 0; i < N; i++){
+    util_zsplit(V[i], U + 0, U + incU);
+    util_zsplit(V[i], U + 2 * incU, U + 3 * incU);
+    U += 4 * incU;
+  }
+}
+
+void util_svec_dotsplit_twins(int N, float *V, int incV, float *U, int incU){
+  for(int i = 0; i < N; i++){
+    util_ssplit(V[i], U + 0, U + 2 * incU);
+    util_ssplit(V[i], U + incU, U + 3 * incU);
+    U += 4 * incU;
+  }
+}
+
+void util_svec_dotsplit_couples(int N, float *V, int incV, float *U, int incU){
+  for(int i = 0; i < N; i++){
+    util_ssplit(V[i], U + 0, U + incU);
+    util_ssplit(V[i], U + 2 * incU, U + 3 * incU);
+    U += 4 * incU;
+  }
+}
+
+void util_cvec_dotsplit_twins(int N, float complex *V, int incV, float complex *U, int incU){
+  for(int i = 0; i < N; i++){
+    util_csplit(V[i], U + 0, U + 2 * incU);
+    util_csplit(V[i], U + incU, U + 3 * incU);
+    U += 4 * incU;
+  }
+}
+
+void util_cvec_dotsplit_couples(int N, float complex *V, int incV, float complex *U, int incU){
+  for(int i = 0; i < N; i++){
+    util_csplit(V[i], U + 0, U + incU);
+    util_csplit(V[i], U + 2 * incU, U + 3 * incU);
+    U += 4 * incU;
+  }
+}
+
 int util_dsoftequals(double a, double b, double bound){
   if(isnan(a) && isnan(b)){
     return 1;
