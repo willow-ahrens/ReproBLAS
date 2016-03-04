@@ -5,6 +5,7 @@ TARGETS := validate_internal_damax$(EXE) validate_internal_zamax$(EXE) validate_
            validate_internal_dmindex$(EXE) validate_internal_smindex$(EXE) \
            verify_daugsum$(EXE) verify_zaugsum$(EXE) verify_saugsum$(EXE) verify_caugsum$(EXE) \
            validate_internal_daugsum$(EXE) validate_internal_zaugsum$(EXE) validate_internal_saugsum$(EXE) validate_internal_caugsum$(EXE)\
+           validate_xblas_ddot$(EXE) validate_xblas_zdot$(EXE)\
            verify_didssq$(EXE) verify_dizssq$(EXE) verify_sisssq$(EXE) verify_sicssq$(EXE) \
            corroborate_rdgemv$(EXE) \
            corroborate_rdgemm$(EXE) \
@@ -40,6 +41,10 @@ validate_internal_daugsum$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) validate_int
 validate_internal_zaugsum$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) validate_internal_zaugsum.o
 validate_internal_saugsum$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) validate_internal_saugsum.o
 validate_internal_caugsum$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) validate_internal_caugsum.o
+validate_xblas_ddot$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) validate_xblas_ddot.o
+validate_xblas_zdot$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) validate_xblas_zdot.o
+validate_xblas_sdot$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) validate_xblas_sdot.o
+validate_xblas_cdot$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) validate_xblas_cdot.o
 verify_didssq$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) verify_didssq.o
 verify_dizssq$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) verify_dizssq.o
 verify_sisssq$(EXE)_DEPS = $$(LIBTEST) $$(LIBREPROBLAS) verify_sisssq.o
