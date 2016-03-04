@@ -4,8 +4,8 @@ TARGETS := validate_internal_damax$(EXE) validate_internal_zamax$(EXE) validate_
            validate_internal_dindex$(EXE) validate_internal_sindex$(EXE) \
            validate_internal_dmindex$(EXE) validate_internal_smindex$(EXE) \
            verify_daugsum$(EXE) verify_zaugsum$(EXE) verify_saugsum$(EXE) verify_caugsum$(EXE) \
-           validate_internal_daugsum$(EXE) validate_internal_zaugsum$(EXE) validate_internal_saugsum$(EXE) validate_internal_caugsum$(EXE)\
-           validate_xblas_ddot$(EXE) validate_xblas_zdot$(EXE)\
+           validate_internal_daugsum$(EXE) validate_internal_zaugsum$(EXE) validate_internal_saugsum$(EXE) validate_internal_caugsum$(EXE) \
+           validate_xblas_ddot$(EXE) validate_xblas_zdot$(EXE) validate_xblas_sdot$(EXE) \
            verify_didssq$(EXE) verify_dizssq$(EXE) verify_sisssq$(EXE) verify_sicssq$(EXE) \
            corroborate_rdgemv$(EXE) \
            corroborate_rdgemm$(EXE) \
