@@ -52,7 +52,7 @@ int validate_xblas_zdot(int fold, int N, double complex* X, int incX, double com
 
   idxd_zizconv(fold, (double*)&r, ires);
   (wrap_ziaugsum_func(func))(fold, N, X, incX, Y, incY, ires);
-  idxd_zziconv_sub(fold, (double*)&res, ires);
+  idxd_zziconv_sub(fold, ires, (double*)&res);
   error = res - ref;
   bound = wrap_zaugsum_bound(fold, N, func, X, incX, Y, incY, res, ref);
   if (!util_zsoftequals(res, ref, bound)) {
