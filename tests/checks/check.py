@@ -273,6 +273,16 @@ check_suite.add_checks([checks.ValidateInternalRZDOTUTest(),\
                          "++inf_nan",\
                          "+-inf_nan"]])
 
+check_suite.add_checks([checks.ValidateXBLASRDDOTTest(),\
+                        checks.ValidateXBLASRZDOTUTest(),\
+                        checks.ValidateXBLASRZDOTCTest(),\
+                        checks.ValidateXBLASRSDOTTest(),\
+                        checks.ValidateXBLASRCDOTUTest(),\
+                        checks.ValidateXBLASRCDOTCTest()],\
+                       ["N", "incX", "incY", "norm"],\
+                       [[1, 2, 3, 4, 5, 6, 7, 8, 15, 16, 63, 64, 4095, 4096], [1, 2, 4], [1, 2, 4], [-1, 0, 1]])
+
+
 check_suite.add_checks([checks.VerifyRDSUMTest(),\
                         checks.VerifyRDASUMTest(),\
                         checks.VerifyDIDIADDTest(),\

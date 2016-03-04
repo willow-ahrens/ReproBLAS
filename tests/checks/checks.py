@@ -383,6 +383,36 @@ class ValidateExternalRCDOTCTest(CheckTest):
   executable = "tests/checks/validate_external_rcblas1"
   name = "validate_external_rcdotc"
 
+class ValidateXBLASRDDOTTest(CheckTest):
+  base_flags = "-w rddot"
+  executable = "tests/checks/validate_xblas_ddot"
+  name = "validate_xblas_rddot"
+
+class ValidateXBLASRZDOTUTest(CheckTest):
+  base_flags = "-w rzdotu"
+  executable = "tests/checks/validate_xblas_zdot"
+  name = "validate_xblas_rzdotu"
+
+class ValidateXBLASRZDOTCTest(CheckTest):
+  base_flags = "-w rzdotc"
+  executable = "tests/checks/validate_xblas_zdot"
+  name = "validate_xblas_rzdotc"
+
+class ValidateXBLASRSDOTTest(CheckTest):
+  base_flags = "-w rsdot"
+  executable = "tests/checks/validate_xblas_sdot"
+  name = "validate_xblas_rsdot"
+
+class ValidateXBLASRCDOTUTest(CheckTest):
+  base_flags = "-w rcdotu"
+  executable = "tests/checks/validate_xblas_cdot"
+  name = "validate_xblas_rcdotu"
+
+class ValidateXBLASRCDOTCTest(CheckTest):
+  base_flags = "-w rcdotc"
+  executable = "tests/checks/validate_xblas_cdot"
+  name = "validate_xblas_rcdotc"
+
 class VerifyDIDIADDTest(CheckTest):
   base_flags = "-w didiadd"
   executable = "tests/checks/verify_daugsum"
