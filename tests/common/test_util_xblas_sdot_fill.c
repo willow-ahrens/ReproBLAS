@@ -100,7 +100,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdlib.h>
 #include <string.h>
 
-void BLAS_error(const char *rname, int iflag, int ival, char *form, ...)
+static void BLAS_error(const char *rname, int iflag, int ival, char *form, ...)
 /*
  * Argument
  * ========
@@ -152,7 +152,7 @@ enum blas_conj_type {
 #define MAX(a,b) (((a) > (b)) ? (a) : (b))
 #define MIN(a,b) (((a) < (b)) ? (a) : (b))
 
-double power(int i1, int i2)
+static double power(int i1, int i2)
 {
   int i, j;
   double r = 1.0;
@@ -169,7 +169,7 @@ double power(int i1, int i2)
   return r;
 }
 
-double xrand(int *is)
+static double xrand(int *is)
 /*
  * XRAND returns a uniformly distributed pseudorandom number in (0, 1).
  * IS is the seed, and is changed with each call.  The period of this
@@ -190,7 +190,7 @@ double xrand(int *is)
   return ret_val;
 }
 
-int FixedBits(double r_true_l, double r_true_t)
+static int FixedBits(double r_true_l, double r_true_t)
 /*
  * Purpose
  * =======
@@ -255,8 +255,8 @@ int FixedBits(double r_true_l, double r_true_t)
 }                               /* FixedBits */
 
 
-void ddadd(double dda_l, double dda_t, double ddb_l, double ddb_t,
-           double *ddc_l, double *ddc_t)
+static void ddadd(double dda_l, double dda_t, double ddb_l, double ddb_t,
+                  double *ddc_l, double *ddc_t)
 {
 /* Purpose
  * =======
@@ -279,8 +279,8 @@ void ddadd(double dda_l, double dda_t, double ddb_l, double ddb_t,
 
 }                               /* end ddadd */
 
-void ddmuld(double dda_l, double dda_t, double db,
-            double *ddc_l, double *ddc_t)
+static void ddmuld(double dda_l, double dda_t, double db,
+                   double *ddc_l, double *ddc_t)
 {
 /* Purpose
  * =======
@@ -319,8 +319,8 @@ void ddmuld(double dda_l, double dda_t, double db,
 
 }                               /* end ddmuld */
 
-void dddiv(double dda_l, double dda_t,
-           double ddb_l, double ddb_t, double *ddc_l, double *ddc_t)
+static void dddiv(double dda_l, double dda_t,
+                  double ddb_l, double ddb_t, double *ddc_l, double *ddc_t)
 {
 /* Purpose
  * =======
@@ -376,8 +376,8 @@ void dddiv(double dda_l, double dda_t,
 }                               /* end dddiv */
 
 
-void z_ddmuld(double *dda_l, double *dda_t, double *db,
-              double *ddc_l, double *ddc_t)
+static void z_ddmuld(double *dda_l, double *dda_t, double *db,
+                     double *ddc_l, double *ddc_t)
 {
 /* Purpose
  * =======
@@ -401,8 +401,8 @@ void z_ddmuld(double *dda_l, double *dda_t, double *db,
   ddc_t[1] = t_t;
 }
 
-void z_dddivd(double *dda_l, double *dda_t, double *db,
-              double *ddc_l, double *ddc_t)
+static void z_dddivd(double *dda_l, double *dda_t, double *db,
+                     double *ddc_l, double *ddc_t)
 {
 /* Purpose
  * =======
@@ -433,9 +433,9 @@ void z_dddivd(double *dda_l, double *dda_t, double *db,
   dddiv(t_l[1], t_t[1], d_l, d_t, &ddc_l[1], &ddc_t[1]);
 }
 
-void BLAS_sdot_x(enum blas_conj_type conj, int n, float alpha,
-		 const float *x, int incx, float beta,
-		 const float *y, int incy, float *r, enum blas_prec_type prec)
+static void BLAS_sdot_x(enum blas_conj_type conj, int n, float alpha,
+                        const float *x, int incx, float beta,
+                        const float *y, int incy, float *r, enum blas_prec_type prec)
 
 /*
  * Purpose
