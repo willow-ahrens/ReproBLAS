@@ -99,7 +99,12 @@ def flags(params, args):
 
 def get_vectorization(verbose="false"):
   if not get_vectorization.vectorization:
-    getter_file = open(os.path.join(top, "scripts/getter.json"), "r")
+    try:
+      getter_file = open(os.path.join(top, "scripts/getter.json"), "r")
+    except (IOError, FileNotFoundError):
+      print("Error: {} not found.".format(os.path.join(top, "scripts/getter.json")))
+      print('Hint: Did you forget to run "make update"?')
+      raise
     getter = json.load(getter_file)
     getter_file.close()
     get_vectorization.vectorization = getter["vectorization"]
@@ -108,7 +113,12 @@ get_vectorization.vectorization = None
 
 def get_dimaxindex(verbose="false"):
   if not get_dimaxindex.dimaxindex:
-    getter_file = open(os.path.join(top, "scripts/getter.json"), "r")
+    try:
+      getter_file = open(os.path.join(top, "scripts/getter.json"), "r")
+    except (IOError, FileNotFoundError):
+      print("Error: {} not found.".format(os.path.join(top, "scripts/getter.json")))
+      print('Hint: Did you forget to run "make update"?')
+      raise
     getter = json.load(getter_file)
     getter_file.close()
     get_dimaxindex.dimaxindex = getter["dimaxindex"]
@@ -117,7 +127,12 @@ get_dimaxindex.dimaxindex = None
 
 def get_simaxindex(verbose="false"):
   if not get_simaxindex.simaxindex:
-    getter_file = open(os.path.join(top, "scripts/getter.json"), "r")
+    try:
+      getter_file = open(os.path.join(top, "scripts/getter.json"), "r")
+    except (IOError, FileNotFoundError):
+      print("Error: {} not found.".format(os.path.join(top, "scripts/getter.json")))
+      print('Hint: Did you forget to run "make update"?')
+      raise
     getter = json.load(getter_file)
     getter_file.close()
     get_simaxindex.simaxindex = getter["simaxindex"]
@@ -126,7 +141,12 @@ get_simaxindex.simaxindex = None
 
 def get_dimaxfold(verbose="false"):
   if not get_dimaxfold.dimaxfold:
-    getter_file = open(os.path.join(top, "scripts/getter.json"), "r")
+    try:
+      getter_file = open(os.path.join(top, "scripts/getter.json"), "r")
+    except (IOError, FileNotFoundError):
+      print("Error: {} not found.".format(os.path.join(top, "scripts/getter.json")))
+      print('Hint: Did you forget to run "make update"?')
+      raise
     getter = json.load(getter_file)
     getter_file.close()
     get_dimaxfold.dimaxfold = getter["dimaxfold"]
@@ -135,7 +155,12 @@ get_dimaxfold.dimaxfold = None
 
 def get_simaxfold(verbose="false"):
   if not get_simaxfold.simaxfold:
-    getter_file = open(os.path.join(top, "scripts/getter.json"), "r")
+    try:
+      getter_file = open(os.path.join(top, "scripts/getter.json"), "r")
+    except (IOError, FileNotFoundError):
+      print("Error: {} not found.".format(os.path.join(top, "scripts/getter.json")))
+      print('Hint: Did you forget to run "make update"?')
+      raise
     getter = json.load(getter_file)
     getter_file.close()
     get_simaxfold.simaxfold = getter["simaxfold"]
@@ -144,7 +169,12 @@ get_simaxfold.simaxfold = None
 
 def get_didefaultfold(verbose="false"):
   if not get_didefaultfold.didefaultfold:
-    getter_file = open(os.path.join(top, "scripts/getter.json"), "r")
+    try:
+      getter_file = open(os.path.join(top, "scripts/getter.json"), "r")
+    except (IOError, FileNotFoundError):
+      print("Error: {} not found.".format(os.path.join(top, "scripts/getter.json")))
+      print('Hint: Did you forget to run "make update"?')
+      raise
     getter = json.load(getter_file)
     getter_file.close()
     get_didefaultfold.didefaultfold = getter["didefaultfold"]
@@ -153,7 +183,12 @@ get_didefaultfold.didefaultfold = None
 
 def get_sidefaultfold(verbose="false"):
   if not get_sidefaultfold.sidefaultfold:
-    getter_file = open(os.path.join(top, "scripts/getter.json"), "r")
+    try:
+      getter_file = open(os.path.join(top, "scripts/getter.json"), "r")
+    except (IOError, FileNotFoundError):
+      print("Error: {} not found.".format(os.path.join(top, "scripts/getter.json")))
+      print('Hint: Did you forget to run "make update"?')
+      raise
     getter = json.load(getter_file)
     getter_file.close()
     get_sidefaultfold.sidefaultfold = getter["sidefaultfold"]
@@ -162,7 +197,12 @@ get_sidefaultfold.sidefaultfold = None
 
 def get_diendurance(verbose="false"):
   if not get_diendurance.diendurance:
-    getter_file = open(os.path.join(top, "scripts/getter.json"), "r")
+    try:
+      getter_file = open(os.path.join(top, "scripts/getter.json"), "r")
+    except (IOError, FileNotFoundError):
+      print("Error: {} not found.".format(os.path.join(top, "scripts/getter.json")))
+      print('Hint: Did you forget to run "make update"?')
+      raise
     getter = json.load(getter_file)
     getter_file.close()
     get_diendurance.diendurance = getter["diendurance"]
@@ -171,7 +211,12 @@ get_diendurance.diendurance = None
 
 def get_siendurance(verbose="false"):
   if not get_siendurance.siendurance:
-    getter_file = open(os.path.join(top, "scripts/getter.json"), "r")
+    try:
+      getter_file = open(os.path.join(top, "scripts/getter.json"), "r")
+    except (IOError, FileNotFoundError):
+      print("Error: {} not found.".format(os.path.join(top, "scripts/getter.json")))
+      print('Hint: Did you forget to run "make update"?')
+      raise
     getter = json.load(getter_file)
     getter_file.close()
     get_siendurance.siendurance = getter["siendurance"]

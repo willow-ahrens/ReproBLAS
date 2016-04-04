@@ -13,8 +13,9 @@ Installation:
 4.    Python is recommended for installation. If python is installed, ReproBLAS
     will use code generation during installation. If python is not installed,
     ReproBLAS will use pre-generated files and you can skip to step 7.
-5.    If python is installed, first type 'make update'. This will make all of
-    the configuration settings available to the python generators.
+5.    If python is installed: from {ReproBLAS_ROOT}, type 'make update'. This
+    will make all of the configuration settings available to the python
+    generators.
 6.    From {ReproBLAS_ROOT}, type 'make'.
 7.    From {ReproBLAS_ROOT}, type 'make install'.
 8.    To verify installation, try compiling the examples. From
