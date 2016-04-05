@@ -66,4 +66,5 @@ void wrap_ref_rzgemv(int fold, char Order, char TransA, int M, int N, double com
   }
   free(YI);
   free(opA);
+  free(opX);
 }

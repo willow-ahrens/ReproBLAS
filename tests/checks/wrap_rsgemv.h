@@ -59,4 +59,5 @@ void wrap_ref_rsgemv(int fold, char Order, char TransA, int M, int N, float alph
   }
   free(YI);
   free(opA);
+  free(opX);
 }

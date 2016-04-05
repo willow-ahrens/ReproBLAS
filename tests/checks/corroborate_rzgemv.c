@@ -123,6 +123,8 @@ int corroborate_rzgemv(int fold, char Order, char TransA, int M, int N, double c
     }
     num_blocks *= 2;
   }
+  free(res);
+  free(Ires);
   return 0;
 }
 
