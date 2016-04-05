@@ -1002,9 +1002,8 @@ static double ulp(float a)
  * Compute the unit last place of a single precision number.
  */
 {
-  double f;
   int e;
-  f = frexp(a, &e);
+  frexp(a, &e);
   return power(2, e - BITS_S);
 }
 

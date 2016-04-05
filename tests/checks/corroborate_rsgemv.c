@@ -188,7 +188,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   util_svec_fill(opN, X, incX, FillX, RealScaleX, ImagScaleX);
   util_svec_fill(opM, Y, incY, FillY, RealScaleY, ImagScaleY);
   if(RealBeta == 0.0){
-    memset(YI, 0, opM * idxd_sinum(fold._int.value));
+    memset(YI, 0, opM * idxd_sisize(fold._int.value));
   }else{
     for(i = 0; i < opM; i++){
       idxd_sisconv(fold._int.value, Y[i * incY] * RealBeta, YI + i * incY * idxd_sinum(fold._int.value));

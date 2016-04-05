@@ -189,7 +189,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   util_zvec_fill(opN, X, incX, FillX, RealScaleX, ImagScaleX);
   util_zvec_fill(opM, Y, incY, FillY, RealScaleY, ImagScaleY);
   if(beta == 0.0){
-    memset(YI, 0, opM * idxd_zinum(fold._int.value));
+    memset(YI, 0, opM * idxd_zisize(fold._int.value));
   }else if (beta == 1.0){
     for(i = 0; i < opM; i++){
       idxd_zizconv(fold._int.value, Y + i * incY, YI + i * incY * idxd_zinum(fold._int.value));

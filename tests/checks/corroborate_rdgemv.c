@@ -188,7 +188,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   util_dvec_fill(opN, X, incX, FillX, RealScaleX, ImagScaleX);
   util_dvec_fill(opM, Y, incY, FillY, RealScaleY, ImagScaleY);
   if(RealBeta == 0.0){
-    memset(YI, 0, opM * idxd_dinum(fold._int.value));
+    memset(YI, 0, opM * idxd_disize(fold._int.value));
   }else{
     for(i = 0; i < opM; i++){
       idxd_didconv(fold._int.value, Y[i * incY] * RealBeta, YI + i * incY * idxd_dinum(fold._int.value));

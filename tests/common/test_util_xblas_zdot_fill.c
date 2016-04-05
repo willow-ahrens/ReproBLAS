@@ -479,9 +479,8 @@ static double ulp(double a)
  * Compute the unit last place of a double precision number.
  */
 {
-  double f;
   int e;
-  f = frexp(a, &e);
+  frexp(a, &e);
   return power(2, e - BITS_D);
 }
 
