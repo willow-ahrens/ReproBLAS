@@ -40,6 +40,6 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
     }
 
   }
-  free(X)
+  free(X);
   return 0;
 }
