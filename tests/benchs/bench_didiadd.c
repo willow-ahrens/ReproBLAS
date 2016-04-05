@@ -81,6 +81,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   util_dvec_fill(N * preN._int.value, preX, incX, FillX, RealScaleX, ImagScaleX);
 
   X = (double_indexed*)util_dvec_alloc(N * idxd_dinum(fold._int.value), 1);
+  memset(X, 0, N * idxd_disize(fold._int.value));
   for(i = 0; i < N; i++){
     idxdBLAS_didsum(fold._int.value, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_dinum(fold._int.value));
   }

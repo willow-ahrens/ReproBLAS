@@ -81,6 +81,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   util_cvec_fill(N * preN._int.value, preX, incX, FillX, RealScaleX, ImagScaleX);
 
   X = (float_complex_indexed*)util_cvec_alloc(N * idxd_cinum(fold._int.value), 1);
+  memset(X, 0, N * idxd_cisize(fold._int.value));
   for(i = 0; i < N; i++){
     idxdBLAS_cicsum(fold._int.value, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_cinum(fold._int.value));
   }

@@ -56,5 +56,6 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
       return 1;
     }
   }
+  free(X);
   return 0;
 }

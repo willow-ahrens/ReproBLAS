@@ -38,6 +38,8 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
       printf("idxd_ufp(%g) = %g != %g\n", X[i * incX], ufpX, bin);
       return 1;
     }
+
   }
+  free(X)
   return 0;
 }

@@ -81,6 +81,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   util_svec_fill(N * preN._int.value, preX, incX, FillX, RealScaleX, ImagScaleX);
 
   X = (float_indexed*)util_svec_alloc(N * idxd_sinum(fold._int.value), 1);
+  memset(X, 0, N * idxd_sisize(fold._int.value));
   for(i = 0; i < N; i++){
     idxdBLAS_sissum(fold._int.value, preN._int.value, preX + i * preN._int.value * incX, incX, X + i * idxd_sinum(fold._int.value));
   }
