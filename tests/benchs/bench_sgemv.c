@@ -73,6 +73,7 @@ int bench_matvec_fill_test(int argc, char** argv, char Order, char TransA, int M
   metric_load_double("d_fma", dN * dM);
   metric_dump();
 
+  free(A);
   free(X);
   free(Y);
   free(res);
