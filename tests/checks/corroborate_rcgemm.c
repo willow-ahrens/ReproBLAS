@@ -161,6 +161,8 @@ int corroborate_rcgemm(int fold, char Order, char TransA, char TransB, int M, in
     }
     num_blocks *= 2;
   }
+  free(res);
+  free(Ires);
   return 0;
 }
 

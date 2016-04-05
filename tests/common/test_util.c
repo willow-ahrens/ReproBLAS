@@ -466,9 +466,11 @@ static void sort(int N, compare_func compare, void *compare_data, swap_func swap
 
 static void elem_swap(void *a, void *b, size_t elem_size){
   void *t = malloc(elem_size);
-  memcpy(t, b, elem_size);
-  memcpy(b, a, elem_size);
-  memcpy(a, t, elem_size);
+  if(a != b){
+    memcpy(t, b, elem_size);
+    memcpy(b, a, elem_size);
+    memcpy(a, t, elem_size);
+  }
   free(t);
 }
 
