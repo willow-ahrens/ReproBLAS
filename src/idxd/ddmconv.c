@@ -39,10 +39,10 @@ double idxd_ddmconv(const int fold, const double* priX, const int incpriX, const
   int scaled;
   X_index = idxd_dmindex(priX);
   bins = idxd_dmbins(X_index);
-  if(X_index <= (3 * DBL_MANT_DIG - 1)/DIWIDTH){
-    scale_down = ldexp(0.5, 1 - (2 * DBL_MANT_DIG - DIWIDTH - 2));
-    scale_up = ldexp(0.5, 1 + (2 * DBL_MANT_DIG - DIWIDTH - 2));
-    scaled = MAX(MIN(fold, (3 * DBL_MANT_DIG - 1)/DIWIDTH - X_index), 0);
+  if(X_index <= (3 * DBL_MANT_DIG)/DIWIDTH){
+    scale_down = ldexp(0.5, 1 - (2 * DBL_MANT_DIG - DIWIDTH));
+    scale_up = ldexp(0.5, 1 + (2 * DBL_MANT_DIG - DIWIDTH));
+    scaled = MAX(MIN(fold, (3 * DBL_MANT_DIG)/DIWIDTH - X_index), 0);
     if(X_index == 0){
       Y += carX[0] * ((bins[0]/6.0) * scale_down * idxd_DMEXPANSION);
       Y += carX[inccarX] * ((bins[1]/6.0) * scale_down);
