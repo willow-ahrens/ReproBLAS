@@ -124,49 +124,6 @@ class Vectorization(object):
   def reset_SIMD_daz_ftz(self):
     raise(NotImplementedError())
 
-"""
-  ##TODO This is currently broken on wierd unroll sizes. fix that.
-  def iterate_unrolled_aligned(self, i_var, n_var, src_ptrs, src_incs, max_unroll, min_unroll, body):
-    align = False
-    if self.type_size > 1 and src_incs[0] == 1:
-      self.code_block.set_equal(i_var, ["((uintptr_t){0} & {1}) >> {2}".format(src_ptrs[0], self.byte_size - 1, int(math.floor(math.log(self.data_type.byte_size, 2))))])
-      self.code_block.write("if({0} != 0 && {0} < {1}){{".format(i_var, n_var))
-      self.code_block.indent()
-#      self.code_block.write("printf(\"v = %p\\n\", {0});".format(src_ptrs[0]))
-      body("{0}".format(i_var))
-      self.code_block.write("{0};".format(self.data_type.data_increment(src_ptrs, src_incs, i_var)))
-#      self.code_block.write("printf(\"v = %p, i = %d\\n\", {0}, {1});".format(src_ptrs[0], i_var))
-      self.code_block.dedent()
-      self.code_block.write("}else{")
-      self.code_block.indent()
-      self.code_block.set_equal(i_var, ["0"])
-      self.code_block.dedent()
-      self.code_block.write("}")
-      self.code_block.write("for(; {0} + {1} <= {2}; {0} += {1}, {3}){{".format(i_var, max_unroll, n_var, self.data_type.data_increment(src_ptrs, src_incs, max_unroll)))
-      align = True
-    else:
-      self.code_block.write("for({0} = 0; {0} + {1} <= {2}; {0} += {1}, {3}){{".format(i_var, max_unroll, n_var, self.data_type.data_increment(src_ptrs, src_incs, max_unroll)))
-    self.code_block.indent()
-    body(max_unroll, align)
-    self.code_block.dedent()
-    self.code_block.write("}")
-    unroll = max_unroll // 2
-    while(unroll >= self.type_size and unroll >= min_unroll):
-      self.code_block.write("if({0} + {1} <= {2}){{".format(i_var, unroll, n_var))
-      self.code_block.indent()
-      body(unroll, align)
-      self.code_block.write("{0} += {1}, {2};".format(i_var, unroll, self.data_type.data_increment(src_ptrs, src_incs, unroll)))
-      self.code_block.dedent()
-      self.code_block.write("}")
-      unroll //=2
-    if(unroll >= min_unroll):
-      self.code_block.write("if({0} < {1}){{".format(i_var, n_var))
-      self.code_block.indent()
-      body("({0} - {1})".format(n_var, i_var), align)
-      self.code_block.dedent()
-      self.code_block.write("}")
-"""
-
 class SISD(Vectorization):
   name = "SISD"
 
@@ -268,10 +225,10 @@ class SISD(Vectorization):
     return [real_src_var, imag_src_var]
 
   def sub(self, src_vars, amt_vars):
-    return ["{0} - {1}".format(src_var, amt_var) for (src_var, amt_var) in zip(src_vars, amt_vars)]
+    return ["({0} - {1})".format(src_var, amt_var) for (src_var, amt_var) in zip(src_vars, amt_vars)]
 
   def add(self, src_vars, amt_vars):
-    return ["{0} + {1}".format(src_var, amt_var) for (src_var, amt_var) in zip(src_vars, amt_vars)]
+    return ["({0} + {1})".format(src_var, amt_var) for (src_var, amt_var) in zip(src_vars, amt_vars)]
 
   def abs(self, src_vars):
     if self.data_type.base_type.name == "double":
@@ -280,10 +237,10 @@ class SISD(Vectorization):
       return ["fabsf({0})".format(src_var) for src_var in src_vars]
 
   def mul(self, src_vars, amt_vars):
-    return ["{0} * {1}".format(src_var, amt_var) for (src_var, amt_var) in zip(src_vars, amt_vars)]
+    return ["({0} * {1})".format(src_var, amt_var) for (src_var, amt_var) in zip(src_vars, amt_vars)]
 
   def div(self, src_vars, amt_vars):
-    return ["{0} / {1}".format(src_var, amt_var) for (src_var, amt_var) in zip(src_vars, amt_vars)]
+    return ["({0} / {1})".format(src_var, amt_var) for (src_var, amt_var) in zip(src_vars, amt_vars)]
 
   def max(self, src1_vars, src2_vars):
     return ["({0} > {1}? {0}: {1})".format(src1_var, src2_var) for (src1_var, src2_var) in zip(src1_vars, src2_vars)]
