@@ -22,10 +22,10 @@ cog.outl()
 
 cog.out(generate.generate(blockSize.BlockSize("smsssq", "N_block_MAX", 32, terminal.get_siendurance(), terminal.get_siendurance(), ["bench_rsnrm2_fold_{}".format(terminal.get_sidefaultfold())]), cog.inFile, args, params, mode))
 ]]]*/
-#ifdef __AVX__
+#if (defined(__AVX__) && !defined(reproBLAS_no__AVX__))
   #include <immintrin.h>
 
-#elif defined(__SSE2__)
+#elif (defined(__SSE2__) && !defined(reproBLAS_no__SSE2__))
   #include <emmintrin.h>
 
 #else
@@ -103,7 +103,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
       cog.out(generate.generate(depositSSq.DepositSSq(dataTypes.Float, "fold", "N_block", "X", "incX", "priY", "incpriY", "scl"), cog.inFile, args, params, mode))
       ]]]*/
     {
-      #ifdef __AVX__
+      #if (defined(__AVX__) && !defined(reproBLAS_no__AVX__))
         __m256 scale_mask_inv = _mm256_set1_ps(1.0 / scl);
         __m256 blp_mask_tmp;
         {
@@ -2765,7 +2765,7 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
             break;
         }
 
-      #elif defined(__SSE2__)
+      #elif (defined(__SSE2__) && !defined(reproBLAS_no__SSE2__))
         __m128 scale_mask_inv = _mm_set1_ps(1.0 / scl);
         __m128 blp_mask_tmp;
         {
@@ -6673,42 +6673,42 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   compression_0 = idxd_SMCOMPRESSION;
                   expansion_0 = idxd_SMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += 1){
-                    X_0 = X[0] * scale_mask_inv;
-                    X_0 = X_0 * X_0;
+                    X_0 = (X[0] * scale_mask_inv);
+                    X_0 = (X_0 * X_0);
 
                     q_0 = s_0_0;
-                    blp_tmp.f = X_0 * compression_0;
+                    blp_tmp.f = (X_0 * compression_0);
                     blp_tmp.i |= 1;
                     s_0_0 = s_0_0 + blp_tmp.f;
-                    q_0 = q_0 - s_0_0 * expansion_0;
-                    X_0 = X_0 + q_0 + q_0;
+                    q_0 = ((q_0 - s_0_0) * expansion_0);
+                    X_0 = ((X_0 + q_0) + q_0);
                     q_0 = s_1_0;
                     blp_tmp.f = X_0;
                     blp_tmp.i |= 1;
                     s_1_0 = s_1_0 + blp_tmp.f;
-                    q_0 = q_0 - s_1_0;
-                    X_0 = X_0 + q_0;
+                    q_0 = (q_0 - s_1_0);
+                    X_0 = (X_0 + q_0);
                     blp_tmp.f = X_0;
                     blp_tmp.i |= 1;
                     s_2_0 = s_2_0 + blp_tmp.f;
                   }
                 }else{
                   for(i = 0; i + 1 <= N_block; i += 1, X += 1){
-                    X_0 = X[0] * scale_mask_inv;
-                    X_0 = X_0 * X_0;
+                    X_0 = (X[0] * scale_mask_inv);
+                    X_0 = (X_0 * X_0);
 
                     q_0 = s_0_0;
                     blp_tmp.f = X_0;
                     blp_tmp.i |= 1;
                     s_0_0 = s_0_0 + blp_tmp.f;
-                    q_0 = q_0 - s_0_0;
-                    X_0 = X_0 + q_0;
+                    q_0 = (q_0 - s_0_0);
+                    X_0 = (X_0 + q_0);
                     q_0 = s_1_0;
                     blp_tmp.f = X_0;
                     blp_tmp.i |= 1;
                     s_1_0 = s_1_0 + blp_tmp.f;
-                    q_0 = q_0 - s_1_0;
-                    X_0 = X_0 + q_0;
+                    q_0 = (q_0 - s_1_0);
+                    X_0 = (X_0 + q_0);
                     blp_tmp.f = X_0;
                     blp_tmp.i |= 1;
                     s_2_0 = s_2_0 + blp_tmp.f;
@@ -6719,42 +6719,42 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   compression_0 = idxd_SMCOMPRESSION;
                   expansion_0 = idxd_SMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += incX){
-                    X_0 = X[0] * scale_mask_inv;
-                    X_0 = X_0 * X_0;
+                    X_0 = (X[0] * scale_mask_inv);
+                    X_0 = (X_0 * X_0);
 
                     q_0 = s_0_0;
-                    blp_tmp.f = X_0 * compression_0;
+                    blp_tmp.f = (X_0 * compression_0);
                     blp_tmp.i |= 1;
                     s_0_0 = s_0_0 + blp_tmp.f;
-                    q_0 = q_0 - s_0_0 * expansion_0;
-                    X_0 = X_0 + q_0 + q_0;
+                    q_0 = ((q_0 - s_0_0) * expansion_0);
+                    X_0 = ((X_0 + q_0) + q_0);
                     q_0 = s_1_0;
                     blp_tmp.f = X_0;
                     blp_tmp.i |= 1;
                     s_1_0 = s_1_0 + blp_tmp.f;
-                    q_0 = q_0 - s_1_0;
-                    X_0 = X_0 + q_0;
+                    q_0 = (q_0 - s_1_0);
+                    X_0 = (X_0 + q_0);
                     blp_tmp.f = X_0;
                     blp_tmp.i |= 1;
                     s_2_0 = s_2_0 + blp_tmp.f;
                   }
                 }else{
                   for(i = 0; i + 1 <= N_block; i += 1, X += incX){
-                    X_0 = X[0] * scale_mask_inv;
-                    X_0 = X_0 * X_0;
+                    X_0 = (X[0] * scale_mask_inv);
+                    X_0 = (X_0 * X_0);
 
                     q_0 = s_0_0;
                     blp_tmp.f = X_0;
                     blp_tmp.i |= 1;
                     s_0_0 = s_0_0 + blp_tmp.f;
-                    q_0 = q_0 - s_0_0;
-                    X_0 = X_0 + q_0;
+                    q_0 = (q_0 - s_0_0);
+                    X_0 = (X_0 + q_0);
                     q_0 = s_1_0;
                     blp_tmp.f = X_0;
                     blp_tmp.i |= 1;
                     s_1_0 = s_1_0 + blp_tmp.f;
-                    q_0 = q_0 - s_1_0;
-                    X_0 = X_0 + q_0;
+                    q_0 = (q_0 - s_1_0);
+                    X_0 = (X_0 + q_0);
                     blp_tmp.f = X_0;
                     blp_tmp.i |= 1;
                     s_2_0 = s_2_0 + blp_tmp.f;
@@ -6787,24 +6787,24 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   compression_0 = idxd_SMCOMPRESSION;
                   expansion_0 = idxd_SMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += 1){
-                    X_0 = X[0] * scale_mask_inv;
-                    X_0 = X_0 * X_0;
+                    X_0 = (X[0] * scale_mask_inv);
+                    X_0 = (X_0 * X_0);
 
                     s_0 = s_buffer[0];
-                    blp_tmp.f = X_0 * compression_0;
+                    blp_tmp.f = (X_0 * compression_0);
                     blp_tmp.i |= 1;
                     q_0 = s_0 + blp_tmp.f;
                     s_buffer[0] = q_0;
-                    q_0 = s_0 - q_0 * expansion_0;
-                    X_0 = X_0 + q_0 + q_0;
+                    q_0 = ((s_0 - q_0) * expansion_0);
+                    X_0 = ((X_0 + q_0) + q_0);
                     for(j = 1; j < fold - 1; j++){
                       s_0 = s_buffer[j];
                       blp_tmp.f = X_0;
                       blp_tmp.i |= 1;
                       q_0 = s_0 + blp_tmp.f;
                       s_buffer[j] = q_0;
-                      q_0 = s_0 - q_0;
-                      X_0 = X_0 + q_0;
+                      q_0 = (s_0 - q_0);
+                      X_0 = (X_0 + q_0);
                     }
                     blp_tmp.f = X_0;
                     blp_tmp.i |= 1;
@@ -6812,8 +6812,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   }
                 }else{
                   for(i = 0; i + 1 <= N_block; i += 1, X += 1){
-                    X_0 = X[0] * scale_mask_inv;
-                    X_0 = X_0 * X_0;
+                    X_0 = (X[0] * scale_mask_inv);
+                    X_0 = (X_0 * X_0);
 
                     for(j = 0; j < fold - 1; j++){
                       s_0 = s_buffer[j];
@@ -6821,8 +6821,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                       blp_tmp.i |= 1;
                       q_0 = s_0 + blp_tmp.f;
                       s_buffer[j] = q_0;
-                      q_0 = s_0 - q_0;
-                      X_0 = X_0 + q_0;
+                      q_0 = (s_0 - q_0);
+                      X_0 = (X_0 + q_0);
                     }
                     blp_tmp.f = X_0;
                     blp_tmp.i |= 1;
@@ -6834,24 +6834,24 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   compression_0 = idxd_SMCOMPRESSION;
                   expansion_0 = idxd_SMEXPANSION * 0.5;
                   for(i = 0; i + 1 <= N_block; i += 1, X += incX){
-                    X_0 = X[0] * scale_mask_inv;
-                    X_0 = X_0 * X_0;
+                    X_0 = (X[0] * scale_mask_inv);
+                    X_0 = (X_0 * X_0);
 
                     s_0 = s_buffer[0];
-                    blp_tmp.f = X_0 * compression_0;
+                    blp_tmp.f = (X_0 * compression_0);
                     blp_tmp.i |= 1;
                     q_0 = s_0 + blp_tmp.f;
                     s_buffer[0] = q_0;
-                    q_0 = s_0 - q_0 * expansion_0;
-                    X_0 = X_0 + q_0 + q_0;
+                    q_0 = ((s_0 - q_0) * expansion_0);
+                    X_0 = ((X_0 + q_0) + q_0);
                     for(j = 1; j < fold - 1; j++){
                       s_0 = s_buffer[j];
                       blp_tmp.f = X_0;
                       blp_tmp.i |= 1;
                       q_0 = s_0 + blp_tmp.f;
                       s_buffer[j] = q_0;
-                      q_0 = s_0 - q_0;
-                      X_0 = X_0 + q_0;
+                      q_0 = (s_0 - q_0);
+                      X_0 = (X_0 + q_0);
                     }
                     blp_tmp.f = X_0;
                     blp_tmp.i |= 1;
@@ -6859,8 +6859,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                   }
                 }else{
                   for(i = 0; i + 1 <= N_block; i += 1, X += incX){
-                    X_0 = X[0] * scale_mask_inv;
-                    X_0 = X_0 * X_0;
+                    X_0 = (X[0] * scale_mask_inv);
+                    X_0 = (X_0 * X_0);
 
                     for(j = 0; j < fold - 1; j++){
                       s_0 = s_buffer[j];
@@ -6868,8 +6868,8 @@ float idxdBLAS_smsssq(const int fold, const int N, const float *X, const int inc
                       blp_tmp.i |= 1;
                       q_0 = s_0 + blp_tmp.f;
                       s_buffer[j] = q_0;
-                      q_0 = s_0 - q_0;
-                      X_0 = X_0 + q_0;
+                      q_0 = (s_0 - q_0);
+                      X_0 = (X_0 + q_0);
                     }
                     blp_tmp.f = X_0;
                     blp_tmp.i |= 1;

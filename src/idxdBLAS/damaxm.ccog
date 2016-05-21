@@ -16,10 +16,10 @@ code_block = generate.CodeBlock()
 vectorizations.conditionally_include_vectorizations(code_block)
 cog.out(str(code_block))
 ]]]*/
-#ifdef __AVX__
+#if (defined(__AVX__) && !defined(reproBLAS_no__AVX__))
   #include <immintrin.h>
 
-#elif defined(__SSE2__)
+#elif (defined(__SSE2__) && !defined(reproBLAS_no__SSE2__))
   #include <emmintrin.h>
 
 #else
@@ -49,7 +49,7 @@ double idxdBLAS_damaxm(const int N, const double *X, const int incX, const doubl
   /*[[[cog
   cog.out(generate.generate(amaxm.AMaxM(dataTypes.Double, "N", "X", "incX", "Y", "incY", "(&amaxm)"), cog.inFile, args, params, mode))
   ]]]*/
-  #ifdef __AVX__
+  #if (defined(__AVX__) && !defined(reproBLAS_no__AVX__))
     __m256d abs_mask_tmp;
     {
       __m256d tmp;
@@ -227,7 +227,7 @@ double idxdBLAS_damaxm(const int N, const double *X, const int incX, const doubl
     max_buffer_tmp[0] = (max_buffer_tmp[0] > max_buffer_tmp[3] ? max_buffer_tmp[0]: max_buffer_tmp[3]);
     (&amaxm)[0] = max_buffer_tmp[0];
 
-  #elif defined(__SSE2__)
+  #elif (defined(__SSE2__) && !defined(reproBLAS_no__SSE2__))
     __m128d abs_mask_tmp;
     {
       __m128d tmp;
@@ -354,7 +354,7 @@ double idxdBLAS_damaxm(const int N, const double *X, const int incX, const doubl
       for(i = 0; i + 1 <= N; i += 1, X += 1, Y += 1){
         X_0 = X[0];
         Y_0 = Y[0];
-        X_0 = fabs(X_0 * Y_0);
+        X_0 = fabs((X_0 * Y_0));
         m_0 = (m_0 > X_0? m_0: X_0);
       }
     }else{
@@ -362,7 +362,7 @@ double idxdBLAS_damaxm(const int N, const double *X, const int incX, const doubl
       for(i = 0; i + 1 <= N; i += 1, X += incX, Y += incY){
         X_0 = X[0];
         Y_0 = Y[0];
-        X_0 = fabs(X_0 * Y_0);
+        X_0 = fabs((X_0 * Y_0));
         m_0 = (m_0 > X_0? m_0: X_0);
       }
     }

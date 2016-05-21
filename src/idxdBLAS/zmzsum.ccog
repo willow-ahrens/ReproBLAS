@@ -22,10 +22,10 @@ cog.outl()
 
 cog.out(generate.generate(blockSize.BlockSize("zmzsum", "N_block_MAX", 32, terminal.get_diendurance(), terminal.get_diendurance(), ["bench_rzsum_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
 ]]]*/
-#ifdef __AVX__
+#if (defined(__AVX__) && !defined(reproBLAS_no__AVX__))
   #include <immintrin.h>
 
-#elif defined(__SSE2__)
+#elif (defined(__SSE2__) && !defined(reproBLAS_no__SSE2__))
   #include <emmintrin.h>
 
 #else
@@ -101,7 +101,7 @@ void idxdBLAS_zmzsum(const int fold, const int N, const void *X, const int incX,
     cog.out(generate.generate(depositSum.DepositSum(dataTypes.DoubleComplex, "fold", "N_block", "x", "incX", "priY", "incpriY"), cog.inFile, args, params, mode))
     ]]]*/
     {
-      #ifdef __AVX__
+      #if (defined(__AVX__) && !defined(reproBLAS_no__AVX__))
         __m256d blp_mask_tmp;
         {
           __m256d tmp;
@@ -4513,7 +4513,7 @@ void idxdBLAS_zmzsum(const int fold, const int N, const void *X, const int incX,
             break;
         }
 
-      #elif defined(__SSE2__)
+      #elif (defined(__SSE2__) && !defined(reproBLAS_no__SSE2__))
         __m128d blp_mask_tmp;
         {
           __m128d tmp;
@@ -6599,8 +6599,11 @@ void idxdBLAS_zmzsum(const int fold, const int N, const void *X, const int incX,
                   if(idxd_dmindex0(priY)){
                     if(idxd_dmindex0(priY + 1)){
                       compression_0 = idxd_DMCOMPRESSION;
+                      compression_1 = idxd_DMCOMPRESSION;
                       expansion_0 = idxd_DMEXPANSION * 0.5;
+                      expansion_1 = idxd_DMEXPANSION * 0.5;
                       expansion_mask_0 = idxd_DMEXPANSION * 0.5;
+                      expansion_mask_1 = idxd_DMEXPANSION * 0.5;
                     }else{
                       compression_0 = idxd_DMCOMPRESSION;
                       compression_1 = 1.0;
@@ -6623,16 +6626,16 @@ void idxdBLAS_zmzsum(const int fold, const int N, const void *X, const int incX,
 
                     q_0 = s_0_0;
                     q_1 = s_0_1;
-                    blp_tmp.d = x_0 * compression_0;
+                    blp_tmp.d = (x_0 * compression_0);
                     blp_tmp.l |= 1;
                     s_0_0 = s_0_0 + blp_tmp.d;
-                    blp_tmp.d = x_1 * compression_1;
+                    blp_tmp.d = (x_1 * compression_1);
                     blp_tmp.l |= 1;
                     s_0_1 = s_0_1 + blp_tmp.d;
-                    q_0 = q_0 - s_0_0;
-                    q_1 = q_1 - s_0_1;
-                    x_0 = x_0 + q_0 * expansion_0 + q_0 * expansion_mask_0;
-                    x_1 = x_1 + q_1 * expansion_1 + q_1 * expansion_mask_1;
+                    q_0 = (q_0 - s_0_0);
+                    q_1 = (q_1 - s_0_1);
+                    x_0 = ((x_0 + (q_0 * expansion_0)) + (q_0 * expansion_mask_0));
+                    x_1 = ((x_1 + (q_1 * expansion_1)) + (q_1 * expansion_mask_1));
                     q_0 = s_1_0;
                     q_1 = s_1_1;
                     blp_tmp.d = x_0;
@@ -6641,10 +6644,10 @@ void idxdBLAS_zmzsum(const int fold, const int N, const void *X, const int incX,
                     blp_tmp.d = x_1;
                     blp_tmp.l |= 1;
                     s_1_1 = s_1_1 + blp_tmp.d;
-                    q_0 = q_0 - s_1_0;
-                    q_1 = q_1 - s_1_1;
-                    x_0 = x_0 + q_0;
-                    x_1 = x_1 + q_1;
+                    q_0 = (q_0 - s_1_0);
+                    q_1 = (q_1 - s_1_1);
+                    x_0 = (x_0 + q_0);
+                    x_1 = (x_1 + q_1);
                     blp_tmp.d = x_0;
                     blp_tmp.l |= 1;
                     s_2_0 = s_2_0 + blp_tmp.d;
@@ -6665,10 +6668,10 @@ void idxdBLAS_zmzsum(const int fold, const int N, const void *X, const int incX,
                     blp_tmp.d = x_1;
                     blp_tmp.l |= 1;
                     s_0_1 = s_0_1 + blp_tmp.d;
-                    q_0 = q_0 - s_0_0;
-                    q_1 = q_1 - s_0_1;
-                    x_0 = x_0 + q_0;
-                    x_1 = x_1 + q_1;
+                    q_0 = (q_0 - s_0_0);
+                    q_1 = (q_1 - s_0_1);
+                    x_0 = (x_0 + q_0);
+                    x_1 = (x_1 + q_1);
                     q_0 = s_1_0;
                     q_1 = s_1_1;
                     blp_tmp.d = x_0;
@@ -6677,10 +6680,10 @@ void idxdBLAS_zmzsum(const int fold, const int N, const void *X, const int incX,
                     blp_tmp.d = x_1;
                     blp_tmp.l |= 1;
                     s_1_1 = s_1_1 + blp_tmp.d;
-                    q_0 = q_0 - s_1_0;
-                    q_1 = q_1 - s_1_1;
-                    x_0 = x_0 + q_0;
-                    x_1 = x_1 + q_1;
+                    q_0 = (q_0 - s_1_0);
+                    q_1 = (q_1 - s_1_1);
+                    x_0 = (x_0 + q_0);
+                    x_1 = (x_1 + q_1);
                     blp_tmp.d = x_0;
                     blp_tmp.l |= 1;
                     s_2_0 = s_2_0 + blp_tmp.d;
@@ -6694,8 +6697,11 @@ void idxdBLAS_zmzsum(const int fold, const int N, const void *X, const int incX,
                   if(idxd_dmindex0(priY)){
                     if(idxd_dmindex0(priY + 1)){
                       compression_0 = idxd_DMCOMPRESSION;
+                      compression_1 = idxd_DMCOMPRESSION;
                       expansion_0 = idxd_DMEXPANSION * 0.5;
+                      expansion_1 = idxd_DMEXPANSION * 0.5;
                       expansion_mask_0 = idxd_DMEXPANSION * 0.5;
+                      expansion_mask_1 = idxd_DMEXPANSION * 0.5;
                     }else{
                       compression_0 = idxd_DMCOMPRESSION;
                       compression_1 = 1.0;
@@ -6718,16 +6724,16 @@ void idxdBLAS_zmzsum(const int fold, const int N, const void *X, const int incX,
 
                     q_0 = s_0_0;
                     q_1 = s_0_1;
-                    blp_tmp.d = x_0 * compression_0;
+                    blp_tmp.d = (x_0 * compression_0);
                     blp_tmp.l |= 1;
                     s_0_0 = s_0_0 + blp_tmp.d;
-                    blp_tmp.d = x_1 * compression_1;
+                    blp_tmp.d = (x_1 * compression_1);
                     blp_tmp.l |= 1;
                     s_0_1 = s_0_1 + blp_tmp.d;
-                    q_0 = q_0 - s_0_0;
-                    q_1 = q_1 - s_0_1;
-                    x_0 = x_0 + q_0 * expansion_0 + q_0 * expansion_mask_0;
-                    x_1 = x_1 + q_1 * expansion_1 + q_1 * expansion_mask_1;
+                    q_0 = (q_0 - s_0_0);
+                    q_1 = (q_1 - s_0_1);
+                    x_0 = ((x_0 + (q_0 * expansion_0)) + (q_0 * expansion_mask_0));
+                    x_1 = ((x_1 + (q_1 * expansion_1)) + (q_1 * expansion_mask_1));
                     q_0 = s_1_0;
                     q_1 = s_1_1;
                     blp_tmp.d = x_0;
@@ -6736,10 +6742,10 @@ void idxdBLAS_zmzsum(const int fold, const int N, const void *X, const int incX,
                     blp_tmp.d = x_1;
                     blp_tmp.l |= 1;
                     s_1_1 = s_1_1 + blp_tmp.d;
-                    q_0 = q_0 - s_1_0;
-                    q_1 = q_1 - s_1_1;
-                    x_0 = x_0 + q_0;
-                    x_1 = x_1 + q_1;
+                    q_0 = (q_0 - s_1_0);
+                    q_1 = (q_1 - s_1_1);
+                    x_0 = (x_0 + q_0);
+                    x_1 = (x_1 + q_1);
                     blp_tmp.d = x_0;
                     blp_tmp.l |= 1;
                     s_2_0 = s_2_0 + blp_tmp.d;
@@ -6760,10 +6766,10 @@ void idxdBLAS_zmzsum(const int fold, const int N, const void *X, const int incX,
                     blp_tmp.d = x_1;
                     blp_tmp.l |= 1;
                     s_0_1 = s_0_1 + blp_tmp.d;
-                    q_0 = q_0 - s_0_0;
-                    q_1 = q_1 - s_0_1;
-                    x_0 = x_0 + q_0;
-                    x_1 = x_1 + q_1;
+                    q_0 = (q_0 - s_0_0);
+                    q_1 = (q_1 - s_0_1);
+                    x_0 = (x_0 + q_0);
+                    x_1 = (x_1 + q_1);
                     q_0 = s_1_0;
                     q_1 = s_1_1;
                     blp_tmp.d = x_0;
@@ -6772,10 +6778,10 @@ void idxdBLAS_zmzsum(const int fold, const int N, const void *X, const int incX,
                     blp_tmp.d = x_1;
                     blp_tmp.l |= 1;
                     s_1_1 = s_1_1 + blp_tmp.d;
-                    q_0 = q_0 - s_1_0;
-                    q_1 = q_1 - s_1_1;
-                    x_0 = x_0 + q_0;
-                    x_1 = x_1 + q_1;
+                    q_0 = (q_0 - s_1_0);
+                    q_1 = (q_1 - s_1_1);
+                    x_0 = (x_0 + q_0);
+                    x_1 = (x_1 + q_1);
                     blp_tmp.d = x_0;
                     blp_tmp.l |= 1;
                     s_2_0 = s_2_0 + blp_tmp.d;
@@ -6816,8 +6822,11 @@ void idxdBLAS_zmzsum(const int fold, const int N, const void *X, const int incX,
                   if(idxd_dmindex0(priY)){
                     if(idxd_dmindex0(priY + 1)){
                       compression_0 = idxd_DMCOMPRESSION;
+                      compression_1 = idxd_DMCOMPRESSION;
                       expansion_0 = idxd_DMEXPANSION * 0.5;
+                      expansion_1 = idxd_DMEXPANSION * 0.5;
                       expansion_mask_0 = idxd_DMEXPANSION * 0.5;
+                      expansion_mask_1 = idxd_DMEXPANSION * 0.5;
                     }else{
                       compression_0 = idxd_DMCOMPRESSION;
                       compression_1 = 1.0;
@@ -6840,18 +6849,18 @@ void idxdBLAS_zmzsum(const int fold, const int N, const void *X, const int incX,
 
                     s_0 = s_buffer[0];
                     s_1 = s_buffer[1];
-                    blp_tmp.d = x_0 * compression_0;
+                    blp_tmp.d = (x_0 * compression_0);
                     blp_tmp.l |= 1;
                     q_0 = s_0 + blp_tmp.d;
-                    blp_tmp.d = x_1 * compression_1;
+                    blp_tmp.d = (x_1 * compression_1);
                     blp_tmp.l |= 1;
                     q_1 = s_1 + blp_tmp.d;
                     s_buffer[0] = q_0;
                     s_buffer[1] = q_1;
-                    q_0 = s_0 - q_0;
-                    q_1 = s_1 - q_1;
-                    x_0 = x_0 + q_0 * expansion_0 + q_0 * expansion_mask_0;
-                    x_1 = x_1 + q_1 * expansion_1 + q_1 * expansion_mask_1;
+                    q_0 = (s_0 - q_0);
+                    q_1 = (s_1 - q_1);
+                    x_0 = ((x_0 + (q_0 * expansion_0)) + (q_0 * expansion_mask_0));
+                    x_1 = ((x_1 + (q_1 * expansion_1)) + (q_1 * expansion_mask_1));
                     for(j = 1; j < fold - 1; j++){
                       s_0 = s_buffer[(j * 2)];
                       s_1 = s_buffer[((j * 2) + 1)];
@@ -6863,10 +6872,10 @@ void idxdBLAS_zmzsum(const int fold, const int N, const void *X, const int incX,
                       q_1 = s_1 + blp_tmp.d;
                       s_buffer[(j * 2)] = q_0;
                       s_buffer[((j * 2) + 1)] = q_1;
-                      q_0 = s_0 - q_0;
-                      q_1 = s_1 - q_1;
-                      x_0 = x_0 + q_0;
-                      x_1 = x_1 + q_1;
+                      q_0 = (s_0 - q_0);
+                      q_1 = (s_1 - q_1);
+                      x_0 = (x_0 + q_0);
+                      x_1 = (x_1 + q_1);
                     }
                     blp_tmp.d = x_0;
                     blp_tmp.l |= 1;
@@ -6891,10 +6900,10 @@ void idxdBLAS_zmzsum(const int fold, const int N, const void *X, const int incX,
                       q_1 = s_1 + blp_tmp.d;
                       s_buffer[(j * 2)] = q_0;
                       s_buffer[((j * 2) + 1)] = q_1;
-                      q_0 = s_0 - q_0;
-                      q_1 = s_1 - q_1;
-                      x_0 = x_0 + q_0;
-                      x_1 = x_1 + q_1;
+                      q_0 = (s_0 - q_0);
+                      q_1 = (s_1 - q_1);
+                      x_0 = (x_0 + q_0);
+                      x_1 = (x_1 + q_1);
                     }
                     blp_tmp.d = x_0;
                     blp_tmp.l |= 1;
@@ -6909,8 +6918,11 @@ void idxdBLAS_zmzsum(const int fold, const int N, const void *X, const int incX,
                   if(idxd_dmindex0(priY)){
                     if(idxd_dmindex0(priY + 1)){
                       compression_0 = idxd_DMCOMPRESSION;
+                      compression_1 = idxd_DMCOMPRESSION;
                       expansion_0 = idxd_DMEXPANSION * 0.5;
+                      expansion_1 = idxd_DMEXPANSION * 0.5;
                       expansion_mask_0 = idxd_DMEXPANSION * 0.5;
+                      expansion_mask_1 = idxd_DMEXPANSION * 0.5;
                     }else{
                       compression_0 = idxd_DMCOMPRESSION;
                       compression_1 = 1.0;
@@ -6933,18 +6945,18 @@ void idxdBLAS_zmzsum(const int fold, const int N, const void *X, const int incX,
 
                     s_0 = s_buffer[0];
                     s_1 = s_buffer[1];
-                    blp_tmp.d = x_0 * compression_0;
+                    blp_tmp.d = (x_0 * compression_0);
                     blp_tmp.l |= 1;
                     q_0 = s_0 + blp_tmp.d;
-                    blp_tmp.d = x_1 * compression_1;
+                    blp_tmp.d = (x_1 * compression_1);
                     blp_tmp.l |= 1;
                     q_1 = s_1 + blp_tmp.d;
                     s_buffer[0] = q_0;
                     s_buffer[1] = q_1;
-                    q_0 = s_0 - q_0;
-                    q_1 = s_1 - q_1;
-                    x_0 = x_0 + q_0 * expansion_0 + q_0 * expansion_mask_0;
-                    x_1 = x_1 + q_1 * expansion_1 + q_1 * expansion_mask_1;
+                    q_0 = (s_0 - q_0);
+                    q_1 = (s_1 - q_1);
+                    x_0 = ((x_0 + (q_0 * expansion_0)) + (q_0 * expansion_mask_0));
+                    x_1 = ((x_1 + (q_1 * expansion_1)) + (q_1 * expansion_mask_1));
                     for(j = 1; j < fold - 1; j++){
                       s_0 = s_buffer[(j * 2)];
                       s_1 = s_buffer[((j * 2) + 1)];
@@ -6956,10 +6968,10 @@ void idxdBLAS_zmzsum(const int fold, const int N, const void *X, const int incX,
                       q_1 = s_1 + blp_tmp.d;
                       s_buffer[(j * 2)] = q_0;
                       s_buffer[((j * 2) + 1)] = q_1;
-                      q_0 = s_0 - q_0;
-                      q_1 = s_1 - q_1;
-                      x_0 = x_0 + q_0;
-                      x_1 = x_1 + q_1;
+                      q_0 = (s_0 - q_0);
+                      q_1 = (s_1 - q_1);
+                      x_0 = (x_0 + q_0);
+                      x_1 = (x_1 + q_1);
                     }
                     blp_tmp.d = x_0;
                     blp_tmp.l |= 1;
@@ -6984,10 +6996,10 @@ void idxdBLAS_zmzsum(const int fold, const int N, const void *X, const int incX,
                       q_1 = s_1 + blp_tmp.d;
                       s_buffer[(j * 2)] = q_0;
                       s_buffer[((j * 2) + 1)] = q_1;
-                      q_0 = s_0 - q_0;
-                      q_1 = s_1 - q_1;
-                      x_0 = x_0 + q_0;
-                      x_1 = x_1 + q_1;
+                      q_0 = (s_0 - q_0);
+                      q_1 = (s_1 - q_1);
+                      x_0 = (x_0 + q_0);
+                      x_1 = (x_1 + q_1);
                     }
                     blp_tmp.d = x_0;
                     blp_tmp.l |= 1;

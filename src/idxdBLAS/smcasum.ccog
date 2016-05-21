@@ -22,10 +22,10 @@ cog.outl()
 
 cog.out(generate.generate(blockSize.BlockSize("smcasum", "N_block_MAX", 32, terminal.get_siendurance()//2, terminal.get_siendurance()//2, ["bench_rscasum_fold_{}".format(terminal.get_sidefaultfold())]), cog.inFile, args, params, mode))
 ]]]*/
-#ifdef __AVX__
+#if (defined(__AVX__) && !defined(reproBLAS_no__AVX__))
   #include <immintrin.h>
 
-#elif defined(__SSE2__)
+#elif (defined(__SSE2__) && !defined(reproBLAS_no__SSE2__))
   #include <emmintrin.h>
 
 #else
@@ -97,7 +97,7 @@ void idxdBLAS_smcasum(const int fold, const int N, const void *X, const int incX
       cog.out(generate.generate(depositASum.DepositASum(dataTypes.FloatComplex, "fold", "N_block", "x", "incX", "asum", 1), cog.inFile, args, params, mode))
       ]]]*/
     {
-      #ifdef __AVX__
+      #if (defined(__AVX__) && !defined(reproBLAS_no__AVX__))
         __m256 abs_mask_tmp;
         {
           __m256 tmp;
@@ -3142,7 +3142,7 @@ void idxdBLAS_smcasum(const int fold, const int N, const void *X, const int incX
             break;
         }
 
-      #elif defined(__SSE2__)
+      #elif (defined(__SSE2__) && !defined(reproBLAS_no__SSE2__))
         __m128 abs_mask_tmp;
         {
           __m128 tmp;
@@ -5775,8 +5775,11 @@ void idxdBLAS_smcasum(const int fold, const int N, const void *X, const int incX
                   if(idxd_smindex0(asum)){
                     if(idxd_smindex0(asum + 1)){
                       compression_0 = idxd_SMCOMPRESSION;
+                      compression_1 = idxd_SMCOMPRESSION;
                       expansion_0 = idxd_SMEXPANSION * 0.5;
+                      expansion_1 = idxd_SMEXPANSION * 0.5;
                       expansion_mask_0 = idxd_SMEXPANSION * 0.5;
+                      expansion_mask_1 = idxd_SMEXPANSION * 0.5;
                     }else{
                       compression_0 = idxd_SMCOMPRESSION;
                       compression_1 = 1.0;
@@ -5799,16 +5802,16 @@ void idxdBLAS_smcasum(const int fold, const int N, const void *X, const int incX
 
                     q_0 = s_0_0;
                     q_1 = s_0_1;
-                    blp_tmp.f = x_0 * compression_0;
+                    blp_tmp.f = (x_0 * compression_0);
                     blp_tmp.i |= 1;
                     s_0_0 = s_0_0 + blp_tmp.f;
-                    blp_tmp.f = x_1 * compression_1;
+                    blp_tmp.f = (x_1 * compression_1);
                     blp_tmp.i |= 1;
                     s_0_1 = s_0_1 + blp_tmp.f;
-                    q_0 = q_0 - s_0_0;
-                    q_1 = q_1 - s_0_1;
-                    x_0 = x_0 + q_0 * expansion_0 + q_0 * expansion_mask_0;
-                    x_1 = x_1 + q_1 * expansion_1 + q_1 * expansion_mask_1;
+                    q_0 = (q_0 - s_0_0);
+                    q_1 = (q_1 - s_0_1);
+                    x_0 = ((x_0 + (q_0 * expansion_0)) + (q_0 * expansion_mask_0));
+                    x_1 = ((x_1 + (q_1 * expansion_1)) + (q_1 * expansion_mask_1));
                     q_0 = s_1_0;
                     q_1 = s_1_1;
                     blp_tmp.f = x_0;
@@ -5817,10 +5820,10 @@ void idxdBLAS_smcasum(const int fold, const int N, const void *X, const int incX
                     blp_tmp.f = x_1;
                     blp_tmp.i |= 1;
                     s_1_1 = s_1_1 + blp_tmp.f;
-                    q_0 = q_0 - s_1_0;
-                    q_1 = q_1 - s_1_1;
-                    x_0 = x_0 + q_0;
-                    x_1 = x_1 + q_1;
+                    q_0 = (q_0 - s_1_0);
+                    q_1 = (q_1 - s_1_1);
+                    x_0 = (x_0 + q_0);
+                    x_1 = (x_1 + q_1);
                     blp_tmp.f = x_0;
                     blp_tmp.i |= 1;
                     s_2_0 = s_2_0 + blp_tmp.f;
@@ -5841,10 +5844,10 @@ void idxdBLAS_smcasum(const int fold, const int N, const void *X, const int incX
                     blp_tmp.f = x_1;
                     blp_tmp.i |= 1;
                     s_0_1 = s_0_1 + blp_tmp.f;
-                    q_0 = q_0 - s_0_0;
-                    q_1 = q_1 - s_0_1;
-                    x_0 = x_0 + q_0;
-                    x_1 = x_1 + q_1;
+                    q_0 = (q_0 - s_0_0);
+                    q_1 = (q_1 - s_0_1);
+                    x_0 = (x_0 + q_0);
+                    x_1 = (x_1 + q_1);
                     q_0 = s_1_0;
                     q_1 = s_1_1;
                     blp_tmp.f = x_0;
@@ -5853,10 +5856,10 @@ void idxdBLAS_smcasum(const int fold, const int N, const void *X, const int incX
                     blp_tmp.f = x_1;
                     blp_tmp.i |= 1;
                     s_1_1 = s_1_1 + blp_tmp.f;
-                    q_0 = q_0 - s_1_0;
-                    q_1 = q_1 - s_1_1;
-                    x_0 = x_0 + q_0;
-                    x_1 = x_1 + q_1;
+                    q_0 = (q_0 - s_1_0);
+                    q_1 = (q_1 - s_1_1);
+                    x_0 = (x_0 + q_0);
+                    x_1 = (x_1 + q_1);
                     blp_tmp.f = x_0;
                     blp_tmp.i |= 1;
                     s_2_0 = s_2_0 + blp_tmp.f;
@@ -5870,8 +5873,11 @@ void idxdBLAS_smcasum(const int fold, const int N, const void *X, const int incX
                   if(idxd_smindex0(asum)){
                     if(idxd_smindex0(asum + 1)){
                       compression_0 = idxd_SMCOMPRESSION;
+                      compression_1 = idxd_SMCOMPRESSION;
                       expansion_0 = idxd_SMEXPANSION * 0.5;
+                      expansion_1 = idxd_SMEXPANSION * 0.5;
                       expansion_mask_0 = idxd_SMEXPANSION * 0.5;
+                      expansion_mask_1 = idxd_SMEXPANSION * 0.5;
                     }else{
                       compression_0 = idxd_SMCOMPRESSION;
                       compression_1 = 1.0;
@@ -5894,16 +5900,16 @@ void idxdBLAS_smcasum(const int fold, const int N, const void *X, const int incX
 
                     q_0 = s_0_0;
                     q_1 = s_0_1;
-                    blp_tmp.f = x_0 * compression_0;
+                    blp_tmp.f = (x_0 * compression_0);
                     blp_tmp.i |= 1;
                     s_0_0 = s_0_0 + blp_tmp.f;
-                    blp_tmp.f = x_1 * compression_1;
+                    blp_tmp.f = (x_1 * compression_1);
                     blp_tmp.i |= 1;
                     s_0_1 = s_0_1 + blp_tmp.f;
-                    q_0 = q_0 - s_0_0;
-                    q_1 = q_1 - s_0_1;
-                    x_0 = x_0 + q_0 * expansion_0 + q_0 * expansion_mask_0;
-                    x_1 = x_1 + q_1 * expansion_1 + q_1 * expansion_mask_1;
+                    q_0 = (q_0 - s_0_0);
+                    q_1 = (q_1 - s_0_1);
+                    x_0 = ((x_0 + (q_0 * expansion_0)) + (q_0 * expansion_mask_0));
+                    x_1 = ((x_1 + (q_1 * expansion_1)) + (q_1 * expansion_mask_1));
                     q_0 = s_1_0;
                     q_1 = s_1_1;
                     blp_tmp.f = x_0;
@@ -5912,10 +5918,10 @@ void idxdBLAS_smcasum(const int fold, const int N, const void *X, const int incX
                     blp_tmp.f = x_1;
                     blp_tmp.i |= 1;
                     s_1_1 = s_1_1 + blp_tmp.f;
-                    q_0 = q_0 - s_1_0;
-                    q_1 = q_1 - s_1_1;
-                    x_0 = x_0 + q_0;
-                    x_1 = x_1 + q_1;
+                    q_0 = (q_0 - s_1_0);
+                    q_1 = (q_1 - s_1_1);
+                    x_0 = (x_0 + q_0);
+                    x_1 = (x_1 + q_1);
                     blp_tmp.f = x_0;
                     blp_tmp.i |= 1;
                     s_2_0 = s_2_0 + blp_tmp.f;
@@ -5936,10 +5942,10 @@ void idxdBLAS_smcasum(const int fold, const int N, const void *X, const int incX
                     blp_tmp.f = x_1;
                     blp_tmp.i |= 1;
                     s_0_1 = s_0_1 + blp_tmp.f;
-                    q_0 = q_0 - s_0_0;
-                    q_1 = q_1 - s_0_1;
-                    x_0 = x_0 + q_0;
-                    x_1 = x_1 + q_1;
+                    q_0 = (q_0 - s_0_0);
+                    q_1 = (q_1 - s_0_1);
+                    x_0 = (x_0 + q_0);
+                    x_1 = (x_1 + q_1);
                     q_0 = s_1_0;
                     q_1 = s_1_1;
                     blp_tmp.f = x_0;
@@ -5948,10 +5954,10 @@ void idxdBLAS_smcasum(const int fold, const int N, const void *X, const int incX
                     blp_tmp.f = x_1;
                     blp_tmp.i |= 1;
                     s_1_1 = s_1_1 + blp_tmp.f;
-                    q_0 = q_0 - s_1_0;
-                    q_1 = q_1 - s_1_1;
-                    x_0 = x_0 + q_0;
-                    x_1 = x_1 + q_1;
+                    q_0 = (q_0 - s_1_0);
+                    q_1 = (q_1 - s_1_1);
+                    x_0 = (x_0 + q_0);
+                    x_1 = (x_1 + q_1);
                     blp_tmp.f = x_0;
                     blp_tmp.i |= 1;
                     s_2_0 = s_2_0 + blp_tmp.f;
@@ -5992,8 +5998,11 @@ void idxdBLAS_smcasum(const int fold, const int N, const void *X, const int incX
                   if(idxd_smindex0(asum)){
                     if(idxd_smindex0(asum + 1)){
                       compression_0 = idxd_SMCOMPRESSION;
+                      compression_1 = idxd_SMCOMPRESSION;
                       expansion_0 = idxd_SMEXPANSION * 0.5;
+                      expansion_1 = idxd_SMEXPANSION * 0.5;
                       expansion_mask_0 = idxd_SMEXPANSION * 0.5;
+                      expansion_mask_1 = idxd_SMEXPANSION * 0.5;
                     }else{
                       compression_0 = idxd_SMCOMPRESSION;
                       compression_1 = 1.0;
@@ -6016,18 +6025,18 @@ void idxdBLAS_smcasum(const int fold, const int N, const void *X, const int incX
 
                     s_0 = s_buffer[0];
                     s_1 = s_buffer[1];
-                    blp_tmp.f = x_0 * compression_0;
+                    blp_tmp.f = (x_0 * compression_0);
                     blp_tmp.i |= 1;
                     q_0 = s_0 + blp_tmp.f;
-                    blp_tmp.f = x_1 * compression_1;
+                    blp_tmp.f = (x_1 * compression_1);
                     blp_tmp.i |= 1;
                     q_1 = s_1 + blp_tmp.f;
                     s_buffer[0] = q_0;
                     s_buffer[1] = q_1;
-                    q_0 = s_0 - q_0;
-                    q_1 = s_1 - q_1;
-                    x_0 = x_0 + q_0 * expansion_0 + q_0 * expansion_mask_0;
-                    x_1 = x_1 + q_1 * expansion_1 + q_1 * expansion_mask_1;
+                    q_0 = (s_0 - q_0);
+                    q_1 = (s_1 - q_1);
+                    x_0 = ((x_0 + (q_0 * expansion_0)) + (q_0 * expansion_mask_0));
+                    x_1 = ((x_1 + (q_1 * expansion_1)) + (q_1 * expansion_mask_1));
                     for(j = 1; j < fold - 1; j++){
                       s_0 = s_buffer[(j * 2)];
                       s_1 = s_buffer[((j * 2) + 1)];
@@ -6039,10 +6048,10 @@ void idxdBLAS_smcasum(const int fold, const int N, const void *X, const int incX
                       q_1 = s_1 + blp_tmp.f;
                       s_buffer[(j * 2)] = q_0;
                       s_buffer[((j * 2) + 1)] = q_1;
-                      q_0 = s_0 - q_0;
-                      q_1 = s_1 - q_1;
-                      x_0 = x_0 + q_0;
-                      x_1 = x_1 + q_1;
+                      q_0 = (s_0 - q_0);
+                      q_1 = (s_1 - q_1);
+                      x_0 = (x_0 + q_0);
+                      x_1 = (x_1 + q_1);
                     }
                     blp_tmp.f = x_0;
                     blp_tmp.i |= 1;
@@ -6067,10 +6076,10 @@ void idxdBLAS_smcasum(const int fold, const int N, const void *X, const int incX
                       q_1 = s_1 + blp_tmp.f;
                       s_buffer[(j * 2)] = q_0;
                       s_buffer[((j * 2) + 1)] = q_1;
-                      q_0 = s_0 - q_0;
-                      q_1 = s_1 - q_1;
-                      x_0 = x_0 + q_0;
-                      x_1 = x_1 + q_1;
+                      q_0 = (s_0 - q_0);
+                      q_1 = (s_1 - q_1);
+                      x_0 = (x_0 + q_0);
+                      x_1 = (x_1 + q_1);
                     }
                     blp_tmp.f = x_0;
                     blp_tmp.i |= 1;
@@ -6085,8 +6094,11 @@ void idxdBLAS_smcasum(const int fold, const int N, const void *X, const int incX
                   if(idxd_smindex0(asum)){
                     if(idxd_smindex0(asum + 1)){
                       compression_0 = idxd_SMCOMPRESSION;
+                      compression_1 = idxd_SMCOMPRESSION;
                       expansion_0 = idxd_SMEXPANSION * 0.5;
+                      expansion_1 = idxd_SMEXPANSION * 0.5;
                       expansion_mask_0 = idxd_SMEXPANSION * 0.5;
+                      expansion_mask_1 = idxd_SMEXPANSION * 0.5;
                     }else{
                       compression_0 = idxd_SMCOMPRESSION;
                       compression_1 = 1.0;
@@ -6109,18 +6121,18 @@ void idxdBLAS_smcasum(const int fold, const int N, const void *X, const int incX
 
                     s_0 = s_buffer[0];
                     s_1 = s_buffer[1];
-                    blp_tmp.f = x_0 * compression_0;
+                    blp_tmp.f = (x_0 * compression_0);
                     blp_tmp.i |= 1;
                     q_0 = s_0 + blp_tmp.f;
-                    blp_tmp.f = x_1 * compression_1;
+                    blp_tmp.f = (x_1 * compression_1);
                     blp_tmp.i |= 1;
                     q_1 = s_1 + blp_tmp.f;
                     s_buffer[0] = q_0;
                     s_buffer[1] = q_1;
-                    q_0 = s_0 - q_0;
-                    q_1 = s_1 - q_1;
-                    x_0 = x_0 + q_0 * expansion_0 + q_0 * expansion_mask_0;
-                    x_1 = x_1 + q_1 * expansion_1 + q_1 * expansion_mask_1;
+                    q_0 = (s_0 - q_0);
+                    q_1 = (s_1 - q_1);
+                    x_0 = ((x_0 + (q_0 * expansion_0)) + (q_0 * expansion_mask_0));
+                    x_1 = ((x_1 + (q_1 * expansion_1)) + (q_1 * expansion_mask_1));
                     for(j = 1; j < fold - 1; j++){
                       s_0 = s_buffer[(j * 2)];
                       s_1 = s_buffer[((j * 2) + 1)];
@@ -6132,10 +6144,10 @@ void idxdBLAS_smcasum(const int fold, const int N, const void *X, const int incX
                       q_1 = s_1 + blp_tmp.f;
                       s_buffer[(j * 2)] = q_0;
                       s_buffer[((j * 2) + 1)] = q_1;
-                      q_0 = s_0 - q_0;
-                      q_1 = s_1 - q_1;
-                      x_0 = x_0 + q_0;
-                      x_1 = x_1 + q_1;
+                      q_0 = (s_0 - q_0);
+                      q_1 = (s_1 - q_1);
+                      x_0 = (x_0 + q_0);
+                      x_1 = (x_1 + q_1);
                     }
                     blp_tmp.f = x_0;
                     blp_tmp.i |= 1;
@@ -6160,10 +6172,10 @@ void idxdBLAS_smcasum(const int fold, const int N, const void *X, const int incX
                       q_1 = s_1 + blp_tmp.f;
                       s_buffer[(j * 2)] = q_0;
                       s_buffer[((j * 2) + 1)] = q_1;
-                      q_0 = s_0 - q_0;
-                      q_1 = s_1 - q_1;
-                      x_0 = x_0 + q_0;
-                      x_1 = x_1 + q_1;
+                      q_0 = (s_0 - q_0);
+                      q_1 = (s_1 - q_1);
+                      x_0 = (x_0 + q_0);
+                      x_1 = (x_1 + q_1);
                     }
                     blp_tmp.f = x_0;
                     blp_tmp.i |= 1;

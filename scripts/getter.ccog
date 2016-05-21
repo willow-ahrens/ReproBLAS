@@ -24,10 +24,10 @@ int main(int argc, char** argv){
   vectorizations.iterate_all_vectorizations(print_vectorization, code_block)
   cog.out(str(code_block))
   ]]]*/
-  #ifdef __AVX__
+  #if (defined(__AVX__) && !defined(reproBLAS_no__AVX__))
     printf("  \"vectorization\": \"AVX\",\n");
 
-  #elif defined(__SSE2__)
+  #elif (defined(__SSE2__) && !defined(reproBLAS_no__SSE2__))
     printf("  \"vectorization\": \"SSE\",\n");
 
   #else

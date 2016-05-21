@@ -22,10 +22,10 @@ cog.outl()
 
 cog.out(generate.generate(blockSize.BlockSize("dmddot", "N_block_MAX", 32, terminal.get_diendurance(), terminal.get_diendurance(), ["bench_rddot_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
 ]]]*/
-#ifdef __AVX__
+#if (defined(__AVX__) && !defined(reproBLAS_no__AVX__))
   #include <immintrin.h>
 
-#elif defined(__SSE2__)
+#elif (defined(__SSE2__) && !defined(reproBLAS_no__SSE2__))
   #include <emmintrin.h>
 
 #else
@@ -91,7 +91,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
     cog.out(generate.generate(depositDot.DepositDot(dataTypes.Double, "fold", "N_block", "X", "incX", "priZ", "incpriZ", "Y", "incY"), cog.inFile, args, params, mode))
     ]]]*/
     {
-      #ifdef __AVX__
+      #if (defined(__AVX__) && !defined(reproBLAS_no__AVX__))
         __m256d blp_mask_tmp;
         {
           __m256d tmp;
@@ -4799,7 +4799,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
             break;
         }
 
-      #elif defined(__SSE2__)
+      #elif (defined(__SSE2__) && !defined(reproBLAS_no__SSE2__))
         __m128d blp_mask_tmp;
         {
           __m128d tmp;
@@ -11639,20 +11639,20 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     for(i = 0; i + 1 <= N_block; i += 1, X += 1, Y += 1){
                       X_0 = X[0];
                       Y_0 = Y[0];
-                      X_0 = X_0 * Y_0;
+                      X_0 = (X_0 * Y_0);
 
                       q_0 = s_0_0;
-                      blp_tmp.d = X_0 * compression_0;
+                      blp_tmp.d = (X_0 * compression_0);
                       blp_tmp.l |= 1;
                       s_0_0 = s_0_0 + blp_tmp.d;
-                      q_0 = q_0 - s_0_0 * expansion_0;
-                      X_0 = X_0 + q_0 + q_0;
+                      q_0 = ((q_0 - s_0_0) * expansion_0);
+                      X_0 = ((X_0 + q_0) + q_0);
                       q_0 = s_1_0;
                       blp_tmp.d = X_0;
                       blp_tmp.l |= 1;
                       s_1_0 = s_1_0 + blp_tmp.d;
-                      q_0 = q_0 - s_1_0;
-                      X_0 = X_0 + q_0;
+                      q_0 = (q_0 - s_1_0);
+                      X_0 = (X_0 + q_0);
                       blp_tmp.d = X_0;
                       blp_tmp.l |= 1;
                       s_2_0 = s_2_0 + blp_tmp.d;
@@ -11661,20 +11661,20 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     for(i = 0; i + 1 <= N_block; i += 1, X += 1, Y += 1){
                       X_0 = X[0];
                       Y_0 = Y[0];
-                      X_0 = X_0 * Y_0;
+                      X_0 = (X_0 * Y_0);
 
                       q_0 = s_0_0;
                       blp_tmp.d = X_0;
                       blp_tmp.l |= 1;
                       s_0_0 = s_0_0 + blp_tmp.d;
-                      q_0 = q_0 - s_0_0;
-                      X_0 = X_0 + q_0;
+                      q_0 = (q_0 - s_0_0);
+                      X_0 = (X_0 + q_0);
                       q_0 = s_1_0;
                       blp_tmp.d = X_0;
                       blp_tmp.l |= 1;
                       s_1_0 = s_1_0 + blp_tmp.d;
-                      q_0 = q_0 - s_1_0;
-                      X_0 = X_0 + q_0;
+                      q_0 = (q_0 - s_1_0);
+                      X_0 = (X_0 + q_0);
                       blp_tmp.d = X_0;
                       blp_tmp.l |= 1;
                       s_2_0 = s_2_0 + blp_tmp.d;
@@ -11687,20 +11687,20 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     for(i = 0; i + 1 <= N_block; i += 1, X += 1, Y += incY){
                       X_0 = X[0];
                       Y_0 = Y[0];
-                      X_0 = X_0 * Y_0;
+                      X_0 = (X_0 * Y_0);
 
                       q_0 = s_0_0;
-                      blp_tmp.d = X_0 * compression_0;
+                      blp_tmp.d = (X_0 * compression_0);
                       blp_tmp.l |= 1;
                       s_0_0 = s_0_0 + blp_tmp.d;
-                      q_0 = q_0 - s_0_0 * expansion_0;
-                      X_0 = X_0 + q_0 + q_0;
+                      q_0 = ((q_0 - s_0_0) * expansion_0);
+                      X_0 = ((X_0 + q_0) + q_0);
                       q_0 = s_1_0;
                       blp_tmp.d = X_0;
                       blp_tmp.l |= 1;
                       s_1_0 = s_1_0 + blp_tmp.d;
-                      q_0 = q_0 - s_1_0;
-                      X_0 = X_0 + q_0;
+                      q_0 = (q_0 - s_1_0);
+                      X_0 = (X_0 + q_0);
                       blp_tmp.d = X_0;
                       blp_tmp.l |= 1;
                       s_2_0 = s_2_0 + blp_tmp.d;
@@ -11709,20 +11709,20 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     for(i = 0; i + 1 <= N_block; i += 1, X += 1, Y += incY){
                       X_0 = X[0];
                       Y_0 = Y[0];
-                      X_0 = X_0 * Y_0;
+                      X_0 = (X_0 * Y_0);
 
                       q_0 = s_0_0;
                       blp_tmp.d = X_0;
                       blp_tmp.l |= 1;
                       s_0_0 = s_0_0 + blp_tmp.d;
-                      q_0 = q_0 - s_0_0;
-                      X_0 = X_0 + q_0;
+                      q_0 = (q_0 - s_0_0);
+                      X_0 = (X_0 + q_0);
                       q_0 = s_1_0;
                       blp_tmp.d = X_0;
                       blp_tmp.l |= 1;
                       s_1_0 = s_1_0 + blp_tmp.d;
-                      q_0 = q_0 - s_1_0;
-                      X_0 = X_0 + q_0;
+                      q_0 = (q_0 - s_1_0);
+                      X_0 = (X_0 + q_0);
                       blp_tmp.d = X_0;
                       blp_tmp.l |= 1;
                       s_2_0 = s_2_0 + blp_tmp.d;
@@ -11737,20 +11737,20 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     for(i = 0; i + 1 <= N_block; i += 1, X += incX, Y += 1){
                       X_0 = X[0];
                       Y_0 = Y[0];
-                      X_0 = X_0 * Y_0;
+                      X_0 = (X_0 * Y_0);
 
                       q_0 = s_0_0;
-                      blp_tmp.d = X_0 * compression_0;
+                      blp_tmp.d = (X_0 * compression_0);
                       blp_tmp.l |= 1;
                       s_0_0 = s_0_0 + blp_tmp.d;
-                      q_0 = q_0 - s_0_0 * expansion_0;
-                      X_0 = X_0 + q_0 + q_0;
+                      q_0 = ((q_0 - s_0_0) * expansion_0);
+                      X_0 = ((X_0 + q_0) + q_0);
                       q_0 = s_1_0;
                       blp_tmp.d = X_0;
                       blp_tmp.l |= 1;
                       s_1_0 = s_1_0 + blp_tmp.d;
-                      q_0 = q_0 - s_1_0;
-                      X_0 = X_0 + q_0;
+                      q_0 = (q_0 - s_1_0);
+                      X_0 = (X_0 + q_0);
                       blp_tmp.d = X_0;
                       blp_tmp.l |= 1;
                       s_2_0 = s_2_0 + blp_tmp.d;
@@ -11759,20 +11759,20 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     for(i = 0; i + 1 <= N_block; i += 1, X += incX, Y += 1){
                       X_0 = X[0];
                       Y_0 = Y[0];
-                      X_0 = X_0 * Y_0;
+                      X_0 = (X_0 * Y_0);
 
                       q_0 = s_0_0;
                       blp_tmp.d = X_0;
                       blp_tmp.l |= 1;
                       s_0_0 = s_0_0 + blp_tmp.d;
-                      q_0 = q_0 - s_0_0;
-                      X_0 = X_0 + q_0;
+                      q_0 = (q_0 - s_0_0);
+                      X_0 = (X_0 + q_0);
                       q_0 = s_1_0;
                       blp_tmp.d = X_0;
                       blp_tmp.l |= 1;
                       s_1_0 = s_1_0 + blp_tmp.d;
-                      q_0 = q_0 - s_1_0;
-                      X_0 = X_0 + q_0;
+                      q_0 = (q_0 - s_1_0);
+                      X_0 = (X_0 + q_0);
                       blp_tmp.d = X_0;
                       blp_tmp.l |= 1;
                       s_2_0 = s_2_0 + blp_tmp.d;
@@ -11785,20 +11785,20 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     for(i = 0; i + 1 <= N_block; i += 1, X += incX, Y += incY){
                       X_0 = X[0];
                       Y_0 = Y[0];
-                      X_0 = X_0 * Y_0;
+                      X_0 = (X_0 * Y_0);
 
                       q_0 = s_0_0;
-                      blp_tmp.d = X_0 * compression_0;
+                      blp_tmp.d = (X_0 * compression_0);
                       blp_tmp.l |= 1;
                       s_0_0 = s_0_0 + blp_tmp.d;
-                      q_0 = q_0 - s_0_0 * expansion_0;
-                      X_0 = X_0 + q_0 + q_0;
+                      q_0 = ((q_0 - s_0_0) * expansion_0);
+                      X_0 = ((X_0 + q_0) + q_0);
                       q_0 = s_1_0;
                       blp_tmp.d = X_0;
                       blp_tmp.l |= 1;
                       s_1_0 = s_1_0 + blp_tmp.d;
-                      q_0 = q_0 - s_1_0;
-                      X_0 = X_0 + q_0;
+                      q_0 = (q_0 - s_1_0);
+                      X_0 = (X_0 + q_0);
                       blp_tmp.d = X_0;
                       blp_tmp.l |= 1;
                       s_2_0 = s_2_0 + blp_tmp.d;
@@ -11807,20 +11807,20 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     for(i = 0; i + 1 <= N_block; i += 1, X += incX, Y += incY){
                       X_0 = X[0];
                       Y_0 = Y[0];
-                      X_0 = X_0 * Y_0;
+                      X_0 = (X_0 * Y_0);
 
                       q_0 = s_0_0;
                       blp_tmp.d = X_0;
                       blp_tmp.l |= 1;
                       s_0_0 = s_0_0 + blp_tmp.d;
-                      q_0 = q_0 - s_0_0;
-                      X_0 = X_0 + q_0;
+                      q_0 = (q_0 - s_0_0);
+                      X_0 = (X_0 + q_0);
                       q_0 = s_1_0;
                       blp_tmp.d = X_0;
                       blp_tmp.l |= 1;
                       s_1_0 = s_1_0 + blp_tmp.d;
-                      q_0 = q_0 - s_1_0;
-                      X_0 = X_0 + q_0;
+                      q_0 = (q_0 - s_1_0);
+                      X_0 = (X_0 + q_0);
                       blp_tmp.d = X_0;
                       blp_tmp.l |= 1;
                       s_2_0 = s_2_0 + blp_tmp.d;
@@ -11858,23 +11858,23 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     for(i = 0; i + 1 <= N_block; i += 1, X += 1, Y += 1){
                       X_0 = X[0];
                       Y_0 = Y[0];
-                      X_0 = X_0 * Y_0;
+                      X_0 = (X_0 * Y_0);
 
                       s_0 = s_buffer[0];
-                      blp_tmp.d = X_0 * compression_0;
+                      blp_tmp.d = (X_0 * compression_0);
                       blp_tmp.l |= 1;
                       q_0 = s_0 + blp_tmp.d;
                       s_buffer[0] = q_0;
-                      q_0 = s_0 - q_0 * expansion_0;
-                      X_0 = X_0 + q_0 + q_0;
+                      q_0 = ((s_0 - q_0) * expansion_0);
+                      X_0 = ((X_0 + q_0) + q_0);
                       for(j = 1; j < fold - 1; j++){
                         s_0 = s_buffer[j];
                         blp_tmp.d = X_0;
                         blp_tmp.l |= 1;
                         q_0 = s_0 + blp_tmp.d;
                         s_buffer[j] = q_0;
-                        q_0 = s_0 - q_0;
-                        X_0 = X_0 + q_0;
+                        q_0 = (s_0 - q_0);
+                        X_0 = (X_0 + q_0);
                       }
                       blp_tmp.d = X_0;
                       blp_tmp.l |= 1;
@@ -11884,7 +11884,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     for(i = 0; i + 1 <= N_block; i += 1, X += 1, Y += 1){
                       X_0 = X[0];
                       Y_0 = Y[0];
-                      X_0 = X_0 * Y_0;
+                      X_0 = (X_0 * Y_0);
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[j];
@@ -11892,8 +11892,8 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                         blp_tmp.l |= 1;
                         q_0 = s_0 + blp_tmp.d;
                         s_buffer[j] = q_0;
-                        q_0 = s_0 - q_0;
-                        X_0 = X_0 + q_0;
+                        q_0 = (s_0 - q_0);
+                        X_0 = (X_0 + q_0);
                       }
                       blp_tmp.d = X_0;
                       blp_tmp.l |= 1;
@@ -11907,23 +11907,23 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     for(i = 0; i + 1 <= N_block; i += 1, X += 1, Y += incY){
                       X_0 = X[0];
                       Y_0 = Y[0];
-                      X_0 = X_0 * Y_0;
+                      X_0 = (X_0 * Y_0);
 
                       s_0 = s_buffer[0];
-                      blp_tmp.d = X_0 * compression_0;
+                      blp_tmp.d = (X_0 * compression_0);
                       blp_tmp.l |= 1;
                       q_0 = s_0 + blp_tmp.d;
                       s_buffer[0] = q_0;
-                      q_0 = s_0 - q_0 * expansion_0;
-                      X_0 = X_0 + q_0 + q_0;
+                      q_0 = ((s_0 - q_0) * expansion_0);
+                      X_0 = ((X_0 + q_0) + q_0);
                       for(j = 1; j < fold - 1; j++){
                         s_0 = s_buffer[j];
                         blp_tmp.d = X_0;
                         blp_tmp.l |= 1;
                         q_0 = s_0 + blp_tmp.d;
                         s_buffer[j] = q_0;
-                        q_0 = s_0 - q_0;
-                        X_0 = X_0 + q_0;
+                        q_0 = (s_0 - q_0);
+                        X_0 = (X_0 + q_0);
                       }
                       blp_tmp.d = X_0;
                       blp_tmp.l |= 1;
@@ -11933,7 +11933,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     for(i = 0; i + 1 <= N_block; i += 1, X += 1, Y += incY){
                       X_0 = X[0];
                       Y_0 = Y[0];
-                      X_0 = X_0 * Y_0;
+                      X_0 = (X_0 * Y_0);
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[j];
@@ -11941,8 +11941,8 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                         blp_tmp.l |= 1;
                         q_0 = s_0 + blp_tmp.d;
                         s_buffer[j] = q_0;
-                        q_0 = s_0 - q_0;
-                        X_0 = X_0 + q_0;
+                        q_0 = (s_0 - q_0);
+                        X_0 = (X_0 + q_0);
                       }
                       blp_tmp.d = X_0;
                       blp_tmp.l |= 1;
@@ -11958,23 +11958,23 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     for(i = 0; i + 1 <= N_block; i += 1, X += incX, Y += 1){
                       X_0 = X[0];
                       Y_0 = Y[0];
-                      X_0 = X_0 * Y_0;
+                      X_0 = (X_0 * Y_0);
 
                       s_0 = s_buffer[0];
-                      blp_tmp.d = X_0 * compression_0;
+                      blp_tmp.d = (X_0 * compression_0);
                       blp_tmp.l |= 1;
                       q_0 = s_0 + blp_tmp.d;
                       s_buffer[0] = q_0;
-                      q_0 = s_0 - q_0 * expansion_0;
-                      X_0 = X_0 + q_0 + q_0;
+                      q_0 = ((s_0 - q_0) * expansion_0);
+                      X_0 = ((X_0 + q_0) + q_0);
                       for(j = 1; j < fold - 1; j++){
                         s_0 = s_buffer[j];
                         blp_tmp.d = X_0;
                         blp_tmp.l |= 1;
                         q_0 = s_0 + blp_tmp.d;
                         s_buffer[j] = q_0;
-                        q_0 = s_0 - q_0;
-                        X_0 = X_0 + q_0;
+                        q_0 = (s_0 - q_0);
+                        X_0 = (X_0 + q_0);
                       }
                       blp_tmp.d = X_0;
                       blp_tmp.l |= 1;
@@ -11984,7 +11984,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     for(i = 0; i + 1 <= N_block; i += 1, X += incX, Y += 1){
                       X_0 = X[0];
                       Y_0 = Y[0];
-                      X_0 = X_0 * Y_0;
+                      X_0 = (X_0 * Y_0);
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[j];
@@ -11992,8 +11992,8 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                         blp_tmp.l |= 1;
                         q_0 = s_0 + blp_tmp.d;
                         s_buffer[j] = q_0;
-                        q_0 = s_0 - q_0;
-                        X_0 = X_0 + q_0;
+                        q_0 = (s_0 - q_0);
+                        X_0 = (X_0 + q_0);
                       }
                       blp_tmp.d = X_0;
                       blp_tmp.l |= 1;
@@ -12007,23 +12007,23 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     for(i = 0; i + 1 <= N_block; i += 1, X += incX, Y += incY){
                       X_0 = X[0];
                       Y_0 = Y[0];
-                      X_0 = X_0 * Y_0;
+                      X_0 = (X_0 * Y_0);
 
                       s_0 = s_buffer[0];
-                      blp_tmp.d = X_0 * compression_0;
+                      blp_tmp.d = (X_0 * compression_0);
                       blp_tmp.l |= 1;
                       q_0 = s_0 + blp_tmp.d;
                       s_buffer[0] = q_0;
-                      q_0 = s_0 - q_0 * expansion_0;
-                      X_0 = X_0 + q_0 + q_0;
+                      q_0 = ((s_0 - q_0) * expansion_0);
+                      X_0 = ((X_0 + q_0) + q_0);
                       for(j = 1; j < fold - 1; j++){
                         s_0 = s_buffer[j];
                         blp_tmp.d = X_0;
                         blp_tmp.l |= 1;
                         q_0 = s_0 + blp_tmp.d;
                         s_buffer[j] = q_0;
-                        q_0 = s_0 - q_0;
-                        X_0 = X_0 + q_0;
+                        q_0 = (s_0 - q_0);
+                        X_0 = (X_0 + q_0);
                       }
                       blp_tmp.d = X_0;
                       blp_tmp.l |= 1;
@@ -12033,7 +12033,7 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                     for(i = 0; i + 1 <= N_block; i += 1, X += incX, Y += incY){
                       X_0 = X[0];
                       Y_0 = Y[0];
-                      X_0 = X_0 * Y_0;
+                      X_0 = (X_0 * Y_0);
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[j];
@@ -12041,8 +12041,8 @@ void idxdBLAS_dmddot(const int fold, const int N, const double *X, const int inc
                         blp_tmp.l |= 1;
                         q_0 = s_0 + blp_tmp.d;
                         s_buffer[j] = q_0;
-                        q_0 = s_0 - q_0;
-                        X_0 = X_0 + q_0;
+                        q_0 = (s_0 - q_0);
+                        X_0 = (X_0 + q_0);
                       }
                       blp_tmp.d = X_0;
                       blp_tmp.l |= 1;

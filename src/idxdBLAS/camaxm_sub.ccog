@@ -16,10 +16,10 @@ code_block = generate.CodeBlock()
 vectorizations.conditionally_include_vectorizations(code_block)
 cog.out(str(code_block))
 ]]]*/
-#ifdef __AVX__
+#if (defined(__AVX__) && !defined(reproBLAS_no__AVX__))
   #include <immintrin.h>
 
-#elif defined(__SSE2__)
+#elif (defined(__SSE2__) && !defined(reproBLAS_no__SSE2__))
   #include <emmintrin.h>
 
 #else
@@ -50,7 +50,7 @@ void idxdBLAS_camaxm_sub(const int N, const void *X, const int incX, const void 
   /*[[[cog
   cog.out(generate.generate(amaxm.AMaxM(dataTypes.FloatComplex, "N", "x", "incX", "y", "incY", "amaxm"), cog.inFile, args, params, mode))
   ]]]*/
-  #ifdef __AVX__
+  #if (defined(__AVX__) && !defined(reproBLAS_no__AVX__))
     __m256 abs_mask_tmp;
     {
       __m256 tmp;
@@ -202,7 +202,7 @@ void idxdBLAS_camaxm_sub(const int N, const void *X, const int incX, const void 
     ((float*)amaxm)[0] = max_buffer_tmp[0];
     ((float*)amaxm)[1] = max_buffer_tmp[1];
 
-  #elif defined(__SSE2__)
+  #elif (defined(__SSE2__) && !defined(reproBLAS_no__SSE2__))
     __m128 abs_mask_tmp;
     {
       __m128 tmp;
@@ -354,10 +354,10 @@ void idxdBLAS_camaxm_sub(const int N, const void *X, const int incX, const void 
         x_1 = ((float*)x)[1];
         y_0 = ((float*)y)[0];
         y_1 = ((float*)y)[1];
-        x_2 = fabsf(x_1 * y_1);
-        x_3 = fabsf(x_0 * y_1);
-        x_0 = fabsf(x_0 * y_0);
-        x_1 = fabsf(x_1 * y_0);
+        x_2 = fabsf((x_1 * y_1));
+        x_3 = fabsf((x_0 * y_1));
+        x_0 = fabsf((x_0 * y_0));
+        x_1 = fabsf((x_1 * y_0));
         m_0 = (m_0 > x_0? m_0: x_0);
         m_1 = (m_1 > x_1? m_1: x_1);
         m_0 = (m_0 > x_2? m_0: x_2);
@@ -370,10 +370,10 @@ void idxdBLAS_camaxm_sub(const int N, const void *X, const int incX, const void 
         x_1 = ((float*)x)[1];
         y_0 = ((float*)y)[0];
         y_1 = ((float*)y)[1];
-        x_2 = fabsf(x_1 * y_1);
-        x_3 = fabsf(x_0 * y_1);
-        x_0 = fabsf(x_0 * y_0);
-        x_1 = fabsf(x_1 * y_0);
+        x_2 = fabsf((x_1 * y_1));
+        x_3 = fabsf((x_0 * y_1));
+        x_0 = fabsf((x_0 * y_0));
+        x_1 = fabsf((x_1 * y_0));
         m_0 = (m_0 > x_0? m_0: x_0);
         m_1 = (m_1 > x_1? m_1: x_1);
         m_0 = (m_0 > x_2? m_0: x_2);

@@ -16,10 +16,10 @@ code_block = generate.CodeBlock()
 vectorizations.conditionally_include_vectorizations(code_block)
 cog.out(str(code_block))
 ]]]*/
-#ifdef __AVX__
+#if (defined(__AVX__) && !defined(reproBLAS_no__AVX__))
   #include <immintrin.h>
 
-#elif defined(__SSE2__)
+#elif (defined(__SSE2__) && !defined(reproBLAS_no__SSE2__))
   #include <emmintrin.h>
 
 #else
@@ -47,7 +47,7 @@ void idxdBLAS_zamax_sub(const int N, const void *X, const int incX, void *amax){
   /*[[[cog
   cog.out(generate.generate(amax.AMax(dataTypes.DoubleComplex, "N", "x", "incX", "amax"), cog.inFile, args, params, mode))
   ]]]*/
-  #ifdef __AVX__
+  #if (defined(__AVX__) && !defined(reproBLAS_no__AVX__))
     __m256d abs_mask_tmp;
     {
       __m256d tmp;
@@ -168,7 +168,7 @@ void idxdBLAS_zamax_sub(const int N, const void *X, const int incX, void *amax){
     ((double*)amax)[0] = max_buffer_tmp[0];
     ((double*)amax)[1] = max_buffer_tmp[1];
 
-  #elif defined(__SSE2__)
+  #elif (defined(__SSE2__) && !defined(reproBLAS_no__SSE2__))
     __m128d abs_mask_tmp;
     {
       __m128d tmp;

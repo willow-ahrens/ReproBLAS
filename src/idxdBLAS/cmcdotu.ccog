@@ -22,10 +22,10 @@ cog.outl()
 
 cog.out(generate.generate(blockSize.BlockSize("cmcdotu", "N_block_MAX", 32, terminal.get_siendurance(), terminal.get_siendurance(), ["bench_rcdotu_fold_{}".format(terminal.get_sidefaultfold())]), cog.inFile, args, params, mode))
 ]]]*/
-#ifdef __AVX__
+#if (defined(__AVX__) && !defined(reproBLAS_no__AVX__))
   #include <immintrin.h>
 
-#elif defined(__SSE2__)
+#elif (defined(__SSE2__) && !defined(reproBLAS_no__SSE2__))
   #include <emmintrin.h>
 
 #else
@@ -105,7 +105,7 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
     cog.out(generate.generate(depositDotU.DepositDotU(dataTypes.FloatComplex, "fold", "N_block", "x", "incX", "priZ", "incpriZ", "y", "incY"), cog.inFile, args, params, mode))
     ]]]*/
     {
-      #ifdef __AVX__
+      #if (defined(__AVX__) && !defined(reproBLAS_no__AVX__))
         __m256 nconj_mask_tmp;
         {
           __m256 tmp;
@@ -8914,7 +8914,7 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
             break;
         }
 
-      #elif defined(__SSE2__)
+      #elif (defined(__SSE2__) && !defined(reproBLAS_no__SSE2__))
         __m128 nconj_mask_tmp;
         {
           __m128 tmp;
@@ -15559,8 +15559,11 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                     if(idxd_smindex0(priZ)){
                       if(idxd_smindex0(priZ + 1)){
                         compression_0 = idxd_SMCOMPRESSION;
+                        compression_1 = idxd_SMCOMPRESSION;
                         expansion_0 = idxd_SMEXPANSION * 0.5;
+                        expansion_1 = idxd_SMEXPANSION * 0.5;
                         expansion_mask_0 = idxd_SMEXPANSION * 0.5;
+                        expansion_mask_1 = idxd_SMEXPANSION * 0.5;
                       }else{
                         compression_0 = idxd_SMCOMPRESSION;
                         compression_1 = 1.0;
@@ -15582,35 +15585,35 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                       x_1 = ((float*)x)[1];
                       y_0 = ((float*)y)[0];
                       y_1 = ((float*)y)[1];
-                      x_2 = x_1 * y_1 * -1;
-                      x_3 = x_0 * y_1;
-                      x_0 = x_0 * y_0;
-                      x_1 = x_1 * y_0;
+                      x_2 = ((x_1 * y_1) * -1);
+                      x_3 = (x_0 * y_1);
+                      x_0 = (x_0 * y_0);
+                      x_1 = (x_1 * y_0);
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
                       q_2 = s_0_2;
                       q_3 = s_0_3;
-                      blp_tmp.f = x_0 * compression_0;
+                      blp_tmp.f = (x_0 * compression_0);
                       blp_tmp.i |= 1;
                       s_0_0 = s_0_0 + blp_tmp.f;
-                      blp_tmp.f = x_1 * compression_1;
+                      blp_tmp.f = (x_1 * compression_1);
                       blp_tmp.i |= 1;
                       s_0_1 = s_0_1 + blp_tmp.f;
-                      blp_tmp.f = x_2 * compression_0;
+                      blp_tmp.f = (x_2 * compression_0);
                       blp_tmp.i |= 1;
                       s_0_2 = s_0_2 + blp_tmp.f;
-                      blp_tmp.f = x_3 * compression_1;
+                      blp_tmp.f = (x_3 * compression_1);
                       blp_tmp.i |= 1;
                       s_0_3 = s_0_3 + blp_tmp.f;
-                      q_0 = q_0 - s_0_0;
-                      q_1 = q_1 - s_0_1;
-                      q_2 = q_2 - s_0_2;
-                      q_3 = q_3 - s_0_3;
-                      x_0 = x_0 + q_0 * expansion_0 + q_0 * expansion_mask_0;
-                      x_1 = x_1 + q_1 * expansion_1 + q_1 * expansion_mask_1;
-                      x_2 = x_2 + q_2 * expansion_0 + q_2 * expansion_mask_0;
-                      x_3 = x_3 + q_3 * expansion_1 + q_3 * expansion_mask_1;
+                      q_0 = (q_0 - s_0_0);
+                      q_1 = (q_1 - s_0_1);
+                      q_2 = (q_2 - s_0_2);
+                      q_3 = (q_3 - s_0_3);
+                      x_0 = ((x_0 + (q_0 * expansion_0)) + (q_0 * expansion_mask_0));
+                      x_1 = ((x_1 + (q_1 * expansion_1)) + (q_1 * expansion_mask_1));
+                      x_2 = ((x_2 + (q_2 * expansion_0)) + (q_2 * expansion_mask_0));
+                      x_3 = ((x_3 + (q_3 * expansion_1)) + (q_3 * expansion_mask_1));
                       q_0 = s_1_0;
                       q_1 = s_1_1;
                       q_2 = s_1_2;
@@ -15627,14 +15630,14 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                       blp_tmp.f = x_3;
                       blp_tmp.i |= 1;
                       s_1_3 = s_1_3 + blp_tmp.f;
-                      q_0 = q_0 - s_1_0;
-                      q_1 = q_1 - s_1_1;
-                      q_2 = q_2 - s_1_2;
-                      q_3 = q_3 - s_1_3;
-                      x_0 = x_0 + q_0;
-                      x_1 = x_1 + q_1;
-                      x_2 = x_2 + q_2;
-                      x_3 = x_3 + q_3;
+                      q_0 = (q_0 - s_1_0);
+                      q_1 = (q_1 - s_1_1);
+                      q_2 = (q_2 - s_1_2);
+                      q_3 = (q_3 - s_1_3);
+                      x_0 = (x_0 + q_0);
+                      x_1 = (x_1 + q_1);
+                      x_2 = (x_2 + q_2);
+                      x_3 = (x_3 + q_3);
                       blp_tmp.f = x_0;
                       blp_tmp.i |= 1;
                       s_2_0 = s_2_0 + blp_tmp.f;
@@ -15654,10 +15657,10 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                       x_1 = ((float*)x)[1];
                       y_0 = ((float*)y)[0];
                       y_1 = ((float*)y)[1];
-                      x_2 = x_1 * y_1 * -1;
-                      x_3 = x_0 * y_1;
-                      x_0 = x_0 * y_0;
-                      x_1 = x_1 * y_0;
+                      x_2 = ((x_1 * y_1) * -1);
+                      x_3 = (x_0 * y_1);
+                      x_0 = (x_0 * y_0);
+                      x_1 = (x_1 * y_0);
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -15675,14 +15678,14 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                       blp_tmp.f = x_3;
                       blp_tmp.i |= 1;
                       s_0_3 = s_0_3 + blp_tmp.f;
-                      q_0 = q_0 - s_0_0;
-                      q_1 = q_1 - s_0_1;
-                      q_2 = q_2 - s_0_2;
-                      q_3 = q_3 - s_0_3;
-                      x_0 = x_0 + q_0;
-                      x_1 = x_1 + q_1;
-                      x_2 = x_2 + q_2;
-                      x_3 = x_3 + q_3;
+                      q_0 = (q_0 - s_0_0);
+                      q_1 = (q_1 - s_0_1);
+                      q_2 = (q_2 - s_0_2);
+                      q_3 = (q_3 - s_0_3);
+                      x_0 = (x_0 + q_0);
+                      x_1 = (x_1 + q_1);
+                      x_2 = (x_2 + q_2);
+                      x_3 = (x_3 + q_3);
                       q_0 = s_1_0;
                       q_1 = s_1_1;
                       q_2 = s_1_2;
@@ -15699,14 +15702,14 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                       blp_tmp.f = x_3;
                       blp_tmp.i |= 1;
                       s_1_3 = s_1_3 + blp_tmp.f;
-                      q_0 = q_0 - s_1_0;
-                      q_1 = q_1 - s_1_1;
-                      q_2 = q_2 - s_1_2;
-                      q_3 = q_3 - s_1_3;
-                      x_0 = x_0 + q_0;
-                      x_1 = x_1 + q_1;
-                      x_2 = x_2 + q_2;
-                      x_3 = x_3 + q_3;
+                      q_0 = (q_0 - s_1_0);
+                      q_1 = (q_1 - s_1_1);
+                      q_2 = (q_2 - s_1_2);
+                      q_3 = (q_3 - s_1_3);
+                      x_0 = (x_0 + q_0);
+                      x_1 = (x_1 + q_1);
+                      x_2 = (x_2 + q_2);
+                      x_3 = (x_3 + q_3);
                       blp_tmp.f = x_0;
                       blp_tmp.i |= 1;
                       s_2_0 = s_2_0 + blp_tmp.f;
@@ -15726,8 +15729,11 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                     if(idxd_smindex0(priZ)){
                       if(idxd_smindex0(priZ + 1)){
                         compression_0 = idxd_SMCOMPRESSION;
+                        compression_1 = idxd_SMCOMPRESSION;
                         expansion_0 = idxd_SMEXPANSION * 0.5;
+                        expansion_1 = idxd_SMEXPANSION * 0.5;
                         expansion_mask_0 = idxd_SMEXPANSION * 0.5;
+                        expansion_mask_1 = idxd_SMEXPANSION * 0.5;
                       }else{
                         compression_0 = idxd_SMCOMPRESSION;
                         compression_1 = 1.0;
@@ -15749,35 +15755,35 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                       x_1 = ((float*)x)[1];
                       y_0 = ((float*)y)[0];
                       y_1 = ((float*)y)[1];
-                      x_2 = x_1 * y_1 * -1;
-                      x_3 = x_0 * y_1;
-                      x_0 = x_0 * y_0;
-                      x_1 = x_1 * y_0;
+                      x_2 = ((x_1 * y_1) * -1);
+                      x_3 = (x_0 * y_1);
+                      x_0 = (x_0 * y_0);
+                      x_1 = (x_1 * y_0);
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
                       q_2 = s_0_2;
                       q_3 = s_0_3;
-                      blp_tmp.f = x_0 * compression_0;
+                      blp_tmp.f = (x_0 * compression_0);
                       blp_tmp.i |= 1;
                       s_0_0 = s_0_0 + blp_tmp.f;
-                      blp_tmp.f = x_1 * compression_1;
+                      blp_tmp.f = (x_1 * compression_1);
                       blp_tmp.i |= 1;
                       s_0_1 = s_0_1 + blp_tmp.f;
-                      blp_tmp.f = x_2 * compression_0;
+                      blp_tmp.f = (x_2 * compression_0);
                       blp_tmp.i |= 1;
                       s_0_2 = s_0_2 + blp_tmp.f;
-                      blp_tmp.f = x_3 * compression_1;
+                      blp_tmp.f = (x_3 * compression_1);
                       blp_tmp.i |= 1;
                       s_0_3 = s_0_3 + blp_tmp.f;
-                      q_0 = q_0 - s_0_0;
-                      q_1 = q_1 - s_0_1;
-                      q_2 = q_2 - s_0_2;
-                      q_3 = q_3 - s_0_3;
-                      x_0 = x_0 + q_0 * expansion_0 + q_0 * expansion_mask_0;
-                      x_1 = x_1 + q_1 * expansion_1 + q_1 * expansion_mask_1;
-                      x_2 = x_2 + q_2 * expansion_0 + q_2 * expansion_mask_0;
-                      x_3 = x_3 + q_3 * expansion_1 + q_3 * expansion_mask_1;
+                      q_0 = (q_0 - s_0_0);
+                      q_1 = (q_1 - s_0_1);
+                      q_2 = (q_2 - s_0_2);
+                      q_3 = (q_3 - s_0_3);
+                      x_0 = ((x_0 + (q_0 * expansion_0)) + (q_0 * expansion_mask_0));
+                      x_1 = ((x_1 + (q_1 * expansion_1)) + (q_1 * expansion_mask_1));
+                      x_2 = ((x_2 + (q_2 * expansion_0)) + (q_2 * expansion_mask_0));
+                      x_3 = ((x_3 + (q_3 * expansion_1)) + (q_3 * expansion_mask_1));
                       q_0 = s_1_0;
                       q_1 = s_1_1;
                       q_2 = s_1_2;
@@ -15794,14 +15800,14 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                       blp_tmp.f = x_3;
                       blp_tmp.i |= 1;
                       s_1_3 = s_1_3 + blp_tmp.f;
-                      q_0 = q_0 - s_1_0;
-                      q_1 = q_1 - s_1_1;
-                      q_2 = q_2 - s_1_2;
-                      q_3 = q_3 - s_1_3;
-                      x_0 = x_0 + q_0;
-                      x_1 = x_1 + q_1;
-                      x_2 = x_2 + q_2;
-                      x_3 = x_3 + q_3;
+                      q_0 = (q_0 - s_1_0);
+                      q_1 = (q_1 - s_1_1);
+                      q_2 = (q_2 - s_1_2);
+                      q_3 = (q_3 - s_1_3);
+                      x_0 = (x_0 + q_0);
+                      x_1 = (x_1 + q_1);
+                      x_2 = (x_2 + q_2);
+                      x_3 = (x_3 + q_3);
                       blp_tmp.f = x_0;
                       blp_tmp.i |= 1;
                       s_2_0 = s_2_0 + blp_tmp.f;
@@ -15821,10 +15827,10 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                       x_1 = ((float*)x)[1];
                       y_0 = ((float*)y)[0];
                       y_1 = ((float*)y)[1];
-                      x_2 = x_1 * y_1 * -1;
-                      x_3 = x_0 * y_1;
-                      x_0 = x_0 * y_0;
-                      x_1 = x_1 * y_0;
+                      x_2 = ((x_1 * y_1) * -1);
+                      x_3 = (x_0 * y_1);
+                      x_0 = (x_0 * y_0);
+                      x_1 = (x_1 * y_0);
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -15842,14 +15848,14 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                       blp_tmp.f = x_3;
                       blp_tmp.i |= 1;
                       s_0_3 = s_0_3 + blp_tmp.f;
-                      q_0 = q_0 - s_0_0;
-                      q_1 = q_1 - s_0_1;
-                      q_2 = q_2 - s_0_2;
-                      q_3 = q_3 - s_0_3;
-                      x_0 = x_0 + q_0;
-                      x_1 = x_1 + q_1;
-                      x_2 = x_2 + q_2;
-                      x_3 = x_3 + q_3;
+                      q_0 = (q_0 - s_0_0);
+                      q_1 = (q_1 - s_0_1);
+                      q_2 = (q_2 - s_0_2);
+                      q_3 = (q_3 - s_0_3);
+                      x_0 = (x_0 + q_0);
+                      x_1 = (x_1 + q_1);
+                      x_2 = (x_2 + q_2);
+                      x_3 = (x_3 + q_3);
                       q_0 = s_1_0;
                       q_1 = s_1_1;
                       q_2 = s_1_2;
@@ -15866,14 +15872,14 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                       blp_tmp.f = x_3;
                       blp_tmp.i |= 1;
                       s_1_3 = s_1_3 + blp_tmp.f;
-                      q_0 = q_0 - s_1_0;
-                      q_1 = q_1 - s_1_1;
-                      q_2 = q_2 - s_1_2;
-                      q_3 = q_3 - s_1_3;
-                      x_0 = x_0 + q_0;
-                      x_1 = x_1 + q_1;
-                      x_2 = x_2 + q_2;
-                      x_3 = x_3 + q_3;
+                      q_0 = (q_0 - s_1_0);
+                      q_1 = (q_1 - s_1_1);
+                      q_2 = (q_2 - s_1_2);
+                      q_3 = (q_3 - s_1_3);
+                      x_0 = (x_0 + q_0);
+                      x_1 = (x_1 + q_1);
+                      x_2 = (x_2 + q_2);
+                      x_3 = (x_3 + q_3);
                       blp_tmp.f = x_0;
                       blp_tmp.i |= 1;
                       s_2_0 = s_2_0 + blp_tmp.f;
@@ -15895,8 +15901,11 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                     if(idxd_smindex0(priZ)){
                       if(idxd_smindex0(priZ + 1)){
                         compression_0 = idxd_SMCOMPRESSION;
+                        compression_1 = idxd_SMCOMPRESSION;
                         expansion_0 = idxd_SMEXPANSION * 0.5;
+                        expansion_1 = idxd_SMEXPANSION * 0.5;
                         expansion_mask_0 = idxd_SMEXPANSION * 0.5;
+                        expansion_mask_1 = idxd_SMEXPANSION * 0.5;
                       }else{
                         compression_0 = idxd_SMCOMPRESSION;
                         compression_1 = 1.0;
@@ -15918,35 +15927,35 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                       x_1 = ((float*)x)[1];
                       y_0 = ((float*)y)[0];
                       y_1 = ((float*)y)[1];
-                      x_2 = x_1 * y_1 * -1;
-                      x_3 = x_0 * y_1;
-                      x_0 = x_0 * y_0;
-                      x_1 = x_1 * y_0;
+                      x_2 = ((x_1 * y_1) * -1);
+                      x_3 = (x_0 * y_1);
+                      x_0 = (x_0 * y_0);
+                      x_1 = (x_1 * y_0);
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
                       q_2 = s_0_2;
                       q_3 = s_0_3;
-                      blp_tmp.f = x_0 * compression_0;
+                      blp_tmp.f = (x_0 * compression_0);
                       blp_tmp.i |= 1;
                       s_0_0 = s_0_0 + blp_tmp.f;
-                      blp_tmp.f = x_1 * compression_1;
+                      blp_tmp.f = (x_1 * compression_1);
                       blp_tmp.i |= 1;
                       s_0_1 = s_0_1 + blp_tmp.f;
-                      blp_tmp.f = x_2 * compression_0;
+                      blp_tmp.f = (x_2 * compression_0);
                       blp_tmp.i |= 1;
                       s_0_2 = s_0_2 + blp_tmp.f;
-                      blp_tmp.f = x_3 * compression_1;
+                      blp_tmp.f = (x_3 * compression_1);
                       blp_tmp.i |= 1;
                       s_0_3 = s_0_3 + blp_tmp.f;
-                      q_0 = q_0 - s_0_0;
-                      q_1 = q_1 - s_0_1;
-                      q_2 = q_2 - s_0_2;
-                      q_3 = q_3 - s_0_3;
-                      x_0 = x_0 + q_0 * expansion_0 + q_0 * expansion_mask_0;
-                      x_1 = x_1 + q_1 * expansion_1 + q_1 * expansion_mask_1;
-                      x_2 = x_2 + q_2 * expansion_0 + q_2 * expansion_mask_0;
-                      x_3 = x_3 + q_3 * expansion_1 + q_3 * expansion_mask_1;
+                      q_0 = (q_0 - s_0_0);
+                      q_1 = (q_1 - s_0_1);
+                      q_2 = (q_2 - s_0_2);
+                      q_3 = (q_3 - s_0_3);
+                      x_0 = ((x_0 + (q_0 * expansion_0)) + (q_0 * expansion_mask_0));
+                      x_1 = ((x_1 + (q_1 * expansion_1)) + (q_1 * expansion_mask_1));
+                      x_2 = ((x_2 + (q_2 * expansion_0)) + (q_2 * expansion_mask_0));
+                      x_3 = ((x_3 + (q_3 * expansion_1)) + (q_3 * expansion_mask_1));
                       q_0 = s_1_0;
                       q_1 = s_1_1;
                       q_2 = s_1_2;
@@ -15963,14 +15972,14 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                       blp_tmp.f = x_3;
                       blp_tmp.i |= 1;
                       s_1_3 = s_1_3 + blp_tmp.f;
-                      q_0 = q_0 - s_1_0;
-                      q_1 = q_1 - s_1_1;
-                      q_2 = q_2 - s_1_2;
-                      q_3 = q_3 - s_1_3;
-                      x_0 = x_0 + q_0;
-                      x_1 = x_1 + q_1;
-                      x_2 = x_2 + q_2;
-                      x_3 = x_3 + q_3;
+                      q_0 = (q_0 - s_1_0);
+                      q_1 = (q_1 - s_1_1);
+                      q_2 = (q_2 - s_1_2);
+                      q_3 = (q_3 - s_1_3);
+                      x_0 = (x_0 + q_0);
+                      x_1 = (x_1 + q_1);
+                      x_2 = (x_2 + q_2);
+                      x_3 = (x_3 + q_3);
                       blp_tmp.f = x_0;
                       blp_tmp.i |= 1;
                       s_2_0 = s_2_0 + blp_tmp.f;
@@ -15990,10 +15999,10 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                       x_1 = ((float*)x)[1];
                       y_0 = ((float*)y)[0];
                       y_1 = ((float*)y)[1];
-                      x_2 = x_1 * y_1 * -1;
-                      x_3 = x_0 * y_1;
-                      x_0 = x_0 * y_0;
-                      x_1 = x_1 * y_0;
+                      x_2 = ((x_1 * y_1) * -1);
+                      x_3 = (x_0 * y_1);
+                      x_0 = (x_0 * y_0);
+                      x_1 = (x_1 * y_0);
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -16011,14 +16020,14 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                       blp_tmp.f = x_3;
                       blp_tmp.i |= 1;
                       s_0_3 = s_0_3 + blp_tmp.f;
-                      q_0 = q_0 - s_0_0;
-                      q_1 = q_1 - s_0_1;
-                      q_2 = q_2 - s_0_2;
-                      q_3 = q_3 - s_0_3;
-                      x_0 = x_0 + q_0;
-                      x_1 = x_1 + q_1;
-                      x_2 = x_2 + q_2;
-                      x_3 = x_3 + q_3;
+                      q_0 = (q_0 - s_0_0);
+                      q_1 = (q_1 - s_0_1);
+                      q_2 = (q_2 - s_0_2);
+                      q_3 = (q_3 - s_0_3);
+                      x_0 = (x_0 + q_0);
+                      x_1 = (x_1 + q_1);
+                      x_2 = (x_2 + q_2);
+                      x_3 = (x_3 + q_3);
                       q_0 = s_1_0;
                       q_1 = s_1_1;
                       q_2 = s_1_2;
@@ -16035,14 +16044,14 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                       blp_tmp.f = x_3;
                       blp_tmp.i |= 1;
                       s_1_3 = s_1_3 + blp_tmp.f;
-                      q_0 = q_0 - s_1_0;
-                      q_1 = q_1 - s_1_1;
-                      q_2 = q_2 - s_1_2;
-                      q_3 = q_3 - s_1_3;
-                      x_0 = x_0 + q_0;
-                      x_1 = x_1 + q_1;
-                      x_2 = x_2 + q_2;
-                      x_3 = x_3 + q_3;
+                      q_0 = (q_0 - s_1_0);
+                      q_1 = (q_1 - s_1_1);
+                      q_2 = (q_2 - s_1_2);
+                      q_3 = (q_3 - s_1_3);
+                      x_0 = (x_0 + q_0);
+                      x_1 = (x_1 + q_1);
+                      x_2 = (x_2 + q_2);
+                      x_3 = (x_3 + q_3);
                       blp_tmp.f = x_0;
                       blp_tmp.i |= 1;
                       s_2_0 = s_2_0 + blp_tmp.f;
@@ -16062,8 +16071,11 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                     if(idxd_smindex0(priZ)){
                       if(idxd_smindex0(priZ + 1)){
                         compression_0 = idxd_SMCOMPRESSION;
+                        compression_1 = idxd_SMCOMPRESSION;
                         expansion_0 = idxd_SMEXPANSION * 0.5;
+                        expansion_1 = idxd_SMEXPANSION * 0.5;
                         expansion_mask_0 = idxd_SMEXPANSION * 0.5;
+                        expansion_mask_1 = idxd_SMEXPANSION * 0.5;
                       }else{
                         compression_0 = idxd_SMCOMPRESSION;
                         compression_1 = 1.0;
@@ -16085,35 +16097,35 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                       x_1 = ((float*)x)[1];
                       y_0 = ((float*)y)[0];
                       y_1 = ((float*)y)[1];
-                      x_2 = x_1 * y_1 * -1;
-                      x_3 = x_0 * y_1;
-                      x_0 = x_0 * y_0;
-                      x_1 = x_1 * y_0;
+                      x_2 = ((x_1 * y_1) * -1);
+                      x_3 = (x_0 * y_1);
+                      x_0 = (x_0 * y_0);
+                      x_1 = (x_1 * y_0);
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
                       q_2 = s_0_2;
                       q_3 = s_0_3;
-                      blp_tmp.f = x_0 * compression_0;
+                      blp_tmp.f = (x_0 * compression_0);
                       blp_tmp.i |= 1;
                       s_0_0 = s_0_0 + blp_tmp.f;
-                      blp_tmp.f = x_1 * compression_1;
+                      blp_tmp.f = (x_1 * compression_1);
                       blp_tmp.i |= 1;
                       s_0_1 = s_0_1 + blp_tmp.f;
-                      blp_tmp.f = x_2 * compression_0;
+                      blp_tmp.f = (x_2 * compression_0);
                       blp_tmp.i |= 1;
                       s_0_2 = s_0_2 + blp_tmp.f;
-                      blp_tmp.f = x_3 * compression_1;
+                      blp_tmp.f = (x_3 * compression_1);
                       blp_tmp.i |= 1;
                       s_0_3 = s_0_3 + blp_tmp.f;
-                      q_0 = q_0 - s_0_0;
-                      q_1 = q_1 - s_0_1;
-                      q_2 = q_2 - s_0_2;
-                      q_3 = q_3 - s_0_3;
-                      x_0 = x_0 + q_0 * expansion_0 + q_0 * expansion_mask_0;
-                      x_1 = x_1 + q_1 * expansion_1 + q_1 * expansion_mask_1;
-                      x_2 = x_2 + q_2 * expansion_0 + q_2 * expansion_mask_0;
-                      x_3 = x_3 + q_3 * expansion_1 + q_3 * expansion_mask_1;
+                      q_0 = (q_0 - s_0_0);
+                      q_1 = (q_1 - s_0_1);
+                      q_2 = (q_2 - s_0_2);
+                      q_3 = (q_3 - s_0_3);
+                      x_0 = ((x_0 + (q_0 * expansion_0)) + (q_0 * expansion_mask_0));
+                      x_1 = ((x_1 + (q_1 * expansion_1)) + (q_1 * expansion_mask_1));
+                      x_2 = ((x_2 + (q_2 * expansion_0)) + (q_2 * expansion_mask_0));
+                      x_3 = ((x_3 + (q_3 * expansion_1)) + (q_3 * expansion_mask_1));
                       q_0 = s_1_0;
                       q_1 = s_1_1;
                       q_2 = s_1_2;
@@ -16130,14 +16142,14 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                       blp_tmp.f = x_3;
                       blp_tmp.i |= 1;
                       s_1_3 = s_1_3 + blp_tmp.f;
-                      q_0 = q_0 - s_1_0;
-                      q_1 = q_1 - s_1_1;
-                      q_2 = q_2 - s_1_2;
-                      q_3 = q_3 - s_1_3;
-                      x_0 = x_0 + q_0;
-                      x_1 = x_1 + q_1;
-                      x_2 = x_2 + q_2;
-                      x_3 = x_3 + q_3;
+                      q_0 = (q_0 - s_1_0);
+                      q_1 = (q_1 - s_1_1);
+                      q_2 = (q_2 - s_1_2);
+                      q_3 = (q_3 - s_1_3);
+                      x_0 = (x_0 + q_0);
+                      x_1 = (x_1 + q_1);
+                      x_2 = (x_2 + q_2);
+                      x_3 = (x_3 + q_3);
                       blp_tmp.f = x_0;
                       blp_tmp.i |= 1;
                       s_2_0 = s_2_0 + blp_tmp.f;
@@ -16157,10 +16169,10 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                       x_1 = ((float*)x)[1];
                       y_0 = ((float*)y)[0];
                       y_1 = ((float*)y)[1];
-                      x_2 = x_1 * y_1 * -1;
-                      x_3 = x_0 * y_1;
-                      x_0 = x_0 * y_0;
-                      x_1 = x_1 * y_0;
+                      x_2 = ((x_1 * y_1) * -1);
+                      x_3 = (x_0 * y_1);
+                      x_0 = (x_0 * y_0);
+                      x_1 = (x_1 * y_0);
 
                       q_0 = s_0_0;
                       q_1 = s_0_1;
@@ -16178,14 +16190,14 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                       blp_tmp.f = x_3;
                       blp_tmp.i |= 1;
                       s_0_3 = s_0_3 + blp_tmp.f;
-                      q_0 = q_0 - s_0_0;
-                      q_1 = q_1 - s_0_1;
-                      q_2 = q_2 - s_0_2;
-                      q_3 = q_3 - s_0_3;
-                      x_0 = x_0 + q_0;
-                      x_1 = x_1 + q_1;
-                      x_2 = x_2 + q_2;
-                      x_3 = x_3 + q_3;
+                      q_0 = (q_0 - s_0_0);
+                      q_1 = (q_1 - s_0_1);
+                      q_2 = (q_2 - s_0_2);
+                      q_3 = (q_3 - s_0_3);
+                      x_0 = (x_0 + q_0);
+                      x_1 = (x_1 + q_1);
+                      x_2 = (x_2 + q_2);
+                      x_3 = (x_3 + q_3);
                       q_0 = s_1_0;
                       q_1 = s_1_1;
                       q_2 = s_1_2;
@@ -16202,14 +16214,14 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                       blp_tmp.f = x_3;
                       blp_tmp.i |= 1;
                       s_1_3 = s_1_3 + blp_tmp.f;
-                      q_0 = q_0 - s_1_0;
-                      q_1 = q_1 - s_1_1;
-                      q_2 = q_2 - s_1_2;
-                      q_3 = q_3 - s_1_3;
-                      x_0 = x_0 + q_0;
-                      x_1 = x_1 + q_1;
-                      x_2 = x_2 + q_2;
-                      x_3 = x_3 + q_3;
+                      q_0 = (q_0 - s_1_0);
+                      q_1 = (q_1 - s_1_1);
+                      q_2 = (q_2 - s_1_2);
+                      q_3 = (q_3 - s_1_3);
+                      x_0 = (x_0 + q_0);
+                      x_1 = (x_1 + q_1);
+                      x_2 = (x_2 + q_2);
+                      x_3 = (x_3 + q_3);
                       blp_tmp.f = x_0;
                       blp_tmp.i |= 1;
                       s_2_0 = s_2_0 + blp_tmp.f;
@@ -16271,8 +16283,11 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                     if(idxd_smindex0(priZ)){
                       if(idxd_smindex0(priZ + 1)){
                         compression_0 = idxd_SMCOMPRESSION;
+                        compression_1 = idxd_SMCOMPRESSION;
                         expansion_0 = idxd_SMEXPANSION * 0.5;
+                        expansion_1 = idxd_SMEXPANSION * 0.5;
                         expansion_mask_0 = idxd_SMEXPANSION * 0.5;
+                        expansion_mask_1 = idxd_SMEXPANSION * 0.5;
                       }else{
                         compression_0 = idxd_SMCOMPRESSION;
                         compression_1 = 1.0;
@@ -16294,39 +16309,39 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                       x_1 = ((float*)x)[1];
                       y_0 = ((float*)y)[0];
                       y_1 = ((float*)y)[1];
-                      x_2 = x_1 * y_1 * -1;
-                      x_3 = x_0 * y_1;
-                      x_0 = x_0 * y_0;
-                      x_1 = x_1 * y_0;
+                      x_2 = ((x_1 * y_1) * -1);
+                      x_3 = (x_0 * y_1);
+                      x_0 = (x_0 * y_0);
+                      x_1 = (x_1 * y_0);
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
                       s_2 = s_buffer[2];
                       s_3 = s_buffer[3];
-                      blp_tmp.f = x_0 * compression_0;
+                      blp_tmp.f = (x_0 * compression_0);
                       blp_tmp.i |= 1;
                       q_0 = s_0 + blp_tmp.f;
-                      blp_tmp.f = x_1 * compression_1;
+                      blp_tmp.f = (x_1 * compression_1);
                       blp_tmp.i |= 1;
                       q_1 = s_1 + blp_tmp.f;
-                      blp_tmp.f = x_2 * compression_0;
+                      blp_tmp.f = (x_2 * compression_0);
                       blp_tmp.i |= 1;
                       q_2 = s_2 + blp_tmp.f;
-                      blp_tmp.f = x_3 * compression_1;
+                      blp_tmp.f = (x_3 * compression_1);
                       blp_tmp.i |= 1;
                       q_3 = s_3 + blp_tmp.f;
                       s_buffer[0] = q_0;
                       s_buffer[1] = q_1;
                       s_buffer[2] = q_2;
                       s_buffer[3] = q_3;
-                      q_0 = s_0 - q_0;
-                      q_1 = s_1 - q_1;
-                      q_2 = s_2 - q_2;
-                      q_3 = s_3 - q_3;
-                      x_0 = x_0 + q_0 * expansion_0 + q_0 * expansion_mask_0;
-                      x_1 = x_1 + q_1 * expansion_1 + q_1 * expansion_mask_1;
-                      x_2 = x_2 + q_2 * expansion_0 + q_2 * expansion_mask_0;
-                      x_3 = x_3 + q_3 * expansion_1 + q_3 * expansion_mask_1;
+                      q_0 = (s_0 - q_0);
+                      q_1 = (s_1 - q_1);
+                      q_2 = (s_2 - q_2);
+                      q_3 = (s_3 - q_3);
+                      x_0 = ((x_0 + (q_0 * expansion_0)) + (q_0 * expansion_mask_0));
+                      x_1 = ((x_1 + (q_1 * expansion_1)) + (q_1 * expansion_mask_1));
+                      x_2 = ((x_2 + (q_2 * expansion_0)) + (q_2 * expansion_mask_0));
+                      x_3 = ((x_3 + (q_3 * expansion_1)) + (q_3 * expansion_mask_1));
                       for(j = 1; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 4)];
                         s_1 = s_buffer[((j * 4) + 1)];
@@ -16348,14 +16363,14 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                         s_buffer[((j * 4) + 1)] = q_1;
                         s_buffer[((j * 4) + 2)] = q_2;
                         s_buffer[((j * 4) + 3)] = q_3;
-                        q_0 = s_0 - q_0;
-                        q_1 = s_1 - q_1;
-                        q_2 = s_2 - q_2;
-                        q_3 = s_3 - q_3;
-                        x_0 = x_0 + q_0;
-                        x_1 = x_1 + q_1;
-                        x_2 = x_2 + q_2;
-                        x_3 = x_3 + q_3;
+                        q_0 = (s_0 - q_0);
+                        q_1 = (s_1 - q_1);
+                        q_2 = (s_2 - q_2);
+                        q_3 = (s_3 - q_3);
+                        x_0 = (x_0 + q_0);
+                        x_1 = (x_1 + q_1);
+                        x_2 = (x_2 + q_2);
+                        x_3 = (x_3 + q_3);
                       }
                       blp_tmp.f = x_0;
                       blp_tmp.i |= 1;
@@ -16376,10 +16391,10 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                       x_1 = ((float*)x)[1];
                       y_0 = ((float*)y)[0];
                       y_1 = ((float*)y)[1];
-                      x_2 = x_1 * y_1 * -1;
-                      x_3 = x_0 * y_1;
-                      x_0 = x_0 * y_0;
-                      x_1 = x_1 * y_0;
+                      x_2 = ((x_1 * y_1) * -1);
+                      x_3 = (x_0 * y_1);
+                      x_0 = (x_0 * y_0);
+                      x_1 = (x_1 * y_0);
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 4)];
@@ -16402,14 +16417,14 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                         s_buffer[((j * 4) + 1)] = q_1;
                         s_buffer[((j * 4) + 2)] = q_2;
                         s_buffer[((j * 4) + 3)] = q_3;
-                        q_0 = s_0 - q_0;
-                        q_1 = s_1 - q_1;
-                        q_2 = s_2 - q_2;
-                        q_3 = s_3 - q_3;
-                        x_0 = x_0 + q_0;
-                        x_1 = x_1 + q_1;
-                        x_2 = x_2 + q_2;
-                        x_3 = x_3 + q_3;
+                        q_0 = (s_0 - q_0);
+                        q_1 = (s_1 - q_1);
+                        q_2 = (s_2 - q_2);
+                        q_3 = (s_3 - q_3);
+                        x_0 = (x_0 + q_0);
+                        x_1 = (x_1 + q_1);
+                        x_2 = (x_2 + q_2);
+                        x_3 = (x_3 + q_3);
                       }
                       blp_tmp.f = x_0;
                       blp_tmp.i |= 1;
@@ -16430,8 +16445,11 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                     if(idxd_smindex0(priZ)){
                       if(idxd_smindex0(priZ + 1)){
                         compression_0 = idxd_SMCOMPRESSION;
+                        compression_1 = idxd_SMCOMPRESSION;
                         expansion_0 = idxd_SMEXPANSION * 0.5;
+                        expansion_1 = idxd_SMEXPANSION * 0.5;
                         expansion_mask_0 = idxd_SMEXPANSION * 0.5;
+                        expansion_mask_1 = idxd_SMEXPANSION * 0.5;
                       }else{
                         compression_0 = idxd_SMCOMPRESSION;
                         compression_1 = 1.0;
@@ -16453,39 +16471,39 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                       x_1 = ((float*)x)[1];
                       y_0 = ((float*)y)[0];
                       y_1 = ((float*)y)[1];
-                      x_2 = x_1 * y_1 * -1;
-                      x_3 = x_0 * y_1;
-                      x_0 = x_0 * y_0;
-                      x_1 = x_1 * y_0;
+                      x_2 = ((x_1 * y_1) * -1);
+                      x_3 = (x_0 * y_1);
+                      x_0 = (x_0 * y_0);
+                      x_1 = (x_1 * y_0);
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
                       s_2 = s_buffer[2];
                       s_3 = s_buffer[3];
-                      blp_tmp.f = x_0 * compression_0;
+                      blp_tmp.f = (x_0 * compression_0);
                       blp_tmp.i |= 1;
                       q_0 = s_0 + blp_tmp.f;
-                      blp_tmp.f = x_1 * compression_1;
+                      blp_tmp.f = (x_1 * compression_1);
                       blp_tmp.i |= 1;
                       q_1 = s_1 + blp_tmp.f;
-                      blp_tmp.f = x_2 * compression_0;
+                      blp_tmp.f = (x_2 * compression_0);
                       blp_tmp.i |= 1;
                       q_2 = s_2 + blp_tmp.f;
-                      blp_tmp.f = x_3 * compression_1;
+                      blp_tmp.f = (x_3 * compression_1);
                       blp_tmp.i |= 1;
                       q_3 = s_3 + blp_tmp.f;
                       s_buffer[0] = q_0;
                       s_buffer[1] = q_1;
                       s_buffer[2] = q_2;
                       s_buffer[3] = q_3;
-                      q_0 = s_0 - q_0;
-                      q_1 = s_1 - q_1;
-                      q_2 = s_2 - q_2;
-                      q_3 = s_3 - q_3;
-                      x_0 = x_0 + q_0 * expansion_0 + q_0 * expansion_mask_0;
-                      x_1 = x_1 + q_1 * expansion_1 + q_1 * expansion_mask_1;
-                      x_2 = x_2 + q_2 * expansion_0 + q_2 * expansion_mask_0;
-                      x_3 = x_3 + q_3 * expansion_1 + q_3 * expansion_mask_1;
+                      q_0 = (s_0 - q_0);
+                      q_1 = (s_1 - q_1);
+                      q_2 = (s_2 - q_2);
+                      q_3 = (s_3 - q_3);
+                      x_0 = ((x_0 + (q_0 * expansion_0)) + (q_0 * expansion_mask_0));
+                      x_1 = ((x_1 + (q_1 * expansion_1)) + (q_1 * expansion_mask_1));
+                      x_2 = ((x_2 + (q_2 * expansion_0)) + (q_2 * expansion_mask_0));
+                      x_3 = ((x_3 + (q_3 * expansion_1)) + (q_3 * expansion_mask_1));
                       for(j = 1; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 4)];
                         s_1 = s_buffer[((j * 4) + 1)];
@@ -16507,14 +16525,14 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                         s_buffer[((j * 4) + 1)] = q_1;
                         s_buffer[((j * 4) + 2)] = q_2;
                         s_buffer[((j * 4) + 3)] = q_3;
-                        q_0 = s_0 - q_0;
-                        q_1 = s_1 - q_1;
-                        q_2 = s_2 - q_2;
-                        q_3 = s_3 - q_3;
-                        x_0 = x_0 + q_0;
-                        x_1 = x_1 + q_1;
-                        x_2 = x_2 + q_2;
-                        x_3 = x_3 + q_3;
+                        q_0 = (s_0 - q_0);
+                        q_1 = (s_1 - q_1);
+                        q_2 = (s_2 - q_2);
+                        q_3 = (s_3 - q_3);
+                        x_0 = (x_0 + q_0);
+                        x_1 = (x_1 + q_1);
+                        x_2 = (x_2 + q_2);
+                        x_3 = (x_3 + q_3);
                       }
                       blp_tmp.f = x_0;
                       blp_tmp.i |= 1;
@@ -16535,10 +16553,10 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                       x_1 = ((float*)x)[1];
                       y_0 = ((float*)y)[0];
                       y_1 = ((float*)y)[1];
-                      x_2 = x_1 * y_1 * -1;
-                      x_3 = x_0 * y_1;
-                      x_0 = x_0 * y_0;
-                      x_1 = x_1 * y_0;
+                      x_2 = ((x_1 * y_1) * -1);
+                      x_3 = (x_0 * y_1);
+                      x_0 = (x_0 * y_0);
+                      x_1 = (x_1 * y_0);
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 4)];
@@ -16561,14 +16579,14 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                         s_buffer[((j * 4) + 1)] = q_1;
                         s_buffer[((j * 4) + 2)] = q_2;
                         s_buffer[((j * 4) + 3)] = q_3;
-                        q_0 = s_0 - q_0;
-                        q_1 = s_1 - q_1;
-                        q_2 = s_2 - q_2;
-                        q_3 = s_3 - q_3;
-                        x_0 = x_0 + q_0;
-                        x_1 = x_1 + q_1;
-                        x_2 = x_2 + q_2;
-                        x_3 = x_3 + q_3;
+                        q_0 = (s_0 - q_0);
+                        q_1 = (s_1 - q_1);
+                        q_2 = (s_2 - q_2);
+                        q_3 = (s_3 - q_3);
+                        x_0 = (x_0 + q_0);
+                        x_1 = (x_1 + q_1);
+                        x_2 = (x_2 + q_2);
+                        x_3 = (x_3 + q_3);
                       }
                       blp_tmp.f = x_0;
                       blp_tmp.i |= 1;
@@ -16591,8 +16609,11 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                     if(idxd_smindex0(priZ)){
                       if(idxd_smindex0(priZ + 1)){
                         compression_0 = idxd_SMCOMPRESSION;
+                        compression_1 = idxd_SMCOMPRESSION;
                         expansion_0 = idxd_SMEXPANSION * 0.5;
+                        expansion_1 = idxd_SMEXPANSION * 0.5;
                         expansion_mask_0 = idxd_SMEXPANSION * 0.5;
+                        expansion_mask_1 = idxd_SMEXPANSION * 0.5;
                       }else{
                         compression_0 = idxd_SMCOMPRESSION;
                         compression_1 = 1.0;
@@ -16614,39 +16635,39 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                       x_1 = ((float*)x)[1];
                       y_0 = ((float*)y)[0];
                       y_1 = ((float*)y)[1];
-                      x_2 = x_1 * y_1 * -1;
-                      x_3 = x_0 * y_1;
-                      x_0 = x_0 * y_0;
-                      x_1 = x_1 * y_0;
+                      x_2 = ((x_1 * y_1) * -1);
+                      x_3 = (x_0 * y_1);
+                      x_0 = (x_0 * y_0);
+                      x_1 = (x_1 * y_0);
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
                       s_2 = s_buffer[2];
                       s_3 = s_buffer[3];
-                      blp_tmp.f = x_0 * compression_0;
+                      blp_tmp.f = (x_0 * compression_0);
                       blp_tmp.i |= 1;
                       q_0 = s_0 + blp_tmp.f;
-                      blp_tmp.f = x_1 * compression_1;
+                      blp_tmp.f = (x_1 * compression_1);
                       blp_tmp.i |= 1;
                       q_1 = s_1 + blp_tmp.f;
-                      blp_tmp.f = x_2 * compression_0;
+                      blp_tmp.f = (x_2 * compression_0);
                       blp_tmp.i |= 1;
                       q_2 = s_2 + blp_tmp.f;
-                      blp_tmp.f = x_3 * compression_1;
+                      blp_tmp.f = (x_3 * compression_1);
                       blp_tmp.i |= 1;
                       q_3 = s_3 + blp_tmp.f;
                       s_buffer[0] = q_0;
                       s_buffer[1] = q_1;
                       s_buffer[2] = q_2;
                       s_buffer[3] = q_3;
-                      q_0 = s_0 - q_0;
-                      q_1 = s_1 - q_1;
-                      q_2 = s_2 - q_2;
-                      q_3 = s_3 - q_3;
-                      x_0 = x_0 + q_0 * expansion_0 + q_0 * expansion_mask_0;
-                      x_1 = x_1 + q_1 * expansion_1 + q_1 * expansion_mask_1;
-                      x_2 = x_2 + q_2 * expansion_0 + q_2 * expansion_mask_0;
-                      x_3 = x_3 + q_3 * expansion_1 + q_3 * expansion_mask_1;
+                      q_0 = (s_0 - q_0);
+                      q_1 = (s_1 - q_1);
+                      q_2 = (s_2 - q_2);
+                      q_3 = (s_3 - q_3);
+                      x_0 = ((x_0 + (q_0 * expansion_0)) + (q_0 * expansion_mask_0));
+                      x_1 = ((x_1 + (q_1 * expansion_1)) + (q_1 * expansion_mask_1));
+                      x_2 = ((x_2 + (q_2 * expansion_0)) + (q_2 * expansion_mask_0));
+                      x_3 = ((x_3 + (q_3 * expansion_1)) + (q_3 * expansion_mask_1));
                       for(j = 1; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 4)];
                         s_1 = s_buffer[((j * 4) + 1)];
@@ -16668,14 +16689,14 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                         s_buffer[((j * 4) + 1)] = q_1;
                         s_buffer[((j * 4) + 2)] = q_2;
                         s_buffer[((j * 4) + 3)] = q_3;
-                        q_0 = s_0 - q_0;
-                        q_1 = s_1 - q_1;
-                        q_2 = s_2 - q_2;
-                        q_3 = s_3 - q_3;
-                        x_0 = x_0 + q_0;
-                        x_1 = x_1 + q_1;
-                        x_2 = x_2 + q_2;
-                        x_3 = x_3 + q_3;
+                        q_0 = (s_0 - q_0);
+                        q_1 = (s_1 - q_1);
+                        q_2 = (s_2 - q_2);
+                        q_3 = (s_3 - q_3);
+                        x_0 = (x_0 + q_0);
+                        x_1 = (x_1 + q_1);
+                        x_2 = (x_2 + q_2);
+                        x_3 = (x_3 + q_3);
                       }
                       blp_tmp.f = x_0;
                       blp_tmp.i |= 1;
@@ -16696,10 +16717,10 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                       x_1 = ((float*)x)[1];
                       y_0 = ((float*)y)[0];
                       y_1 = ((float*)y)[1];
-                      x_2 = x_1 * y_1 * -1;
-                      x_3 = x_0 * y_1;
-                      x_0 = x_0 * y_0;
-                      x_1 = x_1 * y_0;
+                      x_2 = ((x_1 * y_1) * -1);
+                      x_3 = (x_0 * y_1);
+                      x_0 = (x_0 * y_0);
+                      x_1 = (x_1 * y_0);
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 4)];
@@ -16722,14 +16743,14 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                         s_buffer[((j * 4) + 1)] = q_1;
                         s_buffer[((j * 4) + 2)] = q_2;
                         s_buffer[((j * 4) + 3)] = q_3;
-                        q_0 = s_0 - q_0;
-                        q_1 = s_1 - q_1;
-                        q_2 = s_2 - q_2;
-                        q_3 = s_3 - q_3;
-                        x_0 = x_0 + q_0;
-                        x_1 = x_1 + q_1;
-                        x_2 = x_2 + q_2;
-                        x_3 = x_3 + q_3;
+                        q_0 = (s_0 - q_0);
+                        q_1 = (s_1 - q_1);
+                        q_2 = (s_2 - q_2);
+                        q_3 = (s_3 - q_3);
+                        x_0 = (x_0 + q_0);
+                        x_1 = (x_1 + q_1);
+                        x_2 = (x_2 + q_2);
+                        x_3 = (x_3 + q_3);
                       }
                       blp_tmp.f = x_0;
                       blp_tmp.i |= 1;
@@ -16750,8 +16771,11 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                     if(idxd_smindex0(priZ)){
                       if(idxd_smindex0(priZ + 1)){
                         compression_0 = idxd_SMCOMPRESSION;
+                        compression_1 = idxd_SMCOMPRESSION;
                         expansion_0 = idxd_SMEXPANSION * 0.5;
+                        expansion_1 = idxd_SMEXPANSION * 0.5;
                         expansion_mask_0 = idxd_SMEXPANSION * 0.5;
+                        expansion_mask_1 = idxd_SMEXPANSION * 0.5;
                       }else{
                         compression_0 = idxd_SMCOMPRESSION;
                         compression_1 = 1.0;
@@ -16773,39 +16797,39 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                       x_1 = ((float*)x)[1];
                       y_0 = ((float*)y)[0];
                       y_1 = ((float*)y)[1];
-                      x_2 = x_1 * y_1 * -1;
-                      x_3 = x_0 * y_1;
-                      x_0 = x_0 * y_0;
-                      x_1 = x_1 * y_0;
+                      x_2 = ((x_1 * y_1) * -1);
+                      x_3 = (x_0 * y_1);
+                      x_0 = (x_0 * y_0);
+                      x_1 = (x_1 * y_0);
 
                       s_0 = s_buffer[0];
                       s_1 = s_buffer[1];
                       s_2 = s_buffer[2];
                       s_3 = s_buffer[3];
-                      blp_tmp.f = x_0 * compression_0;
+                      blp_tmp.f = (x_0 * compression_0);
                       blp_tmp.i |= 1;
                       q_0 = s_0 + blp_tmp.f;
-                      blp_tmp.f = x_1 * compression_1;
+                      blp_tmp.f = (x_1 * compression_1);
                       blp_tmp.i |= 1;
                       q_1 = s_1 + blp_tmp.f;
-                      blp_tmp.f = x_2 * compression_0;
+                      blp_tmp.f = (x_2 * compression_0);
                       blp_tmp.i |= 1;
                       q_2 = s_2 + blp_tmp.f;
-                      blp_tmp.f = x_3 * compression_1;
+                      blp_tmp.f = (x_3 * compression_1);
                       blp_tmp.i |= 1;
                       q_3 = s_3 + blp_tmp.f;
                       s_buffer[0] = q_0;
                       s_buffer[1] = q_1;
                       s_buffer[2] = q_2;
                       s_buffer[3] = q_3;
-                      q_0 = s_0 - q_0;
-                      q_1 = s_1 - q_1;
-                      q_2 = s_2 - q_2;
-                      q_3 = s_3 - q_3;
-                      x_0 = x_0 + q_0 * expansion_0 + q_0 * expansion_mask_0;
-                      x_1 = x_1 + q_1 * expansion_1 + q_1 * expansion_mask_1;
-                      x_2 = x_2 + q_2 * expansion_0 + q_2 * expansion_mask_0;
-                      x_3 = x_3 + q_3 * expansion_1 + q_3 * expansion_mask_1;
+                      q_0 = (s_0 - q_0);
+                      q_1 = (s_1 - q_1);
+                      q_2 = (s_2 - q_2);
+                      q_3 = (s_3 - q_3);
+                      x_0 = ((x_0 + (q_0 * expansion_0)) + (q_0 * expansion_mask_0));
+                      x_1 = ((x_1 + (q_1 * expansion_1)) + (q_1 * expansion_mask_1));
+                      x_2 = ((x_2 + (q_2 * expansion_0)) + (q_2 * expansion_mask_0));
+                      x_3 = ((x_3 + (q_3 * expansion_1)) + (q_3 * expansion_mask_1));
                       for(j = 1; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 4)];
                         s_1 = s_buffer[((j * 4) + 1)];
@@ -16827,14 +16851,14 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                         s_buffer[((j * 4) + 1)] = q_1;
                         s_buffer[((j * 4) + 2)] = q_2;
                         s_buffer[((j * 4) + 3)] = q_3;
-                        q_0 = s_0 - q_0;
-                        q_1 = s_1 - q_1;
-                        q_2 = s_2 - q_2;
-                        q_3 = s_3 - q_3;
-                        x_0 = x_0 + q_0;
-                        x_1 = x_1 + q_1;
-                        x_2 = x_2 + q_2;
-                        x_3 = x_3 + q_3;
+                        q_0 = (s_0 - q_0);
+                        q_1 = (s_1 - q_1);
+                        q_2 = (s_2 - q_2);
+                        q_3 = (s_3 - q_3);
+                        x_0 = (x_0 + q_0);
+                        x_1 = (x_1 + q_1);
+                        x_2 = (x_2 + q_2);
+                        x_3 = (x_3 + q_3);
                       }
                       blp_tmp.f = x_0;
                       blp_tmp.i |= 1;
@@ -16855,10 +16879,10 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                       x_1 = ((float*)x)[1];
                       y_0 = ((float*)y)[0];
                       y_1 = ((float*)y)[1];
-                      x_2 = x_1 * y_1 * -1;
-                      x_3 = x_0 * y_1;
-                      x_0 = x_0 * y_0;
-                      x_1 = x_1 * y_0;
+                      x_2 = ((x_1 * y_1) * -1);
+                      x_3 = (x_0 * y_1);
+                      x_0 = (x_0 * y_0);
+                      x_1 = (x_1 * y_0);
 
                       for(j = 0; j < fold - 1; j++){
                         s_0 = s_buffer[(j * 4)];
@@ -16881,14 +16905,14 @@ void idxdBLAS_cmcdotu(const int fold, const int N, const void *X, const int incX
                         s_buffer[((j * 4) + 1)] = q_1;
                         s_buffer[((j * 4) + 2)] = q_2;
                         s_buffer[((j * 4) + 3)] = q_3;
-                        q_0 = s_0 - q_0;
-                        q_1 = s_1 - q_1;
-                        q_2 = s_2 - q_2;
-                        q_3 = s_3 - q_3;
-                        x_0 = x_0 + q_0;
-                        x_1 = x_1 + q_1;
-                        x_2 = x_2 + q_2;
-                        x_3 = x_3 + q_3;
+                        q_0 = (s_0 - q_0);
+                        q_1 = (s_1 - q_1);
+                        q_2 = (s_2 - q_2);
+                        q_3 = (s_3 - q_3);
+                        x_0 = (x_0 + q_0);
+                        x_1 = (x_1 + q_1);
+                        x_2 = (x_2 + q_2);
+                        x_3 = (x_3 + q_3);
                       }
                       blp_tmp.f = x_0;
                       blp_tmp.i |= 1;
