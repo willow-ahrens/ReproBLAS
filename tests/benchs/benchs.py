@@ -10,23 +10,23 @@ class BenchSuite(harness.MetricSuite):
 
 class BenchTest(harness.MetricTest):
   def parse_output(self, output):
-    if self.attribute == "time":
+    if self.attribute == "time(s)":
       return output["time"] / output["trials"]
-    elif self.attribute == "peak_time":
+    elif self.attribute == "peak_time(s)":
       return terminal.get_peak_time(output)
-    elif self.attribute == "perf":
+    elif self.attribute == "perf(FLOP/s)":
       return (output["trials"] * terminal.get_flop_count(output)) / max(output["time"], sys.float_info.min)
-    elif self.attribute == "peak_perf":
+    elif self.attribute == "peak_perf(FLOP/s)":
       return (output["trials"] * terminal.get_flop_count(output)) / max(terminal.get_peak_time(output), sys.float_info.min)
-    elif self.attribute == "norm":
+    elif self.attribute == "norm(Hz)":
       return (output["trials"] * output["normalizer"]) / max(output["time"], sys.float_info.min)
-    elif self.attribute == "peak_norm":
+    elif self.attribute == "peak_norm(Hz)":
       return (output["trials"] * output["normalizer"]) / max(terminal.get_peak_time(output), sys.float_info.min)
-    if self.attribute == "freq":
+    elif self.attribute == "freq(Hz)":
       return (output["trials"] * output["input"]) / max(output["time"], sys.float_info.min)
-    elif self.attribute == "peak_freq":
+    elif self.attribute == "peak_freq(Hz)":
       return (output["trials"] * output["input"]) / max(terminal.get_peak_time(output), sys.float_info.min)
-    elif self.attribute == "%peak":
+    elif self.attribute == "peak(%)":
       return (100.0 * terminal.get_peak_time(output) * output["trials"])/max(output["time"], sys.float_info.min)
 
 class BenchCAMAXTest(BenchTest):
