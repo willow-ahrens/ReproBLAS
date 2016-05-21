@@ -47,8 +47,8 @@ BUILD_MPI = false
 #PYTHON = python3
 
 # optionally disable vectorization (comment all for best available)
-SSE2 := false
-AVX := false
+#SSE2 := false
+#AVX := false
 
 # select optimization flags (comment for auto)
 OPTFLAGS := -O3
