@@ -19,4 +19,5 @@ acc_harness.add_suite(accs.AccSuite([accs.AccRDSUMTest(), accs.AccRDASUMTest(), 
 acc_harness.add_suite(accs.AccSuite([accs.AccRSSUMTest(), accs.AccRSASUMTest(), accs.AccRSNRM2Test(), accs.AccRSDOTTest()], params, ranges, attribute))
 acc_harness.add_suite(accs.AccSuite([accs.AccRZSUMTest(), accs.AccRDZASUMTest(), accs.AccRDZNRM2Test(), accs.AccRZDOTUTest(), accs.AccRZDOTCTest()], params, ranges, attribute))
 acc_harness.add_suite(accs.AccSuite([accs.AccRCSUMTest(), accs.AccRSCASUMTest(), accs.AccRSCNRM2Test(), accs.AccRCDOTUTest(), accs.AccRCDOTCTest()], params, ranges, attribute))
+
 acc_harness.run()

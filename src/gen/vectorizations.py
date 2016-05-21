@@ -822,9 +822,9 @@ all_vectorizations = [AVX, SSE, SISD]
 def iterate_all_vectorizations(f, code_block):
   for (i, vectorization) in enumerate(all_vectorizations):
     if i == 0 and len(all_vectorizations) > 1:
-      code_block.write("#ifdef {}".format(vectorization.defined_macro))
+      code_block.write("#if (defined({0}) && !defined(reproBLAS_no{0}))".format(vectorization.defined_macro))
     elif i < len(all_vectorizations) - 1:
-      code_block.write("#elif defined({})".format(vectorization.defined_macro))
+      code_block.write("#elif (defined({0}) && !defined(reproBLAS_no{0}))".format(vectorization.defined_macro))
     elif len(all_vectorizations) > 1:
       code_block.write("#else")
     code_block.indent()

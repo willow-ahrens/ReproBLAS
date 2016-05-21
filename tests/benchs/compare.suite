@@ -1,9 +1,0 @@
-_opts = [("N", [4096, 8192, 16348]), ("a", [100000]), ("u", [0])]
-benchmark(["bench_damax", "bench_damaxm", "bench_idamax"], _opts)
-benchmark(["bench_samax", "bench_samaxm", "bench_isamax"], _opts)
-benchmark(["bench_zamax", "bench_zamaxm", "bench_izamax"], _opts)
-benchmark(["bench_camax", "bench_camaxm", "bench_icamax"], _opts)
-benchmark(["bench_rdasum",  "bench_dasum",  "bench_rdnrm2",  "bench_dnrm2",  "bench_rddot",  "bench_ddot" ], _opts)
-benchmark(["bench_rsasum",  "bench_sasum",  "bench_rsnrm2",  "bench_snrm2",  "bench_rsdot",  "bench_sdot" ], _opts)
-benchmark(["bench_rdzasum", "bench_dzasum", "bench_rdznrm2", "bench_dznrm2", "bench_rzdotu", "bench_zdotu"], _opts)
-benchmark(["bench_rscasum", "bench_scasum", "bench_rscnrm2", "bench_scnrm2", "bench_rcdotu", "bench_cdotu"], _opts)

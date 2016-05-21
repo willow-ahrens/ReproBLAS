@@ -102,60 +102,18 @@ ifeq ($(PYTHON),)
 endif
 
 # Use vectorization flags to determine compiler flags. MTARGET_ARCH is used to determine the target architectures vectorization settings.
-ifeq ($(strip $(MMX))),true)
-  CFLAGS += -mmmx
-endif
-ifeq ($(strip $(MMX)),false)
-  CFLAGS += -mno-mmx
-endif
-ifeq ($(strip $(SSE)),true)
-  CFLAGS += -msse
-endif
-ifeq ($(strip $(SSE)),false)
-  CFLAGS += -mno-sse
-endif
-ifeq ($(strip $(SSE2)),true)
-  CFLAGS += -msse2
-endif
+
 ifeq ($(strip $(SSE2)),false)
-  CFLAGS += -mno-sse2
-endif
-ifeq ($(strip $(SSE3)),true)
-  CFLAGS += -msse3
-endif
-ifeq ($(strip $(SSE3)),false)
-  CFLAGS += -mno-sse3
-endif
-ifeq ($(strip $(SSE4_1)),true)
-  CFLAGS += -msse4.1
-endif
-ifeq ($(strip $(SSE4_1)),false)
-  CFLAGS += -mno-sse4.1
-endif
-ifeq ($(strip $(SSE4_2)),true)
-  CFLAGS += -msse4.2
-endif
-ifeq ($(strip $(SSE4_2)),false)
-  CFLAGS += -mno-sse4.2
-endif
-ifeq ($(strip $(AVX)),true)
-  CFLAGS += -mavx
+  CFLAGS += -DreproBLAS_no__SSE2__
 endif
 ifeq ($(strip $(AVX)),false)
-  CFLAGS += -mno-avx
+  CFLAGS += -DreproBLAS_no__AVX__
 endif
-ifeq ($(strip $(AVX2)),true)
-  CFLAGS += -mavx
-endif
-ifeq ($(strip $(AVX2)),false)
-  CFLAGS += -mno-avx2
-endif
-ifeq ($(MMX)$(SSE)$(SSE1)$(SSE2)$(SSE3)$(SSE4_1)$(SSE4_2)$(AVX)$(AVX2),)
-  ifeq ($(MTARGET_ARCH),)
-    CFLAGS += -march=native
-  else
-    CFLAGS += -march=$(strip $(MTARGET_ARCH))
-  endif
+
+ifeq ($(MTARGET_ARCH),)
+  CFLAGS += -march=native
+else
+  CFLAGS += -march=$(strip $(MTARGET_ARCH))
 endif
 
 CALL_PYTHON = PYTHONPATH=$(TOP) $(PYTHON)
