@@ -33,7 +33,7 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
 
   //check
   for (i = 0; i < (DBL_MAX_EXP - DBL_MIN_EXP) * N; i++) {
-    X[i * incX] = ldexp(0.5 + 0.5 * util_drand48(), (i/N) + DBL_MIN_EXP);
+    X[i * incX] = ldexp(0.5 + 0.5 * util_drand(), (i/N) + DBL_MIN_EXP);
   }
   X[i * incX] = 0.0;
   for (i = 0; i < N * (DBL_MAX_EXP - DBL_MIN_EXP) + 1; i++) {

@@ -32,7 +32,7 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
 
   //check
   for (i = 0; i < N * ((DBL_MAX_EXP - DBL_MIN_EXP)/DIWIDTH) + 1; i++) {
-    X[i * incX] = *idxd_dmbins(i/N) * (1.25/1.5 + 0.5/1.5 * util_drand48());
+    X[i * incX] = *idxd_dmbins(i/N) * (1.25/1.5 + 0.5/1.5 * util_drand());
   }
   for (i = 0; i < N * ((DBL_MAX_EXP - DBL_MIN_EXP)/DIWIDTH) + 1; i++) {
     index = idxd_dmindex(X + i * incX);

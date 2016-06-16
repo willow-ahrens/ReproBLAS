@@ -1,3 +1,5 @@
+#include "test_util.h"
+
 /*
 Copyright (c) 2008-2009 The University of California Berkeley.  All rights reserved.
 
@@ -147,10 +149,6 @@ enum blas_conj_type {
 /* Split a double into 2 parts with at most 26 bits each. (2^27 + 1) */
 #define split 	(134217729.0)
 
-/* macros */
-#define MAX(a,b) (((a) > (b)) ? (a) : (b))
-#define MIN(a,b) (((a) < (b)) ? (a) : (b))
-
 static double power(int i1, int i2)
 {
   int i, j;
@@ -166,27 +164,6 @@ static double power(int i1, int i2)
     r = 1. / r;
 
   return r;
-}
-
-static double xrand(int *is)
-/*
- * XRAND returns a uniformly distributed pseudorandom number in (0, 1).
- * IS is the seed, and is changed with each call.  The period of this
- * linear congruential generator is 2^26, according to Knuth vol. 2.
- */
-{
-  double s1, s2, ret_val;
-#define f7    78125.0           /* 5.d0 ** 7 */
-#define r26   1.4901161193847656e-8     /* 2^(-26) */
-#define r28   3.7252902984619141e-9     /* 2^(-28) */
-#define t28   268435456.0       /* 2^28 */
-
-  s1 = *is;
-  s2 = fmod(f7 * s1, t28);
-  ret_val = (s1 + r26 * s2) * r28;
-  *is = s2;
-
-  return ret_val;
 }
 
 static int FixedBits(double r_true_l, double r_true_t)
@@ -622,9 +599,9 @@ util_xblas_ddot_fill(int n, int n_fix2, int n_mix, int norm,
   }
 
   if (alpha_flag == 0)
-    *alpha = xrand(seed);
+    *alpha = util_drand();
   if (beta_flag == 0)
-    *beta = xrand(seed);
+    *beta = util_drand();
 
   y_free = n - n_fix2;
   k = n_fix2;
@@ -639,16 +616,16 @@ util_xblas_ddot_fill(int n, int n_fix2, int n_mix, int norm,
   B = FixedBits(*r_true_l, *r_true_t);
 
   /* Pick r at random */
-  *r = xrand(seed);
+  *r = util_drand();
 
   /* Pick the free X(i)'s at random. */
   for (i = n_fix2 + n_mix; i < n; ++i)
-    x[i] = xrand(seed);
+    x[i] = util_drand();
 
   if (alpha_flag == 1 && *alpha == 0.0) {
     /* Pick the free Y(i)'s at random. */
     for (i = n_fix2; i < n; ++i)
-      y[i] = xrand(seed);
+      y[i] = util_drand();
     /* Compute r_truth in double-double */
     r_truth(conj, n, *alpha, x, 1, *beta, y, 1, r, r_true_l, r_true_t);
     return;
@@ -660,7 +637,7 @@ util_xblas_ddot_fill(int n, int n_fix2, int n_mix, int norm,
       case 0:
         break;
       case 1:
-        y[n_fix2] = xrand(seed);
+        y[n_fix2] = util_drand();
         break;
       case 2:
         /*
@@ -683,7 +660,7 @@ util_xblas_ddot_fill(int n, int n_fix2, int n_mix, int norm,
           y[k + 1] = -a + eps;  /* exact */
         } else {                /* Both x[k] and x[k+1] fixed; cancel 53
                                  * bits. */
-          y[k] = xrand(seed);
+          y[k] = util_drand();
           gen_y_to_cancel(k + 1, n, conj, *alpha, x, y);
         }
         break;
@@ -722,12 +699,12 @@ util_xblas_ddot_fill(int n, int n_fix2, int n_mix, int norm,
          * Make SUM_{i=0,n-1}(x[k+i] * y[k+i]) small
          * ... Cancel >= 106 bits.
          */
-        a = xrand(seed);        /* Flip a coin */
+        a = util_drand();        /* Flip a coin */
         if (a < 0.5) {
           /*
            * Use last 2 to cancel bits, and leading ones to add bits.
            */
-          y[k] = xrand(seed);
+          y[k] = util_drand();
           rtmpd = *alpha * x[k] * y[k];
           s = 30;
           for (i = k + 1; i < n - 2; ++i) {
@@ -834,7 +811,7 @@ util_xblas_ddot_fill(int n, int n_fix2, int n_mix, int norm,
           y[k] = a - eps_out;   /* exact */
         }
       } else {                  /* Cancel 53 bits. */
-        y[k] = xrand(seed);
+        y[k] = util_drand();
         gen_r_to_cancel(n, conj, *alpha, *beta, x, y, r, seed);
       }
       break;
@@ -870,7 +847,7 @@ util_xblas_ddot_fill(int n, int n_fix2, int n_mix, int norm,
         else
           y[k + 1] = f * power(2, -s) / (*alpha * x[k + 1]);
       } else {                  /* Cancel 53 bits. */
-        y[k] = xrand(seed);
+        y[k] = util_drand();
         gen_y_to_cancel(k + 1, n, conj, *alpha, x, y);
         gen_r_to_cancel(n, conj, *alpha, *beta, x, y, r, seed);
       }
@@ -880,13 +857,13 @@ util_xblas_ddot_fill(int n, int n_fix2, int n_mix, int norm,
        * Make SUM_{i=0,n-1}(alpha * x[k+i] * y[k+i]) + beta*r small.
        * ... Cancel >= 106 bits.
        */
-      a = xrand(seed);          /* Flip a coin */
+      a = util_drand();          /* Flip a coin */
       if (a < 0.5) {
         /*
          * Use last 2 ( Y(n) and r) to cancel bits, and
          * leading ones to add bits.
          */
-        y[k] = xrand(seed);
+        y[k] = util_drand();
         rtmpd = *alpha * x[k] * y[k];
         s = 30;
         for (i = k + 1; i < n - 1; ++i) {
@@ -980,7 +957,7 @@ static double rand_half_1(int l_bits, int *seed)
  * 
  */
 {
-  double a = xrand(seed);       /* [0,1] */
+  double a = util_drand();       /* [0,1] */
   a /= 2.;
   a += 0.5;
   if (l_bits < BITS_D) {
@@ -1030,7 +1007,7 @@ gen_r_to_cancel(int n, enum blas_conj_type conj,
   double rtmp;
 
   if (beta == 0.0)
-    *r = xrand(seed);
+    *r = util_drand();
   else {
     rtmp = 0.0;
     BLAS_ddot_x(conj, n, alpha, x, 1, 0.0, y, 1, &rtmp, blas_prec_extra);

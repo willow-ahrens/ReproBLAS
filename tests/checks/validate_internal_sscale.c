@@ -35,7 +35,7 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
 
   //check
   for (i = 0; i < (FLT_MAX_EXP - FLT_MIN_EXP) * N; i++) {
-    X[i * incX] = ldexpf(0.5 + 0.5 * util_drand48(), (i/N) + FLT_MIN_EXP);
+    X[i * incX] = ldexpf(0.5 + 0.5 * util_drand(), (i/N) + FLT_MIN_EXP);
   }
   for (i = 0; i < N * (FLT_MAX_EXP - FLT_MIN_EXP); i++) {
     scale = idxd_sscale(X[i * incX]);

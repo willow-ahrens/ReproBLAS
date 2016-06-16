@@ -4,6 +4,7 @@
 #include <sys/time.h>
 #include <math.h>
 #include <float.h>
+#include <limits.h>
 
 #include "test_util.h"
 
@@ -137,23 +138,133 @@ const char *util_mat_fill_descs[] = {"Constant",
   #define M_PI 3.14159265358979323846
 #endif
 
+/*
+   A C-program for MT19937, with initialization improved 2002/1/26.
+   Coded by Takuji Nishimura and Makoto Matsumoto.
+
+   Before using, initialize the state by using init_genrand(seed)  
+   or init_by_array(init_key, key_length).
+
+   Copyright (C) 1997 - 2002, Makoto Matsumoto and Takuji Nishimura,
+   All rights reserved.
+
+   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions
+   are met:
+
+     1. Redistributions of source code must retain the above copyright
+        notice, this list of conditions and the following disclaimer.
+
+     2. Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+
+     3. The names of its contributors may not be used to endorse or promote
+        products derived from this software without specific prior written
+        permission.
+
+   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+   A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+   CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+   EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+   PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+   PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+   LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+   NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+   Any feedback is very welcome.
+   http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html
+   email: m-mat @ math.sci.hiroshima-u.ac.jp (remove space)
+*/
+
+/* Period parameters */
+#define MT_N 624
+#define MT_M 397
+#define MT_MATRIX_A 0x9908b0dfUL   /* constant vector a */
+#define MT_UPPER_MASK 0x80000000UL /* most significant w-r bits */
+#define MT_LOWER_MASK 0x7fffffffUL /* least significant r bits */
+
+static unsigned long mt[MT_N]; /* the array for the state vector  */
+static int mti=MT_N+1; /* mti==MT_N+1 means mt[MT_N] is not initialized */
+
+/* initializes mt[MT_N] with a seed */
+static void init_genrand(unsigned long s)
+{
+    mt[0]= s & 0xffffffffUL;
+    for (mti=1; mti<MT_N; mti++) {
+        mt[mti] =
+      (1812433253UL * (mt[mti-1] ^ (mt[mti-1] >> 30)) + mti);
+        /* See Knuth TAOCP Vol2. 3rd Ed. P.106 for multiplier. */
+        /* In the previous versions, MSBs of the seed affect   */
+        /* only MSBs of the array mt[].                        */
+        /* 2002/01/09 modified by Makoto Matsumoto             */
+        mt[mti] &= 0xffffffffUL;
+        /* for >32 bit machines */
+    }
+}
+
+/* generates a random number on [0,0xffffffff]-interval */
+static unsigned long genrand_int32(void)
+{
+    unsigned long y;
+    static unsigned long mag01[2]={0x0UL, MT_MATRIX_A};
+    /* mag01[x] = x * MT_MATRIX_A  for x=0,1 */
+
+    if (mti >= MT_N) { /* generate MT_N words at one time */
+        int kk;
+
+        if (mti == MT_N+1)   /* if init_genrand() has not been called, */
+            init_genrand(5489UL); /* a default initial seed is used */
+
+        for (kk=0;kk<MT_N-MT_M;kk++) {
+            y = (mt[kk]&MT_UPPER_MASK)|(mt[kk+1]&MT_LOWER_MASK);
+            mt[kk] = mt[kk+MT_M] ^ (y >> 1) ^ mag01[y & 0x1UL];
+        }
+        for (;kk<MT_N-1;kk++) {
+            y = (mt[kk]&MT_UPPER_MASK)|(mt[kk+1]&MT_LOWER_MASK);
+            mt[kk] = mt[kk+(MT_M-MT_N)] ^ (y >> 1) ^ mag01[y & 0x1UL];
+        }
+        y = (mt[MT_N-1]&MT_UPPER_MASK)|(mt[0]&MT_LOWER_MASK);
+        mt[MT_N-1] = mt[MT_M-1] ^ (y >> 1) ^ mag01[y & 0x1UL];
+
+        mti = 0;
+    }
+
+    y = mt[mti++];
+
+    /* Tempering */
+    y ^= (y >> 11);
+    y ^= (y << 7) & 0x9d2c5680UL;
+    y ^= (y << 15) & 0xefc60000UL;
+    y ^= (y >> 18);
+
+    return y;
+}
+
+/* generates a random number on [0,1) with 53-bit resolution*/
+static double genrand_res53(void)
+{ 
+    unsigned long a=genrand_int32()>>5, b=genrand_int32()>>6;
+    return(a*67108864.0+b)*(1.0/9007199254740992.0);
+} 
+/* These real versions are due to Isaku Wada, 2002/01/09 added */
+
 void util_random_seed(void) {
   struct timeval st;
   gettimeofday( &st, NULL );
-  srand((long)(st.tv_usec + 1e6*st.tv_sec));
+  init_genrand((unsigned long)(st.tv_usec + 1e6*st.tv_sec));
 }
 
-double util_drand48(){
-  int i;
-  int r;
-  double r48 = 0.0;
-  for(i = 0; i < 6; i++){
-    do{
-      r = rand();
-    }while(r >= (RAND_MAX/256)*256);
-    r48 += ((double)(r % 256)) * ldexp(0.5, i * -8 - 7);
-  }
-  return r48;
+double util_drand(){
+  return genrand_res53();
+}
+
+int util_rand(){
+  return (int)(genrand_int32() % INT_MAX);
 }
 
 void util_ddpd(double* a, double b) {
@@ -436,7 +547,7 @@ static void quicksort(int low, int high, compare_func compare, void *compare_dat
     return;
   }
 
-  i = low + (rand() % (high - low));
+  i = low + (util_rand() % (high - low));
 
   swap(i, high, swap_data);
 
@@ -861,7 +972,7 @@ static void shuffle(int N, swap_func swap, void *swap_data) {
   int gap;
   for (i = 0; i < N - 2; i++)
   {
-    gap = rand() % (N - i);
+    gap = util_rand() % (N - i);
     swap(i, i + gap, swap_data);
   }
 }
@@ -1373,26 +1484,26 @@ void util_dvec_fill(int N, double* V, int incV, util_vec_fill_t Fill, double Rea
     case util_Vec_Rand_Drop:
     case util_Vec_Rand:
       for (i = 0; i < N; i++) {
-        V[i*incV] = util_drand48() * (1+1e-9);
+        V[i*incV] = util_drand() * (1+1e-9);
       }
       break;
     case util_Vec_2_Times_Rand_Minus_1_Drop:
     case util_Vec_2_Times_Rand_Minus_1:
       for (i = 0; i < N; i++) {
-        V[i*incV] = (2 * util_drand48() * (1+1e-9) - 1);
+        V[i*incV] = (2 * util_drand() * (1+1e-9) - 1);
       }
       break;
     case util_Vec_Rand_Plus_Rand_Minus_1_Drop:
     case util_Vec_Rand_Plus_Rand_Minus_1:
       for (i = 0; i < N; i++) {
-        V[i*incV] = util_drand48() * (1+1e-9) + (util_drand48() * (1+1e-9) - 1);
+        V[i*incV] = util_drand() * (1+1e-9) + (util_drand() * (1+1e-9) - 1);
       }
       break;
     case util_Vec_Normal_Drop:
     case util_Vec_Normal:
       for (i = 0; i < N; i++) {
-        double t1 = util_drand48();
-        double t2 = util_drand48();
+        double t1 = util_drand();
+        double t2 = util_drand();
         V[i * incV] = sqrt(-2.0 * log(t1)) * cos(2.0 * M_PI * t2);
       }
       break;
@@ -1454,7 +1565,7 @@ void util_dvec_fill(int N, double* V, int incV, util_vec_fill_t Fill, double Rea
         for(i = 1; i < N - 1; i++){
           V[i * incV] = 1.0;
         }
-        V[(N - 1) * incV] = util_drand48();
+        V[(N - 1) * incV] = util_drand();
       }
       break;
     case util_Vec_Full_Range:
@@ -1474,7 +1585,7 @@ void util_dvec_fill(int N, double* V, int incV, util_vec_fill_t Fill, double Rea
       break;
     case util_Vec_Small_Plus_Rand_Big:
       for (i = 0; i < N; i++) {
-        V[i*incV] = small + (big - small) * util_drand48() * (1+1e-9);
+        V[i*incV] = small + (big - small) * util_drand() * (1+1e-9);
       }
       break;
     case util_Vec_Mountain:
@@ -1499,7 +1610,7 @@ void util_dvec_fill(int N, double* V, int incV, util_vec_fill_t Fill, double Rea
     case util_Vec_Mountain:
       {
         V[(N + 1)/2] = 0.0;
-        double s = util_drand48() * RealScale;
+        double s = util_drand() * RealScale;
         for (i = 0; i < N/2; i++) {
           V[i*incV] = s;
           V[(N - i - 1)*incV] = -s;
@@ -1597,26 +1708,26 @@ void util_svec_fill(int N, float* V, int incV, util_vec_fill_t Fill, float RealS
     case util_Vec_Rand_Drop:
     case util_Vec_Rand:
       for (i = 0; i < N; i++) {
-        V[i*incV] = (float)util_drand48() * (1+1e-4);
+        V[i*incV] = (float)util_drand() * (1+1e-4);
       }
       break;
     case util_Vec_2_Times_Rand_Minus_1_Drop:
     case util_Vec_2_Times_Rand_Minus_1:
       for (i = 0; i < N; i++) {
-        V[i*incV] = (2 * (float)util_drand48() * (1+1e-4) - 1);
+        V[i*incV] = (2 * (float)util_drand() * (1+1e-4) - 1);
       }
       break;
     case util_Vec_Rand_Plus_Rand_Minus_1_Drop:
     case util_Vec_Rand_Plus_Rand_Minus_1:
       for (i = 0; i < N; i++) {
-        V[i*incV] = (float)util_drand48() * (1+1e-4) + ((float)util_drand48() * (1+1e-4) - 1);
+        V[i*incV] = (float)util_drand() * (1+1e-4) + ((float)util_drand() * (1+1e-4) - 1);
       }
       break;
     case util_Vec_Normal_Drop:
     case util_Vec_Normal:
       for (i = 0; i < N; i++) {
-        double t1 = util_drand48();
-        double t2 = util_drand48();
+        double t1 = util_drand();
+        double t2 = util_drand();
         V[i * incV] = (float)(sqrt(-2.0 * log(t1)) * cos(2.0 * M_PI * t2));
       }
       break;
@@ -1678,7 +1789,7 @@ void util_svec_fill(int N, float* V, int incV, util_vec_fill_t Fill, float RealS
         for(i = 1; i < N - 1; i++){
           V[i * incV] = 1.0;
         }
-        V[(N - 1) * incV] = util_drand48();
+        V[(N - 1) * incV] = util_drand();
       }
       break;
     case util_Vec_Full_Range:
@@ -1698,7 +1809,7 @@ void util_svec_fill(int N, float* V, int incV, util_vec_fill_t Fill, float RealS
       break;
     case util_Vec_Small_Plus_Rand_Big:
       for (i = 0; i < N; i++) {
-        V[i*incV] = small + (big - small) * (float)util_drand48() * (1+1e-4);
+        V[i*incV] = small + (big - small) * (float)util_drand() * (1+1e-4);
       }
       break;
     case util_Vec_Mountain:
@@ -1723,7 +1834,7 @@ void util_svec_fill(int N, float* V, int incV, util_vec_fill_t Fill, float RealS
     case util_Vec_Mountain:
       {
         V[(N + 1)/2] = 0.0;
-        double s = util_drand48() * RealScale;
+        double s = util_drand() * RealScale;
         for (i = 0; i < N/2; i++) {
           V[i*incV] = s;
           V[(N - i - 1)*incV] = -s;
