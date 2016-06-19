@@ -199,7 +199,7 @@ def cpu_info(verbose="false"):
 #  @author Peter Ahrens
 #  @date   28 May 2015
 #
-version = "2.0.2"
+version = "2.0.3"
 
 ##
 #  @brief maximum fold to autotune

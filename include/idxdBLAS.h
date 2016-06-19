@@ -33,7 +33,6 @@
 #define IDXDBLAS_H_
 #include "idxd.h"
 #include "reproBLAS.h"
-#include <complex.h>
 
 float idxdBLAS_samax(const int N, const float *X, const int incX);
 double idxdBLAS_damax(const int N, const double *X, const int incX);

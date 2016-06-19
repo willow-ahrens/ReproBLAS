@@ -77,7 +77,7 @@ extern const char *util_mat_fill_names[];
 extern const char *util_mat_fill_descs[];
 
 double util_drand();
-int util_rand();
+int util_rand(int range);
 
 void util_ddpd(double* a, double b);
 

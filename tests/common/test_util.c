@@ -263,8 +263,12 @@ double util_drand(){
   return genrand_res53();
 }
 
-int util_rand(){
-  return (int)(genrand_int32() % INT_MAX);
+int util_rand(int range){
+  long r;
+  do{
+      r = genrand_int32();
+  }while(r >= (0xffffffff/range)*range);
+  return r % range;
 }
 
 void util_ddpd(double* a, double b) {
@@ -547,7 +551,7 @@ static void quicksort(int low, int high, compare_func compare, void *compare_dat
     return;
   }
 
-  i = low + (util_rand() % (high - low));
+  i = low + (util_rand(high - low));
 
   swap(i, high, swap_data);
 
@@ -972,7 +976,7 @@ static void shuffle(int N, swap_func swap, void *swap_data) {
   int gap;
   for (i = 0; i < N - 2; i++)
   {
-    gap = util_rand() % (N - i);
+    gap = util_rand(N - i);
     swap(i, i + gap, swap_data);
   }
 }
