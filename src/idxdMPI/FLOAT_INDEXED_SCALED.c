@@ -9,6 +9,20 @@
 static MPI_Datatype types[idxd_SIMAXFOLD + 1];
 static int types_initialized[idxd_SIMAXFOLD + 1]; //initializes to 0
 
+/**
+ * @brief  Get an MPI_DATATYPE representing scaled indexed single precision.
+ *
+ * Creates (if it has not already been created) and returns a datatype handle
+ * for an MPI datatype that represents a scaled indexed single precision type.
+ *
+ * This method may call @c MPI_Type_contiguous() and @c MPI_Type_commit().
+ * If there is an error, this method will call @c MPI_Abort().
+ *
+ * @param fold the fold of the indexed types
+ *
+ * @author Peter Ahrens
+ * @date   18 Jun 2016
+ */
 MPI_Datatype idxdMPI_FLOAT_INDEXED_SCALED(const int fold){
   int rc;
   if(!types_initialized[fold]){

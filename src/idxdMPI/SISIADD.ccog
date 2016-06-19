@@ -95,6 +95,23 @@ static void idxdMPI_sisiadd_20(void *invec, void *inoutvec, int *len, MPI_Dataty
 static MPI_Op ops[idxd_SIMAXFOLD + 1];
 static int ops_initialized[idxd_SIMAXFOLD + 1]; //initializes to 0
 
+/**
+ * @brief  Get an MPI_OP to add indexed double precision (Y += X)
+ *
+ * Creates (if it has not already been created) and returns a function handle
+ * for an MPI reduction operation that performs the operation Y += X on two
+ * arrays of indexed double precision datatypes of the specified fold.
+ * An MPI datatype handle can be created for such a datatype with
+ * #idxdMPI_FLOAT_INDEXED.
+ *
+ * This method may call @c MPI_Op_create().
+ * If there is an error, this method will call @c MPI_Abort().
+ *
+ * @param fold the fold of the indexed types
+ *
+ * @author Peter Ahrens
+ * @date   18 Jun 2016
+ */
 MPI_Op idxdMPI_SISIADD(const int fold){
   int rc;
   if(!ops_initialized[fold]){

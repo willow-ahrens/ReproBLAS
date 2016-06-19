@@ -9,6 +9,20 @@
 static MPI_Datatype types[idxd_DIMAXFOLD + 1];
 static int types_initialized[idxd_DIMAXFOLD + 1]; //initializes to 0
 
+/**
+ * @brief  Get an MPI_DATATYPE representing indexed double precision.
+ *
+ * Creates (if it has not already been created) and returns a datatype handle
+ * for an MPI datatype that represents an indexed double precision type.
+ *
+ * This method may call @c MPI_Type_contiguous() and @c MPI_Type_commit().
+ * If there is an error, this method will call @c MPI_Abort().
+ *
+ * @param fold the fold of the indexed types
+ *
+ * @author Peter Ahrens
+ * @date   18 Jun 2016
+ */
 MPI_Datatype idxdMPI_DOUBLE_INDEXED(const int fold){
   int rc;
   if(!types_initialized[fold]){

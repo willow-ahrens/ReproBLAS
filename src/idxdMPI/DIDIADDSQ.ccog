@@ -227,6 +227,25 @@ static void idxdMPI_didiaddsq_51(void *invec, void *inoutvec, int *len, MPI_Data
 static MPI_Op ops[idxd_DIMAXFOLD + 1];
 static int ops_initialized[idxd_DIMAXFOLD + 1]; //initializes to 0
 
+/**
+ * @brief  Get an MPI_OP to add indexed double precision scaled sums of squares
+ * (Y += X)
+ *
+ * Creates (if it has not already been created) and returns a function handle
+ * for an MPI reduction operation that performs the operation Y += X where X and
+ * Y represent scaled sums of squares on two arrays of scaled indexed double
+ * precision datatypes of the specified fold.
+ * An MPI datatype handle can be created for such a datatype with
+ * #idxdMPI_DOUBLE_INDEXED_SCALED.
+ *
+ * This method may call @c MPI_Op_create().
+ * If there is an error, this method will call @c MPI_Abort().
+ *
+ * @param fold the fold of the indexed types
+ *
+ * @author Peter Ahrens
+ * @date   18 Jun 2016
+ */
 MPI_Op idxdMPI_DIDIADDSQ(const int fold){
   int rc;
   if(!ops_initialized[fold]){
