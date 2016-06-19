@@ -151,10 +151,10 @@ class ParameterSpace:
     self.parameters = {}
 
   def encode(self):
-    return {"forward_dependencies":{file_name:list(arguments) for (file_name, arguments) in self.forward_dependencies.items()},\
-            "backward_dependencies":{argument:list(file_names) for (argument, file_names) in self.backward_dependencies.items()},\
-            "forward_metrics":{metric:list(arguments) for (metric, arguments) in self.forward_metrics.items()},\
-            "backward_metrics":{argument:list(metrics) for (argument, metrics) in self.backward_metrics.items()},\
+    return {"forward_dependencies":{file_name:sorted(list(arguments)) for (file_name, arguments) in self.forward_dependencies.items()},\
+            "backward_dependencies":{argument:sorted(list(file_names)) for (argument, file_names) in self.backward_dependencies.items()},\
+            "forward_metrics":{metric:sorted(list(arguments)) for (metric, arguments) in self.forward_metrics.items()},\
+            "backward_metrics":{argument:sorted(list(metrics)) for (argument, metrics) in self.backward_metrics.items()},\
             "parameters":{parameter_name:parameter.encode() for (parameter_name, parameter) in self.parameters.items()}}
 
   @staticmethod
