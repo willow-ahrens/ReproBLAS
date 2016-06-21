@@ -26,46 +26,46 @@ typedef union int_float_ {
   uint32_t i;
 } int_float;
 
-#define UFP(X) ({ \
-  long_double tmp_UFP; \
-  tmp_UFP.d = X; \
-  tmp_UFP.l &= (2ull * DBL_MAX_EXP - 1) << (DBL_MANT_DIG - 1); \
-  tmp_UFP.d; \
-  })
+inline float UFP(double X) {
+  long_double tmp_UFP;
+  tmp_UFP.d = X;
+  tmp_UFP.l &= (2ull * DBL_MAX_EXP - 1) << (DBL_MANT_DIG - 1);
+  return tmp_UFP.d;
+}
 
-#define UFPF(X) ({ \
-  int_float tmp_UFPF; \
-  tmp_UFPF.f = X; \
-  tmp_UFPF.i &= (2ul * FLT_MAX_EXP - 1) << (FLT_MANT_DIG - 1); \
-  tmp_UFPF.f; \
-  })
+inline float UFPF(float X) {
+  int_float tmp_UFPF;
+  tmp_UFPF.f = X;
+  tmp_UFPF.i &= (2ul * FLT_MAX_EXP - 1) << (FLT_MANT_DIG - 1);
+  return tmp_UFPF.f;
+}
 
-#define EXP(X) ({ \
-  long_double tmp_EXP; \
-  tmp_EXP.d = X; \
-  (int)((tmp_EXP.l >> (DBL_MANT_DIG - 1)) & (2 * DBL_MAX_EXP - 1));\
-  })
+inline int EXP(double X) {
+  long_double tmp_EXP;
+  tmp_EXP.d = X;
+  return (tmp_EXP.l >> (DBL_MANT_DIG - 1)) & (2 * DBL_MAX_EXP - 1);
+}
 
 #define EXP_BIAS (DBL_MAX_EXP - 2)
 
-#define EXPF(X) ({ \
-  int_float tmp_EXPF; \
-  tmp_EXPF.f = X; \
-  (int)((tmp_EXPF.i >> (FLT_MANT_DIG - 1)) & (2 * FLT_MAX_EXP - 1));\
-  })
+inline int EXPF(float X) {
+  int_float tmp_EXPF;
+  tmp_EXPF.f = X;
+  return (tmp_EXPF.i >> (FLT_MANT_DIG - 1)) & (2 * FLT_MAX_EXP - 1);
+}
 
 #define EXPF_BIAS (FLT_MAX_EXP - 2)
 
-#define ISNANINF(X) ({ \
-  long_double tmp_ISNANINF; \
-  tmp_ISNANINF.d = X; \
-  (tmp_ISNANINF.l & ((2ull * DBL_MAX_EXP - 1) << (DBL_MANT_DIG - 1))) == ((2ull * DBL_MAX_EXP - 1) << (DBL_MANT_DIG - 1));\
-  })
+inline int ISNANINF(double X) {
+  long_double tmp_ISNANINF;
+  tmp_ISNANINF.d = X;
+  return (tmp_ISNANINF.l & ((2ull * DBL_MAX_EXP - 1) << (DBL_MANT_DIG - 1))) == ((2ull * DBL_MAX_EXP - 1) << (DBL_MANT_DIG - 1));
+}
 
-#define ISNANINFF(X) ({ \
-  int_float tmp_ISNANINFF; \
-  tmp_ISNANINFF.f = X; \
-  (tmp_ISNANINFF.i & ((2ul * FLT_MAX_EXP - 1) << (FLT_MANT_DIG - 1))) == ((2ul * FLT_MAX_EXP - 1) << (FLT_MANT_DIG - 1)); \
-  })
+inline int ISNANINFF(float X) {
+  int_float tmp_ISNANINFF;
+  tmp_ISNANINFF.f = X;
+  return (tmp_ISNANINFF.i & ((2ul * FLT_MAX_EXP - 1) << (FLT_MANT_DIG - 1))) == ((2ul * FLT_MAX_EXP - 1) << (FLT_MANT_DIG - 1));
+}
 
 #endif

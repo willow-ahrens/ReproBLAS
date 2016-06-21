@@ -611,7 +611,7 @@ typedef struct mat_row_swap_data{
 
 static void vec_swap(int a, int b, void *data){
   vec_swap_data_t *d = (vec_swap_data_t*)data;
-  elem_swap(d->V + a * d->incV * d->elem_size, d->V + b * d->incV * d->elem_size, d->elem_size);
+  elem_swap((void*)((char*)d->V + a * d->incV * d->elem_size), (void*)((char*)d->V + b * d->incV * d->elem_size), d->elem_size);
   if(d->P){
     elem_swap(d->P + a * d->incP, d->P + b * d->incP, sizeof(int));
   }
@@ -626,11 +626,11 @@ static void mat_row_swap(int a, int b, void *data){
       switch(d->TransA){
         case 'n':
         case 'N':
-          elem_swap(d->A + a * d->lda * d->elem_size, d->A + b * d->lda * d->elem_size, d->N * d->elem_size);
+          elem_swap((void*)((char*)d->A + a * d->lda * d->elem_size), (void*)((char*)d->A + b * d->lda * d->elem_size), d->N * d->elem_size);
           break;
         default:
           for(i = 0; i < d->M; i++){
-            elem_swap(d->A + (a + (i * d->lda)) * d->elem_size, d->A + (b + (i * d->lda)) * d->elem_size, d->elem_size);
+            elem_swap((void*)((char*)d->A + (a + (i * d->lda)) * d->elem_size), (void*)((char*)d->A + (b + (i * d->lda)) * d->elem_size), d->elem_size);
           }
           break;
       }
@@ -640,11 +640,11 @@ static void mat_row_swap(int a, int b, void *data){
         case 'n':
         case 'N':
           for(i = 0; i < d->N; i++){
-            elem_swap(d->A + (a + (i * d->lda)) * d->elem_size, d->A + (b + (i * d->lda)) * d->elem_size, d->elem_size);
+            elem_swap((void*)((char*)d->A + (a + (i * d->lda)) * d->elem_size), (void*)((char*)d->A + (b + (i * d->lda)) * d->elem_size), d->elem_size);
           }
           break;
         default:
-          elem_swap(d->A + a * d->lda * d->elem_size, d->A + b * d->lda * d->elem_size, d->M * d->elem_size);
+          elem_swap((void*)((char*)d->A + a * d->lda * d->elem_size), (void*)((char*)d->A + b * d->lda * d->elem_size), d->M * d->elem_size);
           break;
       }
       break;
@@ -677,7 +677,7 @@ typedef struct mat_row_compare_data{
 
 static int vec_compare(int a, int b, void *data){
   vec_compare_data_t *d = (vec_compare_data_t*)data;
-  return d->elem_compare(d->V + a * d->incV * d->elem_size, d->V + b * d->incV * d->elem_size, d->comp);
+  return d->elem_compare((void*)((char*)d->V + a * d->incV * d->elem_size), (void*)((char*)d->V + b * d->incV * d->elem_size), d->comp);
 }
 
 static int mat_row_compare(int a, int b, void *data){
@@ -688,18 +688,18 @@ static int mat_row_compare(int a, int b, void *data){
       switch(d->TransA){
         case 'n':
         case 'N':
-          return d->elem_compare(d->A + (a * d->lda + d->col) * d->elem_size, d->A + (b * d->lda + d->col) * d->elem_size, d->comp);
+          return d->elem_compare((void*)((char*)d->A + (a * d->lda + d->col) * d->elem_size), (void*)((char*)d->A + (b * d->lda + d->col) * d->elem_size), d->comp);
         default:
-          return d->elem_compare(d->A + (a + d->lda * d->col) * d->elem_size, d->A + (b + d->lda * d->col) * d->elem_size, d->comp);
+          return d->elem_compare((void*)((char*)d->A + (a + d->lda * d->col) * d->elem_size), (void*)((char*)d->A + (b + d->lda * d->col) * d->elem_size), d->comp);
       }
       break;
     default:
       switch(d->TransA){
         case 'n':
         case 'N':
-          return d->elem_compare(d->A + (a + d->lda * d->col) * d->elem_size, d->A + (b + d->lda * d->col) * d->elem_size, d->comp);
+          return d->elem_compare((void*)((char*)d->A + (a + d->lda * d->col) * d->elem_size), (void*)((char*)d->A + (b + d->lda * d->col) * d->elem_size), d->comp);
         default:
-          return d->elem_compare(d->A + (a * d->lda + d->col) * d->elem_size, d->A + (b * d->lda + d->col) * d->elem_size, d->comp);
+          return d->elem_compare((void*)((char*)d->A + (a * d->lda + d->col) * d->elem_size), (void*)((char*)d->A + (b * d->lda + d->col) * d->elem_size), d->comp);
       }
       break;
   }

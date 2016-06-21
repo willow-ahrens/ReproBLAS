@@ -19,7 +19,7 @@ CC = cc
 #CC = clang
 
 # add CFLAGS
-CFLAGS += -Wall -std=c99
+CFLAGS += -Wall -std=c99 -pedantic
 
 # add CPPFLAGS
 CPPFLAGS +=
