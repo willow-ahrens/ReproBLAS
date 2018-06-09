@@ -268,7 +268,7 @@
   "dmdssq_block_size_N_block_MAX": 2048,
   "dmdsum_block_size_N_block_MAX": 2048,
   "dmzasum_block_size_N_block_MAX": 1024,
-  "dmzssq_block_size_N_block_MAX": 64,
+  "dmzssq_block_size_N_block_MAX": 1024,
   "dzdepositASum_expand_AVX_fold_2": true,
   "dzdepositASum_expand_AVX_fold_3": true,
   "dzdepositASum_expand_AVX_fold_4": true,

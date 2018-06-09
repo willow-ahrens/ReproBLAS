@@ -33,7 +33,7 @@ cog.out(generate.generate(blockSize.BlockSize("dmzssq", "N_block_MAX", 32, termi
 
 #endif
 
-#define N_block_MAX 64
+#define N_block_MAX 1024
 //[[[end]]]
 
 /**
