@@ -22,7 +22,7 @@
  *
  * Throughout the library, complex types are specified via @c *void pointers. These routines will sometimes be suffixed by sub, to represent that a function has been made into a subroutine. This allows programmers to use whatever complex types they are already using, as long as the memory pointed to is of the form of two adjacent floating point types, the first and second representing real and imaginary components of the complex number.
  *
- * The goal of using binned types is to obtain either more accurate or reproducible summation of floating point numbers. In reproducible summation, floating point numbers are split into several slices along predefined boundaries in the exponent range. The space between two boundaries is called a bin. Indexed types are composed of several accumulators, each accumulating the slices in a particular bin. The accumulators correspond to the largest consecutive nonzero bins seen so far.
+ * The goal of using binned types is to obtain either more accurate or reproducible summation of floating point numbers. In reproducible summation, floating point numbers are split into several slices along predefined boundaries in the exponent range. The space between two boundaries is called a bin. Binned types are composed of several accumulators, each accumulating the slices in a particular bin. The accumulators correspond to the largest consecutive nonzero bins seen so far.
  *
  * The parameter @c fold describes how many accumulators are used in the binned types supplied to a subroutine (an binned type with @c k accumulators  is @c k-fold). The default value for this parameter can be set in config.h. If you are unsure of what value to use for @c fold, we recommend 3. Note that the @c fold of binned types must be the same for all binned types that interact with each other. Operations on more than one binned type assume all binned types being operated upon have the same @c fold. Note that the @c fold of an binned type may not be changed once the type has been allocated. A common use case would be to set the value of @c fold as a global macro in your code and supply it to all binned functions that you use.
  *
@@ -73,7 +73,7 @@ typedef float float_binned;
 typedef float float_complex_binned;
 
 /**
- * @brief Indexed double precision bin width
+ * @brief Binned double precision bin width
  *
  * bin width (in bits)
  *
@@ -84,7 +84,7 @@ typedef float float_complex_binned;
 #define DBWIDTH 40
 
 /**
- * @brief Indexed single precision bin width
+ * @brief Binned single precision bin width
  *
  * bin width (in bits)
  *
@@ -95,7 +95,7 @@ typedef float float_complex_binned;
 #define SBWIDTH 13
 
 /**
- * @brief Indexed double precision maximum index
+ * @brief Binned double precision maximum index
  *
  * maximum index (inclusive)
  *
@@ -105,7 +105,7 @@ typedef float float_complex_binned;
 #define binned_DBMAXINDEX (((DBL_MAX_EXP - DBL_MIN_EXP + DBL_MANT_DIG - 1)/DBWIDTH) - 1)
 
 /**
- * @brief Indexed single precision maximum index
+ * @brief Binned single precision maximum index
  *
  * maximum index (inclusive)
  *
@@ -131,7 +131,7 @@ typedef float float_complex_binned;
 #define binned_SBMAXFOLD (binned_SBMAXINDEX + 1)
 
 /**
- * @brief Indexed double precision deposit endurance
+ * @brief Binned double precision deposit endurance
  *
  * The number of deposits that can be performed before a renorm is necessary. Applies also to binned complex double precision.
  *
@@ -142,7 +142,7 @@ typedef float float_complex_binned;
 #define binned_DBENDURANCE (1 << (DBL_MANT_DIG - DBWIDTH - 2))
 
 /**
- * @brief Indexed single precision deposit endurance
+ * @brief Binned single precision deposit endurance
  *
  * The number of deposits that can be performed before a renorm is necessary. Applies also to binned complex single precision.
  *
@@ -153,7 +153,7 @@ typedef float float_complex_binned;
 #define binned_SBENDURANCE (1 << (FLT_MANT_DIG - SBWIDTH - 2))
 
 /**
- * @brief Indexed double precision capacity
+ * @brief Binned double precision capacity
  *
  * The maximum number of double precision numbers that can be summed using binned double precision. Applies also to binned complex double precision.
  *
@@ -163,7 +163,7 @@ typedef float float_complex_binned;
 #define binned_DBCAPACITY (binned_DBENDURANCE*(1.0/DBL_EPSILON - 1.0))
 
 /**
- * @brief Indexed single precision capacity
+ * @brief Binned single precision capacity
  *
  * The maximum number of single precision numbers that can be summed using binned single precision. Applies also to binned complex double precision.
  *
@@ -174,7 +174,7 @@ typedef float float_complex_binned;
 
 /**
  * @internal
- * @brief Indexed double precision compression factor
+ * @brief Binned double precision compression factor
  *
  * This factor is used to scale down inputs before deposition into the bin of highest index
  *
@@ -185,7 +185,7 @@ typedef float float_complex_binned;
 
 /**
  * @internal
- * @brief Indexed single precision compression factor
+ * @brief Binned single precision compression factor
  *
  * This factor is used to scale down inputs before deposition into the bin of highest index
  *
@@ -196,7 +196,7 @@ typedef float float_complex_binned;
 
 /**
  * @internal
- * @brief Indexed double precision expansion factor
+ * @brief Binned double precision expansion factor
  *
  * This factor is used to scale up inputs after deposition into the bin of highest index
  *
@@ -207,7 +207,7 @@ typedef float float_complex_binned;
 
 /**
  * @internal
- * @brief Indexed single precision expansion factor
+ * @brief Binned single precision expansion factor
  *
  * This factor is used to scale up inputs after deposition into the bin of highest index
  *

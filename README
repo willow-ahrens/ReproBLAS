@@ -84,7 +84,7 @@ Frequently Asked Questions:
     reproducible summation of floating point numbers. In reproducible summation,
     floating point numbers are split into several slices along predefined
     boundaries in the exponent range. The space between two boundaries is called
-    a bin. Indexed types are composed of several accumulators, each accumulating
+    a bin. Binned types are composed of several accumulators, each accumulating
     the slices in a particular bin. The accumulators correspond to the largest
     consecutive nonzero bins seen so far.
       The parameter fold describes how many accumulators are used in the
