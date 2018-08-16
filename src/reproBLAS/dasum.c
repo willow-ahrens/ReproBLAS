@@ -7,7 +7,7 @@
  *
  * Return the sum of absolute values of elements in X.
  *
- * The reproducible absolute sum is computed with indexed types of default fold using #idxdBLAS_didasum()
+ * The reproducible absolute sum is computed with binned types of default fold using #binnedBLAS_dbdasum()
  *
  * @param N vector length
  * @param X double precision vector

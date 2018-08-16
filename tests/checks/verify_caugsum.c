@@ -1,5 +1,5 @@
-#include <idxdBLAS.h>
-#include <idxd.h>
+#include <binnedBLAS.h>
+#include <binned.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -50,16 +50,16 @@ static void verify_caugsum_options_initialize(void){
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
   fold._int.min               = 2;
-  fold._int.max               = idxd_SIMAXFOLD;
+  fold._int.max               = binned_SBMAXFOLD;
   fold._int.value             = SIDEFAULTFOLD;
 
 }
 
-int verify_caugsum_reproducibility(int fold, int N, float complex* X, int incX, float complex* Y, int incY, int func, float complex ref, float_complex_indexed *iref, int max_num_blocks) {
+int verify_caugsum_reproducibility(int fold, int N, float complex* X, int incX, float complex* Y, int incY, int func, float complex ref, float_complex_binned *iref, int max_num_blocks) {
   // GENERATE DATA
   int i;
   float complex res;
-  float_complex_indexed *ires = idxd_cialloc(fold);
+  float_complex_binned *ires = binned_cballoc(fold);
   int num_blocks = 1;
 
   int block_N = (N + num_blocks - 1) / num_blocks;
@@ -70,23 +70,23 @@ int verify_caugsum_reproducibility(int fold, int N, float complex* X, int incX, 
       res = (wrap_caugsum_func(func))(fold, N, X, incX, Y, incY);
     else {
       block_N =  (N + num_blocks - 1) / num_blocks;
-      idxd_cisetzero(fold, ires);
+      binned_cbsetzero(fold, ires);
       for (i = 0; i < N; i += block_N) {
         block_N = block_N < N - i ? block_N : (N-i);
         (wrap_ciaugsum_func(func))(fold, block_N, X + i * incX, incX, Y + i * incY, incY, ires);
       }
-      idxd_cciconv_sub(fold, ires, &res);
+      binned_ccbconv_sub(fold, ires, &res);
     }
     if (res != ref) {
       printf("%s(X, Y)[num_blocks=%d,block_N=%d] = %g + %gi != %g + %gi\n", wrap_caugsum_func_names[func], num_blocks, block_N, crealf(res), cimagf(res), crealf(ref), cimagf(ref));
       if (num_blocks == 1) {
-        idxd_cisetzero(fold, ires);
+        binned_cbsetzero(fold, ires);
         (wrap_ciaugsum_func(func))(fold, N, X, incX, Y, incY, ires);
       }
-      printf("ref float_complex_indexed:\n");
-      idxd_ciprint(fold, iref);
-      printf("\nres float_complex_indexed:\n");
-      idxd_ciprint(fold, ires);
+      printf("ref float_complex_binned:\n");
+      binned_cbprint(fold, iref);
+      printf("\nres float_complex_binned:\n");
+      binned_cbprint(fold, ires);
       printf("\n");
       return 1;
     }
@@ -121,7 +121,7 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX,
   int rc = 0;
   int i;
   float complex ref;
-  float_complex_indexed *iref;
+  float_complex_binned *iref;
   int max_num_blocks;
 
   verify_caugsum_options_initialize();
@@ -133,7 +133,7 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX,
   opt_eval_option(argc, argv, &shuffles);
   opt_eval_option(argc, argv, &fold);
 
-  iref = idxd_cialloc(fold._int.value);
+  iref = binned_cballoc(fold._int.value);
 
   float complex *X = util_cvec_alloc(N, incX);
   float complex *Y = util_cvec_alloc(N, incY);
@@ -152,7 +152,7 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX,
 
   //compute with unpermuted data
   ref  = (wrap_caugsum_func(augsum_func._named.value))(fold._int.value, N, X, incX, Y, incY);
-  idxd_cisetzero(fold._int.value, iref);
+  binned_cbsetzero(fold._int.value, iref);
   (wrap_ciaugsum_func(augsum_func._named.value))(fold._int.value, N, X, incX, Y, incY, iref);
 
   P = util_identity_permutation(N);

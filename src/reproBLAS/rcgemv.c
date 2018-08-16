@@ -2,7 +2,7 @@
 #include <string.h>
 
 #include <reproBLAS.h>
-#include <idxdBLAS.h>
+#include <binnedBLAS.h>
 
 /**
  * @brief Add to complex single precision vector Y the reproducible matrix-vector product of complex single precision matrix A and complex single precision vector X
@@ -13,9 +13,9 @@
  *
  * where alpha and beta are scalars, x and y are vectors, and A is an M by N matrix.
  *
- * The matrix-vector product is computed using indexed types with #idxdBLAS_cicgemv()
+ * The matrix-vector product is computed using binned types with #binnedBLAS_cbcgemv()
  *
- * @param fold the fold of the indexed types
+ * @param fold the fold of the binned types
  * @param Order a character specifying the matrix ordering ('r' or 'R' for row-major, 'c' or 'C' for column major)
  * @param TransA a character specifying whether or not to transpose A before taking the matrix-vector product ('n' or 'N' not to transpose, 't' or 'T' to transpose, 'c' or 'C' to conjugate transpose)
  * @param M number of rows of matrix A
@@ -37,7 +37,7 @@ void reproBLAS_rcgemv(const int fold, const char Order,
                       const void *alpha, const void *A, const int lda,
                       const void *X, const int incX,
                       const void *beta, void *Y, const int incY){
-  float_complex_indexed *YI;
+  float_complex_binned *YI;
   float betaY[2];
   int i;
 
@@ -48,43 +48,43 @@ void reproBLAS_rcgemv(const int fold, const char Order,
   switch(TransA){
     case 'n':
     case 'N':
-      YI = (float_complex_indexed*)malloc(M * idxd_cisize(fold));
+      YI = (float_complex_binned*)malloc(M * binned_cbsize(fold));
       if(((float*)beta)[0] == 0.0 && ((float*)beta)[1] == 0.0){
-        memset(YI, 0, M * idxd_cisize(fold));
+        memset(YI, 0, M * binned_cbsize(fold));
       }else if(((float*)beta)[0] == 1.0 && ((float*)beta)[1] == 0.0){
         for(i = 0; i < M; i++){
-          idxd_cicconv(fold, ((float*)Y) + 2 * i * incY, YI + i * idxd_cinum(fold));
+          binned_cbcconv(fold, ((float*)Y) + 2 * i * incY, YI + i * binned_cbnum(fold));
         }
       }else{
         for(i = 0; i < M; i++){
           betaY[0] = ((float*)Y)[2 * i * incY] * ((float*)beta)[0] - ((float*)Y)[2 * i * incY + 1] * ((float*)beta)[1];
           betaY[1] = ((float*)Y)[2 * i * incY] * ((float*)beta)[1] + ((float*)Y)[2 * i * incY + 1] * ((float*)beta)[0];
-          idxd_cicconv(fold, betaY, YI + i * idxd_cinum(fold));
+          binned_cbcconv(fold, betaY, YI + i * binned_cbnum(fold));
         }
       }
-      idxdBLAS_cicgemv(fold, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
+      binnedBLAS_cbcgemv(fold, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
       for(i = 0; i < M; i++){
-        idxd_cciconv_sub(fold, YI + i * idxd_cinum(fold), ((float*)Y) + 2 * i * incY);
+        binned_ccbconv_sub(fold, YI + i * binned_cbnum(fold), ((float*)Y) + 2 * i * incY);
       }
       break;
     default:
-      YI = (float_complex_indexed*)malloc(N * idxd_cisize(fold));
+      YI = (float_complex_binned*)malloc(N * binned_cbsize(fold));
       if(((float*)beta)[0] == 0.0 && ((float*)beta)[1] == 0.0){
-        memset(YI, 0, N * idxd_cisize(fold));
+        memset(YI, 0, N * binned_cbsize(fold));
       }else if(((float*)beta)[0] == 1.0 && ((float*)beta)[1] == 0.0){
         for(i = 0; i < N; i++){
-          idxd_cicconv(fold, ((float*)Y) + 2 * i * incY, YI + i * idxd_cinum(fold));
+          binned_cbcconv(fold, ((float*)Y) + 2 * i * incY, YI + i * binned_cbnum(fold));
         }
       }else{
         for(i = 0; i < N; i++){
           betaY[0] = ((float*)Y)[2 * i * incY] * ((float*)beta)[0] - ((float*)Y)[2 * i * incY + 1] * ((float*)beta)[1];
           betaY[1] = ((float*)Y)[2 * i * incY] * ((float*)beta)[1] + ((float*)Y)[2 * i * incY + 1] * ((float*)beta)[0];
-          idxd_cicconv(fold, betaY, YI + i * idxd_cinum(fold));
+          binned_cbcconv(fold, betaY, YI + i * binned_cbnum(fold));
         }
       }
-      idxdBLAS_cicgemv(fold, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
+      binnedBLAS_cbcgemv(fold, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
       for(i = 0; i < N; i++){
-        idxd_cciconv_sub(fold, YI + i * idxd_cinum(fold), ((float*)Y) + 2 * i * incY);
+        binned_ccbconv_sub(fold, YI + i * binned_cbnum(fold), ((float*)Y) + 2 * i * incY);
       }
       break;
   }

@@ -758,7 +758,7 @@ WARN_LOGFILE           =
 # spaces.
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = ./src/idxd ./include/idxd.h ./src/idxdBLAS ./include/idxdBLAS.h ./src/reproBLAS ./include/reproBLAS.h ./src/idxdMPI ./include/idxdMPI.h
+INPUT                  = ./src/binned ./include/binned.h ./src/binnedBLAS ./include/binnedBLAS.h ./src/reproBLAS ./include/reproBLAS.h ./src/binnedMPI ./include/binnedMPI.h
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
@@ -1525,7 +1525,7 @@ EXTERNAL_SEARCH        = NO
 
 SEARCHENGINE_URL       =
 
-# When SERVER_BASED_SEARCH and EXTERNAL_SEARCH are both enabled the unindexed
+# When SERVER_BASED_SEARCH and EXTERNAL_SEARCH are both enabled the unbinned
 # search data is written to a file for indexing by an external tool. With the
 # SEARCHDATA_FILE tag the name of this file can be specified.
 # The default file is: searchdata.xml.

@@ -3,8 +3,8 @@
 #include <math.h>
 #include <string.h>
 
-#include <idxd.h>
-#include <idxdBLAS.h>
+#include <binned.h>
+#include <binnedBLAS.h>
 #include <reproBLAS.h>
 
 #include "../common/test_opt.h"
@@ -41,11 +41,11 @@ static void corroborate_rzgemv_options_initialize(void){
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
   fold._int.min               = 2;
-  fold._int.max               = idxd_DIMAXFOLD;
+  fold._int.max               = binned_DBMAXFOLD;
   fold._int.value             = DIDEFAULTFOLD;
 }
 
-int corroborate_rzgemv(int fold, char Order, char TransA, int M, int N, double complex *alpha, double complex *A, int lda, double complex *X, int incX, double complex *beta, double complex *Y, double_complex_indexed *YI, int incY, double complex *ref, int max_num_blocks) {
+int corroborate_rzgemv(int fold, char Order, char TransA, int M, int N, double complex *alpha, double complex *A, int lda, double complex *X, int incX, double complex *beta, double complex *Y, double_complex_binned *YI, int incY, double complex *ref, int max_num_blocks) {
 
   int i;
   int num_blocks = 1;
@@ -65,12 +65,12 @@ int corroborate_rzgemv(int fold, char Order, char TransA, int M, int N, double c
   }
 
   double complex *res = util_zvec_alloc(opM, incY);
-  double_indexed *Ires = malloc(opM * incY * idxd_zisize(fold));
+  double_binned *Ires = malloc(opM * incY * binned_zbsize(fold));
 
   num_blocks = 1;
   while (num_blocks < opN && num_blocks <= max_num_blocks) {
     memcpy(res, Y, opM * incY * sizeof(complex double));
-    memcpy(Ires, YI, opM * incY * idxd_zisize(fold));
+    memcpy(Ires, YI, opM * incY * binned_zbsize(fold));
     if (num_blocks == 1){
       wrap_rzgemv(fold, Order, TransA, M, N, alpha, A, lda, X, incX, beta, res, incY);
     }else {
@@ -84,10 +84,10 @@ int corroborate_rzgemv(int fold, char Order, char TransA, int M, int N, double c
               switch(Order){
                 case 'r':
                 case 'R':
-                  idxdBLAS_zizgemv(fold, Order, TransA, M, block_opN, alpha, A + i, lda, X + i * incX, incX, Ires, incY);
+                  binnedBLAS_zbzgemv(fold, Order, TransA, M, block_opN, alpha, A + i, lda, X + i * incX, incX, Ires, incY);
                   break;
                 default:
-                  idxdBLAS_zizgemv(fold, Order, TransA, M, block_opN, alpha, A + i * lda, lda, X + i * incX, incX, Ires, incY);
+                  binnedBLAS_zbzgemv(fold, Order, TransA, M, block_opN, alpha, A + i * lda, lda, X + i * incX, incX, Ires, incY);
                   break;
               }
             }
@@ -101,10 +101,10 @@ int corroborate_rzgemv(int fold, char Order, char TransA, int M, int N, double c
               switch(Order){
                 case 'r':
                 case 'R':
-                  idxdBLAS_zizgemv(fold, Order, TransA, block_opN, N, alpha, A + i * lda, lda, X + i * incX, incX, Ires, incY);
+                  binnedBLAS_zbzgemv(fold, Order, TransA, block_opN, N, alpha, A + i * lda, lda, X + i * incX, incX, Ires, incY);
                   break;
                 default:
-                  idxdBLAS_zizgemv(fold, Order, TransA, block_opN, N, alpha, A + i, lda, X + i * incX, incX, Ires, incY);
+                  binnedBLAS_zbzgemv(fold, Order, TransA, block_opN, N, alpha, A + i, lda, X + i * incX, incX, Ires, incY);
                   break;
               }
             }
@@ -112,7 +112,7 @@ int corroborate_rzgemv(int fold, char Order, char TransA, int M, int N, double c
           break;
       }
       for(i = 0; i < opM; i++){
-        idxd_zziconv_sub(fold, Ires + i * incY * idxd_zinum(fold), res + i * incY);
+        binned_zzbconv_sub(fold, Ires + i * incY * binned_zbnum(fold), res + i * incY);
       }
     }
     for(i = 0; i < opM; i++){
@@ -180,7 +180,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   double complex *A  = util_zmat_alloc(Order, M, N, lda);
   double complex *X  = util_zvec_alloc(opN, incX);
   double complex *Y  = util_zvec_alloc(opM, incY);
-  double_complex_indexed *YI = (double_complex_indexed*)malloc(opM * incY * idxd_zisize(fold._int.value));
+  double_complex_binned *YI = (double_complex_binned*)malloc(opM * incY * binned_zbsize(fold._int.value));
   double complex alpha = RealAlpha + I * ImagAlpha;
   double complex beta = RealBeta + I * ImagBeta;
   double complex betaY;
@@ -191,15 +191,15 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   util_zvec_fill(opN, X, incX, FillX, RealScaleX, ImagScaleX);
   util_zvec_fill(opM, Y, incY, FillY, RealScaleY, ImagScaleY);
   if(beta == 0.0){
-    memset(YI, 0, opM * idxd_zisize(fold._int.value));
+    memset(YI, 0, opM * binned_zbsize(fold._int.value));
   }else if (beta == 1.0){
     for(i = 0; i < opM; i++){
-      idxd_zizconv(fold._int.value, Y + i * incY, YI + i * incY * idxd_zinum(fold._int.value));
+      binned_zbzconv(fold._int.value, Y + i * incY, YI + i * incY * binned_zbnum(fold._int.value));
     }
   }else{
     for(i = 0; i < opM; i++){
       betaY = Y[i * incY] * beta;
-      idxd_zizconv(fold._int.value, &betaY, YI + i * incY * idxd_zinum(fold._int.value));
+      binned_zbzconv(fold._int.value, &betaY, YI + i * incY * binned_zbnum(fold._int.value));
     }
   }
   double complex *ref  = (double complex *)malloc(opM * incY * sizeof(double complex));

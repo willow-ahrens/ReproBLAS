@@ -1,5 +1,5 @@
-#include <idxdBLAS.h>
-#include <idxd.h>
+#include <binnedBLAS.h>
+#include <binned.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -12,7 +12,7 @@ int vecvec_show_help(void){
 const char* vecvec_name(int argc, char** argv) {
   (void)argc;
   (void)argv;
-  return "Validate idxdBLAS_damax(m) X=+big";
+  return "Validate binnedBLAS_damax(m) X=+big";
 }
 
 int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
@@ -39,15 +39,15 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   util_dvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
   X[0]         = -big;
 
-  res = idxdBLAS_damax(N, X, incX);
+  res = binnedBLAS_damax(N, X, incX);
   if (res != ref) {
-    printf("idxdBLAS_damax(X) = %g != %g (1 Big at beginning)\n", res, ref);
+    printf("binnedBLAS_damax(X) = %g != %g (1 Big at beginning)\n", res, ref);
     return 1;
   }
 
-  res = idxdBLAS_damaxm(N, X, incX, Y, incY);
+  res = binnedBLAS_damaxm(N, X, incX, Y, incY);
   if (res != ref) {
-    printf("idxdBLAS_damaxm(X) = %g != %g (1 Big at beginning)\n", res, ref);
+    printf("binnedBLAS_damaxm(X) = %g != %g (1 Big at beginning)\n", res, ref);
     return 1;
   }
 
@@ -55,15 +55,15 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   util_dvec_fill(N, X, incX, util_Vec_Constant, small, 1.0);
   X[(N-1)*incX]         = -big;
 
-  res = idxdBLAS_damax(N, X, incX);
+  res = binnedBLAS_damax(N, X, incX);
   if (res != ref) {
-    printf("idxdBLAS_damax(X) = %g != %g (1 Big at end)\n", res, ref);
+    printf("binnedBLAS_damax(X) = %g != %g (1 Big at end)\n", res, ref);
     return 1;
   }
 
-  res = idxdBLAS_damaxm(N, X, incX, Y, incY);
+  res = binnedBLAS_damaxm(N, X, incX, Y, incY);
   if (res != ref) {
-    printf("idxdBLAS_damaxm(X) = %g != %g (1 Big at end)\n", res, ref);
+    printf("binnedBLAS_damaxm(X) = %g != %g (1 Big at end)\n", res, ref);
     return 1;
   }
 

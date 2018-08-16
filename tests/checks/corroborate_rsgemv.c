@@ -3,8 +3,8 @@
 #include <math.h>
 #include <string.h>
 
-#include <idxd.h>
-#include <idxdBLAS.h>
+#include <binned.h>
+#include <binnedBLAS.h>
 #include <reproBLAS.h>
 
 #include "../common/test_opt.h"
@@ -41,11 +41,11 @@ static void corroborate_rsgemv_options_initialize(void){
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
   fold._int.min               = 2;
-  fold._int.max               = idxd_SIMAXFOLD;
+  fold._int.max               = binned_SBMAXFOLD;
   fold._int.value             = SIDEFAULTFOLD;
 }
 
-int corroborate_rsgemv(int fold, char Order, char TransA, int M, int N, float alpha, float *A, int lda, float* X, int incX, float beta, float *Y, float_indexed *YI, int incY, float *ref, int max_num_blocks) {
+int corroborate_rsgemv(int fold, char Order, char TransA, int M, int N, float alpha, float *A, int lda, float* X, int incX, float beta, float *Y, float_binned *YI, int incY, float *ref, int max_num_blocks) {
 
   int i;
   int num_blocks = 1;
@@ -65,12 +65,12 @@ int corroborate_rsgemv(int fold, char Order, char TransA, int M, int N, float al
   }
 
   float *res = util_svec_alloc(opM, incY);
-  float_indexed *Ires = malloc(opM * incY * idxd_sisize(fold));
+  float_binned *Ires = malloc(opM * incY * binned_sbsbze(fold));
 
   num_blocks = 1;
   while (num_blocks < opN && num_blocks <= max_num_blocks) {
     memcpy(res, Y, opM * incY * sizeof(float));
-    memcpy(Ires, YI, opM * incY * idxd_sisize(fold));
+    memcpy(Ires, YI, opM * incY * binned_sbsbze(fold));
     if (num_blocks == 1){
       wrap_rsgemv(fold, Order, TransA, M, N, alpha, A, lda, X, incX, beta, res, incY);
     }else {
@@ -84,10 +84,10 @@ int corroborate_rsgemv(int fold, char Order, char TransA, int M, int N, float al
               switch(Order){
                 case 'r':
                 case 'R':
-                  idxdBLAS_sisgemv(fold, Order, TransA, M, block_opN, alpha, A + i, lda, X + i * incX, incX, Ires, incY);
+                  binnedBLAS_sbsgemv(fold, Order, TransA, M, block_opN, alpha, A + i, lda, X + i * incX, incX, Ires, incY);
                   break;
                 default:
-                  idxdBLAS_sisgemv(fold, Order, TransA, M, block_opN, alpha, A + i * lda, lda, X + i * incX, incX, Ires, incY);
+                  binnedBLAS_sbsgemv(fold, Order, TransA, M, block_opN, alpha, A + i * lda, lda, X + i * incX, incX, Ires, incY);
                   break;
               }
             }
@@ -101,10 +101,10 @@ int corroborate_rsgemv(int fold, char Order, char TransA, int M, int N, float al
               switch(Order){
                 case 'r':
                 case 'R':
-                  idxdBLAS_sisgemv(fold, Order, TransA, block_opN, N, alpha, A + i * lda, lda, X + i * incX, incX, Ires, incY);
+                  binnedBLAS_sbsgemv(fold, Order, TransA, block_opN, N, alpha, A + i * lda, lda, X + i * incX, incX, Ires, incY);
                   break;
                 default:
-                  idxdBLAS_sisgemv(fold, Order, TransA, block_opN, N, alpha, A + i, lda, X + i * incX, incX, Ires, incY);
+                  binnedBLAS_sbsgemv(fold, Order, TransA, block_opN, N, alpha, A + i, lda, X + i * incX, incX, Ires, incY);
                   break;
               }
             }
@@ -112,7 +112,7 @@ int corroborate_rsgemv(int fold, char Order, char TransA, int M, int N, float al
           break;
       }
       for(i = 0; i < opM; i++){
-        res[i * incY] = idxd_ssiconv(fold, Ires + i * incY * idxd_sinum(fold));
+        res[i * incY] = binned_ssbconv(fold, Ires + i * incY * binned_sbnum(fold));
       }
     }
     for(i = 0; i < opM; i++){
@@ -182,7 +182,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   float *A  = util_smat_alloc(Order, M, N, lda);
   float *X  = util_svec_alloc(opN, incX);
   float *Y  = util_svec_alloc(opM, incY);
-  float_indexed *YI = (float_indexed*)malloc(opM * incY * idxd_sisize(fold._int.value));
+  float_binned *YI = (float_binned*)malloc(opM * incY * binned_sbsbze(fold._int.value));
 
   int *P;
 
@@ -190,10 +190,10 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   util_svec_fill(opN, X, incX, FillX, RealScaleX, ImagScaleX);
   util_svec_fill(opM, Y, incY, FillY, RealScaleY, ImagScaleY);
   if(RealBeta == 0.0){
-    memset(YI, 0, opM * idxd_sisize(fold._int.value));
+    memset(YI, 0, opM * binned_sbsbze(fold._int.value));
   }else{
     for(i = 0; i < opM; i++){
-      idxd_sisconv(fold._int.value, Y[i * incY] * RealBeta, YI + i * incY * idxd_sinum(fold._int.value));
+      binned_sbsconv(fold._int.value, Y[i * incY] * RealBeta, YI + i * incY * binned_sbnum(fold._int.value));
     }
   }
   float *ref  = (float*)malloc(opM * incY * sizeof(float));

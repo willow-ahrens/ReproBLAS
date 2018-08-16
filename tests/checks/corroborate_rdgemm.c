@@ -3,8 +3,8 @@
 #include <math.h>
 #include <string.h>
 
-#include <idxd.h>
-#include <idxdBLAS.h>
+#include <binned.h>
+#include <binnedBLAS.h>
 #include <reproBLAS.h>
 
 #include "../common/test_opt.h"
@@ -42,11 +42,11 @@ static void corroborate_rdgemm_options_initialize(void){
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
   fold._int.min               = 2;
-  fold._int.max               = idxd_DIMAXFOLD;
+  fold._int.max               = binned_DBMAXFOLD;
   fold._int.value             = DIDEFAULTFOLD;
 }
 
-int corroborate_rdgemm(int fold, char Order, char TransA, char TransB, int M, int N, int K, double alpha, double *A, int lda, double* B, int ldb, double beta, double *C, double_indexed *CI, int ldc, double *ref, int max_num_blocks) {
+int corroborate_rdgemm(int fold, char Order, char TransA, char TransB, int M, int N, int K, double alpha, double *A, int lda, double* B, int ldb, double beta, double *C, double_binned *CI, int ldc, double *ref, int max_num_blocks) {
 
   int i;
   int j;
@@ -55,7 +55,7 @@ int corroborate_rdgemm(int fold, char Order, char TransA, char TransB, int M, in
   int block_K;
 
   double *res;
-  double_indexed *Ires;
+  double_binned *Ires;
   double *tmpA;
   double *tmpB;
   int CNM;
@@ -70,12 +70,12 @@ int corroborate_rdgemm(int fold, char Order, char TransA, char TransB, int M, in
       break;
   }
   res = malloc(CNM * sizeof(double));
-  Ires = malloc(CNM * idxd_disize(fold));
+  Ires = malloc(CNM * binned_dbsize(fold));
 
   num_blocks = 1;
   while (num_blocks < K && num_blocks <= max_num_blocks) {
     memcpy(res, C, CNM * sizeof(double));
-    memcpy(Ires, CI, CNM * idxd_disize(fold));
+    memcpy(Ires, CI, CNM * binned_dbsize(fold));
     if (num_blocks == 1){
       wrap_rdgemm(fold, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, res, ldc);
     }else {
@@ -125,17 +125,17 @@ int corroborate_rdgemm(int fold, char Order, char TransA, char TransB, int M, in
             }
             break;
         }
-        idxdBLAS_didgemm(fold, Order, TransA, TransB, M, N, block_K, alpha, tmpA, lda, tmpB, ldb, Ires, ldc);
+        binnedBLAS_dbdgemm(fold, Order, TransA, TransB, M, N, block_K, alpha, tmpA, lda, tmpB, ldb, Ires, ldc);
       }
       for(i = 0; i < M; i++){
         for(j = 0; j < N; j++){
           switch(Order){
             case 'r':
             case 'R':
-              res[i * ldc + j] = idxd_ddiconv(fold, Ires + (i * ldc + j) * idxd_dinum(fold));
+              res[i * ldc + j] = binned_ddbconv(fold, Ires + (i * ldc + j) * binned_dbnum(fold));
               break;
             default:
-              res[j * ldc + i] = idxd_ddiconv(fold, Ires + (j * ldc + i) * idxd_dinum(fold));
+              res[j * ldc + i] = binned_ddbconv(fold, Ires + (j * ldc + i) * binned_dbnum(fold));
               break;
           }
         }
@@ -247,7 +247,7 @@ int matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB
       CNM = ldc * N;
       break;
   }
-  double_indexed *CI = malloc(CNM * idxd_disize(fold._int.value));
+  double_binned *CI = malloc(CNM * binned_dbsize(fold._int.value));
 
   int *P;
 
@@ -259,10 +259,10 @@ int matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB
       switch(Order){
         case 'r':
         case 'R':
-          idxd_didconv(fold._int.value, C[i * ldc + j] * RealBeta, CI + (i * ldc + j) * idxd_dinum(fold._int.value));
+          binned_dbdconv(fold._int.value, C[i * ldc + j] * RealBeta, CI + (i * ldc + j) * binned_dbnum(fold._int.value));
           break;
         default:
-          idxd_didconv(fold._int.value, C[j * ldc + i] * RealBeta, CI + (j * ldc + i) * idxd_dinum(fold._int.value));
+          binned_dbdconv(fold._int.value, C[j * ldc + i] * RealBeta, CI + (j * ldc + i) * binned_dbnum(fold._int.value));
           break;
       }
     }

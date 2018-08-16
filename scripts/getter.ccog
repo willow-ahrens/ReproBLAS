@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include <idxd.h>
+#include <binned.h>
 
 #include "../config.h"
 
@@ -36,21 +36,21 @@ int main(int argc, char** argv){
   #endif
   //[[[end]]]
 
-  printf("  \"dimaxindex\": %d,\n", idxd_DIMAXINDEX);
+  printf("  \"dimaxindex\": %d,\n", binned_DBMAXINDEX);
 
-  printf("  \"simaxindex\": %d,\n", idxd_SIMAXINDEX);
+  printf("  \"simaxindex\": %d,\n", binned_SBMAXINDEX);
 
-  printf("  \"dimaxfold\": %d,\n", idxd_DIMAXFOLD);
+  printf("  \"dimaxfold\": %d,\n", binned_DBMAXFOLD);
 
-  printf("  \"simaxfold\": %d,\n", idxd_SIMAXFOLD);
+  printf("  \"simaxfold\": %d,\n", binned_SBMAXFOLD);
 
   printf("  \"didefaultfold\": %d,\n", DIDEFAULTFOLD);
 
   printf("  \"sidefaultfold\": %d,\n", SIDEFAULTFOLD);
 
-  printf("  \"diendurance\": %d,\n", idxd_DIENDURANCE);
+  printf("  \"diendurance\": %d,\n", binned_DBENDURANCE);
 
-  printf("  \"siendurance\": %d\n", idxd_SIENDURANCE);
+  printf("  \"siendurance\": %d\n", binned_SBENDURANCE);
 
   printf("}\n");
 

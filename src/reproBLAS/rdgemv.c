@@ -2,7 +2,7 @@
 #include <string.h>
 
 #include <reproBLAS.h>
-#include <idxdBLAS.h>
+#include <binnedBLAS.h>
 
 /**
  * @brief Add to double precision vector Y the reproducible matrix-vector product of double precision matrix A and double precision vector X
@@ -13,9 +13,9 @@
  *
  * where alpha and beta are scalars, x and y are vectors, and A is an M by N matrix.
  *
- * The matrix-vector product is computed using indexed types with #idxdBLAS_didgemv()
+ * The matrix-vector product is computed using binned types with #binnedBLAS_dbdgemv()
  *
- * @param fold the fold of the indexed types
+ * @param fold the fold of the binned types
  * @param Order a character specifying the matrix ordering ('r' or 'R' for row-major, 'c' or 'C' for column major)
  * @param TransA a character specifying whether or not to transpose A before taking the matrix-vector product ('n' or 'N' not to transpose, 't' or 'T' or 'c' or 'C' to transpose)
  * @param M number of rows of matrix A
@@ -37,7 +37,7 @@ void reproBLAS_rdgemv(const int fold, const char Order,
                       const double alpha, const double *A, const int lda,
                       const double *X, const int incX,
                       const double beta, double *Y, const int incY){
-  double_indexed *YI;
+  double_binned *YI;
   int i;
 
   if(N == 0 || M == 0){
@@ -47,39 +47,39 @@ void reproBLAS_rdgemv(const int fold, const char Order,
   switch(TransA){
     case 'n':
     case 'N':
-      YI = (double_indexed*)malloc(M * idxd_disize(fold));
+      YI = (double_binned*)malloc(M * binned_dbsize(fold));
       if(beta == 0.0){
-        memset(YI, 0, M * idxd_disize(fold));
+        memset(YI, 0, M * binned_dbsize(fold));
       }else if(beta == 1.0){
         for(i = 0; i < M; i++){
-          idxd_didconv(fold, Y[i * incY], YI + i * idxd_dinum(fold));
+          binned_dbdconv(fold, Y[i * incY], YI + i * binned_dbnum(fold));
         }
       }else{
         for(i = 0; i < M; i++){
-          idxd_didconv(fold, Y[i * incY] * beta, YI + i * idxd_dinum(fold));
+          binned_dbdconv(fold, Y[i * incY] * beta, YI + i * binned_dbnum(fold));
         }
       }
-      idxdBLAS_didgemv(fold, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
+      binnedBLAS_dbdgemv(fold, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
       for(i = 0; i < M; i++){
-        Y[i * incY] = idxd_ddiconv(fold, YI + i * idxd_dinum(fold));
+        Y[i * incY] = binned_ddbconv(fold, YI + i * binned_dbnum(fold));
       }
       break;
     default:
-      YI = (double_indexed*)malloc(N * idxd_disize(fold));
+      YI = (double_binned*)malloc(N * binned_dbsize(fold));
       if(beta == 0.0){
-        memset(YI, 0, N * idxd_disize(fold));
+        memset(YI, 0, N * binned_dbsize(fold));
       }else if(beta == 1.0){
         for(i = 0; i < N; i++){
-          idxd_didconv(fold, Y[i * incY], YI + i * idxd_dinum(fold));
+          binned_dbdconv(fold, Y[i * incY], YI + i * binned_dbnum(fold));
         }
       }else{
         for(i = 0; i < N; i++){
-          idxd_didconv(fold, Y[i * incY] * beta, YI + i * idxd_dinum(fold));
+          binned_dbdconv(fold, Y[i * incY] * beta, YI + i * binned_dbnum(fold));
         }
       }
-      idxdBLAS_didgemv(fold, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
+      binnedBLAS_dbdgemv(fold, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
       for(i = 0; i < N; i++){
-        Y[i * incY] = idxd_ddiconv(fold, YI + i * idxd_dinum(fold));
+        Y[i * incY] = binned_ddbconv(fold, YI + i * binned_dbnum(fold));
       }
       break;
   }

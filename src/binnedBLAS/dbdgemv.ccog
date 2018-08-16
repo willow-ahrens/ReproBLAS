@@ -1,0 +1,162 @@
+#include <stdlib.h>
+
+#include "../common/common.h"
+#include "binnedBLAS.h"
+
+/*[[[cog
+import cog
+import generate
+import dataTypes
+from src.common import blockSize
+from scripts import terminal
+
+rounded_cache = 2**(int(terminal.get_cache()).bit_length() - 1)
+xy_block = rounded_cache//dataTypes.Double.byte_size
+y_block = max(xy_block//256, 1)
+
+cog.out(generate.generate(blockSize.BlockSize("dbdgemv", "Y_BLOCK", 1, y_block, y_block, ["bench_rdgemv_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("dbdgemv", "XY_BLOCK", y_block, xy_block, xy_block, ["bench_rdgemv_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("dbdgemv", "YT_BLOCK", 1, y_block, y_block, ["bench_rdgemv_fold_TransA_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("dbdgemv", "XYT_BLOCK", y_block, xy_block, xy_block, ["bench_rdgemv_fold_TransA_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+cog.out(generate.generate(blockSize.BlockSize("dbdgemv", "T_BLOCK", 1, 32, 32, ["bench_rdgemv_TransA_fold_{}".format(terminal.get_didefaultfold())]), cog.inFile, args, params, mode))
+]]]*/
+#define Y_BLOCK 8
+#define XY_BLOCK 32768
+#define YT_BLOCK 128
+#define XYT_BLOCK 32768
+#define T_BLOCK 8
+//[[[end]]]
+#define X_BLOCK (XY_BLOCK/Y_BLOCK)
+#define XT_BLOCK (XYT_BLOCK/YT_BLOCK)
+
+/**
+ * @brief Add to binned double precision vector Y the matrix-vector product of double precision matrix A and double precision vector X
+ *
+ * Performs one of the matrix-vector operations
+ *
+ *   y := alpha*A*x + y   or   y := alpha*A**T*x + y,
+ *
+ * where alpha is a scalar, x is a vector, y is an binned vector, and A is an M by N matrix.
+ *
+ * @param fold the fold of the binned types
+ * @param Order a character specifying the matrix ordering ('r' or 'R' for row-major, 'c' or 'C' for column major)
+ * @param TransA a character specifying whether or not to transpose A before taking the matrix-vector product ('n' or 'N' not to transpose, 't' or 'T' or 'c' or 'C' to transpose)
+ * @param M number of rows of matrix A
+ * @param N number of columns of matrix A
+ * @param alpha scalar alpha
+ * @param A double precision matrix of dimension (M, lda) in row-major or (lda, N) in column-major
+ * @param lda the first dimension of A as declared in the calling program
+ * @param X double precision vector of at least size N if not transposed or size M otherwise
+ * @param incX X vector stride (use every incX'th element)
+ * @param Y binned double precision vector Y of at least size M if not transposed or size N otherwise
+ * @param incY Y vector stride (use every incY'th element)
+ *
+ * @author Peter Ahrens
+ * @date   18 Jan 2016
+ */
+void binnedBLAS_dbdgemv(const int fold, const char Order,
+                      const char TransA, const int M, const int N,
+                      const double alpha, const double *A, const int lda,
+                      const double *X, const int incX,
+                      double_binned *Y, const int incY){
+  int i;
+  int ii;
+  int iii;
+  int j;
+  int jj;
+  int jjj;
+  double *bufX;
+  int incbufX;
+  double *bufA;
+
+  if(M == 0 || N == 0 || alpha == 0.0){
+    return;
+  }
+
+  switch(Order){
+
+    //row major
+    case 'r':
+    case 'R':
+      switch(TransA){
+
+        //row major A not transposed
+        case 'n':
+        case 'N':
+          if(alpha == 1.0){
+            bufX = (double*)X;
+            incbufX = incX;
+          }else{
+            bufX = (double*)malloc(N * sizeof(double));
+            for(j = 0; j < N; j++){
+              bufX[j] = X[j * incX] * alpha;
+            }
+            incbufX = 1;
+          }
+          for(i = 0; i < M; i += Y_BLOCK){
+            for(j = 0; j < N; j += X_BLOCK){
+              for(ii = i; ii < M && ii < i + Y_BLOCK; ii++){
+                binnedBLAS_dbddot(fold, MIN(X_BLOCK, N - j), A + ii * lda + j, 1, bufX + j * incbufX, incbufX, Y + ii * incY * binned_dbnum(fold));
+              }
+            }
+          }
+          if(alpha != 1.0){
+            free(bufX);
+          }
+          break;
+
+        //row major A transposed
+        default:
+          if(alpha == 1.0){
+            bufX = (double*)X;
+            incbufX = incX;
+          }else{
+            bufX = (double*)malloc(M * sizeof(double));
+            for(j = 0; j < M; j++){
+              bufX[j] = X[j * incX] * alpha;
+            }
+            incbufX = 1;
+          }
+          bufA = (double*)malloc(XT_BLOCK * YT_BLOCK * sizeof(double));
+          for(i = 0; i < N; i += YT_BLOCK){
+            for(j = 0; j < M; j += XT_BLOCK){
+              for(jj = j; jj < M && jj < j + XT_BLOCK; jj += T_BLOCK){
+                for(ii = i; ii < N && ii < i + YT_BLOCK; ii+= T_BLOCK){
+                  for(jjj = jj; jjj < M && jjj < jj + MIN(T_BLOCK, XT_BLOCK); jjj++){
+                    for(iii = ii; iii < N && iii < ii + MIN(T_BLOCK, YT_BLOCK); iii++){
+                      bufA[(iii - i) * XT_BLOCK + (jjj - j)] = A[jjj * lda + iii];
+                    }
+                  }
+                }
+              }
+              for(ii = i; ii < N && ii < i + YT_BLOCK; ii++){
+                binnedBLAS_dbddot(fold, MIN(XT_BLOCK, M - j), bufA + (ii - i) * XT_BLOCK, 1, bufX + j * incbufX, incbufX, Y + ii * incY * binned_dbnum(fold));
+              }
+            }
+          }
+          free(bufA);
+          if(alpha != 1.0){
+            free(bufX);
+          }
+          break;
+      }
+      break;
+
+    //column major
+    default:
+      switch(TransA){
+
+        //column major A not transposed
+        case 'n':
+        case 'N':
+          binnedBLAS_dbdgemv(fold, 'r', 't', N, M, alpha, A, lda, X, incX, Y, incY);
+          break;
+
+        //column major A transposed
+        default:
+          binnedBLAS_dbdgemv(fold, 'r', 'n', N, M, alpha, A, lda, X, incX, Y, incY);
+          break;
+      }
+      break;
+  }
+}

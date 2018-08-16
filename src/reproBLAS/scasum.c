@@ -7,7 +7,7 @@
  *
  * Return the sum of magnitudes of elements of X.
  *
- * The reproducible absolute sum is computed with indexed types of default fold using #idxdBLAS_sicasum()
+ * The reproducible absolute sum is computed with binned types of default fold using #binnedBLAS_sbcasum()
  *
  * @param N vector length
  * @param X complex single precision vector

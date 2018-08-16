@@ -3,8 +3,8 @@
 #include <math.h>
 #include <string.h>
 
-#include <idxd.h>
-#include <idxdBLAS.h>
+#include <binned.h>
+#include <binnedBLAS.h>
 #include <reproBLAS.h>
 
 #include "../common/test_opt.h"
@@ -41,11 +41,11 @@ static void corroborate_rzgemm_options_initialize(void){
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
   fold._int.min               = 2;
-  fold._int.max               = idxd_DIMAXFOLD;
+  fold._int.max               = binned_DBMAXFOLD;
   fold._int.value             = DIDEFAULTFOLD;
 }
 
-int corroborate_rzgemm(int fold, char Order, char TransA, char TransB, int M, int N, int K, double complex *alpha, double complex *A, int lda, double complex *B, int ldb, double complex *beta, double complex *C, double_complex_indexed *CI, int ldc, double complex *ref, int max_num_blocks) {
+int corroborate_rzgemm(int fold, char Order, char TransA, char TransB, int M, int N, int K, double complex *alpha, double complex *A, int lda, double complex *B, int ldb, double complex *beta, double complex *C, double_complex_binned *CI, int ldc, double complex *ref, int max_num_blocks) {
 
   int i;
   int j;
@@ -54,7 +54,7 @@ int corroborate_rzgemm(int fold, char Order, char TransA, char TransB, int M, in
   int block_K;
 
   double complex *res;
-  double_complex_indexed *Ires;
+  double_complex_binned *Ires;
   double complex *tmpA;
   double complex *tmpB;
   int CNM;
@@ -69,12 +69,12 @@ int corroborate_rzgemm(int fold, char Order, char TransA, char TransB, int M, in
       break;
   }
   res = malloc(CNM * sizeof(double complex));
-  Ires = malloc(CNM * idxd_zisize(fold));
+  Ires = malloc(CNM * binned_zbsize(fold));
 
   num_blocks = 1;
   while (num_blocks < K && num_blocks <= max_num_blocks) {
     memcpy(res, C, CNM * sizeof(double complex));
-    memcpy(Ires, CI, CNM * idxd_zisize(fold));
+    memcpy(Ires, CI, CNM * binned_zbsize(fold));
     if (num_blocks == 1){
       wrap_rzgemm(fold, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, res, ldc);
     }else {
@@ -124,17 +124,17 @@ int corroborate_rzgemm(int fold, char Order, char TransA, char TransB, int M, in
             }
             break;
         }
-        idxdBLAS_zizgemm(fold, Order, TransA, TransB, M, N, block_K, alpha, tmpA, lda, tmpB, ldb, Ires, ldc);
+        binnedBLAS_zbzgemm(fold, Order, TransA, TransB, M, N, block_K, alpha, tmpA, lda, tmpB, ldb, Ires, ldc);
       }
       for(i = 0; i < M; i++){
         for(j = 0; j < N; j++){
           switch(Order){
             case 'r':
             case 'R':
-              idxd_zziconv_sub(fold, Ires + (i * ldc + j) * idxd_zinum(fold), res + i * ldc + j);
+              binned_zzbconv_sub(fold, Ires + (i * ldc + j) * binned_zbnum(fold), res + i * ldc + j);
               break;
             default:
-              idxd_zziconv_sub(fold, Ires + (j * ldc + i) * idxd_zinum(fold), res + j * ldc + i);
+              binned_zzbconv_sub(fold, Ires + (j * ldc + i) * binned_zbnum(fold), res + j * ldc + i);
               break;
           }
         }
@@ -250,7 +250,7 @@ int matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB
       CNM = ldc * N;
       break;
   }
-  double_complex_indexed *CI = malloc(CNM * idxd_zisize(fold._int.value));
+  double_complex_binned *CI = malloc(CNM * binned_zbsize(fold._int.value));
 
   int *P;
 
@@ -263,20 +263,20 @@ int matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB
         switch(Order){
           case 'r':
           case 'R':
-            idxd_zisetzero(fold._int.value, CI + (i * ldc + j) * idxd_zinum(fold._int.value));
+            binned_zbsetzero(fold._int.value, CI + (i * ldc + j) * binned_zbnum(fold._int.value));
             break;
           default:
-            idxd_zisetzero(fold._int.value, CI + (j * ldc + i) * idxd_zinum(fold._int.value));
+            binned_zbsetzero(fold._int.value, CI + (j * ldc + i) * binned_zbnum(fold._int.value));
             break;
         }
       }else if(beta == 1.0){
         switch(Order){
           case 'r':
           case 'R':
-            idxd_zizconv(fold._int.value, C + i * ldc + j, CI + (i * ldc + j) * idxd_zinum(fold._int.value));
+            binned_zbzconv(fold._int.value, C + i * ldc + j, CI + (i * ldc + j) * binned_zbnum(fold._int.value));
             break;
           default:
-            idxd_zizconv(fold._int.value, C + j * ldc + i, CI + (j * ldc + i) * idxd_zinum(fold._int.value));
+            binned_zbzconv(fold._int.value, C + j * ldc + i, CI + (j * ldc + i) * binned_zbnum(fold._int.value));
             break;
         }
       }else{
@@ -284,11 +284,11 @@ int matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB
           case 'r':
           case 'R':
             betaC = C[i * ldc + j] * beta;
-            idxd_zizconv(fold._int.value, &betaC, CI + (i * ldc + j) * idxd_zinum(fold._int.value));
+            binned_zbzconv(fold._int.value, &betaC, CI + (i * ldc + j) * binned_zbnum(fold._int.value));
             break;
           default:
             betaC = C[j * ldc + i] * beta;
-            idxd_zizconv(fold._int.value, &betaC, CI + (j * ldc + i) * idxd_zinum(fold._int.value));
+            binned_zbzconv(fold._int.value, &betaC, CI + (j * ldc + i) * binned_zbnum(fold._int.value));
             break;
         }
       }

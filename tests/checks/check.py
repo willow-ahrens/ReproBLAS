@@ -57,11 +57,11 @@ check_suite.add_checks([checks.ValidateInternalDAMAXTest(),\
                        [[4095], [1, 2, 4]])
 
 check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
-                        checks.ValidateInternalDIDIADDTest(),\
+                        checks.ValidateInternalDBDBADDTest(),\
                         checks.ValidateInternalDIDADDTest(),\
                         checks.ValidateInternalDIDDEPOSITTest(),\
                         checks.ValidateInternalRSSUMTest(),\
-                        checks.ValidateInternalSISIADDTest(),\
+                        checks.ValidateInternalSBSBADDTest(),\
                         checks.ValidateInternalSISADDTest(),\
                         checks.ValidateInternalSISDEPOSITTest(),\
                         ],\
@@ -75,11 +75,11 @@ check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
                          "sine"]])
 
 check_suite.add_checks([checks.ValidateInternalRZSUMTest(),\
-                        checks.ValidateInternalZIZIADDTest(),\
+                        checks.ValidateInternalZBZBADDTest(),\
                         checks.ValidateInternalZIZADDTest(),\
                         checks.ValidateInternalZIZDEPOSITTest(),\
                         checks.ValidateInternalRCSUMTest(),\
-                        checks.ValidateInternalCICIADDTest(),\
+                        checks.ValidateInternalCBCBADDTest(),\
                         checks.ValidateInternalCICADDTest(),\
                         checks.ValidateInternalCICDEPOSITTest()],\
                        ["N", "fold", "incX", "RealScaleX", "ImagScaleX", "FillX"],\
@@ -185,13 +185,13 @@ check_suite.add_checks([checks.ValidateInternalRZDOTUTest(),\
 check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
                         checks.ValidateInternalRDASUMTest(),\
                         checks.ValidateInternalRDNRM2Test(),\
-                        checks.ValidateInternalDIDIADDTest(),\
+                        checks.ValidateInternalDBDBADDTest(),\
                         checks.ValidateInternalDIDADDTest(),\
                         checks.ValidateInternalDIDDEPOSITTest(),\
                         checks.ValidateInternalRSSUMTest(),\
                         checks.ValidateInternalRSASUMTest(),\
                         checks.ValidateInternalRSNRM2Test(),\
-                        checks.ValidateInternalSISIADDTest(),\
+                        checks.ValidateInternalSBSBADDTest(),\
                         checks.ValidateInternalSISADDTest(),\
                         checks.ValidateInternalSISDEPOSITTest(),\
                         ],\
@@ -208,13 +208,13 @@ check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
 check_suite.add_checks([checks.ValidateInternalRZSUMTest(),\
                         checks.ValidateInternalRDZASUMTest(),\
                         checks.ValidateInternalRDZNRM2Test(),\
-                        checks.ValidateInternalZIZIADDTest(),\
+                        checks.ValidateInternalZBZBADDTest(),\
                         checks.ValidateInternalZIZADDTest(),\
                         checks.ValidateInternalZIZDEPOSITTest(),\
                         checks.ValidateInternalRCSUMTest(),\
                         checks.ValidateInternalRSCASUMTest(),\
                         checks.ValidateInternalRSCNRM2Test(),\
-                        checks.ValidateInternalCICIADDTest(),\
+                        checks.ValidateInternalCBCBADDTest(),\
                         checks.ValidateInternalCICADDTest(),\
                         checks.ValidateInternalCICDEPOSITTest()],\
                        ["N", "fold", "incX", "RealScaleX", "ImagScaleX", "FillX"],\
@@ -285,22 +285,22 @@ check_suite.add_checks([checks.ValidateXBLASRDDOTTest(),\
 
 check_suite.add_checks([checks.VerifyRDSUMTest(),\
                         checks.VerifyRDASUMTest(),\
-                        checks.VerifyDIDIADDTest(),\
+                        checks.VerifyDBDBADDTest(),\
                         checks.VerifyDIDADDTest(),\
                         checks.VerifyDIDDEPOSITTest(),\
                         checks.VerifyRZSUMTest(),\
                         checks.VerifyRDZASUMTest(),\
-                        checks.VerifyZIZIADDTest(),\
+                        checks.VerifyZBZBADDTest(),\
                         checks.VerifyZIZADDTest(),\
                         checks.VerifyZIZDEPOSITTest(),\
                         checks.VerifyRSSUMTest(),\
                         checks.VerifyRSASUMTest(),\
-                        checks.VerifySISIADDTest(),\
+                        checks.VerifySBSBADDTest(),\
                         checks.VerifySISADDTest(),\
                         checks.VerifySISDEPOSITTest(),\
                         checks.VerifyRCSUMTest(),\
                         checks.VerifyRSCASUMTest(),\
-                        checks.VerifyCICIADDTest(),\
+                        checks.VerifyCBCBADDTest(),\
                         checks.VerifyCICADDTest(),\
                         checks.VerifyCICDEPOSITTest()],\
                        ["N", "fold", "B", "incX", "RealScaleX", "FillX"],\
@@ -311,28 +311,28 @@ check_suite.add_checks([checks.VerifyRDSUMTest(),\
                         checks.VerifyRDASUMTest(),\
                         checks.VerifyRDNRM2Test(),\
                         checks.VerifyDIDSSQTest(),\
-                        checks.VerifyDIDIADDTest(),\
+                        checks.VerifyDBDBADDTest(),\
                         checks.VerifyDIDADDTest(),\
                         checks.VerifyDIDDEPOSITTest(),\
                         checks.VerifyRZSUMTest(),\
                         checks.VerifyRDZASUMTest(),\
                         checks.VerifyRDZNRM2Test(),\
                         checks.VerifyDIZSSQTest(),\
-                        checks.VerifyZIZIADDTest(),\
+                        checks.VerifyZBZBADDTest(),\
                         checks.VerifyZIZADDTest(),\
                         checks.VerifyZIZDEPOSITTest(),\
                         checks.VerifyRSSUMTest(),\
                         checks.VerifyRSASUMTest(),\
                         checks.VerifyRSNRM2Test(),\
                         checks.VerifySISSSQTest(),\
-                        checks.VerifySISIADDTest(),\
+                        checks.VerifySBSBADDTest(),\
                         checks.VerifySISADDTest(),\
                         checks.VerifySISDEPOSITTest(),\
                         checks.VerifyRCSUMTest(),\
                         checks.VerifyRSCASUMTest(),\
                         checks.VerifyRSCNRM2Test(),\
                         checks.VerifySICSSQTest(),\
-                        checks.VerifyCICIADDTest(),\
+                        checks.VerifyCBCBADDTest(),\
                         checks.VerifyCICADDTest(),\
                         checks.VerifyCICDEPOSITTest()],\
                        ["N", "fold", "B", "incX", "FillX"],\
@@ -362,7 +362,7 @@ check_suite.add_checks([checks.VerifyRDDOTTest(),\
 
 for i in range(DBL_BIN_WIDTH + 2):
   check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
-                          checks.ValidateInternalDIDIADDTest(),\
+                          checks.ValidateInternalDBDBADDTest(),\
                           checks.ValidateInternalDIDADDTest(),\
                           checks.ValidateInternalDIDDEPOSITTest(),\
                           checks.ValidateInternalRDASUMTest(),\
@@ -375,7 +375,7 @@ for i in range(DBL_BIN_WIDTH + 2):
                           ["constant"]])
 
   check_suite.add_checks([checks.ValidateInternalRDSUMTest(),\
-                          checks.ValidateInternalDIDIADDTest(),\
+                          checks.ValidateInternalDBDBADDTest(),\
                           checks.ValidateInternalDIDADDTest(),\
                           checks.ValidateInternalDIDDEPOSITTest(),\
                           checks.ValidateInternalRDASUMTest(),\
@@ -417,7 +417,7 @@ for i in range(DBL_BIN_WIDTH + 2):
                            "+-big"]])
 
   check_suite.add_checks([checks.ValidateInternalRZSUMTest(),\
-                          checks.ValidateInternalZIZIADDTest(),\
+                          checks.ValidateInternalZBZBADDTest(),\
                           checks.ValidateInternalZIZADDTest(),\
                           checks.ValidateInternalZIZDEPOSITTest(),\
                           checks.ValidateInternalRDZASUMTest(),\
@@ -466,7 +466,7 @@ for i in range(DBL_BIN_WIDTH + 2):
 
 for i in range(FLT_BIN_WIDTH + 2):
   check_suite.add_checks([checks.ValidateInternalRSSUMTest(),\
-                          checks.ValidateInternalSISIADDTest(),\
+                          checks.ValidateInternalSBSBADDTest(),\
                           checks.ValidateInternalSISADDTest(),\
                           checks.ValidateInternalSISDEPOSITTest(),\
                           checks.ValidateInternalRSASUMTest(),\
@@ -479,7 +479,7 @@ for i in range(FLT_BIN_WIDTH + 2):
                           ["constant"]])
 
   check_suite.add_checks([checks.ValidateInternalRSSUMTest(),\
-                          checks.ValidateInternalSISIADDTest(),\
+                          checks.ValidateInternalSBSBADDTest(),\
                           checks.ValidateInternalSISADDTest(),\
                           checks.ValidateInternalSISDEPOSITTest(),\
                           checks.ValidateInternalRSASUMTest(),\
@@ -521,7 +521,7 @@ for i in range(FLT_BIN_WIDTH + 2):
                            "+-big"]])
 
   check_suite.add_checks([checks.ValidateInternalRCSUMTest(),\
-                          checks.ValidateInternalCICIADDTest(),\
+                          checks.ValidateInternalCBCBADDTest(),\
                           checks.ValidateInternalCICADDTest(),\
                           checks.ValidateInternalCICDEPOSITTest(),\
                           checks.ValidateInternalRSCASUMTest(),\
@@ -568,13 +568,13 @@ for i in range(FLT_BIN_WIDTH + 2):
                            "++big",\
                            "+-big"]])
 
-check_suite.add_checks([checks.ValidateInternalDIDIADDTest(),\
+check_suite.add_checks([checks.ValidateInternalDBDBADDTest(),\
                         checks.ValidateInternalDIDADDTest(),\
                         checks.ValidateInternalDIDDEPOSITTest(),\
                         checks.ValidateInternalRDSUMTest(),\
                         checks.ValidateInternalRDASUMTest(),\
                         checks.ValidateInternalRDDOTTest(),\
-                        checks.ValidateInternalZIZIADDTest(),\
+                        checks.ValidateInternalZBZBADDTest(),\
                         checks.ValidateInternalZIZADDTest(),\
                         checks.ValidateInternalZIZDEPOSITTest(),\
                         checks.ValidateInternalRZSUMTest(),\
@@ -585,13 +585,13 @@ check_suite.add_checks([checks.ValidateInternalDIDIADDTest(),\
                        [[1], folds, incs, [DBL_ONES * 2 **(DBL_MAX_EXP - 1), 1.0], [DBL_ONES * 2 **(DBL_MAX_EXP - 1), 1.0],\
                         ["constant",]])
 
-check_suite.add_checks([checks.ValidateInternalSISIADDTest(),\
+check_suite.add_checks([checks.ValidateInternalSBSBADDTest(),\
                         checks.ValidateInternalSISADDTest(),\
                         checks.ValidateInternalSISDEPOSITTest(),\
                         checks.ValidateInternalRSSUMTest(),\
                         checks.ValidateInternalRSASUMTest(),\
                         checks.ValidateInternalRSDOTTest(),\
-                        checks.ValidateInternalCICIADDTest(),\
+                        checks.ValidateInternalCBCBADDTest(),\
                         checks.ValidateInternalCICADDTest(),\
                         checks.ValidateInternalCICDEPOSITTest(),\
                         checks.ValidateInternalRCSUMTest(),\

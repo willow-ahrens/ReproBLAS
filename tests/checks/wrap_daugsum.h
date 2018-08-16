@@ -2,8 +2,8 @@
 #define DAUGSUM_WRAPPER_H
 
 #include <reproBLAS.h>
-#include <idxdBLAS.h>
-#include <idxd.h>
+#include <binnedBLAS.h>
+#include <binned.h>
 #include "../../config.h"
 
 #include "../common/test_util.h"
@@ -13,28 +13,28 @@ typedef enum wrap_daugsum_func {
   wrap_daugsum_RDASUM,
   wrap_daugsum_RDNRM2,
   wrap_daugsum_RDDOT,
-  wrap_daugsum_DIDIADD,
+  wrap_daugsum_DBDBADD,
   wrap_daugsum_DIDADD,
   wrap_daugsum_DIDDEPOSIT
 } wrap_daugsum_func_t;
 
 typedef double (*wrap_daugsum)(int, int, double*, int, double*, int);
-typedef void (*wrap_diaugsum)(int, int, double*, int, double*, int, double_indexed*);
+typedef void (*wrap_diaugsum)(int, int, double*, int, double*, int, double_binned*);
 static const int wrap_daugsum_func_n_names = 7;
 static const char* wrap_daugsum_func_names[] = {"rdsum",
                                                 "rdasum",
                                                 "rdnrm2",
                                                 "rddot",
-                                                "didiadd",
-                                                "didadd",
-                                                "diddeposit"};
+                                                "dbdbadd",
+                                                "dbdadd",
+                                                "dbddeposit"};
 static const char* wrap_daugsum_func_descs[] = {"rdsum",
                                                 "rdasum",
                                                 "rdnrm2",
                                                 "rddot",
-                                                "didiadd",
-                                                "didadd",
-                                                "diddeposit"};
+                                                "dbdbadd",
+                                                "dbdadd",
+                                                "dbddeposit"};
 
 double wrap_rdsum(int fold, int N, double *x, int incx, double *y, int incy) {
   (void)y;
@@ -46,10 +46,10 @@ double wrap_rdsum(int fold, int N, double *x, int incx, double *y, int incy) {
   }
 }
 
-void wrap_didsum(int fold, int N, double *x, int incx, double *y, int incy, double_indexed *z) {
+void wrap_dbdsum(int fold, int N, double *x, int incx, double *y, int incy, double_binned *z) {
   (void)y;
   (void)incy;
-  idxdBLAS_didsum(fold, N, x, incx, z);
+  binnedBLAS_dbdsum(fold, N, x, incx, z);
 }
 
 double wrap_rdasum(int fold, int N, double *x, int incx, double *y, int incy) {
@@ -62,10 +62,10 @@ double wrap_rdasum(int fold, int N, double *x, int incx, double *y, int incy) {
   }
 }
 
-void wrap_didasum(int fold, int N, double *x, int incx, double *y, int incy, double_indexed *z) {
+void wrap_dbdasum(int fold, int N, double *x, int incx, double *y, int incy, double_binned *z) {
   (void)y;
   (void)incy;
-  idxdBLAS_didasum(fold, N, x, incx, z);
+  binnedBLAS_dbdasum(fold, N, x, incx, z);
 }
 
 double wrap_rdnrm2(int fold, int N, double *x, int incx, double *y, int incy) {
@@ -78,10 +78,10 @@ double wrap_rdnrm2(int fold, int N, double *x, int incx, double *y, int incy) {
   }
 }
 
-void wrap_didssq(int fold, int N, double *x, int incx, double *y, int incy, double_indexed *z) {
+void wrap_dbdssq(int fold, int N, double *x, int incx, double *y, int incy, double_binned *z) {
   (void)y;
   (void)incy;
-  idxdBLAS_didssq(fold, N, x, incx, 0.0, z);
+  binnedBLAS_dbdssq(fold, N, x, incx, 0.0, z);
 }
 
 double wrap_rddot(int fold, int N, double *x, int incx, double *y, int incy) {
@@ -92,101 +92,101 @@ double wrap_rddot(int fold, int N, double *x, int incx, double *y, int incy) {
   }
 }
 
-void wrap_diddot(int fold, int N, double *x, int incx, double *y, int incy, double_indexed *z) {
-  idxdBLAS_diddot(fold, N, x, incx, y, incy, z);
+void wrap_dbddot(int fold, int N, double *x, int incx, double *y, int incy, double_binned *z) {
+  binnedBLAS_dbddot(fold, N, x, incx, y, incy, z);
 }
 
-double wrap_rdidiadd(int fold, int N, double *x, int incx, double *y, int incy) {
+double wrap_rdbdbadd(int fold, int N, double *x, int incx, double *y, int incy) {
   (void)y;
   (void)incy;
-  double_indexed *ires = idxd_dialloc(fold);
-  double_indexed *itmp = idxd_dialloc(fold);
-  idxd_disetzero(fold, ires);
+  double_binned *ires = binned_dballoc(fold);
+  double_binned *itmp = binned_dballoc(fold);
+  binned_dbsetzero(fold, ires);
   int i;
   for(i = 0; i < N; i++){
-    idxd_didconv(fold, x[i * incx], itmp);
-    idxd_didiadd(fold, itmp, ires);
+    binned_dbdconv(fold, x[i * incx], itmp);
+    binned_dbdbadd(fold, itmp, ires);
   }
-  double res = idxd_ddiconv(fold, ires);
+  double res = binned_ddbconv(fold, ires);
   free(ires);
   free(itmp);
   return res;
 }
 
-void wrap_didiadd(int fold, int N, double *x, int incx, double *y, int incy, double_indexed *z) {
+void wrap_dbdbadd(int fold, int N, double *x, int incx, double *y, int incy, double_binned *z) {
   (void)y;
   (void)incy;
-  double_indexed *itmp = idxd_dialloc(fold);
+  double_binned *itmp = binned_dballoc(fold);
   int i;
   for(i = 0; i < N; i++){
-    idxd_didconv(fold, x[i * incx], itmp);
-    idxd_didiadd(fold, itmp, z);
+    binned_dbdconv(fold, x[i * incx], itmp);
+    binned_dbdbadd(fold, itmp, z);
   }
   free(itmp);
 }
 
-double wrap_rdidadd(int fold, int N, double *x, int incx, double *y, int incy) {
+double wrap_rdbdadd(int fold, int N, double *x, int incx, double *y, int incy) {
   (void)y;
   (void)incy;
-  double_indexed *ires = idxd_dialloc(fold);
-  idxd_disetzero(fold, ires);
+  double_binned *ires = binned_dballoc(fold);
+  binned_dbsetzero(fold, ires);
   int i;
   for(i = 0; i < N; i++){
-    idxd_didadd(fold, x[i * incx], ires);
+    binned_dbdadd(fold, x[i * incx], ires);
   }
-  double res = idxd_ddiconv(fold, ires);
+  double res = binned_ddbconv(fold, ires);
   free(ires);
   return res;
 }
 
-void wrap_didadd(int fold, int N, double *x, int incx, double *y, int incy, double_indexed *z) {
+void wrap_dbdadd(int fold, int N, double *x, int incx, double *y, int incy, double_binned *z) {
   (void)y;
   (void)incy;
   int i;
   for(i = 0; i < N; i++){
-    idxd_didadd(fold, x[i * incx], z);
+    binned_dbdadd(fold, x[i * incx], z);
   }
 }
 
-double wrap_rdiddeposit(int fold, int N, double *x, int incx, double *y, int incy) {
+double wrap_rdbddeposit(int fold, int N, double *x, int incx, double *y, int incy) {
   (void)y;
   (void)incy;
-  double_indexed *ires = idxd_dialloc(fold);
-  idxd_disetzero(fold, ires);
-  double amax = idxdBLAS_damax(N, x, incx);
-  idxd_didupdate(fold, amax, ires);
+  double_binned *ires = binned_dballoc(fold);
+  binned_dbsetzero(fold, ires);
+  double amax = binnedBLAS_damax(N, x, incx);
+  binned_dbdupdate(fold, amax, ires);
   int i;
   int j = 0;
   for(i = 0; i < N; i++){
-    if(j >= idxd_DIENDURANCE){
-      idxd_direnorm(fold, ires);
+    if(j >= binned_DBENDURANCE){
+      binned_dbrenorm(fold, ires);
       j = 0;
     }
-    idxd_diddeposit(fold, x[i * incx], ires);
+    binned_dbddeposit(fold, x[i * incx], ires);
     j++;
   }
-  idxd_direnorm(fold, ires);
-  double res = idxd_ddiconv(fold, ires);
+  binned_dbrenorm(fold, ires);
+  double res = binned_ddbconv(fold, ires);
   free(ires);
   return res;
 }
 
-void wrap_diddeposit(int fold, int N, double *x, int incx, double *y, int incy, double_indexed *z) {
+void wrap_dbddeposit(int fold, int N, double *x, int incx, double *y, int incy, double_binned *z) {
   (void)y;
   (void)incy;
-  double amax = idxdBLAS_damax(N, x, incx);
-  idxd_didupdate(fold, amax, z);
+  double amax = binnedBLAS_damax(N, x, incx);
+  binned_dbdupdate(fold, amax, z);
   int i;
   int j = 0;
   for(i = 0; i < N; i++){
-    if(j >= idxd_DIENDURANCE){
-      idxd_direnorm(fold, z);
+    if(j >= binned_DBENDURANCE){
+      binned_dbrenorm(fold, z);
       j = 0;
     }
-    idxd_diddeposit(fold, x[i * incx], z);
+    binned_dbddeposit(fold, x[i * incx], z);
     j++;
   }
-  idxd_direnorm(fold, z);
+  binned_dbrenorm(fold, z);
 }
 
 wrap_daugsum wrap_daugsum_func(wrap_daugsum_func_t func) {
@@ -199,12 +199,12 @@ wrap_daugsum wrap_daugsum_func(wrap_daugsum_func_t func) {
       return wrap_rdnrm2;
     case wrap_daugsum_RDDOT:
       return wrap_rddot;
-    case wrap_daugsum_DIDIADD:
-      return wrap_rdidiadd;
+    case wrap_daugsum_DBDBADD:
+      return wrap_rdbdbadd;
     case wrap_daugsum_DIDADD:
-      return wrap_rdidadd;
+      return wrap_rdbdadd;
     case wrap_daugsum_DIDDEPOSIT:
-      return wrap_rdiddeposit;
+      return wrap_rdbddeposit;
   }
   return NULL;
 }
@@ -212,19 +212,19 @@ wrap_daugsum wrap_daugsum_func(wrap_daugsum_func_t func) {
 wrap_diaugsum wrap_diaugsum_func(wrap_daugsum_func_t func) {
   switch(func){
     case wrap_daugsum_RDSUM:
-      return wrap_didsum;
+      return wrap_dbdsum;
     case wrap_daugsum_RDASUM:
-      return wrap_didasum;
+      return wrap_dbdasum;
     case wrap_daugsum_RDNRM2:
-      return wrap_didssq;
+      return wrap_dbdssq;
     case wrap_daugsum_RDDOT:
-      return wrap_diddot;
-    case wrap_daugsum_DIDIADD:
-      return wrap_didiadd;
+      return wrap_dbddot;
+    case wrap_daugsum_DBDBADD:
+      return wrap_dbdbadd;
     case wrap_daugsum_DIDADD:
-      return wrap_didadd;
+      return wrap_dbdadd;
     case wrap_daugsum_DIDDEPOSIT:
-      return wrap_diddeposit;
+      return wrap_dbddeposit;
   }
   return NULL;
 }
@@ -234,7 +234,7 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
   double big   = 1024.0 * 1024.0 * 128.0;         // 2^27
   switch(func){
     case wrap_daugsum_RDSUM:
-    case wrap_daugsum_DIDIADD:
+    case wrap_daugsum_DBDBADD:
     case wrap_daugsum_DIDADD:
     case wrap_daugsum_DIDDEPOSIT:
       switch(FillX){
@@ -292,7 +292,7 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
         double new_scale;
         switch(FillX){
           case util_Vec_Constant:
-            new_scale = idxd_dscale(RealScaleX);
+            new_scale = binned_dscale(RealScaleX);
             RealScaleX /= new_scale;
             return sqrt(N * (RealScaleX * RealScaleX)) * new_scale;
           case util_Vec_Pos_Inf:
@@ -305,7 +305,7 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
           case util_Vec_Pos_Neg_Inf_NaN:
             return NAN;
           case util_Vec_Pos_Big:
-            new_scale = idxd_dscale(RealScaleX * big);
+            new_scale = binned_dscale(RealScaleX * big);
             small *= RealScaleX;
             small /= new_scale;
             big *= RealScaleX;
@@ -313,7 +313,7 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
             return sqrt((N - 1) * (small * small) + big * big) * new_scale;
           case util_Vec_Pos_Pos_Big:
           case util_Vec_Pos_Neg_Big:
-            new_scale = idxd_dscale(RealScaleX * big);
+            new_scale = binned_dscale(RealScaleX * big);
             small *= RealScaleX;
             small /= new_scale;
             big *= RealScaleX;
@@ -463,22 +463,22 @@ double wrap_daugsum_result(int N, wrap_daugsum_func_t func, util_vec_fill_t Fill
 double wrap_daugsum_bound(int fold, int N, wrap_daugsum_func_t func, double *X, int incX, double *Y, int incY, double res, double ref){
   switch(func){
     case wrap_daugsum_RDSUM:
-    case wrap_daugsum_DIDIADD:
+    case wrap_daugsum_DBDBADD:
     case wrap_daugsum_DIDADD:
     case wrap_daugsum_DIDDEPOSIT:
     case wrap_daugsum_RDASUM:
-      return idxd_dibound(fold, N, idxdBLAS_damax(N, X, incX), res);
+      return binned_dbbound(fold, N, binnedBLAS_damax(N, X, incX), res);
     case wrap_daugsum_RDNRM2:
       {
-        double amax = idxdBLAS_damax(N, X, incX);
-        double scale = idxd_dscale(amax);
+        double amax = binnedBLAS_damax(N, X, incX);
+        double scale = binned_dscale(amax);
         if (amax == 0.0){
           return 0.0;
         }
-        return idxd_dibound(fold, N, (amax/scale) * (amax/scale), res) * (scale / (res + ref)) * scale;
+        return binned_dbbound(fold, N, (amax/scale) * (amax/scale), res) * (scale / (res + ref)) * scale;
       }
     case wrap_daugsum_RDDOT:
-      return idxd_dibound(fold, N, idxdBLAS_damaxm(N, X, incX, Y, incY), res);
+      return binned_dbbound(fold, N, binnedBLAS_damaxm(N, X, incX, Y, incY), res);
   }
   fprintf(stderr, "ReproBLAS error: unknown bound for %s\n", wrap_daugsum_func_descs[func]);
   exit(125);

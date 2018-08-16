@@ -7,7 +7,7 @@
  *
  * Return the square root of the sum of the squared elements of X.
  *
- * The reproducible Euclidian norm is computed with scaled indexed types of default fold using #idxdBLAS_sicssq()
+ * The reproducible Euclidian norm is computed with scaled binned types of default fold using #binnedBLAS_sbcssq()
  *
  * @param N vector length
  * @param X complex single precision vector

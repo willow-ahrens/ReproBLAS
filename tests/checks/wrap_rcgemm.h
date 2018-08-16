@@ -1,5 +1,5 @@
-#include <idxd.h>
-#include <idxdBLAS.h>
+#include <binned.h>
+#include <binnedBLAS.h>
 
 #include "../common/test_util.h"
 
@@ -20,7 +20,7 @@ void wrap_ref_rcgemm(int fold, char Order, char TransA, char TransB, int M, int 
   float complex *opA = util_cmat_op(Order, TransA, M, K, A, lda);
   float complex *opB = util_cmat_op(Order, TransB, K, N, B, ldb);
   float complex betaC;
-  float_complex_indexed *CI = idxd_cialloc(fold);
+  float_complex_binned *CI = binned_cballoc(fold);
   if(*alpha != 1.0){
     for(i = 0; i < M; i++){
       for(k = 0; k < K; k++){
@@ -42,31 +42,31 @@ void wrap_ref_rcgemm(int fold, char Order, char TransA, char TransB, int M, int 
         case 'r':
         case 'R':
           if(*beta == 0.0){
-            idxd_cisetzero(fold, CI);
+            binned_cbsetzero(fold, CI);
           }else if(*beta == 1.0){
-            idxd_cicconv(fold, C + i * ldc + j, CI);
+            binned_cbcconv(fold, C + i * ldc + j, CI);
           }else{
             betaC = cmul(C[i * ldc + j], *beta);
-            idxd_cicconv(fold, &betaC, CI);
+            binned_cbcconv(fold, &betaC, CI);
           }
           if(*alpha != 0.0){
-            idxdBLAS_cicdotu(fold, K, opA + i * K, 1, opB + j, N, CI);
+            binnedBLAS_cbcdotu(fold, K, opA + i * K, 1, opB + j, N, CI);
           }
-          idxd_cciconv_sub(fold, CI, C + i * ldc + j);
+          binned_ccbconv_sub(fold, CI, C + i * ldc + j);
           break;
         default:
           if(*beta == 0.0){
-            idxd_cisetzero(fold, CI);
+            binned_cbsetzero(fold, CI);
           }else if(*beta == 1.0){
-            idxd_cicconv(fold, C + j * ldc + i, CI);
+            binned_cbcconv(fold, C + j * ldc + i, CI);
           }else{
             betaC = cmul(C[j * ldc + i], *beta);
-            idxd_cicconv(fold, &betaC, CI);
+            binned_cbcconv(fold, &betaC, CI);
           }
           if(*alpha != 0.0){
-            idxdBLAS_cicdotu(fold, K, opA + i, M, opB + j * K, 1, CI);
+            binnedBLAS_cbcdotu(fold, K, opA + i, M, opB + j * K, 1, CI);
           }
-          idxd_cciconv_sub(fold, CI, C + j * ldc + i);
+          binned_ccbconv_sub(fold, CI, C + j * ldc + i);
           break;
       }
     }

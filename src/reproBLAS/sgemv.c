@@ -11,7 +11,7 @@
  *
  * where alpha and beta are scalars, x and y are vectors, and A is an M by N matrix.
  *
- * The matrix-vector product is computed using indexed types of default fold with #idxdBLAS_sisgemv()
+ * The matrix-vector product is computed using binned types of default fold with #binnedBLAS_sbsgemv()
  *
  * @param Order a character specifying the matrix ordering ('r' or 'R' for row-major, 'c' or 'C' for column major)
  * @param TransA a character specifying whether or not to transpose A before taking the matrix-vector product ('n' or 'N' not to transpose, 't' or 'T' or 'c' or 'C' to transpose)

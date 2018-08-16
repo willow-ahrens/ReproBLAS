@@ -1,14 +1,14 @@
 #include <reproBLAS.h>
-#include <idxdBLAS.h>
+#include <binnedBLAS.h>
 
 /**
  * @brief Compute the reproducible sum of complex double precision vector X
  *
  * Return the sum of X.
  *
- * The reproducible sum is computed with indexed types using #idxdBLAS_zizsum()
+ * The reproducible sum is computed with binned types using #binnedBLAS_zbzsum()
  *
- * @param fold the fold of the indexed types
+ * @param fold the fold of the binned types
  * @param N vector length
  * @param X complex double precision vector
  * @param incX X vector stride (use every incX'th element)
@@ -18,13 +18,13 @@
  * @date   15 Jan 2016
  */
 void reproBLAS_rzsum_sub(const int fold, const int N, const void* X, const int incX, void *sum) {
-  double_complex_indexed *sumi = idxd_zialloc(fold);
+  double_complex_binned *sumi = binned_zballoc(fold);
 
-  idxd_zisetzero(fold, sumi);
+  binned_zbsetzero(fold, sumi);
 
-  idxdBLAS_zizsum(fold, N, X, incX, sumi);
+  binnedBLAS_zbzsum(fold, N, X, incX, sumi);
 
-  idxd_zziconv_sub(fold, sumi, sum);
+  binned_zzbconv_sub(fold, sumi, sum);
   free(sumi);
   return;
 }

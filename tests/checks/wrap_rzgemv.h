@@ -1,5 +1,5 @@
-#include <idxd.h>
-#include <idxdBLAS.h>
+#include <binned.h>
+#include <binnedBLAS.h>
 #include <reproBLAS.h>
 
 #include "../../config.h"
@@ -17,7 +17,7 @@ void wrap_ref_rzgemv(int fold, char Order, char TransA, int M, int N, double com
   int opN;
   double complex *opA;
   double complex *opX;
-  double_complex_indexed *YI;
+  double_complex_binned *YI;
   double complex betaY;
   int i;
   int j;
@@ -33,16 +33,16 @@ void wrap_ref_rzgemv(int fold, char Order, char TransA, int M, int N, double com
       break;
   }
   opA = util_zmat_op(Order, TransA, opM, opN, A, lda);
-  YI = idxd_zialloc(fold);
+  YI = binned_zballoc(fold);
   opX = (double complex*)malloc(opN * sizeof(double complex));
   for(i = 0; i < opM; i++){
     if(*beta == 0.0){
-      idxd_zisetzero(fold, YI);
+      binned_zbsetzero(fold, YI);
     }else if(*beta == 1.0){
-      idxd_zizconv(fold, Y + i * incY, YI);
+      binned_zbzconv(fold, Y + i * incY, YI);
     }else{
       betaY = zmul(Y[i * incY], *beta);
-      idxd_zizconv(fold, &betaY, YI);
+      binned_zbzconv(fold, &betaY, YI);
     }
     if(*alpha != 0.0){
       for(j = 0; j < opN; j++){
@@ -55,14 +55,14 @@ void wrap_ref_rzgemv(int fold, char Order, char TransA, int M, int N, double com
       switch(Order){
         case 'r':
         case 'R':
-          idxdBLAS_zizdotu(fold, opN, opA + i * opN, 1, opX, 1, YI);
+          binnedBLAS_zbzdotu(fold, opN, opA + i * opN, 1, opX, 1, YI);
           break;
         default:
-          idxdBLAS_zizdotu(fold, opN, opA + i, opM, opX, 1, YI);
+          binnedBLAS_zbzdotu(fold, opN, opA + i, opM, opX, 1, YI);
           break;
       }
     }
-    idxd_zziconv_sub(fold, YI, Y + i * incY);
+    binned_zzbconv_sub(fold, YI, Y + i * incY);
   }
   free(YI);
   free(opA);

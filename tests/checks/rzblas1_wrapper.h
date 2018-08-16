@@ -2,8 +2,8 @@
 #define RZBLAS1_WRAPPER_H
 
 #include <reproBLAS.h>
-#include <idxdBLAS.h>
-#include <idxd.h>
+#include <binnedBLAS.h>
+#include <binned.h>
 #include "../../config.h"
 
 #define wrap_RZSUM  0
@@ -24,7 +24,7 @@ static const char* wrap_rzblas1_descs[] = {"rzsum",
                                            "rzdotc"};
 
 typedef double complex (*wrap_rzblas1)(int, double complex*, int, double complex*, int);
-typedef void (*wrap_ziblas1)(int, double complex*, int, double complex*, int, double_complex_indexed*);
+typedef void (*wrap_ziblas1)(int, double complex*, int, double complex*, int, double_complex_binned*);
 
 double complex wrap_rzsum(int N, double complex *x, int incx, double complex *y, int incy) {
   (void)y;
@@ -34,10 +34,10 @@ double complex wrap_rzsum(int N, double complex *x, int incx, double complex *y,
   return ret;
 }
 
-void wrap_zizsum(int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {
+void wrap_zbzsum(int N, double complex *x, int incx, double complex *y, int incy, double_complex_binned *z) {
   (void)y;
   (void)incy;
-  idxdBLAS_zizsum(DIDEFAULTFOLD, N, x, incx, z);
+  binnedBLAS_zbzsum(DIDEFAULTFOLD, N, x, incx, z);
 }
 
 double complex wrap_rdzasum(int N, double complex *x, int incx, double complex *y, int incy) {
@@ -46,10 +46,10 @@ double complex wrap_rdzasum(int N, double complex *x, int incx, double complex *
   return (double complex)reproBLAS_rdzasum(N, x, incx);
 }
 
-void wrap_dizasum(int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {
+void wrap_dbzasum(int N, double complex *x, int incx, double complex *y, int incy, double_complex_binned *z) {
   (void)y;
   (void)incy;
-  idxdBLAS_dmzasum(DIDEFAULTFOLD, N, x, incx, z, 2, z + 2 * DIDEFAULTFOLD, 2);
+  binnedBLAS_dmzasum(DIDEFAULTFOLD, N, x, incx, z, 2, z + 2 * DIDEFAULTFOLD, 2);
 }
 
 double complex wrap_rzdotu(int N, double complex *x, int incx, double complex *y, int incy) {
@@ -58,8 +58,8 @@ double complex wrap_rzdotu(int N, double complex *x, int incx, double complex *y
   return ret;
 }
 
-void wrap_zizdotu(int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {
-  idxdBLAS_zizdotu(DIDEFAULTFOLD, N, x, incx, y, incy, z);
+void wrap_zbzdotu(int N, double complex *x, int incx, double complex *y, int incy, double_complex_binned *z) {
+  binnedBLAS_zbzdotu(DIDEFAULTFOLD, N, x, incx, y, incy, z);
 }
 
 double complex wrap_rzdotc(int N, double complex *x, int incx, double complex *y, int incy) {
@@ -68,8 +68,8 @@ double complex wrap_rzdotc(int N, double complex *x, int incx, double complex *y
   return ret;
 }
 
-void wrap_zizdotc(int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {
-  idxdBLAS_zizdotc(DIDEFAULTFOLD, N, x, incx, y, incy, z);
+void wrap_zbzdotc(int N, double complex *x, int incx, double complex *y, int incy, double_complex_binned *z) {
+  binnedBLAS_zbzdotc(DIDEFAULTFOLD, N, x, incx, y, incy, z);
 }
 
 double complex wrap_rdznrm2(int N, double complex *x, int incx, double complex *y, int incy) {
@@ -78,10 +78,10 @@ double complex wrap_rdznrm2(int N, double complex *x, int incx, double complex *
   return reproBLAS_rdznrm2(N, x, incx);
 }
 
-void wrap_diznrm(int N, double complex *x, int incx, double complex *y, int incy, double_complex_indexed *z) {
+void wrap_diznrm(int N, double complex *x, int incx, double complex *y, int incy, double_complex_binned *z) {
   (void)y;
   (void)incy;
-  idxdBLAS_dmzssq(DIDEFAULTFOLD, N, x, incx, 0.0, z, 2, z + 2 * DIDEFAULTFOLD, 2);
+  binnedBLAS_dmzssq(DIDEFAULTFOLD, N, x, incx, 0.0, z, 2, z + 2 * DIDEFAULTFOLD, 2);
 }
 
 wrap_rzblas1 wrap_rzblas1_func(int func) {
@@ -103,15 +103,15 @@ wrap_rzblas1 wrap_rzblas1_func(int func) {
 wrap_ziblas1 wrap_ziblas1_func(int func) {
   switch(func){
     case wrap_RZSUM:
-      return wrap_zizsum;
+      return wrap_zbzsum;
     case wrap_RDZASUM:
-      return wrap_dizasum;
+      return wrap_dbzasum;
     case wrap_RDZNRM2:
       return wrap_diznrm;
     case wrap_RZDOTU:
-      return wrap_zizdotu;
+      return wrap_zbzdotu;
     case wrap_RZDOTC:
-      return wrap_zizdotc;
+      return wrap_zbzdotc;
   }
   return NULL;
 }

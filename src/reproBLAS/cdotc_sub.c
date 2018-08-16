@@ -7,7 +7,7 @@
  *
  * Return the sum of the pairwise products of X and conjugated Y.
  *
- * The reproducible dot product is computed with indexed types of default fold using #idxdBLAS_cicdotc()
+ * The reproducible dot product is computed with binned types of default fold using #binnedBLAS_cbcdotc()
  *
  * @param N vector length
  * @param X complex single precision vector

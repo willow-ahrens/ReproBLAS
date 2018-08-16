@@ -1,5 +1,5 @@
-#include <idxdBLAS.h>
-#include <idxd.h>
+#include <binnedBLAS.h>
+#include <binned.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -49,15 +49,15 @@ static void verify_daugsum_options_initialize(void){
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
   fold._int.min               = 2;
-  fold._int.max               = idxd_DIMAXFOLD;
+  fold._int.max               = binned_DBMAXFOLD;
   fold._int.value             = DIDEFAULTFOLD;
 }
 
-int verify_daugsum_reproducibility(int fold, int N, double* X, int incX, double* Y, int incY, int func, double ref, double_indexed *iref, int max_num_blocks) {
+int verify_daugsum_reproducibility(int fold, int N, double* X, int incX, double* Y, int incY, int func, double ref, double_binned *iref, int max_num_blocks) {
   // GENERATE DATA
   int i;
   double res;
-  double_indexed *ires = idxd_dialloc(fold);
+  double_binned *ires = binned_dballoc(fold);
   int num_blocks = 1;
 
   int block_N = (N + num_blocks - 1) / num_blocks;
@@ -68,23 +68,23 @@ int verify_daugsum_reproducibility(int fold, int N, double* X, int incX, double*
       res = (wrap_daugsum_func(func))(fold, N, X, incX, Y, incY);
     else {
       block_N =  (N + num_blocks - 1) / num_blocks;
-      idxd_disetzero(fold, ires);
+      binned_dbsetzero(fold, ires);
       for (i = 0; i < N; i += block_N) {
         block_N = block_N < N - i ? block_N : (N-i);
         (wrap_diaugsum_func(func))(fold, block_N, X + i * incX, incX, Y + i * incY, incY, ires);
       }
-      res = idxd_ddiconv(fold, ires);
+      res = binned_ddbconv(fold, ires);
     }
     if (res != ref) {
       printf("%s(X, Y)[num_blocks=%d,block_N=%d] = %g != %g\n", wrap_daugsum_func_names[func], num_blocks, block_N, res, ref);
       if (num_blocks == 1) {
-        idxd_disetzero(fold, ires);
+        binned_dbsetzero(fold, ires);
         (wrap_diaugsum_func(func))(fold, N, X, incX, Y, incY, ires);
       }
-      printf("ref double_indexed:\n");
-      idxd_diprint(fold, iref);
-      printf("\nres double_indexed:\n");
-      idxd_diprint(fold, ires);
+      printf("ref double_binned:\n");
+      binned_dbprint(fold, iref);
+      printf("\nres double_binned:\n");
+      binned_dbprint(fold, ires);
       printf("\n");
       return 1;
     }
@@ -119,7 +119,7 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX,
   int rc = 0;
   int i;
   double ref;
-  double_indexed *iref;
+  double_binned *iref;
   int max_num_blocks;
 
   verify_daugsum_options_initialize();
@@ -131,7 +131,7 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX,
   opt_eval_option(argc, argv, &shuffles);
   opt_eval_option(argc, argv, &fold);
 
-  iref = idxd_dialloc(fold._int.value);
+  iref = binned_dballoc(fold._int.value);
 
   double *X = util_dvec_alloc(N, incX);
   double *Y = util_dvec_alloc(N, incY);
@@ -149,7 +149,7 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX,
 
   //compute with unpermuted data
   ref  = (wrap_daugsum_func(augsum_func._named.value))(fold._int.value, N, X, incX, Y, incY);
-  idxd_disetzero(fold._int.value, iref);
+  binned_dbsetzero(fold._int.value, iref);
   (wrap_diaugsum_func(augsum_func._named.value))(fold._int.value, N, X, incX, Y, incY, iref);
 
   P = util_identity_permutation(N);

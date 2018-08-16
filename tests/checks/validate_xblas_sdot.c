@@ -1,5 +1,5 @@
-#include <idxdBLAS.h>
-#include <idxd.h>
+#include <binnedBLAS.h>
+#include <binned.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -30,7 +30,7 @@ static void validate_xblas_sdot_options_initialize(void){
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
   fold._int.min               = 2;
-  fold._int.max               = idxd_SIMAXFOLD;
+  fold._int.max               = binned_SBMAXFOLD;
   fold._int.value             = SIDEFAULTFOLD;
 
   norm._int.header.type       = opt_int;
@@ -48,18 +48,18 @@ int validate_xblas_sdot(int fold, int N, float* X, int incX, float* Y, int incY,
   float res;
   float error;
   float bound;
-  float_indexed *ires = idxd_sialloc(fold);
+  float_binned *ires = binned_sballoc(fold);
 
-  idxd_sisconv(fold, r, ires);
+  binned_sbsconv(fold, r, ires);
   (wrap_siaugsum_func(func))(fold, N, X, incX, Y, incY, ires);
-  res = idxd_ssiconv(fold, ires);
+  res = binned_ssbconv(fold, ires);
   error = fabsf(res - ref);
   bound = wrap_saugsum_bound(fold, N, func, X, incX, Y, incY, res, ref);
   if (!util_ssoftequals(res, ref, bound)) {
     //TODO these error messages need to go to stderr for all tests.
     printf("%s(X, Y) = %g != %g\n|%g - %g| = %g > %g\n", wrap_saugsum_func_names[func], res, ref, res, ref, error, bound);
-    printf("\nres float_indexed:\n");
-    idxd_siprint(fold, ires);
+    printf("\nres float_binned:\n");
+    binned_sbprint(fold, ires);
     printf("\n");
     return 1;
   }

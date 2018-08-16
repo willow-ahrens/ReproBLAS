@@ -5,7 +5,7 @@ INSTALL_LIB := $(TARGETS)
 
 LIBREPROBLAS := $(OBJPATH)/libreproblas.a
 
-libreproblas.a_DEPS = $$(LIBIDXD) $$(LIBIDXDBLAS)                          \
+libreproblas.a_DEPS = $$(LIBBINNED) $$(LIBBINNEDBLAS)                          \
                       rdsum.o rdasum.o rdnrm2.o rddot.o                    \
                       rzsum_sub.o rdzasum.o rdznrm2.o rzdotc_sub.o         \
                         rzdotu_sub.o                                       \

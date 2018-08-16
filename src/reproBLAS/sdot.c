@@ -7,7 +7,7 @@
  *
  * Return the sum of the pairwise products of X and Y.
  *
- * The reproducible dot product is computed with indexed types of default fold using #idxdBLAS_sisdot()
+ * The reproducible dot product is computed with binned types of default fold using #binnedBLAS_sbsdot()
  *
  * @param N vector length
  * @param X single precision vector

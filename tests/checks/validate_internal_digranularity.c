@@ -1,5 +1,5 @@
-#include <idxdBLAS.h>
-#include <idxd.h>
+#include <binnedBLAS.h>
+#include <binned.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <float.h>
@@ -24,35 +24,35 @@ int test(int argc, char** argv) {
 
   util_random_seed();
 
-  double_indexed *above = idxd_dialloc(2);
-  double_indexed *at = idxd_dialloc(2);
-  double_indexed *below = idxd_dialloc(2);
+  double_binned *above = binned_dballoc(2);
+  double_binned *at = binned_dballoc(2);
+  double_binned *below = binned_dballoc(2);
 
-  idxd_didconv(2, DIGRANULARITY * 2, above);
-  idxd_didconv(2, DIGRANULARITY, at);
-  idxd_didconv(2, DIGRANULARITY * 0.5, below);
+  binned_dbdconv(2, DIGRANULARITY * 2, above);
+  binned_dbdconv(2, DIGRANULARITY, at);
+  binned_dbdconv(2, DIGRANULARITY * 0.5, below);
 
-  if(idxd_ddiconv(2, above) == 0.0){
-    printf("idxd_ddiconv(idxd_didconv(DIGRANULARITY * 2)) == 0\n");
-    printf("idxd_ddiconv(idxd_didconv(%g)) == 0\n", DIGRANULARITY * 2);
-    printf("idxd_ddiconv(idxd_didconv(2^%g)) == 0\n", log2(DIGRANULARITY * 2));
-    idxd_diprint(2, above);
+  if(binned_ddbconv(2, above) == 0.0){
+    printf("binned_ddbconv(binned_dbdconv(DIGRANULARITY * 2)) == 0\n");
+    printf("binned_ddbconv(binned_dbdconv(%g)) == 0\n", DIGRANULARITY * 2);
+    printf("binned_ddbconv(binned_dbdconv(2^%g)) == 0\n", log2(DIGRANULARITY * 2));
+    binned_dbprint(2, above);
     return 1;
   }
 
-  if(idxd_ddiconv(2, at) == 0.0){
-    printf("idxd_ddiconv(idxd_didconv(DIGRANULARITY)) == 0\n");
-    printf("idxd_ddiconv(idxd_didconv(%g)) == 0\n", DIGRANULARITY);
-    printf("idxd_ddiconv(idxd_didconv(2^%g)) == 0\n", log2(DIGRANULARITY));
-    idxd_diprint(2, at);
+  if(binned_ddbconv(2, at) == 0.0){
+    printf("binned_ddbconv(binned_dbdconv(DIGRANULARITY)) == 0\n");
+    printf("binned_ddbconv(binned_dbdconv(%g)) == 0\n", DIGRANULARITY);
+    printf("binned_ddbconv(binned_dbdconv(2^%g)) == 0\n", log2(DIGRANULARITY));
+    binned_dbprint(2, at);
     return 1;
   }
 
-  if(idxd_ddiconv(2, below) != 0.0){
-    printf("idxd_ddiconv(idxd_didconv(DIGRANULARITY * 0.5)) != 0\n");
-    printf("idxd_ddiconv(idxd_didconv(%g)) != 0\n", DIGRANULARITY * 0.5);
-    printf("idxd_ddiconv(idxd_didconv(2^%g)) != 0\n", log2(DIGRANULARITY * 0.5));
-    idxd_diprint(2, below);
+  if(binned_ddbconv(2, below) != 0.0){
+    printf("binned_ddbconv(binned_dbdconv(DIGRANULARITY * 0.5)) != 0\n");
+    printf("binned_ddbconv(binned_dbdconv(%g)) != 0\n", DIGRANULARITY * 0.5);
+    printf("binned_ddbconv(binned_dbdconv(2^%g)) != 0\n", log2(DIGRANULARITY * 0.5));
+    binned_dbprint(2, below);
     return 1;
   }
   return 0;

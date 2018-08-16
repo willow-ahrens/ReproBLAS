@@ -3,8 +3,8 @@
 #include <math.h>
 #include <string.h>
 
-#include <idxd.h>
-#include <idxdBLAS.h>
+#include <binned.h>
+#include <binnedBLAS.h>
 #include <reproBLAS.h>
 
 #include "../common/test_opt.h"
@@ -41,11 +41,11 @@ static void corroborate_rdgemv_options_initialize(void){
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
   fold._int.min               = 2;
-  fold._int.max               = idxd_DIMAXFOLD;
+  fold._int.max               = binned_DBMAXFOLD;
   fold._int.value             = DIDEFAULTFOLD;
 }
 
-int corroborate_rdgemv(int fold, char Order, char TransA, int M, int N, double alpha, double *A, int lda, double* X, int incX, double beta, double *Y, double_indexed *YI, int incY, double *ref, int max_num_blocks) {
+int corroborate_rdgemv(int fold, char Order, char TransA, int M, int N, double alpha, double *A, int lda, double* X, int incX, double beta, double *Y, double_binned *YI, int incY, double *ref, int max_num_blocks) {
 
   int i;
   int num_blocks = 1;
@@ -65,12 +65,12 @@ int corroborate_rdgemv(int fold, char Order, char TransA, int M, int N, double a
   }
 
   double *res = util_dvec_alloc(opM, incY);
-  double_indexed *Ires = malloc(opM * incY * idxd_disize(fold));
+  double_binned *Ires = malloc(opM * incY * binned_dbsize(fold));
 
   num_blocks = 1;
   while (num_blocks < opN && num_blocks <= max_num_blocks) {
     memcpy(res, Y, opM * incY * sizeof(double));
-    memcpy(Ires, YI, opM * incY * idxd_disize(fold));
+    memcpy(Ires, YI, opM * incY * binned_dbsize(fold));
     if (num_blocks == 1){
       wrap_rdgemv(fold, Order, TransA, M, N, alpha, A, lda, X, incX, beta, res, incY);
     }else {
@@ -84,10 +84,10 @@ int corroborate_rdgemv(int fold, char Order, char TransA, int M, int N, double a
               switch(Order){
                 case 'r':
                 case 'R':
-                  idxdBLAS_didgemv(fold, Order, TransA, M, block_opN, alpha, A + i, lda, X + i * incX, incX, Ires, incY);
+                  binnedBLAS_dbdgemv(fold, Order, TransA, M, block_opN, alpha, A + i, lda, X + i * incX, incX, Ires, incY);
                   break;
                 default:
-                  idxdBLAS_didgemv(fold, Order, TransA, M, block_opN, alpha, A + i * lda, lda, X + i * incX, incX, Ires, incY);
+                  binnedBLAS_dbdgemv(fold, Order, TransA, M, block_opN, alpha, A + i * lda, lda, X + i * incX, incX, Ires, incY);
                   break;
               }
             }
@@ -101,10 +101,10 @@ int corroborate_rdgemv(int fold, char Order, char TransA, int M, int N, double a
               switch(Order){
                 case 'r':
                 case 'R':
-                  idxdBLAS_didgemv(fold, Order, TransA, block_opN, N, alpha, A + i * lda, lda, X + i * incX, incX, Ires, incY);
+                  binnedBLAS_dbdgemv(fold, Order, TransA, block_opN, N, alpha, A + i * lda, lda, X + i * incX, incX, Ires, incY);
                   break;
                 default:
-                  idxdBLAS_didgemv(fold, Order, TransA, block_opN, N, alpha, A + i, lda, X + i * incX, incX, Ires, incY);
+                  binnedBLAS_dbdgemv(fold, Order, TransA, block_opN, N, alpha, A + i, lda, X + i * incX, incX, Ires, incY);
                   break;
               }
             }
@@ -112,7 +112,7 @@ int corroborate_rdgemv(int fold, char Order, char TransA, int M, int N, double a
           break;
       }
       for(i = 0; i < opM; i++){
-        res[i * incY] = idxd_ddiconv(fold, Ires + i * incY * idxd_dinum(fold));
+        res[i * incY] = binned_ddbconv(fold, Ires + i * incY * binned_dbnum(fold));
       }
     }
     for(i = 0; i < opM; i++){
@@ -182,7 +182,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   double *A  = util_dmat_alloc(Order, M, N, lda);
   double *X  = util_dvec_alloc(opN, incX);
   double *Y  = util_dvec_alloc(opM, incY);
-  double_indexed *YI = (double_indexed*)malloc(opM * incY * idxd_disize(fold._int.value));
+  double_binned *YI = (double_binned*)malloc(opM * incY * binned_dbsize(fold._int.value));
 
   int *P;
 
@@ -190,10 +190,10 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   util_dvec_fill(opN, X, incX, FillX, RealScaleX, ImagScaleX);
   util_dvec_fill(opM, Y, incY, FillY, RealScaleY, ImagScaleY);
   if(RealBeta == 0.0){
-    memset(YI, 0, opM * idxd_disize(fold._int.value));
+    memset(YI, 0, opM * binned_dbsize(fold._int.value));
   }else{
     for(i = 0; i < opM; i++){
-      idxd_didconv(fold._int.value, Y[i * incY] * RealBeta, YI + i * incY * idxd_dinum(fold._int.value));
+      binned_dbdconv(fold._int.value, Y[i * incY] * RealBeta, YI + i * incY * binned_dbnum(fold._int.value));
     }
   }
   double *ref  = (double*)malloc(opM * incY * sizeof(double));

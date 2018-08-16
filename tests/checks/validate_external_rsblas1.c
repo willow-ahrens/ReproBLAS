@@ -1,5 +1,5 @@
-#include <idxdBLAS.h>
-#include <idxd.h>
+#include <binnedBLAS.h>
+#include <binned.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -62,12 +62,12 @@ int file_test(int argc, char** argv, char *fname) {
   float *Y;
 
   float ref;
-  float_indexed *Iref = idxd_sialloc(SIDEFAULTFOLD);
-  idxd_sisetzero(SIDEFAULTFOLD, Iref);
+  float_binned *Iref = binned_sballoc(SIDEFAULTFOLD);
+  binned_sbsetzero(SIDEFAULTFOLD, Iref);
 
   float res;
-  float_indexed *Ires = idxd_sialloc(SIDEFAULTFOLD);
-  idxd_sisetzero(SIDEFAULTFOLD, Ires);
+  float_binned *Ires = binned_sballoc(SIDEFAULTFOLD);
+  binned_sbsetzero(SIDEFAULTFOLD, Ires);
 
   file_read_vector(fname, &N, (void**)&X, sizeof(float));
   Y = util_svec_alloc(N, 1);
@@ -87,14 +87,14 @@ int file_test(int argc, char** argv, char *fname) {
     Iref = Ires;
 
     file_write_vector(ref_fname, 1, &ref, sizeof(ref));
-    file_write_vector(Iref_fname, 1, Iref, idxd_sisize(SIDEFAULTFOLD));
+    file_write_vector(Iref_fname, 1, Iref, binned_sbsbze(SIDEFAULTFOLD));
   } else {
     void *data;
     int unused0;
     file_read_vector(ref_fname, &unused0, &data, sizeof(ref));
     ref = *(float*)data;
     free(data);
-    file_read_vector(Iref_fname, &unused0, &data, idxd_sisize(SIDEFAULTFOLD));
+    file_read_vector(Iref_fname, &unused0, &data, binned_sbsbze(SIDEFAULTFOLD));
     free(Iref);
     Iref = data;
     if(ref != res){
@@ -102,11 +102,11 @@ int file_test(int argc, char** argv, char *fname) {
       return 1;
     }
     if(memcmp(&Iref, &Ires, sizeof(Iref)) != 0){
-      printf("I%s(%s) = %g != %g\n", wrap_rsblas1_names[func_type._named.value], fname, idxd_ssiconv(SIDEFAULTFOLD, Ires), idxd_ssiconv(SIDEFAULTFOLD, Iref));
+      printf("I%s(%s) = %g != %g\n", wrap_rsblas1_names[func_type._named.value], fname, binned_ssbconv(SIDEFAULTFOLD, Ires), binned_ssbconv(SIDEFAULTFOLD, Iref));
       printf("Ref I_float:\n");
-      idxd_siprint(SIDEFAULTFOLD, Iref);
+      binned_sbprint(SIDEFAULTFOLD, Iref);
       printf("\nRes I_float:\n");
-      idxd_siprint(SIDEFAULTFOLD, Ires);
+      binned_sbprint(SIDEFAULTFOLD, Ires);
       printf("\n");
       return 1;
     }

@@ -2,7 +2,7 @@
 #include <string.h>
 
 #include <reproBLAS.h>
-#include <idxdBLAS.h>
+#include <binnedBLAS.h>
 
 /**
  * @brief Add to single precision matrix C the reproducible matrix-matrix product of single precision matrices A and B
@@ -17,9 +17,9 @@
  *
  * alpha and beta are scalars, A and B and C are matrices with op(A) an M by K matrix, op(B) a K by N matrix, and C is an M by N matrix.
  *
- * The matrix-matrix product is computed using indexed types with #idxdBLAS_sisgemm()
+ * The matrix-matrix product is computed using binned types with #binnedBLAS_sbsgemm()
  *
- * @param fold the fold of the indexed types
+ * @param fold the fold of the binned types
  * @param Order a character specifying the matrix ordering ('r' or 'R' for row-major, 'c' or 'C' for column major)
  * @param TransA a character specifying whether or not to transpose A before taking the matrix-matrix product ('n' or 'N' not to transpose, 't' or 'T' or 'c' or 'C' to transpose)
  * @param TransB a character specifying whether or not to transpose B before taking the matrix-matrix product ('n' or 'N' not to transpose, 't' or 'T' or 'c' or 'C' to transpose)
@@ -43,7 +43,7 @@ void reproBLAS_rsgemm(const int fold, const char Order, const char TransA, const
                       const float alpha, const float *A, const int lda,
                       const float *B, const int ldb,
                       const float beta, float *C, const int ldc){
-  float_indexed *CI;
+  float_binned *CI;
   int i;
   int j;
 
@@ -51,52 +51,52 @@ void reproBLAS_rsgemm(const int fold, const char Order, const char TransA, const
     return;
   }
 
-  CI = (float_indexed*)malloc(M * N * idxd_sisize(fold));
+  CI = (float_binned*)malloc(M * N * binned_sbsbze(fold));
   switch(Order){
     case 'r':
     case 'R':
       if(beta == 0.0){
-        memset(CI, 0, M * N * idxd_sisize(fold));
+        memset(CI, 0, M * N * binned_sbsbze(fold));
       }else if(beta == 1.0){
         for(i = 0; i < M; i++){
           for(j = 0; j < N; j++){
-            idxd_sisconv(fold, C[i * ldc + j], CI + (i * N + j) * idxd_sinum(fold));
+            binned_sbsconv(fold, C[i * ldc + j], CI + (i * N + j) * binned_sbnum(fold));
           }
         }
       }else{
         for(i = 0; i < M; i++){
           for(j = 0; j < N; j++){
-            idxd_sisconv(fold, C[i * ldc + j] * beta, CI + (i * N + j) * idxd_sinum(fold));
+            binned_sbsconv(fold, C[i * ldc + j] * beta, CI + (i * N + j) * binned_sbnum(fold));
           }
         }
       }
-      idxdBLAS_sisgemm(fold, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, CI, N);
+      binnedBLAS_sbsgemm(fold, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, CI, N);
       for(i = 0; i < M; i++){
         for(j = 0; j < N; j++){
-          C[i * ldc + j] = idxd_ssiconv(fold, CI + (i * N + j) * idxd_sinum(fold));
+          C[i * ldc + j] = binned_ssbconv(fold, CI + (i * N + j) * binned_sbnum(fold));
         }
       }
       break;
     default:
       if(beta == 0.0){
-        memset(CI, 0, M * N * idxd_sisize(fold));
+        memset(CI, 0, M * N * binned_sbsbze(fold));
       }else if(beta == 1.0){
         for(j = 0; j < N; j++){
           for(i = 0; i < M; i++){
-            idxd_sisconv(fold, C[j * ldc + i], CI + (j * M + i) * idxd_sinum(fold));
+            binned_sbsconv(fold, C[j * ldc + i], CI + (j * M + i) * binned_sbnum(fold));
           }
         }
       }else{
         for(j = 0; j < N; j++){
           for(i = 0; i < M; i++){
-            idxd_sisconv(fold, C[j * ldc + i] * beta, CI + (j * M + i) * idxd_sinum(fold));
+            binned_sbsconv(fold, C[j * ldc + i] * beta, CI + (j * M + i) * binned_sbnum(fold));
           }
         }
       }
-      idxdBLAS_sisgemm(fold, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, CI, M);
+      binnedBLAS_sbsgemm(fold, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, CI, M);
       for(j = 0; j < N; j++){
         for(i = 0; i < M; i++){
-          C[j * ldc + i] = idxd_ssiconv(fold, CI + (j * M + i) * idxd_sinum(fold));
+          C[j * ldc + i] = binned_ssbconv(fold, CI + (j * M + i) * binned_sbnum(fold));
         }
       }
       break;

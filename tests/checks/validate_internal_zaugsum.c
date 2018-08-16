@@ -1,5 +1,5 @@
-#include <idxdBLAS.h>
-#include <idxd.h>
+#include <binnedBLAS.h>
+#include <binned.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -29,7 +29,7 @@ static void validate_internal_zaugsum_options_initialize(void){
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
   fold._int.min               = 2;
-  fold._int.max               = idxd_DIMAXFOLD;
+  fold._int.max               = binned_DBMAXFOLD;
   fold._int.value             = DIDEFAULTFOLD;
 }
 
@@ -38,7 +38,7 @@ int validate_internal_zaugsum(int fold, int N, double complex* X, int incX, doub
   double complex res;
   double complex error;
   double complex bound;
-  double_complex_indexed *ires = idxd_zialloc(fold);
+  double_complex_binned *ires = binned_zballoc(fold);
 
   res = (wrap_zaugsum_func(func))(fold, N, X, incX, Y, incY);
   error = res - ref;
@@ -46,10 +46,10 @@ int validate_internal_zaugsum(int fold, int N, double complex* X, int incX, doub
   if (!util_zsoftequals(res, ref, bound)) {
     //TODO these error messages need to go to stderr for all tests.
     printf("%s(X, Y) = %g + %gi != %g + %gi\n|%g - %g| = %g > %g and/or |%gi - %gi| = %g > %g\n", wrap_zaugsum_func_names[func], creal(res), cimag(res), creal(ref), cimag(ref), creal(res), creal(ref), fabs(creal(error)), creal(bound), cimag(res), cimag(ref), fabs(cimag(error)), cimag(bound));
-    idxd_zisetzero(fold, ires);
+    binned_zbsetzero(fold, ires);
     (wrap_ziaugsum_func(func))(fold, N, X, incX, Y, incY, ires);
-    printf("\nres double_complex_indexed:\n");
-    idxd_ziprint(fold, ires);
+    printf("\nres double_complex_binned:\n");
+    binned_zbprint(fold, ires);
     printf("\n");
     return 1;
   }

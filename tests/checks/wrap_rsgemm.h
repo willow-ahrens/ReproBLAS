@@ -1,5 +1,5 @@
-#include <idxd.h>
-#include <idxdBLAS.h>
+#include <binned.h>
+#include <binnedBLAS.h>
 
 #include "../common/test_util.h"
 
@@ -19,7 +19,7 @@ void wrap_ref_rsgemm(int fold, char Order, char TransA, char TransB, int M, int 
   int k;
   float *opA = util_smat_op(Order, TransA, M, K, A, lda);
   float *opB = util_smat_op(Order, TransB, K, N, B, ldb);
-  float_indexed *CI = idxd_sialloc(fold);
+  float_binned *CI = binned_sballoc(fold);
   if(alpha != 1.0){
     for(i = 0; i < M; i++){
       for(k = 0; k < K; k++){
@@ -41,25 +41,25 @@ void wrap_ref_rsgemm(int fold, char Order, char TransA, char TransB, int M, int 
         case 'r':
         case 'R':
           if(beta == 0.0){
-            idxd_sisetzero(fold, CI);
+            binned_sbsetzero(fold, CI);
           }else{
-            idxd_sisconv(fold, C[i * ldc + j] * beta, CI);
+            binned_sbsconv(fold, C[i * ldc + j] * beta, CI);
           }
           if(alpha != 0.0){
-            idxdBLAS_sisdot(fold, K, opA + i * K, 1, opB + j, N, CI);
+            binnedBLAS_sbsdot(fold, K, opA + i * K, 1, opB + j, N, CI);
           }
-          C[i * ldc + j] = idxd_ssiconv(fold, CI);
+          C[i * ldc + j] = binned_ssbconv(fold, CI);
           break;
         default:
           if(beta == 0.0){
-            idxd_sisetzero(fold, CI);
+            binned_sbsetzero(fold, CI);
           }else{
-            idxd_sisconv(fold, C[j * ldc + i] * beta, CI);
+            binned_sbsconv(fold, C[j * ldc + i] * beta, CI);
           }
           if(alpha != 0.0){
-            idxdBLAS_sisdot(fold, K, opA + i, M, opB + j * K, 1, CI);
+            binnedBLAS_sbsdot(fold, K, opA + i, M, opB + j * K, 1, CI);
           }
-          C[j * ldc + i] = idxd_ssiconv(fold, CI);
+          C[j * ldc + i] = binned_ssbconv(fold, CI);
           break;
       }
     }

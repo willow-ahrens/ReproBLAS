@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <math.h>
 #include <sys/time.h>
-#include <idxd.h>
-#include <idxdBLAS.h>
+#include <binned.h>
+#include <binnedBLAS.h>
 #include <reproBLAS.h>
 
 static struct timeval start;
@@ -109,73 +109,73 @@ int main(int argc, char** argv){
 
   printf("%15s : %-8g : |%.17e - %.17e| = %g\n", "doubledouble", elapsed_time, sum, sum_shuffled, fabs(sum - sum_shuffled));
 
-  // Pretty soon we're gonna need some indexed types.
-  double_indexed *isum = idxd_dialloc(3);
-  double_indexed *itmp = idxd_dialloc(3);
+  // Pretty soon we're gonna need some binned types.
+  double_binned *isum = binned_dballoc(3);
+  double_binned *itmp = binned_dballoc(3);
 
-  // Here, we sum x by converting it to an array of indexed types,
-  // then we sum the indexed types. This is the most inefficient way to
-  // apply the indexed summation algorithm, but it demonstrates the method
-  // of adding indexed types.
+  // Here, we sum x by converting it to an array of binned types,
+  // then we sum the binned types. This is the most inefficient way to
+  // apply the binned summation algorithm, but it demonstrates the method
+  // of adding binned types.
   tic();
-  idxd_disetzero(3, isum);
+  binned_dbsetzero(3, isum);
   for(int i = 0; i < n; i++){
-    idxd_didconv(3, x[i], itmp);
-    idxd_didiadd(3, itmp, isum);
+    binned_dbdconv(3, x[i], itmp);
+    binned_dbdbadd(3, itmp, isum);
   }
-  sum = idxd_ddiconv(3, isum);
+  sum = binned_ddbconv(3, isum);
   elapsed_time = toc();
 
   // Next, we sum the shuffled x
   tic();
-  idxd_disetzero(3, isum);
+  binned_dbsetzero(3, isum);
   for(int i = 0; i < n; i++){
-    idxd_didconv(3, x_shuffled[i], itmp);
-    idxd_didiadd(3, itmp, isum);
+    binned_dbdconv(3, x_shuffled[i], itmp);
+    binned_dbdbadd(3, itmp, isum);
   }
-  sum_shuffled = idxd_ddiconv(3, isum);
+  sum_shuffled = binned_ddbconv(3, isum);
   elapsed_time = toc();
 
-  printf("%15s : %-8g : |%.17e - %.17e| = %g\n", "idxd_didiadd", elapsed_time, sum, sum_shuffled, fabs(sum - sum_shuffled));
+  printf("%15s : %-8g : |%.17e - %.17e| = %g\n", "binned_dbdbadd", elapsed_time, sum, sum_shuffled, fabs(sum - sum_shuffled));
 
-  // Here, we sum x using idxd primitives. This is less efficient than the
+  // Here, we sum x using binned primitives. This is less efficient than the
   // optimized reproBLAS_sum method, but might be useful if the data isn't
   // arranged in a vector.
   tic();
-  idxd_disetzero(3, isum);
+  binned_dbsetzero(3, isum);
   for(int i = 0; i < n; i++){
-    idxd_didadd(3, x[i], isum);
+    binned_dbdadd(3, x[i], isum);
   }
-  sum = idxd_ddiconv(3, isum);
+  sum = binned_ddbconv(3, isum);
   elapsed_time = toc();
 
   // Next, we sum the shuffled x
   tic();
-  idxd_disetzero(3, isum);
+  binned_dbsetzero(3, isum);
   for(int i = 0; i < n; i++){
-    idxd_didadd(3, x_shuffled[i], isum);
+    binned_dbdadd(3, x_shuffled[i], isum);
   }
-  sum_shuffled = idxd_ddiconv(3, isum);
+  sum_shuffled = binned_ddbconv(3, isum);
   elapsed_time = toc();
 
-  printf("%15s : %-8g : |%.17e - %.17e| = %g\n", "idxd_didadd", elapsed_time, sum, sum_shuffled, fabs(sum - sum_shuffled));
+  printf("%15s : %-8g : |%.17e - %.17e| = %g\n", "binned_dbdadd", elapsed_time, sum, sum_shuffled, fabs(sum - sum_shuffled));
 
-  // Here, we sum x using idxdBLAS. This shows off the internal methods of
+  // Here, we sum x using binnedBLAS. This shows off the internal methods of
   // reproBLAS.
   tic();
-  idxd_disetzero(3, isum);
-  idxdBLAS_didsum(3, n, x, 1, isum);
-  sum = idxd_ddiconv(3, isum);
+  binned_dbsetzero(3, isum);
+  binnedBLAS_dbdsum(3, n, x, 1, isum);
+  sum = binned_ddbconv(3, isum);
   elapsed_time = toc();
 
   // Next, we sum the shuffled x
   tic();
-  idxd_disetzero(3, isum);
-  idxdBLAS_didsum(3, n, x_shuffled, 1, isum);
-  sum_shuffled = idxd_ddiconv(3, isum);
+  binned_dbsetzero(3, isum);
+  binnedBLAS_dbdsum(3, n, x_shuffled, 1, isum);
+  sum_shuffled = binned_ddbconv(3, isum);
   elapsed_time = toc();
 
-  printf("%15s : %-8g : |%.17e - %.17e| = %g\n", "idxdBLAS_didsum", elapsed_time, sum, sum_shuffled, fabs(sum - sum_shuffled));
+  printf("%15s : %-8g : |%.17e - %.17e| = %g\n", "binnedBLAS_dbdsum", elapsed_time, sum, sum_shuffled, fabs(sum - sum_shuffled));
 
   // Here, we sum x using reproBLAS. This is the fastest and easiest method
   tic();

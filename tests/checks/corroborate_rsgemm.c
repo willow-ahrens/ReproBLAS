@@ -3,8 +3,8 @@
 #include <math.h>
 #include <string.h>
 
-#include <idxd.h>
-#include <idxdBLAS.h>
+#include <binned.h>
+#include <binnedBLAS.h>
 #include <reproBLAS.h>
 
 #include "../common/test_opt.h"
@@ -42,11 +42,11 @@ static void corroborate_rsgemm_options_initialize(void){
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
   fold._int.min               = 2;
-  fold._int.max               = idxd_SIMAXFOLD;
+  fold._int.max               = binned_SBMAXFOLD;
   fold._int.value             = SIDEFAULTFOLD;
 }
 
-int corroborate_rsgemm(int fold, char Order, char TransA, char TransB, int M, int N, int K, float alpha, float *A, int lda, float* B, int ldb, float beta, float *C, float_indexed *CI, int ldc, float *ref, int max_num_blocks) {
+int corroborate_rsgemm(int fold, char Order, char TransA, char TransB, int M, int N, int K, float alpha, float *A, int lda, float* B, int ldb, float beta, float *C, float_binned *CI, int ldc, float *ref, int max_num_blocks) {
 
   int i;
   int j;
@@ -55,7 +55,7 @@ int corroborate_rsgemm(int fold, char Order, char TransA, char TransB, int M, in
   int block_K;
 
   float *res;
-  float_indexed *Ires;
+  float_binned *Ires;
   float *tmpA;
   float *tmpB;
   int CNM;
@@ -70,12 +70,12 @@ int corroborate_rsgemm(int fold, char Order, char TransA, char TransB, int M, in
       break;
   }
   res = malloc(CNM * sizeof(float));
-  Ires = malloc(CNM * idxd_sisize(fold));
+  Ires = malloc(CNM * binned_sbsbze(fold));
 
   num_blocks = 1;
   while (num_blocks < K && num_blocks <= max_num_blocks) {
     memcpy(res, C, CNM * sizeof(float));
-    memcpy(Ires, CI, CNM * idxd_sisize(fold));
+    memcpy(Ires, CI, CNM * binned_sbsbze(fold));
     if (num_blocks == 1){
       wrap_rsgemm(fold, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, res, ldc);
     }else {
@@ -125,17 +125,17 @@ int corroborate_rsgemm(int fold, char Order, char TransA, char TransB, int M, in
             }
             break;
         }
-        idxdBLAS_sisgemm(fold, Order, TransA, TransB, M, N, block_K, alpha, tmpA, lda, tmpB, ldb, Ires, ldc);
+        binnedBLAS_sbsgemm(fold, Order, TransA, TransB, M, N, block_K, alpha, tmpA, lda, tmpB, ldb, Ires, ldc);
       }
       for(i = 0; i < M; i++){
         for(j = 0; j < N; j++){
           switch(Order){
             case 'r':
             case 'R':
-              res[i * ldc + j] = idxd_ssiconv(fold, Ires + (i * ldc + j) * idxd_sinum(fold));
+              res[i * ldc + j] = binned_ssbconv(fold, Ires + (i * ldc + j) * binned_sbnum(fold));
               break;
             default:
-              res[j * ldc + i] = idxd_ssiconv(fold, Ires + (j * ldc + i) * idxd_sinum(fold));
+              res[j * ldc + i] = binned_ssbconv(fold, Ires + (j * ldc + i) * binned_sbnum(fold));
               break;
           }
         }
@@ -247,7 +247,7 @@ int matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB
       CNM = ldc * N;
       break;
   }
-  float_indexed *CI = malloc(CNM * idxd_sisize(fold._int.value));
+  float_binned *CI = malloc(CNM * binned_sbsbze(fold._int.value));
 
   int *P;
 
@@ -259,10 +259,10 @@ int matmat_fill_test(int argc, char** argv, char Order, char TransA, char TransB
       switch(Order){
         case 'r':
         case 'R':
-          idxd_sisconv(fold._int.value, C[i * ldc + j] * RealBeta, CI + (i * ldc + j) * idxd_sinum(fold._int.value));
+          binned_sbsconv(fold._int.value, C[i * ldc + j] * RealBeta, CI + (i * ldc + j) * binned_sbnum(fold._int.value));
           break;
         default:
-          idxd_sisconv(fold._int.value, C[j * ldc + i] * RealBeta, CI + (j * ldc + i) * idxd_sinum(fold._int.value));
+          binned_sbsconv(fold._int.value, C[j * ldc + i] * RealBeta, CI + (j * ldc + i) * binned_sbnum(fold._int.value));
           break;
       }
     }

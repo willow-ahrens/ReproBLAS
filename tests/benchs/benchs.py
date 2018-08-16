@@ -227,7 +227,7 @@ class BenchZGEMVTest(BenchTest):
 
 class BenchDDICONVTest(BenchTest):
   name = "DDICONV"
-  executable = "tests/benchs/bench_ddiconv"
+  executable = "tests/benchs/bench_ddbconv"
 
 class BenchZZICONVTest(BenchTest):
   name = "ZZICONV"
@@ -235,27 +235,27 @@ class BenchZZICONVTest(BenchTest):
 
 class BenchSSICONVTest(BenchTest):
   name = "SSICONV"
-  executable = "tests/benchs/bench_ssiconv"
+  executable = "tests/benchs/bench_ssbconv"
 
 class BenchCCICONVTest(BenchTest):
   name = "CCICONV"
   executable = "tests/benchs/bench_cciconv"
 
-class BenchDIDIADDTest(BenchTest):
-  name = "DIDIADD"
-  executable = "tests/benchs/bench_didiadd"
+class BenchDBDBADDTest(BenchTest):
+  name = "DBDBADD"
+  executable = "tests/benchs/bench_dbdbadd"
 
-class BenchZIZIADDTest(BenchTest):
-  name = "ZIZIADD"
-  executable = "tests/benchs/bench_ziziadd"
+class BenchZBZBADDTest(BenchTest):
+  name = "ZBZBADD"
+  executable = "tests/benchs/bench_zbzbadd"
 
-class BenchSISIADDTest(BenchTest):
-  name = "SISIADD"
-  executable = "tests/benchs/bench_sisiadd"
+class BenchSBSBADDTest(BenchTest):
+  name = "SBSBADD"
+  executable = "tests/benchs/bench_sbsbadd"
 
-class BenchCICIADDTest(BenchTest):
-  name = "CICIADD"
-  executable = "tests/benchs/bench_ciciadd"
+class BenchCBCBADDTest(BenchTest):
+  name = "CBCBADD"
+  executable = "tests/benchs/bench_cbcbadd"
 
 class BenchRDGEMVTest(BenchTest):
   name = "RDGEMV"
@@ -328,15 +328,15 @@ all_benchs = {"bench_camax": (BenchCAMAXTest, [""]),\
               "bench_cdotu": (BenchCDOTUTest, [""]),\
               "bench_cgemm": (BenchCGEMVTest, [""]),\
               "bench_cgemv": (BenchCGEMVTest, [""]),\
-              "bench_ciciadd": (BenchCICIADDTest, [""]),\
+              "bench_cbcbadd": (BenchCBCBADDTest, [""]),\
               "bench_damax": (BenchDAMAXTest, [""]),\
               "bench_damaxm": (BenchDAMAXMTest, [""]),\
               "bench_dasum": (BenchDASUMTest, [""]),\
-              "bench_ddiconv": (BenchDDICONVTest, [""]),\
+              "bench_ddbconv": (BenchDDICONVTest, [""]),\
               "bench_ddot": (BenchDDOTTest, [""]),\
               "bench_dgemm": (BenchDGEMVTest, [""]),\
               "bench_dgemv": (BenchDGEMVTest, [""]),\
-              "bench_didiadd": (BenchDIDIADDTest, [""]),\
+              "bench_dbdbadd": (BenchDBDBADDTest, [""]),\
               "bench_dnrm2": (BenchDNRM2Test, [""]),\
               "bench_dzasum": (BenchDZASUMTest, [""]),\
               "bench_dznrm2": (BenchDZNRM2Test, [""]),\
@@ -352,16 +352,16 @@ all_benchs = {"bench_camax": (BenchCAMAXTest, [""]),\
               "bench_sdot": (BenchSDOTTest, [""]),\
               "bench_sgemm": (BenchSGEMVTest, [""]),\
               "bench_sgemv": (BenchSGEMVTest, [""]),\
-              "bench_sisiadd": (BenchSISIADDTest, [""]),\
+              "bench_sbsbadd": (BenchSBSBADDTest, [""]),\
               "bench_snrm2": (BenchSNRM2Test, [""]),\
-              "bench_ssiconv": (BenchSSICONVTest, [""]),\
+              "bench_ssbconv": (BenchSSICONVTest, [""]),\
               "bench_zamax": (BenchZAMAXTest, [""]),\
               "bench_zamaxm": (BenchZAMAXMTest, [""]),\
               "bench_zdotc": (BenchZDOTCTest, [""]),\
               "bench_zdotu": (BenchZDOTUTest, [""]),\
               "bench_zgemm": (BenchZGEMVTest, [""]),\
               "bench_zgemv": (BenchZGEMVTest, [""]),\
-              "bench_ziziadd": (BenchZIZIADDTest, [""]),\
+              "bench_zbzbadd": (BenchZBZBADDTest, [""]),\
               "bench_zziconv": (BenchZZICONVTest, [""]),\
              }
 

@@ -1,5 +1,5 @@
-#include <idxdBLAS.h>
-#include <idxd.h>
+#include <binnedBLAS.h>
+#include <binned.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -62,12 +62,12 @@ int file_test(int argc, char** argv, char *fname) {
   float complex *Y;
 
   float complex ref;
-  float_complex_indexed *Iref = idxd_cialloc(SIDEFAULTFOLD);
-  idxd_cisetzero(SIDEFAULTFOLD, Iref);
+  float_complex_binned *Iref = binned_cballoc(SIDEFAULTFOLD);
+  binned_cbsetzero(SIDEFAULTFOLD, Iref);
 
   float complex res;
-  float_complex_indexed *Ires = idxd_cialloc(SIDEFAULTFOLD);
-  idxd_cisetzero(SIDEFAULTFOLD, Ires);
+  float_complex_binned *Ires = binned_cballoc(SIDEFAULTFOLD);
+  binned_cbsetzero(SIDEFAULTFOLD, Ires);
 
   file_read_vector(fname, &N, (void**)&X, sizeof(float complex));
   Y = util_cvec_alloc(N, 1);
@@ -87,28 +87,28 @@ int file_test(int argc, char** argv, char *fname) {
     Iref = Ires;
 
     file_write_vector(ref_fname, 1, &ref, sizeof(ref));
-    file_write_vector(Iref_fname, 1, Iref, idxd_cisize(SIDEFAULTFOLD));
+    file_write_vector(Iref_fname, 1, Iref, binned_cbsize(SIDEFAULTFOLD));
   } else {
     void *data;
     int unused0;
     file_read_vector(ref_fname, &unused0, &data, sizeof(ref));
     ref = *(float complex*)data;
     free(data);
-    file_read_vector(Iref_fname, &unused0, &data, idxd_cisize(SIDEFAULTFOLD));
+    file_read_vector(Iref_fname, &unused0, &data, binned_cbsize(SIDEFAULTFOLD));
     free(Iref);
-    Iref = (float_complex_indexed*)data;
+    Iref = (float_complex_binned*)data;
     if(ref != res){
       printf("%s(%s) = %g + %gi != %g + %gi\n", wrap_rcblas1_names[func_type._named.value], fname, crealf(res), cimagf(res), crealf(ref), cimagf(ref));
       return 1;
     }
-    if(memcmp(Iref, Ires, idxd_cisize(SIDEFAULTFOLD)) != 0){
-      idxd_cciconv_sub(SIDEFAULTFOLD, Ires, &res);
-      idxd_cciconv_sub(SIDEFAULTFOLD, Iref, &ref);
+    if(memcmp(Iref, Ires, binned_cbsize(SIDEFAULTFOLD)) != 0){
+      binned_ccbconv_sub(SIDEFAULTFOLD, Ires, &res);
+      binned_ccbconv_sub(SIDEFAULTFOLD, Iref, &ref);
       printf("I%s(%s) = %g + %gi != %g + %gi\n", wrap_rcblas1_names[func_type._named.value], fname, crealf(res), cimagf(res), crealf(ref), cimagf(ref));
       printf("Ref I_float_Complex:\n");
-      idxd_ciprint(SIDEFAULTFOLD, Iref);
+      binned_cbprint(SIDEFAULTFOLD, Iref);
       printf("\nRes I_float_Complex:\n");
-      idxd_ciprint(SIDEFAULTFOLD, Ires);
+      binned_cbprint(SIDEFAULTFOLD, Ires);
       printf("\n");
       return 1;
     }

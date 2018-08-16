@@ -1,5 +1,5 @@
-#include <idxd.h>
-#include <idxdBLAS.h>
+#include <binned.h>
+#include <binnedBLAS.h>
 #include <reproBLAS.h>
 
 #include "../../config.h"
@@ -17,7 +17,7 @@ void wrap_ref_rcgemv(int fold, char Order, char TransA, int M, int N, float comp
   int opN;
   float complex *opA;
   float complex *opX;
-  float_complex_indexed *YI;
+  float_complex_binned *YI;
   float complex betaY;
   int i;
   int j;
@@ -33,16 +33,16 @@ void wrap_ref_rcgemv(int fold, char Order, char TransA, int M, int N, float comp
       break;
   }
   opA = util_cmat_op(Order, TransA, opM, opN, A, lda);
-  YI = idxd_cialloc(fold);
+  YI = binned_cballoc(fold);
   opX = (float complex*)malloc(opN * sizeof(float complex));
   for(i = 0; i < opM; i++){
     if(*beta == 0.0){
-      idxd_cisetzero(fold, YI);
+      binned_cbsetzero(fold, YI);
     }else if(*beta == 1.0){
-      idxd_cicconv(fold, Y + i * incY, YI);
+      binned_cbcconv(fold, Y + i * incY, YI);
     }else{
       betaY = cmul(Y[i * incY], *beta);
-      idxd_cicconv(fold, &betaY, YI);
+      binned_cbcconv(fold, &betaY, YI);
     }
     if(*alpha != 0.0){
       for(j = 0; j < opN; j++){
@@ -55,14 +55,14 @@ void wrap_ref_rcgemv(int fold, char Order, char TransA, int M, int N, float comp
       switch(Order){
         case 'r':
         case 'R':
-          idxdBLAS_cicdotu(fold, opN, opA + i * opN, 1, opX, 1, YI);
+          binnedBLAS_cbcdotu(fold, opN, opA + i * opN, 1, opX, 1, YI);
           break;
         default:
-          idxdBLAS_cicdotu(fold, opN, opA + i, opM, opX, 1, YI);
+          binnedBLAS_cbcdotu(fold, opN, opA + i, opM, opX, 1, YI);
           break;
       }
     }
-    idxd_cciconv_sub(fold, YI, Y + i * incY);
+    binned_ccbconv_sub(fold, YI, Y + i * incY);
   }
   free(YI);
   free(opA);

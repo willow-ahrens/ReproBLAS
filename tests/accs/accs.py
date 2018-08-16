@@ -40,7 +40,7 @@ class AccRZSUMTest(AccTest):
 
 class AccDDICONVTest(AccTest):
   name = "DDICONV"
-  executable = "tests/accs/acc_ddiconv"
+  executable = "tests/accs/acc_ddbconv"
 
 class AccZZICONVTest(AccTest):
   name = "ZZICONV"
@@ -48,7 +48,7 @@ class AccZZICONVTest(AccTest):
 
 class AccSSICONVTest(AccTest):
   name = "SSICONV"
-  executable = "tests/accs/acc_ssiconv"
+  executable = "tests/accs/acc_ssbconv"
 
 class AccCCICONVTest(AccTest):
   name = "CCICONV"

@@ -1,5 +1,5 @@
-#include <idxdBLAS.h>
-#include <idxd.h>
+#include <binnedBLAS.h>
+#include <binned.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -29,7 +29,7 @@ static void validate_internal_caugsum_options_initialize(void){
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
   fold._int.min               = 2;
-  fold._int.max               = idxd_SIMAXFOLD;
+  fold._int.max               = binned_SBMAXFOLD;
   fold._int.value             = SIDEFAULTFOLD;
 }
 
@@ -38,7 +38,7 @@ int validate_internal_caugsum(int fold, int N, float complex* X, int incX, float
   float complex res;
   float complex error;
   float complex bound;
-  float_complex_indexed *ires = idxd_cialloc(fold);
+  float_complex_binned *ires = binned_cballoc(fold);
 
   res = (wrap_caugsum_func(func))(fold, N, X, incX, Y, incY);
   error = res - ref;
@@ -46,10 +46,10 @@ int validate_internal_caugsum(int fold, int N, float complex* X, int incX, float
   if (!util_csoftequals(res, ref, bound)) {
     //TODO these error messages need to go to stderr for all tests.
     printf("%s(X, Y) = %g + %gi != %g + %gi\n|%g - %g| = %g > %g and/or |%gi - %gi| = %g > %g\n", wrap_caugsum_func_names[func], crealf(res), cimagf(res), crealf(ref), cimagf(ref), crealf(res), crealf(ref), fabsf(crealf(error)), crealf(bound), cimagf(res), cimagf(ref), fabsf(cimagf(error)), cimagf(bound));
-    idxd_cisetzero(fold, ires);
+    binned_cbsetzero(fold, ires);
     (wrap_ciaugsum_func(func))(fold, N, X, incX, Y, incY, ires);
-    printf("\nres float_complex_indexed:\n");
-    idxd_ciprint(fold, ires);
+    printf("\nres float_complex_binned:\n");
+    binned_cbprint(fold, ires);
     printf("\n");
     return 1;
   }

@@ -1,4 +1,4 @@
 TARGETS :=
-SUBDIRS := idxd idxdBLAS reproBLAS idxdMPI
+SUBDIRS := binned binnedBLAS reproBLAS binnedMPI
 
 INCLUDES += $(d)/gen

@@ -1,5 +1,5 @@
-#include <idxdBLAS.h>
-#include <idxd.h>
+#include <binnedBLAS.h>
+#include <binned.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -49,15 +49,15 @@ static void verify_saugsum_options_initialize(void){
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
   fold._int.min               = 2;
-  fold._int.max               = idxd_SIMAXFOLD;
+  fold._int.max               = binned_SBMAXFOLD;
   fold._int.value             = SIDEFAULTFOLD;
 }
 
-int verify_saugsum_reproducibility(int fold, int N, float* X, int incX, float* Y, int incY, int func, float ref, float_indexed *iref, int max_num_blocks) {
+int verify_saugsum_reproducibility(int fold, int N, float* X, int incX, float* Y, int incY, int func, float ref, float_binned *iref, int max_num_blocks) {
   // GENERATE DATA
   int i;
   float res;
-  float_indexed *ires = idxd_sialloc(fold);
+  float_binned *ires = binned_sballoc(fold);
   int num_blocks = 1;
 
   int block_N = (N + num_blocks - 1) / num_blocks;
@@ -68,23 +68,23 @@ int verify_saugsum_reproducibility(int fold, int N, float* X, int incX, float* Y
       res = (wrap_saugsum_func(func))(fold, N, X, incX, Y, incY);
     else {
       block_N =  (N + num_blocks - 1) / num_blocks;
-      idxd_sisetzero(fold, ires);
+      binned_sbsetzero(fold, ires);
       for (i = 0; i < N; i += block_N) {
         block_N = block_N < N - i ? block_N : (N-i);
         (wrap_siaugsum_func(func))(fold, block_N, X + i * incX, incX, Y + i * incY, incY, ires);
       }
-      res = idxd_ssiconv(fold, ires);
+      res = binned_ssbconv(fold, ires);
     }
     if (res != ref) {
       printf("%s(X, Y)[num_blocks=%d,block_N=%d] = %g != %g\n", wrap_saugsum_func_names[func], num_blocks, block_N, res, ref);
       if (num_blocks == 1) {
-        idxd_sisetzero(fold, ires);
+        binned_sbsetzero(fold, ires);
         (wrap_siaugsum_func(func))(fold, N, X, incX, Y, incY, ires);
       }
-      printf("ref float_indexed:\n");
-      idxd_siprint(fold, iref);
-      printf("\nres float_indexed:\n");
-      idxd_siprint(fold, ires);
+      printf("ref float_binned:\n");
+      binned_sbprint(fold, iref);
+      printf("\nres float_binned:\n");
+      binned_sbprint(fold, ires);
       printf("\n");
       return 1;
     }
@@ -119,7 +119,7 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX,
   int rc = 0;
   int i;
   float ref;
-  float_indexed *iref;
+  float_binned *iref;
   int max_num_blocks;
 
   verify_saugsum_options_initialize();
@@ -131,7 +131,7 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX,
   opt_eval_option(argc, argv, &shuffles);
   opt_eval_option(argc, argv, &fold);
 
-  iref = idxd_sialloc(fold._int.value);
+  iref = binned_sballoc(fold._int.value);
 
   float *X = util_svec_alloc(N, incX);
   float *Y = util_svec_alloc(N, incY);
@@ -150,7 +150,7 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX,
 
   //compute with unpermuted data
   ref  = (wrap_saugsum_func(augsum_func._named.value))(fold._int.value, N, X, incX, Y, incY);
-  idxd_sisetzero(fold._int.value, iref);
+  binned_sbsetzero(fold._int.value, iref);
   (wrap_siaugsum_func(augsum_func._named.value))(fold._int.value, N, X, incX, Y, incY, iref);
 
   P = util_identity_permutation(N);

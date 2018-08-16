@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include <idxdBLAS.h>
+#include <binnedBLAS.h>
 
 #include "../common/test_opt.h"
 #include "../common/test_time.h"
@@ -21,7 +21,7 @@ static void bench_zziconv_options_initialize(void){
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
   fold._int.min               = 2;
-  fold._int.max               = idxd_DIMAXFOLD;
+  fold._int.max               = binned_DBMAXFOLD;
   fold._int.value             = DIDEFAULTFOLD;
 }
 
@@ -55,7 +55,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   int rc = 0;
   int i;
   double complex res = 0.0;
-  double_complex_indexed *ires;
+  double_complex_binned *ires;
 
   bench_zziconv_options_initialize();
   opt_eval_option(argc, argv, &fold);
@@ -67,12 +67,12 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
   //fill x
   util_zvec_fill(N, X, incX, FillX, RealScaleX, ImagScaleX);
 
-  ires = idxd_zialloc(fold._int.value);
-  idxd_zisetzero(fold._int.value, ires);
-  idxdBLAS_zizsum(fold._int.value, N, X, incX, ires);
+  ires = binned_zballoc(fold._int.value);
+  binned_zbsetzero(fold._int.value, ires);
+  binnedBLAS_zbzsum(fold._int.value, N, X, incX, ires);
   time_tic();
   for(i = 0; i < trials; i++){
-    idxd_zziconv_sub(fold._int.value, ires, &res);
+    binned_zzbconv_sub(fold._int.value, ires, &res);
   }
   time_toc();
   free(ires);

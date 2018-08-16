@@ -2,7 +2,7 @@
 #include <string.h>
 
 #include <reproBLAS.h>
-#include <idxdBLAS.h>
+#include <binnedBLAS.h>
 
 /**
  * @brief Add to complex single precision matrix C the reproducible matrix-matrix product of complex single precision matrices A and B
@@ -17,9 +17,9 @@
  *
  * alpha and beta are scalars, A and B and C are matrices with op(A) an M by K matrix, op(B) a K by N matrix, and C is an M by N matrix.
  *
- * The matrix-matrix product is computed using indexed types with #idxdBLAS_cicgemm()
+ * The matrix-matrix product is computed using binned types with #binnedBLAS_cbcgemm()
  *
- * @param fold the fold of the indexed types
+ * @param fold the fold of the binned types
  * @param Order a character specifying the matrix ordering ('r' or 'R' for row-major, 'c' or 'C' for column major)
  * @param TransA a character specifying whether or not to transpose A before taking the matrix-matrix product ('n' or 'N' not to transpose, 't' or 'T' to transpose, 'c' or 'C' to conjugate transpose)
  * @param TransB a character specifying whether or not to transpose B before taking the matrix-matrix product ('n' or 'N' not to transpose, 't' or 'T' to transpose, 'c' or 'C' to conjugate transpose)
@@ -43,7 +43,7 @@ void reproBLAS_rcgemm(const int fold, const char Order, const char TransA, const
                       const void *alpha, const void *A, const int lda,
                       const void *B, const int ldb,
                       const void *beta, void *C, const int ldc){
-  float_complex_indexed *CI;
+  float_complex_binned *CI;
   float betaC[2];
   int i;
   int j;
@@ -52,16 +52,16 @@ void reproBLAS_rcgemm(const int fold, const char Order, const char TransA, const
     return;
   }
 
-  CI = (float_complex_indexed*)malloc(M * N * idxd_cisize(fold));
+  CI = (float_complex_binned*)malloc(M * N * binned_cbsize(fold));
   switch(Order){
     case 'r':
     case 'R':
       if(((float*)beta)[0] == 0.0 && ((float*)beta)[1] == 0.0){
-        memset(CI, 0, M * N * idxd_cisize(fold));
+        memset(CI, 0, M * N * binned_cbsize(fold));
       }else if(((float*)beta)[0] == 1.0 && ((float*)beta)[1] == 0.0){
         for(i = 0; i < M; i++){
           for(j = 0; j < N; j++){
-            idxd_cicconv(fold, ((float*)C) + 2 * (i * ldc + j), CI + (i * N + j) * idxd_cinum(fold));
+            binned_cbcconv(fold, ((float*)C) + 2 * (i * ldc + j), CI + (i * N + j) * binned_cbnum(fold));
           }
         }
       }else{
@@ -69,24 +69,24 @@ void reproBLAS_rcgemm(const int fold, const char Order, const char TransA, const
           for(j = 0; j < N; j++){
             betaC[0] = ((float*)C)[2 * (i * ldc + j)] * ((float*)beta)[0] - ((float*)C)[2 * (i * ldc + j) + 1] * ((float*)beta)[1],
             betaC[1] = ((float*)C)[2 * (i * ldc + j)] * ((float*)beta)[1] + ((float*)C)[2 * (i * ldc + j) + 1] * ((float*)beta)[0],
-            idxd_cicconv(fold, betaC, CI + (i * N + j) * idxd_cinum(fold));
+            binned_cbcconv(fold, betaC, CI + (i * N + j) * binned_cbnum(fold));
           }
         }
       }
-      idxdBLAS_cicgemm(fold, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, CI, N);
+      binnedBLAS_cbcgemm(fold, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, CI, N);
       for(i = 0; i < M; i++){
         for(j = 0; j < N; j++){
-          idxd_cciconv_sub(fold, CI + (i * N + j) * idxd_cinum(fold), ((float*)C) + 2 * (i * ldc + j));
+          binned_ccbconv_sub(fold, CI + (i * N + j) * binned_cbnum(fold), ((float*)C) + 2 * (i * ldc + j));
         }
       }
       break;
     default:
       if(((float*)beta)[0] == 0.0 && ((float*)beta)[1] == 0.0){
-        memset(CI, 0, M * N * idxd_cisize(fold));
+        memset(CI, 0, M * N * binned_cbsize(fold));
       }else if(((float*)beta)[0] == 1.0 && ((float*)beta)[1] == 0.0){
         for(j = 0; j < N; j++){
           for(i = 0; i < M; i++){
-            idxd_cicconv(fold, ((float*)C) + 2 * (j * ldc + i), CI + (j * M + i) * idxd_cinum(fold));
+            binned_cbcconv(fold, ((float*)C) + 2 * (j * ldc + i), CI + (j * M + i) * binned_cbnum(fold));
           }
         }
       }else{
@@ -94,14 +94,14 @@ void reproBLAS_rcgemm(const int fold, const char Order, const char TransA, const
           for(i = 0; i < M; i++){
             betaC[0] = ((float*)C)[2 * (j * ldc + i)] * ((float*)beta)[0] - ((float*)C)[2 * (j * ldc + i) + 1] * ((float*)beta)[1],
             betaC[1] = ((float*)C)[2 * (j * ldc + i)] * ((float*)beta)[1] + ((float*)C)[2 * (j * ldc + i) + 1] * ((float*)beta)[0],
-            idxd_cicconv(fold, betaC, CI + (j * M + i) * idxd_cinum(fold));
+            binned_cbcconv(fold, betaC, CI + (j * M + i) * binned_cbnum(fold));
           }
         }
       }
-      idxdBLAS_cicgemm(fold, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, CI, M);
+      binnedBLAS_cbcgemm(fold, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, CI, M);
       for(j = 0; j < N; j++){
         for(i = 0; i < M; i++){
-          idxd_cciconv_sub(fold, CI + (j * M + i) * idxd_cinum(fold), ((float*)C) + 2 * (j * ldc + i));
+          binned_ccbconv_sub(fold, CI + (j * M + i) * binned_cbnum(fold), ((float*)C) + 2 * (j * ldc + i));
         }
       }
       break;

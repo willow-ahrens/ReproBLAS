@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include <math.h>
 #include <sys/time.h>
-#include <idxd.h>
-#include <idxdBLAS.h>
+#include <binned.h>
+#include <binnedBLAS.h>
 #include <reproBLAS.h>
-#include <idxdMPI.h>
+#include <binnedMPI.h>
 #include <mpi.h>
 
 static struct timeval start;
@@ -101,33 +101,33 @@ int main(int argc, char** argv){
     printf("%15s : %-8g : |%.17e - %.17e| = %g\n", "double", elapsed_time, sum, sum_shuffled, fabs(sum - sum_shuffled));
   }
 
-  // We now sum x using indexed summation
+  // We now sum x using binned summation
   tic();
-  double_indexed *isum = NULL;
-  double_indexed *local_isum = idxd_dialloc(3);
-  idxd_disetzero(3, local_isum);
+  double_binned *isum = NULL;
+  double_binned *local_isum = binned_dballoc(3);
+  binned_dbsetzero(3, local_isum);
   if(rank == 0){
-    isum = idxd_dialloc(3);
-    idxd_disetzero(3, isum);
+    isum = binned_dballoc(3);
+    binned_dbsetzero(3, isum);
   }
   // Performing local summation
-  idxdBLAS_didsum(3, local_n, local_x, 1, local_isum);
+  binnedBLAS_dbdsum(3, local_n, local_x, 1, local_isum);
   // Reduce
-  MPI_Reduce(local_isum, isum, 1, idxdMPI_DOUBLE_INDEXED(3), idxdMPI_DIDIADD(3), 0, MPI_COMM_WORLD);
+  MPI_Reduce(local_isum, isum, 1, binnedMPI_DOUBLE_BINNED(3), binnedMPI_DBDBADD(3), 0, MPI_COMM_WORLD);
   if(rank == 0){
-    sum = idxd_ddiconv(3, isum);
+    sum = binned_ddbconv(3, isum);
   }
   elapsed_time = toc();
 
   // Next, we sum the shuffled x
-  idxd_disetzero(3, local_isum);
+  binned_dbsetzero(3, local_isum);
   if(rank == 0){
-    idxd_disetzero(3, isum);
+    binned_dbsetzero(3, isum);
   }
-  idxdBLAS_didsum(3, local_n, local_x_shuffled, 1, local_isum);
-  MPI_Reduce(local_isum, isum, 1, idxdMPI_DOUBLE_INDEXED(3), idxdMPI_DIDIADD(3), 0, MPI_COMM_WORLD);
+  binnedBLAS_dbdsum(3, local_n, local_x_shuffled, 1, local_isum);
+  MPI_Reduce(local_isum, isum, 1, binnedMPI_DOUBLE_BINNED(3), binnedMPI_DBDBADD(3), 0, MPI_COMM_WORLD);
   if(rank == 0){
-    sum_shuffled = idxd_ddiconv(3, isum);
+    sum_shuffled = binned_ddbconv(3, isum);
   }
 
   if(rank == 0){
@@ -136,7 +136,7 @@ int main(int argc, char** argv){
   free(local_isum);
 
   if(rank == 0){
-    printf("%15s : %-8g : |%.17e - %.17e| = %g\n", "idxdMPI_DIDIADD", elapsed_time, sum, sum_shuffled, fabs(sum - sum_shuffled));
+    printf("%15s : %-8g : |%.17e - %.17e| = %g\n", "binnedMPI_DBDBADD", elapsed_time, sum, sum_shuffled, fabs(sum - sum_shuffled));
   }
 
   if(rank == 0){

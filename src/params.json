@@ -1,2020 +1,2020 @@
 {
   "backward_dependencies": {
     "camax_max_unroll_width_AVX": [
-      "src/idxdBLAS/camax_sub.ccog"
+      "src/binnedBLAS/camax_sub.ccog"
     ],
     "camax_max_unroll_width_SISD": [
-      "src/idxdBLAS/camax_sub.ccog"
+      "src/binnedBLAS/camax_sub.ccog"
     ],
     "camax_max_unroll_width_SSE": [
-      "src/idxdBLAS/camax_sub.ccog"
+      "src/binnedBLAS/camax_sub.ccog"
     ],
     "camaxm_max_unroll_width_AVX": [
-      "src/idxdBLAS/camaxm_sub.ccog"
+      "src/binnedBLAS/camaxm_sub.ccog"
     ],
     "camaxm_max_unroll_width_SISD": [
-      "src/idxdBLAS/camaxm_sub.ccog"
+      "src/binnedBLAS/camaxm_sub.ccog"
     ],
     "camaxm_max_unroll_width_SSE": [
-      "src/idxdBLAS/camaxm_sub.ccog"
+      "src/binnedBLAS/camaxm_sub.ccog"
+    ],
+    "cbcgemm_block_size_XYT_BLOCK": [
+      "src/binnedBLAS/cbcgemm.ccog"
+    ],
+    "cbcgemm_block_size_XY_BLOCK": [
+      "src/binnedBLAS/cbcgemm.ccog"
+    ],
+    "cbcgemm_block_size_YT_BLOCK": [
+      "src/binnedBLAS/cbcgemm.ccog"
+    ],
+    "cbcgemm_block_size_Y_BLOCK": [
+      "src/binnedBLAS/cbcgemm.ccog"
+    ],
+    "cbcgemv_block_size_T_BLOCK": [
+      "src/binnedBLAS/cbcgemv.ccog"
+    ],
+    "cbcgemv_block_size_XYT_BLOCK": [
+      "src/binnedBLAS/cbcgemv.ccog"
+    ],
+    "cbcgemv_block_size_XY_BLOCK": [
+      "src/binnedBLAS/cbcgemv.ccog"
+    ],
+    "cbcgemv_block_size_YT_BLOCK": [
+      "src/binnedBLAS/cbcgemv.ccog"
+    ],
+    "cbcgemv_block_size_Y_BLOCK": [
+      "src/binnedBLAS/cbcgemv.ccog"
     ],
     "cdepositDotC_expand_AVX_fold_2": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_expand_AVX_fold_3": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_expand_AVX_fold_4": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_expand_SISD_fold_2": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_expand_SISD_fold_3": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_expand_SISD_fold_4": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_expand_SSE_fold_2": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_expand_SSE_fold_3": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_expand_SSE_fold_4": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_pipe_width_AVX_fold_0": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_pipe_width_AVX_fold_2": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_pipe_width_AVX_fold_3": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_pipe_width_AVX_fold_4": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_pipe_width_SISD_fold_0": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_pipe_width_SISD_fold_2": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_pipe_width_SISD_fold_3": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_pipe_width_SISD_fold_4": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_pipe_width_SSE_fold_0": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_pipe_width_SSE_fold_2": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_pipe_width_SSE_fold_3": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_pipe_width_SSE_fold_4": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_unroll_width_AVX_fold_0": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_unroll_width_AVX_fold_2": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_unroll_width_AVX_fold_3": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_unroll_width_AVX_fold_4": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_unroll_width_SISD_fold_0": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_unroll_width_SISD_fold_2": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_unroll_width_SISD_fold_3": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_unroll_width_SISD_fold_4": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_unroll_width_SSE_fold_0": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_unroll_width_SSE_fold_2": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_unroll_width_SSE_fold_3": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotC_max_unroll_width_SSE_fold_4": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cdepositDotU_expand_AVX_fold_2": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_expand_AVX_fold_3": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_expand_AVX_fold_4": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_expand_SISD_fold_2": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_expand_SISD_fold_3": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_expand_SISD_fold_4": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_expand_SSE_fold_2": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_expand_SSE_fold_3": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_expand_SSE_fold_4": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_pipe_width_AVX_fold_0": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_pipe_width_AVX_fold_2": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_pipe_width_AVX_fold_3": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_pipe_width_AVX_fold_4": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_pipe_width_SISD_fold_0": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_pipe_width_SISD_fold_2": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_pipe_width_SISD_fold_3": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_pipe_width_SISD_fold_4": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_pipe_width_SSE_fold_0": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_pipe_width_SSE_fold_2": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_pipe_width_SSE_fold_3": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_pipe_width_SSE_fold_4": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_unroll_width_AVX_fold_0": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_unroll_width_AVX_fold_2": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_unroll_width_AVX_fold_3": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_unroll_width_AVX_fold_4": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_unroll_width_SISD_fold_0": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_unroll_width_SISD_fold_2": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_unroll_width_SISD_fold_3": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_unroll_width_SISD_fold_4": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_unroll_width_SSE_fold_0": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_unroll_width_SSE_fold_2": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_unroll_width_SSE_fold_3": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositDotU_max_unroll_width_SSE_fold_4": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cdepositSum_expand_AVX_fold_2": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_expand_AVX_fold_3": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_expand_AVX_fold_4": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_expand_SISD_fold_2": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_expand_SISD_fold_3": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_expand_SISD_fold_4": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_expand_SSE_fold_2": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_expand_SSE_fold_3": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_expand_SSE_fold_4": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_pipe_width_AVX_fold_0": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_pipe_width_AVX_fold_2": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_pipe_width_AVX_fold_3": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_pipe_width_AVX_fold_4": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_pipe_width_SISD_fold_0": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_pipe_width_SISD_fold_2": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_pipe_width_SISD_fold_3": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_pipe_width_SISD_fold_4": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_pipe_width_SSE_fold_0": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_pipe_width_SSE_fold_2": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_pipe_width_SSE_fold_3": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_pipe_width_SSE_fold_4": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_unroll_width_AVX_fold_0": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_unroll_width_AVX_fold_2": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_unroll_width_AVX_fold_3": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_unroll_width_AVX_fold_4": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_unroll_width_SISD_fold_0": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_unroll_width_SISD_fold_2": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_unroll_width_SISD_fold_3": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_unroll_width_SISD_fold_4": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_unroll_width_SSE_fold_0": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_unroll_width_SSE_fold_2": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_unroll_width_SSE_fold_3": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cdepositSum_max_unroll_width_SSE_fold_4": [
-      "src/idxdBLAS/cmcsum.ccog"
-    ],
-    "cicgemm_block_size_XYT_BLOCK": [
-      "src/idxdBLAS/cicgemm.ccog"
-    ],
-    "cicgemm_block_size_XY_BLOCK": [
-      "src/idxdBLAS/cicgemm.ccog"
-    ],
-    "cicgemm_block_size_YT_BLOCK": [
-      "src/idxdBLAS/cicgemm.ccog"
-    ],
-    "cicgemm_block_size_Y_BLOCK": [
-      "src/idxdBLAS/cicgemm.ccog"
-    ],
-    "cicgemv_block_size_T_BLOCK": [
-      "src/idxdBLAS/cicgemv.ccog"
-    ],
-    "cicgemv_block_size_XYT_BLOCK": [
-      "src/idxdBLAS/cicgemv.ccog"
-    ],
-    "cicgemv_block_size_XY_BLOCK": [
-      "src/idxdBLAS/cicgemv.ccog"
-    ],
-    "cicgemv_block_size_YT_BLOCK": [
-      "src/idxdBLAS/cicgemv.ccog"
-    ],
-    "cicgemv_block_size_Y_BLOCK": [
-      "src/idxdBLAS/cicgemv.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "cmcdotc_block_size_N_block_MAX": [
-      "src/idxdBLAS/cmcdotc.ccog"
+      "src/binnedBLAS/cmcdotc.ccog"
     ],
     "cmcdotu_block_size_N_block_MAX": [
-      "src/idxdBLAS/cmcdotu.ccog"
+      "src/binnedBLAS/cmcdotu.ccog"
     ],
     "cmcsum_block_size_N_block_MAX": [
-      "src/idxdBLAS/cmcsum.ccog"
+      "src/binnedBLAS/cmcsum.ccog"
     ],
     "damax_max_unroll_width_AVX": [
-      "src/idxdBLAS/damax.ccog"
+      "src/binnedBLAS/damax.ccog"
     ],
     "damax_max_unroll_width_SISD": [
-      "src/idxdBLAS/damax.ccog"
+      "src/binnedBLAS/damax.ccog"
     ],
     "damax_max_unroll_width_SSE": [
-      "src/idxdBLAS/damax.ccog"
+      "src/binnedBLAS/damax.ccog"
     ],
     "damaxm_max_unroll_width_AVX": [
-      "src/idxdBLAS/damaxm.ccog"
+      "src/binnedBLAS/damaxm.ccog"
     ],
     "damaxm_max_unroll_width_SISD": [
-      "src/idxdBLAS/damaxm.ccog"
+      "src/binnedBLAS/damaxm.ccog"
     ],
     "damaxm_max_unroll_width_SSE": [
-      "src/idxdBLAS/damaxm.ccog"
+      "src/binnedBLAS/damaxm.ccog"
+    ],
+    "dbdgemm_block_size_XYT_BLOCK": [
+      "src/binnedBLAS/dbdgemm.ccog"
+    ],
+    "dbdgemm_block_size_XY_BLOCK": [
+      "src/binnedBLAS/dbdgemm.ccog"
+    ],
+    "dbdgemm_block_size_YT_BLOCK": [
+      "src/binnedBLAS/dbdgemm.ccog"
+    ],
+    "dbdgemm_block_size_Y_BLOCK": [
+      "src/binnedBLAS/dbdgemm.ccog"
+    ],
+    "dbdgemv_block_size_T_BLOCK": [
+      "src/binnedBLAS/dbdgemv.ccog"
+    ],
+    "dbdgemv_block_size_XYT_BLOCK": [
+      "src/binnedBLAS/dbdgemv.ccog"
+    ],
+    "dbdgemv_block_size_XY_BLOCK": [
+      "src/binnedBLAS/dbdgemv.ccog"
+    ],
+    "dbdgemv_block_size_YT_BLOCK": [
+      "src/binnedBLAS/dbdgemv.ccog"
+    ],
+    "dbdgemv_block_size_Y_BLOCK": [
+      "src/binnedBLAS/dbdgemv.ccog"
     ],
     "ddepositASum_expand_AVX_fold_2": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_expand_AVX_fold_3": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_expand_AVX_fold_4": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_expand_SISD_fold_2": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_expand_SISD_fold_3": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_expand_SISD_fold_4": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_expand_SSE_fold_2": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_expand_SSE_fold_3": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_expand_SSE_fold_4": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_pipe_width_AVX_fold_0": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_pipe_width_AVX_fold_2": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_pipe_width_AVX_fold_3": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_pipe_width_AVX_fold_4": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_pipe_width_SISD_fold_0": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_pipe_width_SISD_fold_2": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_pipe_width_SISD_fold_3": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_pipe_width_SISD_fold_4": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_pipe_width_SSE_fold_0": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_pipe_width_SSE_fold_2": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_pipe_width_SSE_fold_3": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_pipe_width_SSE_fold_4": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_unroll_width_AVX_fold_0": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_unroll_width_AVX_fold_2": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_unroll_width_AVX_fold_3": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_unroll_width_AVX_fold_4": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_unroll_width_SISD_fold_0": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_unroll_width_SISD_fold_2": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_unroll_width_SISD_fold_3": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_unroll_width_SISD_fold_4": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_unroll_width_SSE_fold_0": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_unroll_width_SSE_fold_2": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_unroll_width_SSE_fold_3": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositASum_max_unroll_width_SSE_fold_4": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "ddepositDot_expand_AVX_fold_2": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_expand_AVX_fold_3": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_expand_AVX_fold_4": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_expand_SISD_fold_2": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_expand_SISD_fold_3": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_expand_SISD_fold_4": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_expand_SSE_fold_2": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_expand_SSE_fold_3": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_expand_SSE_fold_4": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_pipe_width_AVX_fold_0": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_pipe_width_AVX_fold_2": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_pipe_width_AVX_fold_3": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_pipe_width_AVX_fold_4": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_pipe_width_SISD_fold_0": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_pipe_width_SISD_fold_2": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_pipe_width_SISD_fold_3": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_pipe_width_SISD_fold_4": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_pipe_width_SSE_fold_0": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_pipe_width_SSE_fold_2": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_pipe_width_SSE_fold_3": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_pipe_width_SSE_fold_4": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_unroll_width_AVX_fold_0": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_unroll_width_AVX_fold_2": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_unroll_width_AVX_fold_3": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_unroll_width_AVX_fold_4": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_unroll_width_SISD_fold_0": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_unroll_width_SISD_fold_2": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_unroll_width_SISD_fold_3": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_unroll_width_SISD_fold_4": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_unroll_width_SSE_fold_0": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_unroll_width_SSE_fold_2": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_unroll_width_SSE_fold_3": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositDot_max_unroll_width_SSE_fold_4": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "ddepositSSq_expand_AVX_fold_2": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_expand_AVX_fold_3": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_expand_AVX_fold_4": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_expand_SISD_fold_2": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_expand_SISD_fold_3": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_expand_SISD_fold_4": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_expand_SSE_fold_2": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_expand_SSE_fold_3": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_expand_SSE_fold_4": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_pipe_width_AVX_fold_0": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_pipe_width_AVX_fold_2": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_pipe_width_AVX_fold_3": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_pipe_width_AVX_fold_4": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_pipe_width_SISD_fold_0": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_pipe_width_SISD_fold_2": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_pipe_width_SISD_fold_3": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_pipe_width_SISD_fold_4": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_pipe_width_SSE_fold_0": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_pipe_width_SSE_fold_2": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_pipe_width_SSE_fold_3": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_pipe_width_SSE_fold_4": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_unroll_width_AVX_fold_0": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_unroll_width_AVX_fold_2": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_unroll_width_AVX_fold_3": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_unroll_width_AVX_fold_4": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_unroll_width_SISD_fold_0": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_unroll_width_SISD_fold_2": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_unroll_width_SISD_fold_3": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_unroll_width_SISD_fold_4": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_unroll_width_SSE_fold_0": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_unroll_width_SSE_fold_2": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_unroll_width_SSE_fold_3": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSSq_max_unroll_width_SSE_fold_4": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "ddepositSum_expand_AVX_fold_2": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_expand_AVX_fold_3": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_expand_AVX_fold_4": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_expand_SISD_fold_2": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_expand_SISD_fold_3": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_expand_SISD_fold_4": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_expand_SSE_fold_2": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_expand_SSE_fold_3": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_expand_SSE_fold_4": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_pipe_width_AVX_fold_0": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_pipe_width_AVX_fold_2": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_pipe_width_AVX_fold_3": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_pipe_width_AVX_fold_4": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_pipe_width_SISD_fold_0": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_pipe_width_SISD_fold_2": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_pipe_width_SISD_fold_3": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_pipe_width_SISD_fold_4": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_pipe_width_SSE_fold_0": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_pipe_width_SSE_fold_2": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_pipe_width_SSE_fold_3": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_pipe_width_SSE_fold_4": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_unroll_width_AVX_fold_0": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_unroll_width_AVX_fold_2": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_unroll_width_AVX_fold_3": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_unroll_width_AVX_fold_4": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_unroll_width_SISD_fold_0": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_unroll_width_SISD_fold_2": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_unroll_width_SISD_fold_3": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_unroll_width_SISD_fold_4": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_unroll_width_SSE_fold_0": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_unroll_width_SSE_fold_2": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_unroll_width_SSE_fold_3": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "ddepositSum_max_unroll_width_SSE_fold_4": [
-      "src/idxdBLAS/dmdsum.ccog"
-    ],
-    "didgemm_block_size_XYT_BLOCK": [
-      "src/idxdBLAS/didgemm.ccog"
-    ],
-    "didgemm_block_size_XY_BLOCK": [
-      "src/idxdBLAS/didgemm.ccog"
-    ],
-    "didgemm_block_size_YT_BLOCK": [
-      "src/idxdBLAS/didgemm.ccog"
-    ],
-    "didgemm_block_size_Y_BLOCK": [
-      "src/idxdBLAS/didgemm.ccog"
-    ],
-    "didgemv_block_size_T_BLOCK": [
-      "src/idxdBLAS/didgemv.ccog"
-    ],
-    "didgemv_block_size_XYT_BLOCK": [
-      "src/idxdBLAS/didgemv.ccog"
-    ],
-    "didgemv_block_size_XY_BLOCK": [
-      "src/idxdBLAS/didgemv.ccog"
-    ],
-    "didgemv_block_size_YT_BLOCK": [
-      "src/idxdBLAS/didgemv.ccog"
-    ],
-    "didgemv_block_size_Y_BLOCK": [
-      "src/idxdBLAS/didgemv.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "dmdasum_block_size_N_block_MAX": [
-      "src/idxdBLAS/dmdasum.ccog"
+      "src/binnedBLAS/dmdasum.ccog"
     ],
     "dmddot_block_size_N_block_MAX": [
-      "src/idxdBLAS/dmddot.ccog"
+      "src/binnedBLAS/dmddot.ccog"
     ],
     "dmdssq_block_size_N_block_MAX": [
-      "src/idxdBLAS/dmdssq.ccog"
+      "src/binnedBLAS/dmdssq.ccog"
     ],
     "dmdsum_block_size_N_block_MAX": [
-      "src/idxdBLAS/dmdsum.ccog"
+      "src/binnedBLAS/dmdsum.ccog"
     ],
     "dmzasum_block_size_N_block_MAX": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dmzssq_block_size_N_block_MAX": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositASum_expand_AVX_fold_2": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_expand_AVX_fold_3": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_expand_AVX_fold_4": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_expand_SISD_fold_2": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_expand_SISD_fold_3": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_expand_SISD_fold_4": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_expand_SSE_fold_2": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_expand_SSE_fold_3": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_expand_SSE_fold_4": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_pipe_width_AVX_fold_0": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_pipe_width_AVX_fold_2": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_pipe_width_AVX_fold_3": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_pipe_width_AVX_fold_4": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_pipe_width_SISD_fold_0": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_pipe_width_SISD_fold_2": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_pipe_width_SISD_fold_3": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_pipe_width_SISD_fold_4": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_pipe_width_SSE_fold_0": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_pipe_width_SSE_fold_2": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_pipe_width_SSE_fold_3": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_pipe_width_SSE_fold_4": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_unroll_width_AVX_fold_0": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_unroll_width_AVX_fold_2": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_unroll_width_AVX_fold_3": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_unroll_width_AVX_fold_4": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_unroll_width_SISD_fold_0": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_unroll_width_SISD_fold_2": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_unroll_width_SISD_fold_3": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_unroll_width_SISD_fold_4": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_unroll_width_SSE_fold_0": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_unroll_width_SSE_fold_2": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_unroll_width_SSE_fold_3": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositASum_max_unroll_width_SSE_fold_4": [
-      "src/idxdBLAS/dmzasum.ccog"
+      "src/binnedBLAS/dmzasum.ccog"
     ],
     "dzdepositSSq_expand_AVX_fold_2": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_expand_AVX_fold_3": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_expand_AVX_fold_4": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_expand_SISD_fold_2": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_expand_SISD_fold_3": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_expand_SISD_fold_4": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_expand_SSE_fold_2": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_expand_SSE_fold_3": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_expand_SSE_fold_4": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_pipe_width_AVX_fold_0": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_pipe_width_AVX_fold_2": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_pipe_width_AVX_fold_3": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_pipe_width_AVX_fold_4": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_pipe_width_SISD_fold_0": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_pipe_width_SISD_fold_2": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_pipe_width_SISD_fold_3": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_pipe_width_SISD_fold_4": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_pipe_width_SSE_fold_0": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_pipe_width_SSE_fold_2": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_pipe_width_SSE_fold_3": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_pipe_width_SSE_fold_4": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_unroll_width_AVX_fold_0": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_unroll_width_AVX_fold_2": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_unroll_width_AVX_fold_3": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_unroll_width_AVX_fold_4": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_unroll_width_SISD_fold_0": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_unroll_width_SISD_fold_2": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_unroll_width_SISD_fold_3": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_unroll_width_SISD_fold_4": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_unroll_width_SSE_fold_0": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_unroll_width_SSE_fold_2": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_unroll_width_SSE_fold_3": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "dzdepositSSq_max_unroll_width_SSE_fold_4": [
-      "src/idxdBLAS/dmzssq.ccog"
+      "src/binnedBLAS/dmzssq.ccog"
     ],
     "samax_max_unroll_width_AVX": [
-      "src/idxdBLAS/samax.ccog"
+      "src/binnedBLAS/samax.ccog"
     ],
     "samax_max_unroll_width_SISD": [
-      "src/idxdBLAS/samax.ccog"
+      "src/binnedBLAS/samax.ccog"
     ],
     "samax_max_unroll_width_SSE": [
-      "src/idxdBLAS/samax.ccog"
+      "src/binnedBLAS/samax.ccog"
     ],
     "samaxm_max_unroll_width_AVX": [
-      "src/idxdBLAS/samaxm.ccog"
+      "src/binnedBLAS/samaxm.ccog"
     ],
     "samaxm_max_unroll_width_SISD": [
-      "src/idxdBLAS/samaxm.ccog"
+      "src/binnedBLAS/samaxm.ccog"
     ],
     "samaxm_max_unroll_width_SSE": [
-      "src/idxdBLAS/samaxm.ccog"
+      "src/binnedBLAS/samaxm.ccog"
+    ],
+    "sbsgemm_block_size_XYT_BLOCK": [
+      "src/binnedBLAS/sbsgemm.ccog"
+    ],
+    "sbsgemm_block_size_XY_BLOCK": [
+      "src/binnedBLAS/sbsgemm.ccog"
+    ],
+    "sbsgemm_block_size_YT_BLOCK": [
+      "src/binnedBLAS/sbsgemm.ccog"
+    ],
+    "sbsgemm_block_size_Y_BLOCK": [
+      "src/binnedBLAS/sbsgemm.ccog"
+    ],
+    "sbsgemv_block_size_T_BLOCK": [
+      "src/binnedBLAS/sbsgemv.ccog"
+    ],
+    "sbsgemv_block_size_XYT_BLOCK": [
+      "src/binnedBLAS/sbsgemv.ccog"
+    ],
+    "sbsgemv_block_size_XY_BLOCK": [
+      "src/binnedBLAS/sbsgemv.ccog"
+    ],
+    "sbsgemv_block_size_YT_BLOCK": [
+      "src/binnedBLAS/sbsgemv.ccog"
+    ],
+    "sbsgemv_block_size_Y_BLOCK": [
+      "src/binnedBLAS/sbsgemv.ccog"
     ],
     "scdepositASum_expand_AVX_fold_2": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_expand_AVX_fold_3": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_expand_AVX_fold_4": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_expand_SISD_fold_2": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_expand_SISD_fold_3": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_expand_SISD_fold_4": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_expand_SSE_fold_2": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_expand_SSE_fold_3": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_expand_SSE_fold_4": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_pipe_width_AVX_fold_0": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_pipe_width_AVX_fold_2": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_pipe_width_AVX_fold_3": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_pipe_width_AVX_fold_4": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_pipe_width_SISD_fold_0": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_pipe_width_SISD_fold_2": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_pipe_width_SISD_fold_3": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_pipe_width_SISD_fold_4": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_pipe_width_SSE_fold_0": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_pipe_width_SSE_fold_2": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_pipe_width_SSE_fold_3": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_pipe_width_SSE_fold_4": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_unroll_width_AVX_fold_0": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_unroll_width_AVX_fold_2": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_unroll_width_AVX_fold_3": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_unroll_width_AVX_fold_4": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_unroll_width_SISD_fold_0": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_unroll_width_SISD_fold_2": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_unroll_width_SISD_fold_3": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_unroll_width_SISD_fold_4": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_unroll_width_SSE_fold_0": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_unroll_width_SSE_fold_2": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_unroll_width_SSE_fold_3": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositASum_max_unroll_width_SSE_fold_4": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "scdepositSSq_expand_AVX_fold_2": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_expand_AVX_fold_3": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_expand_AVX_fold_4": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_expand_SISD_fold_2": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_expand_SISD_fold_3": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_expand_SISD_fold_4": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_expand_SSE_fold_2": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_expand_SSE_fold_3": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_expand_SSE_fold_4": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_pipe_width_AVX_fold_0": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_pipe_width_AVX_fold_2": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_pipe_width_AVX_fold_3": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_pipe_width_AVX_fold_4": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_pipe_width_SISD_fold_0": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_pipe_width_SISD_fold_2": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_pipe_width_SISD_fold_3": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_pipe_width_SISD_fold_4": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_pipe_width_SSE_fold_0": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_pipe_width_SSE_fold_2": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_pipe_width_SSE_fold_3": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_pipe_width_SSE_fold_4": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_unroll_width_AVX_fold_0": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_unroll_width_AVX_fold_2": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_unroll_width_AVX_fold_3": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_unroll_width_AVX_fold_4": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_unroll_width_SISD_fold_0": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_unroll_width_SISD_fold_2": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_unroll_width_SISD_fold_3": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_unroll_width_SISD_fold_4": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_unroll_width_SSE_fold_0": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_unroll_width_SSE_fold_2": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_unroll_width_SSE_fold_3": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "scdepositSSq_max_unroll_width_SSE_fold_4": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "sdepositASum_expand_AVX_fold_2": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_expand_AVX_fold_3": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_expand_AVX_fold_4": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_expand_SISD_fold_2": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_expand_SISD_fold_3": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_expand_SISD_fold_4": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_expand_SSE_fold_2": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_expand_SSE_fold_3": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_expand_SSE_fold_4": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_pipe_width_AVX_fold_0": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_pipe_width_AVX_fold_2": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_pipe_width_AVX_fold_3": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_pipe_width_AVX_fold_4": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_pipe_width_SISD_fold_0": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_pipe_width_SISD_fold_2": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_pipe_width_SISD_fold_3": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_pipe_width_SISD_fold_4": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_pipe_width_SSE_fold_0": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_pipe_width_SSE_fold_2": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_pipe_width_SSE_fold_3": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_pipe_width_SSE_fold_4": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_unroll_width_AVX_fold_0": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_unroll_width_AVX_fold_2": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_unroll_width_AVX_fold_3": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_unroll_width_AVX_fold_4": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_unroll_width_SISD_fold_0": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_unroll_width_SISD_fold_2": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_unroll_width_SISD_fold_3": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_unroll_width_SISD_fold_4": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_unroll_width_SSE_fold_0": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_unroll_width_SSE_fold_2": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_unroll_width_SSE_fold_3": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositASum_max_unroll_width_SSE_fold_4": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "sdepositDot_expand_AVX_fold_2": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_expand_AVX_fold_3": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_expand_AVX_fold_4": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_expand_SISD_fold_2": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_expand_SISD_fold_3": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_expand_SISD_fold_4": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_expand_SSE_fold_2": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_expand_SSE_fold_3": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_expand_SSE_fold_4": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_pipe_width_AVX_fold_0": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_pipe_width_AVX_fold_2": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_pipe_width_AVX_fold_3": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_pipe_width_AVX_fold_4": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_pipe_width_SISD_fold_0": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_pipe_width_SISD_fold_2": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_pipe_width_SISD_fold_3": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_pipe_width_SISD_fold_4": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_pipe_width_SSE_fold_0": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_pipe_width_SSE_fold_2": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_pipe_width_SSE_fold_3": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_pipe_width_SSE_fold_4": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_unroll_width_AVX_fold_0": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_unroll_width_AVX_fold_2": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_unroll_width_AVX_fold_3": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_unroll_width_AVX_fold_4": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_unroll_width_SISD_fold_0": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_unroll_width_SISD_fold_2": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_unroll_width_SISD_fold_3": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_unroll_width_SISD_fold_4": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_unroll_width_SSE_fold_0": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_unroll_width_SSE_fold_2": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_unroll_width_SSE_fold_3": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositDot_max_unroll_width_SSE_fold_4": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "sdepositSSq_expand_AVX_fold_2": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_expand_AVX_fold_3": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_expand_AVX_fold_4": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_expand_SISD_fold_2": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_expand_SISD_fold_3": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_expand_SISD_fold_4": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_expand_SSE_fold_2": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_expand_SSE_fold_3": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_expand_SSE_fold_4": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_pipe_width_AVX_fold_0": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_pipe_width_AVX_fold_2": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_pipe_width_AVX_fold_3": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_pipe_width_AVX_fold_4": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_pipe_width_SISD_fold_0": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_pipe_width_SISD_fold_2": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_pipe_width_SISD_fold_3": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_pipe_width_SISD_fold_4": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_pipe_width_SSE_fold_0": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_pipe_width_SSE_fold_2": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_pipe_width_SSE_fold_3": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_pipe_width_SSE_fold_4": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_unroll_width_AVX_fold_0": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_unroll_width_AVX_fold_2": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_unroll_width_AVX_fold_3": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_unroll_width_AVX_fold_4": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_unroll_width_SISD_fold_0": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_unroll_width_SISD_fold_2": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_unroll_width_SISD_fold_3": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_unroll_width_SISD_fold_4": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_unroll_width_SSE_fold_0": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_unroll_width_SSE_fold_2": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_unroll_width_SSE_fold_3": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSSq_max_unroll_width_SSE_fold_4": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "sdepositSum_expand_AVX_fold_2": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_expand_AVX_fold_3": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_expand_AVX_fold_4": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_expand_SISD_fold_2": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_expand_SISD_fold_3": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_expand_SISD_fold_4": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_expand_SSE_fold_2": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_expand_SSE_fold_3": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_expand_SSE_fold_4": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_max_pipe_width_AVX_fold_0": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_max_pipe_width_AVX_fold_2": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_max_pipe_width_AVX_fold_3": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_max_pipe_width_AVX_fold_4": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_max_pipe_width_SISD_fold_0": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_max_pipe_width_SISD_fold_2": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_max_pipe_width_SISD_fold_3": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_max_pipe_width_SISD_fold_4": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_max_pipe_width_SSE_fold_0": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_max_pipe_width_SSE_fold_2": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_max_pipe_width_SSE_fold_3": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_max_pipe_width_SSE_fold_4": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_max_unroll_width_AVX_fold_0": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_max_unroll_width_AVX_fold_2": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_max_unroll_width_AVX_fold_3": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_max_unroll_width_AVX_fold_4": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_max_unroll_width_SISD_fold_0": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_max_unroll_width_SISD_fold_2": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_max_unroll_width_SISD_fold_3": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_max_unroll_width_SISD_fold_4": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_max_unroll_width_SSE_fold_0": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_max_unroll_width_SSE_fold_2": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_max_unroll_width_SSE_fold_3": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "sdepositSum_max_unroll_width_SSE_fold_4": [
-      "src/idxdBLAS/smssum.ccog"
-    ],
-    "sisgemm_block_size_XYT_BLOCK": [
-      "src/idxdBLAS/sisgemm.ccog"
-    ],
-    "sisgemm_block_size_XY_BLOCK": [
-      "src/idxdBLAS/sisgemm.ccog"
-    ],
-    "sisgemm_block_size_YT_BLOCK": [
-      "src/idxdBLAS/sisgemm.ccog"
-    ],
-    "sisgemm_block_size_Y_BLOCK": [
-      "src/idxdBLAS/sisgemm.ccog"
-    ],
-    "sisgemv_block_size_T_BLOCK": [
-      "src/idxdBLAS/sisgemv.ccog"
-    ],
-    "sisgemv_block_size_XYT_BLOCK": [
-      "src/idxdBLAS/sisgemv.ccog"
-    ],
-    "sisgemv_block_size_XY_BLOCK": [
-      "src/idxdBLAS/sisgemv.ccog"
-    ],
-    "sisgemv_block_size_YT_BLOCK": [
-      "src/idxdBLAS/sisgemv.ccog"
-    ],
-    "sisgemv_block_size_Y_BLOCK": [
-      "src/idxdBLAS/sisgemv.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "smcasum_block_size_N_block_MAX": [
-      "src/idxdBLAS/smcasum.ccog"
+      "src/binnedBLAS/smcasum.ccog"
     ],
     "smcssq_block_size_N_block_MAX": [
-      "src/idxdBLAS/smcssq.ccog"
+      "src/binnedBLAS/smcssq.ccog"
     ],
     "smsasum_block_size_N_block_MAX": [
-      "src/idxdBLAS/smsasum.ccog"
+      "src/binnedBLAS/smsasum.ccog"
     ],
     "smsdot_block_size_N_block_MAX": [
-      "src/idxdBLAS/smsdot.ccog"
+      "src/binnedBLAS/smsdot.ccog"
     ],
     "smsssq_block_size_N_block_MAX": [
-      "src/idxdBLAS/smsssq.ccog"
+      "src/binnedBLAS/smsssq.ccog"
     ],
     "smssum_block_size_N_block_MAX": [
-      "src/idxdBLAS/smssum.ccog"
+      "src/binnedBLAS/smssum.ccog"
     ],
     "zamax_max_unroll_width_AVX": [
-      "src/idxdBLAS/zamax_sub.ccog"
+      "src/binnedBLAS/zamax_sub.ccog"
     ],
     "zamax_max_unroll_width_SISD": [
-      "src/idxdBLAS/zamax_sub.ccog"
+      "src/binnedBLAS/zamax_sub.ccog"
     ],
     "zamax_max_unroll_width_SSE": [
-      "src/idxdBLAS/zamax_sub.ccog"
+      "src/binnedBLAS/zamax_sub.ccog"
     ],
     "zamaxm_max_unroll_width_AVX": [
-      "src/idxdBLAS/zamaxm_sub.ccog"
+      "src/binnedBLAS/zamaxm_sub.ccog"
     ],
     "zamaxm_max_unroll_width_SISD": [
-      "src/idxdBLAS/zamaxm_sub.ccog"
+      "src/binnedBLAS/zamaxm_sub.ccog"
     ],
     "zamaxm_max_unroll_width_SSE": [
-      "src/idxdBLAS/zamaxm_sub.ccog"
+      "src/binnedBLAS/zamaxm_sub.ccog"
+    ],
+    "zbzgemm_block_size_XYT_BLOCK": [
+      "src/binnedBLAS/zbzgemm.ccog"
+    ],
+    "zbzgemm_block_size_XY_BLOCK": [
+      "src/binnedBLAS/zbzgemm.ccog"
+    ],
+    "zbzgemm_block_size_YT_BLOCK": [
+      "src/binnedBLAS/zbzgemm.ccog"
+    ],
+    "zbzgemm_block_size_Y_BLOCK": [
+      "src/binnedBLAS/zbzgemm.ccog"
+    ],
+    "zbzgemv_block_size_T_BLOCK": [
+      "src/binnedBLAS/zbzgemv.ccog"
+    ],
+    "zbzgemv_block_size_XYT_BLOCK": [
+      "src/binnedBLAS/zbzgemv.ccog"
+    ],
+    "zbzgemv_block_size_XY_BLOCK": [
+      "src/binnedBLAS/zbzgemv.ccog"
+    ],
+    "zbzgemv_block_size_YT_BLOCK": [
+      "src/binnedBLAS/zbzgemv.ccog"
+    ],
+    "zbzgemv_block_size_Y_BLOCK": [
+      "src/binnedBLAS/zbzgemv.ccog"
     ],
     "zdepositDotC_expand_AVX_fold_2": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_expand_AVX_fold_3": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_expand_AVX_fold_4": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_expand_SISD_fold_2": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_expand_SISD_fold_3": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_expand_SISD_fold_4": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_expand_SSE_fold_2": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_expand_SSE_fold_3": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_expand_SSE_fold_4": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_pipe_width_AVX_fold_0": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_pipe_width_AVX_fold_2": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_pipe_width_AVX_fold_3": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_pipe_width_AVX_fold_4": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_pipe_width_SISD_fold_0": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_pipe_width_SISD_fold_2": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_pipe_width_SISD_fold_3": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_pipe_width_SISD_fold_4": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_pipe_width_SSE_fold_0": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_pipe_width_SSE_fold_2": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_pipe_width_SSE_fold_3": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_pipe_width_SSE_fold_4": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_unroll_width_AVX_fold_0": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_unroll_width_AVX_fold_2": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_unroll_width_AVX_fold_3": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_unroll_width_AVX_fold_4": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_unroll_width_SISD_fold_0": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_unroll_width_SISD_fold_2": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_unroll_width_SISD_fold_3": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_unroll_width_SISD_fold_4": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_unroll_width_SSE_fold_0": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_unroll_width_SSE_fold_2": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_unroll_width_SSE_fold_3": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotC_max_unroll_width_SSE_fold_4": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zdepositDotU_expand_AVX_fold_2": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_expand_AVX_fold_3": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_expand_AVX_fold_4": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_expand_SISD_fold_2": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_expand_SISD_fold_3": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_expand_SISD_fold_4": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_expand_SSE_fold_2": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_expand_SSE_fold_3": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_expand_SSE_fold_4": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_pipe_width_AVX_fold_0": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_pipe_width_AVX_fold_2": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_pipe_width_AVX_fold_3": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_pipe_width_AVX_fold_4": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_pipe_width_SISD_fold_0": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_pipe_width_SISD_fold_2": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_pipe_width_SISD_fold_3": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_pipe_width_SISD_fold_4": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_pipe_width_SSE_fold_0": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_pipe_width_SSE_fold_2": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_pipe_width_SSE_fold_3": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_pipe_width_SSE_fold_4": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_unroll_width_AVX_fold_0": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_unroll_width_AVX_fold_2": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_unroll_width_AVX_fold_3": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_unroll_width_AVX_fold_4": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_unroll_width_SISD_fold_0": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_unroll_width_SISD_fold_2": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_unroll_width_SISD_fold_3": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_unroll_width_SISD_fold_4": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_unroll_width_SSE_fold_0": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_unroll_width_SSE_fold_2": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_unroll_width_SSE_fold_3": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositDotU_max_unroll_width_SSE_fold_4": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zdepositSum_expand_AVX_fold_2": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_expand_AVX_fold_3": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_expand_AVX_fold_4": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_expand_SISD_fold_2": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_expand_SISD_fold_3": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_expand_SISD_fold_4": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_expand_SSE_fold_2": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_expand_SSE_fold_3": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_expand_SSE_fold_4": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_pipe_width_AVX_fold_0": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_pipe_width_AVX_fold_2": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_pipe_width_AVX_fold_3": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_pipe_width_AVX_fold_4": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_pipe_width_SISD_fold_0": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_pipe_width_SISD_fold_2": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_pipe_width_SISD_fold_3": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_pipe_width_SISD_fold_4": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_pipe_width_SSE_fold_0": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_pipe_width_SSE_fold_2": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_pipe_width_SSE_fold_3": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_pipe_width_SSE_fold_4": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_unroll_width_AVX_fold_0": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_unroll_width_AVX_fold_2": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_unroll_width_AVX_fold_3": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_unroll_width_AVX_fold_4": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_unroll_width_SISD_fold_0": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_unroll_width_SISD_fold_2": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_unroll_width_SISD_fold_3": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_unroll_width_SISD_fold_4": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_unroll_width_SSE_fold_0": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_unroll_width_SSE_fold_2": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_unroll_width_SSE_fold_3": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zdepositSum_max_unroll_width_SSE_fold_4": [
-      "src/idxdBLAS/zmzsum.ccog"
-    ],
-    "zizgemm_block_size_XYT_BLOCK": [
-      "src/idxdBLAS/zizgemm.ccog"
-    ],
-    "zizgemm_block_size_XY_BLOCK": [
-      "src/idxdBLAS/zizgemm.ccog"
-    ],
-    "zizgemm_block_size_YT_BLOCK": [
-      "src/idxdBLAS/zizgemm.ccog"
-    ],
-    "zizgemm_block_size_Y_BLOCK": [
-      "src/idxdBLAS/zizgemm.ccog"
-    ],
-    "zizgemv_block_size_T_BLOCK": [
-      "src/idxdBLAS/zizgemv.ccog"
-    ],
-    "zizgemv_block_size_XYT_BLOCK": [
-      "src/idxdBLAS/zizgemv.ccog"
-    ],
-    "zizgemv_block_size_XY_BLOCK": [
-      "src/idxdBLAS/zizgemv.ccog"
-    ],
-    "zizgemv_block_size_YT_BLOCK": [
-      "src/idxdBLAS/zizgemv.ccog"
-    ],
-    "zizgemv_block_size_Y_BLOCK": [
-      "src/idxdBLAS/zizgemv.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ],
     "zmzdotc_block_size_N_block_MAX": [
-      "src/idxdBLAS/zmzdotc.ccog"
+      "src/binnedBLAS/zmzdotc.ccog"
     ],
     "zmzdotu_block_size_N_block_MAX": [
-      "src/idxdBLAS/zmzdotu.ccog"
+      "src/binnedBLAS/zmzdotu.ccog"
     ],
     "zmzsum_block_size_N_block_MAX": [
-      "src/idxdBLAS/zmzsum.ccog"
+      "src/binnedBLAS/zmzsum.ccog"
     ]
   },
   "backward_metrics": {
@@ -2036,6 +2036,33 @@
     "camaxm_max_unroll_width_SSE": [
       "bench_camaxm"
     ],
+    "cbcgemm_block_size_XYT_BLOCK": [
+      "bench_rcgemm_AvgTransA_AvgTransB_fold_3"
+    ],
+    "cbcgemm_block_size_XY_BLOCK": [
+      "bench_rcgemm_AvgTransA_AvgTransB_fold_3"
+    ],
+    "cbcgemm_block_size_YT_BLOCK": [
+      "bench_rcgemm_AvgTransA_AvgTransB_fold_3"
+    ],
+    "cbcgemm_block_size_Y_BLOCK": [
+      "bench_rcgemm_AvgTransA_AvgTransB_fold_3"
+    ],
+    "cbcgemv_block_size_T_BLOCK": [
+      "bench_rcgemv_TransA_fold_3"
+    ],
+    "cbcgemv_block_size_XYT_BLOCK": [
+      "bench_rcgemv_TransA_fold_3"
+    ],
+    "cbcgemv_block_size_XY_BLOCK": [
+      "bench_rcgemv_fold_3"
+    ],
+    "cbcgemv_block_size_YT_BLOCK": [
+      "bench_rcgemv_TransA_fold_3"
+    ],
+    "cbcgemv_block_size_Y_BLOCK": [
+      "bench_rcgemv_fold_3"
+    ],
     "cdepositDotC_expand_AVX_fold_2": [
       "bench_rcdotc_fold_2"
     ],
@@ -2333,33 +2360,6 @@
     "cdepositSum_max_unroll_width_SSE_fold_4": [
       "bench_rcsum_fold_4"
     ],
-    "cicgemm_block_size_XYT_BLOCK": [
-      "bench_rcgemm_AvgTransA_AvgTransB_fold_3"
-    ],
-    "cicgemm_block_size_XY_BLOCK": [
-      "bench_rcgemm_AvgTransA_AvgTransB_fold_3"
-    ],
-    "cicgemm_block_size_YT_BLOCK": [
-      "bench_rcgemm_AvgTransA_AvgTransB_fold_3"
-    ],
-    "cicgemm_block_size_Y_BLOCK": [
-      "bench_rcgemm_AvgTransA_AvgTransB_fold_3"
-    ],
-    "cicgemv_block_size_T_BLOCK": [
-      "bench_rcgemv_TransA_fold_3"
-    ],
-    "cicgemv_block_size_XYT_BLOCK": [
-      "bench_rcgemv_TransA_fold_3"
-    ],
-    "cicgemv_block_size_XY_BLOCK": [
-      "bench_rcgemv_fold_3"
-    ],
-    "cicgemv_block_size_YT_BLOCK": [
-      "bench_rcgemv_TransA_fold_3"
-    ],
-    "cicgemv_block_size_Y_BLOCK": [
-      "bench_rcgemv_fold_3"
-    ],
     "cmcdotc_block_size_N_block_MAX": [
       "bench_rcdotc_fold_3"
     ],
@@ -2386,6 +2386,33 @@
     ],
     "damaxm_max_unroll_width_SSE": [
       "bench_damaxm"
+    ],
+    "dbdgemm_block_size_XYT_BLOCK": [
+      "bench_rdgemm_AvgTransA_AvgTransB_fold_3"
+    ],
+    "dbdgemm_block_size_XY_BLOCK": [
+      "bench_rdgemm_AvgTransA_AvgTransB_fold_3"
+    ],
+    "dbdgemm_block_size_YT_BLOCK": [
+      "bench_rdgemm_AvgTransA_AvgTransB_fold_3"
+    ],
+    "dbdgemm_block_size_Y_BLOCK": [
+      "bench_rdgemm_AvgTransA_AvgTransB_fold_3"
+    ],
+    "dbdgemv_block_size_T_BLOCK": [
+      "bench_rdgemv_TransA_fold_3"
+    ],
+    "dbdgemv_block_size_XYT_BLOCK": [
+      "bench_rdgemv_fold_TransA_3"
+    ],
+    "dbdgemv_block_size_XY_BLOCK": [
+      "bench_rdgemv_fold_3"
+    ],
+    "dbdgemv_block_size_YT_BLOCK": [
+      "bench_rdgemv_fold_TransA_3"
+    ],
+    "dbdgemv_block_size_Y_BLOCK": [
+      "bench_rdgemv_fold_3"
     ],
     "ddepositASum_expand_AVX_fold_2": [
       "bench_rdasum_fold_2"
@@ -2783,33 +2810,6 @@
     "ddepositSum_max_unroll_width_SSE_fold_4": [
       "bench_rdsum_fold_4"
     ],
-    "didgemm_block_size_XYT_BLOCK": [
-      "bench_rdgemm_AvgTransA_AvgTransB_fold_3"
-    ],
-    "didgemm_block_size_XY_BLOCK": [
-      "bench_rdgemm_AvgTransA_AvgTransB_fold_3"
-    ],
-    "didgemm_block_size_YT_BLOCK": [
-      "bench_rdgemm_AvgTransA_AvgTransB_fold_3"
-    ],
-    "didgemm_block_size_Y_BLOCK": [
-      "bench_rdgemm_AvgTransA_AvgTransB_fold_3"
-    ],
-    "didgemv_block_size_T_BLOCK": [
-      "bench_rdgemv_TransA_fold_3"
-    ],
-    "didgemv_block_size_XYT_BLOCK": [
-      "bench_rdgemv_fold_TransA_3"
-    ],
-    "didgemv_block_size_XY_BLOCK": [
-      "bench_rdgemv_fold_3"
-    ],
-    "didgemv_block_size_YT_BLOCK": [
-      "bench_rdgemv_fold_TransA_3"
-    ],
-    "didgemv_block_size_Y_BLOCK": [
-      "bench_rdgemv_fold_3"
-    ],
     "dmdasum_block_size_N_block_MAX": [
       "bench_rdasum_fold_3"
     ],
@@ -3043,6 +3043,33 @@
     ],
     "samaxm_max_unroll_width_SSE": [
       "bench_samaxm"
+    ],
+    "sbsgemm_block_size_XYT_BLOCK": [
+      "bench_rsgemm_AvgTransA_AvgTransB_fold_3"
+    ],
+    "sbsgemm_block_size_XY_BLOCK": [
+      "bench_rsgemm_AvgTransA_AvgTransB_fold_3"
+    ],
+    "sbsgemm_block_size_YT_BLOCK": [
+      "bench_rsgemm_AvgTransA_AvgTransB_fold_3"
+    ],
+    "sbsgemm_block_size_Y_BLOCK": [
+      "bench_rsgemm_AvgTransA_AvgTransB_fold_3"
+    ],
+    "sbsgemv_block_size_T_BLOCK": [
+      "bench_rsgemv_TransA_fold_3"
+    ],
+    "sbsgemv_block_size_XYT_BLOCK": [
+      "bench_rsgemv_fold_TransA_3"
+    ],
+    "sbsgemv_block_size_XY_BLOCK": [
+      "bench_rsgemv_fold_3"
+    ],
+    "sbsgemv_block_size_YT_BLOCK": [
+      "bench_rsgemv_fold_TransA_3"
+    ],
+    "sbsgemv_block_size_Y_BLOCK": [
+      "bench_rsgemv_fold_3"
     ],
     "scdepositASum_expand_AVX_fold_2": [
       "bench_rscasum_fold_2"
@@ -3638,33 +3665,6 @@
     "sdepositSum_max_unroll_width_SSE_fold_4": [
       "bench_rssum_fold_4"
     ],
-    "sisgemm_block_size_XYT_BLOCK": [
-      "bench_rsgemm_AvgTransA_AvgTransB_fold_3"
-    ],
-    "sisgemm_block_size_XY_BLOCK": [
-      "bench_rsgemm_AvgTransA_AvgTransB_fold_3"
-    ],
-    "sisgemm_block_size_YT_BLOCK": [
-      "bench_rsgemm_AvgTransA_AvgTransB_fold_3"
-    ],
-    "sisgemm_block_size_Y_BLOCK": [
-      "bench_rsgemm_AvgTransA_AvgTransB_fold_3"
-    ],
-    "sisgemv_block_size_T_BLOCK": [
-      "bench_rsgemv_TransA_fold_3"
-    ],
-    "sisgemv_block_size_XYT_BLOCK": [
-      "bench_rsgemv_fold_TransA_3"
-    ],
-    "sisgemv_block_size_XY_BLOCK": [
-      "bench_rsgemv_fold_3"
-    ],
-    "sisgemv_block_size_YT_BLOCK": [
-      "bench_rsgemv_fold_TransA_3"
-    ],
-    "sisgemv_block_size_Y_BLOCK": [
-      "bench_rsgemv_fold_3"
-    ],
     "smcasum_block_size_N_block_MAX": [
       "bench_rscasum_fold_3"
     ],
@@ -3700,6 +3700,33 @@
     ],
     "zamaxm_max_unroll_width_SSE": [
       "bench_zamaxm"
+    ],
+    "zbzgemm_block_size_XYT_BLOCK": [
+      "bench_rzgemm_AvgTransA_AvgTransB_fold_3"
+    ],
+    "zbzgemm_block_size_XY_BLOCK": [
+      "bench_rzgemm_AvgTransA_AvgTransB_fold_3"
+    ],
+    "zbzgemm_block_size_YT_BLOCK": [
+      "bench_rzgemm_AvgTransA_AvgTransB_fold_3"
+    ],
+    "zbzgemm_block_size_Y_BLOCK": [
+      "bench_rzgemm_AvgTransA_AvgTransB_fold_3"
+    ],
+    "zbzgemv_block_size_T_BLOCK": [
+      "bench_rzgemv_TransA_fold_3"
+    ],
+    "zbzgemv_block_size_XYT_BLOCK": [
+      "bench_rzgemv_TransA_fold_3"
+    ],
+    "zbzgemv_block_size_XY_BLOCK": [
+      "bench_rzgemv_fold_3"
+    ],
+    "zbzgemv_block_size_YT_BLOCK": [
+      "bench_rzgemv_TransA_fold_3"
+    ],
+    "zbzgemv_block_size_Y_BLOCK": [
+      "bench_rzgemv_fold_3"
     ],
     "zdepositDotC_expand_AVX_fold_2": [
       "bench_rzdotc_fold_2"
@@ -3998,33 +4025,6 @@
     "zdepositSum_max_unroll_width_SSE_fold_4": [
       "bench_rzsum_fold_4"
     ],
-    "zizgemm_block_size_XYT_BLOCK": [
-      "bench_rzgemm_AvgTransA_AvgTransB_fold_3"
-    ],
-    "zizgemm_block_size_XY_BLOCK": [
-      "bench_rzgemm_AvgTransA_AvgTransB_fold_3"
-    ],
-    "zizgemm_block_size_YT_BLOCK": [
-      "bench_rzgemm_AvgTransA_AvgTransB_fold_3"
-    ],
-    "zizgemm_block_size_Y_BLOCK": [
-      "bench_rzgemm_AvgTransA_AvgTransB_fold_3"
-    ],
-    "zizgemv_block_size_T_BLOCK": [
-      "bench_rzgemv_TransA_fold_3"
-    ],
-    "zizgemv_block_size_XYT_BLOCK": [
-      "bench_rzgemv_TransA_fold_3"
-    ],
-    "zizgemv_block_size_XY_BLOCK": [
-      "bench_rzgemv_fold_3"
-    ],
-    "zizgemv_block_size_YT_BLOCK": [
-      "bench_rzgemv_TransA_fold_3"
-    ],
-    "zizgemv_block_size_Y_BLOCK": [
-      "bench_rzgemv_fold_3"
-    ],
     "zmzdotc_block_size_N_block_MAX": [
       "bench_rzdotc_fold_3"
     ],
@@ -4036,30 +4036,30 @@
     ]
   },
   "forward_dependencies": {
-    "src/idxdBLAS/camax_sub.ccog": [
+    "src/binnedBLAS/camax_sub.ccog": [
       "camax_max_unroll_width_AVX",
       "camax_max_unroll_width_SISD",
       "camax_max_unroll_width_SSE"
     ],
-    "src/idxdBLAS/camaxm_sub.ccog": [
+    "src/binnedBLAS/camaxm_sub.ccog": [
       "camaxm_max_unroll_width_AVX",
       "camaxm_max_unroll_width_SISD",
       "camaxm_max_unroll_width_SSE"
     ],
-    "src/idxdBLAS/cicgemm.ccog": [
-      "cicgemm_block_size_XYT_BLOCK",
-      "cicgemm_block_size_XY_BLOCK",
-      "cicgemm_block_size_YT_BLOCK",
-      "cicgemm_block_size_Y_BLOCK"
+    "src/binnedBLAS/cbcgemm.ccog": [
+      "cbcgemm_block_size_XYT_BLOCK",
+      "cbcgemm_block_size_XY_BLOCK",
+      "cbcgemm_block_size_YT_BLOCK",
+      "cbcgemm_block_size_Y_BLOCK"
     ],
-    "src/idxdBLAS/cicgemv.ccog": [
-      "cicgemv_block_size_T_BLOCK",
-      "cicgemv_block_size_XYT_BLOCK",
-      "cicgemv_block_size_XY_BLOCK",
-      "cicgemv_block_size_YT_BLOCK",
-      "cicgemv_block_size_Y_BLOCK"
+    "src/binnedBLAS/cbcgemv.ccog": [
+      "cbcgemv_block_size_T_BLOCK",
+      "cbcgemv_block_size_XYT_BLOCK",
+      "cbcgemv_block_size_XY_BLOCK",
+      "cbcgemv_block_size_YT_BLOCK",
+      "cbcgemv_block_size_Y_BLOCK"
     ],
-    "src/idxdBLAS/cmcdotc.ccog": [
+    "src/binnedBLAS/cmcdotc.ccog": [
       "cdepositDotC_expand_AVX_fold_2",
       "cdepositDotC_expand_AVX_fold_3",
       "cdepositDotC_expand_AVX_fold_4",
@@ -4095,7 +4095,7 @@
       "cdepositDotC_max_unroll_width_SSE_fold_4",
       "cmcdotc_block_size_N_block_MAX"
     ],
-    "src/idxdBLAS/cmcdotu.ccog": [
+    "src/binnedBLAS/cmcdotu.ccog": [
       "cdepositDotU_expand_AVX_fold_2",
       "cdepositDotU_expand_AVX_fold_3",
       "cdepositDotU_expand_AVX_fold_4",
@@ -4131,7 +4131,7 @@
       "cdepositDotU_max_unroll_width_SSE_fold_4",
       "cmcdotu_block_size_N_block_MAX"
     ],
-    "src/idxdBLAS/cmcsum.ccog": [
+    "src/binnedBLAS/cmcsum.ccog": [
       "cdepositSum_expand_AVX_fold_2",
       "cdepositSum_expand_AVX_fold_3",
       "cdepositSum_expand_AVX_fold_4",
@@ -4167,30 +4167,30 @@
       "cdepositSum_max_unroll_width_SSE_fold_4",
       "cmcsum_block_size_N_block_MAX"
     ],
-    "src/idxdBLAS/damax.ccog": [
+    "src/binnedBLAS/damax.ccog": [
       "damax_max_unroll_width_AVX",
       "damax_max_unroll_width_SISD",
       "damax_max_unroll_width_SSE"
     ],
-    "src/idxdBLAS/damaxm.ccog": [
+    "src/binnedBLAS/damaxm.ccog": [
       "damaxm_max_unroll_width_AVX",
       "damaxm_max_unroll_width_SISD",
       "damaxm_max_unroll_width_SSE"
     ],
-    "src/idxdBLAS/didgemm.ccog": [
-      "didgemm_block_size_XYT_BLOCK",
-      "didgemm_block_size_XY_BLOCK",
-      "didgemm_block_size_YT_BLOCK",
-      "didgemm_block_size_Y_BLOCK"
+    "src/binnedBLAS/dbdgemm.ccog": [
+      "dbdgemm_block_size_XYT_BLOCK",
+      "dbdgemm_block_size_XY_BLOCK",
+      "dbdgemm_block_size_YT_BLOCK",
+      "dbdgemm_block_size_Y_BLOCK"
     ],
-    "src/idxdBLAS/didgemv.ccog": [
-      "didgemv_block_size_T_BLOCK",
-      "didgemv_block_size_XYT_BLOCK",
-      "didgemv_block_size_XY_BLOCK",
-      "didgemv_block_size_YT_BLOCK",
-      "didgemv_block_size_Y_BLOCK"
+    "src/binnedBLAS/dbdgemv.ccog": [
+      "dbdgemv_block_size_T_BLOCK",
+      "dbdgemv_block_size_XYT_BLOCK",
+      "dbdgemv_block_size_XY_BLOCK",
+      "dbdgemv_block_size_YT_BLOCK",
+      "dbdgemv_block_size_Y_BLOCK"
     ],
-    "src/idxdBLAS/dmdasum.ccog": [
+    "src/binnedBLAS/dmdasum.ccog": [
       "ddepositASum_expand_AVX_fold_2",
       "ddepositASum_expand_AVX_fold_3",
       "ddepositASum_expand_AVX_fold_4",
@@ -4226,7 +4226,7 @@
       "ddepositASum_max_unroll_width_SSE_fold_4",
       "dmdasum_block_size_N_block_MAX"
     ],
-    "src/idxdBLAS/dmddot.ccog": [
+    "src/binnedBLAS/dmddot.ccog": [
       "ddepositDot_expand_AVX_fold_2",
       "ddepositDot_expand_AVX_fold_3",
       "ddepositDot_expand_AVX_fold_4",
@@ -4262,7 +4262,7 @@
       "ddepositDot_max_unroll_width_SSE_fold_4",
       "dmddot_block_size_N_block_MAX"
     ],
-    "src/idxdBLAS/dmdssq.ccog": [
+    "src/binnedBLAS/dmdssq.ccog": [
       "ddepositSSq_expand_AVX_fold_2",
       "ddepositSSq_expand_AVX_fold_3",
       "ddepositSSq_expand_AVX_fold_4",
@@ -4298,7 +4298,7 @@
       "ddepositSSq_max_unroll_width_SSE_fold_4",
       "dmdssq_block_size_N_block_MAX"
     ],
-    "src/idxdBLAS/dmdsum.ccog": [
+    "src/binnedBLAS/dmdsum.ccog": [
       "ddepositSum_expand_AVX_fold_2",
       "ddepositSum_expand_AVX_fold_3",
       "ddepositSum_expand_AVX_fold_4",
@@ -4334,7 +4334,7 @@
       "ddepositSum_max_unroll_width_SSE_fold_4",
       "dmdsum_block_size_N_block_MAX"
     ],
-    "src/idxdBLAS/dmzasum.ccog": [
+    "src/binnedBLAS/dmzasum.ccog": [
       "dmzasum_block_size_N_block_MAX",
       "dzdepositASum_expand_AVX_fold_2",
       "dzdepositASum_expand_AVX_fold_3",
@@ -4370,7 +4370,7 @@
       "dzdepositASum_max_unroll_width_SSE_fold_3",
       "dzdepositASum_max_unroll_width_SSE_fold_4"
     ],
-    "src/idxdBLAS/dmzssq.ccog": [
+    "src/binnedBLAS/dmzssq.ccog": [
       "dmzssq_block_size_N_block_MAX",
       "dzdepositSSq_expand_AVX_fold_2",
       "dzdepositSSq_expand_AVX_fold_3",
@@ -4406,30 +4406,30 @@
       "dzdepositSSq_max_unroll_width_SSE_fold_3",
       "dzdepositSSq_max_unroll_width_SSE_fold_4"
     ],
-    "src/idxdBLAS/samax.ccog": [
+    "src/binnedBLAS/samax.ccog": [
       "samax_max_unroll_width_AVX",
       "samax_max_unroll_width_SISD",
       "samax_max_unroll_width_SSE"
     ],
-    "src/idxdBLAS/samaxm.ccog": [
+    "src/binnedBLAS/samaxm.ccog": [
       "samaxm_max_unroll_width_AVX",
       "samaxm_max_unroll_width_SISD",
       "samaxm_max_unroll_width_SSE"
     ],
-    "src/idxdBLAS/sisgemm.ccog": [
-      "sisgemm_block_size_XYT_BLOCK",
-      "sisgemm_block_size_XY_BLOCK",
-      "sisgemm_block_size_YT_BLOCK",
-      "sisgemm_block_size_Y_BLOCK"
+    "src/binnedBLAS/sbsgemm.ccog": [
+      "sbsgemm_block_size_XYT_BLOCK",
+      "sbsgemm_block_size_XY_BLOCK",
+      "sbsgemm_block_size_YT_BLOCK",
+      "sbsgemm_block_size_Y_BLOCK"
     ],
-    "src/idxdBLAS/sisgemv.ccog": [
-      "sisgemv_block_size_T_BLOCK",
-      "sisgemv_block_size_XYT_BLOCK",
-      "sisgemv_block_size_XY_BLOCK",
-      "sisgemv_block_size_YT_BLOCK",
-      "sisgemv_block_size_Y_BLOCK"
+    "src/binnedBLAS/sbsgemv.ccog": [
+      "sbsgemv_block_size_T_BLOCK",
+      "sbsgemv_block_size_XYT_BLOCK",
+      "sbsgemv_block_size_XY_BLOCK",
+      "sbsgemv_block_size_YT_BLOCK",
+      "sbsgemv_block_size_Y_BLOCK"
     ],
-    "src/idxdBLAS/smcasum.ccog": [
+    "src/binnedBLAS/smcasum.ccog": [
       "scdepositASum_expand_AVX_fold_2",
       "scdepositASum_expand_AVX_fold_3",
       "scdepositASum_expand_AVX_fold_4",
@@ -4465,7 +4465,7 @@
       "scdepositASum_max_unroll_width_SSE_fold_4",
       "smcasum_block_size_N_block_MAX"
     ],
-    "src/idxdBLAS/smcssq.ccog": [
+    "src/binnedBLAS/smcssq.ccog": [
       "scdepositSSq_expand_AVX_fold_2",
       "scdepositSSq_expand_AVX_fold_3",
       "scdepositSSq_expand_AVX_fold_4",
@@ -4501,7 +4501,7 @@
       "scdepositSSq_max_unroll_width_SSE_fold_4",
       "smcssq_block_size_N_block_MAX"
     ],
-    "src/idxdBLAS/smsasum.ccog": [
+    "src/binnedBLAS/smsasum.ccog": [
       "sdepositASum_expand_AVX_fold_2",
       "sdepositASum_expand_AVX_fold_3",
       "sdepositASum_expand_AVX_fold_4",
@@ -4537,7 +4537,7 @@
       "sdepositASum_max_unroll_width_SSE_fold_4",
       "smsasum_block_size_N_block_MAX"
     ],
-    "src/idxdBLAS/smsdot.ccog": [
+    "src/binnedBLAS/smsdot.ccog": [
       "sdepositDot_expand_AVX_fold_2",
       "sdepositDot_expand_AVX_fold_3",
       "sdepositDot_expand_AVX_fold_4",
@@ -4573,7 +4573,7 @@
       "sdepositDot_max_unroll_width_SSE_fold_4",
       "smsdot_block_size_N_block_MAX"
     ],
-    "src/idxdBLAS/smsssq.ccog": [
+    "src/binnedBLAS/smsssq.ccog": [
       "sdepositSSq_expand_AVX_fold_2",
       "sdepositSSq_expand_AVX_fold_3",
       "sdepositSSq_expand_AVX_fold_4",
@@ -4609,7 +4609,7 @@
       "sdepositSSq_max_unroll_width_SSE_fold_4",
       "smsssq_block_size_N_block_MAX"
     ],
-    "src/idxdBLAS/smssum.ccog": [
+    "src/binnedBLAS/smssum.ccog": [
       "sdepositSum_expand_AVX_fold_2",
       "sdepositSum_expand_AVX_fold_3",
       "sdepositSum_expand_AVX_fold_4",
@@ -4645,30 +4645,30 @@
       "sdepositSum_max_unroll_width_SSE_fold_4",
       "smssum_block_size_N_block_MAX"
     ],
-    "src/idxdBLAS/zamax_sub.ccog": [
+    "src/binnedBLAS/zamax_sub.ccog": [
       "zamax_max_unroll_width_AVX",
       "zamax_max_unroll_width_SISD",
       "zamax_max_unroll_width_SSE"
     ],
-    "src/idxdBLAS/zamaxm_sub.ccog": [
+    "src/binnedBLAS/zamaxm_sub.ccog": [
       "zamaxm_max_unroll_width_AVX",
       "zamaxm_max_unroll_width_SISD",
       "zamaxm_max_unroll_width_SSE"
     ],
-    "src/idxdBLAS/zizgemm.ccog": [
-      "zizgemm_block_size_XYT_BLOCK",
-      "zizgemm_block_size_XY_BLOCK",
-      "zizgemm_block_size_YT_BLOCK",
-      "zizgemm_block_size_Y_BLOCK"
+    "src/binnedBLAS/zbzgemm.ccog": [
+      "zbzgemm_block_size_XYT_BLOCK",
+      "zbzgemm_block_size_XY_BLOCK",
+      "zbzgemm_block_size_YT_BLOCK",
+      "zbzgemm_block_size_Y_BLOCK"
     ],
-    "src/idxdBLAS/zizgemv.ccog": [
-      "zizgemv_block_size_T_BLOCK",
-      "zizgemv_block_size_XYT_BLOCK",
-      "zizgemv_block_size_XY_BLOCK",
-      "zizgemv_block_size_YT_BLOCK",
-      "zizgemv_block_size_Y_BLOCK"
+    "src/binnedBLAS/zbzgemv.ccog": [
+      "zbzgemv_block_size_T_BLOCK",
+      "zbzgemv_block_size_XYT_BLOCK",
+      "zbzgemv_block_size_XY_BLOCK",
+      "zbzgemv_block_size_YT_BLOCK",
+      "zbzgemv_block_size_Y_BLOCK"
     ],
-    "src/idxdBLAS/zmzdotc.ccog": [
+    "src/binnedBLAS/zmzdotc.ccog": [
       "zdepositDotC_expand_AVX_fold_2",
       "zdepositDotC_expand_AVX_fold_3",
       "zdepositDotC_expand_AVX_fold_4",
@@ -4704,7 +4704,7 @@
       "zdepositDotC_max_unroll_width_SSE_fold_4",
       "zmzdotc_block_size_N_block_MAX"
     ],
-    "src/idxdBLAS/zmzdotu.ccog": [
+    "src/binnedBLAS/zmzdotu.ccog": [
       "zdepositDotU_expand_AVX_fold_2",
       "zdepositDotU_expand_AVX_fold_3",
       "zdepositDotU_expand_AVX_fold_4",
@@ -4740,7 +4740,7 @@
       "zdepositDotU_max_unroll_width_SSE_fold_4",
       "zmzdotu_block_size_N_block_MAX"
     ],
-    "src/idxdBLAS/zmzsum.ccog": [
+    "src/binnedBLAS/zmzsum.ccog": [
       "zdepositSum_expand_AVX_fold_2",
       "zdepositSum_expand_AVX_fold_3",
       "zdepositSum_expand_AVX_fold_4",
@@ -4883,19 +4883,19 @@
       "cdepositDotU_max_unroll_width_SSE_fold_4"
     ],
     "bench_rcgemm_AvgTransA_AvgTransB_fold_3": [
-      "cicgemm_block_size_XYT_BLOCK",
-      "cicgemm_block_size_XY_BLOCK",
-      "cicgemm_block_size_YT_BLOCK",
-      "cicgemm_block_size_Y_BLOCK"
+      "cbcgemm_block_size_XYT_BLOCK",
+      "cbcgemm_block_size_XY_BLOCK",
+      "cbcgemm_block_size_YT_BLOCK",
+      "cbcgemm_block_size_Y_BLOCK"
     ],
     "bench_rcgemv_TransA_fold_3": [
-      "cicgemv_block_size_T_BLOCK",
-      "cicgemv_block_size_XYT_BLOCK",
-      "cicgemv_block_size_YT_BLOCK"
+      "cbcgemv_block_size_T_BLOCK",
+      "cbcgemv_block_size_XYT_BLOCK",
+      "cbcgemv_block_size_YT_BLOCK"
     ],
     "bench_rcgemv_fold_3": [
-      "cicgemv_block_size_XY_BLOCK",
-      "cicgemv_block_size_Y_BLOCK"
+      "cbcgemv_block_size_XY_BLOCK",
+      "cbcgemv_block_size_Y_BLOCK"
     ],
     "bench_rcsum_fold_0": [
       "cdepositSum_max_pipe_width_AVX_fold_0",
@@ -5024,21 +5024,21 @@
       "ddepositDot_max_unroll_width_SSE_fold_4"
     ],
     "bench_rdgemm_AvgTransA_AvgTransB_fold_3": [
-      "didgemm_block_size_XYT_BLOCK",
-      "didgemm_block_size_XY_BLOCK",
-      "didgemm_block_size_YT_BLOCK",
-      "didgemm_block_size_Y_BLOCK"
+      "dbdgemm_block_size_XYT_BLOCK",
+      "dbdgemm_block_size_XY_BLOCK",
+      "dbdgemm_block_size_YT_BLOCK",
+      "dbdgemm_block_size_Y_BLOCK"
     ],
     "bench_rdgemv_TransA_fold_3": [
-      "didgemv_block_size_T_BLOCK"
+      "dbdgemv_block_size_T_BLOCK"
     ],
     "bench_rdgemv_fold_3": [
-      "didgemv_block_size_XY_BLOCK",
-      "didgemv_block_size_Y_BLOCK"
+      "dbdgemv_block_size_XY_BLOCK",
+      "dbdgemv_block_size_Y_BLOCK"
     ],
     "bench_rdgemv_fold_TransA_3": [
-      "didgemv_block_size_XYT_BLOCK",
-      "didgemv_block_size_YT_BLOCK"
+      "dbdgemv_block_size_XYT_BLOCK",
+      "dbdgemv_block_size_YT_BLOCK"
     ],
     "bench_rdnrm2_fold_0": [
       "ddepositSSq_max_pipe_width_AVX_fold_0",
@@ -5377,21 +5377,21 @@
       "sdepositDot_max_unroll_width_SSE_fold_4"
     ],
     "bench_rsgemm_AvgTransA_AvgTransB_fold_3": [
-      "sisgemm_block_size_XYT_BLOCK",
-      "sisgemm_block_size_XY_BLOCK",
-      "sisgemm_block_size_YT_BLOCK",
-      "sisgemm_block_size_Y_BLOCK"
+      "sbsgemm_block_size_XYT_BLOCK",
+      "sbsgemm_block_size_XY_BLOCK",
+      "sbsgemm_block_size_YT_BLOCK",
+      "sbsgemm_block_size_Y_BLOCK"
     ],
     "bench_rsgemv_TransA_fold_3": [
-      "sisgemv_block_size_T_BLOCK"
+      "sbsgemv_block_size_T_BLOCK"
     ],
     "bench_rsgemv_fold_3": [
-      "sisgemv_block_size_XY_BLOCK",
-      "sisgemv_block_size_Y_BLOCK"
+      "sbsgemv_block_size_XY_BLOCK",
+      "sbsgemv_block_size_Y_BLOCK"
     ],
     "bench_rsgemv_fold_TransA_3": [
-      "sisgemv_block_size_XYT_BLOCK",
-      "sisgemv_block_size_YT_BLOCK"
+      "sbsgemv_block_size_XYT_BLOCK",
+      "sbsgemv_block_size_YT_BLOCK"
     ],
     "bench_rsnrm2_fold_0": [
       "sdepositSSq_max_pipe_width_AVX_fold_0",
@@ -5562,19 +5562,19 @@
       "zdepositDotU_max_unroll_width_SSE_fold_4"
     ],
     "bench_rzgemm_AvgTransA_AvgTransB_fold_3": [
-      "zizgemm_block_size_XYT_BLOCK",
-      "zizgemm_block_size_XY_BLOCK",
-      "zizgemm_block_size_YT_BLOCK",
-      "zizgemm_block_size_Y_BLOCK"
+      "zbzgemm_block_size_XYT_BLOCK",
+      "zbzgemm_block_size_XY_BLOCK",
+      "zbzgemm_block_size_YT_BLOCK",
+      "zbzgemm_block_size_Y_BLOCK"
     ],
     "bench_rzgemv_TransA_fold_3": [
-      "zizgemv_block_size_T_BLOCK",
-      "zizgemv_block_size_XYT_BLOCK",
-      "zizgemv_block_size_YT_BLOCK"
+      "zbzgemv_block_size_T_BLOCK",
+      "zbzgemv_block_size_XYT_BLOCK",
+      "zbzgemv_block_size_YT_BLOCK"
     ],
     "bench_rzgemv_fold_3": [
-      "zizgemv_block_size_XY_BLOCK",
-      "zizgemv_block_size_Y_BLOCK"
+      "zbzgemv_block_size_XY_BLOCK",
+      "zbzgemv_block_size_Y_BLOCK"
     ],
     "bench_rzsum_fold_0": [
       "zdepositSum_max_pipe_width_AVX_fold_0",
@@ -5723,6 +5723,78 @@
           "SSE"
         ]
       ]
+    },
+    "cbcgemm_block_size_XYT_BLOCK": {
+      "default": 32768,
+      "flavor": "poweroftwo",
+      "maximum": 32768,
+      "minimum": 128,
+      "name": "cbcgemm_block_size_XYT_BLOCK",
+      "tags": []
+    },
+    "cbcgemm_block_size_XY_BLOCK": {
+      "default": 32768,
+      "flavor": "poweroftwo",
+      "maximum": 32768,
+      "minimum": 128,
+      "name": "cbcgemm_block_size_XY_BLOCK",
+      "tags": []
+    },
+    "cbcgemm_block_size_YT_BLOCK": {
+      "default": 128,
+      "flavor": "poweroftwo",
+      "maximum": 128,
+      "minimum": 1,
+      "name": "cbcgemm_block_size_YT_BLOCK",
+      "tags": []
+    },
+    "cbcgemm_block_size_Y_BLOCK": {
+      "default": 128,
+      "flavor": "poweroftwo",
+      "maximum": 128,
+      "minimum": 1,
+      "name": "cbcgemm_block_size_Y_BLOCK",
+      "tags": []
+    },
+    "cbcgemv_block_size_T_BLOCK": {
+      "default": 32,
+      "flavor": "poweroftwo",
+      "maximum": 32,
+      "minimum": 1,
+      "name": "cbcgemv_block_size_T_BLOCK",
+      "tags": []
+    },
+    "cbcgemv_block_size_XYT_BLOCK": {
+      "default": 32768,
+      "flavor": "poweroftwo",
+      "maximum": 32768,
+      "minimum": 128,
+      "name": "cbcgemv_block_size_XYT_BLOCK",
+      "tags": []
+    },
+    "cbcgemv_block_size_XY_BLOCK": {
+      "default": 32768,
+      "flavor": "poweroftwo",
+      "maximum": 32768,
+      "minimum": 128,
+      "name": "cbcgemv_block_size_XY_BLOCK",
+      "tags": []
+    },
+    "cbcgemv_block_size_YT_BLOCK": {
+      "default": 128,
+      "flavor": "poweroftwo",
+      "maximum": 128,
+      "minimum": 1,
+      "name": "cbcgemv_block_size_YT_BLOCK",
+      "tags": []
+    },
+    "cbcgemv_block_size_Y_BLOCK": {
+      "default": 128,
+      "flavor": "poweroftwo",
+      "maximum": 128,
+      "minimum": 1,
+      "name": "cbcgemv_block_size_Y_BLOCK",
+      "tags": []
     },
     "cdepositDotC_expand_AVX_fold_2": {
       "default": false,
@@ -6993,78 +7065,6 @@
         ]
       ]
     },
-    "cicgemm_block_size_XYT_BLOCK": {
-      "default": 32768,
-      "flavor": "poweroftwo",
-      "maximum": 32768,
-      "minimum": 128,
-      "name": "cicgemm_block_size_XYT_BLOCK",
-      "tags": []
-    },
-    "cicgemm_block_size_XY_BLOCK": {
-      "default": 32768,
-      "flavor": "poweroftwo",
-      "maximum": 32768,
-      "minimum": 128,
-      "name": "cicgemm_block_size_XY_BLOCK",
-      "tags": []
-    },
-    "cicgemm_block_size_YT_BLOCK": {
-      "default": 128,
-      "flavor": "poweroftwo",
-      "maximum": 128,
-      "minimum": 1,
-      "name": "cicgemm_block_size_YT_BLOCK",
-      "tags": []
-    },
-    "cicgemm_block_size_Y_BLOCK": {
-      "default": 128,
-      "flavor": "poweroftwo",
-      "maximum": 128,
-      "minimum": 1,
-      "name": "cicgemm_block_size_Y_BLOCK",
-      "tags": []
-    },
-    "cicgemv_block_size_T_BLOCK": {
-      "default": 32,
-      "flavor": "poweroftwo",
-      "maximum": 32,
-      "minimum": 1,
-      "name": "cicgemv_block_size_T_BLOCK",
-      "tags": []
-    },
-    "cicgemv_block_size_XYT_BLOCK": {
-      "default": 32768,
-      "flavor": "poweroftwo",
-      "maximum": 32768,
-      "minimum": 128,
-      "name": "cicgemv_block_size_XYT_BLOCK",
-      "tags": []
-    },
-    "cicgemv_block_size_XY_BLOCK": {
-      "default": 32768,
-      "flavor": "poweroftwo",
-      "maximum": 32768,
-      "minimum": 128,
-      "name": "cicgemv_block_size_XY_BLOCK",
-      "tags": []
-    },
-    "cicgemv_block_size_YT_BLOCK": {
-      "default": 128,
-      "flavor": "poweroftwo",
-      "maximum": 128,
-      "minimum": 1,
-      "name": "cicgemv_block_size_YT_BLOCK",
-      "tags": []
-    },
-    "cicgemv_block_size_Y_BLOCK": {
-      "default": 128,
-      "flavor": "poweroftwo",
-      "maximum": 128,
-      "minimum": 1,
-      "name": "cicgemv_block_size_Y_BLOCK",
-      "tags": []
-    },
     "cmcdotc_block_size_N_block_MAX": {
       "default": 512,
       "flavor": "poweroftwo",
@@ -7172,6 +7172,78 @@
           "SSE"
         ]
       ]
+    },
+    "dbdgemm_block_size_XYT_BLOCK": {
+      "default": 32768,
+      "flavor": "poweroftwo",
+      "maximum": 32768,
+      "minimum": 128,
+      "name": "dbdgemm_block_size_XYT_BLOCK",
+      "tags": []
+    },
+    "dbdgemm_block_size_XY_BLOCK": {
+      "default": 32768,
+      "flavor": "poweroftwo",
+      "maximum": 32768,
+      "minimum": 128,
+      "name": "dbdgemm_block_size_XY_BLOCK",
+      "tags": []
+    },
+    "dbdgemm_block_size_YT_BLOCK": {
+      "default": 128,
+      "flavor": "poweroftwo",
+      "maximum": 128,
+      "minimum": 1,
+      "name": "dbdgemm_block_size_YT_BLOCK",
+      "tags": []
+    },
+    "dbdgemm_block_size_Y_BLOCK": {
+      "default": 128,
+      "flavor": "poweroftwo",
+      "maximum": 128,
+      "minimum": 1,
+      "name": "dbdgemm_block_size_Y_BLOCK",
+      "tags": []
+    },
+    "dbdgemv_block_size_T_BLOCK": {
+      "default": 32,
+      "flavor": "poweroftwo",
+      "maximum": 32,
+      "minimum": 1,
+      "name": "dbdgemv_block_size_T_BLOCK",
+      "tags": []
+    },
+    "dbdgemv_block_size_XYT_BLOCK": {
+      "default": 32768,
+      "flavor": "poweroftwo",
+      "maximum": 32768,
+      "minimum": 128,
+      "name": "dbdgemv_block_size_XYT_BLOCK",
+      "tags": []
+    },
+    "dbdgemv_block_size_XY_BLOCK": {
+      "default": 32768,
+      "flavor": "poweroftwo",
+      "maximum": 32768,
+      "minimum": 128,
+      "name": "dbdgemv_block_size_XY_BLOCK",
+      "tags": []
+    },
+    "dbdgemv_block_size_YT_BLOCK": {
+      "default": 128,
+      "flavor": "poweroftwo",
+      "maximum": 128,
+      "minimum": 1,
+      "name": "dbdgemv_block_size_YT_BLOCK",
+      "tags": []
+    },
+    "dbdgemv_block_size_Y_BLOCK": {
+      "default": 128,
+      "flavor": "poweroftwo",
+      "maximum": 128,
+      "minimum": 1,
+      "name": "dbdgemv_block_size_Y_BLOCK",
+      "tags": []
     },
     "ddepositASum_expand_AVX_fold_2": {
       "default": false,
@@ -8865,78 +8937,6 @@
         ]
       ]
     },
-    "didgemm_block_size_XYT_BLOCK": {
-      "default": 32768,
-      "flavor": "poweroftwo",
-      "maximum": 32768,
-      "minimum": 128,
-      "name": "didgemm_block_size_XYT_BLOCK",
-      "tags": []
-    },
-    "didgemm_block_size_XY_BLOCK": {
-      "default": 32768,
-      "flavor": "poweroftwo",
-      "maximum": 32768,
-      "minimum": 128,
-      "name": "didgemm_block_size_XY_BLOCK",
-      "tags": []
-    },
-    "didgemm_block_size_YT_BLOCK": {
-      "default": 128,
-      "flavor": "poweroftwo",
-      "maximum": 128,
-      "minimum": 1,
-      "name": "didgemm_block_size_YT_BLOCK",
-      "tags": []
-    },
-    "didgemm_block_size_Y_BLOCK": {
-      "default": 128,
-      "flavor": "poweroftwo",
-      "maximum": 128,
-      "minimum": 1,
-      "name": "didgemm_block_size_Y_BLOCK",
-      "tags": []
-    },
-    "didgemv_block_size_T_BLOCK": {
-      "default": 32,
-      "flavor": "poweroftwo",
-      "maximum": 32,
-      "minimum": 1,
-      "name": "didgemv_block_size_T_BLOCK",
-      "tags": []
-    },
-    "didgemv_block_size_XYT_BLOCK": {
-      "default": 32768,
-      "flavor": "poweroftwo",
-      "maximum": 32768,
-      "minimum": 128,
-      "name": "didgemv_block_size_XYT_BLOCK",
-      "tags": []
-    },
-    "didgemv_block_size_XY_BLOCK": {
-      "default": 32768,
-      "flavor": "poweroftwo",
-      "maximum": 32768,
-      "minimum": 128,
-      "name": "didgemv_block_size_XY_BLOCK",
-      "tags": []
-    },
-    "didgemv_block_size_YT_BLOCK": {
-      "default": 128,
-      "flavor": "poweroftwo",
-      "maximum": 128,
-      "minimum": 1,
-      "name": "didgemv_block_size_YT_BLOCK",
-      "tags": []
-    },
-    "didgemv_block_size_Y_BLOCK": {
-      "default": 128,
-      "flavor": "poweroftwo",
-      "maximum": 128,
-      "minimum": 1,
-      "name": "didgemv_block_size_Y_BLOCK",
-      "tags": []
-    },
     "dmdasum_block_size_N_block_MAX": {
       "default": 2048,
       "flavor": "poweroftwo",
@@ -9914,6 +9914,78 @@
           "SSE"
         ]
       ]
+    },
+    "sbsgemm_block_size_XYT_BLOCK": {
+      "default": 65536,
+      "flavor": "poweroftwo",
+      "maximum": 65536,
+      "minimum": 256,
+      "name": "sbsgemm_block_size_XYT_BLOCK",
+      "tags": []
+    },
+    "sbsgemm_block_size_XY_BLOCK": {
+      "default": 65536,
+      "flavor": "poweroftwo",
+      "maximum": 65536,
+      "minimum": 256,
+      "name": "sbsgemm_block_size_XY_BLOCK",
+      "tags": []
+    },
+    "sbsgemm_block_size_YT_BLOCK": {
+      "default": 256,
+      "flavor": "poweroftwo",
+      "maximum": 256,
+      "minimum": 1,
+      "name": "sbsgemm_block_size_YT_BLOCK",
+      "tags": []
+    },
+    "sbsgemm_block_size_Y_BLOCK": {
+      "default": 256,
+      "flavor": "poweroftwo",
+      "maximum": 256,
+      "minimum": 1,
+      "name": "sbsgemm_block_size_Y_BLOCK",
+      "tags": []
+    },
+    "sbsgemv_block_size_T_BLOCK": {
+      "default": 32,
+      "flavor": "poweroftwo",
+      "maximum": 32,
+      "minimum": 1,
+      "name": "sbsgemv_block_size_T_BLOCK",
+      "tags": []
+    },
+    "sbsgemv_block_size_XYT_BLOCK": {
+      "default": 65536,
+      "flavor": "poweroftwo",
+      "maximum": 65536,
+      "minimum": 256,
+      "name": "sbsgemv_block_size_XYT_BLOCK",
+      "tags": []
+    },
+    "sbsgemv_block_size_XY_BLOCK": {
+      "default": 65536,
+      "flavor": "poweroftwo",
+      "maximum": 65536,
+      "minimum": 256,
+      "name": "sbsgemv_block_size_XY_BLOCK",
+      "tags": []
+    },
+    "sbsgemv_block_size_YT_BLOCK": {
+      "default": 256,
+      "flavor": "poweroftwo",
+      "maximum": 256,
+      "minimum": 1,
+      "name": "sbsgemv_block_size_YT_BLOCK",
+      "tags": []
+    },
+    "sbsgemv_block_size_Y_BLOCK": {
+      "default": 256,
+      "flavor": "poweroftwo",
+      "maximum": 256,
+      "minimum": 1,
+      "name": "sbsgemv_block_size_Y_BLOCK",
+      "tags": []
     },
     "scdepositASum_expand_AVX_fold_2": {
       "default": false,
@@ -12453,78 +12525,6 @@
         ]
       ]
     },
-    "sisgemm_block_size_XYT_BLOCK": {
-      "default": 65536,
-      "flavor": "poweroftwo",
-      "maximum": 65536,
-      "minimum": 256,
-      "name": "sisgemm_block_size_XYT_BLOCK",
-      "tags": []
-    },
-    "sisgemm_block_size_XY_BLOCK": {
-      "default": 65536,
-      "flavor": "poweroftwo",
-      "maximum": 65536,
-      "minimum": 256,
-      "name": "sisgemm_block_size_XY_BLOCK",
-      "tags": []
-    },
-    "sisgemm_block_size_YT_BLOCK": {
-      "default": 256,
-      "flavor": "poweroftwo",
-      "maximum": 256,
-      "minimum": 1,
-      "name": "sisgemm_block_size_YT_BLOCK",
-      "tags": []
-    },
-    "sisgemm_block_size_Y_BLOCK": {
-      "default": 256,
-      "flavor": "poweroftwo",
-      "maximum": 256,
-      "minimum": 1,
-      "name": "sisgemm_block_size_Y_BLOCK",
-      "tags": []
-    },
-    "sisgemv_block_size_T_BLOCK": {
-      "default": 32,
-      "flavor": "poweroftwo",
-      "maximum": 32,
-      "minimum": 1,
-      "name": "sisgemv_block_size_T_BLOCK",
-      "tags": []
-    },
-    "sisgemv_block_size_XYT_BLOCK": {
-      "default": 65536,
-      "flavor": "poweroftwo",
-      "maximum": 65536,
-      "minimum": 256,
-      "name": "sisgemv_block_size_XYT_BLOCK",
-      "tags": []
-    },
-    "sisgemv_block_size_XY_BLOCK": {
-      "default": 65536,
-      "flavor": "poweroftwo",
-      "maximum": 65536,
-      "minimum": 256,
-      "name": "sisgemv_block_size_XY_BLOCK",
-      "tags": []
-    },
-    "sisgemv_block_size_YT_BLOCK": {
-      "default": 256,
-      "flavor": "poweroftwo",
-      "maximum": 256,
-      "minimum": 1,
-      "name": "sisgemv_block_size_YT_BLOCK",
-      "tags": []
-    },
-    "sisgemv_block_size_Y_BLOCK": {
-      "default": 256,
-      "flavor": "poweroftwo",
-      "maximum": 256,
-      "minimum": 1,
-      "name": "sisgemv_block_size_Y_BLOCK",
-      "tags": []
-    },
     "smcasum_block_size_N_block_MAX": {
       "default": 256,
       "flavor": "poweroftwo",
@@ -12656,6 +12656,78 @@
           "SSE"
         ]
       ]
+    },
+    "zbzgemm_block_size_XYT_BLOCK": {
+      "default": 16384,
+      "flavor": "poweroftwo",
+      "maximum": 16384,
+      "minimum": 64,
+      "name": "zbzgemm_block_size_XYT_BLOCK",
+      "tags": []
+    },
+    "zbzgemm_block_size_XY_BLOCK": {
+      "default": 16384,
+      "flavor": "poweroftwo",
+      "maximum": 16384,
+      "minimum": 64,
+      "name": "zbzgemm_block_size_XY_BLOCK",
+      "tags": []
+    },
+    "zbzgemm_block_size_YT_BLOCK": {
+      "default": 64,
+      "flavor": "poweroftwo",
+      "maximum": 64,
+      "minimum": 1,
+      "name": "zbzgemm_block_size_YT_BLOCK",
+      "tags": []
+    },
+    "zbzgemm_block_size_Y_BLOCK": {
+      "default": 64,
+      "flavor": "poweroftwo",
+      "maximum": 64,
+      "minimum": 1,
+      "name": "zbzgemm_block_size_Y_BLOCK",
+      "tags": []
+    },
+    "zbzgemv_block_size_T_BLOCK": {
+      "default": 32,
+      "flavor": "poweroftwo",
+      "maximum": 32,
+      "minimum": 1,
+      "name": "zbzgemv_block_size_T_BLOCK",
+      "tags": []
+    },
+    "zbzgemv_block_size_XYT_BLOCK": {
+      "default": 16384,
+      "flavor": "poweroftwo",
+      "maximum": 16384,
+      "minimum": 64,
+      "name": "zbzgemv_block_size_XYT_BLOCK",
+      "tags": []
+    },
+    "zbzgemv_block_size_XY_BLOCK": {
+      "default": 16384,
+      "flavor": "poweroftwo",
+      "maximum": 16384,
+      "minimum": 64,
+      "name": "zbzgemv_block_size_XY_BLOCK",
+      "tags": []
+    },
+    "zbzgemv_block_size_YT_BLOCK": {
+      "default": 64,
+      "flavor": "poweroftwo",
+      "maximum": 64,
+      "minimum": 1,
+      "name": "zbzgemv_block_size_YT_BLOCK",
+      "tags": []
+    },
+    "zbzgemv_block_size_Y_BLOCK": {
+      "default": 64,
+      "flavor": "poweroftwo",
+      "maximum": 64,
+      "minimum": 1,
+      "name": "zbzgemv_block_size_Y_BLOCK",
+      "tags": []
     },
     "zdepositDotC_expand_AVX_fold_2": {
       "default": false,
@@ -13925,78 +13997,6 @@
           "SSE"
         ]
       ]
-    },
-    "zizgemm_block_size_XYT_BLOCK": {
-      "default": 16384,
-      "flavor": "poweroftwo",
-      "maximum": 16384,
-      "minimum": 64,
-      "name": "zizgemm_block_size_XYT_BLOCK",
-      "tags": []
-    },
-    "zizgemm_block_size_XY_BLOCK": {
-      "default": 16384,
-      "flavor": "poweroftwo",
-      "maximum": 16384,
-      "minimum": 64,
-      "name": "zizgemm_block_size_XY_BLOCK",
-      "tags": []
-    },
-    "zizgemm_block_size_YT_BLOCK": {
-      "default": 64,
-      "flavor": "poweroftwo",
-      "maximum": 64,
-      "minimum": 1,
-      "name": "zizgemm_block_size_YT_BLOCK",
-      "tags": []
-    },
-    "zizgemm_block_size_Y_BLOCK": {
-      "default": 64,
-      "flavor": "poweroftwo",
-      "maximum": 64,
-      "minimum": 1,
-      "name": "zizgemm_block_size_Y_BLOCK",
-      "tags": []
-    },
-    "zizgemv_block_size_T_BLOCK": {
-      "default": 32,
-      "flavor": "poweroftwo",
-      "maximum": 32,
-      "minimum": 1,
-      "name": "zizgemv_block_size_T_BLOCK",
-      "tags": []
-    },
-    "zizgemv_block_size_XYT_BLOCK": {
-      "default": 16384,
-      "flavor": "poweroftwo",
-      "maximum": 16384,
-      "minimum": 64,
-      "name": "zizgemv_block_size_XYT_BLOCK",
-      "tags": []
-    },
-    "zizgemv_block_size_XY_BLOCK": {
-      "default": 16384,
-      "flavor": "poweroftwo",
-      "maximum": 16384,
-      "minimum": 64,
-      "name": "zizgemv_block_size_XY_BLOCK",
-      "tags": []
-    },
-    "zizgemv_block_size_YT_BLOCK": {
-      "default": 64,
-      "flavor": "poweroftwo",
-      "maximum": 64,
-      "minimum": 1,
-      "name": "zizgemv_block_size_YT_BLOCK",
-      "tags": []
-    },
-    "zizgemv_block_size_Y_BLOCK": {
-      "default": 64,
-      "flavor": "poweroftwo",
-      "maximum": 64,
-      "minimum": 1,
-      "name": "zizgemv_block_size_Y_BLOCK",
-      "tags": []
     },
     "zmzdotc_block_size_N_block_MAX": {
       "default": 2048,

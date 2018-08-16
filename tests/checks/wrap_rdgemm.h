@@ -1,5 +1,5 @@
-#include <idxd.h>
-#include <idxdBLAS.h>
+#include <binned.h>
+#include <binnedBLAS.h>
 
 #include "../common/test_util.h"
 
@@ -19,7 +19,7 @@ void wrap_ref_rdgemm(int fold, char Order, char TransA, char TransB, int M, int 
   int k;
   double *opA = util_dmat_op(Order, TransA, M, K, A, lda);
   double *opB = util_dmat_op(Order, TransB, K, N, B, ldb);
-  double_indexed *CI = idxd_dialloc(fold);
+  double_binned *CI = binned_dballoc(fold);
   if(alpha != 1.0){
     for(i = 0; i < M; i++){
       for(k = 0; k < K; k++){
@@ -41,25 +41,25 @@ void wrap_ref_rdgemm(int fold, char Order, char TransA, char TransB, int M, int 
         case 'r':
         case 'R':
           if(beta == 0.0){
-            idxd_disetzero(fold, CI);
+            binned_dbsetzero(fold, CI);
           }else{
-            idxd_didconv(fold, C[i * ldc + j] * beta, CI);
+            binned_dbdconv(fold, C[i * ldc + j] * beta, CI);
           }
           if(alpha != 0.0){
-            idxdBLAS_diddot(fold, K, opA + i * K, 1, opB + j, N, CI);
+            binnedBLAS_dbddot(fold, K, opA + i * K, 1, opB + j, N, CI);
           }
-          C[i * ldc + j] = idxd_ddiconv(fold, CI);
+          C[i * ldc + j] = binned_ddbconv(fold, CI);
           break;
         default:
           if(beta == 0.0){
-            idxd_disetzero(fold, CI);
+            binned_dbsetzero(fold, CI);
           }else{
-            idxd_didconv(fold, C[j * ldc + i] * beta, CI);
+            binned_dbdconv(fold, C[j * ldc + i] * beta, CI);
           }
           if(alpha != 0.0){
-            idxdBLAS_diddot(fold, K, opA + i, M, opB + j * K, 1, CI);
+            binnedBLAS_dbddot(fold, K, opA + i, M, opB + j * K, 1, CI);
           }
-          C[j * ldc + i] = idxd_ddiconv(fold, CI);
+          C[j * ldc + i] = binned_ddbconv(fold, CI);
           break;
       }
     }

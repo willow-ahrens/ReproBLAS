@@ -163,20 +163,20 @@ class ValidateInternalRDDOTTest(CheckTest):
   executable = "tests/checks/validate_internal_daugsum"
   name = "validate_internal_rddot"
 
-class ValidateInternalDIDIADDTest(CheckTest):
-  base_flags = "-w didiadd"
+class ValidateInternalDBDBADDTest(CheckTest):
+  base_flags = "-w dbdbadd"
   executable = "tests/checks/validate_internal_daugsum"
-  name = "validate_internal_didiadd"
+  name = "validate_internal_dbdbadd"
 
 class ValidateInternalDIDADDTest(CheckTest):
-  base_flags = "-w didadd"
+  base_flags = "-w dbdadd"
   executable = "tests/checks/validate_internal_daugsum"
-  name = "validate_internal_didadd"
+  name = "validate_internal_dbdadd"
 
 class ValidateInternalDIDDEPOSITTest(CheckTest):
-  base_flags = "-w diddeposit"
+  base_flags = "-w dbddeposit"
   executable = "tests/checks/validate_internal_daugsum"
-  name = "validate_internal_diddeposit"
+  name = "validate_internal_dbddeposit"
 
 class ValidateInternalRZSUMTest(CheckTest):
   base_flags = "-w rzsum"
@@ -203,20 +203,20 @@ class ValidateInternalRZDOTCTest(CheckTest):
   executable = "tests/checks/validate_internal_zaugsum"
   name = "validate_internal_rzdotc"
 
-class ValidateInternalZIZIADDTest(CheckTest):
-  base_flags = "-w ziziadd"
+class ValidateInternalZBZBADDTest(CheckTest):
+  base_flags = "-w zbzbadd"
   executable = "tests/checks/validate_internal_zaugsum"
-  name = "validate_internal_ziziadd"
+  name = "validate_internal_zbzbadd"
 
 class ValidateInternalZIZADDTest(CheckTest):
-  base_flags = "-w zizadd"
+  base_flags = "-w zbzadd"
   executable = "tests/checks/validate_internal_zaugsum"
-  name = "validate_internal_zizadd"
+  name = "validate_internal_zbzadd"
 
 class ValidateInternalZIZDEPOSITTest(CheckTest):
-  base_flags = "-w zizdeposit"
+  base_flags = "-w zbzdeposit"
   executable = "tests/checks/validate_internal_zaugsum"
-  name = "validate_internal_zizdeposit"
+  name = "validate_internal_zbzdeposit"
 
 class ValidateInternalRSSUMTest(CheckTest):
   base_flags = "-w rssum"
@@ -238,20 +238,20 @@ class ValidateInternalRSDOTTest(CheckTest):
   executable = "tests/checks/validate_internal_saugsum"
   name = "validate_internal_rsdot"
 
-class ValidateInternalSISIADDTest(CheckTest):
-  base_flags = "-w sisiadd"
+class ValidateInternalSBSBADDTest(CheckTest):
+  base_flags = "-w sbsbadd"
   executable = "tests/checks/validate_internal_saugsum"
-  name = "validate_internal_sisiadd"
+  name = "validate_internal_sbsbadd"
 
 class ValidateInternalSISADDTest(CheckTest):
-  base_flags = "-w sisadd"
+  base_flags = "-w sbsadd"
   executable = "tests/checks/validate_internal_saugsum"
-  name = "validate_internal_sisadd"
+  name = "validate_internal_sbsadd"
 
 class ValidateInternalSISDEPOSITTest(CheckTest):
-  base_flags = "-w sisdeposit"
+  base_flags = "-w sbsdeposit"
   executable = "tests/checks/validate_internal_saugsum"
-  name = "validate_internal_sisdeposit"
+  name = "validate_internal_sbsdeposit"
 
 class ValidateInternalRCSUMTest(CheckTest):
   base_flags = "-w rcsum"
@@ -278,20 +278,20 @@ class ValidateInternalRCDOTCTest(CheckTest):
   executable = "tests/checks/validate_internal_caugsum"
   name = "validate_internal_rcdotc"
 
-class ValidateInternalCICIADDTest(CheckTest):
-  base_flags = "-w ciciadd"
+class ValidateInternalCBCBADDTest(CheckTest):
+  base_flags = "-w cbcbadd"
   executable = "tests/checks/validate_internal_caugsum"
-  name = "validate_internal_ciciadd"
+  name = "validate_internal_cbcbadd"
 
 class ValidateInternalCICADDTest(CheckTest):
-  base_flags = "-w cicadd"
+  base_flags = "-w cbcadd"
   executable = "tests/checks/validate_internal_caugsum"
-  name = "validate_internal_cicadd"
+  name = "validate_internal_cbcadd"
 
 class ValidateInternalCICDEPOSITTest(CheckTest):
-  base_flags = "-w cicdeposit"
+  base_flags = "-w cbcdeposit"
   executable = "tests/checks/validate_internal_caugsum"
-  name = "validate_internal_cicdeposit"
+  name = "validate_internal_cbcdeposit"
 
 class ValidateExternalRDSUMTest(CheckTest):
   base_flags = "-w rdsum"
@@ -413,20 +413,20 @@ class ValidateXBLASRCDOTCTest(CheckTest):
   executable = "tests/checks/validate_xblas_cdot"
   name = "validate_xblas_rcdotc"
 
-class VerifyDIDIADDTest(CheckTest):
-  base_flags = "-w didiadd"
+class VerifyDBDBADDTest(CheckTest):
+  base_flags = "-w dbdbadd"
   executable = "tests/checks/verify_daugsum"
-  name = "verify_didiadd"
+  name = "verify_dbdbadd"
 
 class VerifyDIDADDTest(CheckTest):
-  base_flags = "-w didadd"
+  base_flags = "-w dbdadd"
   executable = "tests/checks/verify_daugsum"
-  name = "verify_didadd"
+  name = "verify_dbdadd"
 
 class VerifyDIDDEPOSITTest(CheckTest):
-  base_flags = "-w diddeposit"
+  base_flags = "-w dbddeposit"
   executable = "tests/checks/verify_daugsum"
-  name = "verify_diddeposit"
+  name = "verify_dbddeposit"
 
 class VerifyRDSUMTest(CheckTest):
   base_flags = "-w rdsum"
@@ -448,20 +448,20 @@ class VerifyRDDOTTest(CheckTest):
   executable = "tests/checks/verify_daugsum"
   name = "verify_rddot"
 
-class VerifyZIZIADDTest(CheckTest):
-  base_flags = "-w ziziadd"
+class VerifyZBZBADDTest(CheckTest):
+  base_flags = "-w zbzbadd"
   executable = "tests/checks/verify_zaugsum"
-  name = "verify_ziziadd"
+  name = "verify_zbzbadd"
 
 class VerifyZIZADDTest(CheckTest):
-  base_flags = "-w zizadd"
+  base_flags = "-w zbzadd"
   executable = "tests/checks/verify_zaugsum"
-  name = "verify_zizadd"
+  name = "verify_zbzadd"
 
 class VerifyZIZDEPOSITTest(CheckTest):
-  base_flags = "-w zizdeposit"
+  base_flags = "-w zbzdeposit"
   executable = "tests/checks/verify_zaugsum"
-  name = "verify_zizdeposit"
+  name = "verify_zbzdeposit"
 
 class VerifyRZSUMTest(CheckTest):
   base_flags = "-w rzsum"
@@ -488,20 +488,20 @@ class VerifyRZDOTCTest(CheckTest):
   executable = "tests/checks/verify_zaugsum"
   name = "verify_rzdotc"
 
-class VerifySISIADDTest(CheckTest):
-  base_flags = "-w sisiadd"
+class VerifySBSBADDTest(CheckTest):
+  base_flags = "-w sbsbadd"
   executable = "tests/checks/verify_saugsum"
-  name = "verify_sisiadd"
+  name = "verify_sbsbadd"
 
 class VerifySISADDTest(CheckTest):
-  base_flags = "-w sisadd"
+  base_flags = "-w sbsadd"
   executable = "tests/checks/verify_saugsum"
-  name = "verify_sisadd"
+  name = "verify_sbsadd"
 
 class VerifySISDEPOSITTest(CheckTest):
-  base_flags = "-w sisdeposit"
+  base_flags = "-w sbsdeposit"
   executable = "tests/checks/verify_saugsum"
-  name = "verify_sisdeposit"
+  name = "verify_sbsdeposit"
 
 class VerifyRSSUMTest(CheckTest):
   base_flags = "-w rssum"
@@ -523,20 +523,20 @@ class VerifyRSDOTTest(CheckTest):
   executable = "tests/checks/verify_saugsum"
   name = "verify_rsdot"
 
-class VerifyCICIADDTest(CheckTest):
-  base_flags = "-w ciciadd"
+class VerifyCBCBADDTest(CheckTest):
+  base_flags = "-w cbcbadd"
   executable = "tests/checks/verify_caugsum"
-  name = "verify_ciciadd"
+  name = "verify_cbcbadd"
 
 class VerifyCICADDTest(CheckTest):
-  base_flags = "-w cicadd"
+  base_flags = "-w cbcadd"
   executable = "tests/checks/verify_caugsum"
-  name = "verify_cicadd"
+  name = "verify_cbcadd"
 
 class VerifyCICDEPOSITTest(CheckTest):
-  base_flags = "-w cicdeposit"
+  base_flags = "-w cbcdeposit"
   executable = "tests/checks/verify_caugsum"
-  name = "verify_cicdeposit"
+  name = "verify_cbcdeposit"
 
 class VerifyRCSUMTest(CheckTest):
   base_flags = "-w rcsum"
@@ -564,20 +564,20 @@ class VerifyRCDOTCTest(CheckTest):
   name = "verify_rcdotc"
 
 class VerifyDIDSSQTest(CheckTest):
-  executable = "tests/checks/verify_didssq"
-  name = "verify_didssq"
+  executable = "tests/checks/verify_dbdssq"
+  name = "verify_dbdssq"
 
 class VerifyDIZSSQTest(CheckTest):
-  executable = "tests/checks/verify_dizssq"
-  name = "verify_dizssq"
+  executable = "tests/checks/verify_dbzssq"
+  name = "verify_dbzssq"
 
 class VerifySISSSQTest(CheckTest):
-  executable = "tests/checks/verify_sisssq"
-  name = "verify_sisssq"
+  executable = "tests/checks/verify_sbsssq"
+  name = "verify_sbsssq"
 
 class VerifySICSSQTest(CheckTest):
-  executable = "tests/checks/verify_sicssq"
-  name = "verify_sicssq"
+  executable = "tests/checks/verify_sbcssq"
+  name = "verify_sbcssq"
 
 class CorroborateRDGEMVTest(CheckTest):
   base_flags = ""

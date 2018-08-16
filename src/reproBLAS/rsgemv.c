@@ -2,7 +2,7 @@
 #include <string.h>
 
 #include <reproBLAS.h>
-#include <idxdBLAS.h>
+#include <binnedBLAS.h>
 
 /**
  * @brief Add to single precision vector Y the reproducible matrix-vector product of single precision matrix A and single precision vector X
@@ -13,9 +13,9 @@
  *
  * where alpha and beta are scalars, x and y are vectors, and A is an M by N matrix.
  *
- * The matrix-vector product is computed using indexed types with #idxdBLAS_sisgemv()
+ * The matrix-vector product is computed using binned types with #binnedBLAS_sbsgemv()
  *
- * @param fold the fold of the indexed types
+ * @param fold the fold of the binned types
  * @param Order a character specifying the matrix ordering ('r' or 'R' for row-major, 'c' or 'C' for column major)
  * @param TransA a character specifying whether or not to transpose A before taking the matrix-vector product ('n' or 'N' not to transpose, 't' or 'T' or 'c' or 'C' to transpose)
  * @param M number of rows of matrix A
@@ -37,7 +37,7 @@ void reproBLAS_rsgemv(const int fold, const char Order,
                       const float alpha, const float *A, const int lda,
                       const float *X, const int incX,
                       const float beta, float *Y, const int incY){
-  float_indexed *YI;
+  float_binned *YI;
   int i;
 
   if(N == 0 || M == 0){
@@ -47,39 +47,39 @@ void reproBLAS_rsgemv(const int fold, const char Order,
   switch(TransA){
     case 'n':
     case 'N':
-      YI = (float_indexed*)malloc(M * idxd_sisize(fold));
+      YI = (float_binned*)malloc(M * binned_sbsbze(fold));
       if(beta == 0.0){
-        memset(YI, 0, M * idxd_sisize(fold));
+        memset(YI, 0, M * binned_sbsbze(fold));
       }else if(beta == 1.0){
         for(i = 0; i < M; i++){
-          idxd_sisconv(fold, Y[i * incY], YI + i * idxd_sinum(fold));
+          binned_sbsconv(fold, Y[i * incY], YI + i * binned_sbnum(fold));
         }
       }else{
         for(i = 0; i < M; i++){
-          idxd_sisconv(fold, Y[i * incY] * beta, YI + i * idxd_sinum(fold));
+          binned_sbsconv(fold, Y[i * incY] * beta, YI + i * binned_sbnum(fold));
         }
       }
-      idxdBLAS_sisgemv(fold, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
+      binnedBLAS_sbsgemv(fold, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
       for(i = 0; i < M; i++){
-        Y[i * incY] = idxd_ssiconv(fold, YI + i * idxd_sinum(fold));
+        Y[i * incY] = binned_ssbconv(fold, YI + i * binned_sbnum(fold));
       }
       break;
     default:
-      YI = (float_indexed*)malloc(N * idxd_sisize(fold));
+      YI = (float_binned*)malloc(N * binned_sbsbze(fold));
       if(beta == 0.0){
-        memset(YI, 0, N * idxd_sisize(fold));
+        memset(YI, 0, N * binned_sbsbze(fold));
       }else if(beta == 1.0){
         for(i = 0; i < N; i++){
-          idxd_sisconv(fold, Y[i * incY], YI + i * idxd_sinum(fold));
+          binned_sbsconv(fold, Y[i * incY], YI + i * binned_sbnum(fold));
         }
       }else{
         for(i = 0; i < N; i++){
-          idxd_sisconv(fold, Y[i * incY] * beta, YI + i * idxd_sinum(fold));
+          binned_sbsconv(fold, Y[i * incY] * beta, YI + i * binned_sbnum(fold));
         }
       }
-      idxdBLAS_sisgemv(fold, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
+      binnedBLAS_sbsgemv(fold, Order, TransA, M, N, alpha, A, lda, X, incX, YI, 1);
       for(i = 0; i < N; i++){
-        Y[i * incY] = idxd_ssiconv(fold, YI + i * idxd_sinum(fold));
+        Y[i * incY] = binned_ssbconv(fold, YI + i * binned_sbnum(fold));
       }
       break;
   }

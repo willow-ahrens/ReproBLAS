@@ -1,14 +1,14 @@
 #include <reproBLAS.h>
-#include <idxdBLAS.h>
+#include <binnedBLAS.h>
 
 /**
  * @brief Compute the reproducible conjugated dot product of complex single precision vectors X and Y
  *
  * Return the sum of the pairwise products of X and conjugated Y.
  *
- * The reproducible dot product is computed with indexed types using #idxdBLAS_cicdotc()
+ * The reproducible dot product is computed with binned types using #binnedBLAS_cbcdotc()
  *
- * @param fold the fold of the indexed types
+ * @param fold the fold of the binned types
  * @param N vector length
  * @param X complex single precision vector
  * @param incX X vector stride (use every incX'th element)
@@ -20,13 +20,13 @@
  * @date   15 Jan 2016
  */
 void reproBLAS_rcdotc_sub(const int fold, const int N, const void* X, const int incX, const void *Y, const int incY, void *dotc) {
-  float_complex_indexed *dotci = idxd_cialloc(fold);
+  float_complex_binned *dotci = binned_cballoc(fold);
 
-  idxd_cisetzero(fold, dotci);
+  binned_cbsetzero(fold, dotci);
 
-  idxdBLAS_cicdotc(fold, N, X, incX, Y, incY, dotci);
+  binnedBLAS_cbcdotc(fold, N, X, incX, Y, incY, dotci);
 
-  idxd_cciconv_sub(fold, dotci, dotc);
+  binned_ccbconv_sub(fold, dotci, dotc);
   free(dotci);
   return;
 }

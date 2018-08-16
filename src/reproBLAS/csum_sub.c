@@ -7,7 +7,7 @@
  *
  * Return the sum of X.
  *
- * The reproducible sum is computed with indexed types of default fold using #idxdBLAS_cicsum()
+ * The reproducible sum is computed with binned types of default fold using #binnedBLAS_cbcsum()
  *
  * @param N vector length
  * @param X single precision vector

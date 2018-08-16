@@ -2,8 +2,8 @@
 #define RCBLAS1_WRAPPER_H
 
 #include <reproBLAS.h>
-#include <idxdBLAS.h>
-#include <idxd.h>
+#include <binnedBLAS.h>
+#include <binned.h>
 #include "../../config.h"
 
 #define wrap_RCSUM  0
@@ -24,7 +24,7 @@ static const char* wrap_rcblas1_descs[] = {"rcsum",
                                            "rcdotc"};
 
 typedef float complex (*wrap_rcblas1)(int, float complex*, int, float complex*, int);
-typedef void (*wrap_ciblas1)(int, float complex*, int, float complex*, int, float_complex_indexed*);
+typedef void (*wrap_ciblas1)(int, float complex*, int, float complex*, int, float_complex_binned*);
 
 
 float complex wrap_rcsum(int N, float complex *x, int incx, float complex *y, int incy) {
@@ -35,10 +35,10 @@ float complex wrap_rcsum(int N, float complex *x, int incx, float complex *y, in
   return ret;
 }
 
-void wrap_cicsum(int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *z) {
+void wrap_cbcsum(int N, float complex *x, int incx, float complex *y, int incy, float_complex_binned *z) {
   (void)y;
   (void)incy;
-  idxdBLAS_cicsum(SIDEFAULTFOLD, N, x, incx, z);
+  binnedBLAS_cbcsum(SIDEFAULTFOLD, N, x, incx, z);
 }
 
 float complex wrap_rscasum(int N, float complex *x, int incx, float complex *y, int incy) {
@@ -47,10 +47,10 @@ float complex wrap_rscasum(int N, float complex *x, int incx, float complex *y, 
   return (float complex)reproBLAS_rscasum(N, x, incx);
 }
 
-void wrap_sicasum(int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *z) {
+void wrap_sbcasum(int N, float complex *x, int incx, float complex *y, int incy, float_complex_binned *z) {
   (void)y;
   (void)incy;
-  idxdBLAS_smcasum(SIDEFAULTFOLD, N, x, incx, z, 2, z + 2 * SIDEFAULTFOLD, 2);
+  binnedBLAS_smcasum(SIDEFAULTFOLD, N, x, incx, z, 2, z + 2 * SIDEFAULTFOLD, 2);
 }
 
 float complex wrap_rcdotu(int N, float complex *x, int incx, float complex *y, int incy) {
@@ -59,8 +59,8 @@ float complex wrap_rcdotu(int N, float complex *x, int incx, float complex *y, i
   return ret;
 }
 
-void wrap_cicdotu(int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *z) {
-  idxdBLAS_cicdotu(SIDEFAULTFOLD, N, x, incx, y, incy, z);
+void wrap_cbcdotu(int N, float complex *x, int incx, float complex *y, int incy, float_complex_binned *z) {
+  binnedBLAS_cbcdotu(SIDEFAULTFOLD, N, x, incx, y, incy, z);
 }
 
 float complex wrap_rcdotc(int N, float complex *x, int incx, float complex *y, int incy) {
@@ -69,8 +69,8 @@ float complex wrap_rcdotc(int N, float complex *x, int incx, float complex *y, i
   return ret;
 }
 
-void wrap_cicdotc(int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *z) {
-  idxdBLAS_cicdotc(SIDEFAULTFOLD, N, x, incx, y, incy, z);
+void wrap_cbcdotc(int N, float complex *x, int incx, float complex *y, int incy, float_complex_binned *z) {
+  binnedBLAS_cbcdotc(SIDEFAULTFOLD, N, x, incx, y, incy, z);
 }
 
 float complex wrap_rscnrm2(int N, float complex *x, int incx, float complex *y, int incy) {
@@ -79,10 +79,10 @@ float complex wrap_rscnrm2(int N, float complex *x, int incx, float complex *y, 
   return reproBLAS_rscnrm2(N, x, incx);
 }
 
-void wrap_sicnrm(int N, float complex *x, int incx, float complex *y, int incy, float_complex_indexed *z) {
+void wrap_sicnrm(int N, float complex *x, int incx, float complex *y, int incy, float_complex_binned *z) {
   (void)y;
   (void)incy;
-  idxdBLAS_smcssq(SIDEFAULTFOLD, N, x, incx, 0.0, z, 2, z + 2 * SIDEFAULTFOLD, 2);
+  binnedBLAS_smcssq(SIDEFAULTFOLD, N, x, incx, 0.0, z, 2, z + 2 * SIDEFAULTFOLD, 2);
 }
 
 wrap_rcblas1 wrap_rcblas1_func(int func) {
@@ -104,15 +104,15 @@ wrap_rcblas1 wrap_rcblas1_func(int func) {
 wrap_ciblas1 wrap_ciblas1_func(int func) {
   switch(func){
     case wrap_RCSUM:
-      return wrap_cicsum;
+      return wrap_cbcsum;
     case wrap_RSCASUM:
-      return wrap_sicasum;
+      return wrap_sbcasum;
     case wrap_RSCNRM2:
       return wrap_sicnrm;
     case wrap_RCDOTU:
-      return wrap_cicdotu;
+      return wrap_cbcdotu;
     case wrap_RCDOTC:
-      return wrap_cicdotc;
+      return wrap_cbcdotc;
   }
   return NULL;
 }

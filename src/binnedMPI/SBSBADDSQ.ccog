@@ -1,0 +1,223 @@
+#include <mpi.h>
+#include <stdio.h>
+
+#include <binned.h>
+
+#include <../config.h>
+
+static inline void sbsbaddsqv(const int fold, const int N, const float *X, float *Y){
+  int i;
+  for(i = 0; i < N; i++, X += binned_dbnum(fold) + 1, Y += binned_dbnum(fold) + 1){
+    binned_smsmaddsq(fold, X[0], (float_binned*)(X + 1), 1, (float_binned*)(X + 1 + fold), 1, Y[0], (float_binned*)(Y + 1), 1, (float_binned*)(Y + 1 + fold), 1);
+  }
+}
+
+/*[[[cog
+import cog
+from scripts import terminal
+for fold in range(2, terminal.get_simaxindex() + 1):
+  cog.outl("static void binnedMPI_sbsbaddsq_{}(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){{".format(fold))
+  cog.outl("  sbsbaddsqv({}, *len, (float*)invec, (float*)inoutvec);".format(fold))
+  cog.outl("}")
+  cog.outl("")
+]]]*/
+static void binnedMPI_sbsbaddsq_2(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  sbsbaddsqv(2, *len, (float*)invec, (float*)inoutvec);
+}
+
+static void binnedMPI_sbsbaddsq_3(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  sbsbaddsqv(3, *len, (float*)invec, (float*)inoutvec);
+}
+
+static void binnedMPI_sbsbaddsq_4(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  sbsbaddsqv(4, *len, (float*)invec, (float*)inoutvec);
+}
+
+static void binnedMPI_sbsbaddsq_5(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  sbsbaddsqv(5, *len, (float*)invec, (float*)inoutvec);
+}
+
+static void binnedMPI_sbsbaddsq_6(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  sbsbaddsqv(6, *len, (float*)invec, (float*)inoutvec);
+}
+
+static void binnedMPI_sbsbaddsq_7(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  sbsbaddsqv(7, *len, (float*)invec, (float*)inoutvec);
+}
+
+static void binnedMPI_sbsbaddsq_8(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  sbsbaddsqv(8, *len, (float*)invec, (float*)inoutvec);
+}
+
+static void binnedMPI_sbsbaddsq_9(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  sbsbaddsqv(9, *len, (float*)invec, (float*)inoutvec);
+}
+
+static void binnedMPI_sbsbaddsq_10(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  sbsbaddsqv(10, *len, (float*)invec, (float*)inoutvec);
+}
+
+static void binnedMPI_sbsbaddsq_11(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  sbsbaddsqv(11, *len, (float*)invec, (float*)inoutvec);
+}
+
+static void binnedMPI_sbsbaddsq_12(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  sbsbaddsqv(12, *len, (float*)invec, (float*)inoutvec);
+}
+
+static void binnedMPI_sbsbaddsq_13(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  sbsbaddsqv(13, *len, (float*)invec, (float*)inoutvec);
+}
+
+static void binnedMPI_sbsbaddsq_14(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  sbsbaddsqv(14, *len, (float*)invec, (float*)inoutvec);
+}
+
+static void binnedMPI_sbsbaddsq_15(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  sbsbaddsqv(15, *len, (float*)invec, (float*)inoutvec);
+}
+
+static void binnedMPI_sbsbaddsq_16(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  sbsbaddsqv(16, *len, (float*)invec, (float*)inoutvec);
+}
+
+static void binnedMPI_sbsbaddsq_17(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  sbsbaddsqv(17, *len, (float*)invec, (float*)inoutvec);
+}
+
+static void binnedMPI_sbsbaddsq_18(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  sbsbaddsqv(18, *len, (float*)invec, (float*)inoutvec);
+}
+
+static void binnedMPI_sbsbaddsq_19(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  sbsbaddsqv(19, *len, (float*)invec, (float*)inoutvec);
+}
+
+static void binnedMPI_sbsbaddsq_20(void *invec, void *inoutvec, int *len, MPI_Datatype* datatype){
+  sbsbaddsqv(20, *len, (float*)invec, (float*)inoutvec);
+}
+
+//[[[end]]]
+
+static MPI_Op ops[binned_SBMAXFOLD + 1];
+static int ops_initialized[binned_SBMAXFOLD + 1]; //initializes to 0
+
+/**
+ * @brief  Get an MPI_OP to add binned single precision scaled sums of squares
+ * (Y += X)
+ *
+ * Creates (if it has not already been created) and returns a function handle
+ * for an MPI reduction operation that performs the operation Y += X where X and
+ * Y represent scaled sums of squares on two arrays of scaled binned single
+ * precision datatypes of the specified fold.
+ * An MPI datatype handle can be created for such a datatype with
+ * #binnedMPI_FLOAT_BINNED_SCALED.
+ *
+ * This method may call @c MPI_Op_create().
+ * If there is an error, this method will call @c MPI_Abort().
+ *
+ * @param fold the fold of the binned types
+ *
+ * @author Peter Ahrens
+ * @date   18 Jun 2016
+ */
+MPI_Op binnedMPI_SBSBADDSQ(const int fold){
+  int rc;
+  if(!ops_initialized[fold]){
+    switch(fold){
+      /*[[[cog
+      import cog
+      from scripts import terminal
+      for fold in range(2, terminal.get_simaxindex() + 1):
+        cog.outl("case {}:".format(fold))
+        cog.outl("  rc = MPI_Op_create(&binnedMPI_sbsbaddsq_{0}, 1, ops + {0});".format(fold))
+        cog.outl("  break;")
+        cog.outl("")
+      ]]]*/
+      case 2:
+        rc = MPI_Op_create(&binnedMPI_sbsbaddsq_2, 1, ops + 2);
+        break;
+
+      case 3:
+        rc = MPI_Op_create(&binnedMPI_sbsbaddsq_3, 1, ops + 3);
+        break;
+
+      case 4:
+        rc = MPI_Op_create(&binnedMPI_sbsbaddsq_4, 1, ops + 4);
+        break;
+
+      case 5:
+        rc = MPI_Op_create(&binnedMPI_sbsbaddsq_5, 1, ops + 5);
+        break;
+
+      case 6:
+        rc = MPI_Op_create(&binnedMPI_sbsbaddsq_6, 1, ops + 6);
+        break;
+
+      case 7:
+        rc = MPI_Op_create(&binnedMPI_sbsbaddsq_7, 1, ops + 7);
+        break;
+
+      case 8:
+        rc = MPI_Op_create(&binnedMPI_sbsbaddsq_8, 1, ops + 8);
+        break;
+
+      case 9:
+        rc = MPI_Op_create(&binnedMPI_sbsbaddsq_9, 1, ops + 9);
+        break;
+
+      case 10:
+        rc = MPI_Op_create(&binnedMPI_sbsbaddsq_10, 1, ops + 10);
+        break;
+
+      case 11:
+        rc = MPI_Op_create(&binnedMPI_sbsbaddsq_11, 1, ops + 11);
+        break;
+
+      case 12:
+        rc = MPI_Op_create(&binnedMPI_sbsbaddsq_12, 1, ops + 12);
+        break;
+
+      case 13:
+        rc = MPI_Op_create(&binnedMPI_sbsbaddsq_13, 1, ops + 13);
+        break;
+
+      case 14:
+        rc = MPI_Op_create(&binnedMPI_sbsbaddsq_14, 1, ops + 14);
+        break;
+
+      case 15:
+        rc = MPI_Op_create(&binnedMPI_sbsbaddsq_15, 1, ops + 15);
+        break;
+
+      case 16:
+        rc = MPI_Op_create(&binnedMPI_sbsbaddsq_16, 1, ops + 16);
+        break;
+
+      case 17:
+        rc = MPI_Op_create(&binnedMPI_sbsbaddsq_17, 1, ops + 17);
+        break;
+
+      case 18:
+        rc = MPI_Op_create(&binnedMPI_sbsbaddsq_18, 1, ops + 18);
+        break;
+
+      case 19:
+        rc = MPI_Op_create(&binnedMPI_sbsbaddsq_19, 1, ops + 19);
+        break;
+
+      case 20:
+        rc = MPI_Op_create(&binnedMPI_sbsbaddsq_20, 1, ops + 20);
+        break;
+
+      //[[[end]]]
+    }
+    if(rc != MPI_SUCCESS){
+      fprintf(stderr, "[%s.%d] ReproBLAS error: MPI_Op_create error: %d\n", __FILE__, __LINE__, rc);
+      MPI_Abort(MPI_COMM_WORLD, rc);
+      return 0;
+    }
+    ops_initialized[fold] = 1;
+  }
+  return ops[fold];
+}

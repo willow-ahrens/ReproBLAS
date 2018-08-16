@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include <idxdBLAS.h>
+#include <binnedBLAS.h>
 #include <reproBLAS.h>
 
 #include "../common/test_opt.h"
@@ -22,7 +22,7 @@ static void acc_rdsum_options_initialize(void){
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
   fold._int.min               = 2;
-  fold._int.max               = idxd_DIMAXFOLD;
+  fold._int.max               = binned_DBMAXFOLD;
   fold._int.value             = DIDEFAULTFOLD;
 }
 
@@ -57,7 +57,7 @@ int acc_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealSca
   int i;
   int j;
   double res = 0.0;
-  double_indexed *ires;
+  double_binned *ires;
   double ref;
   double s[2];
 
@@ -71,10 +71,10 @@ int acc_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealSca
 
   for(i = 0; i < trials; i++){
     util_dvec_fill(N, X, incX, FillX, RealScaleX, ImagScaleX);
-    ires = idxd_dialloc(fold._int.value);
-    idxd_disetzero(fold._int.value, ires);
-    idxdBLAS_didsum(fold._int.value, N, X, incX, ires);
-    res = idxd_ddiconv(fold._int.value, ires);
+    ires = binned_dballoc(fold._int.value);
+    binned_dbsetzero(fold._int.value, ires);
+    binnedBLAS_dbdsum(fold._int.value, N, X, incX, ires);
+    res = binned_ddbconv(fold._int.value, ires);
     free(ires);
 
     util_dvec_sort(N, (double*)X, incX, NULL, 0, util_Decreasing_Magnitude);

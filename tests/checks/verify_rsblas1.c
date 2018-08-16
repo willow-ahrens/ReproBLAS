@@ -1,5 +1,5 @@
-#include <idxdBLAS.h>
-#include <idxd.h>
+#include <binnedBLAS.h>
+#include <binned.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -23,11 +23,11 @@ static void verify_rsblas1_options_intitialize(void){
   func_type._named.value             = wrap_RSSUM;
 }
 
-int verify_rsblas1_reproducibility(int N, float* X, int incX, float* Y, int incY, int func, float ref, float_indexed *Iref, int max_num_blocks) {
+int verify_rsblas1_reproducibility(int N, float* X, int incX, float* Y, int incY, int func, float ref, float_binned *Iref, int max_num_blocks) {
   // GENERATE DATA
   int i;
   float res;
-  float_indexed *Ires = idxd_sialloc(SIDEFAULTFOLD);
+  float_binned *Ires = binned_sballoc(SIDEFAULTFOLD);
   int num_blocks = 1;
 
   int block_N = (N + num_blocks - 1) / num_blocks;
@@ -38,23 +38,23 @@ int verify_rsblas1_reproducibility(int N, float* X, int incX, float* Y, int incY
       res = (wrap_rsblas1_func(func))(N, X, incX, Y, incY);
     else {
       block_N =  (N + num_blocks - 1) / num_blocks;
-      idxd_sisetzero(SIDEFAULTFOLD, Ires);
+      binned_sbsetzero(SIDEFAULTFOLD, Ires);
       for (i = 0; i < N; i += block_N) {
         block_N = block_N < N - i ? block_N : (N-i);
         (wrap_siblas1_func(func))(block_N, X + i * incX, incX, Y + i * incY, incY, Ires);
       }
-      res = idxd_ssiconv(SIDEFAULTFOLD, Ires);
+      res = binned_ssbconv(SIDEFAULTFOLD, Ires);
     }
     if (res != ref) {
       printf("%s(X, Y)[num_blocks=%d,block_N=%d] = %g != %g\n", wrap_rsblas1_names[func], num_blocks, block_N, res, ref);
       if (num_blocks == 1) {
-        idxd_sisetzero(SIDEFAULTFOLD, Ires);
+        binned_sbsetzero(SIDEFAULTFOLD, Ires);
         (wrap_siblas1_func(func))(N, X, incX, Y, incY, Ires);
       }
       printf("Ref I_float:\n");
-      idxd_siprint(SIDEFAULTFOLD, Iref);
+      binned_sbprint(SIDEFAULTFOLD, Iref);
       printf("\nRes I_float:\n");
-      idxd_siprint(SIDEFAULTFOLD, Ires);
+      binned_sbprint(SIDEFAULTFOLD, Ires);
       printf("\n");
       return 1;
     }
@@ -84,7 +84,7 @@ const char* vecvec_fill_name(int argc, char** argv){
 int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX, double ImagScaleX, int incX, int FillY, double RealScaleY, double ImagScaleY, int incY){
   int rc = 0;
   float ref;
-  float_indexed *Iref = idxd_sialloc(SIDEFAULTFOLD);
+  float_binned *Iref = binned_sballoc(SIDEFAULTFOLD);
   int max_num_blocks = 1024;
 
   verify_rsblas1_options_intitialize();
@@ -107,7 +107,7 @@ int vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealScaleX,
 
   //compute with unpermuted data
   ref  = (wrap_rsblas1_func(func_type._named.value))(N, X, incX, Y, incY);
-  idxd_sisetzero(SIDEFAULTFOLD, Iref);
+  binned_sbsetzero(SIDEFAULTFOLD, Iref);
   (wrap_siblas1_func(func_type._named.value))(N, X, incX, Y, incY, Iref);
 
   P = util_identity_permutation(N);

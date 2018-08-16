@@ -6,7 +6,7 @@
  */
 
 /**
- * @brief The fold of double precision indexed types when fold is not specified.
+ * @brief The fold of double precision binned types when fold is not specified.
  *
  * @author Peter Ahrens
  * @date   26 May 2015
@@ -14,7 +14,7 @@
 #define DIDEFAULTFOLD 3
 
 /**
- * @brief The fold of single precision indexed types when fold is not specified.
+ * @brief The fold of single precision binned types when fold is not specified.
  *
  * @author Peter Ahrens
  * @date   26 May 2015

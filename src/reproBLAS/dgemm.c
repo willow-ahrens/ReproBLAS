@@ -15,7 +15,7 @@
  *
  * alpha and beta are scalars, A and B and C are matrices with op(A) an M by K matrix, op(B) a K by N matrix, and C is an M by N matrix.
  *
- * The matrix-matrix product is computed using indexed types of default fold with #idxdBLAS_didgemm()
+ * The matrix-matrix product is computed using binned types of default fold with #binnedBLAS_dbdgemm()
  *
  * @param Order a character specifying the matrix ordering ('r' or 'R' for row-major, 'c' or 'C' for column major)
  * @param TransA a character specifying whether or not to transpose A before taking the matrix-matrix product ('n' or 'N' not to transpose, 't' or 'T' or 'c' or 'C' to transpose)

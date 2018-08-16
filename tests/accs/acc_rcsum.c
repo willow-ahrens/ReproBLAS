@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include <idxdBLAS.h>
+#include <binnedBLAS.h>
 #include <reproBLAS.h>
 
 #include "../common/test_opt.h"
@@ -22,7 +22,7 @@ static void acc_rcsum_options_initialize(void){
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
   fold._int.min               = 2;
-  fold._int.max               = idxd_SIMAXFOLD;
+  fold._int.max               = binned_SBMAXFOLD;
   fold._int.value             = SIDEFAULTFOLD;
 }
 
@@ -57,7 +57,7 @@ int acc_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealSca
   int i;
   int j;
   float complex res = 0.0;
-  float_complex_indexed *ires;
+  float_complex_binned *ires;
   double s;
   float ref;
 
@@ -71,10 +71,10 @@ int acc_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealSca
 
   for(i = 0; i < trials; i++){
     util_cvec_fill(N, X, incX, FillX, RealScaleX, ImagScaleX);
-    ires = idxd_cialloc(fold._int.value);
-    idxd_cisetzero(fold._int.value, ires);
-    idxdBLAS_cicsum(fold._int.value, N, X, incX, ires);
-    idxd_cciconv_sub(fold._int.value, ires, &res);
+    ires = binned_cballoc(fold._int.value);
+    binned_cbsetzero(fold._int.value, ires);
+    binnedBLAS_cbcsum(fold._int.value, N, X, incX, ires);
+    binned_ccbconv_sub(fold._int.value, ires, &res);
     free(ires);
 
     util_svec_sort(N, (float*)X, incX * 2, NULL, 0, util_Decreasing_Magnitude);

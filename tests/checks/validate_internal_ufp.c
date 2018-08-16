@@ -1,5 +1,5 @@
-#include <idxdBLAS.h>
-#include <idxd.h>
+#include <binnedBLAS.h>
+#include <binned.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -33,9 +33,9 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
     X[i * incX] = 3 * bin;
     bin *= 2;
 
-    ufpX = idxd_ufp(X[i * incX]);
+    ufpX = binned_ufp(X[i * incX]);
     if (ufpX != bin) {
-      printf("idxd_ufp(%g) = %g != %g\n", X[i * incX], ufpX, bin);
+      printf("binned_ufp(%g) = %g != %g\n", X[i * incX], ufpX, bin);
       return 1;
     }
 

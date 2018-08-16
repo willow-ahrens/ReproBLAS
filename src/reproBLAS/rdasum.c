@@ -1,14 +1,14 @@
 #include <reproBLAS.h>
-#include <idxdBLAS.h>
+#include <binnedBLAS.h>
 
 /**
  * @brief Compute the reproducible absolute sum of double precision vector X
  *
  * Return the sum of absolute values of elements in X.
  *
- * The reproducible absolute sum is computed with indexed types using #idxdBLAS_didasum()
+ * The reproducible absolute sum is computed with binned types using #binnedBLAS_dbdasum()
  *
- * @param fold the fold of the indexed types
+ * @param fold the fold of the binned types
  * @param N vector length
  * @param X double precision vector
  * @param incX X vector stride (use every incX'th element)
@@ -18,14 +18,14 @@
  * @date   15 Jan 2016
  */
 double reproBLAS_rdasum(const int fold, const int N, const double* X, const int incX) {
-  double_indexed *asumi = idxd_dialloc(fold);
+  double_binned *asumi = binned_dballoc(fold);
   double asum;
 
-  idxd_disetzero(fold, asumi);
+  binned_dbsetzero(fold, asumi);
 
-  idxdBLAS_didasum(fold, N, X, incX, asumi);
+  binnedBLAS_dbdasum(fold, N, X, incX, asumi);
 
-  asum = idxd_ddiconv(fold, asumi);
+  asum = binned_ddbconv(fold, asumi);
   free(asumi);
   return asum;
 }

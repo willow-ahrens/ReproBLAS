@@ -1,5 +1,5 @@
-#include <idxdBLAS.h>
-#include <idxd.h>
+#include <binnedBLAS.h>
+#include <binned.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <float.h>
@@ -37,18 +37,18 @@ int vecvec_test(int argc, char** argv, int N, int incX, int incY) {
   }
   X[i * incX] = 0.0;
   for (i = 0; i < N * (DBL_MAX_EXP - DBL_MIN_EXP) + 1; i++) {
-    index = idxd_dindex(X[i * incX]);
+    index = binned_dindex(X[i * incX]);
     if (index == 0){
-      X[i * incX] *= idxd_DMCOMPRESSION;
+      X[i * incX] *= binned_DMCOMPRESSION;
     }
-    if (X[i * incX] != 0.0 && *idxd_dmbins(index) / ldexp(0.75, DBL_MANT_DIG) > 2 * fabs(X[i * incX])){
+    if (X[i * incX] != 0.0 && *binned_dmbins(index) / ldexp(0.75, DBL_MANT_DIG) > 2 * fabs(X[i * incX])){
       printf("2 * |X| !>= 2^(i * W)\n");
-      printf("2 * %g !>= %g\n", fabs(X[i * incX]), *idxd_dmbins(index + 1)/ldexp(0.75, DBL_MANT_DIG - DIWIDTH));
+      printf("2 * %g !>= %g\n", fabs(X[i * incX]), *binned_dmbins(index + 1)/ldexp(0.75, DBL_MANT_DIG - DBWIDTH));
       return 1;
     }
-    if (*idxd_dmbins(index) / ldexp(0.75, DBL_MANT_DIG - DIWIDTH) <= 2 * fabs(X[i * incX])){
+    if (*binned_dmbins(index) / ldexp(0.75, DBL_MANT_DIG - DBWIDTH) <= 2 * fabs(X[i * incX])){
       printf("2 * |X| !< 2^((i + 1) * W)\n");
-      printf("2 * %g !< %g\n", fabs(X[i * incX]), *idxd_dmbins(index)/ldexp(0.75, DBL_MANT_DIG - DIWIDTH));
+      printf("2 * %g !< %g\n", fabs(X[i * incX]), *binned_dmbins(index)/ldexp(0.75, DBL_MANT_DIG - DBWIDTH));
       return 1;
     }
   }

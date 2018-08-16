@@ -3,8 +3,8 @@
 #include <math.h>
 #include <string.h>
 
-#include <idxd.h>
-#include <idxdBLAS.h>
+#include <binned.h>
+#include <binnedBLAS.h>
 #include <reproBLAS.h>
 
 #include "../common/test_opt.h"
@@ -41,11 +41,11 @@ static void corroborate_rcgemv_options_initialize(void){
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
   fold._int.min               = 2;
-  fold._int.max               = idxd_SIMAXFOLD;
+  fold._int.max               = binned_SBMAXFOLD;
   fold._int.value             = SIDEFAULTFOLD;
 }
 
-int corroborate_rcgemv(int fold, char Order, char TransA, int M, int N, float complex *alpha, float complex *A, int lda, float complex *X, int incX, float complex *beta, float complex *Y, float_complex_indexed *YI, int incY, float complex *ref, int max_num_blocks) {
+int corroborate_rcgemv(int fold, char Order, char TransA, int M, int N, float complex *alpha, float complex *A, int lda, float complex *X, int incX, float complex *beta, float complex *Y, float_complex_binned *YI, int incY, float complex *ref, int max_num_blocks) {
 
   int i;
   int num_blocks = 1;
@@ -65,12 +65,12 @@ int corroborate_rcgemv(int fold, char Order, char TransA, int M, int N, float co
   }
 
   float complex *res = util_cvec_alloc(opM, incY);
-  float_indexed *Ires = malloc(opM * incY * idxd_cisize(fold));
+  float_binned *Ires = malloc(opM * incY * binned_cbsize(fold));
 
   num_blocks = 1;
   while (num_blocks < opN && num_blocks <= max_num_blocks) {
     memcpy(res, Y, opM * incY * sizeof(complex float));
-    memcpy(Ires, YI, opM * incY * idxd_cisize(fold));
+    memcpy(Ires, YI, opM * incY * binned_cbsize(fold));
     if (num_blocks == 1){
       wrap_rcgemv(fold, Order, TransA, M, N, alpha, A, lda, X, incX, beta, res, incY);
     }else {
@@ -84,10 +84,10 @@ int corroborate_rcgemv(int fold, char Order, char TransA, int M, int N, float co
               switch(Order){
                 case 'r':
                 case 'R':
-                  idxdBLAS_cicgemv(fold, Order, TransA, M, block_opN, alpha, A + i, lda, X + i * incX, incX, Ires, incY);
+                  binnedBLAS_cbcgemv(fold, Order, TransA, M, block_opN, alpha, A + i, lda, X + i * incX, incX, Ires, incY);
                   break;
                 default:
-                  idxdBLAS_cicgemv(fold, Order, TransA, M, block_opN, alpha, A + i * lda, lda, X + i * incX, incX, Ires, incY);
+                  binnedBLAS_cbcgemv(fold, Order, TransA, M, block_opN, alpha, A + i * lda, lda, X + i * incX, incX, Ires, incY);
                   break;
               }
             }
@@ -101,10 +101,10 @@ int corroborate_rcgemv(int fold, char Order, char TransA, int M, int N, float co
               switch(Order){
                 case 'r':
                 case 'R':
-                  idxdBLAS_cicgemv(fold, Order, TransA, block_opN, N, alpha, A + i * lda, lda, X + i * incX, incX, Ires, incY);
+                  binnedBLAS_cbcgemv(fold, Order, TransA, block_opN, N, alpha, A + i * lda, lda, X + i * incX, incX, Ires, incY);
                   break;
                 default:
-                  idxdBLAS_cicgemv(fold, Order, TransA, block_opN, N, alpha, A + i, lda, X + i * incX, incX, Ires, incY);
+                  binnedBLAS_cbcgemv(fold, Order, TransA, block_opN, N, alpha, A + i, lda, X + i * incX, incX, Ires, incY);
                   break;
               }
             }
@@ -112,7 +112,7 @@ int corroborate_rcgemv(int fold, char Order, char TransA, int M, int N, float co
           break;
       }
       for(i = 0; i < opM; i++){
-        idxd_cciconv_sub(fold, Ires + i * incY * idxd_cinum(fold), res + i * incY);
+        binned_ccbconv_sub(fold, Ires + i * incY * binned_cbnum(fold), res + i * incY);
       }
     }
     for(i = 0; i < opM; i++){
@@ -180,7 +180,7 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   float complex *A  = util_cmat_alloc(Order, M, N, lda);
   float complex *X  = util_cvec_alloc(opN, incX);
   float complex *Y  = util_cvec_alloc(opM, incY);
-  float_complex_indexed *YI = (float_complex_indexed*)malloc(opM * incY * idxd_cisize(fold._int.value));
+  float_complex_binned *YI = (float_complex_binned*)malloc(opM * incY * binned_cbsize(fold._int.value));
   float complex alpha = RealAlpha + I * ImagAlpha;
   float complex beta = RealBeta + I * ImagBeta;
   float complex betaY;
@@ -191,15 +191,15 @@ int matvec_fill_test(int argc, char** argv, char Order, char TransA, int M, int 
   util_cvec_fill(opN, X, incX, FillX, RealScaleX, ImagScaleX);
   util_cvec_fill(opM, Y, incY, FillY, RealScaleY, ImagScaleY);
   if(beta == 0.0){
-    memset(YI, 0, opM * idxd_cisize(fold._int.value));
+    memset(YI, 0, opM * binned_cbsize(fold._int.value));
   }else if (beta == 1.0){
     for(i = 0; i < opM; i++){
-      idxd_cicconv(fold._int.value, Y + i * incY, YI + i * incY * idxd_cinum(fold._int.value));
+      binned_cbcconv(fold._int.value, Y + i * incY, YI + i * incY * binned_cbnum(fold._int.value));
     }
   }else{
     for(i = 0; i < opM; i++){
       betaY = Y[i * incY] * beta;
-      idxd_cicconv(fold._int.value, &betaY, YI + i * incY * idxd_cinum(fold._int.value));
+      binned_cbcconv(fold._int.value, &betaY, YI + i * incY * binned_cbnum(fold._int.value));
     }
   }
   float complex *ref  = (float complex *)malloc(opM * incY * sizeof(float complex));

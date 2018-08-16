@@ -1,5 +1,5 @@
-#include <idxdBLAS.h>
-#include <idxd.h>
+#include <binnedBLAS.h>
+#include <binned.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -30,7 +30,7 @@ static void validate_xblas_ddot_options_initialize(void){
   fold._int.header.help       = "fold";
   fold._int.required          = 0;
   fold._int.min               = 2;
-  fold._int.max               = idxd_DIMAXFOLD;
+  fold._int.max               = binned_DBMAXFOLD;
   fold._int.value             = DIDEFAULTFOLD;
 
   norm._int.header.type       = opt_int;
@@ -48,18 +48,18 @@ int validate_xblas_ddot(int fold, int N, double* X, int incX, double* Y, int inc
   double res;
   double error;
   double bound;
-  double_indexed *ires = idxd_dialloc(fold);
+  double_binned *ires = binned_dballoc(fold);
 
-  idxd_didconv(fold, r, ires);
+  binned_dbdconv(fold, r, ires);
   (wrap_diaugsum_func(func))(fold, N, X, incX, Y, incY, ires);
-  res = idxd_ddiconv(fold, ires);
+  res = binned_ddbconv(fold, ires);
   error = fabs(res - ref);
   bound = wrap_daugsum_bound(fold, N, func, X, incX, Y, incY, res, ref);
   if (!util_dsoftequals(res, ref, bound)) {
     //TODO these error messages need to go to stderr for all tests.
     printf("%s(X, Y) = %g != %g\n|%g - %g| = %g > %g\n", wrap_daugsum_func_names[func], res, ref, res, ref, error, bound);
-    printf("\nres double_indexed:\n");
-    idxd_diprint(fold, ires);
+    printf("\nres double_binned:\n");
+    binned_dbprint(fold, ires);
     printf("\n");
     return 1;
   }

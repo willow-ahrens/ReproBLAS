@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <idxdBLAS.h>
+#include <binnedBLAS.h>
 #include "../common/test_opt.h"
 #include "../common/test_time.h"
 #include "../common/test_metric.h"
@@ -40,7 +40,7 @@ int bench_vecvec_fill_test(int argc, char** argv, int N, int FillX, double RealS
 
   time_tic();
   for(i = 0; i < trials; i++){
-    idxdBLAS_camax_sub(N, X, incX, &res);
+    binnedBLAS_camax_sub(N, X, incX, &res);
   }
   time_toc();
 

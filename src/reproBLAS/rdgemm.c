@@ -2,7 +2,7 @@
 #include <string.h>
 
 #include <reproBLAS.h>
-#include <idxdBLAS.h>
+#include <binnedBLAS.h>
 
 /**
  * @brief Add to double precision matrix C the reproducible matrix-matrix product of double precision matrices A and B
@@ -17,9 +17,9 @@
  *
  * alpha and beta are scalars, A and B and C are matrices with op(A) an M by K matrix, op(B) a K by N matrix, and C is an M by N matrix.
  *
- * The matrix-matrix product is computed using indexed types with #idxdBLAS_didgemm()
+ * The matrix-matrix product is computed using binned types with #binnedBLAS_dbdgemm()
  *
- * @param fold the fold of the indexed types
+ * @param fold the fold of the binned types
  * @param Order a character specifying the matrix ordering ('r' or 'R' for row-major, 'c' or 'C' for column major)
  * @param TransA a character specifying whether or not to transpose A before taking the matrix-matrix product ('n' or 'N' not to transpose, 't' or 'T' or 'c' or 'C' to transpose)
  * @param TransB a character specifying whether or not to transpose B before taking the matrix-matrix product ('n' or 'N' not to transpose, 't' or 'T' or 'c' or 'C' to transpose)
@@ -43,7 +43,7 @@ void reproBLAS_rdgemm(const int fold, const char Order, const char TransA, const
                       const double alpha, const double *A, const int lda,
                       const double *B, const int ldb,
                       const double beta, double *C, const int ldc){
-  double_indexed *CI;
+  double_binned *CI;
   int i;
   int j;
 
@@ -51,52 +51,52 @@ void reproBLAS_rdgemm(const int fold, const char Order, const char TransA, const
     return;
   }
 
-  CI = (double_indexed*)malloc(M * N * idxd_disize(fold));
+  CI = (double_binned*)malloc(M * N * binned_dbsize(fold));
   switch(Order){
     case 'r':
     case 'R':
       if(beta == 0.0){
-        memset(CI, 0, M * N * idxd_disize(fold));
+        memset(CI, 0, M * N * binned_dbsize(fold));
       }else if(beta == 1.0){
         for(i = 0; i < M; i++){
           for(j = 0; j < N; j++){
-            idxd_didconv(fold, C[i * ldc + j], CI + (i * N + j) * idxd_dinum(fold));
+            binned_dbdconv(fold, C[i * ldc + j], CI + (i * N + j) * binned_dbnum(fold));
           }
         }
       }else{
         for(i = 0; i < M; i++){
           for(j = 0; j < N; j++){
-            idxd_didconv(fold, C[i * ldc + j] * beta, CI + (i * N + j) * idxd_dinum(fold));
+            binned_dbdconv(fold, C[i * ldc + j] * beta, CI + (i * N + j) * binned_dbnum(fold));
           }
         }
       }
-      idxdBLAS_didgemm(fold, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, CI, N);
+      binnedBLAS_dbdgemm(fold, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, CI, N);
       for(i = 0; i < M; i++){
         for(j = 0; j < N; j++){
-          C[i * ldc + j] = idxd_ddiconv(fold, CI + (i * N + j) * idxd_dinum(fold));
+          C[i * ldc + j] = binned_ddbconv(fold, CI + (i * N + j) * binned_dbnum(fold));
         }
       }
       break;
     default:
       if(beta == 0.0){
-        memset(CI, 0, M * N * idxd_disize(fold));
+        memset(CI, 0, M * N * binned_dbsize(fold));
       }else if(beta == 1.0){
         for(j = 0; j < N; j++){
           for(i = 0; i < M; i++){
-            idxd_didconv(fold, C[j * ldc + i], CI + (j * M + i) * idxd_dinum(fold));
+            binned_dbdconv(fold, C[j * ldc + i], CI + (j * M + i) * binned_dbnum(fold));
           }
         }
       }else{
         for(j = 0; j < N; j++){
           for(i = 0; i < M; i++){
-            idxd_didconv(fold, C[j * ldc + i] * beta, CI + (j * M + i) * idxd_dinum(fold));
+            binned_dbdconv(fold, C[j * ldc + i] * beta, CI + (j * M + i) * binned_dbnum(fold));
           }
         }
       }
-      idxdBLAS_didgemm(fold, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, CI, M);
+      binnedBLAS_dbdgemm(fold, Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, CI, M);
       for(j = 0; j < N; j++){
         for(i = 0; i < M; i++){
-          C[j * ldc + i] = idxd_ddiconv(fold, CI + (j * M + i) * idxd_dinum(fold));
+          C[j * ldc + i] = binned_ddbconv(fold, CI + (j * M + i) * binned_dbnum(fold));
         }
       }
       break;
