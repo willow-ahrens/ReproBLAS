@@ -1,4 +1,4 @@
-# Reproducible BLAS v2.0.3
+# Reproducible BLAS v2.1.0
 
 ## Installation:
 
