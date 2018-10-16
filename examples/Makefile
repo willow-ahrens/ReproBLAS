@@ -32,15 +32,15 @@ TARGET = $(patsubst %,%.o,$(examples))
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(examples): % : %.o
-	$(LDC) -o $@ $(patsubst %,%.o,$@) -lbinned -lbinnedBLAS -lreproBLAS
+	$(LDC) -o $@ $(patsubst %,%.o,$@) $(LDFLAGS) -lbinned -lbinnedblas -lreproblas
 
 $(omp_examples): % : %.o
 	$(CC) $(CFLAGS) $(OMP_FLAG) -c $(patsubst %,%.c,$@)
-	$(LDC) $(OMP_FLAG) -o run-$@ $(patsubst %,%.o,$@) $(LDFLAGS) -lbinned -lbinnedBLAS -lreproBLAS
+	$(LDC) $(OMP_FLAG) -o run-$@ $(patsubst %,%.o,$@) $(LDFLAGS) -lbinned -lbinnedblas -lreproblas
 
 $(mpi_examples): % : %.o
 	$(MPICC) $(CFLAGS) $(INCR) -c $(patsubst %,%.c,$@)
-	$(MPILDC) -o $@ $(patsubst %,%.o,$@) $(LDFLAGS) -lbinned -lbinnedBLAS -lreproBLAS -lbinnedMPI
+	$(MPILDC) -o $@ $(patsubst %,%.o,$@) $(LDFLAGS) -lbinned -lbinnedblas -lreproblas -lbinnedMPI
 
 clean:
 	rm -rf *.o
