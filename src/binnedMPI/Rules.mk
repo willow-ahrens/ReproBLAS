@@ -1,12 +1,12 @@
 TARGETS :=
 ifeq ($(BUILD_MPI),true)
-TARGETS += libbinnedmpi.a
+TARGETS += libbinnedMPI.a
 endif
 SUBDIRS :=
 
 INSTALL_LIB := $(TARGETS)
 
-LIBBINNEDMPI := $(OBJPATH)/libbinnedmpi.a
+LIBBINNEDMPI := $(OBJPATH)/libbinnedMPI.a
 
 LDFLAGS += $(MPILDFLAGS)
 CFLAGS += $(MPICFLAGS)
@@ -18,7 +18,7 @@ COGGED = DBDBADD.ccog \
          CBCBADD.ccog \
          SBSBADDSQ.ccog
 
-libbinnedmpi.a_DEPS = $$(LIBBINNED) DOUBLE_BINNED.o \
+libbinnedMPI.a_DEPS = $$(LIBBINNED) DOUBLE_BINNED.o \
                                 DOUBLE_COMPLEX_BINNED.o \
                                 DOUBLE_BINNED_SCALED.o \
                                 FLOAT_BINNED.o \
