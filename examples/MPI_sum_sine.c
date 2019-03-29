@@ -28,10 +28,23 @@ int main(int argc, char** argv){
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &size);
 
-  int n = 10000000;
-  // Let's make n a multiple of size, for simplicity
-  n = n + size - (n % size); 
+  int n = 100000;
+
   int local_n = n / size;
+  if(rank == size - 1){
+    local_n += n - (local_n * size);
+  }
+
+  int *counts = malloc(size * sizeof(int));
+  int *displs = malloc(size * sizeof(int));
+
+  for(int i = 0; i < size; i++){
+    counts[i] = n / size;
+    displs[i] = i * (n / size);
+    if(i == size - 1){
+      counts[i] += n - (counts[i] * size);
+    }
+  }
 
   double *x = NULL;
   double *x_shuffled = NULL;
@@ -62,8 +75,8 @@ int main(int argc, char** argv){
   }
 
   // Distribute the x arrays among processors
-  MPI_Scatter(x, local_n, MPI_DOUBLE, local_x, local_n, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-  MPI_Scatter(x_shuffled, local_n, MPI_DOUBLE, local_x_shuffled, local_n, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  MPI_Scatterv(x, counts, displs, MPI_DOUBLE, local_x, local_n, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  MPI_Scatterv(x_shuffled, counts, displs, MPI_DOUBLE, local_x_shuffled, local_n, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
   double sum;
   double sum_shuffled;
@@ -143,6 +156,8 @@ int main(int argc, char** argv){
     free(x);
     free(x_shuffled);
   }
+  free(counts);
+  free(displs);
   free(local_x);
   free(local_x_shuffled);
   MPI_Finalize();

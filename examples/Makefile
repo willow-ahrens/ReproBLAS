@@ -40,7 +40,7 @@ $(omp_examples): % : %.o
 
 $(mpi_examples): % : %.o
 	$(MPICC) $(CFLAGS) $(INCR) -c $(patsubst %,%.c,$@)
-	$(MPILDC) -o $@ $(patsubst %,%.o,$@) $(LDFLAGS) -lbinned -lbinnedblas -lreproblas -lbinnedMPI
+	$(MPILDC) -o $@ $(patsubst %,%.o,$@) $(LDFLAGS) -lbinned -lbinnedblas -lreproblas -lbinnedmpi
 
 clean:
 	rm -rf *.o
