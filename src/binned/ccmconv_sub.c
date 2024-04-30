@@ -12,7 +12,7 @@
  * @param conv scalar return
  *
  * @author Hong Diep Nguyen
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   27 Apr 2015
  */
 void binned_ccmconv_sub(const int fold, const float *priX, const int incpriX, const float *carX, const int inccarX, void *conv) {

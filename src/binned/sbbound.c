@@ -15,10 +15,10 @@
  * @param S the value of the sum computed using binned types
  * @return error bound
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   31 Jul 2015
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @author Hong Diep Nguyen
  * @date   21 May 2015
  */

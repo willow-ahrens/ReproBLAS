@@ -20,7 +20,7 @@
  *
  * @return updated scale of Y
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   1 Jun 2015
  */
 #include <stdio.h>

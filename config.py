@@ -50,7 +50,7 @@ def execute(command_verbose):
 #  @param verbose be verbose if this string is equal to @c"true"
 #  @return a list of tuples such that the ith tuple is @c(<rc>, <output>) where @c<rc> is the return code and @c<output> is the output of running the ith command on the host machine, respectively
 #
-#  @author Peter Ahrens
+#  @author Willow Ahrens
 #  @date   28 May 2015
 #
 def run(command_list, verbose="false"):
@@ -74,7 +74,7 @@ def run(command_list, verbose="false"):
 #  @param verbose be verbose if this string is equal to @c"true"
 #  @return a list of tuples such that the ith tuple is @c(<rc>, <output>) where @c<rc> is the return code and @c<output> is the output of running the ith command on the host machine, respectively
 #
-#  @author Peter Ahrens
+#  @author Willow Ahrens
 #  @date   28 May 2015
 #
 def run_parallel(command_list, verbose="false"):
@@ -111,7 +111,7 @@ def run_parallel(command_list, verbose="false"):
 #                fma   - is fma available (True, False)
 #  @return idealized theoretical time in which the cpu could complete the given instructions (in any order)
 #
-#  @author Peter Ahrens
+#  @author Willow Ahrens
 #  @date   28 May 2015
 #
 def peak_time(data):
@@ -164,7 +164,7 @@ def peak_time(data):
 #                fma   - is fma available (True, False)
 #  @return total count of flops
 #
-#  @author Peter Ahrens
+#  @author Willow Ahrens
 #  @date   28 May 2015
 #
 def flop_count(data):
@@ -180,7 +180,7 @@ def flop_count(data):
 #                freq  - frequency of cpu (Hz)
 #                fma   - is fma available (True, False)
 #
-#  @author Peter Ahrens
+#  @author Willow Ahrens
 #  @date   8 Oct 2015
 #
 def cpu_info(verbose="false"):
@@ -196,7 +196,7 @@ def cpu_info(verbose="false"):
 ##
 #  @brief version number
 #
-#  @author Peter Ahrens
+#  @author Willow Ahrens
 #  @date   28 May 2015
 #
 version = "2.1.0"
@@ -206,7 +206,7 @@ version = "2.1.0"
 #
 #  Increases to this number will vastly increase the time necessary to autotune the library
 #
-#  @author Peter Ahrens
+#  @author Willow Ahrens
 #  @date   28 May 2015
 #
 max_expand_fold = 4

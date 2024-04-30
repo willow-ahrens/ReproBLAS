@@ -13,7 +13,7 @@
  * @param inccarX stride within X's carry vector (use every inccarX'th element)
  *
  * @author Hong Diep Nguyen
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   27 Apr 2015
  */
 void binned_zmnegate(const int fold, double* priX, const int incpriX, double* carX, const int inccarX) {

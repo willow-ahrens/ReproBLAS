@@ -16,7 +16,7 @@
  * @param incX X vector stride (use every incX'th element)
  * @return Euclidian norm of X
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   15 Jan 2016
  */
 float reproBLAS_rsnrm2(const int fold, const int N, const float* X, const int incX) {

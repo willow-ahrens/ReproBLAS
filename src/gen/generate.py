@@ -3,7 +3,7 @@
 #                                                                              #
 #     These functions are called when one actually wants to generate a file.   #
 #                                                                              #
-#                                                            Peter Ahrens 2014 #
+#                                                            Willow Ahrens 2014 #
 ################################################################################
 
 import os,json

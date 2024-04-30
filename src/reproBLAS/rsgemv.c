@@ -29,7 +29,7 @@
  * @param Y single precision vector Y of at least size M if not transposed or size N otherwise
  * @param incY Y vector stride (use every incY'th element)
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   18 Jan 2016
  */
 void reproBLAS_rsgemv(const int fold, const char Order,

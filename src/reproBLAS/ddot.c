@@ -16,7 +16,7 @@
  * @param incY Y vector stride (use every incY'th element)
  * @return the dot product of X and Y
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   15 Jan 2016
  */
 double reproBLAS_ddot(const int N, const double* X, const int incX, const double *Y, const int incY) {

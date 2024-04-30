@@ -13,7 +13,7 @@
  * @param Y binned scalar Y
  * @return the new scaling factor of Y
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   18 Jan 2016
  */
 double binnedBLAS_dbdssq(const int fold, const int N, const double *X, const int incX, const double scaleY, double_binned *Y){

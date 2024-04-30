@@ -8,7 +8,7 @@
 /**
  * @brief The fold of double precision binned types when fold is not specified.
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   26 May 2015
  */
 #define DIDEFAULTFOLD 3
@@ -16,7 +16,7 @@
 /**
  * @brief The fold of single precision binned types when fold is not specified.
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   26 May 2015
  */
 #define SIDEFAULTFOLD 3

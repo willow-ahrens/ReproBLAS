@@ -40,7 +40,7 @@ cog.out(str(code_block))
  * @param incX X vector stride (use every incX'th element)
  * @param amax scalar return
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   15 Jan 2016
  */
 void binnedBLAS_camax_sub(const int N, const void *X, const int incX, void *amax) {

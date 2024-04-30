@@ -14,7 +14,7 @@
  * @param incX X vector stride (use every incX'th element)
  * @return absolute sum of X
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   15 Jan 2016
  */
 double reproBLAS_dasum(const int N, const double* X, const int incX) {

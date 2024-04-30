@@ -14,7 +14,7 @@
  * @param incX X vector stride (use every incX'th element)
  * @return sum of X
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   15 Jan 2016
  */
 float reproBLAS_rssum(const int fold, const int N, const float* X, const int incX) {

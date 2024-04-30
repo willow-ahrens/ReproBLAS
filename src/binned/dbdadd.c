@@ -10,7 +10,7 @@
  * @param Y binned scalar Y
  *
  * @author Hong Diep Nguyen
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   27 Apr 2015
  */
 void binned_dbdadd(const int fold, const double X, double_binned *Y){

@@ -9,7 +9,7 @@
  * @param X binned scalar X
  *
  * @author Hong Diep Nguyen
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   27 Apr 2015
  */
 void binned_zbnegate(const int fold, double_complex_binned* X){

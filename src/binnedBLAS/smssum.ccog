@@ -52,7 +52,7 @@ cog.out(generate.generate(blockSize.BlockSize("smssum", "N_block_MAX", 32, termi
  * @param carY Y's carry vector
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   15 Jan 2016
  */
 void binnedBLAS_smssum(const int fold, const int N, const float *X, const int incX, float *priY, const int incpriY, float *carY, const int inccarY){

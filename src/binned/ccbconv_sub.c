@@ -8,7 +8,7 @@
  * @param conv scalar return
  *
  * @author Hong Diep Nguyen
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   27 Apr 2015
  */
 void binned_ccbconv_sub(const int fold, const float_complex_binned *X, void *conv) {

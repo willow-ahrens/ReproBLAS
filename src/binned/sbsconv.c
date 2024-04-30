@@ -8,7 +8,7 @@
  * @param Y binned scalar Y
  *
  * @author Hong Diep Nguyen
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   27 Apr 2015
  */
 void binned_sbsconv(const int fold, const float X, float_binned *Y) {

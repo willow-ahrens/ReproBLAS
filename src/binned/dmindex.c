@@ -15,7 +15,7 @@
  * @param priX X's primary vector
  * @return X's index
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @author Hong Diep Nguyen
  * @date   23 Sep 2015
  */

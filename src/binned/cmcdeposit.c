@@ -18,7 +18,7 @@
  * @param incpriY stride within Y's primary vector (use every incpriY'th element)
  *
  * @author Hong Diep Nguyen
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   10 Jun 2015
  */
 void binned_cmcdeposit(const int fold, const void *X, float *priY, const int incpriY){

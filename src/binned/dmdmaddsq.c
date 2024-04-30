@@ -20,7 +20,7 @@
  *
  * @return updated scale of Y
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   1 Jun 2015
  */
 double binned_dmdmaddsq(const int fold, const double scaleX, const double *priX, const int incpriX, const double *carX, const int inccarX, const double scaleY, double *priY, const int incpriY, double *carY, const int inccarY) {

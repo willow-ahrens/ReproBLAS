@@ -12,7 +12,7 @@
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
  * @author Hong Diep Nguyen
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   27 Apr 2015
  */
 void binned_zmzconv(const int fold, const void *X, double *priY, const int incpriY, double *carY, const int inccarY) {

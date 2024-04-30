@@ -13,7 +13,7 @@
  * @param incY Y vector stride (use every incY'th element)
  * @param Z binned scalar Z
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   15 Jan 2016
  */
 void binnedBLAS_zbzdotu(const int fold, const int N, const void *X, const int incX, const void *Y, const int incY, double_complex_binned *Z){

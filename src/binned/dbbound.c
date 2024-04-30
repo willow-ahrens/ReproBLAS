@@ -15,7 +15,7 @@
  * @param S the value of the sum computed using binned types
  * @return error bound
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   31 Jul 2015
  */
 double binned_dbbound(const int fold, const int N, const double X, const double S) {

@@ -16,7 +16,7 @@
  * @param incY Y vector stride (use every incY'th element)
  * @return the dot product of X and Y
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   15 Jan 2016
  */
 float reproBLAS_rsdot(const int fold, const int N, const float* X, const int incX, const float *Y, const int incY) {

@@ -14,7 +14,7 @@
  * @param priX X's primary vector
  * @return >0 if x has denormal bits, 0 otherwise.
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   23 Jun 2015
  */
 int binned_smdenorm(const int fold, const float *priX){

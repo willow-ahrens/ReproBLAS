@@ -13,7 +13,7 @@
  *
  * @return updated scale of Y
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   2 Dec 2015
  */
 double binned_dbdbaddsq(const int fold, const double scaleX, const double_binned *X, const double scaleY, double_binned *Y) {

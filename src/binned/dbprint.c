@@ -7,7 +7,7 @@
  * @param X binned scalar X
  *
  * @author Hong Diep Nguyen
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   27 Apr 2015
  */
 void binned_dbprint(const int fold, const double_binned *X) {

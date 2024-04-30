@@ -41,7 +41,7 @@ cog.out(str(code_block))
  * @param incY Y vector stride (use every incY'th element)
  * @return absolute maximum value multiple of X and Y
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   15 Jan 2016
  */
 double binnedBLAS_damaxm(const int N, const double *X, const int incX, const double *Y, const int incY){

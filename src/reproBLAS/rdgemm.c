@@ -35,7 +35,7 @@
  * @param C double precision matrix of dimension (M, ldc) in row-major or (ldc, N) in column-major.
  * @param ldc the first dimension of C as declared in the calling program. ldc must be at least N in row major or M in column major.
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   18 Jan 2016
  */
 void reproBLAS_rdgemm(const int fold, const char Order, const char TransA, const char TransB,

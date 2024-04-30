@@ -20,7 +20,7 @@ static int types_initialized[binned_SBMAXFOLD + 1]; //initializes to 0
  *
  * @param fold the fold of the binned types
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   18 Jun 2016
  */
 MPI_Datatype binnedMPI_FLOAT_BINNED_SCALED(const int fold){

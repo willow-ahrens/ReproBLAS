@@ -14,7 +14,7 @@
  * @param incX X vector stride (use every incX'th element)
  * @return Euclidian norm of X
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   15 Jan 2016
  */
 double reproBLAS_dznrm2(const int N, const void* X, const int incX) {

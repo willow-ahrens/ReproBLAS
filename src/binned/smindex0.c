@@ -13,7 +13,7 @@
  * @param priX X's primary vector
  * @return >0 if x has index 0, 0 otherwise.
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   19 May 2015
  */
 int binned_smindex0(const float *priX){

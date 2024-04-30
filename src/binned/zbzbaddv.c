@@ -12,7 +12,7 @@
  * @param Y binned vector Y
  * @param incY Y vector stride (use every incY'th element)
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   25 Jun 2015
  */
 void binned_zbzbaddv(const int fold, const int N, const double_complex_binned *X, const int incX, double_complex_binned *Y, const int incY){

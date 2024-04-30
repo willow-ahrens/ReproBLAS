@@ -4,7 +4,7 @@
 #     A set of classes used to represent the four main data types supported by #
 # ReproBLAS.                                                                   #
 #                                                                              #
-#                                                            Peter Ahrens 2014 #
+#                                                            Willow Ahrens 2014 #
 ################################################################################
 
 from utils import *

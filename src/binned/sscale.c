@@ -19,7 +19,7 @@
  * @param X single precision number to be scaled
  * @return reproducible scaling factor
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   19 Jun 2015
  */
 float binned_sscale(const float X){

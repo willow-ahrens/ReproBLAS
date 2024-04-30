@@ -78,7 +78,7 @@ typedef float float_complex_binned;
  * bin width (in bits)
  *
  * @author Hong Diep Nguyen
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   27 Apr 2015
  */
 #define DBWIDTH 40
@@ -89,7 +89,7 @@ typedef float float_complex_binned;
  * bin width (in bits)
  *
  * @author Hong Diep Nguyen
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   27 Apr 2015
  */
 #define SBWIDTH 13
@@ -99,7 +99,7 @@ typedef float float_complex_binned;
  *
  * maximum index (inclusive)
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   24 Jun 2015
  */
 #define binned_DBMAXINDEX (((DBL_MAX_EXP - DBL_MIN_EXP + DBL_MANT_DIG - 1)/DBWIDTH) - 1)
@@ -109,7 +109,7 @@ typedef float float_complex_binned;
  *
  * maximum index (inclusive)
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   24 Jun 2015
  */
 #define binned_SBMAXINDEX (((FLT_MAX_EXP - FLT_MIN_EXP + FLT_MANT_DIG - 1)/SBWIDTH) - 1)
@@ -117,7 +117,7 @@ typedef float float_complex_binned;
 /**
  * @brief The maximum double precision fold supported by the library.
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   14 Jan 2016
  */
 #define binned_DBMAXFOLD (binned_DBMAXINDEX + 1)
@@ -125,7 +125,7 @@ typedef float float_complex_binned;
 /**
  * @brief The maximum single precision fold supported by the library.
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   14 Jan 2016
  */
 #define binned_SBMAXFOLD (binned_SBMAXINDEX + 1)
@@ -136,7 +136,7 @@ typedef float float_complex_binned;
  * The number of deposits that can be performed before a renorm is necessary. Applies also to binned complex double precision.
  *
  * @author Hong Diep Nguyen
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   27 Apr 2015
  */
 #define binned_DBENDURANCE (1 << (DBL_MANT_DIG - DBWIDTH - 2))
@@ -147,7 +147,7 @@ typedef float float_complex_binned;
  * The number of deposits that can be performed before a renorm is necessary. Applies also to binned complex single precision.
  *
  * @author Hong Diep Nguyen
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   27 Apr 2015
  */
 #define binned_SBENDURANCE (1 << (FLT_MANT_DIG - SBWIDTH - 2))
@@ -157,7 +157,7 @@ typedef float float_complex_binned;
  *
  * The maximum number of double precision numbers that can be summed using binned double precision. Applies also to binned complex double precision.
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   27 Apr 2015
  */
 #define binned_DBCAPACITY (binned_DBENDURANCE*(1.0/DBL_EPSILON - 1.0))
@@ -167,7 +167,7 @@ typedef float float_complex_binned;
  *
  * The maximum number of single precision numbers that can be summed using binned single precision. Applies also to binned complex double precision.
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   27 Apr 2015
  */
 #define binned_SBCAPACITY (binned_SBENDURANCE*(1.0/FLT_EPSILON - 1.0))
@@ -178,7 +178,7 @@ typedef float float_complex_binned;
  *
  * This factor is used to scale down inputs before deposition into the bin of highest index
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   19 May 2015
  */
 #define binned_DMCOMPRESSION (1.0/(1 << (DBL_MANT_DIG - DBWIDTH + 1)))
@@ -189,7 +189,7 @@ typedef float float_complex_binned;
  *
  * This factor is used to scale down inputs before deposition into the bin of highest index
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   19 May 2015
  */
 #define binned_SMCOMPRESSION (1.0/(1 << (FLT_MANT_DIG - SBWIDTH + 1)))
@@ -200,7 +200,7 @@ typedef float float_complex_binned;
  *
  * This factor is used to scale up inputs after deposition into the bin of highest index
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   19 May 2015
  */
 #define binned_DMEXPANSION (1.0*(1 << (DBL_MANT_DIG - DBWIDTH + 1)))
@@ -211,7 +211,7 @@ typedef float float_complex_binned;
  *
  * This factor is used to scale up inputs after deposition into the bin of highest index
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   19 May 2015
  */
 #define binned_SMEXPANSION (1.0*(1 << (FLT_MANT_DIG - SBWIDTH + 1)))

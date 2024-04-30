@@ -53,7 +53,7 @@ cog.out(generate.generate(blockSize.BlockSize("zmzdotu", "N_block_MAX", 32, term
  * @param carZ Z's carry vector
  * @param inccarZ stride within Z's carry vector (use every inccarZ'th element)
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   15 Jan 2016
  */
 void binnedBLAS_zmzdotu(const int fold, const int N, const void *X, const int incX, const void *Y, const int incY, double *priZ, const int incpriZ, double *carZ, const int inccarZ){

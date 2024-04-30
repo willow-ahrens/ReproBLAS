@@ -14,7 +14,7 @@
  * @return unit in the first place
  *
  * @author Hong Diep Nguyen
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   27 Apr 2015
  */
 double binned_ufp(double X) {

@@ -8,7 +8,7 @@
  * @return scalar Y
  *
  * @author Hong Diep Nguyen
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   27 Apr 2015
  */
 double binned_ddbconv(const int fold, const double_binned *X) {

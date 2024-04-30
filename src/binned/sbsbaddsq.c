@@ -13,7 +13,7 @@
  *
  * @return updated scale of Y
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   2 Dec 2015
  */
 float binned_sbsbaddsq(const int fold, const float scaleX, const float_binned *X, const float scaleY, float_binned *Y) {

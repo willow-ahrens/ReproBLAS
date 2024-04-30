@@ -19,7 +19,7 @@
  * @param X double precision number to be scaled
  * @return reproducible scaling factor
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   19 Jun 2015
  */
 double binned_dscale(const double X){

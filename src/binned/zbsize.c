@@ -7,7 +7,7 @@
  * @return the size (in bytes) of the binned type
  *
  * @author Hong Diep Nguyen
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   27 Apr 2015
  */
 size_t binned_zbsize(const int fold){

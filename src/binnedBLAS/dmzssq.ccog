@@ -53,7 +53,7 @@ cog.out(generate.generate(blockSize.BlockSize("dmzssq", "N_block_MAX", 32, termi
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  * @return the new scaling factor of Y
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   18 Jan 2016
  */
 double binnedBLAS_dmzssq(const int fold, const int N, const void *X, const int incX, const double scaleY, double *priY, const int incpriY, double *carY, const int inccarY){

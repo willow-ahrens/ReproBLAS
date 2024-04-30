@@ -16,7 +16,7 @@
  * @param inccarX stride within X's carry vector (use every inccarX'th element)
  *
  * @author Hong Diep Nguyen
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   27 Apr 2015
  */
 void binned_cmprint(const int fold, const float* priX, const int incpriX, const float* carX, const int inccarX) {

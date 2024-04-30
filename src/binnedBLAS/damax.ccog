@@ -39,7 +39,7 @@ cog.out(str(code_block))
  * @param incX X vector stride (use every incX'th element)
  * @return absolute maximum value of X
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   15 Jan 2016
  */
 double binnedBLAS_damax(const int N, const double *X, const int incX){

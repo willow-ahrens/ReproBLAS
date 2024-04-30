@@ -12,7 +12,7 @@
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
  * @author Hong Diep Nguyen
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   30 Apr 2015
  */
 void binned_smsconv(const int fold, const float X, float* priY, const int incpriY, float* carY, const int inccarY) {

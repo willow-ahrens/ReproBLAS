@@ -4,7 +4,7 @@
 #     A set of classes used to generate generically vectorized code. Currently #
 # supports SISD, Intel SSE, Intel AVX.                                         #
 #                                                                              #
-#                                                            Peter Ahrens 2014 #
+#                                                            Willow Ahrens 2014 #
 ################################################################################
 
 

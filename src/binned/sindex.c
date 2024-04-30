@@ -12,7 +12,7 @@
  * @param X scalar X
  * @return X's index
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @author Hong Diep Nguyen
  * @date   19 Jun 2015
  */

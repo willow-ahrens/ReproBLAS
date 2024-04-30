@@ -16,7 +16,7 @@
  * @param incY Y vector stride (use every incY'th element)
  * @param dotu scalar return
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   15 Jan 2016
  */
 void reproBLAS_rcdotu_sub(const int fold, const int N, const void* X, const int incX, const void *Y, const int incY, void *dotu) {

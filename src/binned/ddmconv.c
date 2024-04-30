@@ -17,7 +17,7 @@
  * @param inccarX stride within X's carry vector (use every inccarX'th element)
  * @return scalar Y
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   31 Jul 2015
  */
 double binned_ddmconv(const int fold, const double* priX, const int incpriX, const double* carX, const int inccarX) {

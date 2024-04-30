@@ -14,7 +14,7 @@
  * @param incX X vector stride (use every incX'th element)
  * @param sum scalar return
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   15 Jan 2016
  */
 void reproBLAS_rzsum_sub(const int fold, const int N, const void* X, const int incX, void *sum) {

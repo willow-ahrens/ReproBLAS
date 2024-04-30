@@ -16,7 +16,7 @@ static int bins_initialized = 0;
  * @param X index
  * @return pointer to constant double precision bins of index X
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @author Hong Diep Nguyen
  * @date   19 Jun 2015
  */

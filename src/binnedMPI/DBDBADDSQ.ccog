@@ -243,7 +243,7 @@ static int ops_initialized[binned_DBMAXFOLD + 1]; //initializes to 0
  *
  * @param fold the fold of the binned types
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   18 Jun 2016
  */
 MPI_Op binnedMPI_DBDBADDSQ(const int fold){

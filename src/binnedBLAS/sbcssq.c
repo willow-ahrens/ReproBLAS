@@ -13,7 +13,7 @@
  * @param Y binned scalar Y
  * @return the new scaling factor of Y
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   18 Jan 2016
  */
 float binnedBLAS_sbcssq(const int fold, const int N, const void *X, const int incX, const float scaleY, float_binned *Y){

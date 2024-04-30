@@ -51,7 +51,7 @@ cog.out(generate.generate(blockSize.BlockSize("dmdasum", "N_block_MAX", 32, term
  * @param carY Y's carry vector
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   15 Jan 2016
  */
 void binnedBLAS_dmdasum(const int fold, const int N, const double *X, const int incX, double *priY, const int incpriY, double *carY, const int inccarY){

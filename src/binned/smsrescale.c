@@ -14,7 +14,7 @@
  * @param carY Y's carry vector
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   1 Jun 2015
  */
 void binned_smsrescale(const int fold, const float X, const float scaleY, float *priY, const int incpriY, float *carY, const int inccarY){

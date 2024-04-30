@@ -14,7 +14,7 @@
  * @param incX X vector stride (use every incX'th element)
  * @return absolute sum of X
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   15 Jan 2016
  */
 double reproBLAS_rdzasum(const int fold, const int N, const void* X, const int incX) {

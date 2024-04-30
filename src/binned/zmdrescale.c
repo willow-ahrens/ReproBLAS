@@ -14,7 +14,7 @@
  * @param carY Y's carry vector
  * @param inccarY stride within Y's carry vector (use every inccarY'th element)
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   1 Jun 2015
  */
 void binned_zmdrescale(const int fold, const double X, const double scaleY, double *priY, const int incpriY, double *carY, const int inccarY){

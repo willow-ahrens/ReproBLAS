@@ -4,7 +4,7 @@
 #     Helps with the actual writing (indentation, formatting, logisitcs) of    #
 # generated code.                                                              #
 #                                                                              #
-#                                                            Peter Ahrens 2014 #
+#                                                            Willow Ahrens 2014 #
 ################################################################################
 
 def mix(op, *args, **kwargs):

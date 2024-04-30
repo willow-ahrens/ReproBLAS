@@ -1,6 +1,6 @@
 #Harness.py
 #the intended test harness for all tests here.
-#By peter ahrens
+#By Willow Ahrens
 #comments/code niceness to come
 
 import argparse

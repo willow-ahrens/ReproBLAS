@@ -10,7 +10,7 @@
  * @param X single precision vector
  * @param incX X vector stride (use every incX'th element)
  * @param Y binned scalar Y
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @date   15 Jan 2016
  */
 void binnedBLAS_sbsasum(const int fold, const int N, const float *X, const int incX, float_binned *Y){

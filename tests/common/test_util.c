@@ -541,7 +541,7 @@ int util_ccompare(void *a, void *b, util_comp_t comp){
 /**
  * @brief a quicksort using the extra permutation infastructure that I implemented.
  *
- * @author Peter Ahrens
+ * @author Willow Ahrens
  * @author Logic lovingly stolen from Jonathan Shewchuk's CS61B notes from 2013
  */
 static void quicksort(int low, int high, compare_func compare, void *compare_data, swap_func swap, void *swap_data) {
